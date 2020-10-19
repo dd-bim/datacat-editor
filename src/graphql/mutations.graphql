@@ -1,0 +1,120 @@
+mutation UpdateProfile($input: ProfileUpdateInput!) {
+    updateProfile(input: $input) {
+        ...UserProfile
+    }
+}
+
+mutation CreateEntry($input: CreateEntryInput!) {
+    createEntry(input: $input) {
+        entry {
+            ...ConceptProps
+        }
+    }
+}
+
+mutation DeleteEntry($id: ID!) {
+    deleteEntry(input: {id: $id}) {
+        entry {
+            ...ConceptProps
+        }
+    }
+}
+
+mutation SetVersion($input: SetVersionInput!) {
+    setVersion(input: $input) {
+        entry {
+            ...ConceptProps
+        }
+    }
+}
+
+mutation AddName($input: AddNameInput!) {
+    addName(input: $input) {
+        entry {
+            ...ConceptProps
+        }
+    }
+}
+
+mutation UpdateName($input: UpdateNameInput!) {
+    updateName(input: $input) {
+        entry {
+            ...ConceptProps
+        }
+    }
+}
+
+mutation DeleteName($input: DeleteNameInput!) {
+    deleteName(input: $input) {
+        entry {
+            ...ConceptProps
+        }
+    }
+}
+
+mutation AddDescription($input: AddDescriptionInput!) {
+    addDescription(input: $input) {
+        entry {
+            ...ConceptProps
+        }
+    }
+}
+
+mutation UpdateDescription($input: UpdateDescriptionInput!) {
+    updateDescription(input: $input) {
+        entry {
+            ...ConceptProps
+        }
+    }
+}
+
+mutation DeleteDescription($input: DeleteDescriptionInput!) {
+    deleteDescription(input: $input) {
+        entry {
+            ...ConceptProps
+        }
+    }
+}
+
+mutation CreateOneToManyRelationship($input: CreateOneToManyRelationshipInput!) {
+    createOneToManyRelationship(input: $input) {
+        relationship {
+            ... on XtdRelationship {
+                id
+            }
+        }
+    }
+}
+
+mutation UpdateOneToManyRelationship($oldId: ID!, $input: CreateOneToManyRelationshipInput!) {
+    deleteRelationship(input: { id: $oldId }) {
+        relationship {
+            ... on XtdRelationship {
+                id
+            }
+        }
+    }
+    createOneToManyRelationship(input: $input) {
+        relationship {
+            ... on XtdRelationship {
+                id
+            }
+        }
+    }
+}
+
+mutation DeleteRelationship($input: DeleteRelationshipInput!) {
+    deleteRelationship(input: $input) {
+        relationship {
+            ... on XtdRelationship {
+                id
+            }
+        }
+    }
+}
+
+mutation TagBag($bagId: ID!, $tagId: ID!) {
+    tag(conceptId: $bagId, tagId: $tagId) {
+        ...CollectionDetailProps
+    }
+}

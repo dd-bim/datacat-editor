@@ -1,0 +1,91 @@
+query FindLanguages($input: LanguageFilterInput!) {
+    languages(input: $input) {
+        nodes {
+            ...LanguageProps
+        }
+        totalElements
+    }
+}
+
+query FindConcept($input: SearchInput!) {
+    search(input: $input) {
+        nodes {
+            ...SearchResultProps
+        }
+        totalElements
+    }
+}
+
+query PropertyTree {
+    hierarchy(input: {
+        rootNodeFilter: {
+            entryTypeIn: [Bag]
+            tagged: ["6f96aaa7-e08f-49bb-ac63-93061d4c5db2"]
+        }
+    }) {
+        nodes {
+            ...ConceptProps
+        }
+        paths
+    }
+}
+
+query ExternalDocument($id: ID!) {
+    externalDocument(id: $id) {
+        ...ExternalDocumentDetailProps
+    }
+}
+
+query Subjects($input: FilterInput) {
+    subjects(input: $input) {
+        nodes {
+            ...ObjectProps
+        }
+        pageInfo {
+            ...PageProps
+        }
+        totalElements
+    }
+}
+
+query Subjects($input: FilterInput) {
+    subjects(input: $input) {
+        nodes {
+            ...ObjectProps
+        }
+        pageInfo {
+            ...PageProps
+        }
+        totalElements
+    }
+}
+
+query GetObjectEntry($id: ID!) {
+    node(id: $id) {
+        ...ObjectDetailProps
+    }
+}
+
+query GetCollectionEntry($id: ID!) {
+    node(id: $id) {
+        ...CollectionDetailProps
+    }
+}
+
+query Bag($id: ID!) {
+    bag(id: $id) {
+        ...CollectionDetailProps
+    }
+}
+
+query BagList($input: FilterInput) {
+    bags(input: $input) {
+        nodes {
+            ...CollectionProps
+        }
+        pageInfo {
+            ...PageProps
+        }
+        totalElements
+    }
+}

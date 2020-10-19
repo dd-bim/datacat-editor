@@ -1,0 +1,186 @@
+fragment UserProfile on Profile {
+    username
+    firstName
+    lastName
+    email
+    organization
+}
+
+
+fragment PageProps on PageInfo {
+    totalPages
+    pageNumber
+    hasNext
+    hasPrevious
+}
+
+fragment LanguageProps on Language {
+    id
+    languageTag
+    displayCountry(input: { languageTag: "de" })
+    displayLanguage(input: { languageTag: "de" })
+}
+
+fragment TranslationProps on Translation {
+    id
+    language {
+        ...LanguageProps
+    }
+    value
+}
+
+fragment TagProps on Tag {
+    id
+    localizedName
+    localizedDescription
+}
+
+fragment SearchResultProps on Concept {
+    id
+    versionId
+    versionDate
+    name(input: { languageTags: ["de-DE", "en-US"] })
+    de: name(input: { languageTags: ["de-DE"] })
+    en: name(input: { languageTags: ["en-US, en-GB"] })
+    description(input: { languageTags: ["de-DE", "en-US"] })
+    tags {
+        ...TagProps
+    }
+}
+
+fragment ConceptProps on Concept {
+    id
+    versionId
+    versionDate
+    name(input: { languageTags: ["de-DE", "en-US"] })
+    de: name(input: { languageTags: ["de-DE"] })
+    en: name(input: { languageTags: ["en-US, en-GB"] })
+    names {
+        ...TranslationProps
+    }
+    description(input: { languageTags: ["de-DE", "en-US"] })
+    descriptions {
+        ...TranslationProps
+    }
+    tags {
+        ...TagProps
+    }
+}
+
+fragment EntityProps on Entity {
+    created
+    createdBy
+    lastModified
+    lastModifiedBy
+}
+
+fragment ExternalDocumentProps on XtdExternalDocument {
+    ...ConceptProps
+    ...EntityProps
+}
+
+fragment ObjectProps on XtdObject {
+    ...ConceptProps
+    ...EntityProps
+}
+
+fragment CollectionProps on XtdCollection {
+    ...ConceptProps
+    ...EntityProps
+}
+
+fragment RelationshipProps on XtdRelationship {
+    ...ConceptProps
+    ...EntityProps
+}
+
+fragment DocumentsProps on XtdRelDocuments {
+    ...RelationshipProps
+    relatedThings {
+        ...SearchResultProps
+    }
+}
+
+fragment CollectsProps on XtdRelCollects {
+    ...RelationshipProps
+    relatingCollection {
+        ...SearchResultProps
+        tags { ...TagProps }
+    }
+    relatedThings {
+        ...SearchResultProps
+    }
+}
+
+
+fragment AssignsCollectionsProps on XtdRelAssignsCollections {
+    ...RelationshipProps
+    relatingObject {
+        ...SearchResultProps
+    }
+    relatedCollections {
+        ...SearchResultProps
+    }
+}
+
+fragment AssignsPropertiesProps on XtdRelAssignsProperties {
+    ...RelationshipProps
+    relatingObject {
+        ...SearchResultProps
+    }
+    relatedProperties {
+        ...SearchResultProps
+    }
+}
+
+fragment AssignsPropertyWithValuesProps on XtdRelAssignsPropertyWithValues {
+    ...RelationshipProps
+    relatedProperty {
+        ...SearchResultProps
+    }
+    relatedValues {
+        ...SearchResultProps
+    }
+}
+
+fragment ExternalDocumentDetailProps on XtdExternalDocument {
+    ...ExternalDocumentProps
+    documents {
+        nodes {
+            ...DocumentsProps
+        }
+    }
+}
+
+fragment ObjectDetailProps on XtdObject {
+    ...ObjectProps
+    assignedCollections {
+        nodes {
+            ...AssignsCollectionsProps
+        }
+    }
+    assignedProperties {
+        nodes {
+            ...AssignsPropertiesProps
+        }
+    }
+#    assignedPropertiesWithValues {
+#        nodes {
+#            ...AssignsPropertyWithValuesProps
+#        }
+#    }
+}
+
+fragment CollectionDetailProps on XtdCollection {
+    ...CollectionProps
+    collects {
+        nodes {
+            ...CollectsProps
+        }
+    }
+    collectedBy {
+        nodes {
+            ...CollectsProps
+        }
+    }
+}
