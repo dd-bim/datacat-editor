@@ -1,0 +1,3 @@
+mutation LoginForm($credentials: LoginInput!) {
+    token: login(input: $credentials)
+}

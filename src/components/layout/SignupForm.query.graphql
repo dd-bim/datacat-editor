@@ -1,0 +1,3 @@
+mutation SignupForm($profile: SignupInput!) {
+    success: signup(input: $profile)
+}

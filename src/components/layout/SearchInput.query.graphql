@@ -1,0 +1,18 @@
+fragment SearchResult on Concept {
+    id
+    name
+    description
+}
+
+
+query SearchInput($input: SearchInput) {
+    search(input: $input) {
+        nodes {
+            ...SearchResult
+        }
+        pageInfo {
+            ...PageProps
+        }
+        totalElements
+    }
+}

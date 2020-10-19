@@ -1,0 +1,3 @@
+mutation ConfirmEmail($token: String!) {
+    success: confirm(token: $token)
+}
