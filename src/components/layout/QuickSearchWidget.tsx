@@ -1,4 +1,4 @@
-import {Link as RouterLink, useHistory} from "react-router-dom";
+import {Link as RouterLink} from "react-router-dom";
 import {makeStyles, Theme} from "@material-ui/core/styles";
 import React, {useRef, useState} from "react";
 import {Popper} from "@material-ui/core";
@@ -36,7 +36,6 @@ interface QuickSearchWidgetProps {
 
 export function QuickSearchWidget(props: QuickSearchWidgetProps) {
     const classes = useStyles();
-    const history = useHistory();
     const searchInput = useRef(null);
     const [query, setQuery] = useState("");
     const {loading, error, data} = useFindConceptQuery({

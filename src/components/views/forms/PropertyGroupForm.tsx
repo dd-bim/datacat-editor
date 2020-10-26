@@ -1,5 +1,4 @@
 import React, {FC} from "react";
-import {useHistory} from "react-router-dom";
 import {
     CollectionDetailPropsFragment,
     CollectsPropsFragment,
@@ -24,7 +23,6 @@ import {FormProps} from "./FormView";
 const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
-    const history = useHistory();
 
     const baseOptions = {
         refetchQueries: [{query: PropertyTreeDocument}]

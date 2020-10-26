@@ -75,7 +75,7 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
 
     const onSubmit = async ({id, versionId, versionDate, name, description}: CreateEntryFormValues) => {
         const entryType = input?.entryType!;
-        const {errors, data} = await create({
+        const {data} = await create({
             variables: {
                 input: {
                     entryType: entryType,

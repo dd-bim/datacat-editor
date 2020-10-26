@@ -4,8 +4,6 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
 import {Link} from "@material-ui/core";
 
-const mail = process.env.REACT_APP_MAIL;
-
 const useStyles = makeStyles(theme => ({
     footer: {
         display: "flex",

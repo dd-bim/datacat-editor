@@ -17,7 +17,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import NameFormSet from "../../forms/NameFormSet";
 import DescriptionFormSet from "../../forms/DescriptionFormSet";
 import VersionFormSet from "../../forms/VersionFormSet";
-import {ClassEntity, getEntityType} from "../../../domain";
+import {ClassEntity} from "../../../domain";
 import {FormProps} from "./FormView";
 
 const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) => {
@@ -90,7 +90,6 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
                      description="Zeigt auf, welche Konzepte sich auf dieses Konzept beziehen.">
                 <ul>
                     {entry.collectedBy.nodes.map(({relatingCollection}) => {
-                        const entityType = getEntityType(relatingCollection.__typename, relatingCollection.tags.map(t => t.id));
                         return (
                             <li>{relatingCollection.id}</li>
                         )
