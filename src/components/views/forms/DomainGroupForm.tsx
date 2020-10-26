@@ -91,7 +91,7 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
                 <ul>
                     {entry.collectedBy.nodes.map(({relatingCollection}) => {
                         return (
-                            <li>{relatingCollection.id}</li>
+                            <li key={relatingCollection.id}>{relatingCollection.id}</li>
                         )
                     })}
                 </ul>

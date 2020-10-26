@@ -95,15 +95,17 @@ export default function Layout() {
                                 Auswahl an Konzepten entlang eines definierten Entwurfsschemas. Derzeit werden folgende
                                 Typen durch die Oberfläche unterstützt - in Klammern wird die konzeptuelle Entsprechung
                                 nach ISO12006-3 angegeben, welche durch die datacat API umgesetzt werden:
+                            </Typography>
 
-                                <ul>
-                                    <li>Fachmodell (XtdBag)</li>
-                                    <li>Gruppe (XtdBag)</li>
-                                    <li>Klasse (XtdSubject)</li>
-                                    <li>Merkmalsgruppe (XtdNest)</li>
-                                    <li>Merkmal (XtdProperty)</li>
-                                </ul>
+                            <ul>
+                                <li>Fachmodell (XtdBag)</li>
+                                <li>Gruppe (XtdBag)</li>
+                                <li>Klasse (XtdSubject)</li>
+                                <li>Merkmalsgruppe (XtdNest)</li>
+                                <li>Merkmal (XtdProperty)</li>
+                            </ul>
 
+                            <Typography gutterBottom>
                                 Weitere Typen sind in Vorbereitung und werden es ermöglichen den Katalog semantisch weiter
                                 auszubauen.
                             </Typography>

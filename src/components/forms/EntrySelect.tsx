@@ -49,8 +49,6 @@ export const EntrySelect: FC<EntrySelectProps> = (props) => {
             .sort((a, b) => a.name.localeCompare(b.name));
     }, [options]);
 
-    console.log(chips);
-
     return (
         <Autocomplete<EntrySelectOption, true, true, true>
             {...otherProps}

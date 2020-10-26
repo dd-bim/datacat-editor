@@ -40,7 +40,7 @@ export default function Footer(props: PaperProps) {
                     </Link>
                 </Typography>
                 <Typography variant="caption">
-                    {process.env.REACT_APP_TITLE} {process.env.REACT_APP_EDITOR}
+                    {process.env.REACT_APP_TITLE} {process.env.REACT_APP_VERSION}
                 </Typography>
             </Paper>
         </div>

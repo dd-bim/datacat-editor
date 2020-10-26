@@ -58,12 +58,8 @@ function EntryTable<T extends EntryTableRow>(props: EntryTableProps<T>) {
                     prepareRow(row);
                     const onClick = () => onSelect(row.original);
                     return (
-                        <Tooltip title={row.original.description ?? ""} arrow>
-                            <TableRow
-                                {...row.getRowProps()}
-                                hover
-                                onClick={onClick}
-                            >
+                        <Tooltip {...row.getRowProps()} title={row.original.description ?? ""} arrow>
+                            <TableRow hover onClick={onClick}>
                                 {row.cells.map(cell => {
                                     return (
                                         <TableCell {...cell.getCellProps()}>
