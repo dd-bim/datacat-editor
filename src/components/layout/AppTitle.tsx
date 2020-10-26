@@ -24,7 +24,7 @@ const AppTitle: FC = (props) => {
             component="h1"
             {...otherProps}
         >
-            <PetsIcon className={classes.logo}/> <span>{process.env.REACT_APP_TITLE}</span>
+            <PetsIcon className={classes.logo}/> <span>datacat editor</span>
         </Typography>
     )
 }

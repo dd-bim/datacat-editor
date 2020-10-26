@@ -4,7 +4,6 @@ import AppTitle from "./AppTitle";
 
 test('renders title', () => {
     const {getByText} = render(<AppTitle/>);
-    const exp = new RegExp(process.env.REACT_APP_TITLE!, "i");
-    const linkElement = getByText(exp);
+    const linkElement = getByText(/datacat editor/i);
     expect(linkElement).toBeInTheDocument();
 });
