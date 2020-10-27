@@ -83,7 +83,7 @@ export const DataTemplateEntity: Entity = {
 }
 
 export const PropertyGroupEntity: Entity = {
-    tags: ["1JgHXKXfn4mRSoMVsQBMsM"],
+    tags: ["a27c8e3c-5fd1-47c9-806a-6ded070efae8"],
     title: "Merkmalsgruppe",
     titlePlural: "Merkmalsgruppen",
     entityType: EntityTypes.XtdNest,
