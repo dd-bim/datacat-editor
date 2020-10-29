@@ -28,6 +28,14 @@ type CreateEntrySplitButtonProps = {
     ButtonGroupProps?: ButtonGroupProps
 }
 
+const options = [
+    ModelEntity,
+    GroupEntity,
+    ClassEntity,
+    PropertyGroupEntity,
+    PropertyEntity,
+];
+
 
 const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
     const {
@@ -42,6 +50,7 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
         ]
     });
 
+    const [lastUsedOption, setLastUsedOption] = React.useState(ClassEntity);
     const [menuOpen, setMenuOpen] = React.useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
     const anchorRef = React.useRef<HTMLDivElement>(null);
@@ -58,6 +67,7 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
 
     const onClick = (tag: Entity) => {
         setMenuOpen(false);
+        setLastUsedOption(tag);
         setInput(tag);
         setDialogOpen(true);
     }
@@ -75,20 +85,24 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
 
     const onSubmit = async ({id, versionId, versionDate, name, description}: CreateEntryFormValues) => {
         const entryType = input?.entryType!;
+        const names = [
+            {languageTag: "de", value: name}
+        ];
+        const descriptions = description
+            ? [{languageTag: "de", value: description}]
+            : [];
+        const version = {versionId, versionDate};
+        const properties = {
+            id,
+            version: version,
+            names: names,
+            descriptions
+        };
         const {data} = await create({
             variables: {
                 input: {
-                    entryType: entryType,
-                    properties: {
-                        id,
-                        version: {versionId, versionDate},
-                        names: [
-                            {languageTag: "de", value: name}
-                        ],
-                        descriptions: description
-                            ? [{languageTag: "de", value: description}]
-                            : []
-                    },
+                    entryType,
+                    properties: properties,
                     tags: input?.tags!
                 }
             }
@@ -111,7 +125,7 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
                 ref={anchorRef}
                 aria-label="Eintrag hinzufügen"
             >
-                <Button onClick={() => onClick(ClassEntity)} startIcon={<AddIcon/>}>Neue Klasse</Button>
+                <Button onClick={() => onClick(lastUsedOption)} startIcon={<AddIcon/>}>{lastUsedOption.title} hinzufügen</Button>
                 <Button
                     color="inherit"
                     aria-controls={menuOpen ? 'split-button-menu' : undefined}
@@ -135,18 +149,11 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
                         <Paper>
                             <ClickAwayListener onClickAway={handleClose}>
                                 <MenuList id="split-button-menu">
-                                    <MenuItem onClick={() => onClick(ModelEntity)}>
-                                        Neues {ModelEntity.title}
-                                    </MenuItem>
-                                    <MenuItem onClick={() => onClick(GroupEntity)}>
-                                        Neue {GroupEntity.title}
-                                    </MenuItem>
-                                    <MenuItem onClick={() => onClick(PropertyGroupEntity)}>
-                                        Neue {PropertyGroupEntity.title}
-                                    </MenuItem>
-                                    <MenuItem onClick={() => onClick(PropertyEntity)}>
-                                        Neues {PropertyEntity.title}
-                                    </MenuItem>
+                                    {options.filter(entityType => entityType !== lastUsedOption).map(option => (
+                                        <MenuItem onClick={() => onClick(option)}>
+                                            {option.title}
+                                        </MenuItem>
+                                    ))}
                                 </MenuList>
                             </ClickAwayListener>
                         </Paper>
