@@ -12,7 +12,7 @@ import ConfirmationView from "./ConfirmationView";
 import DomainModelList from "../views/lists/DomainModelList";
 import Typography from "@material-ui/core/Typography";
 import ProfileFormView from "../views/forms/ProfileFormView";
-import {ClassEntity, GroupEntity, ModelEntity, PropertyEntity, PropertyGroupEntity} from "../../domain";
+import {ClassEntity, GroupEntity, ModelEntity, PropertyEntity, PropertyGroupEntity, ValueEntity} from "../../domain";
 import DomainGroupList from "../views/lists/DomainGroupList";
 import DomainClassList from "../views/lists/DomainClassList";
 import PropertyGroupList from "../views/lists/PropertyGroupList";
@@ -20,6 +20,7 @@ import HierarchyView from "../views/HierarchyView";
 import PropertyList from "../views/lists/PropertyList";
 import Paper from "@material-ui/core/Paper";
 import useGridStyles from "../../hooks/useGridStyle";
+import ValueList from "../views/lists/ValueList";
 
 const drawerWidth = 250;
 
@@ -103,15 +104,18 @@ export default function Layout() {
                                 <li>Klasse (XtdSubject)</li>
                                 <li>Merkmalsgruppe (XtdNest)</li>
                                 <li>Merkmal (XtdProperty)</li>
+                                <li>Wert (XtdValue)</li>
                             </ul>
 
                             <Typography gutterBottom>
-                                Weitere Typen sind in Vorbereitung und werden es ermöglichen den Katalog semantisch weiter
+                                Weitere Typen sind in Vorbereitung und werden es ermöglichen den Katalog semantisch
+                                weiter
                                 auszubauen.
                             </Typography>
                             <Typography>
                                 <b>
-                                    Wählen Sie im Menübaum (siehe Menü-Taste oben link) den gewünschten Konzepttyp aus um
+                                    Wählen Sie im Menübaum (siehe Menü-Taste oben link) den gewünschten Konzepttyp aus
+                                    um
                                     mit der Arbeit im Katalog zu beginnen.
                                 </b>
                             </Typography>
@@ -138,6 +142,9 @@ export default function Layout() {
                     </Route>
                     <Route path={`/${PropertyEntity.path}/:id?`}>
                         <PropertyList/>
+                    </Route>
+                    <Route path={`/${ValueEntity.path}/:id?`}>
+                        <ValueList/>
                     </Route>
                 </Switch>
                 <Footer/>
