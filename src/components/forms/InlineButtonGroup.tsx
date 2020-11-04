@@ -1,5 +1,5 @@
 import IconButton from "@material-ui/core/IconButton";
-import ClearIcon from "@material-ui/icons/Clear";
+import UndoIcon from '@material-ui/icons/Undo';
 import SaveIcon from "@material-ui/icons/Save";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import React, {FC} from "react";
@@ -30,12 +30,19 @@ const InlineButtonGroup: FC<InlineButtonGroupProps> = (props) => {
     return (
         <div className={classes.root}>
             {onReset && (
-                <IconButton onClick={onReset} size="small">
-                    <ClearIcon/>
+                <IconButton
+                    disabled={!isDirty}
+                    onClick={onReset}
+                    size="small"
+                >
+                    <UndoIcon/>
                 </IconButton>
             )}
             {onDelete && (
-                <IconButton onClick={onDelete} size="small">
+                <IconButton
+                    onClick={onDelete}
+                    size="small"
+                >
                     <DeleteForeverIcon/>
                 </IconButton>
             )}
