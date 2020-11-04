@@ -76,6 +76,38 @@ mutation DeleteDescription($input: DeleteDescriptionInput!) {
     }
 }
 
+mutation SetTolerance($input: SetToleranceInput!) {
+    setTolerance(input: $input) {
+        entry {
+            ...ValueDetailProps
+        }
+    }
+}
+
+mutation UnsetTolerance($input: UnsetToleranceInput!) {
+    unsetTolerance(input: $input) {
+        entry {
+            ...ValueDetailProps
+        }
+    }
+}
+
+mutation SetNominalValue($input: SetNominalValueInput!) {
+    setNominalValue(input: $input) {
+        entry {
+            ...ValueDetailProps
+        }
+    }
+}
+
+mutation UnsetNominalValue($input: UnsetNominalValueInput!) {
+    unsetNominalValue(input: $input) {
+        entry {
+            ...ValueDetailProps
+        }
+    }
+}
+
 mutation CreateOneToManyRelationship($input: CreateOneToManyRelationshipInput!) {
     createOneToManyRelationship(input: $input) {
         relationship {

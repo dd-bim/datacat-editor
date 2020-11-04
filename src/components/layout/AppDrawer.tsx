@@ -155,7 +155,6 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
                         icon={<ValueEntity.Icon/>}
                         primary={ValueEntity.titlePlural}
                         to={`/${ValueEntity.path}`}
-                        disabled
                     />
                 </List>
             </div>

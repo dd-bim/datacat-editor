@@ -220,6 +220,12 @@ export type LoginInput = {
 };
 
 
+export type NominalValueInput = {
+  valueRole: ValueRole;
+  valueType: ValueType;
+  nominalValue?: Maybe<Scalars['String']>;
+};
+
 
 export enum OneToManyRelationshipType {
   ActsUpon = 'ActsUpon',
@@ -280,17 +286,13 @@ export type SearchInput = {
 
 export type SetNominalValueInput = {
   id: Scalars['ID'];
-  valueRole: ValueRole;
-  valueType: ValueType;
-  nominalValue?: Maybe<Scalars['String']>;
+  nominalValue: NominalValueInput;
 };
 
 
 export type SetToleranceInput = {
   id: Scalars['ID'];
-  toleranceType: ToleranceType;
-  lowerTolerance?: Maybe<Scalars['String']>;
-  upperTolerance?: Maybe<Scalars['String']>;
+  tolerance: ToleranceInput;
 };
 
 
@@ -319,6 +321,12 @@ export type TagInput = {
   scope?: Maybe<Scalars['String']>;
   names: Array<LocalizedTextInput>;
   descriptions?: Maybe<Array<LocalizedTextInput>>;
+};
+
+export type ToleranceInput = {
+  toleranceType: ToleranceType;
+  lowerTolerance?: Maybe<Scalars['String']>;
+  upperTolerance?: Maybe<Scalars['String']>;
 };
 
 export enum ToleranceType {
@@ -1364,6 +1372,11 @@ type ObjectProps_XtdValue_Fragment = (
 
 export type ObjectPropsFragment = ObjectProps_XtdActivity_Fragment | ObjectProps_XtdActor_Fragment | ObjectProps_XtdClassification_Fragment | ObjectProps_XtdMeasureWithUnit_Fragment | ObjectProps_XtdProperty_Fragment | ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment;
 
+export type ValuePropsFragment = (
+  { __typename: 'XtdValue', valueType?: Maybe<ValueType>, valueRole?: Maybe<ValueRole>, nominalValue?: Maybe<string>, toleranceType?: Maybe<ToleranceType>, lowerTolerance?: Maybe<string>, upperTolerance?: Maybe<string> }
+  & ObjectProps_XtdValue_Fragment
+);
+
 type CollectionProps_XtdBag_Fragment = (
   { __typename: 'XtdBag' }
   & ConceptProps_XtdBag_Fragment
@@ -1721,6 +1734,12 @@ type ObjectDetailProps_XtdValue_Fragment = (
 );
 
 export type ObjectDetailPropsFragment = ObjectDetailProps_XtdActivity_Fragment | ObjectDetailProps_XtdActor_Fragment | ObjectDetailProps_XtdClassification_Fragment | ObjectDetailProps_XtdMeasureWithUnit_Fragment | ObjectDetailProps_XtdProperty_Fragment | ObjectDetailProps_XtdSubject_Fragment | ObjectDetailProps_XtdUnit_Fragment | ObjectDetailProps_XtdValue_Fragment;
+
+export type ValueDetailPropsFragment = (
+  { __typename: 'XtdValue' }
+  & ValuePropsFragment
+  & ObjectDetailProps_XtdValue_Fragment
+);
 
 type CollectionDetailProps_XtdBag_Fragment = (
   { __typename: 'XtdBag', collects: { __typename: 'XtdRelCollectsConnection', nodes: Array<(
@@ -2116,6 +2135,46 @@ export type DeleteDescriptionMutation = { __typename: 'Mutation', deleteDescript
       & ConceptProps_XtdValue_Fragment
     )> }> };
 
+export type SetToleranceMutationVariables = Exact<{
+  input: SetToleranceInput;
+}>;
+
+
+export type SetToleranceMutation = { __typename: 'Mutation', setTolerance?: Maybe<{ __typename: 'SetTolerancePayload', entry?: Maybe<(
+      { __typename: 'XtdValue' }
+      & ValueDetailPropsFragment
+    )> }> };
+
+export type UnsetToleranceMutationVariables = Exact<{
+  input: UnsetToleranceInput;
+}>;
+
+
+export type UnsetToleranceMutation = { __typename: 'Mutation', unsetTolerance?: Maybe<{ __typename: 'UnsetTolerancePayload', entry?: Maybe<(
+      { __typename: 'XtdValue' }
+      & ValueDetailPropsFragment
+    )> }> };
+
+export type SetNominalValueMutationVariables = Exact<{
+  input: SetNominalValueInput;
+}>;
+
+
+export type SetNominalValueMutation = { __typename: 'Mutation', setNominalValue?: Maybe<{ __typename: 'UnsetNominalValuePayload', entry?: Maybe<(
+      { __typename: 'XtdValue' }
+      & ValueDetailPropsFragment
+    )> }> };
+
+export type UnsetNominalValueMutationVariables = Exact<{
+  input: UnsetNominalValueInput;
+}>;
+
+
+export type UnsetNominalValueMutation = { __typename: 'Mutation', unsetNominalValue?: Maybe<{ __typename: 'UnsetNominalValuePayload', entry?: Maybe<(
+      { __typename: 'XtdValue' }
+      & ValueDetailPropsFragment
+    )> }> };
+
 export type CreateOneToManyRelationshipMutationVariables = Exact<{
   input: CreateOneToManyRelationshipInput;
 }>;
@@ -2378,6 +2437,16 @@ export type GetObjectEntryQuery = { __typename: 'Query', node?: Maybe<(
     & ObjectDetailProps_XtdValue_Fragment
   )> };
 
+export type GetValueEntryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetValueEntryQuery = { __typename: 'Query', node?: Maybe<{ __typename: 'XtdActivity' } | { __typename: 'XtdActor' } | { __typename: 'XtdBag' } | { __typename: 'XtdClassification' } | { __typename: 'XtdExternalDocument' } | { __typename: 'XtdMeasureWithUnit' } | { __typename: 'XtdNest' } | { __typename: 'XtdProperty' } | { __typename: 'XtdRelActsUpon' } | { __typename: 'XtdRelAssignsCollections' } | { __typename: 'XtdRelAssignsMeasures' } | { __typename: 'XtdRelAssignsProperties' } | { __typename: 'XtdRelAssignsPropertyWithValues' } | { __typename: 'XtdRelAssignsUnits' } | { __typename: 'XtdRelAssignsValues' } | { __typename: 'XtdRelAssociates' } | { __typename: 'XtdRelCollects' } | { __typename: 'XtdRelComposes' } | { __typename: 'XtdRelDocuments' } | { __typename: 'XtdRelGroups' } | { __typename: 'XtdRelSequences' } | { __typename: 'XtdRelSpecializes' } | { __typename: 'XtdSubject' } | { __typename: 'XtdUnit' } | (
+    { __typename: 'XtdValue' }
+    & ValueDetailPropsFragment
+  )> };
+
 export type GetCollectionEntryQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -2625,6 +2694,17 @@ export const ObjectPropsFragmentDoc = gql`
 }
     ${ConceptPropsFragmentDoc}
 ${EntityPropsFragmentDoc}`;
+export const ValuePropsFragmentDoc = gql`
+    fragment ValueProps on XtdValue {
+  ...ObjectProps
+  valueType
+  valueRole
+  nominalValue
+  toleranceType
+  lowerTolerance
+  upperTolerance
+}
+    ${ObjectPropsFragmentDoc}`;
 export const AssignsCollectionsPropsFragmentDoc = gql`
     fragment AssignsCollectionsProps on XtdRelAssignsCollections {
   ...RelationshipProps
@@ -2666,6 +2746,13 @@ export const ObjectDetailPropsFragmentDoc = gql`
     ${ObjectPropsFragmentDoc}
 ${AssignsCollectionsPropsFragmentDoc}
 ${AssignsPropertiesPropsFragmentDoc}`;
+export const ValueDetailPropsFragmentDoc = gql`
+    fragment ValueDetailProps on XtdValue {
+  ...ValueProps
+  ...ObjectDetailProps
+}
+    ${ValuePropsFragmentDoc}
+${ObjectDetailPropsFragmentDoc}`;
 export const CollectionPropsFragmentDoc = gql`
     fragment CollectionProps on XtdCollection {
   ...ConceptProps
@@ -3389,6 +3476,142 @@ export function useDeleteDescriptionMutation(baseOptions?: Apollo.MutationHookOp
 export type DeleteDescriptionMutationHookResult = ReturnType<typeof useDeleteDescriptionMutation>;
 export type DeleteDescriptionMutationResult = Apollo.MutationResult<DeleteDescriptionMutation>;
 export type DeleteDescriptionMutationOptions = Apollo.BaseMutationOptions<DeleteDescriptionMutation, DeleteDescriptionMutationVariables>;
+export const SetToleranceDocument = gql`
+    mutation SetTolerance($input: SetToleranceInput!) {
+  setTolerance(input: $input) {
+    entry {
+      ...ValueDetailProps
+    }
+  }
+}
+    ${ValueDetailPropsFragmentDoc}`;
+export type SetToleranceMutationFn = Apollo.MutationFunction<SetToleranceMutation, SetToleranceMutationVariables>;
+
+/**
+ * __useSetToleranceMutation__
+ *
+ * To run a mutation, you first call `useSetToleranceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetToleranceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setToleranceMutation, { data, loading, error }] = useSetToleranceMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSetToleranceMutation(baseOptions?: Apollo.MutationHookOptions<SetToleranceMutation, SetToleranceMutationVariables>) {
+        return Apollo.useMutation<SetToleranceMutation, SetToleranceMutationVariables>(SetToleranceDocument, baseOptions);
+      }
+export type SetToleranceMutationHookResult = ReturnType<typeof useSetToleranceMutation>;
+export type SetToleranceMutationResult = Apollo.MutationResult<SetToleranceMutation>;
+export type SetToleranceMutationOptions = Apollo.BaseMutationOptions<SetToleranceMutation, SetToleranceMutationVariables>;
+export const UnsetToleranceDocument = gql`
+    mutation UnsetTolerance($input: UnsetToleranceInput!) {
+  unsetTolerance(input: $input) {
+    entry {
+      ...ValueDetailProps
+    }
+  }
+}
+    ${ValueDetailPropsFragmentDoc}`;
+export type UnsetToleranceMutationFn = Apollo.MutationFunction<UnsetToleranceMutation, UnsetToleranceMutationVariables>;
+
+/**
+ * __useUnsetToleranceMutation__
+ *
+ * To run a mutation, you first call `useUnsetToleranceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnsetToleranceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unsetToleranceMutation, { data, loading, error }] = useUnsetToleranceMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUnsetToleranceMutation(baseOptions?: Apollo.MutationHookOptions<UnsetToleranceMutation, UnsetToleranceMutationVariables>) {
+        return Apollo.useMutation<UnsetToleranceMutation, UnsetToleranceMutationVariables>(UnsetToleranceDocument, baseOptions);
+      }
+export type UnsetToleranceMutationHookResult = ReturnType<typeof useUnsetToleranceMutation>;
+export type UnsetToleranceMutationResult = Apollo.MutationResult<UnsetToleranceMutation>;
+export type UnsetToleranceMutationOptions = Apollo.BaseMutationOptions<UnsetToleranceMutation, UnsetToleranceMutationVariables>;
+export const SetNominalValueDocument = gql`
+    mutation SetNominalValue($input: SetNominalValueInput!) {
+  setNominalValue(input: $input) {
+    entry {
+      ...ValueDetailProps
+    }
+  }
+}
+    ${ValueDetailPropsFragmentDoc}`;
+export type SetNominalValueMutationFn = Apollo.MutationFunction<SetNominalValueMutation, SetNominalValueMutationVariables>;
+
+/**
+ * __useSetNominalValueMutation__
+ *
+ * To run a mutation, you first call `useSetNominalValueMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetNominalValueMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setNominalValueMutation, { data, loading, error }] = useSetNominalValueMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSetNominalValueMutation(baseOptions?: Apollo.MutationHookOptions<SetNominalValueMutation, SetNominalValueMutationVariables>) {
+        return Apollo.useMutation<SetNominalValueMutation, SetNominalValueMutationVariables>(SetNominalValueDocument, baseOptions);
+      }
+export type SetNominalValueMutationHookResult = ReturnType<typeof useSetNominalValueMutation>;
+export type SetNominalValueMutationResult = Apollo.MutationResult<SetNominalValueMutation>;
+export type SetNominalValueMutationOptions = Apollo.BaseMutationOptions<SetNominalValueMutation, SetNominalValueMutationVariables>;
+export const UnsetNominalValueDocument = gql`
+    mutation UnsetNominalValue($input: UnsetNominalValueInput!) {
+  unsetNominalValue(input: $input) {
+    entry {
+      ...ValueDetailProps
+    }
+  }
+}
+    ${ValueDetailPropsFragmentDoc}`;
+export type UnsetNominalValueMutationFn = Apollo.MutationFunction<UnsetNominalValueMutation, UnsetNominalValueMutationVariables>;
+
+/**
+ * __useUnsetNominalValueMutation__
+ *
+ * To run a mutation, you first call `useUnsetNominalValueMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnsetNominalValueMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unsetNominalValueMutation, { data, loading, error }] = useUnsetNominalValueMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUnsetNominalValueMutation(baseOptions?: Apollo.MutationHookOptions<UnsetNominalValueMutation, UnsetNominalValueMutationVariables>) {
+        return Apollo.useMutation<UnsetNominalValueMutation, UnsetNominalValueMutationVariables>(UnsetNominalValueDocument, baseOptions);
+      }
+export type UnsetNominalValueMutationHookResult = ReturnType<typeof useUnsetNominalValueMutation>;
+export type UnsetNominalValueMutationResult = Apollo.MutationResult<UnsetNominalValueMutation>;
+export type UnsetNominalValueMutationOptions = Apollo.BaseMutationOptions<UnsetNominalValueMutation, UnsetNominalValueMutationVariables>;
 export const CreateOneToManyRelationshipDocument = gql`
     mutation CreateOneToManyRelationship($input: CreateOneToManyRelationshipInput!) {
   createOneToManyRelationship(input: $input) {
@@ -3612,7 +3835,9 @@ export type FindConceptLazyQueryHookResult = ReturnType<typeof useFindConceptLaz
 export type FindConceptQueryResult = Apollo.QueryResult<FindConceptQuery, FindConceptQueryVariables>;
 export const PropertyTreeDocument = gql`
     query PropertyTree {
-  hierarchy(input: {rootNodeFilter: {entryTypeIn: [Bag], tagged: ["6f96aaa7-e08f-49bb-ac63-93061d4c5db2"]}}) {
+  hierarchy(
+    input: {rootNodeFilter: {entryTypeIn: [Bag], tagged: ["6f96aaa7-e08f-49bb-ac63-93061d4c5db2"]}}
+  ) {
     nodes {
       ...ConceptProps
     }
@@ -3751,6 +3976,39 @@ export function useGetObjectEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetObjectEntryQueryHookResult = ReturnType<typeof useGetObjectEntryQuery>;
 export type GetObjectEntryLazyQueryHookResult = ReturnType<typeof useGetObjectEntryLazyQuery>;
 export type GetObjectEntryQueryResult = Apollo.QueryResult<GetObjectEntryQuery, GetObjectEntryQueryVariables>;
+export const GetValueEntryDocument = gql`
+    query GetValueEntry($id: ID!) {
+  node(id: $id) {
+    ...ValueDetailProps
+  }
+}
+    ${ValueDetailPropsFragmentDoc}`;
+
+/**
+ * __useGetValueEntryQuery__
+ *
+ * To run a query within a React component, call `useGetValueEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetValueEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetValueEntryQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetValueEntryQuery(baseOptions?: Apollo.QueryHookOptions<GetValueEntryQuery, GetValueEntryQueryVariables>) {
+        return Apollo.useQuery<GetValueEntryQuery, GetValueEntryQueryVariables>(GetValueEntryDocument, baseOptions);
+      }
+export function useGetValueEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetValueEntryQuery, GetValueEntryQueryVariables>) {
+          return Apollo.useLazyQuery<GetValueEntryQuery, GetValueEntryQueryVariables>(GetValueEntryDocument, baseOptions);
+        }
+export type GetValueEntryQueryHookResult = ReturnType<typeof useGetValueEntryQuery>;
+export type GetValueEntryLazyQueryHookResult = ReturnType<typeof useGetValueEntryLazyQuery>;
+export type GetValueEntryQueryResult = Apollo.QueryResult<GetValueEntryQuery, GetValueEntryQueryVariables>;
 export const GetCollectionEntryDocument = gql`
     query GetCollectionEntry($id: ID!) {
   node(id: $id) {

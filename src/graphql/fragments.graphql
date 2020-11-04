@@ -84,6 +84,16 @@ fragment ObjectProps on XtdObject {
     ...EntityProps
 }
 
+fragment ValueProps on XtdValue {
+    ...ObjectProps
+    valueType
+    valueRole
+    nominalValue
+    toleranceType
+    lowerTolerance
+    upperTolerance
+}
+
 fragment CollectionProps on XtdCollection {
     ...ConceptProps
     ...EntityProps
@@ -169,6 +179,11 @@ fragment ObjectDetailProps on XtdObject {
 #            ...AssignsPropertyWithValuesProps
 #        }
 #    }
+}
+
+fragment ValueDetailProps on XtdValue {
+    ...ValueProps
+    ...ObjectDetailProps
 }
 
 fragment CollectionDetailProps on XtdCollection {

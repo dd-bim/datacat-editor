@@ -66,6 +66,12 @@ query GetObjectEntry($id: ID!) {
     }
 }
 
+query GetValueEntry($id: ID!) {
+    node(id: $id) {
+        ...ValueDetailProps
+    }
+}
+
 query GetCollectionEntry($id: ID!) {
     node(id: $id) {
         ...CollectionDetailProps
