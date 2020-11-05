@@ -12,6 +12,9 @@ query FindConcept($input: SearchInput!) {
         nodes {
             ...SearchResultProps
         }
+        pageInfo {
+            ...PageProps
+        }
         totalElements
     }
 }
@@ -30,33 +33,9 @@ query PropertyTree {
     }
 }
 
-query ExternalDocument($id: ID!) {
-    externalDocument(id: $id) {
+query GetDocumentEntry($id: ID!) {
+    node(id: $id) {
         ...ExternalDocumentDetailProps
-    }
-}
-
-query Subjects($input: FilterInput) {
-    subjects(input: $input) {
-        nodes {
-            ...ObjectProps
-        }
-        pageInfo {
-            ...PageProps
-        }
-        totalElements
-    }
-}
-
-query Subjects($input: FilterInput) {
-    subjects(input: $input) {
-        nodes {
-            ...ObjectProps
-        }
-        pageInfo {
-            ...PageProps
-        }
-        totalElements
     }
 }
 
@@ -75,23 +54,5 @@ query GetValueEntry($id: ID!) {
 query GetCollectionEntry($id: ID!) {
     node(id: $id) {
         ...CollectionDetailProps
-    }
-}
-
-query Bag($id: ID!) {
-    bag(id: $id) {
-        ...CollectionDetailProps
-    }
-}
-
-query BagList($input: FilterInput) {
-    bags(input: $input) {
-        nodes {
-            ...CollectionProps
-        }
-        pageInfo {
-            ...PageProps
-        }
-        totalElements
     }
 }
