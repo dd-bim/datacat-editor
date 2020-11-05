@@ -5,14 +5,14 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import MaterialUIAppBar from "@material-ui/core/AppBar";
 import React from "react";
 import {QuickSearchWidget} from "./QuickSearchWidget";
-import useAuthContext, {useWriteAccess} from "../../hooks/useAuthContext";
+import useAuthContext, {useWriteAccess} from "../hooks/useAuthContext";
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import {Tooltip} from "@material-ui/core";
-import {useProfile} from "../../providers/ProfileProvider";
+import {useProfile} from "../providers/ProfileProvider";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from '@material-ui/icons/Menu';
-import CreateEntrySplitButton from "../CreateEntrySplitButton";
+import CreateEntrySplitButton from "./CreateEntrySplitButton";
 import AppTitle from "./AppTitle";
 
 const useStyles = makeStyles((theme: Theme) => ({

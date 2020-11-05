@@ -8,12 +8,12 @@ import Grid from "@material-ui/core/Grid";
 import {Route, Switch} from "react-router";
 import DomainModelForm from "./forms/DomainModelForm";
 import IconButton from "@material-ui/core/IconButton";
-import {Hierarchy} from "../Hierarchy";
-import {ConceptPropsFragment, usePropertyTreeQuery} from "../../generated/types";
+import {Hierarchy} from "../components/Hierarchy";
+import {ConceptPropsFragment, usePropertyTreeQuery} from "../generated/types";
 import DomainGroupForm from "./forms/DomainGroupForm";
 import DomainClassForm from "./forms/DomainClassForm";
 import PropertyGroupForm from "./forms/PropertyGroupForm";
-import useLocalStorage from "../../hooks/useLocalStorage";
+import useLocalStorage from "../hooks/useLocalStorage";
 import {
     ClassEntity,
     DomainClassIcon,
@@ -24,8 +24,8 @@ import {
     ModelEntity,
     PropertyGroupEntity,
     PropertyGroupIcon
-} from "../../domain";
-import {RelationshipIcon} from "../ConceptIcon";
+} from "../domain";
+import {RelationshipIcon} from "../components/ConceptIcon";
 
 const useStyles = makeStyles(theme => ({
     paper: {

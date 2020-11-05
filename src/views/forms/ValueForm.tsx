@@ -1,21 +1,23 @@
 import React, {FC} from "react";
 import {
-    ObjectDetailPropsFragment,
     PropertyTreeDocument,
     useDeleteEntryMutation,
-    useGetObjectEntryQuery
-} from "../../../generated/types";
+    useGetValueEntryQuery,
+    ValueDetailPropsFragment
+} from "../../generated/types";
 import {Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
-import MetaFormSet from "../../forms/MetaFormSet";
+import MetaFormSet from "../../components/forms/MetaFormSet";
 import Button from "@material-ui/core/Button";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import NameFormSet from "../../forms/NameFormSet";
-import DescriptionFormSet from "../../forms/DescriptionFormSet";
-import VersionFormSet from "../../forms/VersionFormSet";
+import NameFormSet from "../../components/forms/NameFormSet";
+import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
+import VersionFormSet from "../../components/forms/VersionFormSet";
 import {FormProps} from "./FormView";
+import ToleranceFormSet from "../../components/forms/ToleranceFormSet";
+import NominalValueFormSet from "../../components/forms/NominalValueFormSet";
 
-const PropertyForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
+const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
 
@@ -24,19 +26,19 @@ const PropertyForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
     };
 
     // fetch domain model
-    const {loading, error, data} = useGetObjectEntryQuery({
-        fetchPolicy: "network-only",
+    const {loading, error, data} = useGetValueEntryQuery({
+        fetchPolicy: "cache-and-network",
         variables: {id}
     });
-    let entry = data?.node as ObjectDetailPropsFragment | undefined;
+    let entry = data?.node as ValueDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation(baseOptions);
 
-    if (loading) return <Typography>Lade Merkmal..</Typography>;
+    if (loading) return <Typography>Lade Wert..</Typography>;
     if (error || !entry) return <Typography>Es ist ein Fehler aufgetreten..</Typography>;
 
     const handleOnDelete = async () => {
         await deleteEntry({variables: {id}});
-        enqueueSnackbar("Merkmal gelöscht.")
+        enqueueSnackbar("Wert gelöscht.")
         onDelete(entry!);
     };
 
@@ -58,6 +60,20 @@ const PropertyForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
                 versionDate={entry.versionDate}
             />
 
+            <NominalValueFormSet
+                id={id}
+                valueRole={entry.valueRole}
+                valueType={entry.valueType}
+                nominalValue={entry.nominalValue}
+            />
+
+            <ToleranceFormSet
+                id={id}
+                toleranceType={entry.toleranceType}
+                lowerTolerance={entry.lowerTolerance}
+                upperTolerance={entry.upperTolerance}
+            />
+
             <MetaFormSet entry={entry}/>
 
             <Button
@@ -72,4 +88,4 @@ const PropertyForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
     );
 }
 
-export default PropertyForm;
+export default ValueForm;

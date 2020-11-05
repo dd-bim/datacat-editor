@@ -1,8 +1,8 @@
 import React, {FC} from "react";
-import {useProfileQuery, useUpdateProfileMutation} from "../../../generated/types";
+import {useProfileQuery, useUpdateProfileMutation} from "../../generated/types";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import {useSnackbar} from "notistack";
-import {ProfileForm, ProfileFormValues} from "../../forms/ProfileForm";
+import {ProfileForm, ProfileFormValues} from "../../components/forms/ProfileForm";
 import View from "../View";
 
 const ProfileFormView: FC = () => {

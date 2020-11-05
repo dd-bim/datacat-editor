@@ -23,7 +23,7 @@ import {
     PropertyEntity,
     PropertyGroupEntity,
     ValueEntity
-} from "../../domain";
+} from "../domain";
 import AppTitle from "./AppTitle";
 
 const useStyles = makeStyles(theme => ({

@@ -2,25 +2,25 @@ import React, {FC} from "react";
 import {
     CollectionDetailPropsFragment,
     CollectsPropsFragment,
-    EntityTypes,
     GetCollectionEntryDocument,
     PropertyTreeDocument,
     useDeleteEntryMutation,
     useGetCollectionEntryQuery
-} from "../../../generated/types";
+} from "../../generated/types";
 import {Typography} from "@material-ui/core";
-import useCollects from "../../../hooks/useCollects";
+import useCollects from "../../hooks/useCollects";
 import {useSnackbar} from "notistack";
-import {FormSet} from "../../forms/FormSet";
-import MetaFormSet from "../../forms/MetaFormSet";
+import {FormSet} from "../../components/forms/FormSet";
+import MetaFormSet from "../../components/forms/MetaFormSet";
 import Button from "@material-ui/core/Button";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import NameFormSet from "../../forms/NameFormSet";
-import DescriptionFormSet from "../../forms/DescriptionFormSet";
-import VersionFormSet from "../../forms/VersionFormSet";
+import NameFormSet from "../../components/forms/NameFormSet";
+import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
+import VersionFormSet from "../../components/forms/VersionFormSet";
+import {ClassEntity} from "../../domain";
 import {FormProps} from "./FormView";
 
-const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) => {
+const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
 
@@ -41,10 +41,10 @@ const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) 
         relationships: entry?.collects.nodes || [],
         optionsSearchInput: {
             pageSize: 100,
-            entityTypeIn: [EntityTypes.XtdProperty]
+            tagged: ClassEntity.tags
         },
         renderLabel(relationship?: CollectsPropsFragment): React.ReactNode {
-            return relationship ? `Merkmale (${relationship.id})` : `Merkmale`;
+            return relationship ? `Klassen (${relationship.id})` : `Klassen`;
         },
         refetchQueries: [
             {query: PropertyTreeDocument},
@@ -52,12 +52,12 @@ const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) 
         ]
     });
 
-    if (loading) return <Typography>Lade Merkmalsgruppe..</Typography>;
+    if (loading) return <Typography>Lade Gruppe..</Typography>;
     if (error || !entry) return <Typography>Es ist ein Fehler aufgetreten..</Typography>;
 
     const handleOnDelete = async () => {
         await deleteEntry({variables: {id}});
-        enqueueSnackbar("Merkmalsgruppe gelöscht.")
+        enqueueSnackbar("Gruppe gelöscht.")
         onDelete(entry!);
     };
 
@@ -80,10 +80,21 @@ const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) 
             />
 
             <FormSet
-                title="Merkmale"
-                description="Merkmale, die dieser Merkmalsgruppe zugeordnet sind."
+                title="Klassen"
+                description="Klassen, die dieser Gruppe zugeordnet sind."
             >
                 {collectsInputs}
+            </FormSet>
+
+            <FormSet title="Verwendet durch..."
+                     description="Zeigt auf, welche Konzepte sich auf dieses Konzept beziehen.">
+                <ul>
+                    {entry.collectedBy.nodes.map(({relatingCollection}) => {
+                        return (
+                            <li key={relatingCollection.id}>{relatingCollection.id}</li>
+                        )
+                    })}
+                </ul>
             </FormSet>
 
             <MetaFormSet entry={entry}/>
@@ -100,4 +111,4 @@ const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) 
     );
 }
 
-export default PropertyGroupForm;
+export default DomainGroupForm;

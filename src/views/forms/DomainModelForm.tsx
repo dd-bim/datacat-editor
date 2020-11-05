@@ -6,18 +6,18 @@ import {
     PropertyTreeDocument,
     useDeleteEntryMutation,
     useGetCollectionEntryQuery
-} from "../../../generated/types";
+} from "../../generated/types";
 import {Typography} from "@material-ui/core";
-import useCollects from "../../../hooks/useCollects";
+import useCollects from "../../hooks/useCollects";
 import {useSnackbar} from "notistack";
-import {FormSet} from "../../forms/FormSet";
-import MetaFormSet from "../../forms/MetaFormSet";
+import {FormSet} from "../../components/forms/FormSet";
+import MetaFormSet from "../../components/forms/MetaFormSet";
 import Button from "@material-ui/core/Button";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import NameFormSet from "../../forms/NameFormSet";
-import DescriptionFormSet from "../../forms/DescriptionFormSet";
-import VersionFormSet from "../../forms/VersionFormSet";
-import {GroupEntity} from "../../../domain";
+import NameFormSet from "../../components/forms/NameFormSet";
+import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
+import VersionFormSet from "../../components/forms/VersionFormSet";
+import {GroupEntity} from "../../domain";
 import {FormProps} from "./FormView";
 
 

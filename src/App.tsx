@@ -2,7 +2,7 @@ import {ThemeProvider} from "@material-ui/core/styles";
 import React from "react";
 import theme from "./theme";
 import {BrowserRouter as Router} from "react-router-dom";
-import Layout from "./components/layout/Layout";
+import Layout from "./Layout";
 import AuthProvider from "./providers/AuthProvider";
 import ApiProvider from "./providers/ApiProvider";
 import ProfileProvider from "./providers/ProfileProvider";

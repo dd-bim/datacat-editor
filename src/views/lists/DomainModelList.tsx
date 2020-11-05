@@ -3,16 +3,14 @@ import {useHistory, useParams} from "react-router-dom";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Paper} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
+import {EntityTypes, SearchResultPropsFragment, useFindConceptQuery} from "../../generated/types";
+import {ModelEntity} from "../../domain";
+import EntryTable from "../../components/EntryTable";
+import DomainModelForm from "../forms/DomainModelForm";
 import Grid from "@material-ui/core/Grid";
-import {EntityTypes, SearchResultPropsFragment, useFindConceptQuery} from "../../../generated/types";
-import {DocumentEntity} from "../../../domain";
-import EntryTable from "../../layout/EntryTable";
-import SearchField from "../../forms/SearchInput";
-import useQuerying from "../../../hooks/useQuerying";
-import usePaging from "../../../hooks/usePaging";
-import useBus from 'use-bus';
-import {NewEntryAction} from "../../CreateEntrySplitButton";
-import DocumentForm from "../forms/DocumentForm";
+import SearchField from "../../components/forms/SearchInput";
+import useQuerying from "../../hooks/useQuerying";
+import usePaging from "../../hooks/usePaging";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -26,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const DocumentList: FC = () => {
+const DomainModelList: FC = () => {
     const classes = useStyles();
 
     const history = useHistory();
@@ -42,7 +40,8 @@ const DocumentList: FC = () => {
     const {data, refetch} = useFindConceptQuery({
         variables: {
             input: {
-                entityTypeIn: [EntityTypes.XtdExternalDocument],
+                entityTypeIn: [EntityTypes.XtdBag],
+                tagged: ModelEntity.tags,
                 query,
                 pageSize,
                 pageNumber
@@ -52,24 +51,12 @@ const DocumentList: FC = () => {
 
     const paging = usePaging({ pagination: querying, totalElements: data?.search.totalElements });
 
-    useBus(
-        (event) => {
-            if (event.type === "new/entry") {
-                const action = (event as NewEntryAction);
-                return action.entryType === DocumentEntity.entryType;
-            }
-            return false;
-        },
-        () => refetch(),
-        [refetch]
-    );
-
     const handleOnSelect = (value: SearchResultPropsFragment) => {
-        history.push(`/${DocumentEntity.path}/${value.id}`);
+        history.push(`/${ModelEntity.path}/${value.id}`);
     };
 
     const handleOnDelete = async () => {
-        history.push(`/${DocumentEntity.path}`);
+        history.push(`/${ModelEntity.path}`);
         await refetch();
     };
 
@@ -78,7 +65,7 @@ const DocumentList: FC = () => {
             <Grid item xs={6}>
                 <Paper className={classes.paper}>
                     <Typography variant="h5">
-                        Alle {DocumentEntity.titlePlural}
+                        Alle {ModelEntity.titlePlural}
                     </Typography>
                     <SearchField value={query} onChange={setQuery}/>
                     <EntryTable
@@ -91,13 +78,13 @@ const DocumentList: FC = () => {
             <Grid item xs={6}>
                 <Paper className={classes.paper}>
                     <Typography variant="h5">
-                        {DocumentEntity.title} bearbeiten
+                        {ModelEntity.title} bearbeiten
                     </Typography>
                     {id ? (
-                        <DocumentForm id={id} onDelete={handleOnDelete}/>
+                        <DomainModelForm id={id} onDelete={handleOnDelete}/>
                     ) : (
                         <Typography className={classes.hint} variant="body1">
-                            {DocumentEntity.title} in der Listenansicht auswählen um Referenzdokument anzuzeigen.
+                            {ModelEntity.title} in der Listenansicht auswählen um Eigenschaften anzuzeigen.
                         </Typography>
                     )}
                 </Paper>
@@ -106,5 +93,5 @@ const DocumentList: FC = () => {
     )
 }
 
-export default DocumentList;
+export default DomainModelList;
 

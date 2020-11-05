@@ -4,13 +4,15 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Paper} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import {EntityTypes, SearchResultPropsFragment, useFindConceptQuery} from "../../../generated/types";
-import {GroupEntity} from "../../../domain";
-import EntryTable from "../../layout/EntryTable";
-import DomainGroupForm from "../forms/DomainGroupForm";
-import SearchField from "../../forms/SearchInput";
-import useQuerying from "../../../hooks/useQuerying";
-import usePaging from "../../../hooks/usePaging";
+import {EntityTypes, SearchResultPropsFragment, useFindConceptQuery} from "../../generated/types";
+import {DocumentEntity} from "../../domain";
+import EntryTable from "../../components/EntryTable";
+import SearchField from "../../components/forms/SearchInput";
+import useQuerying from "../../hooks/useQuerying";
+import usePaging from "../../hooks/usePaging";
+import useBus from 'use-bus';
+import {NewEntryAction} from "../../components/CreateEntrySplitButton";
+import DocumentForm from "../forms/DocumentForm";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -24,7 +26,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const DomainGroupList: FC = () => {
+const DocumentList: FC = () => {
     const classes = useStyles();
 
     const history = useHistory();
@@ -40,8 +42,7 @@ const DomainGroupList: FC = () => {
     const {data, refetch} = useFindConceptQuery({
         variables: {
             input: {
-                entityTypeIn: [EntityTypes.XtdBag],
-                tagged: GroupEntity.tags,
+                entityTypeIn: [EntityTypes.XtdExternalDocument],
                 query,
                 pageSize,
                 pageNumber
@@ -51,12 +52,24 @@ const DomainGroupList: FC = () => {
 
     const paging = usePaging({ pagination: querying, totalElements: data?.search.totalElements });
 
+    useBus(
+        (event) => {
+            if (event.type === "new/entry") {
+                const action = (event as NewEntryAction);
+                return action.entryType === DocumentEntity.entryType;
+            }
+            return false;
+        },
+        () => refetch(),
+        [refetch]
+    );
+
     const handleOnSelect = (value: SearchResultPropsFragment) => {
-        history.push(`/${GroupEntity.path}/${value.id}`);
+        history.push(`/${DocumentEntity.path}/${value.id}`);
     };
 
     const handleOnDelete = async () => {
-        history.push(`/${GroupEntity.path}`);
+        history.push(`/${DocumentEntity.path}`);
         await refetch();
     };
 
@@ -65,7 +78,7 @@ const DomainGroupList: FC = () => {
             <Grid item xs={6}>
                 <Paper className={classes.paper}>
                     <Typography variant="h5">
-                        Alle {GroupEntity.titlePlural}
+                        Alle {DocumentEntity.titlePlural}
                     </Typography>
                     <SearchField value={query} onChange={setQuery}/>
                     <EntryTable
@@ -78,13 +91,13 @@ const DomainGroupList: FC = () => {
             <Grid item xs={6}>
                 <Paper className={classes.paper}>
                     <Typography variant="h5">
-                        {GroupEntity.title} bearbeiten
+                        {DocumentEntity.title} bearbeiten
                     </Typography>
                     {id ? (
-                        <DomainGroupForm id={id} onDelete={handleOnDelete}/>
+                        <DocumentForm id={id} onDelete={handleOnDelete}/>
                     ) : (
                         <Typography className={classes.hint} variant="body1">
-                            {GroupEntity.title} in der Listenansicht auswählen um Eigenschaften anzuzeigen.
+                            {DocumentEntity.title} in der Listenansicht auswählen um Referenzdokument anzuzeigen.
                         </Typography>
                     )}
                 </Paper>
@@ -93,5 +106,5 @@ const DomainGroupList: FC = () => {
     )
 }
 
-export default DomainGroupList;
+export default DocumentList;
 

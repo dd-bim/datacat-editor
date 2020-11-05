@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import Grid from "@material-ui/core/Grid";
-import LoginForm from "./LoginForm";
+import LoginForm from "../components/LoginForm";
 import Typography from "@material-ui/core/Typography";
-import SignupForm from "./SignupForm";
-import useAuthContext from "../../hooks/useAuthContext";
+import SignupForm from "../components/SignupForm";
+import useAuthContext from "../hooks/useAuthContext";
 import {useSnackbar} from "notistack";
 import {Paper} from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";

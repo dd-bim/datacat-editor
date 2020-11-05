@@ -12,7 +12,7 @@ import React, {useState} from "react";
 import EntrySelect, {EntrySelectOption} from "../components/forms/EntrySelect";
 import useDebounce from "./useDebounce";
 import {Value} from "@material-ui/lab";
-import {toConceptSelectOption} from "../components/views/forms/utils";
+import {toConceptSelectOption} from "../views/forms/utils";
 import {PureQueryOptions, RefetchQueriesFunction} from "@apollo/client";
 
 type UseAssignsPropertiesOptions = {
