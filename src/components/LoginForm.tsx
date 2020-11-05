@@ -4,8 +4,8 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import TextField from "@material-ui/core/TextField";
 import {Button} from "@material-ui/core";
 import {Alert} from "@material-ui/lab";
-import {LoginInput, useLoginFormMutation} from "../../generated/types";
-import {JwtToken} from "../../providers/AuthProvider";
+import {LoginInput, useLoginFormMutation} from "../generated/types";
+import {JwtToken} from "../providers/AuthProvider";
 
 interface LoginFormProps {
     onLogin: (token: JwtToken) => void;

@@ -4,13 +4,13 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Paper} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import {SearchResultPropsFragment, useFindConceptQuery} from "../../../generated/types";
-import {ValueEntity} from "../../../domain";
-import EntryTable from "../../layout/EntryTable";
-import SearchField from "../../forms/SearchInput";
-import useQuerying from "../../../hooks/useQuerying";
-import usePaging from "../../../hooks/usePaging";
-import ValueForm from "../forms/ValueForm";
+import {SearchResultPropsFragment, useFindConceptQuery} from "../../generated/types";
+import {PropertyEntity} from "../../domain";
+import EntryTable from "../../components/EntryTable";
+import SearchField from "../../components/forms/SearchInput";
+import useQuerying from "../../hooks/useQuerying";
+import usePaging from "../../hooks/usePaging";
+import PropertyForm from "../forms/PropertyForm";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const ValueList: FC = () => {
+const PropertyList: FC = () => {
     const classes = useStyles();
 
     const history = useHistory();
@@ -40,7 +40,8 @@ const ValueList: FC = () => {
     const {data, refetch} = useFindConceptQuery({
         variables: {
             input: {
-                entityTypeIn: [ValueEntity.entityType],
+                entityTypeIn: [PropertyEntity.entityType],
+                // tagged: PropertyEntity.tags,
                 query,
                 pageSize,
                 pageNumber
@@ -51,11 +52,11 @@ const ValueList: FC = () => {
     const paging = usePaging({pagination: querying, totalElements: data?.search.totalElements});
 
     const handleOnSelect = (value: SearchResultPropsFragment) => {
-        history.push(`/${ValueEntity.path}/${value.id}`);
+        history.push(`/${PropertyEntity.path}/${value.id}`);
     };
 
     const handleOnDelete = async () => {
-        history.push(`/${ValueEntity.path}`);
+        history.push(`/${PropertyEntity.path}`);
         await refetch();
     };
 
@@ -64,7 +65,7 @@ const ValueList: FC = () => {
             <Grid item xs={6}>
                 <Paper className={classes.paper}>
                     <Typography variant="h5">
-                        Alle {ValueEntity.titlePlural}
+                        Alle {PropertyEntity.titlePlural}
                     </Typography>
                     <SearchField value={query} onChange={setQuery}/>
                     <EntryTable
@@ -77,13 +78,13 @@ const ValueList: FC = () => {
             <Grid item xs={6}>
                 <Paper className={classes.paper}>
                     <Typography variant="h5">
-                        {ValueEntity.title} bearbeiten
+                        {PropertyEntity.title} bearbeiten
                     </Typography>
                     {id ? (
-                        <ValueForm id={id} onDelete={handleOnDelete}/>
+                        <PropertyForm id={id} onDelete={handleOnDelete}/>
                     ) : (
                         <Typography className={classes.hint} variant="body1">
-                            {ValueEntity.title} in der Listenansicht auswählen um Eigenschaften anzuzeigen.
+                            {PropertyEntity.title} in der Listenansicht auswählen um Eigenschaften anzuzeigen.
                         </Typography>
                     )}
                 </Paper>
@@ -92,5 +93,5 @@ const ValueList: FC = () => {
     )
 }
 
-export default ValueList;
+export default PropertyList;
 

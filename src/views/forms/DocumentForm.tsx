@@ -7,18 +7,18 @@ import {
     PropertyTreeDocument,
     useDeleteEntryMutation,
     useGetDocumentEntryQuery
-} from "../../../generated/types";
+} from "../../generated/types";
 import {Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
-import {FormSet} from "../../forms/FormSet";
-import MetaFormSet from "../../forms/MetaFormSet";
+import {FormSet} from "../../components/forms/FormSet";
+import MetaFormSet from "../../components/forms/MetaFormSet";
 import Button from "@material-ui/core/Button";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import NameFormSet from "../../forms/NameFormSet";
-import DescriptionFormSet from "../../forms/DescriptionFormSet";
-import VersionFormSet from "../../forms/VersionFormSet";
+import NameFormSet from "../../components/forms/NameFormSet";
+import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
+import VersionFormSet from "../../components/forms/VersionFormSet";
 import {FormProps} from "./FormView";
-import useDocuments from "../../../hooks/useDocuments";
+import useDocuments from "../../hooks/useDocuments";
 
 const DocumentForm: FC<FormProps<ExternalDocumentDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;

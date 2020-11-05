@@ -7,13 +7,13 @@ import Paper from "@material-ui/core/Paper";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import ConceptIcon from "../ConceptIcon";
+import ConceptIcon from "./ConceptIcon";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Typography from "@material-ui/core/Typography";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import {useFindConceptQuery} from "../../generated/types";
+import {useFindConceptQuery} from "../generated/types";
 import SearchField from "./SearchField";
-import {Domain, getEntityType} from "../../domain";
+import {Domain, getEntityType} from "../domain";
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchResults: {

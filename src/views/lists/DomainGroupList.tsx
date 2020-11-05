@@ -3,14 +3,14 @@ import {useHistory, useParams} from "react-router-dom";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Paper} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import {EntityTypes, SearchResultPropsFragment, useFindConceptQuery} from "../../../generated/types";
-import {ModelEntity} from "../../../domain";
-import EntryTable from "../../layout/EntryTable";
-import DomainModelForm from "../forms/DomainModelForm";
 import Grid from "@material-ui/core/Grid";
-import SearchField from "../../forms/SearchInput";
-import useQuerying from "../../../hooks/useQuerying";
-import usePaging from "../../../hooks/usePaging";
+import {EntityTypes, SearchResultPropsFragment, useFindConceptQuery} from "../../generated/types";
+import {GroupEntity} from "../../domain";
+import EntryTable from "../../components/EntryTable";
+import DomainGroupForm from "../forms/DomainGroupForm";
+import SearchField from "../../components/forms/SearchInput";
+import useQuerying from "../../hooks/useQuerying";
+import usePaging from "../../hooks/usePaging";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const DomainModelList: FC = () => {
+const DomainGroupList: FC = () => {
     const classes = useStyles();
 
     const history = useHistory();
@@ -41,7 +41,7 @@ const DomainModelList: FC = () => {
         variables: {
             input: {
                 entityTypeIn: [EntityTypes.XtdBag],
-                tagged: ModelEntity.tags,
+                tagged: GroupEntity.tags,
                 query,
                 pageSize,
                 pageNumber
@@ -52,11 +52,11 @@ const DomainModelList: FC = () => {
     const paging = usePaging({ pagination: querying, totalElements: data?.search.totalElements });
 
     const handleOnSelect = (value: SearchResultPropsFragment) => {
-        history.push(`/${ModelEntity.path}/${value.id}`);
+        history.push(`/${GroupEntity.path}/${value.id}`);
     };
 
     const handleOnDelete = async () => {
-        history.push(`/${ModelEntity.path}`);
+        history.push(`/${GroupEntity.path}`);
         await refetch();
     };
 
@@ -65,7 +65,7 @@ const DomainModelList: FC = () => {
             <Grid item xs={6}>
                 <Paper className={classes.paper}>
                     <Typography variant="h5">
-                        Alle {ModelEntity.titlePlural}
+                        Alle {GroupEntity.titlePlural}
                     </Typography>
                     <SearchField value={query} onChange={setQuery}/>
                     <EntryTable
@@ -78,13 +78,13 @@ const DomainModelList: FC = () => {
             <Grid item xs={6}>
                 <Paper className={classes.paper}>
                     <Typography variant="h5">
-                        {ModelEntity.title} bearbeiten
+                        {GroupEntity.title} bearbeiten
                     </Typography>
                     {id ? (
-                        <DomainModelForm id={id} onDelete={handleOnDelete}/>
+                        <DomainGroupForm id={id} onDelete={handleOnDelete}/>
                     ) : (
                         <Typography className={classes.hint} variant="body1">
-                            {ModelEntity.title} in der Listenansicht auswählen um Eigenschaften anzuzeigen.
+                            {GroupEntity.title} in der Listenansicht auswählen um Eigenschaften anzuzeigen.
                         </Typography>
                     )}
                 </Paper>
@@ -93,5 +93,5 @@ const DomainModelList: FC = () => {
     )
 }
 
-export default DomainModelList;
+export default DomainGroupList;
 

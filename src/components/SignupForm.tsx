@@ -4,7 +4,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Alert} from "@material-ui/lab";
 import {TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import {SignupInput, useSignupFormMutation} from "../../generated/types";
+import {SignupInput, useSignupFormMutation} from "../generated/types";
 
 const usernameHelperText = "A username is required. No whitespace. Must start with a letter and have a minimum length of 3."
 const passwordHelperText = "A password is required and must have a minimum lenght of 8."

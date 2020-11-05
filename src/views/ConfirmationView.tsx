@@ -1,10 +1,10 @@
 import Typography from "@material-ui/core/Typography";
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
-import {ConfirmEmailMutationVariables, useConfirmEmailMutation} from "../../generated/types";
+import {ConfirmEmailMutationVariables, useConfirmEmailMutation} from "../generated/types";
 import TextField from "@material-ui/core/TextField";
 import {Button} from "@material-ui/core";
-import useLocationQueryParam from "../../hooks/useLocationQueryParam";
+import useLocationQueryParam from "../hooks/useLocationQueryParam";
 import {Alert} from "@material-ui/lab";
 import {Redirect} from "react-router-dom";
 import {useSnackbar} from "notistack";

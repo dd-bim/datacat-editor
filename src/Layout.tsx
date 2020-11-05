@@ -1,17 +1,17 @@
 import React, {useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import AppDrawer from "./AppDrawer";
-import BoardingView from "./BoardingView";
-import {AppBar} from "./AppBar";
+import AppDrawer from "./components/AppDrawer";
+import BoardingView from "./views/BoardingView";
+import {AppBar} from "./components/AppBar";
 import {Route, Switch} from "react-router-dom";
-import useAuthContext from "../../hooks/useAuthContext";
+import useAuthContext from "./hooks/useAuthContext";
 import {Toolbar} from "@material-ui/core";
-import Footer from "./Footer";
-import ConfirmationView from "./ConfirmationView";
-import DomainModelList from "../views/lists/DomainModelList";
+import Footer from "./components/Footer";
+import ConfirmationView from "./views/ConfirmationView";
+import DomainModelList from "./views/lists/DomainModelList";
 import Typography from "@material-ui/core/Typography";
-import ProfileFormView from "../views/forms/ProfileFormView";
+import ProfileFormView from "./views/forms/ProfileFormView";
 import {
     ClassEntity,
     DocumentEntity,
@@ -20,16 +20,16 @@ import {
     PropertyEntity,
     PropertyGroupEntity,
     ValueEntity
-} from "../../domain";
-import DomainGroupList from "../views/lists/DomainGroupList";
-import DomainClassList from "../views/lists/DomainClassList";
-import PropertyGroupList from "../views/lists/PropertyGroupList";
-import HierarchyView from "../views/HierarchyView";
-import PropertyList from "../views/lists/PropertyList";
+} from "./domain";
+import DomainGroupList from "./views/lists/DomainGroupList";
+import DomainClassList from "./views/lists/DomainClassList";
+import PropertyGroupList from "./views/lists/PropertyGroupList";
+import HierarchyView from "./views/HierarchyView";
+import PropertyList from "./views/lists/PropertyList";
 import Paper from "@material-ui/core/Paper";
-import useGridStyles from "../../hooks/useGridStyle";
-import ValueList from "../views/lists/ValueList";
-import DocumentList from "../views/lists/DocumentList";
+import useGridStyles from "./hooks/useGridStyle";
+import ValueList from "./views/lists/ValueList";
+import DocumentList from "./views/lists/DocumentList";
 
 const drawerWidth = 250;
 

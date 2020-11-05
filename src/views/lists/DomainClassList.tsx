@@ -4,13 +4,15 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Paper} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import {SearchResultPropsFragment, useFindConceptQuery} from "../../../generated/types";
-import {PropertyEntity} from "../../../domain";
-import EntryTable from "../../layout/EntryTable";
-import SearchField from "../../forms/SearchInput";
-import useQuerying from "../../../hooks/useQuerying";
-import usePaging from "../../../hooks/usePaging";
-import PropertyForm from "../forms/PropertyForm";
+import {EntityTypes, SearchResultPropsFragment, useFindConceptQuery} from "../../generated/types";
+import {ClassEntity} from "../../domain";
+import EntryTable from "../../components/EntryTable";
+import DomainClassForm from "../forms/DomainClassForm";
+import SearchField from "../../components/forms/SearchInput";
+import useQuerying from "../../hooks/useQuerying";
+import usePaging from "../../hooks/usePaging";
+import useBus from 'use-bus';
+import {NewEntryAction} from "../../components/CreateEntrySplitButton";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -24,7 +26,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const PropertyList: FC = () => {
+const DomainClassList: FC = () => {
     const classes = useStyles();
 
     const history = useHistory();
@@ -40,8 +42,8 @@ const PropertyList: FC = () => {
     const {data, refetch} = useFindConceptQuery({
         variables: {
             input: {
-                entityTypeIn: [PropertyEntity.entityType],
-                // tagged: PropertyEntity.tags,
+                entityTypeIn: [EntityTypes.XtdObject],
+                tagged: ClassEntity.tags,
                 query,
                 pageSize,
                 pageNumber
@@ -49,14 +51,26 @@ const PropertyList: FC = () => {
         }
     });
 
-    const paging = usePaging({pagination: querying, totalElements: data?.search.totalElements});
+    const paging = usePaging({ pagination: querying, totalElements: data?.search.totalElements });
+
+    useBus(
+        (event) => {
+            if (event.type === "new/entry") {
+                const action = (event as NewEntryAction);
+                return action.entryType === ClassEntity.entryType;
+            }
+            return false;
+        },
+        () => refetch(),
+        [refetch]
+    );
 
     const handleOnSelect = (value: SearchResultPropsFragment) => {
-        history.push(`/${PropertyEntity.path}/${value.id}`);
+        history.push(`/${ClassEntity.path}/${value.id}`);
     };
 
     const handleOnDelete = async () => {
-        history.push(`/${PropertyEntity.path}`);
+        history.push(`/${ClassEntity.path}`);
         await refetch();
     };
 
@@ -65,7 +79,7 @@ const PropertyList: FC = () => {
             <Grid item xs={6}>
                 <Paper className={classes.paper}>
                     <Typography variant="h5">
-                        Alle {PropertyEntity.titlePlural}
+                        Alle {ClassEntity.titlePlural}
                     </Typography>
                     <SearchField value={query} onChange={setQuery}/>
                     <EntryTable
@@ -78,13 +92,13 @@ const PropertyList: FC = () => {
             <Grid item xs={6}>
                 <Paper className={classes.paper}>
                     <Typography variant="h5">
-                        {PropertyEntity.title} bearbeiten
+                        {ClassEntity.title} bearbeiten
                     </Typography>
                     {id ? (
-                        <PropertyForm id={id} onDelete={handleOnDelete}/>
+                        <DomainClassForm id={id} onDelete={handleOnDelete}/>
                     ) : (
                         <Typography className={classes.hint} variant="body1">
-                            {PropertyEntity.title} in der Listenansicht auswählen um Eigenschaften anzuzeigen.
+                            {ClassEntity.title} in der Listenansicht auswählen um Eigenschaften anzuzeigen.
                         </Typography>
                     )}
                 </Paper>
@@ -93,5 +107,5 @@ const PropertyList: FC = () => {
     )
 }
 
-export default PropertyList;
+export default DomainClassList;
 

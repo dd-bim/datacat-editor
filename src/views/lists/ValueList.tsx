@@ -4,13 +4,13 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Paper} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import {EntityTypes, SearchResultPropsFragment, useFindConceptQuery} from "../../../generated/types";
-import {PropertyGroupEntity} from "../../../domain";
-import EntryTable from "../../layout/EntryTable";
-import SearchField from "../../forms/SearchInput";
-import useQuerying from "../../../hooks/useQuerying";
-import usePaging from "../../../hooks/usePaging";
-import PropertyGroupForm from "../forms/PropertyGroupForm";
+import {SearchResultPropsFragment, useFindConceptQuery} from "../../generated/types";
+import {ValueEntity} from "../../domain";
+import EntryTable from "../../components/EntryTable";
+import SearchField from "../../components/forms/SearchInput";
+import useQuerying from "../../hooks/useQuerying";
+import usePaging from "../../hooks/usePaging";
+import ValueForm from "../forms/ValueForm";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const PropertyGroupList: FC = () => {
+const ValueList: FC = () => {
     const classes = useStyles();
 
     const history = useHistory();
@@ -40,8 +40,7 @@ const PropertyGroupList: FC = () => {
     const {data, refetch} = useFindConceptQuery({
         variables: {
             input: {
-                entityTypeIn: [EntityTypes.XtdNest],
-                tagged: PropertyGroupEntity.tags,
+                entityTypeIn: [ValueEntity.entityType],
                 query,
                 pageSize,
                 pageNumber
@@ -52,11 +51,11 @@ const PropertyGroupList: FC = () => {
     const paging = usePaging({pagination: querying, totalElements: data?.search.totalElements});
 
     const handleOnSelect = (value: SearchResultPropsFragment) => {
-        history.push(`/${PropertyGroupEntity.path}/${value.id}`);
+        history.push(`/${ValueEntity.path}/${value.id}`);
     };
 
     const handleOnDelete = async () => {
-        history.push(`/${PropertyGroupEntity.path}`);
+        history.push(`/${ValueEntity.path}`);
         await refetch();
     };
 
@@ -65,7 +64,7 @@ const PropertyGroupList: FC = () => {
             <Grid item xs={6}>
                 <Paper className={classes.paper}>
                     <Typography variant="h5">
-                        Alle {PropertyGroupEntity.titlePlural}
+                        Alle {ValueEntity.titlePlural}
                     </Typography>
                     <SearchField value={query} onChange={setQuery}/>
                     <EntryTable
@@ -78,13 +77,13 @@ const PropertyGroupList: FC = () => {
             <Grid item xs={6}>
                 <Paper className={classes.paper}>
                     <Typography variant="h5">
-                        {PropertyGroupEntity.title} bearbeiten
+                        {ValueEntity.title} bearbeiten
                     </Typography>
                     {id ? (
-                        <PropertyGroupForm id={id} onDelete={handleOnDelete}/>
+                        <ValueForm id={id} onDelete={handleOnDelete}/>
                     ) : (
                         <Typography className={classes.hint} variant="body1">
-                            {PropertyGroupEntity.title} in der Listenansicht auswählen um Eigenschaften anzuzeigen.
+                            {ValueEntity.title} in der Listenansicht auswählen um Eigenschaften anzuzeigen.
                         </Typography>
                     )}
                 </Paper>
@@ -93,5 +92,5 @@ const PropertyGroupList: FC = () => {
     )
 }
 
-export default PropertyGroupList;
+export default ValueList;
 

@@ -8,7 +8,7 @@ import Table from "@material-ui/core/Table";
 import React from "react";
 import {Column, useTable} from "react-table";
 import {TablePaginationProps} from "@material-ui/core";
-import {Maybe} from "../../generated/types";
+import {Maybe} from "../generated/types";
 import Tooltip from "@material-ui/core/Tooltip";
 
 export type EntryTableRow = {
