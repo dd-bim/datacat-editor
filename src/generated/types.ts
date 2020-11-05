@@ -443,410 +443,6 @@ export type VersionInput = {
 
 
 
-export type ConfirmEmailMutationVariables = Exact<{
-  token: Scalars['String'];
-}>;
-
-
-export type ConfirmEmailMutation = { __typename: 'Mutation', success?: Maybe<boolean> };
-
-export type LoginFormMutationVariables = Exact<{
-  credentials: LoginInput;
-}>;
-
-
-export type LoginFormMutation = { __typename: 'Mutation', token?: Maybe<string> };
-
-type SearchResult_XtdActivity_Fragment = { __typename: 'XtdActivity', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-type SearchResult_XtdActor_Fragment = { __typename: 'XtdActor', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-type SearchResult_XtdBag_Fragment = { __typename: 'XtdBag', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-type SearchResult_XtdClassification_Fragment = { __typename: 'XtdClassification', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-type SearchResult_XtdExternalDocument_Fragment = { __typename: 'XtdExternalDocument', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-type SearchResult_XtdMeasureWithUnit_Fragment = { __typename: 'XtdMeasureWithUnit', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-type SearchResult_XtdNest_Fragment = { __typename: 'XtdNest', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-type SearchResult_XtdProperty_Fragment = { __typename: 'XtdProperty', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-type SearchResult_XtdRelActsUpon_Fragment = { __typename: 'XtdRelActsUpon', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-type SearchResult_XtdRelAssignsCollections_Fragment = { __typename: 'XtdRelAssignsCollections', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-type SearchResult_XtdRelAssignsMeasures_Fragment = { __typename: 'XtdRelAssignsMeasures', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-type SearchResult_XtdRelAssignsProperties_Fragment = { __typename: 'XtdRelAssignsProperties', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-type SearchResult_XtdRelAssignsPropertyWithValues_Fragment = { __typename: 'XtdRelAssignsPropertyWithValues', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-type SearchResult_XtdRelAssignsUnits_Fragment = { __typename: 'XtdRelAssignsUnits', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-type SearchResult_XtdRelAssignsValues_Fragment = { __typename: 'XtdRelAssignsValues', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-type SearchResult_XtdRelAssociates_Fragment = { __typename: 'XtdRelAssociates', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-type SearchResult_XtdRelCollects_Fragment = { __typename: 'XtdRelCollects', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-type SearchResult_XtdRelComposes_Fragment = { __typename: 'XtdRelComposes', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-type SearchResult_XtdRelDocuments_Fragment = { __typename: 'XtdRelDocuments', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-type SearchResult_XtdRelGroups_Fragment = { __typename: 'XtdRelGroups', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-type SearchResult_XtdRelSequences_Fragment = { __typename: 'XtdRelSequences', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-type SearchResult_XtdRelSpecializes_Fragment = { __typename: 'XtdRelSpecializes', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-type SearchResult_XtdSubject_Fragment = { __typename: 'XtdSubject', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-type SearchResult_XtdUnit_Fragment = { __typename: 'XtdUnit', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-type SearchResult_XtdValue_Fragment = { __typename: 'XtdValue', id: string, name?: Maybe<string>, description?: Maybe<string> };
-
-export type SearchResultFragment = SearchResult_XtdActivity_Fragment | SearchResult_XtdActor_Fragment | SearchResult_XtdBag_Fragment | SearchResult_XtdClassification_Fragment | SearchResult_XtdExternalDocument_Fragment | SearchResult_XtdMeasureWithUnit_Fragment | SearchResult_XtdNest_Fragment | SearchResult_XtdProperty_Fragment | SearchResult_XtdRelActsUpon_Fragment | SearchResult_XtdRelAssignsCollections_Fragment | SearchResult_XtdRelAssignsMeasures_Fragment | SearchResult_XtdRelAssignsProperties_Fragment | SearchResult_XtdRelAssignsPropertyWithValues_Fragment | SearchResult_XtdRelAssignsUnits_Fragment | SearchResult_XtdRelAssignsValues_Fragment | SearchResult_XtdRelAssociates_Fragment | SearchResult_XtdRelCollects_Fragment | SearchResult_XtdRelComposes_Fragment | SearchResult_XtdRelDocuments_Fragment | SearchResult_XtdRelGroups_Fragment | SearchResult_XtdRelSequences_Fragment | SearchResult_XtdRelSpecializes_Fragment | SearchResult_XtdSubject_Fragment | SearchResult_XtdUnit_Fragment | SearchResult_XtdValue_Fragment;
-
-export type SearchInputQueryVariables = Exact<{
-  input?: Maybe<SearchInput>;
-}>;
-
-
-export type SearchInputQuery = { __typename: 'Query', search: { __typename: 'SearchResultConnection', totalElements: number, nodes: Array<(
-      { __typename: 'XtdActivity' }
-      & SearchResult_XtdActivity_Fragment
-    ) | (
-      { __typename: 'XtdActor' }
-      & SearchResult_XtdActor_Fragment
-    ) | (
-      { __typename: 'XtdBag' }
-      & SearchResult_XtdBag_Fragment
-    ) | (
-      { __typename: 'XtdClassification' }
-      & SearchResult_XtdClassification_Fragment
-    ) | (
-      { __typename: 'XtdExternalDocument' }
-      & SearchResult_XtdExternalDocument_Fragment
-    ) | (
-      { __typename: 'XtdMeasureWithUnit' }
-      & SearchResult_XtdMeasureWithUnit_Fragment
-    ) | (
-      { __typename: 'XtdNest' }
-      & SearchResult_XtdNest_Fragment
-    ) | (
-      { __typename: 'XtdProperty' }
-      & SearchResult_XtdProperty_Fragment
-    ) | (
-      { __typename: 'XtdRelActsUpon' }
-      & SearchResult_XtdRelActsUpon_Fragment
-    ) | (
-      { __typename: 'XtdRelAssignsCollections' }
-      & SearchResult_XtdRelAssignsCollections_Fragment
-    ) | (
-      { __typename: 'XtdRelAssignsMeasures' }
-      & SearchResult_XtdRelAssignsMeasures_Fragment
-    ) | (
-      { __typename: 'XtdRelAssignsProperties' }
-      & SearchResult_XtdRelAssignsProperties_Fragment
-    ) | (
-      { __typename: 'XtdRelAssignsPropertyWithValues' }
-      & SearchResult_XtdRelAssignsPropertyWithValues_Fragment
-    ) | (
-      { __typename: 'XtdRelAssignsUnits' }
-      & SearchResult_XtdRelAssignsUnits_Fragment
-    ) | (
-      { __typename: 'XtdRelAssignsValues' }
-      & SearchResult_XtdRelAssignsValues_Fragment
-    ) | (
-      { __typename: 'XtdRelAssociates' }
-      & SearchResult_XtdRelAssociates_Fragment
-    ) | (
-      { __typename: 'XtdRelCollects' }
-      & SearchResult_XtdRelCollects_Fragment
-    ) | (
-      { __typename: 'XtdRelComposes' }
-      & SearchResult_XtdRelComposes_Fragment
-    ) | (
-      { __typename: 'XtdRelDocuments' }
-      & SearchResult_XtdRelDocuments_Fragment
-    ) | (
-      { __typename: 'XtdRelGroups' }
-      & SearchResult_XtdRelGroups_Fragment
-    ) | (
-      { __typename: 'XtdRelSequences' }
-      & SearchResult_XtdRelSequences_Fragment
-    ) | (
-      { __typename: 'XtdRelSpecializes' }
-      & SearchResult_XtdRelSpecializes_Fragment
-    ) | (
-      { __typename: 'XtdSubject' }
-      & SearchResult_XtdSubject_Fragment
-    ) | (
-      { __typename: 'XtdUnit' }
-      & SearchResult_XtdUnit_Fragment
-    ) | (
-      { __typename: 'XtdValue' }
-      & SearchResult_XtdValue_Fragment
-    )>, pageInfo: (
-      { __typename: 'PageInfo' }
-      & PagePropsFragment
-    ) } };
-
-export type SignupFormMutationVariables = Exact<{
-  profile: SignupInput;
-}>;
-
-
-export type SignupFormMutation = { __typename: 'Mutation', success?: Maybe<boolean> };
-
-type DomainClassProps_XtdActivity_Fragment = { __typename: 'XtdActivity', id: string, created: string, createdBy: string, lastModified: string, lastModifiedBy: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )> };
-
-type DomainClassProps_XtdActor_Fragment = { __typename: 'XtdActor', id: string, created: string, createdBy: string, lastModified: string, lastModifiedBy: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )> };
-
-type DomainClassProps_XtdClassification_Fragment = { __typename: 'XtdClassification', id: string, created: string, createdBy: string, lastModified: string, lastModifiedBy: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )> };
-
-type DomainClassProps_XtdMeasureWithUnit_Fragment = { __typename: 'XtdMeasureWithUnit', id: string, created: string, createdBy: string, lastModified: string, lastModifiedBy: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )> };
-
-type DomainClassProps_XtdProperty_Fragment = { __typename: 'XtdProperty', id: string, created: string, createdBy: string, lastModified: string, lastModifiedBy: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )> };
-
-type DomainClassProps_XtdSubject_Fragment = { __typename: 'XtdSubject', id: string, created: string, createdBy: string, lastModified: string, lastModifiedBy: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )> };
-
-type DomainClassProps_XtdUnit_Fragment = { __typename: 'XtdUnit', id: string, created: string, createdBy: string, lastModified: string, lastModifiedBy: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )> };
-
-type DomainClassProps_XtdValue_Fragment = { __typename: 'XtdValue', id: string, created: string, createdBy: string, lastModified: string, lastModifiedBy: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )> };
-
-export type DomainClassPropsFragment = DomainClassProps_XtdActivity_Fragment | DomainClassProps_XtdActor_Fragment | DomainClassProps_XtdClassification_Fragment | DomainClassProps_XtdMeasureWithUnit_Fragment | DomainClassProps_XtdProperty_Fragment | DomainClassProps_XtdSubject_Fragment | DomainClassProps_XtdUnit_Fragment | DomainClassProps_XtdValue_Fragment;
-
-type DomainClassDetails_XtdActivity_Fragment = (
-  { __typename: 'XtdActivity' }
-  & DomainClassProps_XtdActivity_Fragment
-);
-
-type DomainClassDetails_XtdActor_Fragment = (
-  { __typename: 'XtdActor' }
-  & DomainClassProps_XtdActor_Fragment
-);
-
-type DomainClassDetails_XtdClassification_Fragment = (
-  { __typename: 'XtdClassification' }
-  & DomainClassProps_XtdClassification_Fragment
-);
-
-type DomainClassDetails_XtdMeasureWithUnit_Fragment = (
-  { __typename: 'XtdMeasureWithUnit' }
-  & DomainClassProps_XtdMeasureWithUnit_Fragment
-);
-
-type DomainClassDetails_XtdProperty_Fragment = (
-  { __typename: 'XtdProperty' }
-  & DomainClassProps_XtdProperty_Fragment
-);
-
-type DomainClassDetails_XtdSubject_Fragment = (
-  { __typename: 'XtdSubject' }
-  & DomainClassProps_XtdSubject_Fragment
-);
-
-type DomainClassDetails_XtdUnit_Fragment = (
-  { __typename: 'XtdUnit' }
-  & DomainClassProps_XtdUnit_Fragment
-);
-
-type DomainClassDetails_XtdValue_Fragment = (
-  { __typename: 'XtdValue' }
-  & DomainClassProps_XtdValue_Fragment
-);
-
-export type DomainClassDetailsFragment = DomainClassDetails_XtdActivity_Fragment | DomainClassDetails_XtdActor_Fragment | DomainClassDetails_XtdClassification_Fragment | DomainClassDetails_XtdMeasureWithUnit_Fragment | DomainClassDetails_XtdProperty_Fragment | DomainClassDetails_XtdSubject_Fragment | DomainClassDetails_XtdUnit_Fragment | DomainClassDetails_XtdValue_Fragment;
-
-export type DomainClassQueryVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-export type DomainClassQuery = { __typename: 'Query', node?: Maybe<(
-    { __typename: 'XtdActivity' }
-    & DomainClassDetails_XtdActivity_Fragment
-  ) | (
-    { __typename: 'XtdActor' }
-    & DomainClassDetails_XtdActor_Fragment
-  ) | { __typename: 'XtdBag' } | (
-    { __typename: 'XtdClassification' }
-    & DomainClassDetails_XtdClassification_Fragment
-  ) | { __typename: 'XtdExternalDocument' } | (
-    { __typename: 'XtdMeasureWithUnit' }
-    & DomainClassDetails_XtdMeasureWithUnit_Fragment
-  ) | { __typename: 'XtdNest' } | (
-    { __typename: 'XtdProperty' }
-    & DomainClassDetails_XtdProperty_Fragment
-  ) | { __typename: 'XtdRelActsUpon' } | { __typename: 'XtdRelAssignsCollections' } | { __typename: 'XtdRelAssignsMeasures' } | { __typename: 'XtdRelAssignsProperties' } | { __typename: 'XtdRelAssignsPropertyWithValues' } | { __typename: 'XtdRelAssignsUnits' } | { __typename: 'XtdRelAssignsValues' } | { __typename: 'XtdRelAssociates' } | { __typename: 'XtdRelCollects' } | { __typename: 'XtdRelComposes' } | { __typename: 'XtdRelDocuments' } | { __typename: 'XtdRelGroups' } | { __typename: 'XtdRelSequences' } | { __typename: 'XtdRelSpecializes' } | (
-    { __typename: 'XtdSubject' }
-    & DomainClassDetails_XtdSubject_Fragment
-  ) | (
-    { __typename: 'XtdUnit' }
-    & DomainClassDetails_XtdUnit_Fragment
-  ) | (
-    { __typename: 'XtdValue' }
-    & DomainClassDetails_XtdValue_Fragment
-  )> };
-
-export type DomainClassListQueryVariables = Exact<{
-  input?: Maybe<SearchInput>;
-}>;
-
-
-export type DomainClassListQuery = { __typename: 'Query', search: { __typename: 'SearchResultConnection', totalElements: number, nodes: Array<(
-      { __typename: 'XtdActivity' }
-      & DomainClassProps_XtdActivity_Fragment
-    ) | (
-      { __typename: 'XtdActor' }
-      & DomainClassProps_XtdActor_Fragment
-    ) | { __typename: 'XtdBag' } | (
-      { __typename: 'XtdClassification' }
-      & DomainClassProps_XtdClassification_Fragment
-    ) | { __typename: 'XtdExternalDocument' } | (
-      { __typename: 'XtdMeasureWithUnit' }
-      & DomainClassProps_XtdMeasureWithUnit_Fragment
-    ) | { __typename: 'XtdNest' } | (
-      { __typename: 'XtdProperty' }
-      & DomainClassProps_XtdProperty_Fragment
-    ) | { __typename: 'XtdRelActsUpon' } | { __typename: 'XtdRelAssignsCollections' } | { __typename: 'XtdRelAssignsMeasures' } | { __typename: 'XtdRelAssignsProperties' } | { __typename: 'XtdRelAssignsPropertyWithValues' } | { __typename: 'XtdRelAssignsUnits' } | { __typename: 'XtdRelAssignsValues' } | { __typename: 'XtdRelAssociates' } | { __typename: 'XtdRelCollects' } | { __typename: 'XtdRelComposes' } | { __typename: 'XtdRelDocuments' } | { __typename: 'XtdRelGroups' } | { __typename: 'XtdRelSequences' } | { __typename: 'XtdRelSpecializes' } | (
-      { __typename: 'XtdSubject' }
-      & DomainClassProps_XtdSubject_Fragment
-    ) | (
-      { __typename: 'XtdUnit' }
-      & DomainClassProps_XtdUnit_Fragment
-    ) | (
-      { __typename: 'XtdValue' }
-      & DomainClassProps_XtdValue_Fragment
-    )>, pageInfo: { __typename: 'PageInfo', totalPages: number, pageNumber: number, hasNext: boolean, hasPrevious: boolean } } };
-
-export type TagDomainClassMutationVariables = Exact<{
-  domainModelId: Scalars['ID'];
-  tagId: Scalars['ID'];
-}>;
-
-
-export type TagDomainClassMutation = { __typename: 'Mutation', tag: (
-    { __typename: 'XtdActivity' }
-    & DomainClassDetails_XtdActivity_Fragment
-  ) | (
-    { __typename: 'XtdActor' }
-    & DomainClassDetails_XtdActor_Fragment
-  ) | { __typename: 'XtdBag' } | (
-    { __typename: 'XtdClassification' }
-    & DomainClassDetails_XtdClassification_Fragment
-  ) | { __typename: 'XtdExternalDocument' } | (
-    { __typename: 'XtdMeasureWithUnit' }
-    & DomainClassDetails_XtdMeasureWithUnit_Fragment
-  ) | { __typename: 'XtdNest' } | (
-    { __typename: 'XtdProperty' }
-    & DomainClassDetails_XtdProperty_Fragment
-  ) | { __typename: 'XtdRelActsUpon' } | { __typename: 'XtdRelAssignsCollections' } | { __typename: 'XtdRelAssignsMeasures' } | { __typename: 'XtdRelAssignsProperties' } | { __typename: 'XtdRelAssignsPropertyWithValues' } | { __typename: 'XtdRelAssignsUnits' } | { __typename: 'XtdRelAssignsValues' } | { __typename: 'XtdRelAssociates' } | { __typename: 'XtdRelCollects' } | { __typename: 'XtdRelComposes' } | { __typename: 'XtdRelDocuments' } | { __typename: 'XtdRelGroups' } | { __typename: 'XtdRelSequences' } | { __typename: 'XtdRelSpecializes' } | (
-    { __typename: 'XtdSubject' }
-    & DomainClassDetails_XtdSubject_Fragment
-  ) | (
-    { __typename: 'XtdUnit' }
-    & DomainClassDetails_XtdUnit_Fragment
-  ) | (
-    { __typename: 'XtdValue' }
-    & DomainClassDetails_XtdValue_Fragment
-  ) };
-
-export type DomainGroupPropsFragment = { __typename: 'XtdBag', id: string, created: string, createdBy: string, lastModified: string, lastModifiedBy: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<{ __typename: 'Tag', id: string, localizedName: string }> };
-
-export type DomainGroupDetailsFragment = (
-  { __typename: 'XtdBag', collects: { __typename: 'XtdRelCollectsConnection', nodes: Array<{ __typename: 'XtdRelCollects', id: string, relatedThings: Array<{ __typename: 'XtdActivity', id: string, name?: Maybe<string> } | { __typename: 'XtdActor', id: string, name?: Maybe<string> } | { __typename: 'XtdBag', id: string, name?: Maybe<string> } | { __typename: 'XtdClassification', id: string, name?: Maybe<string> } | { __typename: 'XtdMeasureWithUnit', id: string, name?: Maybe<string> } | { __typename: 'XtdNest', id: string, name?: Maybe<string> } | { __typename: 'XtdProperty', id: string, name?: Maybe<string> } | { __typename: 'XtdSubject', id: string, name?: Maybe<string> } | { __typename: 'XtdUnit', id: string, name?: Maybe<string> } | { __typename: 'XtdValue', id: string, name?: Maybe<string> }> }> } }
-  & DomainGroupPropsFragment
-);
-
-export type DomainGroupQueryVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-export type DomainGroupQuery = { __typename: 'Query', node?: Maybe<{ __typename: 'XtdActivity' } | { __typename: 'XtdActor' } | (
-    { __typename: 'XtdBag' }
-    & DomainGroupDetailsFragment
-  ) | { __typename: 'XtdClassification' } | { __typename: 'XtdExternalDocument' } | { __typename: 'XtdMeasureWithUnit' } | { __typename: 'XtdNest' } | { __typename: 'XtdProperty' } | { __typename: 'XtdRelActsUpon' } | { __typename: 'XtdRelAssignsCollections' } | { __typename: 'XtdRelAssignsMeasures' } | { __typename: 'XtdRelAssignsProperties' } | { __typename: 'XtdRelAssignsPropertyWithValues' } | { __typename: 'XtdRelAssignsUnits' } | { __typename: 'XtdRelAssignsValues' } | { __typename: 'XtdRelAssociates' } | { __typename: 'XtdRelCollects' } | { __typename: 'XtdRelComposes' } | { __typename: 'XtdRelDocuments' } | { __typename: 'XtdRelGroups' } | { __typename: 'XtdRelSequences' } | { __typename: 'XtdRelSpecializes' } | { __typename: 'XtdSubject' } | { __typename: 'XtdUnit' } | { __typename: 'XtdValue' }> };
-
-export type DomainGroupListQueryVariables = Exact<{
-  input?: Maybe<FilterInput>;
-}>;
-
-
-export type DomainGroupListQuery = { __typename: 'Query', bags: { __typename: 'XtdBagConnection', totalElements: number, nodes: Array<(
-      { __typename: 'XtdBag' }
-      & DomainGroupPropsFragment
-    )>, pageInfo: { __typename: 'PageInfo', totalPages: number, pageNumber: number, hasNext: boolean, hasPrevious: boolean } } };
-
-export type TagDomainGroupMutationVariables = Exact<{
-  domainModelId: Scalars['ID'];
-  tagId: Scalars['ID'];
-}>;
-
-
-export type TagDomainGroupMutation = { __typename: 'Mutation', tag: { __typename: 'XtdActivity' } | { __typename: 'XtdActor' } | (
-    { __typename: 'XtdBag' }
-    & DomainGroupDetailsFragment
-  ) | { __typename: 'XtdClassification' } | { __typename: 'XtdExternalDocument' } | { __typename: 'XtdMeasureWithUnit' } | { __typename: 'XtdNest' } | { __typename: 'XtdProperty' } | { __typename: 'XtdRelActsUpon' } | { __typename: 'XtdRelAssignsCollections' } | { __typename: 'XtdRelAssignsMeasures' } | { __typename: 'XtdRelAssignsProperties' } | { __typename: 'XtdRelAssignsPropertyWithValues' } | { __typename: 'XtdRelAssignsUnits' } | { __typename: 'XtdRelAssignsValues' } | { __typename: 'XtdRelAssociates' } | { __typename: 'XtdRelCollects' } | { __typename: 'XtdRelComposes' } | { __typename: 'XtdRelDocuments' } | { __typename: 'XtdRelGroups' } | { __typename: 'XtdRelSequences' } | { __typename: 'XtdRelSpecializes' } | { __typename: 'XtdSubject' } | { __typename: 'XtdUnit' } | { __typename: 'XtdValue' } };
-
 export type UserProfileFragment = { __typename: 'Profile', username: string, firstName: string, lastName: string, email: string, organization: string };
 
 export type PagePropsFragment = { __typename: 'PageInfo', totalPages: number, pageNumber: number, hasNext: boolean, hasPrevious: boolean };
@@ -1765,6 +1361,27 @@ type CollectionDetailProps_XtdNest_Fragment = (
 
 export type CollectionDetailPropsFragment = CollectionDetailProps_XtdBag_Fragment | CollectionDetailProps_XtdNest_Fragment;
 
+export type SignupFormMutationVariables = Exact<{
+  profile: SignupInput;
+}>;
+
+
+export type SignupFormMutation = { __typename: 'Mutation', success?: Maybe<boolean> };
+
+export type ConfirmEmailMutationVariables = Exact<{
+  token: Scalars['String'];
+}>;
+
+
+export type ConfirmEmailMutation = { __typename: 'Mutation', success?: Maybe<boolean> };
+
+export type LoginFormMutationVariables = Exact<{
+  credentials: LoginInput;
+}>;
+
+
+export type LoginFormMutation = { __typename: 'Mutation', token?: Maybe<string> };
+
 export type UpdateProfileMutationVariables = Exact<{
   input: ProfileUpdateInput;
 }>;
@@ -2301,7 +1918,10 @@ export type FindConceptQuery = { __typename: 'Query', search: { __typename: 'Sea
     ) | (
       { __typename: 'XtdValue' }
       & SearchResultProps_XtdValue_Fragment
-    )> } };
+    )>, pageInfo: (
+      { __typename: 'PageInfo' }
+      & PagePropsFragment
+    ) } };
 
 export type PropertyTreeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2383,28 +2003,15 @@ export type PropertyTreeQuery = { __typename: 'Query', hierarchy: { __typename: 
       & ConceptProps_XtdValue_Fragment
     )> } };
 
-export type ExternalDocumentQueryVariables = Exact<{
+export type GetDocumentEntryQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type ExternalDocumentQuery = { __typename: 'Query', externalDocument?: Maybe<(
+export type GetDocumentEntryQuery = { __typename: 'Query', node?: Maybe<{ __typename: 'XtdActivity' } | { __typename: 'XtdActor' } | { __typename: 'XtdBag' } | { __typename: 'XtdClassification' } | (
     { __typename: 'XtdExternalDocument' }
     & ExternalDocumentDetailPropsFragment
-  )> };
-
-export type SubjectsQueryVariables = Exact<{
-  input?: Maybe<FilterInput>;
-}>;
-
-
-export type SubjectsQuery = { __typename: 'Query', subjects: { __typename: 'XtdSubjectConnection', totalElements: number, nodes: Array<(
-      { __typename: 'XtdSubject' }
-      & ObjectProps_XtdSubject_Fragment
-    )>, pageInfo: (
-      { __typename: 'PageInfo' }
-      & PagePropsFragment
-    ) } };
+  ) | { __typename: 'XtdMeasureWithUnit' } | { __typename: 'XtdNest' } | { __typename: 'XtdProperty' } | { __typename: 'XtdRelActsUpon' } | { __typename: 'XtdRelAssignsCollections' } | { __typename: 'XtdRelAssignsMeasures' } | { __typename: 'XtdRelAssignsProperties' } | { __typename: 'XtdRelAssignsPropertyWithValues' } | { __typename: 'XtdRelAssignsUnits' } | { __typename: 'XtdRelAssignsValues' } | { __typename: 'XtdRelAssociates' } | { __typename: 'XtdRelCollects' } | { __typename: 'XtdRelComposes' } | { __typename: 'XtdRelDocuments' } | { __typename: 'XtdRelGroups' } | { __typename: 'XtdRelSequences' } | { __typename: 'XtdRelSpecializes' } | { __typename: 'XtdSubject' } | { __typename: 'XtdUnit' } | { __typename: 'XtdValue' }> };
 
 export type GetObjectEntryQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -2460,29 +2067,6 @@ export type GetCollectionEntryQuery = { __typename: 'Query', node?: Maybe<{ __ty
     & CollectionDetailProps_XtdNest_Fragment
   ) | { __typename: 'XtdProperty' } | { __typename: 'XtdRelActsUpon' } | { __typename: 'XtdRelAssignsCollections' } | { __typename: 'XtdRelAssignsMeasures' } | { __typename: 'XtdRelAssignsProperties' } | { __typename: 'XtdRelAssignsPropertyWithValues' } | { __typename: 'XtdRelAssignsUnits' } | { __typename: 'XtdRelAssignsValues' } | { __typename: 'XtdRelAssociates' } | { __typename: 'XtdRelCollects' } | { __typename: 'XtdRelComposes' } | { __typename: 'XtdRelDocuments' } | { __typename: 'XtdRelGroups' } | { __typename: 'XtdRelSequences' } | { __typename: 'XtdRelSpecializes' } | { __typename: 'XtdSubject' } | { __typename: 'XtdUnit' } | { __typename: 'XtdValue' }> };
 
-export type BagQueryVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-export type BagQuery = { __typename: 'Query', bag?: Maybe<(
-    { __typename: 'XtdBag' }
-    & CollectionDetailProps_XtdBag_Fragment
-  )> };
-
-export type BagListQueryVariables = Exact<{
-  input?: Maybe<FilterInput>;
-}>;
-
-
-export type BagListQuery = { __typename: 'Query', bags: { __typename: 'XtdBagConnection', totalElements: number, nodes: Array<(
-      { __typename: 'XtdBag' }
-      & CollectionProps_XtdBag_Fragment
-    )>, pageInfo: (
-      { __typename: 'PageInfo' }
-      & PagePropsFragment
-    ) } };
-
 export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -2491,11 +2075,21 @@ export type ProfileQuery = { __typename: 'Query', profile: (
     & UserProfileFragment
   ) };
 
-export const SearchResultFragmentDoc = gql`
-    fragment SearchResult on Concept {
-  id
-  name
-  description
+export const UserProfileFragmentDoc = gql`
+    fragment UserProfile on Profile {
+  username
+  firstName
+  lastName
+  email
+  organization
+}
+    `;
+export const PagePropsFragmentDoc = gql`
+    fragment PageProps on PageInfo {
+  totalPages
+  pageNumber
+  hasNext
+  hasPrevious
 }
     `;
 export const LanguagePropsFragmentDoc = gql`
@@ -2515,82 +2109,6 @@ export const TranslationPropsFragmentDoc = gql`
   value
 }
     ${LanguagePropsFragmentDoc}`;
-export const DomainClassPropsFragmentDoc = gql`
-    fragment DomainClassProps on XtdObject {
-  id
-  created
-  createdBy
-  lastModified
-  lastModifiedBy
-  versionId
-  versionDate
-  name
-  names {
-    ...TranslationProps
-  }
-  descriptions {
-    ...TranslationProps
-  }
-}
-    ${TranslationPropsFragmentDoc}`;
-export const DomainClassDetailsFragmentDoc = gql`
-    fragment DomainClassDetails on XtdObject {
-  ...DomainClassProps
-}
-    ${DomainClassPropsFragmentDoc}`;
-export const DomainGroupPropsFragmentDoc = gql`
-    fragment DomainGroupProps on XtdBag {
-  id
-  created
-  createdBy
-  lastModified
-  lastModifiedBy
-  versionId
-  versionDate
-  name
-  names {
-    ...TranslationProps
-  }
-  descriptions {
-    ...TranslationProps
-  }
-  tags {
-    id
-    localizedName
-  }
-}
-    ${TranslationPropsFragmentDoc}`;
-export const DomainGroupDetailsFragmentDoc = gql`
-    fragment DomainGroupDetails on XtdBag {
-  ...DomainGroupProps
-  collects {
-    nodes {
-      id
-      relatedThings {
-        id
-        name
-      }
-    }
-  }
-}
-    ${DomainGroupPropsFragmentDoc}`;
-export const UserProfileFragmentDoc = gql`
-    fragment UserProfile on Profile {
-  username
-  firstName
-  lastName
-  email
-  organization
-}
-    `;
-export const PagePropsFragmentDoc = gql`
-    fragment PageProps on PageInfo {
-  totalPages
-  pageNumber
-  hasNext
-  hasPrevious
-}
-    `;
 export const TagPropsFragmentDoc = gql`
     fragment TagProps on Tag {
   id
@@ -2792,6 +2310,36 @@ export const CollectionDetailPropsFragmentDoc = gql`
 }
     ${CollectionPropsFragmentDoc}
 ${CollectsPropsFragmentDoc}`;
+export const SignupFormDocument = gql`
+    mutation SignupForm($profile: SignupInput!) {
+  success: signup(input: $profile)
+}
+    `;
+export type SignupFormMutationFn = Apollo.MutationFunction<SignupFormMutation, SignupFormMutationVariables>;
+
+/**
+ * __useSignupFormMutation__
+ *
+ * To run a mutation, you first call `useSignupFormMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignupFormMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [signupFormMutation, { data, loading, error }] = useSignupFormMutation({
+ *   variables: {
+ *      profile: // value for 'profile'
+ *   },
+ * });
+ */
+export function useSignupFormMutation(baseOptions?: Apollo.MutationHookOptions<SignupFormMutation, SignupFormMutationVariables>) {
+        return Apollo.useMutation<SignupFormMutation, SignupFormMutationVariables>(SignupFormDocument, baseOptions);
+      }
+export type SignupFormMutationHookResult = ReturnType<typeof useSignupFormMutation>;
+export type SignupFormMutationResult = Apollo.MutationResult<SignupFormMutation>;
+export type SignupFormMutationOptions = Apollo.BaseMutationOptions<SignupFormMutation, SignupFormMutationVariables>;
 export const ConfirmEmailDocument = gql`
     mutation ConfirmEmail($token: String!) {
   success: confirm(token: $token)
@@ -2852,292 +2400,6 @@ export function useLoginFormMutation(baseOptions?: Apollo.MutationHookOptions<Lo
 export type LoginFormMutationHookResult = ReturnType<typeof useLoginFormMutation>;
 export type LoginFormMutationResult = Apollo.MutationResult<LoginFormMutation>;
 export type LoginFormMutationOptions = Apollo.BaseMutationOptions<LoginFormMutation, LoginFormMutationVariables>;
-export const SearchInputDocument = gql`
-    query SearchInput($input: SearchInput) {
-  search(input: $input) {
-    nodes {
-      ...SearchResult
-    }
-    pageInfo {
-      ...PageProps
-    }
-    totalElements
-  }
-}
-    ${SearchResultFragmentDoc}
-${PagePropsFragmentDoc}`;
-
-/**
- * __useSearchInputQuery__
- *
- * To run a query within a React component, call `useSearchInputQuery` and pass it any options that fit your needs.
- * When your component renders, `useSearchInputQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useSearchInputQuery({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useSearchInputQuery(baseOptions?: Apollo.QueryHookOptions<SearchInputQuery, SearchInputQueryVariables>) {
-        return Apollo.useQuery<SearchInputQuery, SearchInputQueryVariables>(SearchInputDocument, baseOptions);
-      }
-export function useSearchInputLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchInputQuery, SearchInputQueryVariables>) {
-          return Apollo.useLazyQuery<SearchInputQuery, SearchInputQueryVariables>(SearchInputDocument, baseOptions);
-        }
-export type SearchInputQueryHookResult = ReturnType<typeof useSearchInputQuery>;
-export type SearchInputLazyQueryHookResult = ReturnType<typeof useSearchInputLazyQuery>;
-export type SearchInputQueryResult = Apollo.QueryResult<SearchInputQuery, SearchInputQueryVariables>;
-export const SignupFormDocument = gql`
-    mutation SignupForm($profile: SignupInput!) {
-  success: signup(input: $profile)
-}
-    `;
-export type SignupFormMutationFn = Apollo.MutationFunction<SignupFormMutation, SignupFormMutationVariables>;
-
-/**
- * __useSignupFormMutation__
- *
- * To run a mutation, you first call `useSignupFormMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useSignupFormMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [signupFormMutation, { data, loading, error }] = useSignupFormMutation({
- *   variables: {
- *      profile: // value for 'profile'
- *   },
- * });
- */
-export function useSignupFormMutation(baseOptions?: Apollo.MutationHookOptions<SignupFormMutation, SignupFormMutationVariables>) {
-        return Apollo.useMutation<SignupFormMutation, SignupFormMutationVariables>(SignupFormDocument, baseOptions);
-      }
-export type SignupFormMutationHookResult = ReturnType<typeof useSignupFormMutation>;
-export type SignupFormMutationResult = Apollo.MutationResult<SignupFormMutation>;
-export type SignupFormMutationOptions = Apollo.BaseMutationOptions<SignupFormMutation, SignupFormMutationVariables>;
-export const DomainClassDocument = gql`
-    query DomainClass($id: ID!) {
-  node(id: $id) {
-    ...DomainClassDetails
-  }
-}
-    ${DomainClassDetailsFragmentDoc}`;
-
-/**
- * __useDomainClassQuery__
- *
- * To run a query within a React component, call `useDomainClassQuery` and pass it any options that fit your needs.
- * When your component renders, `useDomainClassQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useDomainClassQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useDomainClassQuery(baseOptions?: Apollo.QueryHookOptions<DomainClassQuery, DomainClassQueryVariables>) {
-        return Apollo.useQuery<DomainClassQuery, DomainClassQueryVariables>(DomainClassDocument, baseOptions);
-      }
-export function useDomainClassLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DomainClassQuery, DomainClassQueryVariables>) {
-          return Apollo.useLazyQuery<DomainClassQuery, DomainClassQueryVariables>(DomainClassDocument, baseOptions);
-        }
-export type DomainClassQueryHookResult = ReturnType<typeof useDomainClassQuery>;
-export type DomainClassLazyQueryHookResult = ReturnType<typeof useDomainClassLazyQuery>;
-export type DomainClassQueryResult = Apollo.QueryResult<DomainClassQuery, DomainClassQueryVariables>;
-export const DomainClassListDocument = gql`
-    query DomainClassList($input: SearchInput) {
-  search(input: $input) {
-    nodes {
-      ...DomainClassProps
-    }
-    pageInfo {
-      totalPages
-      pageNumber
-      hasNext
-      hasPrevious
-    }
-    totalElements
-  }
-}
-    ${DomainClassPropsFragmentDoc}`;
-
-/**
- * __useDomainClassListQuery__
- *
- * To run a query within a React component, call `useDomainClassListQuery` and pass it any options that fit your needs.
- * When your component renders, `useDomainClassListQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useDomainClassListQuery({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useDomainClassListQuery(baseOptions?: Apollo.QueryHookOptions<DomainClassListQuery, DomainClassListQueryVariables>) {
-        return Apollo.useQuery<DomainClassListQuery, DomainClassListQueryVariables>(DomainClassListDocument, baseOptions);
-      }
-export function useDomainClassListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DomainClassListQuery, DomainClassListQueryVariables>) {
-          return Apollo.useLazyQuery<DomainClassListQuery, DomainClassListQueryVariables>(DomainClassListDocument, baseOptions);
-        }
-export type DomainClassListQueryHookResult = ReturnType<typeof useDomainClassListQuery>;
-export type DomainClassListLazyQueryHookResult = ReturnType<typeof useDomainClassListLazyQuery>;
-export type DomainClassListQueryResult = Apollo.QueryResult<DomainClassListQuery, DomainClassListQueryVariables>;
-export const TagDomainClassDocument = gql`
-    mutation TagDomainClass($domainModelId: ID!, $tagId: ID!) {
-  tag(conceptId: $domainModelId, tagId: $tagId) {
-    ...DomainClassDetails
-  }
-}
-    ${DomainClassDetailsFragmentDoc}`;
-export type TagDomainClassMutationFn = Apollo.MutationFunction<TagDomainClassMutation, TagDomainClassMutationVariables>;
-
-/**
- * __useTagDomainClassMutation__
- *
- * To run a mutation, you first call `useTagDomainClassMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useTagDomainClassMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [tagDomainClassMutation, { data, loading, error }] = useTagDomainClassMutation({
- *   variables: {
- *      domainModelId: // value for 'domainModelId'
- *      tagId: // value for 'tagId'
- *   },
- * });
- */
-export function useTagDomainClassMutation(baseOptions?: Apollo.MutationHookOptions<TagDomainClassMutation, TagDomainClassMutationVariables>) {
-        return Apollo.useMutation<TagDomainClassMutation, TagDomainClassMutationVariables>(TagDomainClassDocument, baseOptions);
-      }
-export type TagDomainClassMutationHookResult = ReturnType<typeof useTagDomainClassMutation>;
-export type TagDomainClassMutationResult = Apollo.MutationResult<TagDomainClassMutation>;
-export type TagDomainClassMutationOptions = Apollo.BaseMutationOptions<TagDomainClassMutation, TagDomainClassMutationVariables>;
-export const DomainGroupDocument = gql`
-    query DomainGroup($id: ID!) {
-  node(id: $id) {
-    ...DomainGroupDetails
-  }
-}
-    ${DomainGroupDetailsFragmentDoc}`;
-
-/**
- * __useDomainGroupQuery__
- *
- * To run a query within a React component, call `useDomainGroupQuery` and pass it any options that fit your needs.
- * When your component renders, `useDomainGroupQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useDomainGroupQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useDomainGroupQuery(baseOptions?: Apollo.QueryHookOptions<DomainGroupQuery, DomainGroupQueryVariables>) {
-        return Apollo.useQuery<DomainGroupQuery, DomainGroupQueryVariables>(DomainGroupDocument, baseOptions);
-      }
-export function useDomainGroupLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DomainGroupQuery, DomainGroupQueryVariables>) {
-          return Apollo.useLazyQuery<DomainGroupQuery, DomainGroupQueryVariables>(DomainGroupDocument, baseOptions);
-        }
-export type DomainGroupQueryHookResult = ReturnType<typeof useDomainGroupQuery>;
-export type DomainGroupLazyQueryHookResult = ReturnType<typeof useDomainGroupLazyQuery>;
-export type DomainGroupQueryResult = Apollo.QueryResult<DomainGroupQuery, DomainGroupQueryVariables>;
-export const DomainGroupListDocument = gql`
-    query DomainGroupList($input: FilterInput) {
-  bags(input: $input) {
-    nodes {
-      ...DomainGroupProps
-    }
-    pageInfo {
-      totalPages
-      pageNumber
-      hasNext
-      hasPrevious
-    }
-    totalElements
-  }
-}
-    ${DomainGroupPropsFragmentDoc}`;
-
-/**
- * __useDomainGroupListQuery__
- *
- * To run a query within a React component, call `useDomainGroupListQuery` and pass it any options that fit your needs.
- * When your component renders, `useDomainGroupListQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useDomainGroupListQuery({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useDomainGroupListQuery(baseOptions?: Apollo.QueryHookOptions<DomainGroupListQuery, DomainGroupListQueryVariables>) {
-        return Apollo.useQuery<DomainGroupListQuery, DomainGroupListQueryVariables>(DomainGroupListDocument, baseOptions);
-      }
-export function useDomainGroupListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DomainGroupListQuery, DomainGroupListQueryVariables>) {
-          return Apollo.useLazyQuery<DomainGroupListQuery, DomainGroupListQueryVariables>(DomainGroupListDocument, baseOptions);
-        }
-export type DomainGroupListQueryHookResult = ReturnType<typeof useDomainGroupListQuery>;
-export type DomainGroupListLazyQueryHookResult = ReturnType<typeof useDomainGroupListLazyQuery>;
-export type DomainGroupListQueryResult = Apollo.QueryResult<DomainGroupListQuery, DomainGroupListQueryVariables>;
-export const TagDomainGroupDocument = gql`
-    mutation TagDomainGroup($domainModelId: ID!, $tagId: ID!) {
-  tag(conceptId: $domainModelId, tagId: $tagId) {
-    ...DomainGroupDetails
-  }
-}
-    ${DomainGroupDetailsFragmentDoc}`;
-export type TagDomainGroupMutationFn = Apollo.MutationFunction<TagDomainGroupMutation, TagDomainGroupMutationVariables>;
-
-/**
- * __useTagDomainGroupMutation__
- *
- * To run a mutation, you first call `useTagDomainGroupMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useTagDomainGroupMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [tagDomainGroupMutation, { data, loading, error }] = useTagDomainGroupMutation({
- *   variables: {
- *      domainModelId: // value for 'domainModelId'
- *      tagId: // value for 'tagId'
- *   },
- * });
- */
-export function useTagDomainGroupMutation(baseOptions?: Apollo.MutationHookOptions<TagDomainGroupMutation, TagDomainGroupMutationVariables>) {
-        return Apollo.useMutation<TagDomainGroupMutation, TagDomainGroupMutationVariables>(TagDomainGroupDocument, baseOptions);
-      }
-export type TagDomainGroupMutationHookResult = ReturnType<typeof useTagDomainGroupMutation>;
-export type TagDomainGroupMutationResult = Apollo.MutationResult<TagDomainGroupMutation>;
-export type TagDomainGroupMutationOptions = Apollo.BaseMutationOptions<TagDomainGroupMutation, TagDomainGroupMutationVariables>;
 export const UpdateProfileDocument = gql`
     mutation UpdateProfile($input: ProfileUpdateInput!) {
   updateProfile(input: $input) {
@@ -3803,10 +3065,14 @@ export const FindConceptDocument = gql`
     nodes {
       ...SearchResultProps
     }
+    pageInfo {
+      ...PageProps
+    }
     totalElements
   }
 }
-    ${SearchResultPropsFragmentDoc}`;
+    ${SearchResultPropsFragmentDoc}
+${PagePropsFragmentDoc}`;
 
 /**
  * __useFindConceptQuery__
@@ -3870,79 +3136,39 @@ export function usePropertyTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type PropertyTreeQueryHookResult = ReturnType<typeof usePropertyTreeQuery>;
 export type PropertyTreeLazyQueryHookResult = ReturnType<typeof usePropertyTreeLazyQuery>;
 export type PropertyTreeQueryResult = Apollo.QueryResult<PropertyTreeQuery, PropertyTreeQueryVariables>;
-export const ExternalDocumentDocument = gql`
-    query ExternalDocument($id: ID!) {
-  externalDocument(id: $id) {
+export const GetDocumentEntryDocument = gql`
+    query GetDocumentEntry($id: ID!) {
+  node(id: $id) {
     ...ExternalDocumentDetailProps
   }
 }
     ${ExternalDocumentDetailPropsFragmentDoc}`;
 
 /**
- * __useExternalDocumentQuery__
+ * __useGetDocumentEntryQuery__
  *
- * To run a query within a React component, call `useExternalDocumentQuery` and pass it any options that fit your needs.
- * When your component renders, `useExternalDocumentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetDocumentEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetDocumentEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useExternalDocumentQuery({
+ * const { data, loading, error } = useGetDocumentEntryQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useExternalDocumentQuery(baseOptions?: Apollo.QueryHookOptions<ExternalDocumentQuery, ExternalDocumentQueryVariables>) {
-        return Apollo.useQuery<ExternalDocumentQuery, ExternalDocumentQueryVariables>(ExternalDocumentDocument, baseOptions);
+export function useGetDocumentEntryQuery(baseOptions?: Apollo.QueryHookOptions<GetDocumentEntryQuery, GetDocumentEntryQueryVariables>) {
+        return Apollo.useQuery<GetDocumentEntryQuery, GetDocumentEntryQueryVariables>(GetDocumentEntryDocument, baseOptions);
       }
-export function useExternalDocumentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ExternalDocumentQuery, ExternalDocumentQueryVariables>) {
-          return Apollo.useLazyQuery<ExternalDocumentQuery, ExternalDocumentQueryVariables>(ExternalDocumentDocument, baseOptions);
+export function useGetDocumentEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetDocumentEntryQuery, GetDocumentEntryQueryVariables>) {
+          return Apollo.useLazyQuery<GetDocumentEntryQuery, GetDocumentEntryQueryVariables>(GetDocumentEntryDocument, baseOptions);
         }
-export type ExternalDocumentQueryHookResult = ReturnType<typeof useExternalDocumentQuery>;
-export type ExternalDocumentLazyQueryHookResult = ReturnType<typeof useExternalDocumentLazyQuery>;
-export type ExternalDocumentQueryResult = Apollo.QueryResult<ExternalDocumentQuery, ExternalDocumentQueryVariables>;
-export const SubjectsDocument = gql`
-    query Subjects($input: FilterInput) {
-  subjects(input: $input) {
-    nodes {
-      ...ObjectProps
-    }
-    pageInfo {
-      ...PageProps
-    }
-    totalElements
-  }
-}
-    ${ObjectPropsFragmentDoc}
-${PagePropsFragmentDoc}`;
-
-/**
- * __useSubjectsQuery__
- *
- * To run a query within a React component, call `useSubjectsQuery` and pass it any options that fit your needs.
- * When your component renders, `useSubjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useSubjectsQuery({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useSubjectsQuery(baseOptions?: Apollo.QueryHookOptions<SubjectsQuery, SubjectsQueryVariables>) {
-        return Apollo.useQuery<SubjectsQuery, SubjectsQueryVariables>(SubjectsDocument, baseOptions);
-      }
-export function useSubjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SubjectsQuery, SubjectsQueryVariables>) {
-          return Apollo.useLazyQuery<SubjectsQuery, SubjectsQueryVariables>(SubjectsDocument, baseOptions);
-        }
-export type SubjectsQueryHookResult = ReturnType<typeof useSubjectsQuery>;
-export type SubjectsLazyQueryHookResult = ReturnType<typeof useSubjectsLazyQuery>;
-export type SubjectsQueryResult = Apollo.QueryResult<SubjectsQuery, SubjectsQueryVariables>;
+export type GetDocumentEntryQueryHookResult = ReturnType<typeof useGetDocumentEntryQuery>;
+export type GetDocumentEntryLazyQueryHookResult = ReturnType<typeof useGetDocumentEntryLazyQuery>;
+export type GetDocumentEntryQueryResult = Apollo.QueryResult<GetDocumentEntryQuery, GetDocumentEntryQueryVariables>;
 export const GetObjectEntryDocument = gql`
     query GetObjectEntry($id: ID!) {
   node(id: $id) {
@@ -4042,79 +3268,6 @@ export function useGetCollectionEntryLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type GetCollectionEntryQueryHookResult = ReturnType<typeof useGetCollectionEntryQuery>;
 export type GetCollectionEntryLazyQueryHookResult = ReturnType<typeof useGetCollectionEntryLazyQuery>;
 export type GetCollectionEntryQueryResult = Apollo.QueryResult<GetCollectionEntryQuery, GetCollectionEntryQueryVariables>;
-export const BagDocument = gql`
-    query Bag($id: ID!) {
-  bag(id: $id) {
-    ...CollectionDetailProps
-  }
-}
-    ${CollectionDetailPropsFragmentDoc}`;
-
-/**
- * __useBagQuery__
- *
- * To run a query within a React component, call `useBagQuery` and pass it any options that fit your needs.
- * When your component renders, `useBagQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useBagQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useBagQuery(baseOptions?: Apollo.QueryHookOptions<BagQuery, BagQueryVariables>) {
-        return Apollo.useQuery<BagQuery, BagQueryVariables>(BagDocument, baseOptions);
-      }
-export function useBagLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BagQuery, BagQueryVariables>) {
-          return Apollo.useLazyQuery<BagQuery, BagQueryVariables>(BagDocument, baseOptions);
-        }
-export type BagQueryHookResult = ReturnType<typeof useBagQuery>;
-export type BagLazyQueryHookResult = ReturnType<typeof useBagLazyQuery>;
-export type BagQueryResult = Apollo.QueryResult<BagQuery, BagQueryVariables>;
-export const BagListDocument = gql`
-    query BagList($input: FilterInput) {
-  bags(input: $input) {
-    nodes {
-      ...CollectionProps
-    }
-    pageInfo {
-      ...PageProps
-    }
-    totalElements
-  }
-}
-    ${CollectionPropsFragmentDoc}
-${PagePropsFragmentDoc}`;
-
-/**
- * __useBagListQuery__
- *
- * To run a query within a React component, call `useBagListQuery` and pass it any options that fit your needs.
- * When your component renders, `useBagListQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useBagListQuery({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useBagListQuery(baseOptions?: Apollo.QueryHookOptions<BagListQuery, BagListQueryVariables>) {
-        return Apollo.useQuery<BagListQuery, BagListQueryVariables>(BagListDocument, baseOptions);
-      }
-export function useBagListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BagListQuery, BagListQueryVariables>) {
-          return Apollo.useLazyQuery<BagListQuery, BagListQueryVariables>(BagListDocument, baseOptions);
-        }
-export type BagListQueryHookResult = ReturnType<typeof useBagListQuery>;
-export type BagListLazyQueryHookResult = ReturnType<typeof useBagListLazyQuery>;
-export type BagListQueryResult = Apollo.QueryResult<BagListQuery, BagListQueryVariables>;
 export const ProfileDocument = gql`
     query Profile {
   profile {

@@ -1,3 +1,15 @@
+mutation SignupForm($profile: SignupInput!) {
+    success: signup(input: $profile)
+}
+
+mutation ConfirmEmail($token: String!) {
+    success: confirm(token: $token)
+}
+
+mutation LoginForm($credentials: LoginInput!) {
+    token: login(input: $credentials)
+}
+
 mutation UpdateProfile($input: ProfileUpdateInput!) {
     updateProfile(input: $input) {
         ...UserProfile
