@@ -35,7 +35,7 @@ export type Entity = {
 export const DocumentEntity: Entity = {
     tags: [],
     title: "Referenzdokument",
-    titlePlural: "Referendokumente",
+    titlePlural: "Referenzdokumente",
     entityType: EntityTypes.XtdExternalDocument,
     entryType: EntryType.ExternalDocument,
     path: "document",
