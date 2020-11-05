@@ -15,7 +15,15 @@ import DialogContent from "@material-ui/core/DialogContent";
 import CreateEntryForm, {CreateEntryFormValues} from "./forms/CreateEntryForm";
 import {Maybe} from "graphql/jsutils/Maybe";
 import {useSnackbar} from "notistack";
-import {ClassEntity, Entity, GroupEntity, ModelEntity, PropertyEntity, PropertyGroupEntity} from "../domain";
+import {
+    ClassEntity,
+    DocumentEntity,
+    Entity,
+    GroupEntity,
+    ModelEntity,
+    PropertyEntity,
+    PropertyGroupEntity
+} from "../domain";
 import {dispatch, EventAction} from 'use-bus';
 
 export type NewEntryAction = {
@@ -29,6 +37,7 @@ type CreateEntrySplitButtonProps = {
 }
 
 const options = [
+    DocumentEntity,
     ModelEntity,
     GroupEntity,
     ClassEntity,
