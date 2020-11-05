@@ -12,7 +12,15 @@ import ConfirmationView from "./ConfirmationView";
 import DomainModelList from "../views/lists/DomainModelList";
 import Typography from "@material-ui/core/Typography";
 import ProfileFormView from "../views/forms/ProfileFormView";
-import {ClassEntity, GroupEntity, ModelEntity, PropertyEntity, PropertyGroupEntity, ValueEntity} from "../../domain";
+import {
+    ClassEntity,
+    DocumentEntity,
+    GroupEntity,
+    ModelEntity,
+    PropertyEntity,
+    PropertyGroupEntity,
+    ValueEntity
+} from "../../domain";
 import DomainGroupList from "../views/lists/DomainGroupList";
 import DomainClassList from "../views/lists/DomainClassList";
 import PropertyGroupList from "../views/lists/PropertyGroupList";
@@ -21,6 +29,7 @@ import PropertyList from "../views/lists/PropertyList";
 import Paper from "@material-ui/core/Paper";
 import useGridStyles from "../../hooks/useGridStyle";
 import ValueList from "../views/lists/ValueList";
+import DocumentList from "../views/lists/DocumentList";
 
 const drawerWidth = 250;
 
@@ -127,6 +136,9 @@ export default function Layout() {
                     </Route>
                     <Route path="/search">
                         <HierarchyView/>
+                    </Route>
+                    <Route path={`/${DocumentEntity.path}/:id?`}>
+                        <DocumentList/>
                     </Route>
                     <Route path={`/${ModelEntity.path}/:id?`}>
                         <DomainModelList/>

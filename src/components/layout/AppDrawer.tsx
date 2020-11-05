@@ -17,6 +17,7 @@ import ImportExportIcon from '@material-ui/icons/ImportExport';
 import {
     ClassEntity,
     DataTemplateEntity,
+    DocumentEntity,
     GroupEntity,
     ModelEntity,
     PropertyEntity,
@@ -113,6 +114,12 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
                     />
 
                     <ListSubheader disableSticky>Eingabe</ListSubheader>
+
+                    <AppDrawerItem
+                        icon={<DocumentEntity.Icon/>}
+                        primary={DocumentEntity.titlePlural}
+                        to={`/${DocumentEntity.path}`}
+                    />
 
                     <AppDrawerItem
                         icon={<ModelEntity.Icon/>}
