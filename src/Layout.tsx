@@ -30,6 +30,10 @@ import Paper from "@material-ui/core/Paper";
 import useGridStyles from "./hooks/useGridStyle";
 import ValueList from "./views/lists/ValueList";
 import DocumentList from "./views/lists/DocumentList";
+import useGraphiQLFetcher from "./hooks/useGraphiQLFetcher";
+import {GraphiQL} from "graphiql";
+
+import "graphiql/graphiql.min.css";
 
 const drawerWidth = 250;
 
@@ -50,6 +54,9 @@ const useStyles = makeStyles(theme => ({
         flexDirection: "column",
         flexGrow: 1,
         padding: theme.spacing(3)
+    },
+    graphiql: {
+        minHeight: "100vh"
     }
 }));
 
@@ -58,6 +65,7 @@ export default function Layout() {
     const gridStyles = useGridStyles();
     const {token} = useAuthContext();
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const graphiqlFetcher = useGraphiQLFetcher();
 
     if (!token) {
         return (
@@ -136,6 +144,11 @@ export default function Layout() {
                     </Route>
                     <Route path="/search">
                         <HierarchyView/>
+                    </Route>
+                    <Route path="/graphiql">
+                        <Paper className={classes.graphiql}>
+                            <GraphiQL fetcher={graphiqlFetcher}/>
+                        </Paper>
                     </Route>
                     <Route path={`/${DocumentEntity.path}/:id?`}>
                         <DocumentList/>
