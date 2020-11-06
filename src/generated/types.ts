@@ -1074,7 +1074,10 @@ type RelationshipProps_XtdRelSpecializes_Fragment = (
 export type RelationshipPropsFragment = RelationshipProps_XtdRelActsUpon_Fragment | RelationshipProps_XtdRelAssignsCollections_Fragment | RelationshipProps_XtdRelAssignsMeasures_Fragment | RelationshipProps_XtdRelAssignsProperties_Fragment | RelationshipProps_XtdRelAssignsPropertyWithValues_Fragment | RelationshipProps_XtdRelAssignsUnits_Fragment | RelationshipProps_XtdRelAssignsValues_Fragment | RelationshipProps_XtdRelAssociates_Fragment | RelationshipProps_XtdRelCollects_Fragment | RelationshipProps_XtdRelComposes_Fragment | RelationshipProps_XtdRelDocuments_Fragment | RelationshipProps_XtdRelGroups_Fragment | RelationshipProps_XtdRelSequences_Fragment | RelationshipProps_XtdRelSpecializes_Fragment;
 
 export type DocumentsPropsFragment = (
-  { __typename: 'XtdRelDocuments', relatedThings: Array<(
+  { __typename: 'XtdRelDocuments', relatingDocument: (
+    { __typename: 'XtdExternalDocument' }
+    & ExternalDocumentPropsFragment
+  ), relatedThings: Array<(
     { __typename: 'XtdActivity' }
     & SearchResultProps_XtdActivity_Fragment
   ) | (
@@ -1248,6 +1251,9 @@ type ObjectDetailProps_XtdActivity_Fragment = (
     )> }, assignedProperties: { __typename: 'XtdRelAssignsPropertiesConnection', nodes: Array<(
       { __typename: 'XtdRelAssignsProperties' }
       & AssignsPropertiesPropsFragment
+    )> }, documentedBy: { __typename: 'XtdRelDocumentsConnection', nodes: Array<(
+      { __typename: 'XtdRelDocuments' }
+      & DocumentsPropsFragment
     )> } }
   & ObjectProps_XtdActivity_Fragment
 );
@@ -1259,6 +1265,9 @@ type ObjectDetailProps_XtdActor_Fragment = (
     )> }, assignedProperties: { __typename: 'XtdRelAssignsPropertiesConnection', nodes: Array<(
       { __typename: 'XtdRelAssignsProperties' }
       & AssignsPropertiesPropsFragment
+    )> }, documentedBy: { __typename: 'XtdRelDocumentsConnection', nodes: Array<(
+      { __typename: 'XtdRelDocuments' }
+      & DocumentsPropsFragment
     )> } }
   & ObjectProps_XtdActor_Fragment
 );
@@ -1270,6 +1279,9 @@ type ObjectDetailProps_XtdClassification_Fragment = (
     )> }, assignedProperties: { __typename: 'XtdRelAssignsPropertiesConnection', nodes: Array<(
       { __typename: 'XtdRelAssignsProperties' }
       & AssignsPropertiesPropsFragment
+    )> }, documentedBy: { __typename: 'XtdRelDocumentsConnection', nodes: Array<(
+      { __typename: 'XtdRelDocuments' }
+      & DocumentsPropsFragment
     )> } }
   & ObjectProps_XtdClassification_Fragment
 );
@@ -1281,6 +1293,9 @@ type ObjectDetailProps_XtdMeasureWithUnit_Fragment = (
     )> }, assignedProperties: { __typename: 'XtdRelAssignsPropertiesConnection', nodes: Array<(
       { __typename: 'XtdRelAssignsProperties' }
       & AssignsPropertiesPropsFragment
+    )> }, documentedBy: { __typename: 'XtdRelDocumentsConnection', nodes: Array<(
+      { __typename: 'XtdRelDocuments' }
+      & DocumentsPropsFragment
     )> } }
   & ObjectProps_XtdMeasureWithUnit_Fragment
 );
@@ -1292,6 +1307,9 @@ type ObjectDetailProps_XtdProperty_Fragment = (
     )> }, assignedProperties: { __typename: 'XtdRelAssignsPropertiesConnection', nodes: Array<(
       { __typename: 'XtdRelAssignsProperties' }
       & AssignsPropertiesPropsFragment
+    )> }, documentedBy: { __typename: 'XtdRelDocumentsConnection', nodes: Array<(
+      { __typename: 'XtdRelDocuments' }
+      & DocumentsPropsFragment
     )> } }
   & ObjectProps_XtdProperty_Fragment
 );
@@ -1303,6 +1321,9 @@ type ObjectDetailProps_XtdSubject_Fragment = (
     )> }, assignedProperties: { __typename: 'XtdRelAssignsPropertiesConnection', nodes: Array<(
       { __typename: 'XtdRelAssignsProperties' }
       & AssignsPropertiesPropsFragment
+    )> }, documentedBy: { __typename: 'XtdRelDocumentsConnection', nodes: Array<(
+      { __typename: 'XtdRelDocuments' }
+      & DocumentsPropsFragment
     )> } }
   & ObjectProps_XtdSubject_Fragment
 );
@@ -1314,6 +1335,9 @@ type ObjectDetailProps_XtdUnit_Fragment = (
     )> }, assignedProperties: { __typename: 'XtdRelAssignsPropertiesConnection', nodes: Array<(
       { __typename: 'XtdRelAssignsProperties' }
       & AssignsPropertiesPropsFragment
+    )> }, documentedBy: { __typename: 'XtdRelDocumentsConnection', nodes: Array<(
+      { __typename: 'XtdRelDocuments' }
+      & DocumentsPropsFragment
     )> } }
   & ObjectProps_XtdUnit_Fragment
 );
@@ -1325,6 +1349,9 @@ type ObjectDetailProps_XtdValue_Fragment = (
     )> }, assignedProperties: { __typename: 'XtdRelAssignsPropertiesConnection', nodes: Array<(
       { __typename: 'XtdRelAssignsProperties' }
       & AssignsPropertiesPropsFragment
+    )> }, documentedBy: { __typename: 'XtdRelDocumentsConnection', nodes: Array<(
+      { __typename: 'XtdRelDocuments' }
+      & DocumentsPropsFragment
     )> } }
   & ObjectProps_XtdValue_Fragment
 );
@@ -1344,6 +1371,9 @@ type CollectionDetailProps_XtdBag_Fragment = (
     )> }, collectedBy: { __typename: 'XtdRelCollectsConnection', nodes: Array<(
       { __typename: 'XtdRelCollects' }
       & CollectsPropsFragment
+    )> }, documentedBy: { __typename: 'XtdRelDocumentsConnection', nodes: Array<(
+      { __typename: 'XtdRelDocuments' }
+      & DocumentsPropsFragment
     )> } }
   & CollectionProps_XtdBag_Fragment
 );
@@ -1355,6 +1385,9 @@ type CollectionDetailProps_XtdNest_Fragment = (
     )> }, collectedBy: { __typename: 'XtdRelCollectsConnection', nodes: Array<(
       { __typename: 'XtdRelCollects' }
       & CollectsPropsFragment
+    )> }, documentedBy: { __typename: 'XtdRelDocumentsConnection', nodes: Array<(
+      { __typename: 'XtdRelDocuments' }
+      & DocumentsPropsFragment
     )> } }
   & CollectionProps_XtdNest_Fragment
 );
@@ -2188,11 +2221,15 @@ ${EntityPropsFragmentDoc}`;
 export const DocumentsPropsFragmentDoc = gql`
     fragment DocumentsProps on XtdRelDocuments {
   ...RelationshipProps
+  relatingDocument {
+    ...ExternalDocumentProps
+  }
   relatedThings {
     ...SearchResultProps
   }
 }
     ${RelationshipPropsFragmentDoc}
+${ExternalDocumentPropsFragmentDoc}
 ${SearchResultPropsFragmentDoc}`;
 export const ExternalDocumentDetailPropsFragmentDoc = gql`
     fragment ExternalDocumentDetailProps on XtdExternalDocument {
@@ -2260,10 +2297,16 @@ export const ObjectDetailPropsFragmentDoc = gql`
       ...AssignsPropertiesProps
     }
   }
+  documentedBy {
+    nodes {
+      ...DocumentsProps
+    }
+  }
 }
     ${ObjectPropsFragmentDoc}
 ${AssignsCollectionsPropsFragmentDoc}
-${AssignsPropertiesPropsFragmentDoc}`;
+${AssignsPropertiesPropsFragmentDoc}
+${DocumentsPropsFragmentDoc}`;
 export const ValueDetailPropsFragmentDoc = gql`
     fragment ValueDetailProps on XtdValue {
   ...ValueProps
@@ -2307,9 +2350,15 @@ export const CollectionDetailPropsFragmentDoc = gql`
       ...CollectsProps
     }
   }
+  documentedBy {
+    nodes {
+      ...DocumentsProps
+    }
+  }
 }
     ${CollectionPropsFragmentDoc}
-${CollectsPropsFragmentDoc}`;
+${CollectsPropsFragmentDoc}
+${DocumentsPropsFragmentDoc}`;
 export const SignupFormDocument = gql`
     mutation SignupForm($profile: SignupInput!) {
   success: signup(input: $profile)
