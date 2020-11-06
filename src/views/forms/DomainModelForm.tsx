@@ -19,6 +19,7 @@ import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import {GroupEntity} from "../../domain";
 import {FormProps} from "./FormView";
+import useDocumentedBy from "../../hooks/useDocumentedBy";
 
 
 function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
@@ -53,6 +54,13 @@ function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
         ]
     });
 
+    const documentedByInputs = useDocumentedBy({
+        id,
+        relationships: entry?.documentedBy.nodes || [],
+        label: 'Referenzdokumente',
+        helperText: 'Weitere Dokumente'
+    });
+
     if (loading) return <Typography>Lade Fachmodel..</Typography>;
     if (error || !entry) return <Typography>Es ist ein Fehler aufgetreten..</Typography>;
 
@@ -85,6 +93,10 @@ function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
                 description="Gruppen, die diesem Fachmodell zugeordnet sind."
             >
                 {collectsInputs}
+            </FormSet>
+
+            <FormSet title="Referenzen" description="">
+                {documentedByInputs}
             </FormSet>
 
             <MetaFormSet entry={entry}/>
