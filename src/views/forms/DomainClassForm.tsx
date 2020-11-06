@@ -22,6 +22,7 @@ import useAssignsCollections from "../../hooks/useAssignsCollections";
 import useAssignsProperties from "../../hooks/useAssignsProperties";
 import {PropertyGroupEntity} from "../../domain";
 import {FormProps} from "./FormView";
+import useDocumentedBy from "../../hooks/useDocumentedBy";
 
 const DomainClassForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
@@ -71,6 +72,13 @@ const DomainClassForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
         ]
     });
 
+    const documentedByInputs = useDocumentedBy({
+        id,
+        relationships: entry?.documentedBy.nodes || [],
+        label: 'Referenzdokumente',
+        helperText: 'Weitere Dokumente'
+    });
+
     if (loading) return <Typography>Lade Klasse..</Typography>;
     if (error || !entry) return <Typography>Es ist ein Fehler aufgetreten..</Typography>;
 
@@ -110,6 +118,10 @@ const DomainClassForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
                 description="Merkmale, die dieser Klasse direkt zugeordnet sind."
             >
                 {assignedProperties}
+            </FormSet>
+
+            <FormSet title="Referenzen" description="">
+                {documentedByInputs}
             </FormSet>
 
             <MetaFormSet entry={entry}/>
