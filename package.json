@@ -26,6 +26,7 @@
     "@types/react-router-dom": "^5.1.6",
     "@types/react-table": "^7.0.25",
     "dayjs": "^1.9.4",
+    "graphiql": "^1.0.6",
     "graphql": "^15.4.0",
     "node-fetch": "^2.6.0",
     "notistack": "^1.0.1",
