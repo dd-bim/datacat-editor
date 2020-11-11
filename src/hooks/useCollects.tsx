@@ -5,15 +5,11 @@ import {
     SearchInput,
     useCreateOneToManyRelationshipMutation,
     useDeleteRelationshipMutation,
-    useFindConceptQuery,
     useUpdateOneToManyRelationshipMutation
 } from "../generated/types";
-import React, {useState} from "react";
-import EntrySelect, {EntrySelectOption} from "../components/forms/EntrySelect";
-import useDebounce from "./useDebounce";
-import {Value} from "@material-ui/lab";
-import {toConceptSelectOption} from "../views/forms/utils";
+import React from "react";
 import {PureQueryOptions, RefetchQueriesFunction} from "@apollo/client";
+import SearchBox, {SearchBoxOption, toSearchBoxOptions} from "../components/SearchBox";
 
 type UseCollectsOptions = {
     id: string,
@@ -34,18 +30,6 @@ const useCollects = (props: UseCollectsOptions) => {
         refetchQueries
     } = props;
 
-    // query nested groups
-    const [optionsQuery, setOptionsQuery] = useState("");
-    const debouncedOptionsQuery = useDebounce(optionsQuery, 500);
-    const {data: optionsData} = useFindConceptQuery({
-        variables: {input: {...optionsSearchInput, query: debouncedOptionsQuery}}
-    });
-    const options = optionsData?.search.nodes.map(toConceptSelectOption) ?? [];
-
-    const handleOnInputChange = (e: React.ChangeEvent<{}>, value: string) => {
-        setOptionsQuery(value);
-    };
-
     const [createRelationship] = useCreateOneToManyRelationshipMutation({
         refetchQueries
     });
@@ -63,32 +47,30 @@ const useCollects = (props: UseCollectsOptions) => {
             label: renderLabel(),
             helperText: renderHelperText ? renderHelperText() : undefined
         };
-        const handleOnChange = async (event: React.ChangeEvent<{}>, value: Value<EntrySelectOption, true, true, true>) => {
+        const handleOnChange = async (event: React.ChangeEvent<{}>, values: SearchBoxOption[]) => {
             const input: CreateOneToManyRelationshipInput = {
                 relationshipType: OneToManyRelationshipType.Collects,
                 from: id,
-                to: (value as EntrySelectOption[]).map(x => x.id)
+                to: values.map(x => x.id)
             };
             await createRelationship({variables: {input}});
         }
 
         return [
-            <EntrySelect
+            <SearchBox
                 key={inputId}
+                multiple
                 id={inputId}
-                defaultValue={[]}
-                options={options}
-                onInputChange={handleOnInputChange}
+                searchOptions={optionsSearchInput}
                 onChange={handleOnChange}
-                InputProps={inputProps}
+                TextFieldProps={inputProps}
             />
         ];
     } else {
         return relationships.map(relationship => {
             const inputId = `${id}-collects-${relationship.id}`;
-            const defaultValue = relationship.relatedThings.map(toConceptSelectOption);
-            const handleOnChange = async (event: React.ChangeEvent<{}>, value: Value<EntrySelectOption, true, true, true>) => {
-                const values = value as EntrySelectOption[];
+            const defaultValue = toSearchBoxOptions(relationship.relatedThings);
+            const handleOnChange = async (event: React.ChangeEvent<{}>, values: SearchBoxOption[]) => {
                 if (values.length) {
                     await update({
                         variables: {
@@ -96,7 +78,7 @@ const useCollects = (props: UseCollectsOptions) => {
                             input: {
                                 relationshipType: OneToManyRelationshipType.Collects,
                                 from: id,
-                                to: (value as EntrySelectOption[]).map(x => x.id)
+                                to: (values).map(x => x.id)
                             }
 
                         }
@@ -109,14 +91,14 @@ const useCollects = (props: UseCollectsOptions) => {
             };
 
             return (
-                <EntrySelect
+                <SearchBox
                     key={inputId}
+                    multiple
                     id={inputId}
                     defaultValue={defaultValue}
-                    options={options}
-                    onInputChange={handleOnInputChange}
+                    searchOptions={optionsSearchInput}
                     onChange={handleOnChange}
-                    InputProps={{
+                    TextFieldProps={{
                         label: renderLabel(relationship),
                         helperText: renderHelperText ? renderHelperText(relationship) : undefined
                     }}

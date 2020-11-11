@@ -1,7 +1,7 @@
-import {DocumentsPropsFragment} from "../generated/types";
-import React, {FC} from "react";
+import {getEntityType} from "../domain";
 import ConceptChip from "../components/ConceptChip";
-import {DocumentEntity} from "../domain";
+import React, {FC} from "react";
+import {CollectsPropsFragment} from "../generated/types";
 import {Typography} from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
@@ -11,31 +11,29 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-type UseDocumentedByOptions = {
-    relationships: DocumentsPropsFragment[],
-    emptyMessage?: string
+type UseCollectedByProps = {
+    relationships: CollectsPropsFragment[],
+    emptyMessage: string
 }
 
-const useDocumentedBy: FC<UseDocumentedByOptions> = (props) => {
-    const {
-        relationships,
-        emptyMessage = "Durch kein Dokument beschrieben."
-    } = props;
+const useCollectedBy: FC<UseCollectedByProps> = (props) => {
+    const {relationships, emptyMessage} = props;
     const classes = useStyles();
 
     const chips = Array.from(relationships)
-        .sort(({relatingDocument: left}, {relatingDocument: right}) => {
+        .sort(({relatingCollection: left}, {relatingCollection: right}) => {
             const a = left.name ?? left.id;
             const b = right.name ?? right.id;
             return a.localeCompare(b);
         })
         .map(relationship => {
-        const {relatingDocument: {id, name, description}} = relationship;
+        const {relatingCollection: {__typename, id, name, description, tags}} = relationship;
+        const domainEntityType = getEntityType(__typename.substring(3), tags.map(tag => tag.id));
         return (
             <ConceptChip
                 key={id}
                 className={classes.chip}
-                conceptType={DocumentEntity}
+                conceptType={domainEntityType!}
                 id={id}
                 label={name ?? id}
                 title={description ?? undefined}
@@ -48,7 +46,7 @@ const useDocumentedBy: FC<UseDocumentedByOptions> = (props) => {
                 <Typography color="textSecondary">{emptyMessage}</Typography>
             )}
         </div>
-    );
-}
+    )
+};
 
-export default useDocumentedBy;
+export default useCollectedBy;
