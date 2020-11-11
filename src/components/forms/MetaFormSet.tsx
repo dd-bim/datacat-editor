@@ -1,14 +1,23 @@
 import {Typography} from "@material-ui/core";
 import {toLLL} from "../../dateUtil";
 import {FormSet} from "./FormSet";
-import React, {FC} from "react";
-import {ConceptPropsFragment, EntityPropsFragment} from "../../generated/types";
+import React from "react";
+import {ItemPropsFragment, MetaPropsFragment} from "../../generated/types";
+import Paper from "@material-ui/core/Paper";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import {WithChildren} from "../../views/forms/FormView";
 
-type MetaFormSetProps = {
-    entry: EntityPropsFragment & ConceptPropsFragment
-}
+const useStyles = makeStyles(theme => ({
+    root: {
+        padding: theme.spacing(1)
+    }
+}));
 
-const MetaFormSet: FC<MetaFormSetProps> = (props) => {
+type MetaFormSetProps = WithChildren<{
+    entry: ItemPropsFragment & MetaPropsFragment
+}>
+
+function MetaFormSet(props: MetaFormSetProps) {
     const {
         entry: {
             id,
@@ -18,29 +27,36 @@ const MetaFormSet: FC<MetaFormSetProps> = (props) => {
             lastModified,
             lastModifiedBy,
             tags
-        }
+        },
+        children
     } = props;
+    const classes = useStyles();
+
     return (
-        <FormSet
-            title="Metainformationen"
-            description="Technische Informationen zum Konzept"
-        >
-            <Typography variant="body2">
-                ID: {id}
-            </Typography>
-            <Typography variant="body2">
-                ISO12006-3-Konzept: {__typename}
-            </Typography>
-            <Typography variant="body2">
-                Tags: {tags.map(x => x.localizedName).join(", ")}
-            </Typography>
-            <Typography variant="body2">
-                Erstellt: {toLLL(created)} durch {createdBy}
-            </Typography>
-            <Typography variant="body2">
-                Zuletzt bearbeitet: {toLLL(lastModified)} durch {lastModifiedBy}
-            </Typography>
-        </FormSet>
+        <Paper className={classes.root} variant="outlined">
+            <FormSet
+                title="Metainformationen"
+                description="Technische Informationen zum Konzept"
+            >
+                <Typography variant="body2">
+                    ID: {id}
+                </Typography>
+                <Typography variant="body2">
+                    ISO12006-3-Konzept: {__typename}
+                </Typography>
+                <Typography variant="body2">
+                    Tags: {tags.map(x => x.localizedName).join(", ")}
+                </Typography>
+                <Typography variant="body2">
+                    Erstellt: {toLLL(created)} durch {createdBy}
+                </Typography>
+                <Typography variant="body2">
+                    Zuletzt bearbeitet: {toLLL(lastModified)} durch {lastModifiedBy}
+                </Typography>
+            </FormSet>
+
+            {children}
+        </Paper>
     );
 }
 
