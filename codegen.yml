@@ -1,7 +1,7 @@
 schema: http://localhost:8080/graphql
 documents: src/**/*.graphql
 config:
-  nonOptionalTypename: true
+  skipTypename: true
   onlyOperationTypes: true
   preResolveTypes: true
   reactApolloVersion: 3
