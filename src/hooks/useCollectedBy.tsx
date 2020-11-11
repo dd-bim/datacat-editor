@@ -43,7 +43,7 @@ const useCollectedBy: FC<UseCollectedByProps> = (props) => {
     return (
         <div>
             {chips.length ? chips : (
-                <Typography color="textSecondary">{emptyMessage}</Typography>
+                <Typography variant="body2" color="textSecondary">{emptyMessage}</Typography>
             )}
         </div>
     )
