@@ -5,15 +5,11 @@ import {
     SearchInput,
     useCreateOneToManyRelationshipMutation,
     useDeleteRelationshipMutation,
-    useFindConceptQuery,
     useUpdateOneToManyRelationshipMutation
 } from "../generated/types";
-import React, {useState} from "react";
-import EntrySelect, {EntrySelectOption} from "../components/forms/EntrySelect";
-import useDebounce from "./useDebounce";
-import {Value} from "@material-ui/lab";
-import {toConceptSelectOption} from "../views/forms/utils";
+import React from "react";
 import {PureQueryOptions, RefetchQueriesFunction} from "@apollo/client";
+import SearchBox, {SearchBoxOption, toSearchBoxOptions} from "../components/SearchBox";
 
 type UseAssignsPropertiesOptions = {
     id: string,
@@ -34,18 +30,6 @@ const useAssignsProperties = (props: UseAssignsPropertiesOptions) => {
         refetchQueries
     } = props;
 
-    // query nested groups
-    const [optionsQuery, setOptionsQuery] = useState("");
-    const debouncedOptionsQuery = useDebounce(optionsQuery, 500);
-    const {data: optionsData} = useFindConceptQuery({
-        variables: {input: {...optionsSearchInput, query: debouncedOptionsQuery}}
-    });
-    const options = optionsData?.search.nodes.map(toConceptSelectOption) ?? [];
-
-    const handleOnInputChange = (e: React.ChangeEvent<{}>, value: string) => {
-        setOptionsQuery(value);
-    };
-
     const [createRelationship] = useCreateOneToManyRelationshipMutation({
         refetchQueries
     });
@@ -63,36 +47,35 @@ const useAssignsProperties = (props: UseAssignsPropertiesOptions) => {
             label: renderLabel(),
             helperText: renderHelperText ? renderHelperText() : undefined
         };
-        const handleOnChange = async (event: React.ChangeEvent<{}>, value: Value<EntrySelectOption, true, true, true>) => {
+        const handleOnChange = async (event: React.ChangeEvent<{}>, values: SearchBoxOption[]) => {
             const input: CreateOneToManyRelationshipInput = {
                 relationshipType: OneToManyRelationshipType.AssignsProperties,
                 from: id,
-                to: (value as EntrySelectOption[]).map(x => x.id)
+                to: values.map(x => x.id)
             };
             await createRelationship({variables: {input}});
         }
 
         return [
-            <EntrySelect
+            <SearchBox
                 key={inputId}
+                multiple
                 id={inputId}
                 defaultValue={[]}
-                options={options}
-                onInputChange={handleOnInputChange}
                 onChange={handleOnChange}
-                InputProps={inputProps}
+                searchOptions={optionsSearchInput}
+                TextFieldProps={inputProps}
             />
         ];
     } else {
         return relationships.map(relationship => {
             const inputId = `${id}-assigns-properties-${relationship.id}`;
-            const defaultValue = relationship.relatedProperties.map(toConceptSelectOption);
+            const defaultValue = toSearchBoxOptions(relationship.relatedProperties);
             const inputProps = {
                 label: renderLabel(relationship),
                 helperText: renderHelperText ? renderHelperText(relationship) : undefined
             };
-            const handleOnChange = async (event: React.ChangeEvent<{}>, value: Value<EntrySelectOption, true, true, true>) => {
-                const values = value as EntrySelectOption[];
+            const handleOnChange = async (event: React.ChangeEvent<{}>, values: SearchBoxOption[]) => {
                 if (values.length) {
                     await update({
                         variables: {
@@ -100,7 +83,7 @@ const useAssignsProperties = (props: UseAssignsPropertiesOptions) => {
                             input: {
                                 relationshipType: OneToManyRelationshipType.AssignsProperties,
                                 from: id,
-                                to: (value as EntrySelectOption[]).map(x => x.id)
+                                to: values.map(x => x.id)
                             }
 
                         }
@@ -113,14 +96,14 @@ const useAssignsProperties = (props: UseAssignsPropertiesOptions) => {
             };
 
             return (
-                <EntrySelect
+                <SearchBox
                     key={inputId}
+                    multiple
                     id={inputId}
                     defaultValue={defaultValue}
-                    options={options}
-                    onInputChange={handleOnInputChange}
                     onChange={handleOnChange}
-                    InputProps={inputProps}
+                    searchOptions={optionsSearchInput}
+                    TextFieldProps={inputProps}
                 />
             );
         });
