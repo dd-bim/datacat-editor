@@ -11,7 +11,6 @@ export const useFormSetStyles = makeStyles(theme => ({
     root: {
         display: "flex",
         flexDirection: "column",
-        marginBottom: theme.spacing(2),
         "& > *": {
             marginBottom: theme.spacing(1)
         },
@@ -28,7 +27,7 @@ export const useFormSetStyles = makeStyles(theme => ({
 }));
 type FormSetProps = {
     title: React.ReactNode
-    description: string
+    description?: string
 }
 export const FormSet: FC<FormSetProps> = (props) => {
     const {title, description, children} = props;
@@ -36,13 +35,22 @@ export const FormSet: FC<FormSetProps> = (props) => {
 
     return (
         <div className={classes.root}>
-            <Typography variant="subtitle2" className={classes.title}>
+            <Typography
+                variant="subtitle2"
+                className={classes.title}
+            >
                 {title}
             </Typography>
 
-            <Typography variant="body2" color="textSecondary" className={classes.description}>
-                {description}
-            </Typography>
+            {description && (
+                <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    className={classes.description}
+                >
+                    {description}
+                </Typography>
+            )}
 
             {children}
         </div>
