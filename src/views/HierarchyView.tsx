@@ -92,7 +92,7 @@ const HierarchyView: FC = () => {
 
     return (
         <Grid container spacing={1}>
-            <Grid item xs={6}>
+            <Grid item xs={5}>
                 <Paper className={classes.paper}>
                     <Typography variant="h5">
                         Katalog durchsuchen
@@ -101,7 +101,7 @@ const HierarchyView: FC = () => {
                     {content}
                 </Paper>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={7}>
                 <Paper className={classes.paper}>
                     <Switch>
                         <Route exact path={`${path}/${ModelEntity.path}/:id`} render={renderProps => {
