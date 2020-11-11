@@ -1,7 +1,6 @@
 import React, {FC} from "react";
 import {
     DocumentsPropsFragment,
-    EntityTypes,
     ExternalDocumentDetailPropsFragment,
     GetObjectEntryDocument,
     PropertyTreeDocument,
@@ -17,7 +16,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
-import {FormProps} from "./FormView";
+import FormView, {FormProps} from "./FormView";
 import useDocuments from "../../hooks/useDocuments";
 
 const DocumentForm: FC<FormProps<ExternalDocumentDetailPropsFragment>> = (props) => {
@@ -39,10 +38,6 @@ const DocumentForm: FC<FormProps<ExternalDocumentDetailPropsFragment>> = (props)
     const documented = useDocuments({
         id,
         relationships: entry?.documents.nodes || [],
-        optionsSearchInput: {
-            pageSize: 100,
-            entityTypeIn: [EntityTypes.XtdObject, EntityTypes.XtdCollection]
-        },
         renderLabel(relationship?: DocumentsPropsFragment): React.ReactNode {
             return relationship ? `Konzepte (${relationship.id})` : `Konzepte`;
         },
@@ -62,7 +57,7 @@ const DocumentForm: FC<FormProps<ExternalDocumentDetailPropsFragment>> = (props)
     };
 
     return (
-        <React.Fragment>
+        <FormView>
             <NameFormSet
                 entryId={id}
                 names={entry.names}
@@ -96,7 +91,7 @@ const DocumentForm: FC<FormProps<ExternalDocumentDetailPropsFragment>> = (props)
             >
                 Löschen
             </Button>
-        </React.Fragment>
+        </FormView>
     );
 }
 

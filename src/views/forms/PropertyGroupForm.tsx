@@ -18,7 +18,9 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
-import {FormProps} from "./FormView";
+import FormView, {FormProps} from "./FormView";
+import useDocumentedBy from "../../hooks/useDocumentedBy";
+import useCollectionAssignedTo from "../../hooks/useCollectionAssignedTo";
 
 const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
@@ -52,6 +54,15 @@ const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) 
         ]
     });
 
+    const documentedByInputs = useDocumentedBy({
+        relationships: entry?.documentedBy.nodes ?? []
+    });
+
+    const collectionAssignedTo = useCollectionAssignedTo({
+        relationships: entry?.assignedTo.nodes ?? [],
+        emptyMessage: "Merkmalsgruppe ist keiner Klasse zugewiesen."
+    });
+
     if (loading) return <Typography>Lade Merkmalsgruppe..</Typography>;
     if (error || !entry) return <Typography>Es ist ein Fehler aufgetreten..</Typography>;
 
@@ -62,7 +73,7 @@ const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) 
     };
 
     return (
-        <React.Fragment>
+        <FormView>
             <NameFormSet
                 entryId={id}
                 names={entry.names}
@@ -88,6 +99,14 @@ const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) 
 
             <MetaFormSet entry={entry}/>
 
+            <FormSet title="Referenzen...">
+                {documentedByInputs}
+            </FormSet>
+
+            <FormSet title="Klassen...">
+                {collectionAssignedTo}
+            </FormSet>
+
             <Button
                 variant="contained"
                 color="primary"
@@ -96,7 +115,7 @@ const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) 
             >
                 Löschen
             </Button>
-        </React.Fragment>
+        </FormView>
     );
 }
 

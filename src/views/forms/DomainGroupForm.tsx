@@ -18,7 +18,9 @@ import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import {ClassEntity} from "../../domain";
-import {FormProps} from "./FormView";
+import FormView, {FormProps} from "./FormView";
+import useDocumentedBy from "../../hooks/useDocumentedBy";
+import useCollectedBy from "../../hooks/useCollectedBy";
 
 const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
@@ -36,7 +38,7 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
     let entry = data?.node as CollectionDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation(baseOptions);
 
-    const collectsInputs = useCollects({
+    const collects = useCollects({
         id,
         relationships: entry?.collects.nodes || [],
         optionsSearchInput: {
@@ -52,6 +54,15 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
         ]
     });
 
+    const documentedBy = useDocumentedBy({
+        relationships: entry?.documentedBy.nodes ?? [],
+    });
+
+    const collectedBy = useCollectedBy({
+        relationships: entry?.collectedBy.nodes ?? [],
+        emptyMessage: "In keinen Fachmodellen aufgeführt."
+    });
+
     if (loading) return <Typography>Lade Gruppe..</Typography>;
     if (error || !entry) return <Typography>Es ist ein Fehler aufgetreten..</Typography>;
 
@@ -62,7 +73,7 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
     };
 
     return (
-        <React.Fragment>
+        <FormView>
             <NameFormSet
                 entryId={id}
                 names={entry.names}
@@ -83,21 +94,21 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
                 title="Klassen"
                 description="Klassen, die dieser Gruppe zugeordnet sind."
             >
-                {collectsInputs}
-            </FormSet>
-
-            <FormSet title="Verwendet durch..."
-                     description="Zeigt auf, welche Konzepte sich auf dieses Konzept beziehen.">
-                <ul>
-                    {entry.collectedBy.nodes.map(({relatingCollection}) => {
-                        return (
-                            <li key={relatingCollection.id}>{relatingCollection.id}</li>
-                        )
-                    })}
-                </ul>
+                {collects}
             </FormSet>
 
             <MetaFormSet entry={entry}/>
+
+            <FormSet title="Referenzen...">
+                {documentedBy}
+            </FormSet>
+
+            <FormSet
+                title="Fachmodelle..."
+                description="Zeigt auf, welche Fachmodelle diese Gruppe nutzen."
+            >
+                <div>{collectedBy}</div>
+            </FormSet>
 
             <Button
                 variant="contained"
@@ -107,7 +118,7 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
             >
                 Löschen
             </Button>
-        </React.Fragment>
+        </FormView>
     );
 }
 

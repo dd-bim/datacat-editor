@@ -13,7 +13,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
-import {FormProps} from "./FormView";
+import FormView, {FormProps} from "./FormView";
 import ToleranceFormSet from "../../components/forms/ToleranceFormSet";
 import NominalValueFormSet from "../../components/forms/NominalValueFormSet";
 
@@ -43,7 +43,7 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
     };
 
     return (
-        <React.Fragment>
+        <FormView>
             <NameFormSet
                 entryId={id}
                 names={entry.names}
@@ -84,7 +84,7 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
             >
                 Löschen
             </Button>
-        </React.Fragment>
+        </FormView>
     );
 }
 
