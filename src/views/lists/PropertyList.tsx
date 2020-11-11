@@ -62,7 +62,7 @@ const PropertyList: FC = () => {
 
     return (
         <Grid container spacing={1}>
-            <Grid item xs={6}>
+            <Grid item xs={5}>
                 <Paper className={classes.paper}>
                     <Typography variant="h5">
                         Alle {PropertyEntity.titlePlural}
@@ -75,7 +75,7 @@ const PropertyList: FC = () => {
                     />
                 </Paper>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={7}>
                 <Paper className={classes.paper}>
                     <Typography variant="h5">
                         {PropertyEntity.title} bearbeiten
