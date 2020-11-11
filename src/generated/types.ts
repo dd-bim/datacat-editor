@@ -443,952 +443,541 @@ export type VersionInput = {
 
 
 
-export type UserProfileFragment = { __typename: 'Profile', username: string, firstName: string, lastName: string, email: string, organization: string };
+export type UserProfileFragment = { username: string, firstName: string, lastName: string, email: string, organization: string };
 
-export type PagePropsFragment = { __typename: 'PageInfo', totalPages: number, pageNumber: number, hasNext: boolean, hasPrevious: boolean };
+export type PagePropsFragment = { totalPages: number, pageNumber: number, hasNext: boolean, hasPrevious: boolean };
 
-export type LanguagePropsFragment = { __typename: 'Language', id: string, languageTag: string, displayCountry: string, displayLanguage: string };
+export type LanguagePropsFragment = { id: string, languageTag: string, displayCountry: string, displayLanguage: string };
 
-export type TranslationPropsFragment = { __typename: 'Translation', id: string, value: string, language: (
-    { __typename: 'Language' }
-    & LanguagePropsFragment
-  ) };
+export type TranslationPropsFragment = { id: string, value: string, language: LanguagePropsFragment };
 
-export type TagPropsFragment = { __typename: 'Tag', id: string, localizedName: string, localizedDescription?: Maybe<string> };
+export type TagPropsFragment = { id: string, localizedName: string, localizedDescription?: Maybe<string> };
 
-type SearchResultProps_XtdActivity_Fragment = { __typename: 'XtdActivity', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdActivity_Fragment = { __typename: 'XtdActivity', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdActor_Fragment = { __typename: 'XtdActor', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdActor_Fragment = { __typename: 'XtdActor', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdBag_Fragment = { __typename: 'XtdBag', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdBag_Fragment = { __typename: 'XtdBag', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdClassification_Fragment = { __typename: 'XtdClassification', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdClassification_Fragment = { __typename: 'XtdClassification', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdExternalDocument_Fragment = { __typename: 'XtdExternalDocument', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdExternalDocument_Fragment = { __typename: 'XtdExternalDocument', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdMeasureWithUnit_Fragment = { __typename: 'XtdMeasureWithUnit', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdMeasureWithUnit_Fragment = { __typename: 'XtdMeasureWithUnit', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdNest_Fragment = { __typename: 'XtdNest', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdNest_Fragment = { __typename: 'XtdNest', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdProperty_Fragment = { __typename: 'XtdProperty', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdProperty_Fragment = { __typename: 'XtdProperty', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdRelActsUpon_Fragment = { __typename: 'XtdRelActsUpon', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdRelActsUpon_Fragment = { __typename: 'XtdRelActsUpon', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdRelAssignsCollections_Fragment = { __typename: 'XtdRelAssignsCollections', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdRelAssignsCollections_Fragment = { __typename: 'XtdRelAssignsCollections', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdRelAssignsMeasures_Fragment = { __typename: 'XtdRelAssignsMeasures', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdRelAssignsMeasures_Fragment = { __typename: 'XtdRelAssignsMeasures', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdRelAssignsProperties_Fragment = { __typename: 'XtdRelAssignsProperties', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdRelAssignsProperties_Fragment = { __typename: 'XtdRelAssignsProperties', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdRelAssignsPropertyWithValues_Fragment = { __typename: 'XtdRelAssignsPropertyWithValues', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdRelAssignsPropertyWithValues_Fragment = { __typename: 'XtdRelAssignsPropertyWithValues', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdRelAssignsUnits_Fragment = { __typename: 'XtdRelAssignsUnits', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdRelAssignsUnits_Fragment = { __typename: 'XtdRelAssignsUnits', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdRelAssignsValues_Fragment = { __typename: 'XtdRelAssignsValues', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdRelAssignsValues_Fragment = { __typename: 'XtdRelAssignsValues', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdRelAssociates_Fragment = { __typename: 'XtdRelAssociates', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdRelAssociates_Fragment = { __typename: 'XtdRelAssociates', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdRelCollects_Fragment = { __typename: 'XtdRelCollects', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdRelCollects_Fragment = { __typename: 'XtdRelCollects', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdRelComposes_Fragment = { __typename: 'XtdRelComposes', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdRelComposes_Fragment = { __typename: 'XtdRelComposes', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdRelDocuments_Fragment = { __typename: 'XtdRelDocuments', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdRelDocuments_Fragment = { __typename: 'XtdRelDocuments', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdRelGroups_Fragment = { __typename: 'XtdRelGroups', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdRelGroups_Fragment = { __typename: 'XtdRelGroups', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdRelSequences_Fragment = { __typename: 'XtdRelSequences', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdRelSequences_Fragment = { __typename: 'XtdRelSequences', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdRelSpecializes_Fragment = { __typename: 'XtdRelSpecializes', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdRelSpecializes_Fragment = { __typename: 'XtdRelSpecializes', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdSubject_Fragment = { __typename: 'XtdSubject', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdSubject_Fragment = { __typename: 'XtdSubject', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdUnit_Fragment = { __typename: 'XtdUnit', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdUnit_Fragment = { __typename: 'XtdUnit', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdValue_Fragment = { __typename: 'XtdValue', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ItemProps_XtdValue_Fragment = { __typename: 'XtdValue', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+
+export type ItemPropsFragment = ItemProps_XtdActivity_Fragment | ItemProps_XtdActor_Fragment | ItemProps_XtdBag_Fragment | ItemProps_XtdClassification_Fragment | ItemProps_XtdExternalDocument_Fragment | ItemProps_XtdMeasureWithUnit_Fragment | ItemProps_XtdNest_Fragment | ItemProps_XtdProperty_Fragment | ItemProps_XtdRelActsUpon_Fragment | ItemProps_XtdRelAssignsCollections_Fragment | ItemProps_XtdRelAssignsMeasures_Fragment | ItemProps_XtdRelAssignsProperties_Fragment | ItemProps_XtdRelAssignsPropertyWithValues_Fragment | ItemProps_XtdRelAssignsUnits_Fragment | ItemProps_XtdRelAssignsValues_Fragment | ItemProps_XtdRelAssociates_Fragment | ItemProps_XtdRelCollects_Fragment | ItemProps_XtdRelComposes_Fragment | ItemProps_XtdRelDocuments_Fragment | ItemProps_XtdRelGroups_Fragment | ItemProps_XtdRelSequences_Fragment | ItemProps_XtdRelSpecializes_Fragment | ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment;
+
+type SearchResultProps_XtdActivity_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdActivity_Fragment
+);
+
+type SearchResultProps_XtdActor_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdActor_Fragment
+);
+
+type SearchResultProps_XtdBag_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdBag_Fragment
+);
+
+type SearchResultProps_XtdClassification_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdClassification_Fragment
+);
+
+type SearchResultProps_XtdExternalDocument_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdExternalDocument_Fragment
+);
+
+type SearchResultProps_XtdMeasureWithUnit_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdMeasureWithUnit_Fragment
+);
+
+type SearchResultProps_XtdNest_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdNest_Fragment
+);
+
+type SearchResultProps_XtdProperty_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdProperty_Fragment
+);
+
+type SearchResultProps_XtdRelActsUpon_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdRelActsUpon_Fragment
+);
+
+type SearchResultProps_XtdRelAssignsCollections_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdRelAssignsCollections_Fragment
+);
+
+type SearchResultProps_XtdRelAssignsMeasures_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdRelAssignsMeasures_Fragment
+);
+
+type SearchResultProps_XtdRelAssignsProperties_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdRelAssignsProperties_Fragment
+);
+
+type SearchResultProps_XtdRelAssignsPropertyWithValues_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdRelAssignsPropertyWithValues_Fragment
+);
+
+type SearchResultProps_XtdRelAssignsUnits_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdRelAssignsUnits_Fragment
+);
+
+type SearchResultProps_XtdRelAssignsValues_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdRelAssignsValues_Fragment
+);
+
+type SearchResultProps_XtdRelAssociates_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdRelAssociates_Fragment
+);
+
+type SearchResultProps_XtdRelCollects_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdRelCollects_Fragment
+);
+
+type SearchResultProps_XtdRelComposes_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdRelComposes_Fragment
+);
+
+type SearchResultProps_XtdRelDocuments_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdRelDocuments_Fragment
+);
+
+type SearchResultProps_XtdRelGroups_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdRelGroups_Fragment
+);
+
+type SearchResultProps_XtdRelSequences_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdRelSequences_Fragment
+);
+
+type SearchResultProps_XtdRelSpecializes_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdRelSpecializes_Fragment
+);
+
+type SearchResultProps_XtdSubject_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdSubject_Fragment
+);
+
+type SearchResultProps_XtdUnit_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdUnit_Fragment
+);
+
+type SearchResultProps_XtdValue_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string> }
+  & ItemProps_XtdValue_Fragment
+);
 
 export type SearchResultPropsFragment = SearchResultProps_XtdActivity_Fragment | SearchResultProps_XtdActor_Fragment | SearchResultProps_XtdBag_Fragment | SearchResultProps_XtdClassification_Fragment | SearchResultProps_XtdExternalDocument_Fragment | SearchResultProps_XtdMeasureWithUnit_Fragment | SearchResultProps_XtdNest_Fragment | SearchResultProps_XtdProperty_Fragment | SearchResultProps_XtdRelActsUpon_Fragment | SearchResultProps_XtdRelAssignsCollections_Fragment | SearchResultProps_XtdRelAssignsMeasures_Fragment | SearchResultProps_XtdRelAssignsProperties_Fragment | SearchResultProps_XtdRelAssignsPropertyWithValues_Fragment | SearchResultProps_XtdRelAssignsUnits_Fragment | SearchResultProps_XtdRelAssignsValues_Fragment | SearchResultProps_XtdRelAssociates_Fragment | SearchResultProps_XtdRelCollects_Fragment | SearchResultProps_XtdRelComposes_Fragment | SearchResultProps_XtdRelDocuments_Fragment | SearchResultProps_XtdRelGroups_Fragment | SearchResultProps_XtdRelSequences_Fragment | SearchResultProps_XtdRelSpecializes_Fragment | SearchResultProps_XtdSubject_Fragment | SearchResultProps_XtdUnit_Fragment | SearchResultProps_XtdValue_Fragment;
 
-type ConceptProps_XtdActivity_Fragment = { __typename: 'XtdActivity', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdActivity_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdActivity_Fragment
+);
 
-type ConceptProps_XtdActor_Fragment = { __typename: 'XtdActor', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdActor_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdActor_Fragment
+);
 
-type ConceptProps_XtdBag_Fragment = { __typename: 'XtdBag', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdBag_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdBag_Fragment
+);
 
-type ConceptProps_XtdClassification_Fragment = { __typename: 'XtdClassification', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdClassification_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdClassification_Fragment
+);
 
-type ConceptProps_XtdExternalDocument_Fragment = { __typename: 'XtdExternalDocument', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdExternalDocument_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdExternalDocument_Fragment
+);
 
-type ConceptProps_XtdMeasureWithUnit_Fragment = { __typename: 'XtdMeasureWithUnit', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdMeasureWithUnit_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdMeasureWithUnit_Fragment
+);
 
-type ConceptProps_XtdNest_Fragment = { __typename: 'XtdNest', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdNest_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdNest_Fragment
+);
 
-type ConceptProps_XtdProperty_Fragment = { __typename: 'XtdProperty', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdProperty_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdProperty_Fragment
+);
 
-type ConceptProps_XtdRelActsUpon_Fragment = { __typename: 'XtdRelActsUpon', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdRelActsUpon_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdRelActsUpon_Fragment
+);
 
-type ConceptProps_XtdRelAssignsCollections_Fragment = { __typename: 'XtdRelAssignsCollections', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdRelAssignsCollections_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdRelAssignsCollections_Fragment
+);
 
-type ConceptProps_XtdRelAssignsMeasures_Fragment = { __typename: 'XtdRelAssignsMeasures', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdRelAssignsMeasures_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdRelAssignsMeasures_Fragment
+);
 
-type ConceptProps_XtdRelAssignsProperties_Fragment = { __typename: 'XtdRelAssignsProperties', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdRelAssignsProperties_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdRelAssignsProperties_Fragment
+);
 
-type ConceptProps_XtdRelAssignsPropertyWithValues_Fragment = { __typename: 'XtdRelAssignsPropertyWithValues', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdRelAssignsPropertyWithValues_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdRelAssignsPropertyWithValues_Fragment
+);
 
-type ConceptProps_XtdRelAssignsUnits_Fragment = { __typename: 'XtdRelAssignsUnits', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdRelAssignsUnits_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdRelAssignsUnits_Fragment
+);
 
-type ConceptProps_XtdRelAssignsValues_Fragment = { __typename: 'XtdRelAssignsValues', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdRelAssignsValues_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdRelAssignsValues_Fragment
+);
 
-type ConceptProps_XtdRelAssociates_Fragment = { __typename: 'XtdRelAssociates', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdRelAssociates_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdRelAssociates_Fragment
+);
 
-type ConceptProps_XtdRelCollects_Fragment = { __typename: 'XtdRelCollects', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdRelCollects_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdRelCollects_Fragment
+);
 
-type ConceptProps_XtdRelComposes_Fragment = { __typename: 'XtdRelComposes', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdRelComposes_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdRelComposes_Fragment
+);
 
-type ConceptProps_XtdRelDocuments_Fragment = { __typename: 'XtdRelDocuments', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdRelDocuments_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdRelDocuments_Fragment
+);
 
-type ConceptProps_XtdRelGroups_Fragment = { __typename: 'XtdRelGroups', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdRelGroups_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdRelGroups_Fragment
+);
 
-type ConceptProps_XtdRelSequences_Fragment = { __typename: 'XtdRelSequences', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdRelSequences_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdRelSequences_Fragment
+);
 
-type ConceptProps_XtdRelSpecializes_Fragment = { __typename: 'XtdRelSpecializes', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdRelSpecializes_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdRelSpecializes_Fragment
+);
 
-type ConceptProps_XtdSubject_Fragment = { __typename: 'XtdSubject', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdSubject_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdSubject_Fragment
+);
 
-type ConceptProps_XtdUnit_Fragment = { __typename: 'XtdUnit', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdUnit_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdUnit_Fragment
+);
 
-type ConceptProps_XtdValue_Fragment = { __typename: 'XtdValue', id: string, versionId?: Maybe<string>, versionDate?: Maybe<string>, name?: Maybe<string>, description?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, descriptions: Array<(
-    { __typename: 'Translation' }
-    & TranslationPropsFragment
-  )>, tags: Array<(
-    { __typename: 'Tag' }
-    & TagPropsFragment
-  )> };
+type ConceptProps_XtdValue_Fragment = (
+  { versionId?: Maybe<string>, versionDate?: Maybe<string>, de?: Maybe<string>, en?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
+  & ItemProps_XtdValue_Fragment
+);
 
 export type ConceptPropsFragment = ConceptProps_XtdActivity_Fragment | ConceptProps_XtdActor_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdRelActsUpon_Fragment | ConceptProps_XtdRelAssignsCollections_Fragment | ConceptProps_XtdRelAssignsMeasures_Fragment | ConceptProps_XtdRelAssignsProperties_Fragment | ConceptProps_XtdRelAssignsPropertyWithValues_Fragment | ConceptProps_XtdRelAssignsUnits_Fragment | ConceptProps_XtdRelAssignsValues_Fragment | ConceptProps_XtdRelAssociates_Fragment | ConceptProps_XtdRelCollects_Fragment | ConceptProps_XtdRelComposes_Fragment | ConceptProps_XtdRelDocuments_Fragment | ConceptProps_XtdRelGroups_Fragment | ConceptProps_XtdRelSequences_Fragment | ConceptProps_XtdRelSpecializes_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment;
 
-type EntityProps_XtdActivity_Fragment = { __typename: 'XtdActivity', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+export type ExternalDocumentPropsFragment = ConceptProps_XtdExternalDocument_Fragment;
 
-type EntityProps_XtdActor_Fragment = { __typename: 'XtdActor', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+type ObjectProps_XtdActivity_Fragment = ConceptProps_XtdActivity_Fragment;
 
-type EntityProps_XtdBag_Fragment = { __typename: 'XtdBag', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+type ObjectProps_XtdActor_Fragment = ConceptProps_XtdActor_Fragment;
 
-type EntityProps_XtdClassification_Fragment = { __typename: 'XtdClassification', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+type ObjectProps_XtdClassification_Fragment = ConceptProps_XtdClassification_Fragment;
 
-type EntityProps_XtdExternalDocument_Fragment = { __typename: 'XtdExternalDocument', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+type ObjectProps_XtdMeasureWithUnit_Fragment = ConceptProps_XtdMeasureWithUnit_Fragment;
 
-type EntityProps_XtdMeasureWithUnit_Fragment = { __typename: 'XtdMeasureWithUnit', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+type ObjectProps_XtdProperty_Fragment = ConceptProps_XtdProperty_Fragment;
 
-type EntityProps_XtdNest_Fragment = { __typename: 'XtdNest', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+type ObjectProps_XtdSubject_Fragment = ConceptProps_XtdSubject_Fragment;
 
-type EntityProps_XtdProperty_Fragment = { __typename: 'XtdProperty', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+type ObjectProps_XtdUnit_Fragment = ConceptProps_XtdUnit_Fragment;
 
-type EntityProps_XtdRelActsUpon_Fragment = { __typename: 'XtdRelActsUpon', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type EntityProps_XtdRelAssignsCollections_Fragment = { __typename: 'XtdRelAssignsCollections', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type EntityProps_XtdRelAssignsMeasures_Fragment = { __typename: 'XtdRelAssignsMeasures', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type EntityProps_XtdRelAssignsProperties_Fragment = { __typename: 'XtdRelAssignsProperties', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type EntityProps_XtdRelAssignsPropertyWithValues_Fragment = { __typename: 'XtdRelAssignsPropertyWithValues', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type EntityProps_XtdRelAssignsUnits_Fragment = { __typename: 'XtdRelAssignsUnits', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type EntityProps_XtdRelAssignsValues_Fragment = { __typename: 'XtdRelAssignsValues', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type EntityProps_XtdRelAssociates_Fragment = { __typename: 'XtdRelAssociates', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type EntityProps_XtdRelCollects_Fragment = { __typename: 'XtdRelCollects', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type EntityProps_XtdRelComposes_Fragment = { __typename: 'XtdRelComposes', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type EntityProps_XtdRelDocuments_Fragment = { __typename: 'XtdRelDocuments', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type EntityProps_XtdRelGroups_Fragment = { __typename: 'XtdRelGroups', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type EntityProps_XtdRelSequences_Fragment = { __typename: 'XtdRelSequences', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type EntityProps_XtdRelSpecializes_Fragment = { __typename: 'XtdRelSpecializes', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type EntityProps_XtdSubject_Fragment = { __typename: 'XtdSubject', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type EntityProps_XtdUnit_Fragment = { __typename: 'XtdUnit', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type EntityProps_XtdValue_Fragment = { __typename: 'XtdValue', created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-export type EntityPropsFragment = EntityProps_XtdActivity_Fragment | EntityProps_XtdActor_Fragment | EntityProps_XtdBag_Fragment | EntityProps_XtdClassification_Fragment | EntityProps_XtdExternalDocument_Fragment | EntityProps_XtdMeasureWithUnit_Fragment | EntityProps_XtdNest_Fragment | EntityProps_XtdProperty_Fragment | EntityProps_XtdRelActsUpon_Fragment | EntityProps_XtdRelAssignsCollections_Fragment | EntityProps_XtdRelAssignsMeasures_Fragment | EntityProps_XtdRelAssignsProperties_Fragment | EntityProps_XtdRelAssignsPropertyWithValues_Fragment | EntityProps_XtdRelAssignsUnits_Fragment | EntityProps_XtdRelAssignsValues_Fragment | EntityProps_XtdRelAssociates_Fragment | EntityProps_XtdRelCollects_Fragment | EntityProps_XtdRelComposes_Fragment | EntityProps_XtdRelDocuments_Fragment | EntityProps_XtdRelGroups_Fragment | EntityProps_XtdRelSequences_Fragment | EntityProps_XtdRelSpecializes_Fragment | EntityProps_XtdSubject_Fragment | EntityProps_XtdUnit_Fragment | EntityProps_XtdValue_Fragment;
-
-export type ExternalDocumentPropsFragment = (
-  { __typename: 'XtdExternalDocument' }
-  & ConceptProps_XtdExternalDocument_Fragment
-  & EntityProps_XtdExternalDocument_Fragment
-);
-
-type ObjectProps_XtdActivity_Fragment = (
-  { __typename: 'XtdActivity' }
-  & ConceptProps_XtdActivity_Fragment
-  & EntityProps_XtdActivity_Fragment
-);
-
-type ObjectProps_XtdActor_Fragment = (
-  { __typename: 'XtdActor' }
-  & ConceptProps_XtdActor_Fragment
-  & EntityProps_XtdActor_Fragment
-);
-
-type ObjectProps_XtdClassification_Fragment = (
-  { __typename: 'XtdClassification' }
-  & ConceptProps_XtdClassification_Fragment
-  & EntityProps_XtdClassification_Fragment
-);
-
-type ObjectProps_XtdMeasureWithUnit_Fragment = (
-  { __typename: 'XtdMeasureWithUnit' }
-  & ConceptProps_XtdMeasureWithUnit_Fragment
-  & EntityProps_XtdMeasureWithUnit_Fragment
-);
-
-type ObjectProps_XtdProperty_Fragment = (
-  { __typename: 'XtdProperty' }
-  & ConceptProps_XtdProperty_Fragment
-  & EntityProps_XtdProperty_Fragment
-);
-
-type ObjectProps_XtdSubject_Fragment = (
-  { __typename: 'XtdSubject' }
-  & ConceptProps_XtdSubject_Fragment
-  & EntityProps_XtdSubject_Fragment
-);
-
-type ObjectProps_XtdUnit_Fragment = (
-  { __typename: 'XtdUnit' }
-  & ConceptProps_XtdUnit_Fragment
-  & EntityProps_XtdUnit_Fragment
-);
-
-type ObjectProps_XtdValue_Fragment = (
-  { __typename: 'XtdValue' }
-  & ConceptProps_XtdValue_Fragment
-  & EntityProps_XtdValue_Fragment
-);
+type ObjectProps_XtdValue_Fragment = ConceptProps_XtdValue_Fragment;
 
 export type ObjectPropsFragment = ObjectProps_XtdActivity_Fragment | ObjectProps_XtdActor_Fragment | ObjectProps_XtdClassification_Fragment | ObjectProps_XtdMeasureWithUnit_Fragment | ObjectProps_XtdProperty_Fragment | ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment;
 
 export type ValuePropsFragment = (
-  { __typename: 'XtdValue', valueType?: Maybe<ValueType>, valueRole?: Maybe<ValueRole>, nominalValue?: Maybe<string>, toleranceType?: Maybe<ToleranceType>, lowerTolerance?: Maybe<string>, upperTolerance?: Maybe<string> }
+  { valueType?: Maybe<ValueType>, valueRole?: Maybe<ValueRole>, nominalValue?: Maybe<string>, toleranceType?: Maybe<ToleranceType>, lowerTolerance?: Maybe<string>, upperTolerance?: Maybe<string> }
   & ObjectProps_XtdValue_Fragment
 );
 
-type CollectionProps_XtdBag_Fragment = (
-  { __typename: 'XtdBag' }
-  & ConceptProps_XtdBag_Fragment
-  & EntityProps_XtdBag_Fragment
-);
+type CollectionProps_XtdBag_Fragment = ConceptProps_XtdBag_Fragment;
 
-type CollectionProps_XtdNest_Fragment = (
-  { __typename: 'XtdNest' }
-  & ConceptProps_XtdNest_Fragment
-  & EntityProps_XtdNest_Fragment
-);
+type CollectionProps_XtdNest_Fragment = ConceptProps_XtdNest_Fragment;
 
 export type CollectionPropsFragment = CollectionProps_XtdBag_Fragment | CollectionProps_XtdNest_Fragment;
 
-type RelationshipProps_XtdRelActsUpon_Fragment = (
-  { __typename: 'XtdRelActsUpon' }
-  & ConceptProps_XtdRelActsUpon_Fragment
-  & EntityProps_XtdRelActsUpon_Fragment
-);
+type RelationshipProps_XtdRelActsUpon_Fragment = ConceptProps_XtdRelActsUpon_Fragment;
 
-type RelationshipProps_XtdRelAssignsCollections_Fragment = (
-  { __typename: 'XtdRelAssignsCollections' }
-  & ConceptProps_XtdRelAssignsCollections_Fragment
-  & EntityProps_XtdRelAssignsCollections_Fragment
-);
+type RelationshipProps_XtdRelAssignsCollections_Fragment = ConceptProps_XtdRelAssignsCollections_Fragment;
 
-type RelationshipProps_XtdRelAssignsMeasures_Fragment = (
-  { __typename: 'XtdRelAssignsMeasures' }
-  & ConceptProps_XtdRelAssignsMeasures_Fragment
-  & EntityProps_XtdRelAssignsMeasures_Fragment
-);
+type RelationshipProps_XtdRelAssignsMeasures_Fragment = ConceptProps_XtdRelAssignsMeasures_Fragment;
 
-type RelationshipProps_XtdRelAssignsProperties_Fragment = (
-  { __typename: 'XtdRelAssignsProperties' }
-  & ConceptProps_XtdRelAssignsProperties_Fragment
-  & EntityProps_XtdRelAssignsProperties_Fragment
-);
+type RelationshipProps_XtdRelAssignsProperties_Fragment = ConceptProps_XtdRelAssignsProperties_Fragment;
 
-type RelationshipProps_XtdRelAssignsPropertyWithValues_Fragment = (
-  { __typename: 'XtdRelAssignsPropertyWithValues' }
-  & ConceptProps_XtdRelAssignsPropertyWithValues_Fragment
-  & EntityProps_XtdRelAssignsPropertyWithValues_Fragment
-);
+type RelationshipProps_XtdRelAssignsPropertyWithValues_Fragment = ConceptProps_XtdRelAssignsPropertyWithValues_Fragment;
 
-type RelationshipProps_XtdRelAssignsUnits_Fragment = (
-  { __typename: 'XtdRelAssignsUnits' }
-  & ConceptProps_XtdRelAssignsUnits_Fragment
-  & EntityProps_XtdRelAssignsUnits_Fragment
-);
+type RelationshipProps_XtdRelAssignsUnits_Fragment = ConceptProps_XtdRelAssignsUnits_Fragment;
 
-type RelationshipProps_XtdRelAssignsValues_Fragment = (
-  { __typename: 'XtdRelAssignsValues' }
-  & ConceptProps_XtdRelAssignsValues_Fragment
-  & EntityProps_XtdRelAssignsValues_Fragment
-);
+type RelationshipProps_XtdRelAssignsValues_Fragment = ConceptProps_XtdRelAssignsValues_Fragment;
 
-type RelationshipProps_XtdRelAssociates_Fragment = (
-  { __typename: 'XtdRelAssociates' }
-  & ConceptProps_XtdRelAssociates_Fragment
-  & EntityProps_XtdRelAssociates_Fragment
-);
+type RelationshipProps_XtdRelAssociates_Fragment = ConceptProps_XtdRelAssociates_Fragment;
 
-type RelationshipProps_XtdRelCollects_Fragment = (
-  { __typename: 'XtdRelCollects' }
-  & ConceptProps_XtdRelCollects_Fragment
-  & EntityProps_XtdRelCollects_Fragment
-);
+type RelationshipProps_XtdRelCollects_Fragment = ConceptProps_XtdRelCollects_Fragment;
 
-type RelationshipProps_XtdRelComposes_Fragment = (
-  { __typename: 'XtdRelComposes' }
-  & ConceptProps_XtdRelComposes_Fragment
-  & EntityProps_XtdRelComposes_Fragment
-);
+type RelationshipProps_XtdRelComposes_Fragment = ConceptProps_XtdRelComposes_Fragment;
 
-type RelationshipProps_XtdRelDocuments_Fragment = (
-  { __typename: 'XtdRelDocuments' }
-  & ConceptProps_XtdRelDocuments_Fragment
-  & EntityProps_XtdRelDocuments_Fragment
-);
+type RelationshipProps_XtdRelDocuments_Fragment = ConceptProps_XtdRelDocuments_Fragment;
 
-type RelationshipProps_XtdRelGroups_Fragment = (
-  { __typename: 'XtdRelGroups' }
-  & ConceptProps_XtdRelGroups_Fragment
-  & EntityProps_XtdRelGroups_Fragment
-);
+type RelationshipProps_XtdRelGroups_Fragment = ConceptProps_XtdRelGroups_Fragment;
 
-type RelationshipProps_XtdRelSequences_Fragment = (
-  { __typename: 'XtdRelSequences' }
-  & ConceptProps_XtdRelSequences_Fragment
-  & EntityProps_XtdRelSequences_Fragment
-);
+type RelationshipProps_XtdRelSequences_Fragment = ConceptProps_XtdRelSequences_Fragment;
 
-type RelationshipProps_XtdRelSpecializes_Fragment = (
-  { __typename: 'XtdRelSpecializes' }
-  & ConceptProps_XtdRelSpecializes_Fragment
-  & EntityProps_XtdRelSpecializes_Fragment
-);
+type RelationshipProps_XtdRelSpecializes_Fragment = ConceptProps_XtdRelSpecializes_Fragment;
 
 export type RelationshipPropsFragment = RelationshipProps_XtdRelActsUpon_Fragment | RelationshipProps_XtdRelAssignsCollections_Fragment | RelationshipProps_XtdRelAssignsMeasures_Fragment | RelationshipProps_XtdRelAssignsProperties_Fragment | RelationshipProps_XtdRelAssignsPropertyWithValues_Fragment | RelationshipProps_XtdRelAssignsUnits_Fragment | RelationshipProps_XtdRelAssignsValues_Fragment | RelationshipProps_XtdRelAssociates_Fragment | RelationshipProps_XtdRelCollects_Fragment | RelationshipProps_XtdRelComposes_Fragment | RelationshipProps_XtdRelDocuments_Fragment | RelationshipProps_XtdRelGroups_Fragment | RelationshipProps_XtdRelSequences_Fragment | RelationshipProps_XtdRelSpecializes_Fragment;
 
 export type DocumentsPropsFragment = (
-  { __typename: 'XtdRelDocuments', relatingDocument: (
-    { __typename: 'XtdExternalDocument' }
-    & ExternalDocumentPropsFragment
-  ), relatedThings: Array<(
-    { __typename: 'XtdActivity' }
-    & SearchResultProps_XtdActivity_Fragment
-  ) | (
-    { __typename: 'XtdActor' }
-    & SearchResultProps_XtdActor_Fragment
-  ) | (
-    { __typename: 'XtdBag' }
-    & SearchResultProps_XtdBag_Fragment
-  ) | (
-    { __typename: 'XtdClassification' }
-    & SearchResultProps_XtdClassification_Fragment
-  ) | (
-    { __typename: 'XtdMeasureWithUnit' }
-    & SearchResultProps_XtdMeasureWithUnit_Fragment
-  ) | (
-    { __typename: 'XtdNest' }
-    & SearchResultProps_XtdNest_Fragment
-  ) | (
-    { __typename: 'XtdProperty' }
-    & SearchResultProps_XtdProperty_Fragment
-  ) | (
-    { __typename: 'XtdSubject' }
-    & SearchResultProps_XtdSubject_Fragment
-  ) | (
-    { __typename: 'XtdUnit' }
-    & SearchResultProps_XtdUnit_Fragment
-  ) | (
-    { __typename: 'XtdValue' }
-    & SearchResultProps_XtdValue_Fragment
-  )> }
+  { relatingDocument: ExternalDocumentPropsFragment, relatedThings: Array<SearchResultProps_XtdActivity_Fragment | SearchResultProps_XtdActor_Fragment | SearchResultProps_XtdBag_Fragment | SearchResultProps_XtdClassification_Fragment | SearchResultProps_XtdMeasureWithUnit_Fragment | SearchResultProps_XtdNest_Fragment | SearchResultProps_XtdProperty_Fragment | SearchResultProps_XtdSubject_Fragment | SearchResultProps_XtdUnit_Fragment | SearchResultProps_XtdValue_Fragment> }
   & RelationshipProps_XtdRelDocuments_Fragment
 );
 
 export type CollectsPropsFragment = (
-  { __typename: 'XtdRelCollects', relatingCollection: (
-    { __typename: 'XtdBag', tags: Array<(
-      { __typename: 'Tag' }
-      & TagPropsFragment
-    )> }
+  { relatingCollection: (
+    { tags: Array<TagPropsFragment> }
     & SearchResultProps_XtdBag_Fragment
   ) | (
-    { __typename: 'XtdNest', tags: Array<(
-      { __typename: 'Tag' }
-      & TagPropsFragment
-    )> }
+    { tags: Array<TagPropsFragment> }
     & SearchResultProps_XtdNest_Fragment
-  ), relatedThings: Array<(
-    { __typename: 'XtdActivity' }
-    & SearchResultProps_XtdActivity_Fragment
-  ) | (
-    { __typename: 'XtdActor' }
-    & SearchResultProps_XtdActor_Fragment
-  ) | (
-    { __typename: 'XtdBag' }
-    & SearchResultProps_XtdBag_Fragment
-  ) | (
-    { __typename: 'XtdClassification' }
-    & SearchResultProps_XtdClassification_Fragment
-  ) | (
-    { __typename: 'XtdMeasureWithUnit' }
-    & SearchResultProps_XtdMeasureWithUnit_Fragment
-  ) | (
-    { __typename: 'XtdNest' }
-    & SearchResultProps_XtdNest_Fragment
-  ) | (
-    { __typename: 'XtdProperty' }
-    & SearchResultProps_XtdProperty_Fragment
-  ) | (
-    { __typename: 'XtdSubject' }
-    & SearchResultProps_XtdSubject_Fragment
-  ) | (
-    { __typename: 'XtdUnit' }
-    & SearchResultProps_XtdUnit_Fragment
-  ) | (
-    { __typename: 'XtdValue' }
-    & SearchResultProps_XtdValue_Fragment
-  )> }
+  ), relatedThings: Array<SearchResultProps_XtdActivity_Fragment | SearchResultProps_XtdActor_Fragment | SearchResultProps_XtdBag_Fragment | SearchResultProps_XtdClassification_Fragment | SearchResultProps_XtdMeasureWithUnit_Fragment | SearchResultProps_XtdNest_Fragment | SearchResultProps_XtdProperty_Fragment | SearchResultProps_XtdSubject_Fragment | SearchResultProps_XtdUnit_Fragment | SearchResultProps_XtdValue_Fragment> }
   & RelationshipProps_XtdRelCollects_Fragment
 );
 
 export type AssignsCollectionsPropsFragment = (
-  { __typename: 'XtdRelAssignsCollections', relatingObject: (
-    { __typename: 'XtdActivity' }
-    & SearchResultProps_XtdActivity_Fragment
-  ) | (
-    { __typename: 'XtdActor' }
-    & SearchResultProps_XtdActor_Fragment
-  ) | (
-    { __typename: 'XtdClassification' }
-    & SearchResultProps_XtdClassification_Fragment
-  ) | (
-    { __typename: 'XtdMeasureWithUnit' }
-    & SearchResultProps_XtdMeasureWithUnit_Fragment
-  ) | (
-    { __typename: 'XtdProperty' }
-    & SearchResultProps_XtdProperty_Fragment
-  ) | (
-    { __typename: 'XtdSubject' }
-    & SearchResultProps_XtdSubject_Fragment
-  ) | (
-    { __typename: 'XtdUnit' }
-    & SearchResultProps_XtdUnit_Fragment
-  ) | (
-    { __typename: 'XtdValue' }
-    & SearchResultProps_XtdValue_Fragment
-  ), relatedCollections: Array<(
-    { __typename: 'XtdBag' }
-    & SearchResultProps_XtdBag_Fragment
-  ) | (
-    { __typename: 'XtdNest' }
-    & SearchResultProps_XtdNest_Fragment
-  )> }
+  { relatingObject: SearchResultProps_XtdActivity_Fragment | SearchResultProps_XtdActor_Fragment | SearchResultProps_XtdClassification_Fragment | SearchResultProps_XtdMeasureWithUnit_Fragment | SearchResultProps_XtdProperty_Fragment | SearchResultProps_XtdSubject_Fragment | SearchResultProps_XtdUnit_Fragment | SearchResultProps_XtdValue_Fragment, relatedCollections: Array<SearchResultProps_XtdBag_Fragment | SearchResultProps_XtdNest_Fragment> }
   & RelationshipProps_XtdRelAssignsCollections_Fragment
 );
 
 export type AssignsPropertiesPropsFragment = (
-  { __typename: 'XtdRelAssignsProperties', relatingObject: (
-    { __typename: 'XtdActivity' }
-    & SearchResultProps_XtdActivity_Fragment
-  ) | (
-    { __typename: 'XtdActor' }
-    & SearchResultProps_XtdActor_Fragment
-  ) | (
-    { __typename: 'XtdClassification' }
-    & SearchResultProps_XtdClassification_Fragment
-  ) | (
-    { __typename: 'XtdMeasureWithUnit' }
-    & SearchResultProps_XtdMeasureWithUnit_Fragment
-  ) | (
-    { __typename: 'XtdProperty' }
-    & SearchResultProps_XtdProperty_Fragment
-  ) | (
-    { __typename: 'XtdSubject' }
-    & SearchResultProps_XtdSubject_Fragment
-  ) | (
-    { __typename: 'XtdUnit' }
-    & SearchResultProps_XtdUnit_Fragment
-  ) | (
-    { __typename: 'XtdValue' }
-    & SearchResultProps_XtdValue_Fragment
-  ), relatedProperties: Array<(
-    { __typename: 'XtdProperty' }
-    & SearchResultProps_XtdProperty_Fragment
-  )> }
+  { relatingObject: SearchResultProps_XtdActivity_Fragment | SearchResultProps_XtdActor_Fragment | SearchResultProps_XtdClassification_Fragment | SearchResultProps_XtdMeasureWithUnit_Fragment | SearchResultProps_XtdProperty_Fragment | SearchResultProps_XtdSubject_Fragment | SearchResultProps_XtdUnit_Fragment | SearchResultProps_XtdValue_Fragment, relatedProperties: Array<SearchResultProps_XtdProperty_Fragment> }
   & RelationshipProps_XtdRelAssignsProperties_Fragment
 );
 
 export type AssignsPropertyWithValuesPropsFragment = (
-  { __typename: 'XtdRelAssignsPropertyWithValues', relatedProperty: (
-    { __typename: 'XtdProperty' }
-    & SearchResultProps_XtdProperty_Fragment
-  ), relatedValues: Array<(
-    { __typename: 'XtdValue' }
-    & SearchResultProps_XtdValue_Fragment
-  )> }
+  { relatedProperty: SearchResultProps_XtdProperty_Fragment, relatedValues: Array<SearchResultProps_XtdValue_Fragment> }
   & RelationshipProps_XtdRelAssignsPropertyWithValues_Fragment
 );
 
+type MetaProps_XtdActivity_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+type MetaProps_XtdActor_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+type MetaProps_XtdBag_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+type MetaProps_XtdClassification_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+type MetaProps_XtdExternalDocument_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+type MetaProps_XtdMeasureWithUnit_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+type MetaProps_XtdNest_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+type MetaProps_XtdProperty_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+type MetaProps_XtdRelActsUpon_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+type MetaProps_XtdRelAssignsCollections_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+type MetaProps_XtdRelAssignsMeasures_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+type MetaProps_XtdRelAssignsProperties_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+type MetaProps_XtdRelAssignsPropertyWithValues_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+type MetaProps_XtdRelAssignsUnits_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+type MetaProps_XtdRelAssignsValues_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+type MetaProps_XtdRelAssociates_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+type MetaProps_XtdRelCollects_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+type MetaProps_XtdRelComposes_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+type MetaProps_XtdRelDocuments_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+type MetaProps_XtdRelGroups_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+type MetaProps_XtdRelSequences_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+type MetaProps_XtdRelSpecializes_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+type MetaProps_XtdSubject_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+type MetaProps_XtdUnit_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+type MetaProps_XtdValue_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+
+export type MetaPropsFragment = MetaProps_XtdActivity_Fragment | MetaProps_XtdActor_Fragment | MetaProps_XtdBag_Fragment | MetaProps_XtdClassification_Fragment | MetaProps_XtdExternalDocument_Fragment | MetaProps_XtdMeasureWithUnit_Fragment | MetaProps_XtdNest_Fragment | MetaProps_XtdProperty_Fragment | MetaProps_XtdRelActsUpon_Fragment | MetaProps_XtdRelAssignsCollections_Fragment | MetaProps_XtdRelAssignsMeasures_Fragment | MetaProps_XtdRelAssignsProperties_Fragment | MetaProps_XtdRelAssignsPropertyWithValues_Fragment | MetaProps_XtdRelAssignsUnits_Fragment | MetaProps_XtdRelAssignsValues_Fragment | MetaProps_XtdRelAssociates_Fragment | MetaProps_XtdRelCollects_Fragment | MetaProps_XtdRelComposes_Fragment | MetaProps_XtdRelDocuments_Fragment | MetaProps_XtdRelGroups_Fragment | MetaProps_XtdRelSequences_Fragment | MetaProps_XtdRelSpecializes_Fragment | MetaProps_XtdSubject_Fragment | MetaProps_XtdUnit_Fragment | MetaProps_XtdValue_Fragment;
+
 export type ExternalDocumentDetailPropsFragment = (
-  { __typename: 'XtdExternalDocument', documents: { __typename: 'XtdRelDocumentsConnection', nodes: Array<(
-      { __typename: 'XtdRelDocuments' }
-      & DocumentsPropsFragment
-    )> } }
+  { documents: { nodes: Array<DocumentsPropsFragment> } }
+  & MetaProps_XtdExternalDocument_Fragment
   & ExternalDocumentPropsFragment
 );
 
 type ObjectDetailProps_XtdActivity_Fragment = (
-  { __typename: 'XtdActivity', assignedCollections: { __typename: 'XtdRelAssignsCollectionsConnection', nodes: Array<(
-      { __typename: 'XtdRelAssignsCollections' }
-      & AssignsCollectionsPropsFragment
-    )> }, assignedProperties: { __typename: 'XtdRelAssignsPropertiesConnection', nodes: Array<(
-      { __typename: 'XtdRelAssignsProperties' }
-      & AssignsPropertiesPropsFragment
-    )> }, documentedBy: { __typename: 'XtdRelDocumentsConnection', nodes: Array<(
-      { __typename: 'XtdRelDocuments' }
-      & DocumentsPropsFragment
-    )> } }
+  { assignedCollections: { nodes: Array<AssignsCollectionsPropsFragment> }, assignedProperties: { nodes: Array<AssignsPropertiesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, documentedBy: { nodes: Array<DocumentsPropsFragment> } }
+  & MetaProps_XtdActivity_Fragment
   & ObjectProps_XtdActivity_Fragment
 );
 
 type ObjectDetailProps_XtdActor_Fragment = (
-  { __typename: 'XtdActor', assignedCollections: { __typename: 'XtdRelAssignsCollectionsConnection', nodes: Array<(
-      { __typename: 'XtdRelAssignsCollections' }
-      & AssignsCollectionsPropsFragment
-    )> }, assignedProperties: { __typename: 'XtdRelAssignsPropertiesConnection', nodes: Array<(
-      { __typename: 'XtdRelAssignsProperties' }
-      & AssignsPropertiesPropsFragment
-    )> }, documentedBy: { __typename: 'XtdRelDocumentsConnection', nodes: Array<(
-      { __typename: 'XtdRelDocuments' }
-      & DocumentsPropsFragment
-    )> } }
+  { assignedCollections: { nodes: Array<AssignsCollectionsPropsFragment> }, assignedProperties: { nodes: Array<AssignsPropertiesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, documentedBy: { nodes: Array<DocumentsPropsFragment> } }
+  & MetaProps_XtdActor_Fragment
   & ObjectProps_XtdActor_Fragment
 );
 
 type ObjectDetailProps_XtdClassification_Fragment = (
-  { __typename: 'XtdClassification', assignedCollections: { __typename: 'XtdRelAssignsCollectionsConnection', nodes: Array<(
-      { __typename: 'XtdRelAssignsCollections' }
-      & AssignsCollectionsPropsFragment
-    )> }, assignedProperties: { __typename: 'XtdRelAssignsPropertiesConnection', nodes: Array<(
-      { __typename: 'XtdRelAssignsProperties' }
-      & AssignsPropertiesPropsFragment
-    )> }, documentedBy: { __typename: 'XtdRelDocumentsConnection', nodes: Array<(
-      { __typename: 'XtdRelDocuments' }
-      & DocumentsPropsFragment
-    )> } }
+  { assignedCollections: { nodes: Array<AssignsCollectionsPropsFragment> }, assignedProperties: { nodes: Array<AssignsPropertiesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, documentedBy: { nodes: Array<DocumentsPropsFragment> } }
+  & MetaProps_XtdClassification_Fragment
   & ObjectProps_XtdClassification_Fragment
 );
 
 type ObjectDetailProps_XtdMeasureWithUnit_Fragment = (
-  { __typename: 'XtdMeasureWithUnit', assignedCollections: { __typename: 'XtdRelAssignsCollectionsConnection', nodes: Array<(
-      { __typename: 'XtdRelAssignsCollections' }
-      & AssignsCollectionsPropsFragment
-    )> }, assignedProperties: { __typename: 'XtdRelAssignsPropertiesConnection', nodes: Array<(
-      { __typename: 'XtdRelAssignsProperties' }
-      & AssignsPropertiesPropsFragment
-    )> }, documentedBy: { __typename: 'XtdRelDocumentsConnection', nodes: Array<(
-      { __typename: 'XtdRelDocuments' }
-      & DocumentsPropsFragment
-    )> } }
+  { assignedCollections: { nodes: Array<AssignsCollectionsPropsFragment> }, assignedProperties: { nodes: Array<AssignsPropertiesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, documentedBy: { nodes: Array<DocumentsPropsFragment> } }
+  & MetaProps_XtdMeasureWithUnit_Fragment
   & ObjectProps_XtdMeasureWithUnit_Fragment
 );
 
 type ObjectDetailProps_XtdProperty_Fragment = (
-  { __typename: 'XtdProperty', assignedCollections: { __typename: 'XtdRelAssignsCollectionsConnection', nodes: Array<(
-      { __typename: 'XtdRelAssignsCollections' }
-      & AssignsCollectionsPropsFragment
-    )> }, assignedProperties: { __typename: 'XtdRelAssignsPropertiesConnection', nodes: Array<(
-      { __typename: 'XtdRelAssignsProperties' }
-      & AssignsPropertiesPropsFragment
-    )> }, documentedBy: { __typename: 'XtdRelDocumentsConnection', nodes: Array<(
-      { __typename: 'XtdRelDocuments' }
-      & DocumentsPropsFragment
-    )> } }
+  { assignedCollections: { nodes: Array<AssignsCollectionsPropsFragment> }, assignedProperties: { nodes: Array<AssignsPropertiesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, documentedBy: { nodes: Array<DocumentsPropsFragment> } }
+  & MetaProps_XtdProperty_Fragment
   & ObjectProps_XtdProperty_Fragment
 );
 
 type ObjectDetailProps_XtdSubject_Fragment = (
-  { __typename: 'XtdSubject', assignedCollections: { __typename: 'XtdRelAssignsCollectionsConnection', nodes: Array<(
-      { __typename: 'XtdRelAssignsCollections' }
-      & AssignsCollectionsPropsFragment
-    )> }, assignedProperties: { __typename: 'XtdRelAssignsPropertiesConnection', nodes: Array<(
-      { __typename: 'XtdRelAssignsProperties' }
-      & AssignsPropertiesPropsFragment
-    )> }, documentedBy: { __typename: 'XtdRelDocumentsConnection', nodes: Array<(
-      { __typename: 'XtdRelDocuments' }
-      & DocumentsPropsFragment
-    )> } }
+  { assignedCollections: { nodes: Array<AssignsCollectionsPropsFragment> }, assignedProperties: { nodes: Array<AssignsPropertiesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, documentedBy: { nodes: Array<DocumentsPropsFragment> } }
+  & MetaProps_XtdSubject_Fragment
   & ObjectProps_XtdSubject_Fragment
 );
 
 type ObjectDetailProps_XtdUnit_Fragment = (
-  { __typename: 'XtdUnit', assignedCollections: { __typename: 'XtdRelAssignsCollectionsConnection', nodes: Array<(
-      { __typename: 'XtdRelAssignsCollections' }
-      & AssignsCollectionsPropsFragment
-    )> }, assignedProperties: { __typename: 'XtdRelAssignsPropertiesConnection', nodes: Array<(
-      { __typename: 'XtdRelAssignsProperties' }
-      & AssignsPropertiesPropsFragment
-    )> }, documentedBy: { __typename: 'XtdRelDocumentsConnection', nodes: Array<(
-      { __typename: 'XtdRelDocuments' }
-      & DocumentsPropsFragment
-    )> } }
+  { assignedCollections: { nodes: Array<AssignsCollectionsPropsFragment> }, assignedProperties: { nodes: Array<AssignsPropertiesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, documentedBy: { nodes: Array<DocumentsPropsFragment> } }
+  & MetaProps_XtdUnit_Fragment
   & ObjectProps_XtdUnit_Fragment
 );
 
 type ObjectDetailProps_XtdValue_Fragment = (
-  { __typename: 'XtdValue', assignedCollections: { __typename: 'XtdRelAssignsCollectionsConnection', nodes: Array<(
-      { __typename: 'XtdRelAssignsCollections' }
-      & AssignsCollectionsPropsFragment
-    )> }, assignedProperties: { __typename: 'XtdRelAssignsPropertiesConnection', nodes: Array<(
-      { __typename: 'XtdRelAssignsProperties' }
-      & AssignsPropertiesPropsFragment
-    )> }, documentedBy: { __typename: 'XtdRelDocumentsConnection', nodes: Array<(
-      { __typename: 'XtdRelDocuments' }
-      & DocumentsPropsFragment
-    )> } }
+  { assignedCollections: { nodes: Array<AssignsCollectionsPropsFragment> }, assignedProperties: { nodes: Array<AssignsPropertiesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, documentedBy: { nodes: Array<DocumentsPropsFragment> } }
+  & MetaProps_XtdValue_Fragment
   & ObjectProps_XtdValue_Fragment
 );
 
 export type ObjectDetailPropsFragment = ObjectDetailProps_XtdActivity_Fragment | ObjectDetailProps_XtdActor_Fragment | ObjectDetailProps_XtdClassification_Fragment | ObjectDetailProps_XtdMeasureWithUnit_Fragment | ObjectDetailProps_XtdProperty_Fragment | ObjectDetailProps_XtdSubject_Fragment | ObjectDetailProps_XtdUnit_Fragment | ObjectDetailProps_XtdValue_Fragment;
 
+export type PropertyDetailPropsFragment = (
+  { assignedTo: { nodes: Array<AssignsPropertiesPropsFragment> } }
+  & ObjectDetailProps_XtdProperty_Fragment
+);
+
 export type ValueDetailPropsFragment = (
-  { __typename: 'XtdValue' }
+  ObjectDetailProps_XtdValue_Fragment
   & ValuePropsFragment
-  & ObjectDetailProps_XtdValue_Fragment
 );
 
 type CollectionDetailProps_XtdBag_Fragment = (
-  { __typename: 'XtdBag', collects: { __typename: 'XtdRelCollectsConnection', nodes: Array<(
-      { __typename: 'XtdRelCollects' }
-      & CollectsPropsFragment
-    )> }, collectedBy: { __typename: 'XtdRelCollectsConnection', nodes: Array<(
-      { __typename: 'XtdRelCollects' }
-      & CollectsPropsFragment
-    )> }, documentedBy: { __typename: 'XtdRelDocumentsConnection', nodes: Array<(
-      { __typename: 'XtdRelDocuments' }
-      & DocumentsPropsFragment
-    )> } }
+  { collects: { nodes: Array<CollectsPropsFragment> }, assignedTo: { nodes: Array<AssignsCollectionsPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, documentedBy: { nodes: Array<DocumentsPropsFragment> } }
+  & MetaProps_XtdBag_Fragment
   & CollectionProps_XtdBag_Fragment
 );
 
 type CollectionDetailProps_XtdNest_Fragment = (
-  { __typename: 'XtdNest', collects: { __typename: 'XtdRelCollectsConnection', nodes: Array<(
-      { __typename: 'XtdRelCollects' }
-      & CollectsPropsFragment
-    )> }, collectedBy: { __typename: 'XtdRelCollectsConnection', nodes: Array<(
-      { __typename: 'XtdRelCollects' }
-      & CollectsPropsFragment
-    )> }, documentedBy: { __typename: 'XtdRelDocumentsConnection', nodes: Array<(
-      { __typename: 'XtdRelDocuments' }
-      & DocumentsPropsFragment
-    )> } }
+  { collects: { nodes: Array<CollectsPropsFragment> }, assignedTo: { nodes: Array<AssignsCollectionsPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, documentedBy: { nodes: Array<DocumentsPropsFragment> } }
+  & MetaProps_XtdNest_Fragment
   & CollectionProps_XtdNest_Fragment
 );
 
@@ -1399,438 +988,126 @@ export type SignupFormMutationVariables = Exact<{
 }>;
 
 
-export type SignupFormMutation = { __typename: 'Mutation', success?: Maybe<boolean> };
+export type SignupFormMutation = { success?: Maybe<boolean> };
 
 export type ConfirmEmailMutationVariables = Exact<{
   token: Scalars['String'];
 }>;
 
 
-export type ConfirmEmailMutation = { __typename: 'Mutation', success?: Maybe<boolean> };
+export type ConfirmEmailMutation = { success?: Maybe<boolean> };
 
 export type LoginFormMutationVariables = Exact<{
   credentials: LoginInput;
 }>;
 
 
-export type LoginFormMutation = { __typename: 'Mutation', token?: Maybe<string> };
+export type LoginFormMutation = { token?: Maybe<string> };
 
 export type UpdateProfileMutationVariables = Exact<{
   input: ProfileUpdateInput;
 }>;
 
 
-export type UpdateProfileMutation = { __typename: 'Mutation', updateProfile: (
-    { __typename: 'Profile' }
-    & UserProfileFragment
-  ) };
+export type UpdateProfileMutation = { updateProfile: UserProfileFragment };
 
 export type CreateEntryMutationVariables = Exact<{
   input: CreateEntryInput;
 }>;
 
 
-export type CreateEntryMutation = { __typename: 'Mutation', createEntry?: Maybe<{ __typename: 'CreateEntryPayload', entry?: Maybe<(
-      { __typename: 'XtdActor' }
-      & ConceptProps_XtdActor_Fragment
-    ) | (
-      { __typename: 'XtdActivity' }
-      & ConceptProps_XtdActivity_Fragment
-    ) | (
-      { __typename: 'XtdBag' }
-      & ConceptProps_XtdBag_Fragment
-    ) | (
-      { __typename: 'XtdClassification' }
-      & ConceptProps_XtdClassification_Fragment
-    ) | (
-      { __typename: 'XtdExternalDocument' }
-      & ConceptProps_XtdExternalDocument_Fragment
-    ) | (
-      { __typename: 'XtdMeasureWithUnit' }
-      & ConceptProps_XtdMeasureWithUnit_Fragment
-    ) | (
-      { __typename: 'XtdNest' }
-      & ConceptProps_XtdNest_Fragment
-    ) | (
-      { __typename: 'XtdSubject' }
-      & ConceptProps_XtdSubject_Fragment
-    ) | (
-      { __typename: 'XtdProperty' }
-      & ConceptProps_XtdProperty_Fragment
-    ) | (
-      { __typename: 'XtdUnit' }
-      & ConceptProps_XtdUnit_Fragment
-    ) | (
-      { __typename: 'XtdValue' }
-      & ConceptProps_XtdValue_Fragment
-    )> }> };
+export type CreateEntryMutation = { createEntry?: Maybe<{ entry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
 
 export type DeleteEntryMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type DeleteEntryMutation = { __typename: 'Mutation', deleteEntry?: Maybe<{ __typename: 'DeleteEntryPayload', entry?: Maybe<(
-      { __typename: 'XtdActor' }
-      & ConceptProps_XtdActor_Fragment
-    ) | (
-      { __typename: 'XtdActivity' }
-      & ConceptProps_XtdActivity_Fragment
-    ) | (
-      { __typename: 'XtdBag' }
-      & ConceptProps_XtdBag_Fragment
-    ) | (
-      { __typename: 'XtdClassification' }
-      & ConceptProps_XtdClassification_Fragment
-    ) | (
-      { __typename: 'XtdExternalDocument' }
-      & ConceptProps_XtdExternalDocument_Fragment
-    ) | (
-      { __typename: 'XtdMeasureWithUnit' }
-      & ConceptProps_XtdMeasureWithUnit_Fragment
-    ) | (
-      { __typename: 'XtdNest' }
-      & ConceptProps_XtdNest_Fragment
-    ) | (
-      { __typename: 'XtdSubject' }
-      & ConceptProps_XtdSubject_Fragment
-    ) | (
-      { __typename: 'XtdProperty' }
-      & ConceptProps_XtdProperty_Fragment
-    ) | (
-      { __typename: 'XtdUnit' }
-      & ConceptProps_XtdUnit_Fragment
-    ) | (
-      { __typename: 'XtdValue' }
-      & ConceptProps_XtdValue_Fragment
-    )> }> };
+export type DeleteEntryMutation = { deleteEntry?: Maybe<{ entry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
 
 export type SetVersionMutationVariables = Exact<{
   input: SetVersionInput;
 }>;
 
 
-export type SetVersionMutation = { __typename: 'Mutation', setVersion?: Maybe<{ __typename: 'SetVersionPayload', entry?: Maybe<(
-      { __typename: 'XtdActor' }
-      & ConceptProps_XtdActor_Fragment
-    ) | (
-      { __typename: 'XtdActivity' }
-      & ConceptProps_XtdActivity_Fragment
-    ) | (
-      { __typename: 'XtdBag' }
-      & ConceptProps_XtdBag_Fragment
-    ) | (
-      { __typename: 'XtdClassification' }
-      & ConceptProps_XtdClassification_Fragment
-    ) | (
-      { __typename: 'XtdExternalDocument' }
-      & ConceptProps_XtdExternalDocument_Fragment
-    ) | (
-      { __typename: 'XtdMeasureWithUnit' }
-      & ConceptProps_XtdMeasureWithUnit_Fragment
-    ) | (
-      { __typename: 'XtdNest' }
-      & ConceptProps_XtdNest_Fragment
-    ) | (
-      { __typename: 'XtdSubject' }
-      & ConceptProps_XtdSubject_Fragment
-    ) | (
-      { __typename: 'XtdProperty' }
-      & ConceptProps_XtdProperty_Fragment
-    ) | (
-      { __typename: 'XtdUnit' }
-      & ConceptProps_XtdUnit_Fragment
-    ) | (
-      { __typename: 'XtdValue' }
-      & ConceptProps_XtdValue_Fragment
-    )> }> };
+export type SetVersionMutation = { setVersion?: Maybe<{ entry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
 
 export type AddNameMutationVariables = Exact<{
   input: AddNameInput;
 }>;
 
 
-export type AddNameMutation = { __typename: 'Mutation', addName?: Maybe<{ __typename: 'AddNamePayload', entry?: Maybe<(
-      { __typename: 'XtdActor' }
-      & ConceptProps_XtdActor_Fragment
-    ) | (
-      { __typename: 'XtdActivity' }
-      & ConceptProps_XtdActivity_Fragment
-    ) | (
-      { __typename: 'XtdBag' }
-      & ConceptProps_XtdBag_Fragment
-    ) | (
-      { __typename: 'XtdClassification' }
-      & ConceptProps_XtdClassification_Fragment
-    ) | (
-      { __typename: 'XtdExternalDocument' }
-      & ConceptProps_XtdExternalDocument_Fragment
-    ) | (
-      { __typename: 'XtdMeasureWithUnit' }
-      & ConceptProps_XtdMeasureWithUnit_Fragment
-    ) | (
-      { __typename: 'XtdNest' }
-      & ConceptProps_XtdNest_Fragment
-    ) | (
-      { __typename: 'XtdSubject' }
-      & ConceptProps_XtdSubject_Fragment
-    ) | (
-      { __typename: 'XtdProperty' }
-      & ConceptProps_XtdProperty_Fragment
-    ) | (
-      { __typename: 'XtdUnit' }
-      & ConceptProps_XtdUnit_Fragment
-    ) | (
-      { __typename: 'XtdValue' }
-      & ConceptProps_XtdValue_Fragment
-    )> }> };
+export type AddNameMutation = { addName?: Maybe<{ entry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
 
 export type UpdateNameMutationVariables = Exact<{
   input: UpdateNameInput;
 }>;
 
 
-export type UpdateNameMutation = { __typename: 'Mutation', updateName?: Maybe<{ __typename: 'UpdateNamePayload', entry?: Maybe<(
-      { __typename: 'XtdActor' }
-      & ConceptProps_XtdActor_Fragment
-    ) | (
-      { __typename: 'XtdActivity' }
-      & ConceptProps_XtdActivity_Fragment
-    ) | (
-      { __typename: 'XtdBag' }
-      & ConceptProps_XtdBag_Fragment
-    ) | (
-      { __typename: 'XtdClassification' }
-      & ConceptProps_XtdClassification_Fragment
-    ) | (
-      { __typename: 'XtdExternalDocument' }
-      & ConceptProps_XtdExternalDocument_Fragment
-    ) | (
-      { __typename: 'XtdMeasureWithUnit' }
-      & ConceptProps_XtdMeasureWithUnit_Fragment
-    ) | (
-      { __typename: 'XtdNest' }
-      & ConceptProps_XtdNest_Fragment
-    ) | (
-      { __typename: 'XtdSubject' }
-      & ConceptProps_XtdSubject_Fragment
-    ) | (
-      { __typename: 'XtdProperty' }
-      & ConceptProps_XtdProperty_Fragment
-    ) | (
-      { __typename: 'XtdUnit' }
-      & ConceptProps_XtdUnit_Fragment
-    ) | (
-      { __typename: 'XtdValue' }
-      & ConceptProps_XtdValue_Fragment
-    )> }> };
+export type UpdateNameMutation = { updateName?: Maybe<{ entry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
 
 export type DeleteNameMutationVariables = Exact<{
   input: DeleteNameInput;
 }>;
 
 
-export type DeleteNameMutation = { __typename: 'Mutation', deleteName?: Maybe<{ __typename: 'DeleteNamePayload', entry?: Maybe<(
-      { __typename: 'XtdActor' }
-      & ConceptProps_XtdActor_Fragment
-    ) | (
-      { __typename: 'XtdActivity' }
-      & ConceptProps_XtdActivity_Fragment
-    ) | (
-      { __typename: 'XtdBag' }
-      & ConceptProps_XtdBag_Fragment
-    ) | (
-      { __typename: 'XtdClassification' }
-      & ConceptProps_XtdClassification_Fragment
-    ) | (
-      { __typename: 'XtdExternalDocument' }
-      & ConceptProps_XtdExternalDocument_Fragment
-    ) | (
-      { __typename: 'XtdMeasureWithUnit' }
-      & ConceptProps_XtdMeasureWithUnit_Fragment
-    ) | (
-      { __typename: 'XtdNest' }
-      & ConceptProps_XtdNest_Fragment
-    ) | (
-      { __typename: 'XtdSubject' }
-      & ConceptProps_XtdSubject_Fragment
-    ) | (
-      { __typename: 'XtdProperty' }
-      & ConceptProps_XtdProperty_Fragment
-    ) | (
-      { __typename: 'XtdUnit' }
-      & ConceptProps_XtdUnit_Fragment
-    ) | (
-      { __typename: 'XtdValue' }
-      & ConceptProps_XtdValue_Fragment
-    )> }> };
+export type DeleteNameMutation = { deleteName?: Maybe<{ entry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
 
 export type AddDescriptionMutationVariables = Exact<{
   input: AddDescriptionInput;
 }>;
 
 
-export type AddDescriptionMutation = { __typename: 'Mutation', addDescription?: Maybe<{ __typename: 'AddDescriptionPayload', entry?: Maybe<(
-      { __typename: 'XtdActor' }
-      & ConceptProps_XtdActor_Fragment
-    ) | (
-      { __typename: 'XtdActivity' }
-      & ConceptProps_XtdActivity_Fragment
-    ) | (
-      { __typename: 'XtdBag' }
-      & ConceptProps_XtdBag_Fragment
-    ) | (
-      { __typename: 'XtdClassification' }
-      & ConceptProps_XtdClassification_Fragment
-    ) | (
-      { __typename: 'XtdExternalDocument' }
-      & ConceptProps_XtdExternalDocument_Fragment
-    ) | (
-      { __typename: 'XtdMeasureWithUnit' }
-      & ConceptProps_XtdMeasureWithUnit_Fragment
-    ) | (
-      { __typename: 'XtdNest' }
-      & ConceptProps_XtdNest_Fragment
-    ) | (
-      { __typename: 'XtdSubject' }
-      & ConceptProps_XtdSubject_Fragment
-    ) | (
-      { __typename: 'XtdProperty' }
-      & ConceptProps_XtdProperty_Fragment
-    ) | (
-      { __typename: 'XtdUnit' }
-      & ConceptProps_XtdUnit_Fragment
-    ) | (
-      { __typename: 'XtdValue' }
-      & ConceptProps_XtdValue_Fragment
-    )> }> };
+export type AddDescriptionMutation = { addDescription?: Maybe<{ entry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
 
 export type UpdateDescriptionMutationVariables = Exact<{
   input: UpdateDescriptionInput;
 }>;
 
 
-export type UpdateDescriptionMutation = { __typename: 'Mutation', updateDescription?: Maybe<{ __typename: 'UpdateDescriptionPayload', entry?: Maybe<(
-      { __typename: 'XtdActor' }
-      & ConceptProps_XtdActor_Fragment
-    ) | (
-      { __typename: 'XtdActivity' }
-      & ConceptProps_XtdActivity_Fragment
-    ) | (
-      { __typename: 'XtdBag' }
-      & ConceptProps_XtdBag_Fragment
-    ) | (
-      { __typename: 'XtdClassification' }
-      & ConceptProps_XtdClassification_Fragment
-    ) | (
-      { __typename: 'XtdExternalDocument' }
-      & ConceptProps_XtdExternalDocument_Fragment
-    ) | (
-      { __typename: 'XtdMeasureWithUnit' }
-      & ConceptProps_XtdMeasureWithUnit_Fragment
-    ) | (
-      { __typename: 'XtdNest' }
-      & ConceptProps_XtdNest_Fragment
-    ) | (
-      { __typename: 'XtdSubject' }
-      & ConceptProps_XtdSubject_Fragment
-    ) | (
-      { __typename: 'XtdProperty' }
-      & ConceptProps_XtdProperty_Fragment
-    ) | (
-      { __typename: 'XtdUnit' }
-      & ConceptProps_XtdUnit_Fragment
-    ) | (
-      { __typename: 'XtdValue' }
-      & ConceptProps_XtdValue_Fragment
-    )> }> };
+export type UpdateDescriptionMutation = { updateDescription?: Maybe<{ entry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
 
 export type DeleteDescriptionMutationVariables = Exact<{
   input: DeleteDescriptionInput;
 }>;
 
 
-export type DeleteDescriptionMutation = { __typename: 'Mutation', deleteDescription?: Maybe<{ __typename: 'DeleteDescriptionPayload', entry?: Maybe<(
-      { __typename: 'XtdActor' }
-      & ConceptProps_XtdActor_Fragment
-    ) | (
-      { __typename: 'XtdActivity' }
-      & ConceptProps_XtdActivity_Fragment
-    ) | (
-      { __typename: 'XtdBag' }
-      & ConceptProps_XtdBag_Fragment
-    ) | (
-      { __typename: 'XtdClassification' }
-      & ConceptProps_XtdClassification_Fragment
-    ) | (
-      { __typename: 'XtdExternalDocument' }
-      & ConceptProps_XtdExternalDocument_Fragment
-    ) | (
-      { __typename: 'XtdMeasureWithUnit' }
-      & ConceptProps_XtdMeasureWithUnit_Fragment
-    ) | (
-      { __typename: 'XtdNest' }
-      & ConceptProps_XtdNest_Fragment
-    ) | (
-      { __typename: 'XtdSubject' }
-      & ConceptProps_XtdSubject_Fragment
-    ) | (
-      { __typename: 'XtdProperty' }
-      & ConceptProps_XtdProperty_Fragment
-    ) | (
-      { __typename: 'XtdUnit' }
-      & ConceptProps_XtdUnit_Fragment
-    ) | (
-      { __typename: 'XtdValue' }
-      & ConceptProps_XtdValue_Fragment
-    )> }> };
+export type DeleteDescriptionMutation = { deleteDescription?: Maybe<{ entry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
 
 export type SetToleranceMutationVariables = Exact<{
   input: SetToleranceInput;
 }>;
 
 
-export type SetToleranceMutation = { __typename: 'Mutation', setTolerance?: Maybe<{ __typename: 'SetTolerancePayload', entry?: Maybe<(
-      { __typename: 'XtdValue' }
-      & ValueDetailPropsFragment
-    )> }> };
+export type SetToleranceMutation = { setTolerance?: Maybe<{ entry?: Maybe<ValueDetailPropsFragment> }> };
 
 export type UnsetToleranceMutationVariables = Exact<{
   input: UnsetToleranceInput;
 }>;
 
 
-export type UnsetToleranceMutation = { __typename: 'Mutation', unsetTolerance?: Maybe<{ __typename: 'UnsetTolerancePayload', entry?: Maybe<(
-      { __typename: 'XtdValue' }
-      & ValueDetailPropsFragment
-    )> }> };
+export type UnsetToleranceMutation = { unsetTolerance?: Maybe<{ entry?: Maybe<ValueDetailPropsFragment> }> };
 
 export type SetNominalValueMutationVariables = Exact<{
   input: SetNominalValueInput;
 }>;
 
 
-export type SetNominalValueMutation = { __typename: 'Mutation', setNominalValue?: Maybe<{ __typename: 'UnsetNominalValuePayload', entry?: Maybe<(
-      { __typename: 'XtdValue' }
-      & ValueDetailPropsFragment
-    )> }> };
+export type SetNominalValueMutation = { setNominalValue?: Maybe<{ entry?: Maybe<ValueDetailPropsFragment> }> };
 
 export type UnsetNominalValueMutationVariables = Exact<{
   input: UnsetNominalValueInput;
 }>;
 
 
-export type UnsetNominalValueMutation = { __typename: 'Mutation', unsetNominalValue?: Maybe<{ __typename: 'UnsetNominalValuePayload', entry?: Maybe<(
-      { __typename: 'XtdValue' }
-      & ValueDetailPropsFragment
-    )> }> };
+export type UnsetNominalValueMutation = { unsetNominalValue?: Maybe<{ entry?: Maybe<ValueDetailPropsFragment> }> };
 
 export type CreateOneToManyRelationshipMutationVariables = Exact<{
   input: CreateOneToManyRelationshipInput;
 }>;
 
 
-export type CreateOneToManyRelationshipMutation = { __typename: 'Mutation', createOneToManyRelationship?: Maybe<{ __typename: 'CreateOneToManyRelationshipPayload', relationship?: Maybe<{ __typename: 'XtdRelActsUpon', id: string } | { __typename: 'XtdRelAssignsCollections', id: string } | { __typename: 'XtdRelAssignsMeasures', id: string } | { __typename: 'XtdRelAssignsProperties', id: string } | { __typename: 'XtdRelAssignsUnits', id: string } | { __typename: 'XtdRelAssignsValues', id: string } | { __typename: 'XtdRelAssociates', id: string } | { __typename: 'XtdRelCollects', id: string } | { __typename: 'XtdRelComposes', id: string } | { __typename: 'XtdRelDocuments', id: string } | { __typename: 'XtdRelGroups', id: string } | { __typename: 'XtdRelSpecializes', id: string }> }> };
+export type CreateOneToManyRelationshipMutation = { createOneToManyRelationship?: Maybe<{ relationship?: Maybe<{ id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string }> }> };
 
 export type UpdateOneToManyRelationshipMutationVariables = Exact<{
   oldId: Scalars['ID'];
@@ -1838,14 +1115,14 @@ export type UpdateOneToManyRelationshipMutationVariables = Exact<{
 }>;
 
 
-export type UpdateOneToManyRelationshipMutation = { __typename: 'Mutation', deleteRelationship?: Maybe<{ __typename: 'DeleteRelationshipPayload', relationship?: Maybe<{ __typename: 'XtdRelActsUpon', id: string } | { __typename: 'XtdRelAssignsCollections', id: string } | { __typename: 'XtdRelAssignsMeasures', id: string } | { __typename: 'XtdRelAssignsProperties', id: string } | { __typename: 'XtdRelAssignsPropertyWithValues', id: string } | { __typename: 'XtdRelAssignsUnits', id: string } | { __typename: 'XtdRelAssignsValues', id: string } | { __typename: 'XtdRelAssociates', id: string } | { __typename: 'XtdRelCollects', id: string } | { __typename: 'XtdRelComposes', id: string } | { __typename: 'XtdRelDocuments', id: string } | { __typename: 'XtdRelGroups', id: string } | { __typename: 'XtdRelSequences', id: string } | { __typename: 'XtdRelSpecializes', id: string }> }>, createOneToManyRelationship?: Maybe<{ __typename: 'CreateOneToManyRelationshipPayload', relationship?: Maybe<{ __typename: 'XtdRelActsUpon', id: string } | { __typename: 'XtdRelAssignsCollections', id: string } | { __typename: 'XtdRelAssignsMeasures', id: string } | { __typename: 'XtdRelAssignsProperties', id: string } | { __typename: 'XtdRelAssignsUnits', id: string } | { __typename: 'XtdRelAssignsValues', id: string } | { __typename: 'XtdRelAssociates', id: string } | { __typename: 'XtdRelCollects', id: string } | { __typename: 'XtdRelComposes', id: string } | { __typename: 'XtdRelDocuments', id: string } | { __typename: 'XtdRelGroups', id: string } | { __typename: 'XtdRelSpecializes', id: string }> }> };
+export type UpdateOneToManyRelationshipMutation = { deleteRelationship?: Maybe<{ relationship?: Maybe<{ id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string }> }>, createOneToManyRelationship?: Maybe<{ relationship?: Maybe<{ id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string }> }> };
 
 export type DeleteRelationshipMutationVariables = Exact<{
   input: DeleteRelationshipInput;
 }>;
 
 
-export type DeleteRelationshipMutation = { __typename: 'Mutation', deleteRelationship?: Maybe<{ __typename: 'DeleteRelationshipPayload', relationship?: Maybe<{ __typename: 'XtdRelActsUpon', id: string } | { __typename: 'XtdRelAssignsCollections', id: string } | { __typename: 'XtdRelAssignsMeasures', id: string } | { __typename: 'XtdRelAssignsProperties', id: string } | { __typename: 'XtdRelAssignsPropertyWithValues', id: string } | { __typename: 'XtdRelAssignsUnits', id: string } | { __typename: 'XtdRelAssignsValues', id: string } | { __typename: 'XtdRelAssociates', id: string } | { __typename: 'XtdRelCollects', id: string } | { __typename: 'XtdRelComposes', id: string } | { __typename: 'XtdRelDocuments', id: string } | { __typename: 'XtdRelGroups', id: string } | { __typename: 'XtdRelSequences', id: string } | { __typename: 'XtdRelSpecializes', id: string }> }> };
+export type DeleteRelationshipMutation = { deleteRelationship?: Maybe<{ relationship?: Maybe<{ id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string }> }> };
 
 export type TagBagMutationVariables = Exact<{
   bagId: Scalars['ID'];
@@ -1853,260 +1130,73 @@ export type TagBagMutationVariables = Exact<{
 }>;
 
 
-export type TagBagMutation = { __typename: 'Mutation', tag: { __typename: 'XtdActivity' } | { __typename: 'XtdActor' } | (
-    { __typename: 'XtdBag' }
-    & CollectionDetailProps_XtdBag_Fragment
-  ) | { __typename: 'XtdClassification' } | { __typename: 'XtdExternalDocument' } | { __typename: 'XtdMeasureWithUnit' } | (
-    { __typename: 'XtdNest' }
-    & CollectionDetailProps_XtdNest_Fragment
-  ) | { __typename: 'XtdProperty' } | { __typename: 'XtdRelActsUpon' } | { __typename: 'XtdRelAssignsCollections' } | { __typename: 'XtdRelAssignsMeasures' } | { __typename: 'XtdRelAssignsProperties' } | { __typename: 'XtdRelAssignsPropertyWithValues' } | { __typename: 'XtdRelAssignsUnits' } | { __typename: 'XtdRelAssignsValues' } | { __typename: 'XtdRelAssociates' } | { __typename: 'XtdRelCollects' } | { __typename: 'XtdRelComposes' } | { __typename: 'XtdRelDocuments' } | { __typename: 'XtdRelGroups' } | { __typename: 'XtdRelSequences' } | { __typename: 'XtdRelSpecializes' } | { __typename: 'XtdSubject' } | { __typename: 'XtdUnit' } | { __typename: 'XtdValue' } };
+export type TagBagMutation = { tag: CollectionDetailProps_XtdBag_Fragment | CollectionDetailProps_XtdNest_Fragment };
 
 export type FindLanguagesQueryVariables = Exact<{
   input: LanguageFilterInput;
 }>;
 
 
-export type FindLanguagesQuery = { __typename: 'Query', languages?: Maybe<{ __typename: 'LanguageConnection', totalElements: number, nodes: Array<(
-      { __typename: 'Language' }
-      & LanguagePropsFragment
-    )> }> };
+export type FindLanguagesQuery = { languages?: Maybe<{ totalElements: number, nodes: Array<LanguagePropsFragment> }> };
+
+export type FindItemQueryVariables = Exact<{
+  input: SearchInput;
+}>;
+
+
+export type FindItemQuery = { search: { totalElements: number, nodes: Array<ItemProps_XtdActivity_Fragment | ItemProps_XtdActor_Fragment | ItemProps_XtdBag_Fragment | ItemProps_XtdClassification_Fragment | ItemProps_XtdExternalDocument_Fragment | ItemProps_XtdMeasureWithUnit_Fragment | ItemProps_XtdNest_Fragment | ItemProps_XtdProperty_Fragment | ItemProps_XtdRelActsUpon_Fragment | ItemProps_XtdRelAssignsCollections_Fragment | ItemProps_XtdRelAssignsMeasures_Fragment | ItemProps_XtdRelAssignsProperties_Fragment | ItemProps_XtdRelAssignsPropertyWithValues_Fragment | ItemProps_XtdRelAssignsUnits_Fragment | ItemProps_XtdRelAssignsValues_Fragment | ItemProps_XtdRelAssociates_Fragment | ItemProps_XtdRelCollects_Fragment | ItemProps_XtdRelComposes_Fragment | ItemProps_XtdRelDocuments_Fragment | ItemProps_XtdRelGroups_Fragment | ItemProps_XtdRelSequences_Fragment | ItemProps_XtdRelSpecializes_Fragment | ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment>, pageInfo: PagePropsFragment } };
 
 export type FindConceptQueryVariables = Exact<{
   input: SearchInput;
 }>;
 
 
-export type FindConceptQuery = { __typename: 'Query', search: { __typename: 'SearchResultConnection', totalElements: number, nodes: Array<(
-      { __typename: 'XtdActivity' }
-      & SearchResultProps_XtdActivity_Fragment
-    ) | (
-      { __typename: 'XtdActor' }
-      & SearchResultProps_XtdActor_Fragment
-    ) | (
-      { __typename: 'XtdBag' }
-      & SearchResultProps_XtdBag_Fragment
-    ) | (
-      { __typename: 'XtdClassification' }
-      & SearchResultProps_XtdClassification_Fragment
-    ) | (
-      { __typename: 'XtdExternalDocument' }
-      & SearchResultProps_XtdExternalDocument_Fragment
-    ) | (
-      { __typename: 'XtdMeasureWithUnit' }
-      & SearchResultProps_XtdMeasureWithUnit_Fragment
-    ) | (
-      { __typename: 'XtdNest' }
-      & SearchResultProps_XtdNest_Fragment
-    ) | (
-      { __typename: 'XtdProperty' }
-      & SearchResultProps_XtdProperty_Fragment
-    ) | (
-      { __typename: 'XtdRelActsUpon' }
-      & SearchResultProps_XtdRelActsUpon_Fragment
-    ) | (
-      { __typename: 'XtdRelAssignsCollections' }
-      & SearchResultProps_XtdRelAssignsCollections_Fragment
-    ) | (
-      { __typename: 'XtdRelAssignsMeasures' }
-      & SearchResultProps_XtdRelAssignsMeasures_Fragment
-    ) | (
-      { __typename: 'XtdRelAssignsProperties' }
-      & SearchResultProps_XtdRelAssignsProperties_Fragment
-    ) | (
-      { __typename: 'XtdRelAssignsPropertyWithValues' }
-      & SearchResultProps_XtdRelAssignsPropertyWithValues_Fragment
-    ) | (
-      { __typename: 'XtdRelAssignsUnits' }
-      & SearchResultProps_XtdRelAssignsUnits_Fragment
-    ) | (
-      { __typename: 'XtdRelAssignsValues' }
-      & SearchResultProps_XtdRelAssignsValues_Fragment
-    ) | (
-      { __typename: 'XtdRelAssociates' }
-      & SearchResultProps_XtdRelAssociates_Fragment
-    ) | (
-      { __typename: 'XtdRelCollects' }
-      & SearchResultProps_XtdRelCollects_Fragment
-    ) | (
-      { __typename: 'XtdRelComposes' }
-      & SearchResultProps_XtdRelComposes_Fragment
-    ) | (
-      { __typename: 'XtdRelDocuments' }
-      & SearchResultProps_XtdRelDocuments_Fragment
-    ) | (
-      { __typename: 'XtdRelGroups' }
-      & SearchResultProps_XtdRelGroups_Fragment
-    ) | (
-      { __typename: 'XtdRelSequences' }
-      & SearchResultProps_XtdRelSequences_Fragment
-    ) | (
-      { __typename: 'XtdRelSpecializes' }
-      & SearchResultProps_XtdRelSpecializes_Fragment
-    ) | (
-      { __typename: 'XtdSubject' }
-      & SearchResultProps_XtdSubject_Fragment
-    ) | (
-      { __typename: 'XtdUnit' }
-      & SearchResultProps_XtdUnit_Fragment
-    ) | (
-      { __typename: 'XtdValue' }
-      & SearchResultProps_XtdValue_Fragment
-    )>, pageInfo: (
-      { __typename: 'PageInfo' }
-      & PagePropsFragment
-    ) } };
+export type FindConceptQuery = { search: { totalElements: number, nodes: Array<SearchResultProps_XtdActivity_Fragment | SearchResultProps_XtdActor_Fragment | SearchResultProps_XtdBag_Fragment | SearchResultProps_XtdClassification_Fragment | SearchResultProps_XtdExternalDocument_Fragment | SearchResultProps_XtdMeasureWithUnit_Fragment | SearchResultProps_XtdNest_Fragment | SearchResultProps_XtdProperty_Fragment | SearchResultProps_XtdRelActsUpon_Fragment | SearchResultProps_XtdRelAssignsCollections_Fragment | SearchResultProps_XtdRelAssignsMeasures_Fragment | SearchResultProps_XtdRelAssignsProperties_Fragment | SearchResultProps_XtdRelAssignsPropertyWithValues_Fragment | SearchResultProps_XtdRelAssignsUnits_Fragment | SearchResultProps_XtdRelAssignsValues_Fragment | SearchResultProps_XtdRelAssociates_Fragment | SearchResultProps_XtdRelCollects_Fragment | SearchResultProps_XtdRelComposes_Fragment | SearchResultProps_XtdRelDocuments_Fragment | SearchResultProps_XtdRelGroups_Fragment | SearchResultProps_XtdRelSequences_Fragment | SearchResultProps_XtdRelSpecializes_Fragment | SearchResultProps_XtdSubject_Fragment | SearchResultProps_XtdUnit_Fragment | SearchResultProps_XtdValue_Fragment>, pageInfo: PagePropsFragment } };
 
 export type PropertyTreeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type PropertyTreeQuery = { __typename: 'Query', hierarchy: { __typename: 'HierarchyPayload', paths: Array<Array<string>>, nodes: Array<(
-      { __typename: 'XtdActivity' }
-      & ConceptProps_XtdActivity_Fragment
-    ) | (
-      { __typename: 'XtdActor' }
-      & ConceptProps_XtdActor_Fragment
-    ) | (
-      { __typename: 'XtdBag' }
-      & ConceptProps_XtdBag_Fragment
-    ) | (
-      { __typename: 'XtdClassification' }
-      & ConceptProps_XtdClassification_Fragment
-    ) | (
-      { __typename: 'XtdExternalDocument' }
-      & ConceptProps_XtdExternalDocument_Fragment
-    ) | (
-      { __typename: 'XtdMeasureWithUnit' }
-      & ConceptProps_XtdMeasureWithUnit_Fragment
-    ) | (
-      { __typename: 'XtdNest' }
-      & ConceptProps_XtdNest_Fragment
-    ) | (
-      { __typename: 'XtdProperty' }
-      & ConceptProps_XtdProperty_Fragment
-    ) | (
-      { __typename: 'XtdRelActsUpon' }
-      & ConceptProps_XtdRelActsUpon_Fragment
-    ) | (
-      { __typename: 'XtdRelAssignsCollections' }
-      & ConceptProps_XtdRelAssignsCollections_Fragment
-    ) | (
-      { __typename: 'XtdRelAssignsMeasures' }
-      & ConceptProps_XtdRelAssignsMeasures_Fragment
-    ) | (
-      { __typename: 'XtdRelAssignsProperties' }
-      & ConceptProps_XtdRelAssignsProperties_Fragment
-    ) | (
-      { __typename: 'XtdRelAssignsPropertyWithValues' }
-      & ConceptProps_XtdRelAssignsPropertyWithValues_Fragment
-    ) | (
-      { __typename: 'XtdRelAssignsUnits' }
-      & ConceptProps_XtdRelAssignsUnits_Fragment
-    ) | (
-      { __typename: 'XtdRelAssignsValues' }
-      & ConceptProps_XtdRelAssignsValues_Fragment
-    ) | (
-      { __typename: 'XtdRelAssociates' }
-      & ConceptProps_XtdRelAssociates_Fragment
-    ) | (
-      { __typename: 'XtdRelCollects' }
-      & ConceptProps_XtdRelCollects_Fragment
-    ) | (
-      { __typename: 'XtdRelComposes' }
-      & ConceptProps_XtdRelComposes_Fragment
-    ) | (
-      { __typename: 'XtdRelDocuments' }
-      & ConceptProps_XtdRelDocuments_Fragment
-    ) | (
-      { __typename: 'XtdRelGroups' }
-      & ConceptProps_XtdRelGroups_Fragment
-    ) | (
-      { __typename: 'XtdRelSequences' }
-      & ConceptProps_XtdRelSequences_Fragment
-    ) | (
-      { __typename: 'XtdRelSpecializes' }
-      & ConceptProps_XtdRelSpecializes_Fragment
-    ) | (
-      { __typename: 'XtdSubject' }
-      & ConceptProps_XtdSubject_Fragment
-    ) | (
-      { __typename: 'XtdUnit' }
-      & ConceptProps_XtdUnit_Fragment
-    ) | (
-      { __typename: 'XtdValue' }
-      & ConceptProps_XtdValue_Fragment
-    )> } };
+export type PropertyTreeQuery = { hierarchy: { paths: Array<Array<string>>, nodes: Array<ConceptProps_XtdActivity_Fragment | ConceptProps_XtdActor_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdRelActsUpon_Fragment | ConceptProps_XtdRelAssignsCollections_Fragment | ConceptProps_XtdRelAssignsMeasures_Fragment | ConceptProps_XtdRelAssignsProperties_Fragment | ConceptProps_XtdRelAssignsPropertyWithValues_Fragment | ConceptProps_XtdRelAssignsUnits_Fragment | ConceptProps_XtdRelAssignsValues_Fragment | ConceptProps_XtdRelAssociates_Fragment | ConceptProps_XtdRelCollects_Fragment | ConceptProps_XtdRelComposes_Fragment | ConceptProps_XtdRelDocuments_Fragment | ConceptProps_XtdRelGroups_Fragment | ConceptProps_XtdRelSequences_Fragment | ConceptProps_XtdRelSpecializes_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> } };
 
 export type GetDocumentEntryQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetDocumentEntryQuery = { __typename: 'Query', node?: Maybe<{ __typename: 'XtdActivity' } | { __typename: 'XtdActor' } | { __typename: 'XtdBag' } | { __typename: 'XtdClassification' } | (
-    { __typename: 'XtdExternalDocument' }
-    & ExternalDocumentDetailPropsFragment
-  ) | { __typename: 'XtdMeasureWithUnit' } | { __typename: 'XtdNest' } | { __typename: 'XtdProperty' } | { __typename: 'XtdRelActsUpon' } | { __typename: 'XtdRelAssignsCollections' } | { __typename: 'XtdRelAssignsMeasures' } | { __typename: 'XtdRelAssignsProperties' } | { __typename: 'XtdRelAssignsPropertyWithValues' } | { __typename: 'XtdRelAssignsUnits' } | { __typename: 'XtdRelAssignsValues' } | { __typename: 'XtdRelAssociates' } | { __typename: 'XtdRelCollects' } | { __typename: 'XtdRelComposes' } | { __typename: 'XtdRelDocuments' } | { __typename: 'XtdRelGroups' } | { __typename: 'XtdRelSequences' } | { __typename: 'XtdRelSpecializes' } | { __typename: 'XtdSubject' } | { __typename: 'XtdUnit' } | { __typename: 'XtdValue' }> };
+export type GetDocumentEntryQuery = { node?: Maybe<ExternalDocumentDetailPropsFragment> };
 
 export type GetObjectEntryQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetObjectEntryQuery = { __typename: 'Query', node?: Maybe<(
-    { __typename: 'XtdActivity' }
-    & ObjectDetailProps_XtdActivity_Fragment
-  ) | (
-    { __typename: 'XtdActor' }
-    & ObjectDetailProps_XtdActor_Fragment
-  ) | { __typename: 'XtdBag' } | (
-    { __typename: 'XtdClassification' }
-    & ObjectDetailProps_XtdClassification_Fragment
-  ) | { __typename: 'XtdExternalDocument' } | (
-    { __typename: 'XtdMeasureWithUnit' }
-    & ObjectDetailProps_XtdMeasureWithUnit_Fragment
-  ) | { __typename: 'XtdNest' } | (
-    { __typename: 'XtdProperty' }
-    & ObjectDetailProps_XtdProperty_Fragment
-  ) | { __typename: 'XtdRelActsUpon' } | { __typename: 'XtdRelAssignsCollections' } | { __typename: 'XtdRelAssignsMeasures' } | { __typename: 'XtdRelAssignsProperties' } | { __typename: 'XtdRelAssignsPropertyWithValues' } | { __typename: 'XtdRelAssignsUnits' } | { __typename: 'XtdRelAssignsValues' } | { __typename: 'XtdRelAssociates' } | { __typename: 'XtdRelCollects' } | { __typename: 'XtdRelComposes' } | { __typename: 'XtdRelDocuments' } | { __typename: 'XtdRelGroups' } | { __typename: 'XtdRelSequences' } | { __typename: 'XtdRelSpecializes' } | (
-    { __typename: 'XtdSubject' }
-    & ObjectDetailProps_XtdSubject_Fragment
-  ) | (
-    { __typename: 'XtdUnit' }
-    & ObjectDetailProps_XtdUnit_Fragment
-  ) | (
-    { __typename: 'XtdValue' }
-    & ObjectDetailProps_XtdValue_Fragment
-  )> };
+export type GetObjectEntryQuery = { node?: Maybe<ObjectDetailProps_XtdActivity_Fragment | ObjectDetailProps_XtdActor_Fragment | ObjectDetailProps_XtdClassification_Fragment | ObjectDetailProps_XtdMeasureWithUnit_Fragment | ObjectDetailProps_XtdProperty_Fragment | ObjectDetailProps_XtdSubject_Fragment | ObjectDetailProps_XtdUnit_Fragment | ObjectDetailProps_XtdValue_Fragment> };
+
+export type GetPropertyEntryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetPropertyEntryQuery = { node?: Maybe<PropertyDetailPropsFragment> };
 
 export type GetValueEntryQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetValueEntryQuery = { __typename: 'Query', node?: Maybe<{ __typename: 'XtdActivity' } | { __typename: 'XtdActor' } | { __typename: 'XtdBag' } | { __typename: 'XtdClassification' } | { __typename: 'XtdExternalDocument' } | { __typename: 'XtdMeasureWithUnit' } | { __typename: 'XtdNest' } | { __typename: 'XtdProperty' } | { __typename: 'XtdRelActsUpon' } | { __typename: 'XtdRelAssignsCollections' } | { __typename: 'XtdRelAssignsMeasures' } | { __typename: 'XtdRelAssignsProperties' } | { __typename: 'XtdRelAssignsPropertyWithValues' } | { __typename: 'XtdRelAssignsUnits' } | { __typename: 'XtdRelAssignsValues' } | { __typename: 'XtdRelAssociates' } | { __typename: 'XtdRelCollects' } | { __typename: 'XtdRelComposes' } | { __typename: 'XtdRelDocuments' } | { __typename: 'XtdRelGroups' } | { __typename: 'XtdRelSequences' } | { __typename: 'XtdRelSpecializes' } | { __typename: 'XtdSubject' } | { __typename: 'XtdUnit' } | (
-    { __typename: 'XtdValue' }
-    & ValueDetailPropsFragment
-  )> };
+export type GetValueEntryQuery = { node?: Maybe<ValueDetailPropsFragment> };
 
 export type GetCollectionEntryQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetCollectionEntryQuery = { __typename: 'Query', node?: Maybe<{ __typename: 'XtdActivity' } | { __typename: 'XtdActor' } | (
-    { __typename: 'XtdBag' }
-    & CollectionDetailProps_XtdBag_Fragment
-  ) | { __typename: 'XtdClassification' } | { __typename: 'XtdExternalDocument' } | { __typename: 'XtdMeasureWithUnit' } | (
-    { __typename: 'XtdNest' }
-    & CollectionDetailProps_XtdNest_Fragment
-  ) | { __typename: 'XtdProperty' } | { __typename: 'XtdRelActsUpon' } | { __typename: 'XtdRelAssignsCollections' } | { __typename: 'XtdRelAssignsMeasures' } | { __typename: 'XtdRelAssignsProperties' } | { __typename: 'XtdRelAssignsPropertyWithValues' } | { __typename: 'XtdRelAssignsUnits' } | { __typename: 'XtdRelAssignsValues' } | { __typename: 'XtdRelAssociates' } | { __typename: 'XtdRelCollects' } | { __typename: 'XtdRelComposes' } | { __typename: 'XtdRelDocuments' } | { __typename: 'XtdRelGroups' } | { __typename: 'XtdRelSequences' } | { __typename: 'XtdRelSpecializes' } | { __typename: 'XtdSubject' } | { __typename: 'XtdUnit' } | { __typename: 'XtdValue' }> };
+export type GetCollectionEntryQuery = { node?: Maybe<CollectionDetailProps_XtdBag_Fragment | CollectionDetailProps_XtdNest_Fragment> };
 
 export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProfileQuery = { __typename: 'Query', profile: (
-    { __typename: 'Profile' }
-    & UserProfileFragment
-  ) };
+export type ProfileQuery = { profile: UserProfileFragment };
 
 export const UserProfileFragmentDoc = gql`
     fragment UserProfile on Profile {
@@ -2125,6 +1215,24 @@ export const PagePropsFragmentDoc = gql`
   hasPrevious
 }
     `;
+export const TagPropsFragmentDoc = gql`
+    fragment TagProps on Tag {
+  id
+  localizedName
+  localizedDescription
+}
+    `;
+export const ItemPropsFragmentDoc = gql`
+    fragment ItemProps on Concept {
+  __typename
+  id
+  name(input: {languageTags: ["de-DE", "en-US"]})
+  description(input: {languageTags: ["de-DE", "en-US"]})
+  tags {
+    ...TagProps
+  }
+}
+    ${TagPropsFragmentDoc}`;
 export const LanguagePropsFragmentDoc = gql`
     fragment LanguageProps on Language {
   id
@@ -2142,63 +1250,36 @@ export const TranslationPropsFragmentDoc = gql`
   value
 }
     ${LanguagePropsFragmentDoc}`;
-export const TagPropsFragmentDoc = gql`
-    fragment TagProps on Tag {
-  id
-  localizedName
-  localizedDescription
-}
-    `;
 export const ConceptPropsFragmentDoc = gql`
     fragment ConceptProps on Concept {
-  id
+  ...ItemProps
   versionId
   versionDate
-  name(input: {languageTags: ["de-DE", "en-US"]})
   de: name(input: {languageTags: ["de-DE"]})
   en: name(input: {languageTags: ["en-US, en-GB"]})
   names {
     ...TranslationProps
   }
-  description(input: {languageTags: ["de-DE", "en-US"]})
   descriptions {
     ...TranslationProps
   }
-  tags {
-    ...TagProps
-  }
 }
-    ${TranslationPropsFragmentDoc}
-${TagPropsFragmentDoc}`;
-export const EntityPropsFragmentDoc = gql`
-    fragment EntityProps on Entity {
-  created
-  createdBy
-  lastModified
-  lastModifiedBy
-}
-    `;
+    ${ItemPropsFragmentDoc}
+${TranslationPropsFragmentDoc}`;
 export const RelationshipPropsFragmentDoc = gql`
     fragment RelationshipProps on XtdRelationship {
   ...ConceptProps
-  ...EntityProps
 }
-    ${ConceptPropsFragmentDoc}
-${EntityPropsFragmentDoc}`;
+    ${ConceptPropsFragmentDoc}`;
 export const SearchResultPropsFragmentDoc = gql`
     fragment SearchResultProps on Concept {
-  id
+  ...ItemProps
   versionId
   versionDate
-  name(input: {languageTags: ["de-DE", "en-US"]})
   de: name(input: {languageTags: ["de-DE"]})
   en: name(input: {languageTags: ["en-US, en-GB"]})
-  description(input: {languageTags: ["de-DE", "en-US"]})
-  tags {
-    ...TagProps
-  }
 }
-    ${TagPropsFragmentDoc}`;
+    ${ItemPropsFragmentDoc}`;
 export const AssignsPropertyWithValuesPropsFragmentDoc = gql`
     fragment AssignsPropertyWithValuesProps on XtdRelAssignsPropertyWithValues {
   ...RelationshipProps
@@ -2211,13 +1292,19 @@ export const AssignsPropertyWithValuesPropsFragmentDoc = gql`
 }
     ${RelationshipPropsFragmentDoc}
 ${SearchResultPropsFragmentDoc}`;
+export const MetaPropsFragmentDoc = gql`
+    fragment MetaProps on Entity {
+  created
+  createdBy
+  lastModified
+  lastModifiedBy
+}
+    `;
 export const ExternalDocumentPropsFragmentDoc = gql`
     fragment ExternalDocumentProps on XtdExternalDocument {
   ...ConceptProps
-  ...EntityProps
 }
-    ${ConceptPropsFragmentDoc}
-${EntityPropsFragmentDoc}`;
+    ${ConceptPropsFragmentDoc}`;
 export const DocumentsPropsFragmentDoc = gql`
     fragment DocumentsProps on XtdRelDocuments {
   ...RelationshipProps
@@ -2233,6 +1320,7 @@ ${ExternalDocumentPropsFragmentDoc}
 ${SearchResultPropsFragmentDoc}`;
 export const ExternalDocumentDetailPropsFragmentDoc = gql`
     fragment ExternalDocumentDetailProps on XtdExternalDocument {
+  ...MetaProps
   ...ExternalDocumentProps
   documents {
     nodes {
@@ -2240,26 +1328,14 @@ export const ExternalDocumentDetailPropsFragmentDoc = gql`
     }
   }
 }
-    ${ExternalDocumentPropsFragmentDoc}
+    ${MetaPropsFragmentDoc}
+${ExternalDocumentPropsFragmentDoc}
 ${DocumentsPropsFragmentDoc}`;
 export const ObjectPropsFragmentDoc = gql`
     fragment ObjectProps on XtdObject {
   ...ConceptProps
-  ...EntityProps
 }
-    ${ConceptPropsFragmentDoc}
-${EntityPropsFragmentDoc}`;
-export const ValuePropsFragmentDoc = gql`
-    fragment ValueProps on XtdValue {
-  ...ObjectProps
-  valueType
-  valueRole
-  nominalValue
-  toleranceType
-  lowerTolerance
-  upperTolerance
-}
-    ${ObjectPropsFragmentDoc}`;
+    ${ConceptPropsFragmentDoc}`;
 export const AssignsCollectionsPropsFragmentDoc = gql`
     fragment AssignsCollectionsProps on XtdRelAssignsCollections {
   ...RelationshipProps
@@ -2284,43 +1360,6 @@ export const AssignsPropertiesPropsFragmentDoc = gql`
 }
     ${RelationshipPropsFragmentDoc}
 ${SearchResultPropsFragmentDoc}`;
-export const ObjectDetailPropsFragmentDoc = gql`
-    fragment ObjectDetailProps on XtdObject {
-  ...ObjectProps
-  assignedCollections {
-    nodes {
-      ...AssignsCollectionsProps
-    }
-  }
-  assignedProperties {
-    nodes {
-      ...AssignsPropertiesProps
-    }
-  }
-  documentedBy {
-    nodes {
-      ...DocumentsProps
-    }
-  }
-}
-    ${ObjectPropsFragmentDoc}
-${AssignsCollectionsPropsFragmentDoc}
-${AssignsPropertiesPropsFragmentDoc}
-${DocumentsPropsFragmentDoc}`;
-export const ValueDetailPropsFragmentDoc = gql`
-    fragment ValueDetailProps on XtdValue {
-  ...ValueProps
-  ...ObjectDetailProps
-}
-    ${ValuePropsFragmentDoc}
-${ObjectDetailPropsFragmentDoc}`;
-export const CollectionPropsFragmentDoc = gql`
-    fragment CollectionProps on XtdCollection {
-  ...ConceptProps
-  ...EntityProps
-}
-    ${ConceptPropsFragmentDoc}
-${EntityPropsFragmentDoc}`;
 export const CollectsPropsFragmentDoc = gql`
     fragment CollectsProps on XtdRelCollects {
   ...RelationshipProps
@@ -2337,12 +1376,18 @@ export const CollectsPropsFragmentDoc = gql`
     ${RelationshipPropsFragmentDoc}
 ${SearchResultPropsFragmentDoc}
 ${TagPropsFragmentDoc}`;
-export const CollectionDetailPropsFragmentDoc = gql`
-    fragment CollectionDetailProps on XtdCollection {
-  ...CollectionProps
-  collects {
+export const ObjectDetailPropsFragmentDoc = gql`
+    fragment ObjectDetailProps on XtdObject {
+  ...MetaProps
+  ...ObjectProps
+  assignedCollections {
     nodes {
-      ...CollectsProps
+      ...AssignsCollectionsProps
+    }
+  }
+  assignedProperties {
+    nodes {
+      ...AssignsPropertiesProps
     }
   }
   collectedBy {
@@ -2356,8 +1401,75 @@ export const CollectionDetailPropsFragmentDoc = gql`
     }
   }
 }
-    ${CollectionPropsFragmentDoc}
+    ${MetaPropsFragmentDoc}
+${ObjectPropsFragmentDoc}
+${AssignsCollectionsPropsFragmentDoc}
+${AssignsPropertiesPropsFragmentDoc}
 ${CollectsPropsFragmentDoc}
+${DocumentsPropsFragmentDoc}`;
+export const PropertyDetailPropsFragmentDoc = gql`
+    fragment PropertyDetailProps on XtdProperty {
+  ...ObjectDetailProps
+  assignedTo {
+    nodes {
+      ...AssignsPropertiesProps
+    }
+  }
+}
+    ${ObjectDetailPropsFragmentDoc}
+${AssignsPropertiesPropsFragmentDoc}`;
+export const ValuePropsFragmentDoc = gql`
+    fragment ValueProps on XtdValue {
+  ...ObjectProps
+  valueType
+  valueRole
+  nominalValue
+  toleranceType
+  lowerTolerance
+  upperTolerance
+}
+    ${ObjectPropsFragmentDoc}`;
+export const ValueDetailPropsFragmentDoc = gql`
+    fragment ValueDetailProps on XtdValue {
+  ...ObjectDetailProps
+  ...ValueProps
+}
+    ${ObjectDetailPropsFragmentDoc}
+${ValuePropsFragmentDoc}`;
+export const CollectionPropsFragmentDoc = gql`
+    fragment CollectionProps on XtdCollection {
+  ...ConceptProps
+}
+    ${ConceptPropsFragmentDoc}`;
+export const CollectionDetailPropsFragmentDoc = gql`
+    fragment CollectionDetailProps on XtdCollection {
+  ...MetaProps
+  ...CollectionProps
+  collects {
+    nodes {
+      ...CollectsProps
+    }
+  }
+  assignedTo {
+    nodes {
+      ...AssignsCollectionsProps
+    }
+  }
+  collectedBy {
+    nodes {
+      ...CollectsProps
+    }
+  }
+  documentedBy {
+    nodes {
+      ...DocumentsProps
+    }
+  }
+}
+    ${MetaPropsFragmentDoc}
+${CollectionPropsFragmentDoc}
+${CollectsPropsFragmentDoc}
+${AssignsCollectionsPropsFragmentDoc}
 ${DocumentsPropsFragmentDoc}`;
 export const SignupFormDocument = gql`
     mutation SignupForm($profile: SignupInput!) {
@@ -3108,6 +2220,46 @@ export function useFindLanguagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type FindLanguagesQueryHookResult = ReturnType<typeof useFindLanguagesQuery>;
 export type FindLanguagesLazyQueryHookResult = ReturnType<typeof useFindLanguagesLazyQuery>;
 export type FindLanguagesQueryResult = Apollo.QueryResult<FindLanguagesQuery, FindLanguagesQueryVariables>;
+export const FindItemDocument = gql`
+    query FindItem($input: SearchInput!) {
+  search(input: $input) {
+    nodes {
+      ...ItemProps
+    }
+    pageInfo {
+      ...PageProps
+    }
+    totalElements
+  }
+}
+    ${ItemPropsFragmentDoc}
+${PagePropsFragmentDoc}`;
+
+/**
+ * __useFindItemQuery__
+ *
+ * To run a query within a React component, call `useFindItemQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindItemQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindItemQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useFindItemQuery(baseOptions?: Apollo.QueryHookOptions<FindItemQuery, FindItemQueryVariables>) {
+        return Apollo.useQuery<FindItemQuery, FindItemQueryVariables>(FindItemDocument, baseOptions);
+      }
+export function useFindItemLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindItemQuery, FindItemQueryVariables>) {
+          return Apollo.useLazyQuery<FindItemQuery, FindItemQueryVariables>(FindItemDocument, baseOptions);
+        }
+export type FindItemQueryHookResult = ReturnType<typeof useFindItemQuery>;
+export type FindItemLazyQueryHookResult = ReturnType<typeof useFindItemLazyQuery>;
+export type FindItemQueryResult = Apollo.QueryResult<FindItemQuery, FindItemQueryVariables>;
 export const FindConceptDocument = gql`
     query FindConcept($input: SearchInput!) {
   search(input: $input) {
@@ -3251,6 +2403,39 @@ export function useGetObjectEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetObjectEntryQueryHookResult = ReturnType<typeof useGetObjectEntryQuery>;
 export type GetObjectEntryLazyQueryHookResult = ReturnType<typeof useGetObjectEntryLazyQuery>;
 export type GetObjectEntryQueryResult = Apollo.QueryResult<GetObjectEntryQuery, GetObjectEntryQueryVariables>;
+export const GetPropertyEntryDocument = gql`
+    query GetPropertyEntry($id: ID!) {
+  node(id: $id) {
+    ...PropertyDetailProps
+  }
+}
+    ${PropertyDetailPropsFragmentDoc}`;
+
+/**
+ * __useGetPropertyEntryQuery__
+ *
+ * To run a query within a React component, call `useGetPropertyEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPropertyEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPropertyEntryQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetPropertyEntryQuery(baseOptions?: Apollo.QueryHookOptions<GetPropertyEntryQuery, GetPropertyEntryQueryVariables>) {
+        return Apollo.useQuery<GetPropertyEntryQuery, GetPropertyEntryQueryVariables>(GetPropertyEntryDocument, baseOptions);
+      }
+export function useGetPropertyEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPropertyEntryQuery, GetPropertyEntryQueryVariables>) {
+          return Apollo.useLazyQuery<GetPropertyEntryQuery, GetPropertyEntryQueryVariables>(GetPropertyEntryDocument, baseOptions);
+        }
+export type GetPropertyEntryQueryHookResult = ReturnType<typeof useGetPropertyEntryQuery>;
+export type GetPropertyEntryLazyQueryHookResult = ReturnType<typeof useGetPropertyEntryLazyQuery>;
+export type GetPropertyEntryQueryResult = Apollo.QueryResult<GetPropertyEntryQuery, GetPropertyEntryQueryVariables>;
 export const GetValueEntryDocument = gql`
     query GetValueEntry($id: ID!) {
   node(id: $id) {
