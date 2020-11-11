@@ -35,53 +35,44 @@ fragment TagProps on Tag {
     localizedDescription
 }
 
-fragment SearchResultProps on Concept {
+fragment ItemProps on Concept {
+    __typename
     id
-    versionId
-    versionDate
     name(input: { languageTags: ["de-DE", "en-US"] })
-    de: name(input: { languageTags: ["de-DE"] })
-    en: name(input: { languageTags: ["en-US, en-GB"] })
     description(input: { languageTags: ["de-DE", "en-US"] })
     tags {
         ...TagProps
     }
 }
 
-fragment ConceptProps on Concept {
-    id
+fragment SearchResultProps on Concept {
+    ...ItemProps
     versionId
     versionDate
-    name(input: { languageTags: ["de-DE", "en-US"] })
+    de: name(input: { languageTags: ["de-DE"] })
+    en: name(input: { languageTags: ["en-US, en-GB"] })
+}
+
+fragment ConceptProps on Concept {
+    ...ItemProps
+    versionId
+    versionDate
     de: name(input: { languageTags: ["de-DE"] })
     en: name(input: { languageTags: ["en-US, en-GB"] })
     names {
         ...TranslationProps
     }
-    description(input: { languageTags: ["de-DE", "en-US"] })
     descriptions {
         ...TranslationProps
     }
-    tags {
-        ...TagProps
-    }
-}
-
-fragment EntityProps on Entity {
-    created
-    createdBy
-    lastModified
-    lastModifiedBy
 }
 
 fragment ExternalDocumentProps on XtdExternalDocument {
     ...ConceptProps
-    ...EntityProps
 }
 
 fragment ObjectProps on XtdObject {
     ...ConceptProps
-    ...EntityProps
 }
 
 fragment ValueProps on XtdValue {
@@ -96,12 +87,10 @@ fragment ValueProps on XtdValue {
 
 fragment CollectionProps on XtdCollection {
     ...ConceptProps
-    ...EntityProps
 }
 
 fragment RelationshipProps on XtdRelationship {
     ...ConceptProps
-    ...EntityProps
 }
 
 fragment DocumentsProps on XtdRelDocuments {
@@ -156,7 +145,15 @@ fragment AssignsPropertyWithValuesProps on XtdRelAssignsPropertyWithValues {
     }
 }
 
+fragment MetaProps on Entity {
+    created
+    createdBy
+    lastModified
+    lastModifiedBy
+}
+
 fragment ExternalDocumentDetailProps on XtdExternalDocument {
+    ...MetaProps
     ...ExternalDocumentProps
     documents {
         nodes {
@@ -166,6 +163,7 @@ fragment ExternalDocumentDetailProps on XtdExternalDocument {
 }
 
 fragment ObjectDetailProps on XtdObject {
+    ...MetaProps
     ...ObjectProps
     assignedCollections {
         nodes {
@@ -177,6 +175,11 @@ fragment ObjectDetailProps on XtdObject {
             ...AssignsPropertiesProps
         }
     }
+    collectedBy {
+        nodes {
+            ...CollectsProps
+        }
+    }
     documentedBy {
         nodes {
             ...DocumentsProps
@@ -184,16 +187,31 @@ fragment ObjectDetailProps on XtdObject {
     }
 }
 
-fragment ValueDetailProps on XtdValue {
-    ...ValueProps
+fragment PropertyDetailProps on XtdProperty {
     ...ObjectDetailProps
+    assignedTo {
+        nodes {
+            ...AssignsPropertiesProps
+        }
+    }
+}
+
+fragment ValueDetailProps on XtdValue {
+    ...ObjectDetailProps
+    ...ValueProps
 }
 
 fragment CollectionDetailProps on XtdCollection {
+    ...MetaProps
     ...CollectionProps
     collects {
         nodes {
             ...CollectsProps
+        }
+    }
+    assignedTo {
+        nodes {
+            ...AssignsCollectionsProps
         }
     }
     collectedBy {

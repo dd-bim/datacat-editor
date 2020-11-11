@@ -7,6 +7,18 @@ query FindLanguages($input: LanguageFilterInput!) {
     }
 }
 
+query FindItem($input: SearchInput!) {
+    search(input: $input) {
+        nodes {
+            ...ItemProps
+        }
+        pageInfo {
+            ...PageProps
+        }
+        totalElements
+    }
+}
+
 query FindConcept($input: SearchInput!) {
     search(input: $input) {
         nodes {
@@ -42,6 +54,12 @@ query GetDocumentEntry($id: ID!) {
 query GetObjectEntry($id: ID!) {
     node(id: $id) {
         ...ObjectDetailProps
+    }
+}
+
+query GetPropertyEntry($id: ID!) {
+    node(id: $id) {
+        ...PropertyDetailProps
     }
 }
 
