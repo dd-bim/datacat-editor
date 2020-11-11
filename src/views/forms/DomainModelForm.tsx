@@ -18,7 +18,7 @@ import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import {GroupEntity} from "../../domain";
-import {FormProps} from "./FormView";
+import FormView, {FormProps} from "./FormView";
 import useDocumentedBy from "../../hooks/useDocumentedBy";
 
 
@@ -54,11 +54,8 @@ function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
         ]
     });
 
-    const documentedByInputs = useDocumentedBy({
-        id,
+    const documentedBy = useDocumentedBy({
         relationships: entry?.documentedBy.nodes || [],
-        label: 'Referenzdokumente',
-        helperText: 'Weitere Dokumente'
     });
 
     if (loading) return <Typography>Lade Fachmodel..</Typography>;
@@ -71,7 +68,7 @@ function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
     };
 
     return (
-        <React.Fragment>
+        <FormView>
             <NameFormSet
                 entryId={id}
                 names={entry.names}
@@ -95,11 +92,11 @@ function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
                 {collectsInputs}
             </FormSet>
 
-            <FormSet title="Referenzen" description="">
-                {documentedByInputs}
-            </FormSet>
-
             <MetaFormSet entry={entry}/>
+
+            <FormSet title="Referenzen">
+                {documentedBy}
+            </FormSet>
 
             <Button
                 variant="contained"
@@ -109,7 +106,7 @@ function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
             >
                 Löschen
             </Button>
-        </React.Fragment>
+        </FormView>
     );
 }
 

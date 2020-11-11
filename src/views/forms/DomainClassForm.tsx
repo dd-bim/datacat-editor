@@ -21,8 +21,9 @@ import VersionFormSet from "../../components/forms/VersionFormSet";
 import useAssignsCollections from "../../hooks/useAssignsCollections";
 import useAssignsProperties from "../../hooks/useAssignsProperties";
 import {PropertyGroupEntity} from "../../domain";
-import {FormProps} from "./FormView";
+import FormView, {FormProps} from "./FormView";
 import useDocumentedBy from "../../hooks/useDocumentedBy";
+import useCollectedBy from "../../hooks/useCollectedBy";
 
 const DomainClassForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
@@ -72,12 +73,15 @@ const DomainClassForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
         ]
     });
 
-    const documentedByInputs = useDocumentedBy({
-        id,
-        relationships: entry?.documentedBy.nodes || [],
-        label: 'Referenzdokumente',
-        helperText: 'Weitere Dokumente'
+    const documentedBy = useDocumentedBy({
+        relationships: entry?.documentedBy.nodes ?? []
     });
+
+    const collectedBy = useCollectedBy({
+        relationships: entry?.collectedBy.nodes ?? [],
+        emptyMessage: "Klasse wird in keiner Gruppe genutzt."
+    })
+
 
     if (loading) return <Typography>Lade Klasse..</Typography>;
     if (error || !entry) return <Typography>Es ist ein Fehler aufgetreten..</Typography>;
@@ -89,7 +93,7 @@ const DomainClassForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
     };
 
     return (
-        <React.Fragment>
+        <FormView>
             <NameFormSet
                 entryId={id}
                 names={entry.names}
@@ -120,11 +124,15 @@ const DomainClassForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
                 {assignedProperties}
             </FormSet>
 
-            <FormSet title="Referenzen" description="">
-                {documentedByInputs}
-            </FormSet>
+            <MetaFormSet entry={entry}>
+                <FormSet title="Referenzen..." description="">
+                    {documentedBy}
+                </FormSet>
 
-            <MetaFormSet entry={entry}/>
+                <FormSet title="Gruppen...">
+                    {collectedBy}
+                </FormSet>
+            </MetaFormSet>
 
             <Button
                 variant="contained"
@@ -134,7 +142,7 @@ const DomainClassForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
             >
                 Löschen
             </Button>
-        </React.Fragment>
+        </FormView>
     );
 }
 

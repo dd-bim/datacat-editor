@@ -1,9 +1,9 @@
 import React, {FC} from "react";
 import {
-    ObjectDetailPropsFragment,
+    PropertyDetailPropsFragment,
     PropertyTreeDocument,
     useDeleteEntryMutation,
-    useGetObjectEntryQuery
+    useGetPropertyEntryQuery
 } from "../../generated/types";
 import {Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
@@ -13,9 +13,13 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
-import {FormProps} from "./FormView";
+import FormView, {FormProps} from "./FormView";
+import useDocumentedBy from "../../hooks/useDocumentedBy";
+import {FormSet} from "../../components/forms/FormSet";
+import useCollectedBy from "../../hooks/useCollectedBy";
+import usePropertyAssignedTo from "../../hooks/usePropertyAssignedTo";
 
-const PropertyForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
+const PropertyForm: FC<FormProps<PropertyDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
 
@@ -24,12 +28,26 @@ const PropertyForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
     };
 
     // fetch domain model
-    const {loading, error, data} = useGetObjectEntryQuery({
+    const {loading, error, data} = useGetPropertyEntryQuery({
         fetchPolicy: "network-only",
         variables: {id}
     });
-    let entry = data?.node as ObjectDetailPropsFragment | undefined;
+    let entry = data?.node as PropertyDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation(baseOptions);
+
+    const documentedBy = useDocumentedBy({
+        relationships: entry?.documentedBy.nodes || []
+    });
+
+    const collectedBy = useCollectedBy({
+        relationships: entry?.collectedBy.nodes || [],
+        emptyMessage: "In keinen Merkmalsgruppen genutzt."
+    });
+
+    const assignedTo = usePropertyAssignedTo({
+        relationships: entry?.assignedTo.nodes || [],
+        emptyMessage: "Durch keine Klasse genutzt."
+    })
 
     if (loading) return <Typography>Lade Merkmal..</Typography>;
     if (error || !entry) return <Typography>Es ist ein Fehler aufgetreten..</Typography>;
@@ -41,7 +59,7 @@ const PropertyForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
     };
 
     return (
-        <React.Fragment>
+        <FormView>
             <NameFormSet
                 entryId={id}
                 names={entry.names}
@@ -60,6 +78,18 @@ const PropertyForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
 
             <MetaFormSet entry={entry}/>
 
+            <FormSet title="Referenzen...">
+                {documentedBy}
+            </FormSet>
+
+            <FormSet title="Merkmalsgruppen...">
+                {collectedBy}
+            </FormSet>
+
+            <FormSet title="Klassen...">
+                {assignedTo}
+            </FormSet>
+
             <Button
                 variant="contained"
                 color="primary"
@@ -68,7 +98,7 @@ const PropertyForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
             >
                 Löschen
             </Button>
-        </React.Fragment>
+        </FormView>
     );
 }
 
