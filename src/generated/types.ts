@@ -390,59 +390,6 @@ export type VersionInput = {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export type UserProfileFragment = { username: string, firstName: string, lastName: string, email: string, organization: string };
 
 export type PagePropsFragment = { totalPages: number, pageNumber: number, hasNext: boolean, hasPrevious: boolean };
@@ -2211,7 +2158,7 @@ export const FindLanguagesDocument = gql`
  *   },
  * });
  */
-export function useFindLanguagesQuery(baseOptions?: Apollo.QueryHookOptions<FindLanguagesQuery, FindLanguagesQueryVariables>) {
+export function useFindLanguagesQuery(baseOptions: Apollo.QueryHookOptions<FindLanguagesQuery, FindLanguagesQueryVariables>) {
         return Apollo.useQuery<FindLanguagesQuery, FindLanguagesQueryVariables>(FindLanguagesDocument, baseOptions);
       }
 export function useFindLanguagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindLanguagesQuery, FindLanguagesQueryVariables>) {
@@ -2251,7 +2198,7 @@ ${PagePropsFragmentDoc}`;
  *   },
  * });
  */
-export function useFindItemQuery(baseOptions?: Apollo.QueryHookOptions<FindItemQuery, FindItemQueryVariables>) {
+export function useFindItemQuery(baseOptions: Apollo.QueryHookOptions<FindItemQuery, FindItemQueryVariables>) {
         return Apollo.useQuery<FindItemQuery, FindItemQueryVariables>(FindItemDocument, baseOptions);
       }
 export function useFindItemLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindItemQuery, FindItemQueryVariables>) {
@@ -2291,7 +2238,7 @@ ${PagePropsFragmentDoc}`;
  *   },
  * });
  */
-export function useFindConceptQuery(baseOptions?: Apollo.QueryHookOptions<FindConceptQuery, FindConceptQueryVariables>) {
+export function useFindConceptQuery(baseOptions: Apollo.QueryHookOptions<FindConceptQuery, FindConceptQueryVariables>) {
         return Apollo.useQuery<FindConceptQuery, FindConceptQueryVariables>(FindConceptDocument, baseOptions);
       }
 export function useFindConceptLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindConceptQuery, FindConceptQueryVariables>) {
@@ -2361,7 +2308,7 @@ export const GetDocumentEntryDocument = gql`
  *   },
  * });
  */
-export function useGetDocumentEntryQuery(baseOptions?: Apollo.QueryHookOptions<GetDocumentEntryQuery, GetDocumentEntryQueryVariables>) {
+export function useGetDocumentEntryQuery(baseOptions: Apollo.QueryHookOptions<GetDocumentEntryQuery, GetDocumentEntryQueryVariables>) {
         return Apollo.useQuery<GetDocumentEntryQuery, GetDocumentEntryQueryVariables>(GetDocumentEntryDocument, baseOptions);
       }
 export function useGetDocumentEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetDocumentEntryQuery, GetDocumentEntryQueryVariables>) {
@@ -2394,7 +2341,7 @@ export const GetObjectEntryDocument = gql`
  *   },
  * });
  */
-export function useGetObjectEntryQuery(baseOptions?: Apollo.QueryHookOptions<GetObjectEntryQuery, GetObjectEntryQueryVariables>) {
+export function useGetObjectEntryQuery(baseOptions: Apollo.QueryHookOptions<GetObjectEntryQuery, GetObjectEntryQueryVariables>) {
         return Apollo.useQuery<GetObjectEntryQuery, GetObjectEntryQueryVariables>(GetObjectEntryDocument, baseOptions);
       }
 export function useGetObjectEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetObjectEntryQuery, GetObjectEntryQueryVariables>) {
@@ -2427,7 +2374,7 @@ export const GetPropertyEntryDocument = gql`
  *   },
  * });
  */
-export function useGetPropertyEntryQuery(baseOptions?: Apollo.QueryHookOptions<GetPropertyEntryQuery, GetPropertyEntryQueryVariables>) {
+export function useGetPropertyEntryQuery(baseOptions: Apollo.QueryHookOptions<GetPropertyEntryQuery, GetPropertyEntryQueryVariables>) {
         return Apollo.useQuery<GetPropertyEntryQuery, GetPropertyEntryQueryVariables>(GetPropertyEntryDocument, baseOptions);
       }
 export function useGetPropertyEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPropertyEntryQuery, GetPropertyEntryQueryVariables>) {
@@ -2460,7 +2407,7 @@ export const GetValueEntryDocument = gql`
  *   },
  * });
  */
-export function useGetValueEntryQuery(baseOptions?: Apollo.QueryHookOptions<GetValueEntryQuery, GetValueEntryQueryVariables>) {
+export function useGetValueEntryQuery(baseOptions: Apollo.QueryHookOptions<GetValueEntryQuery, GetValueEntryQueryVariables>) {
         return Apollo.useQuery<GetValueEntryQuery, GetValueEntryQueryVariables>(GetValueEntryDocument, baseOptions);
       }
 export function useGetValueEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetValueEntryQuery, GetValueEntryQueryVariables>) {
@@ -2493,7 +2440,7 @@ export const GetCollectionEntryDocument = gql`
  *   },
  * });
  */
-export function useGetCollectionEntryQuery(baseOptions?: Apollo.QueryHookOptions<GetCollectionEntryQuery, GetCollectionEntryQueryVariables>) {
+export function useGetCollectionEntryQuery(baseOptions: Apollo.QueryHookOptions<GetCollectionEntryQuery, GetCollectionEntryQueryVariables>) {
         return Apollo.useQuery<GetCollectionEntryQuery, GetCollectionEntryQueryVariables>(GetCollectionEntryDocument, baseOptions);
       }
 export function useGetCollectionEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCollectionEntryQuery, GetCollectionEntryQueryVariables>) {
