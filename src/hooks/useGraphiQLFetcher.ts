@@ -1,10 +1,10 @@
-import useAuthContext from "./useAuthContext";
+import {useKeycloak} from "@react-keycloak/web";
 
 export const useGraphiQLFetcher = () => {
-    const {token} = useAuthContext();
+    const {keycloak} = useKeycloak();
     let headers: Record<string, string> = { 'Content-Type': 'application/json' };
-    if (token) {
-        headers = { 'Authorization': `Bearer ${token}`, ...headers };
+    if (keycloak.token) {
+        headers = { 'Authorization': `Bearer ${keycloak.token}`, ...headers };
     }
     return (params: any) => fetch(process.env.REACT_APP_API as string, {
         method: 'POST',

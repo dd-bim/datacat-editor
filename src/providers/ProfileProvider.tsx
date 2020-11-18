@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import {useProfileQuery, UserProfileFragment} from "../generated/types";
-import useAuthContext from "../hooks/useAuthContext";
 import {ApolloError} from "@apollo/client";
+import {useKeycloak} from "@react-keycloak/web";
 
 type ProfileContextState = {
     loading: boolean,
@@ -16,9 +16,9 @@ export function useProfile() {
 }
 
 export default function ProfileProvider({children}: { children: React.ReactNode }) {
-    const {token} = useAuthContext();
+    const {keycloak} = useKeycloak();
     const {loading, error, data} = useProfileQuery({
-        skip: !token
+        skip: !keycloak.authenticated
     });
 
     return (

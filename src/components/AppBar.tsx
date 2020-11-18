@@ -5,7 +5,6 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import MaterialUIAppBar from "@material-ui/core/AppBar";
 import React from "react";
 import {QuickSearchWidget} from "./QuickSearchWidget";
-import useAuthContext, {useWriteAccess} from "../hooks/useAuthContext";
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import {Tooltip} from "@material-ui/core";
@@ -14,6 +13,8 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from '@material-ui/icons/Menu';
 import CreateEntrySplitButton from "./CreateEntrySplitButton";
 import AppTitle from "./AppTitle";
+import {useKeycloak} from "@react-keycloak/web";
+import {KeycloakTokenParsed} from "keycloak-js";
 
 const useStyles = makeStyles((theme: Theme) => ({
     appBar: {
@@ -31,17 +32,18 @@ type AppBarProps = {
     onClick?(): void;
 }
 
+type Profile = KeycloakTokenParsed & {preferred_username: string}
+
 export function AppBar(props: AppBarProps) {
     const {onClick} = props;
     const classes = useStyles();
-    const {profile} = useProfile();
-    const {logout} = useAuthContext();
-    const verifiedUser = useWriteAccess();
+    const {keycloak} = useKeycloak();
+    const user = (keycloak.idTokenParsed as Profile | undefined);
 
     return (
         <MaterialUIAppBar position="fixed" className={classes.appBar}>
             <Toolbar className={classes.toolbar}>
-                {onClick && profile && (
+                {onClick && (
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -52,7 +54,7 @@ export function AppBar(props: AppBarProps) {
                     </IconButton>
                 )}
                 <AppTitle/>
-                {profile && (
+                {user && (
                     <React.Fragment>
                         <QuickSearchWidget key="search-input"/>
 
@@ -62,7 +64,7 @@ export function AppBar(props: AppBarProps) {
                                 variant="outlined"
                                 color="inherit"
                                 aria-label="logout"
-                                startIcon={verifiedUser ? (
+                                startIcon={keycloak.hasRealmRole('user') ? (
                                     <Tooltip title="Durch den Administrator bestätigter Benutzer">
                                         <VerifiedUserIcon/>
                                     </Tooltip>
@@ -72,9 +74,9 @@ export function AppBar(props: AppBarProps) {
                                     </Tooltip>
                                 )}
                                 endIcon={<ExitToAppIcon/>}
-                                onClick={() => logout()}
+                                onClick={() => keycloak.logout()}
                         >
-                            {profile.username}
+                            {user.preferred_username}
                         </Button>
                     </React.Fragment>
                 )}

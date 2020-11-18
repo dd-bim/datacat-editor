@@ -5,10 +5,8 @@ import AppDrawer from "./components/AppDrawer";
 import BoardingView from "./views/BoardingView";
 import {AppBar} from "./components/AppBar";
 import {Route, Switch} from "react-router-dom";
-import useAuthContext from "./hooks/useAuthContext";
 import {Toolbar} from "@material-ui/core";
 import Footer from "./components/Footer";
-import ConfirmationView from "./views/ConfirmationView";
 import DomainModelList from "./views/lists/DomainModelList";
 import Typography from "@material-ui/core/Typography";
 import ProfileFormView from "./views/forms/ProfileFormView";
@@ -34,6 +32,7 @@ import useGraphiQLFetcher from "./hooks/useGraphiQLFetcher";
 import {GraphiQL} from "graphiql";
 
 import "graphiql/graphiql.min.css";
+import {useKeycloak} from "@react-keycloak/web";
 
 const drawerWidth = 250;
 
@@ -63,22 +62,15 @@ const useStyles = makeStyles(theme => ({
 export default function Layout() {
     const classes = useStyles();
     const gridStyles = useGridStyles();
-    const {token} = useAuthContext();
+    const {keycloak} = useKeycloak();
     const [drawerOpen, setDrawerOpen] = useState(false);
     const graphiqlFetcher = useGraphiQLFetcher();
 
-    if (!token) {
+    if (!keycloak.authenticated) {
         return (
             <div className={classes.content}>
                 <CssBaseline/>
-                <Switch>
-                    <Route path="/confirm">
-                        <ConfirmationView/>
-                    </Route>
-                    <Route>
-                        <BoardingView/>
-                    </Route>
-                </Switch>
+                <BoardingView/>
                 <Footer/>
             </div>
         );

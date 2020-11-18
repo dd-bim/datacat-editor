@@ -1,17 +1,19 @@
 import {ApolloClient, ApolloProvider, HttpLink, InMemoryCache} from "@apollo/client";
 import possibleTypes from "../generated/possibleTypes.json";
 import React from "react";
-import useAuthContext from "../hooks/useAuthContext";
+import {useKeycloak} from "@react-keycloak/web";
 
 export type ApiProviderProps = {
     children?: React.ReactNode;
 }
 
 export default function ApiProvider(props: ApiProviderProps) {
-    const { children } = props;
-    const { token } = useAuthContext();
+    const {children} = props;
+    const {keycloak, initialized} = useKeycloak();
+    const token = keycloak?.token ?? '';
+
     const headers = token ? {
-        'Authorization': `Bearer ${token}`
+        'Authorization': initialized ? `Bearer ${token}` : undefined
     } : {};
     const apolloClient = new ApolloClient({
         connectToDevTools: true,

@@ -3,7 +3,6 @@ import Grid from "@material-ui/core/Grid";
 import LoginForm from "../components/LoginForm";
 import Typography from "@material-ui/core/Typography";
 import SignupForm from "../components/SignupForm";
-import useAuthContext from "../hooks/useAuthContext";
 import {useSnackbar} from "notistack";
 import {Paper} from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -11,6 +10,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import PetsIcon from "@material-ui/icons/Pets";
+import {useKeycloak} from "@react-keycloak/web";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -50,20 +50,20 @@ function TabPanel(props: TabPanelProps) {
 
 export default function BoardingView() {
     const classes = useStyles();
-    const {enqueueSnackbar} = useSnackbar();
-    const {login} = useAuthContext();
-    const [signupSent, setSignupSent] = useState(false);
+    // const {enqueueSnackbar} = useSnackbar();
+    const {keycloak} = useKeycloak();
+    // const [signupSent, setSignupSent] = useState(false);
     const [tab, setTab] = useState("login");
 
-    const handleLogin = (token: string) => {
-        enqueueSnackbar('Welcome back!');
-        login(token);
-    }
-
-    const handleSignup = () => {
-        setSignupSent(true);
-        enqueueSnackbar('Signup successful! You will need to check your inbox and confirm your email address before logging in.');
-    }
+    // const handleLogin = (token: string) => {
+    //     enqueueSnackbar('Welcome back!');
+    //     login(token);
+    // }
+    //
+    // const handleSignup = () => {
+    //     setSignupSent(true);
+    //     enqueueSnackbar('Signup successful! You will need to check your inbox and confirm your email address before logging in.');
+    // }
 
 
     return (
@@ -121,35 +121,35 @@ export default function BoardingView() {
                         textColor="primary"
                         centered
                     >
-                        <Tab label="Anmelden" value="login"/>
-                        <Tab label="Registrieren" value="signup"/>
+                        <Tab label="Anmelden" value="login" onClick={() => keycloak.login()}/>
+                        <Tab label="Registrieren" value="signup" onClick={() => keycloak.register()}/>
                     </Tabs>
-                    <TabPanel value={tab} index="login">
-                        <Typography>
-                            Bitte nuten Sie Ihren Benutzernamen und Ihr Password um sich beim Editor anzumelden.
-                        </Typography>
-                        <LoginForm onLogin={handleLogin}/>
-                    </TabPanel>
-                    <TabPanel value={tab} index="signup">
-                        {signupSent ? (
-                            <Typography>
-                                Sie erhalten in den nächsten Minuten einen Bestätigungscode per Email, mit dem Sie
-                                Ihren
-                                Account aktivieren können.
-                            </Typography>
-                        ) : (
-                            <React.Fragment>
-                                <Typography>
-                                    Sie können sich registrieren um lesenden Zugriff auf den Katalog zu erhalten.
-                                    Möchten Sie
-                                    sich an der Bearbeitung
-                                    des Katalogs beteiligen, so informieren Sie bitte den Administrator.
-                                </Typography>
-                                <SignupForm onSignup={handleSignup}/>
-                            </React.Fragment>
+                    {/*<TabPanel value={tab} index="login">*/}
+                    {/*    <Typography>*/}
+                    {/*        Bitte nuten Sie Ihren Benutzernamen und Ihr Password um sich beim Editor anzumelden.*/}
+                    {/*    </Typography>*/}
+                    {/*    <LoginForm onLogin={handleLogin}/>*/}
+                    {/*</TabPanel>*/}
+                    {/*<TabPanel value={tab} index="signup">*/}
+                    {/*    {signupSent ? (*/}
+                    {/*        <Typography>*/}
+                    {/*            Sie erhalten in den nächsten Minuten einen Bestätigungscode per Email, mit dem Sie*/}
+                    {/*            Ihren*/}
+                    {/*            Account aktivieren können.*/}
+                    {/*        </Typography>*/}
+                    {/*    ) : (*/}
+                    {/*        <React.Fragment>*/}
+                    {/*            <Typography>*/}
+                    {/*                Sie können sich registrieren um lesenden Zugriff auf den Katalog zu erhalten.*/}
+                    {/*                Möchten Sie*/}
+                    {/*                sich an der Bearbeitung*/}
+                    {/*                des Katalogs beteiligen, so informieren Sie bitte den Administrator.*/}
+                    {/*            </Typography>*/}
+                    {/*            <SignupForm onSignup={handleSignup}/>*/}
+                    {/*        </React.Fragment>*/}
 
-                        )}
-                    </TabPanel>
+                    {/*    )}*/}
+                    {/*</TabPanel>*/}
                 </Paper>
             </Grid>
         </Grid>

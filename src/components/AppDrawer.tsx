@@ -25,6 +25,7 @@ import {
     ValueEntity
 } from "../domain";
 import AppTitle from "./AppTitle";
+import {useKeycloak} from "@react-keycloak/web";
 
 const useStyles = makeStyles(theme => ({
     drawerContainer: {
@@ -71,6 +72,8 @@ export const AppDrawerItem: FunctionComponent<AppDrawerItemProps & ListItemProps
 
 const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
     const classes = useStyles();
+    const {keycloak} = useKeycloak();
+
     return (
         <Drawer {...props}>
             <div className={classes.drawerContainer}>
@@ -87,11 +90,17 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
                         to="/"
                     />
 
-                    <AppDrawerItem
-                        icon={<AccountCircleIcon/>}
-                        primary="Profil bearbeiten"
-                        to="/profile"
-                    />
+                    <Tooltip title="Profil bearbeiten" aria-label="Profil bearbeiten" arrow enterDelay={500}>
+                        <ListItem
+                            button
+                            onClick={() => keycloak.accountManagement()}
+                        >
+                            <ListItemIcon>
+                                <AccountCircleIcon/>
+                            </ListItemIcon>
+                            <ListItemText primary="Profil bearbeiten"/>
+                        </ListItem>
+                    </Tooltip>
 
                     <AppDrawerItem
                         icon={<SearchIcon/>}
