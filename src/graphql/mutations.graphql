@@ -158,7 +158,9 @@ mutation DeleteRelationship($input: DeleteRelationshipInput!) {
 }
 
 mutation TagBag($bagId: ID!, $tagId: ID!) {
-    tag(conceptId: $bagId, tagId: $tagId) {
-        ...CollectionDetailProps
+    addTag(input: { entryId: $bagId, tagId: $tagId}) {
+        entry {
+            ...CollectionDetailProps
+        }
     }
 }

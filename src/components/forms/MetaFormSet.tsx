@@ -45,7 +45,7 @@ function MetaFormSet(props: MetaFormSetProps) {
                     ISO12006-3-Konzept: {__typename}
                 </Typography>
                 <Typography variant="body2">
-                    Tags: {tags.map(x => x.localizedName).join(", ")}
+                    Tags: {tags.map(x => x.name).join(", ")}
                 </Typography>
                 <Typography variant="body2">
                     Erstellt: {toLLL(created)} durch {createdBy}

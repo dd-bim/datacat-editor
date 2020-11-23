@@ -31,8 +31,7 @@ fragment TranslationProps on Translation {
 
 fragment TagProps on Tag {
     id
-    localizedName
-    localizedDescription
+    name
 }
 
 fragment ItemProps on Concept {

@@ -54,6 +54,12 @@ export type AddNameInput = {
 };
 
 
+export type AddTagInput = {
+  entryId: Scalars['ID'];
+  tagId: Scalars['ID'];
+};
+
+
 
 
 
@@ -89,6 +95,11 @@ export type CreateQualifiedOneToOneRelationshipInput = {
 };
 
 
+export type CreateTagInput = {
+  name: Scalars['String'];
+};
+
+
 export type DeleteDescriptionInput = {
   entryId: Scalars['ID'];
   descriptionId: Scalars['ID'];
@@ -107,6 +118,11 @@ export type DeleteNameInput = {
 
 
 export type DeleteRelationshipInput = {
+  id: Scalars['ID'];
+};
+
+
+export type DeleteTagInput = {
   id: Scalars['ID'];
 };
 
@@ -209,11 +225,6 @@ export type LocalizationInput = {
 };
 
 
-export type LocalizedTextInput = {
-  languageTag: Scalars['String'];
-  text: Scalars['String'];
-};
-
 export type LoginInput = {
   username: Scalars['ID'];
   password: Scalars['String'];
@@ -271,6 +282,12 @@ export enum QualifiedOneToOneRelationshipType {
 
 
 
+export type RemoveTagInput = {
+  entryId: Scalars['ID'];
+  tagId: Scalars['ID'];
+};
+
+
 export type SearchInput = {
   query?: Maybe<Scalars['String']>;
   filters?: Maybe<Array<EntryFilterInput>>;
@@ -315,12 +332,6 @@ export type SignupInput = {
 
 export type TagFilterInput = {
   in?: Maybe<Array<Scalars['ID']>>;
-};
-
-export type TagInput = {
-  scope?: Maybe<Scalars['String']>;
-  names: Array<LocalizedTextInput>;
-  descriptions?: Maybe<Array<LocalizedTextInput>>;
 };
 
 export type ToleranceInput = {
@@ -368,6 +379,12 @@ export type UpdateNameInput = {
 };
 
 
+export type UpdateTagInput = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
 export enum ValueRole {
   Nominal = 'Nominal',
   Maximum = 'Maximum',
@@ -390,6 +407,60 @@ export type VersionInput = {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export type UserProfileFragment = { username: string, firstName: string, lastName: string, email: string, organization: string };
 
 export type PagePropsFragment = { totalPages: number, pageNumber: number, hasNext: boolean, hasPrevious: boolean };
@@ -398,7 +469,7 @@ export type LanguagePropsFragment = { id: string, languageTag: string, displayCo
 
 export type TranslationPropsFragment = { id: string, value: string, language: LanguagePropsFragment };
 
-export type TagPropsFragment = { id: string, localizedName: string, localizedDescription?: Maybe<string> };
+export type TagPropsFragment = { id: string, name: string };
 
 type ItemProps_XtdActivity_Fragment = { __typename: 'XtdActivity', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
@@ -1077,7 +1148,7 @@ export type TagBagMutationVariables = Exact<{
 }>;
 
 
-export type TagBagMutation = { tag: CollectionDetailProps_XtdBag_Fragment | CollectionDetailProps_XtdNest_Fragment };
+export type TagBagMutation = { addTag?: Maybe<{ entry?: Maybe<CollectionDetailProps_XtdBag_Fragment | CollectionDetailProps_XtdNest_Fragment> }> };
 
 export type FindLanguagesQueryVariables = Exact<{
   input: LanguageFilterInput;
@@ -1165,8 +1236,7 @@ export const PagePropsFragmentDoc = gql`
 export const TagPropsFragmentDoc = gql`
     fragment TagProps on Tag {
   id
-  localizedName
-  localizedDescription
+  name
 }
     `;
 export const ItemPropsFragmentDoc = gql`
@@ -2100,8 +2170,10 @@ export type DeleteRelationshipMutationResult = Apollo.MutationResult<DeleteRelat
 export type DeleteRelationshipMutationOptions = Apollo.BaseMutationOptions<DeleteRelationshipMutation, DeleteRelationshipMutationVariables>;
 export const TagBagDocument = gql`
     mutation TagBag($bagId: ID!, $tagId: ID!) {
-  tag(conceptId: $bagId, tagId: $tagId) {
-    ...CollectionDetailProps
+  addTag(input: {entryId: $bagId, tagId: $tagId}) {
+    entry {
+      ...CollectionDetailProps
+    }
   }
 }
     ${CollectionDetailPropsFragmentDoc}`;
