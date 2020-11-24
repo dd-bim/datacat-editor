@@ -22,10 +22,13 @@ import {
     getEntityType,
     GroupEntity,
     ModelEntity,
+    PropertyEntity,
     PropertyGroupEntity,
-    PropertyGroupIcon
+    PropertyGroupIcon,
+    PropertyIcon
 } from "../domain";
 import {RelationshipIcon} from "../components/ConceptIcon";
+import PropertyForm from "./forms/PropertyForm";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -145,6 +148,17 @@ const HierarchyView: FC = () => {
                                         <PropertyGroupIcon/> Merkmalsgruppe bearbeiten
                                     </Typography>
                                     <PropertyGroupForm id={id} onDelete={handleOnDelete}/>
+                                </React.Fragment>
+                            );
+                        }}/>
+                        <Route exact path={`${path}/${PropertyEntity.path}/:id`} render={renderProps => {
+                            const id: string = renderProps.match.params.id;
+                            return (
+                                <React.Fragment>
+                                    <Typography variant="h5">
+                                        <PropertyIcon/> Merkmal bearbeiten
+                                    </Typography>
+                                    <PropertyForm id={id} onDelete={handleOnDelete}/>
                                 </React.Fragment>
                             );
                         }}/>
