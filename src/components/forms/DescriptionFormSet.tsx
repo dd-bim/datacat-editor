@@ -25,12 +25,12 @@ const useStyles = makeStyles(() => ({
 }));
 
 type DescriptionFormSetProps = {
-    entryId: string,
+    catalogEntryId: string,
     descriptions: TranslationPropsFragment[]
 }
 
 const DescriptionFormSet: FC<DescriptionFormSetProps> = (props) => {
-    const {entryId, descriptions} = props;
+    const {catalogEntryId, descriptions} = props;
     const classes = useStyles();
 
     const {enqueueSnackbar} = useSnackbar();
@@ -43,7 +43,7 @@ const DescriptionFormSet: FC<DescriptionFormSetProps> = (props) => {
     const onSubmitNewDescription = async (values: TranslationInput) => {
         await addDescription({
             variables: {
-                input: {entryId, description: {...values}}
+                input: {catalogEntryId, description: {...values}}
             }
         });
         setOpen(false);
@@ -57,7 +57,7 @@ const DescriptionFormSet: FC<DescriptionFormSetProps> = (props) => {
                 await updateDescription({
                     variables: {
                         input: {
-                            entryId, description: {id: translation.id, value: values.value}
+                            catalogEntryId, description: {id: translation.id, value: values.value}
                         }
                     }
                 });
@@ -66,7 +66,7 @@ const DescriptionFormSet: FC<DescriptionFormSetProps> = (props) => {
             const onDelete = async () => {
                 await deleteDescription({
                     variables: {
-                        input: {entryId, descriptionId: translation.id}
+                        input: {catalogEntryId, descriptionId: translation.id}
                     }
                 });
                 enqueueSnackbar("Beschreibung gelöscht.");

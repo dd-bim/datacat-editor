@@ -43,28 +43,52 @@ export type AccountUpdateInput = {
 };
 
 export type AddDescriptionInput = {
-  entryId: Scalars['ID'];
+  catalogEntryId: Scalars['ID'];
   description: TranslationInput;
 };
 
 
 export type AddNameInput = {
-  entryId: Scalars['ID'];
+  catalogEntryId: Scalars['ID'];
   name: TranslationInput;
 };
 
 
 export type AddTagInput = {
-  entryId: Scalars['ID'];
+  catalogEntryId: Scalars['ID'];
   tagId: Scalars['ID'];
 };
 
 
 
+export type CatalogEntryFilterInput = {
+  catalogEntryType?: Maybe<CatalogEntryTypeFilterInput>;
+  tags?: Maybe<TagFilterInput>;
+};
+
+export enum CatalogEntryType {
+  Actor = 'Actor',
+  Activity = 'Activity',
+  Bag = 'Bag',
+  Classification = 'Classification',
+  ExternalDocument = 'ExternalDocument',
+  Measure = 'Measure',
+  Nest = 'Nest',
+  Subject = 'Subject',
+  Property = 'Property',
+  Unit = 'Unit',
+  Value = 'Value'
+}
+
+export type CatalogEntryTypeFilterInput = {
+  in?: Maybe<Array<CatalogEntryType>>;
+};
 
 
-export type CreateEntryInput = {
-  entryType: EntryType;
+
+
+export type CreateCatalogEntryInput = {
+  catalogEntryType: CatalogEntryType;
   properties: PropertiesInput;
   tags?: Maybe<Array<Scalars['ID']>>;
 };
@@ -100,19 +124,19 @@ export type CreateTagInput = {
 };
 
 
+export type DeleteCatalogEntryInput = {
+  id: Scalars['ID'];
+};
+
 export type DeleteDescriptionInput = {
-  entryId: Scalars['ID'];
+  catalogEntryId: Scalars['ID'];
   descriptionId: Scalars['ID'];
 };
 
 
-export type DeleteEntryInput = {
-  id: Scalars['ID'];
-};
-
 
 export type DeleteNameInput = {
-  entryId: Scalars['ID'];
+  catalogEntryId: Scalars['ID'];
   nameId: Scalars['ID'];
 };
 
@@ -162,30 +186,6 @@ export enum EntityTypes {
   XtdRelSpecializes = 'XtdRelSpecializes'
 }
 
-
-export type EntryFilterInput = {
-  entryType?: Maybe<EntryTypeFilterInput>;
-  tags?: Maybe<TagFilterInput>;
-};
-
-export enum EntryType {
-  Actor = 'Actor',
-  Activity = 'Activity',
-  Bag = 'Bag',
-  Classification = 'Classification',
-  ExternalDocument = 'ExternalDocument',
-  Measure = 'Measure',
-  Nest = 'Nest',
-  Subject = 'Subject',
-  Property = 'Property',
-  Unit = 'Unit',
-  Value = 'Value'
-}
-
-export type EntryTypeFilterInput = {
-  in?: Maybe<Array<EntryType>>;
-};
-
 export type FilterInput = {
   query?: Maybe<Scalars['String']>;
   idIn?: Maybe<Array<Scalars['ID']>>;
@@ -201,8 +201,8 @@ export type HierarchyFilterInput = {
 
 
 export type HierarchyRootNodeFilterInput = {
-  entryTypeIn?: Maybe<Array<EntryType>>;
-  entryTypeNotIn?: Maybe<Array<EntryType>>;
+  catalogEntryTypeIn?: Maybe<Array<CatalogEntryType>>;
+  catalogEntryTypeNotIn?: Maybe<Array<CatalogEntryType>>;
   idIn?: Maybe<Array<Scalars['ID']>>;
   idNotIn?: Maybe<Array<Scalars['ID']>>;
   tagged?: Maybe<Array<Scalars['ID']>>;
@@ -283,14 +283,14 @@ export enum QualifiedOneToOneRelationshipType {
 
 
 export type RemoveTagInput = {
-  entryId: Scalars['ID'];
+  catalogEntryId: Scalars['ID'];
   tagId: Scalars['ID'];
 };
 
 
 export type SearchInput = {
   query?: Maybe<Scalars['String']>;
-  filters?: Maybe<Array<EntryFilterInput>>;
+  filters?: Maybe<Array<CatalogEntryFilterInput>>;
   entityTypeIn?: Maybe<Array<EntityTypes>>;
   entityTypeNotIn?: Maybe<Array<EntityTypes>>;
   idIn?: Maybe<Array<Scalars['ID']>>;
@@ -368,13 +368,13 @@ export type UnsetToleranceInput = {
 
 
 export type UpdateDescriptionInput = {
-  entryId: Scalars['ID'];
+  catalogEntryId: Scalars['ID'];
   description: TranslationUpdateInput;
 };
 
 
 export type UpdateNameInput = {
-  entryId: Scalars['ID'];
+  catalogEntryId: Scalars['ID'];
   name: TranslationUpdateInput;
 };
 
@@ -404,6 +404,7 @@ export type VersionInput = {
   versionId?: Maybe<Scalars['String']>;
   versionDate?: Maybe<Scalars['String']>;
 };
+
 
 
 
@@ -1030,95 +1031,95 @@ export type UpdateProfileMutationVariables = Exact<{
 export type UpdateProfileMutation = { updateProfile: UserProfileFragment };
 
 export type CreateEntryMutationVariables = Exact<{
-  input: CreateEntryInput;
+  input: CreateCatalogEntryInput;
 }>;
 
 
-export type CreateEntryMutation = { createEntry?: Maybe<{ entry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
+export type CreateEntryMutation = { createCatalogEntry?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
 
 export type DeleteEntryMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type DeleteEntryMutation = { deleteEntry?: Maybe<{ entry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
+export type DeleteEntryMutation = { deleteEntry?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
 
 export type SetVersionMutationVariables = Exact<{
   input: SetVersionInput;
 }>;
 
 
-export type SetVersionMutation = { setVersion?: Maybe<{ entry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
+export type SetVersionMutation = { setVersion?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
 
 export type AddNameMutationVariables = Exact<{
   input: AddNameInput;
 }>;
 
 
-export type AddNameMutation = { addName?: Maybe<{ entry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
+export type AddNameMutation = { addName?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
 
 export type UpdateNameMutationVariables = Exact<{
   input: UpdateNameInput;
 }>;
 
 
-export type UpdateNameMutation = { updateName?: Maybe<{ entry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
+export type UpdateNameMutation = { updateName?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
 
 export type DeleteNameMutationVariables = Exact<{
   input: DeleteNameInput;
 }>;
 
 
-export type DeleteNameMutation = { deleteName?: Maybe<{ entry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
+export type DeleteNameMutation = { deleteName?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
 
 export type AddDescriptionMutationVariables = Exact<{
   input: AddDescriptionInput;
 }>;
 
 
-export type AddDescriptionMutation = { addDescription?: Maybe<{ entry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
+export type AddDescriptionMutation = { addDescription?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
 
 export type UpdateDescriptionMutationVariables = Exact<{
   input: UpdateDescriptionInput;
 }>;
 
 
-export type UpdateDescriptionMutation = { updateDescription?: Maybe<{ entry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
+export type UpdateDescriptionMutation = { updateDescription?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
 
 export type DeleteDescriptionMutationVariables = Exact<{
   input: DeleteDescriptionInput;
 }>;
 
 
-export type DeleteDescriptionMutation = { deleteDescription?: Maybe<{ entry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
+export type DeleteDescriptionMutation = { deleteDescription?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
 
 export type SetToleranceMutationVariables = Exact<{
   input: SetToleranceInput;
 }>;
 
 
-export type SetToleranceMutation = { setTolerance?: Maybe<{ entry?: Maybe<ValueDetailPropsFragment> }> };
+export type SetToleranceMutation = { setTolerance?: Maybe<{ catalogEntry?: Maybe<ValueDetailPropsFragment> }> };
 
 export type UnsetToleranceMutationVariables = Exact<{
   input: UnsetToleranceInput;
 }>;
 
 
-export type UnsetToleranceMutation = { unsetTolerance?: Maybe<{ entry?: Maybe<ValueDetailPropsFragment> }> };
+export type UnsetToleranceMutation = { unsetTolerance?: Maybe<{ catalogEntry?: Maybe<ValueDetailPropsFragment> }> };
 
 export type SetNominalValueMutationVariables = Exact<{
   input: SetNominalValueInput;
 }>;
 
 
-export type SetNominalValueMutation = { setNominalValue?: Maybe<{ entry?: Maybe<ValueDetailPropsFragment> }> };
+export type SetNominalValueMutation = { setNominalValue?: Maybe<{ catalogEntry?: Maybe<ValueDetailPropsFragment> }> };
 
 export type UnsetNominalValueMutationVariables = Exact<{
   input: UnsetNominalValueInput;
 }>;
 
 
-export type UnsetNominalValueMutation = { unsetNominalValue?: Maybe<{ entry?: Maybe<ValueDetailPropsFragment> }> };
+export type UnsetNominalValueMutation = { unsetNominalValue?: Maybe<{ catalogEntry?: Maybe<ValueDetailPropsFragment> }> };
 
 export type CreateOneToManyRelationshipMutationVariables = Exact<{
   input: CreateOneToManyRelationshipInput;
@@ -1148,7 +1149,7 @@ export type TagBagMutationVariables = Exact<{
 }>;
 
 
-export type TagBagMutation = { addTag?: Maybe<{ entry?: Maybe<CollectionDetailProps_XtdBag_Fragment | CollectionDetailProps_XtdNest_Fragment> }> };
+export type TagBagMutation = { addTag?: Maybe<{ catalogEntry?: Maybe<CollectionDetailProps_XtdBag_Fragment | CollectionDetailProps_XtdNest_Fragment> }> };
 
 export type FindLanguagesQueryVariables = Exact<{
   input: LanguageFilterInput;
@@ -1174,7 +1175,7 @@ export type FindConceptQuery = { search: { totalElements: number, nodes: Array<S
 export type PropertyTreeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type PropertyTreeQuery = { hierarchy: { paths: Array<Array<string>>, nodes: Array<ConceptProps_XtdActivity_Fragment | ConceptProps_XtdActor_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdRelActsUpon_Fragment | ConceptProps_XtdRelAssignsCollections_Fragment | ConceptProps_XtdRelAssignsMeasures_Fragment | ConceptProps_XtdRelAssignsProperties_Fragment | ConceptProps_XtdRelAssignsPropertyWithValues_Fragment | ConceptProps_XtdRelAssignsUnits_Fragment | ConceptProps_XtdRelAssignsValues_Fragment | ConceptProps_XtdRelAssociates_Fragment | ConceptProps_XtdRelCollects_Fragment | ConceptProps_XtdRelComposes_Fragment | ConceptProps_XtdRelDocuments_Fragment | ConceptProps_XtdRelGroups_Fragment | ConceptProps_XtdRelSequences_Fragment | ConceptProps_XtdRelSpecializes_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> } };
+export type PropertyTreeQuery = { hierarchy: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdActivity_Fragment | ItemProps_XtdActor_Fragment | ItemProps_XtdBag_Fragment | ItemProps_XtdClassification_Fragment | ItemProps_XtdExternalDocument_Fragment | ItemProps_XtdMeasureWithUnit_Fragment | ItemProps_XtdNest_Fragment | ItemProps_XtdProperty_Fragment | ItemProps_XtdRelActsUpon_Fragment | ItemProps_XtdRelAssignsCollections_Fragment | ItemProps_XtdRelAssignsMeasures_Fragment | ItemProps_XtdRelAssignsProperties_Fragment | ItemProps_XtdRelAssignsPropertyWithValues_Fragment | ItemProps_XtdRelAssignsUnits_Fragment | ItemProps_XtdRelAssignsValues_Fragment | ItemProps_XtdRelAssociates_Fragment | ItemProps_XtdRelCollects_Fragment | ItemProps_XtdRelComposes_Fragment | ItemProps_XtdRelDocuments_Fragment | ItemProps_XtdRelGroups_Fragment | ItemProps_XtdRelSequences_Fragment | ItemProps_XtdRelSpecializes_Fragment | ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
 
 export type GetDocumentEntryQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -1611,9 +1612,9 @@ export type UpdateProfileMutationHookResult = ReturnType<typeof useUpdateProfile
 export type UpdateProfileMutationResult = Apollo.MutationResult<UpdateProfileMutation>;
 export type UpdateProfileMutationOptions = Apollo.BaseMutationOptions<UpdateProfileMutation, UpdateProfileMutationVariables>;
 export const CreateEntryDocument = gql`
-    mutation CreateEntry($input: CreateEntryInput!) {
-  createEntry(input: $input) {
-    entry {
+    mutation CreateEntry($input: CreateCatalogEntryInput!) {
+  createCatalogEntry(input: $input) {
+    catalogEntry {
       ...ConceptProps
     }
   }
@@ -1647,7 +1648,7 @@ export type CreateEntryMutationOptions = Apollo.BaseMutationOptions<CreateEntryM
 export const DeleteEntryDocument = gql`
     mutation DeleteEntry($id: ID!) {
   deleteEntry(input: {id: $id}) {
-    entry {
+    catalogEntry {
       ...ConceptProps
     }
   }
@@ -1681,7 +1682,7 @@ export type DeleteEntryMutationOptions = Apollo.BaseMutationOptions<DeleteEntryM
 export const SetVersionDocument = gql`
     mutation SetVersion($input: SetVersionInput!) {
   setVersion(input: $input) {
-    entry {
+    catalogEntry {
       ...ConceptProps
     }
   }
@@ -1715,7 +1716,7 @@ export type SetVersionMutationOptions = Apollo.BaseMutationOptions<SetVersionMut
 export const AddNameDocument = gql`
     mutation AddName($input: AddNameInput!) {
   addName(input: $input) {
-    entry {
+    catalogEntry {
       ...ConceptProps
     }
   }
@@ -1749,7 +1750,7 @@ export type AddNameMutationOptions = Apollo.BaseMutationOptions<AddNameMutation,
 export const UpdateNameDocument = gql`
     mutation UpdateName($input: UpdateNameInput!) {
   updateName(input: $input) {
-    entry {
+    catalogEntry {
       ...ConceptProps
     }
   }
@@ -1783,7 +1784,7 @@ export type UpdateNameMutationOptions = Apollo.BaseMutationOptions<UpdateNameMut
 export const DeleteNameDocument = gql`
     mutation DeleteName($input: DeleteNameInput!) {
   deleteName(input: $input) {
-    entry {
+    catalogEntry {
       ...ConceptProps
     }
   }
@@ -1817,7 +1818,7 @@ export type DeleteNameMutationOptions = Apollo.BaseMutationOptions<DeleteNameMut
 export const AddDescriptionDocument = gql`
     mutation AddDescription($input: AddDescriptionInput!) {
   addDescription(input: $input) {
-    entry {
+    catalogEntry {
       ...ConceptProps
     }
   }
@@ -1851,7 +1852,7 @@ export type AddDescriptionMutationOptions = Apollo.BaseMutationOptions<AddDescri
 export const UpdateDescriptionDocument = gql`
     mutation UpdateDescription($input: UpdateDescriptionInput!) {
   updateDescription(input: $input) {
-    entry {
+    catalogEntry {
       ...ConceptProps
     }
   }
@@ -1885,7 +1886,7 @@ export type UpdateDescriptionMutationOptions = Apollo.BaseMutationOptions<Update
 export const DeleteDescriptionDocument = gql`
     mutation DeleteDescription($input: DeleteDescriptionInput!) {
   deleteDescription(input: $input) {
-    entry {
+    catalogEntry {
       ...ConceptProps
     }
   }
@@ -1919,7 +1920,7 @@ export type DeleteDescriptionMutationOptions = Apollo.BaseMutationOptions<Delete
 export const SetToleranceDocument = gql`
     mutation SetTolerance($input: SetToleranceInput!) {
   setTolerance(input: $input) {
-    entry {
+    catalogEntry {
       ...ValueDetailProps
     }
   }
@@ -1953,7 +1954,7 @@ export type SetToleranceMutationOptions = Apollo.BaseMutationOptions<SetToleranc
 export const UnsetToleranceDocument = gql`
     mutation UnsetTolerance($input: UnsetToleranceInput!) {
   unsetTolerance(input: $input) {
-    entry {
+    catalogEntry {
       ...ValueDetailProps
     }
   }
@@ -1987,7 +1988,7 @@ export type UnsetToleranceMutationOptions = Apollo.BaseMutationOptions<UnsetTole
 export const SetNominalValueDocument = gql`
     mutation SetNominalValue($input: SetNominalValueInput!) {
   setNominalValue(input: $input) {
-    entry {
+    catalogEntry {
       ...ValueDetailProps
     }
   }
@@ -2021,7 +2022,7 @@ export type SetNominalValueMutationOptions = Apollo.BaseMutationOptions<SetNomin
 export const UnsetNominalValueDocument = gql`
     mutation UnsetNominalValue($input: UnsetNominalValueInput!) {
   unsetNominalValue(input: $input) {
-    entry {
+    catalogEntry {
       ...ValueDetailProps
     }
   }
@@ -2170,8 +2171,8 @@ export type DeleteRelationshipMutationResult = Apollo.MutationResult<DeleteRelat
 export type DeleteRelationshipMutationOptions = Apollo.BaseMutationOptions<DeleteRelationshipMutation, DeleteRelationshipMutationVariables>;
 export const TagBagDocument = gql`
     mutation TagBag($bagId: ID!, $tagId: ID!) {
-  addTag(input: {entryId: $bagId, tagId: $tagId}) {
-    entry {
+  addTag(input: {catalogEntryId: $bagId, tagId: $tagId}) {
+    catalogEntry {
       ...CollectionDetailProps
     }
   }
@@ -2322,15 +2323,15 @@ export type FindConceptQueryResult = Apollo.QueryResult<FindConceptQuery, FindCo
 export const PropertyTreeDocument = gql`
     query PropertyTree {
   hierarchy(
-    input: {rootNodeFilter: {entryTypeIn: [Bag], tagged: ["6f96aaa7-e08f-49bb-ac63-93061d4c5db2"]}}
+    input: {rootNodeFilter: {catalogEntryTypeIn: [Bag], tagged: ["6f96aaa7-e08f-49bb-ac63-93061d4c5db2"]}}
   ) {
     nodes {
-      ...ConceptProps
+      ...ItemProps
     }
     paths
   }
 }
-    ${ConceptPropsFragmentDoc}`;
+    ${ItemPropsFragmentDoc}`;
 
 /**
  * __usePropertyTreeQuery__

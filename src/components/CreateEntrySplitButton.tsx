@@ -1,5 +1,5 @@
 import React, {FC, useState} from "react";
-import {EntryType, PropertyTreeDocument, useCreateEntryMutation} from "../generated/types";
+import {CatalogEntryType, PropertyTreeDocument, useCreateEntryMutation} from "../generated/types";
 import {ButtonGroup, ButtonGroupProps, Dialog} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
@@ -27,7 +27,7 @@ import {
 import {dispatch, EventAction} from 'use-bus';
 
 export type NewEntryAction = {
-    entryType: EntryType
+    entryType: CatalogEntryType
     id: string
 } & EventAction
 
@@ -93,7 +93,7 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
     };
 
     const onSubmit = async ({id, versionId, versionDate, name, description}: CreateEntryFormValues) => {
-        const entryType = input?.entryType!;
+        const catalogEntryType = input?.entryType!;
         const names = [
             {languageTag: "de", value: name}
         ];
@@ -110,7 +110,7 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
         const {data} = await create({
             variables: {
                 input: {
-                    entryType,
+                    catalogEntryType,
                     properties: properties,
                     tags: input?.tags!
                 }
@@ -122,7 +122,7 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
         setDialogOpen(false);
         enqueueSnackbar(`${input!.title} erstellt.`);
 
-        const newId = data?.createEntry?.entry?.id;
+        const newId = data?.createCatalogEntry?.catalogEntry?.id;
         dispatch({type: `new/entry`, entryType: input!.entryType, id: newId});
     };
 

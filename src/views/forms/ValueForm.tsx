@@ -45,12 +45,12 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
     return (
         <FormView>
             <NameFormSet
-                entryId={id}
+                catalogEntryId={id}
                 names={entry.names}
             />
 
             <DescriptionFormSet
-                entryId={id}
+                catalogEntryId={id}
                 descriptions={entry.descriptions}
             />
 

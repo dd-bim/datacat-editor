@@ -70,12 +70,12 @@ function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
     return (
         <FormView>
             <NameFormSet
-                entryId={id}
+                catalogEntryId={id}
                 names={entry.names}
             />
 
             <DescriptionFormSet
-                entryId={id}
+                catalogEntryId={id}
                 descriptions={entry.descriptions}
             />
 

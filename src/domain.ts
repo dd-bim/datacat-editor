@@ -8,7 +8,7 @@ import PropertyIcon from "@material-ui/icons/Palette";
 import ValueIcon from "@material-ui/icons/LocalOffer";
 import RelationshipIcon from '@material-ui/icons/SettingsEthernet';
 import DataTemplateIcon from '@material-ui/icons/DynamicFeed';
-import {EntityTypes, EntryType} from "./generated/types";
+import {CatalogEntryType, EntityTypes} from "./generated/types";
 
 export {
     ReferenceDocumentIcon,
@@ -27,7 +27,7 @@ export type Entity = {
     title: string,
     titlePlural: string,
     entityType: EntityTypes // TODO: only used in search widget until API is migrated to EntryType
-    entryType: EntryType,
+    entryType: CatalogEntryType,
     path: string,
     Icon: SvgIconComponent
 };
@@ -37,7 +37,7 @@ export const DocumentEntity: Entity = {
     title: "Referenzdokument",
     titlePlural: "Referenzdokumente",
     entityType: EntityTypes.XtdExternalDocument,
-    entryType: EntryType.ExternalDocument,
+    entryType: CatalogEntryType.ExternalDocument,
     path: "document",
     Icon: ReferenceDocumentIcon
 };
@@ -47,7 +47,7 @@ export const ModelEntity: Entity = {
     title: "Fachmodell",
     titlePlural: "Fachmodelle",
     entityType: EntityTypes.XtdBag,
-    entryType: EntryType.Bag,
+    entryType: CatalogEntryType.Bag,
     path: "model",
     Icon: DomainModelIcon
 };
@@ -57,7 +57,7 @@ export const GroupEntity: Entity = {
     title: "Gruppe",
     titlePlural: "Gruppen",
     entityType: EntityTypes.XtdBag,
-    entryType: EntryType.Bag,
+    entryType: CatalogEntryType.Bag,
     path: "group",
     Icon: DomainGroupIcon
 };
@@ -67,7 +67,7 @@ export const ClassEntity: Entity = {
     title: "Klasse",
     titlePlural: "Klassen",
     entityType: EntityTypes.XtdSubject,
-    entryType: EntryType.Subject,
+    entryType: CatalogEntryType.Subject,
     path: "class",
     Icon: DomainClassIcon
 }
@@ -77,7 +77,7 @@ export const DataTemplateEntity: Entity = {
     title: "Datenvorlage",
     titlePlural: "Datenvorlagen",
     entityType: EntityTypes.XtdBag,
-    entryType: EntryType.Bag,
+    entryType: CatalogEntryType.Bag,
     path: "data-template",
     Icon: DataTemplateIcon
 }
@@ -87,7 +87,7 @@ export const PropertyGroupEntity: Entity = {
     title: "Merkmalsgruppe",
     titlePlural: "Merkmalsgruppen",
     entityType: EntityTypes.XtdNest,
-    entryType: EntryType.Nest,
+    entryType: CatalogEntryType.Nest,
     path: "property-group",
     Icon: PropertyGroupIcon
 }
@@ -97,7 +97,7 @@ export const PropertyEntity: Entity = {
     title: "Merkmal",
     titlePlural: "Merkmale",
     entityType: EntityTypes.XtdProperty,
-    entryType: EntryType.Property,
+    entryType: CatalogEntryType.Property,
     path: "property",
     Icon: PropertyIcon
 }
@@ -107,7 +107,7 @@ export const ValueEntity: Entity = {
     title: "Wert",
     titlePlural: "Werte",
     entityType: EntityTypes.XtdValue,
-    entryType: EntryType.Value,
+    entryType: CatalogEntryType.Value,
     path: "value",
     Icon: ValueIcon
 }
@@ -128,7 +128,7 @@ export const TaggedDomain = Domain.filter(x => x.tags.length);
 export const UntaggedDomain = Domain.filter(x => !x.tags.length);
 
 export function getEntityType(entryType: string, tags?: string[]): Entity | null {
-    if (!(entryType in EntryType)) {
+    if (!(entryType in CatalogEntryType)) {
         return null;
     }
 

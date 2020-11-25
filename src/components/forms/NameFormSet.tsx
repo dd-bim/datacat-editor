@@ -18,12 +18,12 @@ import {FormSet, sortByLanguage, useFormSetStyles} from "./FormSet";
 import {useSnackbar} from "notistack";
 
 type NameFormSetProps = {
-    entryId: string,
+    catalogEntryId: string,
     names: TranslationPropsFragment[]
 }
 
 const NameFormSet: FC<NameFormSetProps> = (props) => {
-    const {entryId, names} = props;
+    const {catalogEntryId, names} = props;
     const classes = useFormSetStyles();
 
     const {enqueueSnackbar} = useSnackbar();
@@ -37,7 +37,7 @@ const NameFormSet: FC<NameFormSetProps> = (props) => {
     const onSubmitNewName = async (values: TranslationInput) => {
         await addName({
             variables: {
-                input: {entryId, name: {...values}}
+                input: {catalogEntryId, name: {...values}}
             }
         });
         setOpen(false);
@@ -50,7 +50,7 @@ const NameFormSet: FC<NameFormSetProps> = (props) => {
                 await updateName({
                     variables: {
                         input: {
-                            entryId, name: {id: translation.id, value: values.value}
+                            catalogEntryId, name: {id: translation.id, value: values.value}
                         }
                     }
                 });
@@ -59,7 +59,7 @@ const NameFormSet: FC<NameFormSetProps> = (props) => {
             const onDelete = async () => {
                 await deleteName({
                     variables: {
-                        input: {entryId, nameId: translation.id}
+                        input: {catalogEntryId, nameId: translation.id}
                     }
                 });
                 enqueueSnackbar("Name gelöscht.")

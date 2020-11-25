@@ -34,12 +34,12 @@ query FindConcept($input: SearchInput!) {
 query PropertyTree {
     hierarchy(input: {
         rootNodeFilter: {
-            entryTypeIn: [Bag]
+            catalogEntryTypeIn: [Bag]
             tagged: ["6f96aaa7-e08f-49bb-ac63-93061d4c5db2"]
         }
     }) {
         nodes {
-            ...ConceptProps
+            ...ItemProps
         }
         paths
     }

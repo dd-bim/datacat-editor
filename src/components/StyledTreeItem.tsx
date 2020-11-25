@@ -5,7 +5,7 @@ import ConceptIcon from "./ConceptIcon";
 import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import {ConceptPropsFragment} from "../generated/types";
+import {ItemPropsFragment} from "../generated/types";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -58,9 +58,9 @@ const useStyles = makeStyles((theme) => ({
 
 type StyleTreeItemProps = {
     id: string,
-    data: ConceptPropsFragment,
+    data: ItemPropsFragment,
     children: PropertyTreeNode[],
-    onFilter?(nodeId: string, data: ConceptPropsFragment): void
+    onFilter?(nodeId: string, data: ItemPropsFragment): void
 }
 export const StyledTreeItem: FC<StyleTreeItemProps & TreeItemProps> = (props) => {
     const classes = useStyles();

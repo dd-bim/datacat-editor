@@ -6,7 +6,7 @@ import TreeView from "@material-ui/lab/TreeView";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import {StyledTreeItem} from "./StyledTreeItem";
-import {ConceptPropsFragment} from "../generated/types";
+import {ItemPropsFragment} from "../generated/types";
 
 const usePropertyTreeStyles = makeStyles({
     root: {
@@ -14,10 +14,10 @@ const usePropertyTreeStyles = makeStyles({
     }
 });
 type HierarchyProps = {
-    leaves: ConceptPropsFragment[]
+    leaves: ItemPropsFragment[]
     paths: string[][],
     hideRelationships: boolean,
-    onSelect(selection: ConceptPropsFragment): void
+    onSelect(selection: ItemPropsFragment): void
 }
 export const Hierarchy: FC<HierarchyProps> = (props) => {
     const classes = usePropertyTreeStyles();

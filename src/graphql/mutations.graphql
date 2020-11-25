@@ -16,9 +16,9 @@ mutation UpdateProfile($input: ProfileUpdateInput!) {
     }
 }
 
-mutation CreateEntry($input: CreateEntryInput!) {
-    createEntry(input: $input) {
-        entry {
+mutation CreateEntry($input: CreateCatalogEntryInput!) {
+    createCatalogEntry(input: $input) {
+        catalogEntry {
             ...ConceptProps
         }
     }
@@ -26,7 +26,7 @@ mutation CreateEntry($input: CreateEntryInput!) {
 
 mutation DeleteEntry($id: ID!) {
     deleteEntry(input: {id: $id}) {
-        entry {
+        catalogEntry {
             ...ConceptProps
         }
     }
@@ -34,7 +34,7 @@ mutation DeleteEntry($id: ID!) {
 
 mutation SetVersion($input: SetVersionInput!) {
     setVersion(input: $input) {
-        entry {
+        catalogEntry {
             ...ConceptProps
         }
     }
@@ -42,7 +42,7 @@ mutation SetVersion($input: SetVersionInput!) {
 
 mutation AddName($input: AddNameInput!) {
     addName(input: $input) {
-        entry {
+        catalogEntry {
             ...ConceptProps
         }
     }
@@ -50,7 +50,7 @@ mutation AddName($input: AddNameInput!) {
 
 mutation UpdateName($input: UpdateNameInput!) {
     updateName(input: $input) {
-        entry {
+        catalogEntry {
             ...ConceptProps
         }
     }
@@ -58,7 +58,7 @@ mutation UpdateName($input: UpdateNameInput!) {
 
 mutation DeleteName($input: DeleteNameInput!) {
     deleteName(input: $input) {
-        entry {
+        catalogEntry {
             ...ConceptProps
         }
     }
@@ -66,7 +66,7 @@ mutation DeleteName($input: DeleteNameInput!) {
 
 mutation AddDescription($input: AddDescriptionInput!) {
     addDescription(input: $input) {
-        entry {
+        catalogEntry {
             ...ConceptProps
         }
     }
@@ -74,7 +74,7 @@ mutation AddDescription($input: AddDescriptionInput!) {
 
 mutation UpdateDescription($input: UpdateDescriptionInput!) {
     updateDescription(input: $input) {
-        entry {
+        catalogEntry {
             ...ConceptProps
         }
     }
@@ -82,7 +82,7 @@ mutation UpdateDescription($input: UpdateDescriptionInput!) {
 
 mutation DeleteDescription($input: DeleteDescriptionInput!) {
     deleteDescription(input: $input) {
-        entry {
+        catalogEntry {
             ...ConceptProps
         }
     }
@@ -90,7 +90,7 @@ mutation DeleteDescription($input: DeleteDescriptionInput!) {
 
 mutation SetTolerance($input: SetToleranceInput!) {
     setTolerance(input: $input) {
-        entry {
+        catalogEntry {
             ...ValueDetailProps
         }
     }
@@ -98,7 +98,7 @@ mutation SetTolerance($input: SetToleranceInput!) {
 
 mutation UnsetTolerance($input: UnsetToleranceInput!) {
     unsetTolerance(input: $input) {
-        entry {
+        catalogEntry {
             ...ValueDetailProps
         }
     }
@@ -106,7 +106,7 @@ mutation UnsetTolerance($input: UnsetToleranceInput!) {
 
 mutation SetNominalValue($input: SetNominalValueInput!) {
     setNominalValue(input: $input) {
-        entry {
+        catalogEntry {
             ...ValueDetailProps
         }
     }
@@ -114,7 +114,7 @@ mutation SetNominalValue($input: SetNominalValueInput!) {
 
 mutation UnsetNominalValue($input: UnsetNominalValueInput!) {
     unsetNominalValue(input: $input) {
-        entry {
+        catalogEntry {
             ...ValueDetailProps
         }
     }
@@ -158,8 +158,8 @@ mutation DeleteRelationship($input: DeleteRelationshipInput!) {
 }
 
 mutation TagBag($bagId: ID!, $tagId: ID!) {
-    addTag(input: { entryId: $bagId, tagId: $tagId}) {
-        entry {
+    addTag(input: { catalogEntryId: $bagId, tagId: $tagId}) {
+        catalogEntry {
             ...CollectionDetailProps
         }
     }
