@@ -82,7 +82,7 @@ const DocumentList: FC = () => {
                     </Typography>
                     <SearchField value={query} onChange={setQuery}/>
                     <CatalogEntryList
-                        data={data?.search.nodes ?? []}
+                        rows={data?.search.nodes ?? []}
                         pagingOptions={paging}
                         onSelect={handleOnSelect}
                     />

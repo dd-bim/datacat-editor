@@ -6,13 +6,12 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import {EntityTypes, SearchResultPropsFragment, useFindConceptQuery} from "../../generated/types";
 import {ClassEntity} from "../../domain";
-import CatalogEntryList from "../../components/CatalogEntryList";
 import DomainClassForm from "../forms/DomainClassForm";
-import SearchField from "../../components/forms/SearchInput";
 import useQuerying from "../../hooks/useQuerying";
 import usePaging from "../../hooks/usePaging";
 import useBus from 'use-bus';
 import {NewEntryAction} from "../../components/CreateEntrySplitButton";
+import CatalogEntryListView from "../CatalogEntryListView";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -51,7 +50,7 @@ const DomainClassList: FC = () => {
         }
     });
 
-    const paging = usePaging({ pagination: querying, totalElements: data?.search.totalElements });
+    const paging = usePaging({pagination: querying, totalElements: data?.search.totalElements});
 
     useBus(
         (event) => {
@@ -78,13 +77,12 @@ const DomainClassList: FC = () => {
         <Grid container spacing={1}>
             <Grid item xs={5}>
                 <Paper className={classes.paper}>
-                    <Typography variant="h5">
-                        Alle {ClassEntity.titlePlural}
-                    </Typography>
-                    <SearchField value={query} onChange={setQuery}/>
-                    <CatalogEntryList
-                        data={data?.search.nodes ?? []}
-                        pagingOptions={paging}
+                    <CatalogEntryListView
+                        title={ClassEntity.titlePlural}
+                        searchInput={{
+                            entityTypeIn: [EntityTypes.XtdObject],
+                            tagged: ClassEntity.tags
+                        }}
                         onSelect={handleOnSelect}
                     />
                 </Paper>

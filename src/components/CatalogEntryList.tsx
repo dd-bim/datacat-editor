@@ -6,7 +6,6 @@ import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
 import Table from "@material-ui/core/Table";
 import React from "react";
-import {Column, useTable} from "react-table";
 import {TablePaginationProps} from "@material-ui/core";
 import {Maybe} from "../generated/types";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -19,53 +18,41 @@ export type CatalogEntryListItem = {
 };
 
 type CatalogEntryListProps<T extends CatalogEntryListItem> = {
-    data: T[],
+    rows: T[],
+    selectedRowIds?: string[],
     pagingOptions: Omit<TablePaginationProps<'td'>, 'component'>,
     onSelect(value: T): void
 }
 
 function CatalogEntryList<T extends CatalogEntryListItem>(props: CatalogEntryListProps<T>) {
-    const {data, pagingOptions, onSelect} = props;
-    const {headerGroups, rows, prepareRow, visibleColumns} = useTable({
-        columns: React.useMemo<Column<T>[]>(() => [{
-                accessor: 'de',
-                Header: 'Deutsch',
-            }, {
-                accessor: 'en',
-                Header: 'Englisch'
-            }],
-            []
-        ),
-        data: React.useMemo<T[]>(() => (data), [data]),
-    });
+    const {rows, selectedRowIds = [], pagingOptions, onSelect} = props;
 
     return (
         <Table size="small">
             <TableHead>
-                {headerGroups.map(headerGroup => (
-                    <TableRow {...headerGroup.getHeaderGroupProps()}>
-                        {headerGroup.headers.map(column => (
-                            <TableCell {...column.getHeaderProps()}>
-                                {column.render('Header')}
-                            </TableCell>
-                        ))}
-                    </TableRow>
-                ))}
+                <TableRow>
+                    <TableCell>
+                        Deutsch
+                    </TableCell>
+                    <TableCell>
+                        Englisch
+                    </TableCell>
+                </TableRow>
             </TableHead>
             <TableBody>
-                {rows.map((row, i) => {
-                    prepareRow(row);
-                    const onClick = () => onSelect(row.original);
+                {rows.map(row => {
+                    const {id, de, en, description} = row;
+                    const isSelect = selectedRowIds.includes(id);
+                    const onClick = () => onSelect(row);
                     return (
-                        <Tooltip {...row.getRowProps()} title={row.original.description ?? ""} arrow>
-                            <TableRow hover onClick={onClick}>
-                                {row.cells.map(cell => {
-                                    return (
-                                        <TableCell {...cell.getCellProps()}>
-                                            {cell.render('Cell')}
-                                        </TableCell>
-                                    )
-                                })}
+                        <Tooltip key={id} title={description ?? ""} arrow>
+                            <TableRow hover onClick={onClick} selected={isSelect}>
+                                <TableCell>
+                                    {de}
+                                </TableCell>
+                                <TableCell>
+                                    {en}
+                                </TableCell>
                             </TableRow>
                         </Tooltip>
                     )
@@ -73,11 +60,7 @@ function CatalogEntryList<T extends CatalogEntryListItem>(props: CatalogEntryLis
             </TableBody>
             <TableFooter>
                 <TableRow>
-                    <TablePagination
-
-                        colSpan={visibleColumns.length}
-                        {...pagingOptions}
-                    />
+                    <TablePagination colSpan={2} {...pagingOptions} />
                 </TableRow>
             </TableFooter>
         </Table>
