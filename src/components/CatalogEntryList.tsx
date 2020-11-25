@@ -11,21 +11,20 @@ import {TablePaginationProps} from "@material-ui/core";
 import {Maybe} from "../generated/types";
 import Tooltip from "@material-ui/core/Tooltip";
 
-export type EntryTableRow = {
+export type CatalogEntryListItem = {
     id: string,
-    name?: Maybe<string>,
     de?: Maybe<string>,
     en?: Maybe<string>,
     description?: Maybe<string>
 };
 
-type EntryTableProps<T extends EntryTableRow> = {
+type CatalogEntryListProps<T extends CatalogEntryListItem> = {
     data: T[],
     pagingOptions: Omit<TablePaginationProps<'td'>, 'component'>,
     onSelect(value: T): void
 }
 
-function EntryTable<T extends EntryTableRow>(props: EntryTableProps<T>) {
+function CatalogEntryList<T extends CatalogEntryListItem>(props: CatalogEntryListProps<T>) {
     const {data, pagingOptions, onSelect} = props;
     const {headerGroups, rows, prepareRow, visibleColumns} = useTable({
         columns: React.useMemo<Column<T>[]>(() => [{
@@ -85,4 +84,4 @@ function EntryTable<T extends EntryTableRow>(props: EntryTableProps<T>) {
     );
 }
 
-export default EntryTable;
+export default CatalogEntryList;

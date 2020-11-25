@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import {EntityTypes, SearchResultPropsFragment, useFindConceptQuery} from "../../generated/types";
 import {PropertyGroupEntity} from "../../domain";
-import EntryTable from "../../components/EntryTable";
+import CatalogEntryList from "../../components/CatalogEntryList";
 import SearchField from "../../components/forms/SearchInput";
 import useQuerying from "../../hooks/useQuerying";
 import usePaging from "../../hooks/usePaging";
@@ -68,7 +68,7 @@ const PropertyGroupList: FC = () => {
                         Alle {PropertyGroupEntity.titlePlural}
                     </Typography>
                     <SearchField value={query} onChange={setQuery}/>
-                    <EntryTable
+                    <CatalogEntryList
                         data={data?.search.nodes ?? []}
                         pagingOptions={paging}
                         onSelect={handleOnSelect}

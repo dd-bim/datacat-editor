@@ -5,7 +5,7 @@ import {Paper} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import {EntityTypes, SearchResultPropsFragment, useFindConceptQuery} from "../../generated/types";
 import {ModelEntity} from "../../domain";
-import EntryTable from "../../components/EntryTable";
+import CatalogEntryList from "../../components/CatalogEntryList";
 import DomainModelForm from "../forms/DomainModelForm";
 import Grid from "@material-ui/core/Grid";
 import SearchField from "../../components/forms/SearchInput";
@@ -68,7 +68,7 @@ const DomainModelList: FC = () => {
                         Alle {ModelEntity.titlePlural}
                     </Typography>
                     <SearchField value={query} onChange={setQuery}/>
-                    <EntryTable
+                    <CatalogEntryList
                         data={data?.search.nodes ?? []}
                         pagingOptions={paging}
                         onSelect={handleOnSelect}
