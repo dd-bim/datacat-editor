@@ -125,14 +125,14 @@ export type CreateTagInput = {
 
 
 export type DeleteCatalogEntryInput = {
-  id: Scalars['ID'];
+  catalogEntryId: Scalars['ID'];
 };
+
 
 export type DeleteDescriptionInput = {
   catalogEntryId: Scalars['ID'];
   descriptionId: Scalars['ID'];
 };
-
 
 
 export type DeleteNameInput = {
@@ -147,7 +147,7 @@ export type DeleteRelationshipInput = {
 
 
 export type DeleteTagInput = {
-  id: Scalars['ID'];
+  tagId: Scalars['ID'];
 };
 
 
@@ -302,19 +302,19 @@ export type SearchInput = {
 
 
 export type SetNominalValueInput = {
-  id: Scalars['ID'];
+  valueId: Scalars['ID'];
   nominalValue: NominalValueInput;
 };
 
 
 export type SetToleranceInput = {
-  id: Scalars['ID'];
+  valueId: Scalars['ID'];
   tolerance: ToleranceInput;
 };
 
 
 export type SetVersionInput = {
-  id: Scalars['ID'];
+  catalogEntryId: Scalars['ID'];
   version: VersionInput;
 };
 
@@ -347,23 +347,23 @@ export enum ToleranceType {
 
 
 export type TranslationInput = {
-  id?: Maybe<Scalars['ID']>;
+  catalogEntryId?: Maybe<Scalars['ID']>;
   languageTag: Scalars['ID'];
   value: Scalars['String'];
 };
 
 export type TranslationUpdateInput = {
-  id: Scalars['ID'];
+  translationId: Scalars['ID'];
   value: Scalars['String'];
 };
 
 export type UnsetNominalValueInput = {
-  id: Scalars['ID'];
+  valueId: Scalars['ID'];
 };
 
 
 export type UnsetToleranceInput = {
-  id: Scalars['ID'];
+  valueId: Scalars['ID'];
 };
 
 
@@ -380,7 +380,7 @@ export type UpdateNameInput = {
 
 
 export type UpdateTagInput = {
-  id: Scalars['ID'];
+  tagId: Scalars['ID'];
   name: Scalars['String'];
 };
 
@@ -1042,7 +1042,7 @@ export type DeleteEntryMutationVariables = Exact<{
 }>;
 
 
-export type DeleteEntryMutation = { deleteEntry?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
+export type DeleteEntryMutation = { deleteCatalogEntry?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
 
 export type SetVersionMutationVariables = Exact<{
   input: SetVersionInput;
@@ -1647,7 +1647,7 @@ export type CreateEntryMutationResult = Apollo.MutationResult<CreateEntryMutatio
 export type CreateEntryMutationOptions = Apollo.BaseMutationOptions<CreateEntryMutation, CreateEntryMutationVariables>;
 export const DeleteEntryDocument = gql`
     mutation DeleteEntry($id: ID!) {
-  deleteEntry(input: {id: $id}) {
+  deleteCatalogEntry(input: {catalogEntryId: $id}) {
     catalogEntry {
       ...ConceptProps
     }

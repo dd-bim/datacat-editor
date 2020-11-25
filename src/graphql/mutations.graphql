@@ -25,7 +25,7 @@ mutation CreateEntry($input: CreateCatalogEntryInput!) {
 }
 
 mutation DeleteEntry($id: ID!) {
-    deleteEntry(input: {id: $id}) {
+    deleteCatalogEntry(input: {catalogEntryId: $id}) {
         catalogEntry {
             ...ConceptProps
         }
