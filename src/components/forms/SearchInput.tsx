@@ -1,8 +1,9 @@
 import React, {FC} from "react";
-import CancelIcon from '@material-ui/icons/Cancel';
+import ClearIcon from '@material-ui/icons/Clear';
 import TextField from "@material-ui/core/TextField";
 import {InputAdornment} from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
+import SearchIcon from '@material-ui/icons/Search';
 
 type SearchInputProps = {
     value: string,
@@ -21,10 +22,15 @@ const SearchField: FC<SearchInputProps> = (props) => {
             fullWidth
             onChange={event => onChange(event.target.value)}
             InputProps={{
+                startAdornment: (
+                    <InputAdornment position="start">
+                        <SearchIcon/>
+                    </InputAdornment>
+                ),
                 endAdornment: value && (
                     <InputAdornment position="end">
-                        <IconButton onClick={() => onChange("")}>
-                            <CancelIcon/>
+                        <IconButton size="small" onClick={() => onChange("")}>
+                            <ClearIcon/>
                         </IconButton>
                     </InputAdornment>
                 )
