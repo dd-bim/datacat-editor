@@ -39,7 +39,7 @@ const ToleranceFormSet: FC<ToleranceFormSetProps> = (props) => {
     const onSubmit = async (tolerance: ToleranceInput) => {
         await setTolerance({
             variables: {
-                input: {id, tolerance}
+                input: {valueId: id, tolerance}
             }
         });
         enqueueSnackbar("Toleranz aktualisiert.");
@@ -48,7 +48,7 @@ const ToleranceFormSet: FC<ToleranceFormSetProps> = (props) => {
     const onDelete = async () => {
         await unsetTolerance({
             variables: {
-                input: {id}
+                input: {valueId: id}
             }
         });
         enqueueSnackbar("Toleranz entfernt.");

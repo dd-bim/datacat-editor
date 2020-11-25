@@ -23,6 +23,7 @@ import {
     ModelEntity,
     PropertyEntity,
     PropertyGroupEntity,
+    UnitEntity,
     ValueEntity
 } from "../domain";
 import AppTitle from "./AppTitle";
@@ -114,7 +115,7 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
                         disabled
                     />
 
-                    <ListSubheader disableSticky>Eingabe</ListSubheader>
+                    <ListSubheader disableSticky>Katalog</ListSubheader>
 
                     <AppDrawerItem
                         icon={<DocumentEntity.Icon/>}
@@ -163,6 +164,12 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
                         icon={<MeasureEntity.Icon/>}
                         primary={MeasureEntity.titlePlural}
                         to={`/${MeasureEntity.path}`}
+                    />
+
+                    <AppDrawerItem
+                        icon={<UnitEntity.Icon/>}
+                        primary={UnitEntity.titlePlural}
+                        to={`/${UnitEntity.path}`}
                     />
 
                     <AppDrawerItem

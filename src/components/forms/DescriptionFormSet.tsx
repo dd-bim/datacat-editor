@@ -57,7 +57,10 @@ const DescriptionFormSet: FC<DescriptionFormSetProps> = (props) => {
                 await updateDescription({
                     variables: {
                         input: {
-                            catalogEntryId, description: {id: translation.id, value: values.value}
+                            catalogEntryId,
+                            description: {
+                                translationId: translation.id, value: values.value
+                            }
                         }
                     }
                 });

@@ -23,7 +23,7 @@ const VersionFormSet: FC<VersionFormSetProps> = (props) => {
     const onSubmit = async (values: VersionInput) => {
         await setVersion({
             variables: {
-                input: {id, version: values}
+                input: {catalogEntryId: id, version: values}
             }
         });
         enqueueSnackbar("Version aktualisiert.");

@@ -7,6 +7,7 @@ import {
     ModelEntity,
     PropertyEntity,
     PropertyGroupEntity,
+    UnitEntity,
     ValueEntity
 } from "../domain";
 import React from "react";
@@ -134,6 +135,22 @@ const CatalogEntryRoutes = () => {
                         <MeasureForm
                             id={id}
                             onDelete={() => onDelete(MeasureEntity.path)}
+                        />
+                    ))}
+                />
+            </Route>
+
+            <Route path={`/${UnitEntity.path}/:id?`}>
+                <CompositeCatalogEntryView
+                    entryType={UnitEntity}
+                    searchInput={{
+                        entityTypeIn: [UnitEntity.entityType],
+                        tagged: UnitEntity.tags,
+                    }}
+                    renderForm={(id => (
+                        <MeasureForm
+                            id={id}
+                            onDelete={() => onDelete(UnitEntity.path)}
                         />
                     ))}
                 />

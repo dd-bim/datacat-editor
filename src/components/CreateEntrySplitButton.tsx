@@ -24,6 +24,7 @@ import {
     ModelEntity,
     PropertyEntity,
     PropertyGroupEntity,
+    UnitEntity,
     ValueEntity
 } from "../domain";
 import {dispatch, EventAction} from 'use-bus';
@@ -46,6 +47,7 @@ const options = [
     PropertyGroupEntity,
     PropertyEntity,
     MeasureEntity,
+    UnitEntity,
     ValueEntity
 ];
 
@@ -138,7 +140,7 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
                 ref={anchorRef}
                 aria-label="Eintrag hinzufügen"
             >
-                <Button onClick={() => onClick(lastUsedOption)} startIcon={<AddIcon/>}>{lastUsedOption.title} hinzufügen</Button>
+                <Button onClick={() => onClick(lastUsedOption)} startIcon={<AddIcon/>}>{lastUsedOption.title}</Button>
                 <Button
                     color="inherit"
                     aria-controls={menuOpen ? 'split-button-menu' : undefined}

@@ -50,7 +50,10 @@ const NameFormSet: FC<NameFormSetProps> = (props) => {
                 await updateName({
                     variables: {
                         input: {
-                            catalogEntryId, name: {id: translation.id, value: values.value}
+                            catalogEntryId, name: {
+                                translationId: translation.id,
+                                value: values.value
+                            }
                         }
                     }
                 });

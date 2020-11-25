@@ -38,7 +38,7 @@ const NominalValueFormSet: FC<NominalValueFormSetProps> = (props) => {
     const onSubmit = async (nominalValue: NominalValueInput) => {
         await setNominalValue({
             variables: {
-                input: {id, nominalValue}
+                input: {valueId: id, nominalValue}
             }
         });
         enqueueSnackbar("Nennwert aktualisiert.");
@@ -47,7 +47,7 @@ const NominalValueFormSet: FC<NominalValueFormSetProps> = (props) => {
     const onDelete = async () => {
         await unsetNominalValue({
             variables: {
-                input: {id}
+                input: {valueId: id}
             }
         });
         enqueueSnackbar("Nennwert entfernt.");
