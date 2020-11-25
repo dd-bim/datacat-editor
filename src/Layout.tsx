@@ -9,31 +9,16 @@ import useAuthContext from "./hooks/useAuthContext";
 import {Toolbar} from "@material-ui/core";
 import Footer from "./components/Footer";
 import ConfirmationView from "./views/ConfirmationView";
-import DomainModelList from "./views/lists/DomainModelList";
 import Typography from "@material-ui/core/Typography";
 import ProfileFormView from "./views/forms/ProfileFormView";
-import {
-    ClassEntity,
-    DocumentEntity,
-    GroupEntity,
-    ModelEntity,
-    PropertyEntity,
-    PropertyGroupEntity,
-    ValueEntity
-} from "./domain";
-import DomainGroupList from "./views/lists/DomainGroupList";
-import DomainClassList from "./views/lists/DomainClassList";
-import PropertyGroupList from "./views/lists/PropertyGroupList";
 import HierarchyView from "./views/HierarchyView";
-import PropertyList from "./views/lists/PropertyList";
 import Paper from "@material-ui/core/Paper";
 import useGridStyles from "./hooks/useGridStyle";
-import ValueList from "./views/lists/ValueList";
-import DocumentList from "./views/lists/DocumentList";
 import useGraphiQLFetcher from "./hooks/useGraphiQLFetcher";
 import {GraphiQL} from "graphiql";
 
 import "graphiql/graphiql.min.css";
+import CatalogEntryRoutes from "./routes/CatalogEntryRoutes";
 
 const drawerWidth = 250;
 
@@ -150,27 +135,7 @@ export default function Layout() {
                             <GraphiQL fetcher={graphiqlFetcher}/>
                         </Paper>
                     </Route>
-                    <Route path={`/${DocumentEntity.path}/:id?`}>
-                        <DocumentList/>
-                    </Route>
-                    <Route path={`/${ModelEntity.path}/:id?`}>
-                        <DomainModelList/>
-                    </Route>
-                    <Route path={`/${GroupEntity.path}/:id?`}>
-                        <DomainGroupList/>
-                    </Route>
-                    <Route path={`/${ClassEntity.path}/:id?`}>
-                        <DomainClassList/>
-                    </Route>
-                    <Route path={`/${PropertyGroupEntity.path}/:id?`}>
-                        <PropertyGroupList/>
-                    </Route>
-                    <Route path={`/${PropertyEntity.path}/:id?`}>
-                        <PropertyList/>
-                    </Route>
-                    <Route path={`/${ValueEntity.path}/:id?`}>
-                        <ValueList/>
-                    </Route>
+                    <CatalogEntryRoutes/>
                 </Switch>
                 <Footer/>
             </main>
