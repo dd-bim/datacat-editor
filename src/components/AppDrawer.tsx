@@ -19,6 +19,7 @@ import {
     DataTemplateEntity,
     DocumentEntity,
     GroupEntity,
+    MeasureEntity,
     ModelEntity,
     PropertyEntity,
     PropertyGroupEntity,
@@ -156,6 +157,12 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
                         icon={<PropertyEntity.Icon/>}
                         primary={PropertyEntity.titlePlural}
                         to={`/${PropertyEntity.path}`}
+                    />
+
+                    <AppDrawerItem
+                        icon={<MeasureEntity.Icon/>}
+                        primary={MeasureEntity.titlePlural}
+                        to={`/${MeasureEntity.path}`}
                     />
 
                     <AppDrawerItem

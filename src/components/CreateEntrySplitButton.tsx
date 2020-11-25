@@ -20,9 +20,11 @@ import {
     DocumentEntity,
     Entity,
     GroupEntity,
+    MeasureEntity,
     ModelEntity,
     PropertyEntity,
-    PropertyGroupEntity
+    PropertyGroupEntity,
+    ValueEntity
 } from "../domain";
 import {dispatch, EventAction} from 'use-bus';
 
@@ -43,6 +45,8 @@ const options = [
     ClassEntity,
     PropertyGroupEntity,
     PropertyEntity,
+    MeasureEntity,
+    ValueEntity
 ];
 
 

@@ -3,6 +3,7 @@ import {
     ClassEntity,
     DocumentEntity,
     GroupEntity,
+    MeasureEntity,
     ModelEntity,
     PropertyEntity,
     PropertyGroupEntity,
@@ -18,6 +19,7 @@ import DomainClassForm from "../views/forms/DomainClassForm";
 import PropertyGroupForm from "../views/forms/PropertyGroupForm";
 import PropertyForm from "../views/forms/PropertyForm";
 import ValueForm from "../views/forms/ValueForm";
+import MeasureForm from "../views/forms/MeasureForm";
 
 const CatalogEntryRoutes = () => {
     const history = useHistory();
@@ -116,6 +118,22 @@ const CatalogEntryRoutes = () => {
                         <PropertyForm
                             id={id}
                             onDelete={() => onDelete(PropertyEntity.path)}
+                        />
+                    ))}
+                />
+            </Route>
+
+            <Route path={`/${MeasureEntity.path}/:id?`}>
+                <CompositeCatalogEntryView
+                    entryType={MeasureEntity}
+                    searchInput={{
+                        entityTypeIn: [MeasureEntity.entityType],
+                        tagged: MeasureEntity.tags,
+                    }}
+                    renderForm={(id => (
+                        <MeasureForm
+                            id={id}
+                            onDelete={() => onDelete(MeasureEntity.path)}
                         />
                     ))}
                 />

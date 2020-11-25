@@ -9,6 +9,7 @@ import ValueIcon from "@material-ui/icons/LocalOffer";
 import RelationshipIcon from '@material-ui/icons/SettingsEthernet';
 import DataTemplateIcon from '@material-ui/icons/DynamicFeed';
 import {CatalogEntryType, EntityTypes} from "./generated/types";
+import MeasureIcon from '@material-ui/icons/Speed';
 
 export {
     ReferenceDocumentIcon,
@@ -16,6 +17,7 @@ export {
     DomainGroupIcon,
     PropertyGroupIcon,
     PropertyIcon,
+    MeasureIcon,
     ValueIcon,
     RelationshipIcon,
     DataTemplateIcon,
@@ -102,6 +104,16 @@ export const PropertyEntity: Entity = {
     Icon: PropertyIcon
 }
 
+export const MeasureEntity: Entity = {
+    tags: undefined,
+    title: "Bemaßung",
+    titlePlural: "Bemaßungen",
+    entityType: EntityTypes.XtdMeasureWithUnit,
+    entryType: CatalogEntryType.Measure,
+    path: "measure",
+    Icon: MeasureIcon
+}
+
 export const ValueEntity: Entity = {
     tags: undefined,
     title: "Wert",
@@ -120,6 +132,7 @@ export const Domain = [
     DataTemplateEntity,
     PropertyGroupEntity,
     PropertyEntity,
+    MeasureEntity,
     ValueEntity
 ];
 
