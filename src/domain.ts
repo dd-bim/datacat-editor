@@ -23,7 +23,7 @@ export {
 }
 
 export type Entity = {
-    tags: string[],
+    tags?: string[],
     title: string,
     titlePlural: string,
     entityType: EntityTypes // TODO: only used in search widget until API is migrated to EntryType
@@ -33,7 +33,7 @@ export type Entity = {
 };
 
 export const DocumentEntity: Entity = {
-    tags: [],
+    tags: undefined,
     title: "Referenzdokument",
     titlePlural: "Referenzdokumente",
     entityType: EntityTypes.XtdExternalDocument,
@@ -93,7 +93,7 @@ export const PropertyGroupEntity: Entity = {
 }
 
 export const PropertyEntity: Entity = {
-    tags: [],
+    tags: undefined,
     title: "Merkmal",
     titlePlural: "Merkmale",
     entityType: EntityTypes.XtdProperty,
@@ -103,7 +103,7 @@ export const PropertyEntity: Entity = {
 }
 
 export const ValueEntity: Entity = {
-    tags: [],
+    tags: undefined,
     title: "Wert",
     titlePlural: "Werte",
     entityType: EntityTypes.XtdValue,
@@ -123,24 +123,20 @@ export const Domain = [
     ValueEntity
 ];
 
-export const TaggedDomain = Domain.filter(x => x.tags.length);
-
-export const UntaggedDomain = Domain.filter(x => !x.tags.length);
-
 export function getEntityType(entryType: string, tags?: string[]): Entity | null {
     if (!(entryType in CatalogEntryType)) {
         return null;
     }
 
     for (const id of tags ?? []) {
-        for (const entityType of TaggedDomain) {
-            if (entityType.tags.includes(id)) {
+        for (const entityType of Domain) {
+            if (entityType.tags?.includes(id)) {
                 return entityType;
             }
         }
     }
 
-    for (const entityType of UntaggedDomain) {
+    for (const entityType of Domain) {
         if (entryType === entityType.entryType) {
             return entityType;
         }
