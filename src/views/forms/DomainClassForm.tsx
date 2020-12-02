@@ -22,8 +22,7 @@ import useAssignsCollections from "../../hooks/useAssignsCollections";
 import useAssignsProperties from "../../hooks/useAssignsProperties";
 import {PropertyGroupEntity} from "../../domain";
 import FormView, {FormProps} from "./FormView";
-import useDocumentedBy from "../../hooks/useDocumentedBy";
-import useCollectedBy from "../../hooks/useCollectedBy";
+import useRelated from "../../hooks/useRelated";
 
 const DomainClassForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
@@ -73,13 +72,14 @@ const DomainClassForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
         ]
     });
 
-    const documentedBy = useDocumentedBy({
-        relationships: entry?.documentedBy.nodes ?? []
+    const documentedBy = useRelated({
+        catalogEntries: entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? [],
+        emptyMessage: "Keine Referenzdokument verlinkt."
     });
 
-    const collectedBy = useCollectedBy({
-        relationships: entry?.collectedBy.nodes ?? [],
-        emptyMessage: "Klasse wird in keiner Gruppe genutzt."
+    const collectedBy = useRelated({
+        catalogEntries: entry?.collectedBy.nodes.map(node => node.relatingCollection) ?? [],
+        emptyMessage: "Klasse kommt in keiner Sammlung vor."
     })
 
 

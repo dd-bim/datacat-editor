@@ -58,13 +58,19 @@ query GetObjectEntry($id: ID!) {
 }
 
 query GetPropertyEntry($id: ID!) {
-    node(id: $id) {
+    node: getProperty(id: $id) {
         ...PropertyDetailProps
     }
 }
 
+query GetMeasureEntry($id: ID!) {
+    node: getMeasure(id: $id) {
+        ...MeasureDetailProps
+    }
+}
+
 query GetValueEntry($id: ID!) {
-    node(id: $id) {
+    node: getValue(id: $id) {
         ...ValueDetailProps
     }
 }

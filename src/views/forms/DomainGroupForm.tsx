@@ -19,8 +19,7 @@ import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import {ClassEntity} from "../../domain";
 import FormView, {FormProps} from "./FormView";
-import useDocumentedBy from "../../hooks/useDocumentedBy";
-import useCollectedBy from "../../hooks/useCollectedBy";
+import useRelated from "../../hooks/useRelated";
 
 const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
@@ -54,13 +53,14 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
         ]
     });
 
-    const documentedBy = useDocumentedBy({
-        relationships: entry?.documentedBy.nodes ?? [],
+    const documentedBy = useRelated({
+        catalogEntries: entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? [],
+        emptyMessage: "Gruppe ist mit keinem Referenzdokument verlinkt."
     });
 
-    const collectedBy = useCollectedBy({
-        relationships: entry?.collectedBy.nodes ?? [],
-        emptyMessage: "In keinen Fachmodellen aufgeführt."
+    const collectedBy = useRelated({
+        catalogEntries: entry?.collectedBy.nodes.map(node => node.relatingCollection) ?? [],
+        emptyMessage: "Gruppe kommt in keiner Sammlung vor."
     });
 
     if (loading) return <Typography>Lade Gruppe..</Typography>;

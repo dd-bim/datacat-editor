@@ -16,6 +16,8 @@ import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
 import ToleranceFormSet from "../../components/forms/ToleranceFormSet";
 import NominalValueFormSet from "../../components/forms/NominalValueFormSet";
+import useRelated from "../../hooks/useRelated";
+import {FormSet} from "../../components/forms/FormSet";
 
 const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
@@ -32,6 +34,11 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
     });
     let entry = data?.node as ValueDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation(baseOptions);
+
+    const documentedBy = useRelated({
+        catalogEntries: entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? [],
+        emptyMessage: "Gruppe ist mit keinem Referenzdokument verlinkt."
+    });
 
     if (loading) return <Typography>Lade Wert..</Typography>;
     if (error || !entry) return <Typography>Es ist ein Fehler aufgetreten..</Typography>;
@@ -75,6 +82,10 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
             />
 
             <MetaFormSet entry={entry}/>
+
+            <FormSet title="Referenzen...">
+                {documentedBy}
+            </FormSet>
 
             <Button
                 variant="contained"

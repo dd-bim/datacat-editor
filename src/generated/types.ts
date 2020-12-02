@@ -3,6 +3,8 @@ import {gql} from '@apollo/client';
 
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -347,7 +349,7 @@ export enum ToleranceType {
 
 
 export type TranslationInput = {
-  catalogEntryId?: Maybe<Scalars['ID']>;
+  id?: Maybe<Scalars['ID']>;
   languageTag: Scalars['ID'];
   value: Scalars['String'];
 };
@@ -865,6 +867,11 @@ export type AssignsPropertiesPropsFragment = (
   & RelationshipProps_XtdRelAssignsProperties_Fragment
 );
 
+export type AssignsMeasuresPropsFragment = (
+  { relatingProperty: SearchResultProps_XtdProperty_Fragment, relatedMeasures: Array<SearchResultProps_XtdMeasureWithUnit_Fragment> }
+  & RelationshipProps_XtdRelAssignsMeasures_Fragment
+);
+
 export type AssignsPropertyWithValuesPropsFragment = (
   { relatedProperty: SearchResultProps_XtdProperty_Fragment, relatedValues: Array<SearchResultProps_XtdValue_Fragment> }
   & RelationshipProps_XtdRelAssignsPropertyWithValues_Fragment
@@ -979,8 +986,13 @@ type ObjectDetailProps_XtdValue_Fragment = (
 export type ObjectDetailPropsFragment = ObjectDetailProps_XtdActivity_Fragment | ObjectDetailProps_XtdActor_Fragment | ObjectDetailProps_XtdClassification_Fragment | ObjectDetailProps_XtdMeasureWithUnit_Fragment | ObjectDetailProps_XtdProperty_Fragment | ObjectDetailProps_XtdSubject_Fragment | ObjectDetailProps_XtdUnit_Fragment | ObjectDetailProps_XtdValue_Fragment;
 
 export type PropertyDetailPropsFragment = (
-  { assignedTo: { nodes: Array<AssignsPropertiesPropsFragment> } }
+  { assignedMeasures: { nodes: Array<AssignsMeasuresPropsFragment> }, assignedTo: { nodes: Array<AssignsPropertiesPropsFragment> } }
   & ObjectDetailProps_XtdProperty_Fragment
+);
+
+export type MeasureDetailPropsFragment = (
+  { assignedTo: { nodes: Array<AssignsMeasuresPropsFragment> } }
+  & ObjectDetailProps_XtdMeasureWithUnit_Fragment
 );
 
 export type ValueDetailPropsFragment = (
@@ -1197,6 +1209,13 @@ export type GetPropertyEntryQueryVariables = Exact<{
 
 
 export type GetPropertyEntryQuery = { node?: Maybe<PropertyDetailPropsFragment> };
+
+export type GetMeasureEntryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetMeasureEntryQuery = { node?: Maybe<MeasureDetailPropsFragment> };
 
 export type GetValueEntryQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -1425,9 +1444,26 @@ ${AssignsCollectionsPropsFragmentDoc}
 ${AssignsPropertiesPropsFragmentDoc}
 ${CollectsPropsFragmentDoc}
 ${DocumentsPropsFragmentDoc}`;
+export const AssignsMeasuresPropsFragmentDoc = gql`
+    fragment AssignsMeasuresProps on XtdRelAssignsMeasures {
+  ...RelationshipProps
+  relatingProperty {
+    ...SearchResultProps
+  }
+  relatedMeasures {
+    ...SearchResultProps
+  }
+}
+    ${RelationshipPropsFragmentDoc}
+${SearchResultPropsFragmentDoc}`;
 export const PropertyDetailPropsFragmentDoc = gql`
     fragment PropertyDetailProps on XtdProperty {
   ...ObjectDetailProps
+  assignedMeasures {
+    nodes {
+      ...AssignsMeasuresProps
+    }
+  }
   assignedTo {
     nodes {
       ...AssignsPropertiesProps
@@ -1435,7 +1471,19 @@ export const PropertyDetailPropsFragmentDoc = gql`
   }
 }
     ${ObjectDetailPropsFragmentDoc}
+${AssignsMeasuresPropsFragmentDoc}
 ${AssignsPropertiesPropsFragmentDoc}`;
+export const MeasureDetailPropsFragmentDoc = gql`
+    fragment MeasureDetailProps on XtdMeasureWithUnit {
+  ...ObjectDetailProps
+  assignedTo {
+    nodes {
+      ...AssignsMeasuresProps
+    }
+  }
+}
+    ${ObjectDetailPropsFragmentDoc}
+${AssignsMeasuresPropsFragmentDoc}`;
 export const ValuePropsFragmentDoc = gql`
     fragment ValueProps on XtdValue {
   ...ObjectProps
@@ -2425,7 +2473,7 @@ export type GetObjectEntryLazyQueryHookResult = ReturnType<typeof useGetObjectEn
 export type GetObjectEntryQueryResult = Apollo.QueryResult<GetObjectEntryQuery, GetObjectEntryQueryVariables>;
 export const GetPropertyEntryDocument = gql`
     query GetPropertyEntry($id: ID!) {
-  node(id: $id) {
+  node: getProperty(id: $id) {
     ...PropertyDetailProps
   }
 }
@@ -2456,9 +2504,42 @@ export function useGetPropertyEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetPropertyEntryQueryHookResult = ReturnType<typeof useGetPropertyEntryQuery>;
 export type GetPropertyEntryLazyQueryHookResult = ReturnType<typeof useGetPropertyEntryLazyQuery>;
 export type GetPropertyEntryQueryResult = Apollo.QueryResult<GetPropertyEntryQuery, GetPropertyEntryQueryVariables>;
+export const GetMeasureEntryDocument = gql`
+    query GetMeasureEntry($id: ID!) {
+  node: getMeasure(id: $id) {
+    ...MeasureDetailProps
+  }
+}
+    ${MeasureDetailPropsFragmentDoc}`;
+
+/**
+ * __useGetMeasureEntryQuery__
+ *
+ * To run a query within a React component, call `useGetMeasureEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMeasureEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMeasureEntryQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetMeasureEntryQuery(baseOptions: Apollo.QueryHookOptions<GetMeasureEntryQuery, GetMeasureEntryQueryVariables>) {
+        return Apollo.useQuery<GetMeasureEntryQuery, GetMeasureEntryQueryVariables>(GetMeasureEntryDocument, baseOptions);
+      }
+export function useGetMeasureEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMeasureEntryQuery, GetMeasureEntryQueryVariables>) {
+          return Apollo.useLazyQuery<GetMeasureEntryQuery, GetMeasureEntryQueryVariables>(GetMeasureEntryDocument, baseOptions);
+        }
+export type GetMeasureEntryQueryHookResult = ReturnType<typeof useGetMeasureEntryQuery>;
+export type GetMeasureEntryLazyQueryHookResult = ReturnType<typeof useGetMeasureEntryLazyQuery>;
+export type GetMeasureEntryQueryResult = Apollo.QueryResult<GetMeasureEntryQuery, GetMeasureEntryQueryVariables>;
 export const GetValueEntryDocument = gql`
     query GetValueEntry($id: ID!) {
-  node(id: $id) {
+  node: getValue(id: $id) {
     ...ValueDetailProps
   }
 }

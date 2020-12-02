@@ -9,8 +9,8 @@ import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
-import useDocumentedBy from "../../hooks/useDocumentedBy";
 import {FormSet} from "../../components/forms/FormSet";
+import useRelated from "../../hooks/useRelated";
 
 const UnitForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
@@ -24,8 +24,9 @@ const UnitForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
     let entry = data?.node as ObjectDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation();
 
-    const documentedBy = useDocumentedBy({
-        relationships: entry?.documentedBy.nodes || []
+    const documentedBy = useRelated({
+        catalogEntries: entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? [],
+        emptyMessage: "Einheit ist mit keinem Referenzdokument verlinkt."
     });
 
     if (loading) return <Typography>Lade Maßeinheit..</Typography>;

@@ -134,6 +134,16 @@ fragment AssignsPropertiesProps on XtdRelAssignsProperties {
     }
 }
 
+fragment AssignsMeasuresProps on XtdRelAssignsMeasures {
+    ...RelationshipProps
+    relatingProperty {
+        ...SearchResultProps
+    }
+    relatedMeasures {
+        ...SearchResultProps
+    }
+}
+
 fragment AssignsPropertyWithValuesProps on XtdRelAssignsPropertyWithValues {
     ...RelationshipProps
     relatedProperty {
@@ -188,9 +198,23 @@ fragment ObjectDetailProps on XtdObject {
 
 fragment PropertyDetailProps on XtdProperty {
     ...ObjectDetailProps
+    assignedMeasures {
+        nodes {
+            ...AssignsMeasuresProps
+        }
+    }
     assignedTo {
         nodes {
             ...AssignsPropertiesProps
+        }
+    }
+}
+
+fragment MeasureDetailProps on XtdMeasureWithUnit {
+    ...ObjectDetailProps
+    assignedTo {
+        nodes {
+            ...AssignsMeasuresProps
         }
     }
 }

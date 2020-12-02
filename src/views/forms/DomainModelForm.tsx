@@ -19,7 +19,7 @@ import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import {GroupEntity} from "../../domain";
 import FormView, {FormProps} from "./FormView";
-import useDocumentedBy from "../../hooks/useDocumentedBy";
+import useRelated from "../../hooks/useRelated";
 
 
 function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
@@ -54,8 +54,9 @@ function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
         ]
     });
 
-    const documentedBy = useDocumentedBy({
-        relationships: entry?.documentedBy.nodes || [],
+    const documentedBy = useRelated({
+        catalogEntries: entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? [],
+        emptyMessage: "Fachmodell ist mit keinem Referenzdokument verlinkt."
     });
 
     if (loading) return <Typography>Lade Fachmodel..</Typography>;

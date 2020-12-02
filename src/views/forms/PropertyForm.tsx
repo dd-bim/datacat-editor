@@ -1,5 +1,8 @@
 import React, {FC} from "react";
 import {
+    AssignsMeasuresPropsFragment,
+    EntityTypes,
+    GetObjectEntryDocument,
     PropertyDetailPropsFragment,
     PropertyTreeDocument,
     useDeleteEntryMutation,
@@ -14,10 +17,9 @@ import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
-import useDocumentedBy from "../../hooks/useDocumentedBy";
 import {FormSet} from "../../components/forms/FormSet";
-import useCollectedBy from "../../hooks/useCollectedBy";
-import usePropertyAssignedTo from "../../hooks/usePropertyAssignedTo";
+import useAssignsMeasures from "../../hooks/useAssignsMeasures";
+import useRelated from "../../hooks/useRelated";
 
 const PropertyForm: FC<FormProps<PropertyDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
@@ -35,18 +37,35 @@ const PropertyForm: FC<FormProps<PropertyDetailPropsFragment>> = (props) => {
     let entry = data?.node as PropertyDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation(baseOptions);
 
-    const documentedBy = useDocumentedBy({
-        relationships: entry?.documentedBy.nodes || []
+    const assignedMeasures = useAssignsMeasures({
+        id,
+        relationships: entry?.assignedMeasures.nodes || [],
+        optionsSearchInput: {
+            pageSize: 100,
+            entityTypeIn: [EntityTypes.XtdMeasureWithUnit]
+        },
+        renderLabel(relationship?: AssignsMeasuresPropsFragment): React.ReactNode {
+            return relationship ? `Bemaßungen (${relationship.id})` : `Bemaßungen`;
+        },
+        refetchQueries: [
+            {query: PropertyTreeDocument},
+            {query: GetObjectEntryDocument, variables: {id}}
+        ]
     });
 
-    const collectedBy = useCollectedBy({
-        relationships: entry?.collectedBy.nodes || [],
-        emptyMessage: "In keinen Merkmalsgruppen genutzt."
+    const documentedBy = useRelated({
+        catalogEntries: entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? [],
+        emptyMessage: "Merkmal ist mit keinem Referenzdokument verlinkt."
     });
 
-    const assignedTo = usePropertyAssignedTo({
-        relationships: entry?.assignedTo.nodes || [],
-        emptyMessage: "Durch keine Klasse genutzt."
+    const collectedBy = useRelated({
+        catalogEntries: entry?.collectedBy.nodes.map(node => node.relatingCollection) || [],
+        emptyMessage: "Merkmal kommt in keiner Sammlung vor."
+    });
+
+    const assignedTo = useRelated({
+        catalogEntries: entry?.assignedTo.nodes.map(node => node.relatingObject) || [],
+        emptyMessage: "Merkmal ist keinem Objekt direkt zugewiesen."
     })
 
     if (loading) return <Typography>Lade Merkmal..</Typography>;
@@ -75,6 +94,13 @@ const PropertyForm: FC<FormProps<PropertyDetailPropsFragment>> = (props) => {
                 versionId={entry.versionId}
                 versionDate={entry.versionDate}
             />
+
+            <FormSet
+                title="Bemaßungen"
+                description="Bemaßungen, die diesem Merkmal zugeordnet sind."
+            >
+                {assignedMeasures}
+            </FormSet>
 
             <MetaFormSet entry={entry}/>
 

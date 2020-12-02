@@ -1,5 +1,5 @@
 import React, {FC} from "react";
-import {ObjectDetailPropsFragment, useDeleteEntryMutation, useGetObjectEntryQuery} from "../../generated/types";
+import {MeasureDetailPropsFragment, useDeleteEntryMutation, useGetMeasureEntryQuery} from "../../generated/types";
 import {Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
@@ -9,23 +9,29 @@ import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
-import useDocumentedBy from "../../hooks/useDocumentedBy";
 import {FormSet} from "../../components/forms/FormSet";
+import useRelated from "../../hooks/useRelated";
 
-const MeasureForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
+const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
 
     // fetch domain model
-    const {loading, error, data} = useGetObjectEntryQuery({
+    const {loading, error, data} = useGetMeasureEntryQuery({
         fetchPolicy: "network-only",
         variables: {id}
     });
-    let entry = data?.node as ObjectDetailPropsFragment | undefined;
+    let entry = data?.node as MeasureDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation();
 
-    const documentedBy = useDocumentedBy({
-        relationships: entry?.documentedBy.nodes || []
+    const documentedBy = useRelated({
+        catalogEntries: entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? [],
+        emptyMessage: "Bemaßung ist mit keinem Referenzdokument verlinkt."
+    });
+
+    const assignedTo = useRelated({
+        catalogEntries: entry?.assignedTo.nodes.map(node => node.relatingProperty) || [],
+        emptyMessage: "Bemaßung wird durch kein Merkmal referenziert."
     });
 
     if (loading) return <Typography>Lade Bemaßung..</Typography>;
@@ -59,6 +65,10 @@ const MeasureForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
 
             <FormSet title="Referenzen...">
                 {documentedBy}
+            </FormSet>
+
+            <FormSet title="Merkmale...">
+                {assignedTo}
             </FormSet>
 
             <Button

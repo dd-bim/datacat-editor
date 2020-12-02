@@ -19,8 +19,7 @@ import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
-import useDocumentedBy from "../../hooks/useDocumentedBy";
-import useCollectionAssignedTo from "../../hooks/useCollectionAssignedTo";
+import useRelated from "../../hooks/useRelated";
 
 const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
@@ -54,12 +53,13 @@ const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) 
         ]
     });
 
-    const documentedByInputs = useDocumentedBy({
-        relationships: entry?.documentedBy.nodes ?? []
+    const documentedBy = useRelated({
+        catalogEntries: entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? [],
+        emptyMessage: "Merkmalsgruppe ist mit keinem Referenzdokument verlinkt."
     });
 
-    const collectionAssignedTo = useCollectionAssignedTo({
-        relationships: entry?.assignedTo.nodes ?? [],
+    const collectionAssignedTo = useRelated({
+        catalogEntries: entry?.assignedTo.nodes.map(node => node.relatingObject) ?? [],
         emptyMessage: "Merkmalsgruppe ist keiner Klasse zugewiesen."
     });
 
@@ -100,7 +100,7 @@ const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) 
             <MetaFormSet entry={entry}/>
 
             <FormSet title="Referenzen...">
-                {documentedByInputs}
+                {documentedBy}
             </FormSet>
 
             <FormSet title="Klassen...">
