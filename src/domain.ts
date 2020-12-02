@@ -151,9 +151,6 @@ export const Domain = [
 ];
 
 export function getEntityType(entryType: string, tags?: string[]): Entity | null {
-    if (!(entryType in CatalogEntryType)) {
-        return null;
-    }
 
     for (const id of tags ?? []) {
         for (const entityType of Domain) {
@@ -168,6 +165,8 @@ export function getEntityType(entryType: string, tags?: string[]): Entity | null
             return entityType;
         }
     }
+
+    if (entryType === "MeasureWithUnit") return MeasureEntity;
 
     return null;
 }
