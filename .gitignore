@@ -22,5 +22,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# tools
+.eslintcache
+
+# project
+
 .idea
 *.iml
