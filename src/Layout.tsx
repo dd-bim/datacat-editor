@@ -14,11 +14,10 @@ import ProfileFormView from "./views/forms/ProfileFormView";
 import HierarchyView from "./views/HierarchyView";
 import Paper from "@material-ui/core/Paper";
 import useGridStyles from "./hooks/useGridStyle";
-import useGraphiQLFetcher from "./hooks/useGraphiQLFetcher";
-import {GraphiQL} from "graphiql";
 
 import "graphiql/graphiql.min.css";
 import CatalogEntryRoutes from "./routes/CatalogEntryRoutes";
+import GraphiQLEditor from "./GraphiQLEditor";
 
 const drawerWidth = 250;
 
@@ -41,7 +40,8 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(3)
     },
     graphiql: {
-        minHeight: "100vh"
+        minHeight: "100vh",
+        height: "100%"
     }
 }));
 
@@ -50,7 +50,6 @@ export default function Layout() {
     const gridStyles = useGridStyles();
     const {token} = useAuthContext();
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const graphiqlFetcher = useGraphiQLFetcher();
 
     if (!token) {
         return (
@@ -132,7 +131,7 @@ export default function Layout() {
                     </Route>
                     <Route path="/graphiql">
                         <Paper className={classes.graphiql}>
-                            <GraphiQL fetcher={graphiqlFetcher}/>
+                            <GraphiQLEditor/>
                         </Paper>
                     </Route>
                     <CatalogEntryRoutes/>
