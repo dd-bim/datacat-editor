@@ -92,18 +92,15 @@ export default function SearchBox<Multiple extends boolean | undefined, DisableC
         </React.Fragment>
     );
 
-    const renderTag = ({domainEntityType, id, name, description}: SearchBoxOption, tagProps: object) => {
-        debugger;
-        return (
-            <ConceptChip
-                conceptType={domainEntityType}
-                id={id}
-                label={name}
-                title={description}
-                {...tagProps}
-            />
-        );
-    };
+    const renderTag = ({domainEntityType, id, name, description}: SearchBoxOption, tagProps: object) => (
+        <ConceptChip
+            conceptType={domainEntityType}
+            id={id}
+            label={name}
+            title={description}
+            {...tagProps}
+        />
+    );
 
     const renderTags = (values: SearchBoxOption[], getTagProps: AutocompleteGetTagProps) => (
         values
