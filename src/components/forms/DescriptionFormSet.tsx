@@ -88,12 +88,14 @@ const DescriptionFormSet: FC<DescriptionFormSetProps> = (props) => {
                 />
             );
         });
+    const hasDescription = !!descriptionForms.length;
 
-    if (!descriptionForms.length) {
+    if (!hasDescription) {
         descriptionForms.push(
-            <Typography key="no-translation" variant="body2" color="textSecondary">Kein Beschreibung
-                vorhanden.</Typography>
-        )
+            <Typography key="no-translation" variant="body2" align="center" color="textSecondary">
+                Kein Beschreibung vorhanden.
+            </Typography>
+        );
     }
 
     return (
@@ -128,7 +130,7 @@ const DescriptionFormSet: FC<DescriptionFormSetProps> = (props) => {
                 onClick={() => setOpen(true)}
             >
                 <TranslateIcon
-                    fontSize="inherit"/> {descriptionForms.length ? "Beschreibung übersetzen" : "Beschreibung hinzufügen"}
+                    fontSize="inherit"/> {hasDescription ? "Beschreibung übersetzen" : "Beschreibung hinzufügen"}
             </Link>
         </FormSet>
     );
