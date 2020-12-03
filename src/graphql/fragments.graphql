@@ -154,6 +154,16 @@ fragment AssignsPropertyWithValuesProps on XtdRelAssignsPropertyWithValues {
     }
 }
 
+fragment AssignsUnitsProps on XtdRelAssignsUnits {
+    ...RelationshipProps
+    relatingMeasure {
+        ...SearchResultProps
+    }
+    relatedUnits {
+        ...SearchResultProps
+    }
+}
+
 fragment MetaProps on Entity {
     created
     createdBy
@@ -215,6 +225,19 @@ fragment MeasureDetailProps on XtdMeasureWithUnit {
     assignedTo {
         nodes {
             ...AssignsMeasuresProps
+        }
+    }
+    assignedUnits {
+        nodes {
+            ...AssignsUnitsProps
+        }
+    }
+}
+
+fragment UnitProps on XtdUnit {
+    assignedTo {
+        nodes {
+            ...AssignsUnitsProps
         }
     }
 }

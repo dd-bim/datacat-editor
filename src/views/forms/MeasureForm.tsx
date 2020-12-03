@@ -1,5 +1,13 @@
 import React, {FC} from "react";
-import {MeasureDetailPropsFragment, useDeleteEntryMutation, useGetMeasureEntryQuery} from "../../generated/types";
+import {
+    AssignsUnitsPropsFragment,
+    EntityTypes,
+    GetObjectEntryDocument,
+    MeasureDetailPropsFragment,
+    PropertyTreeDocument,
+    useDeleteEntryMutation,
+    useGetMeasureEntryQuery
+} from "../../generated/types";
 import {Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
@@ -11,6 +19,7 @@ import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
 import {FormSet} from "../../components/forms/FormSet";
 import useRelated from "../../hooks/useRelated";
+import useAssignsUnits from "../../hooks/useAssignsUnits";
 
 const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
@@ -23,6 +32,22 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
     });
     let entry = data?.node as MeasureDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation();
+
+    const assignsUnits = useAssignsUnits({
+        id,
+        relationships: entry?.assignedUnits.nodes || [],
+        optionsSearchInput: {
+            pageSize: 100,
+            entityTypeIn: [EntityTypes.XtdUnit]
+        },
+        renderLabel(relationship?: AssignsUnitsPropsFragment): React.ReactNode {
+            return relationship ? `Einheiten (${relationship.id})` : `Einheiten`;
+        },
+        refetchQueries: [
+            {query: PropertyTreeDocument},
+            {query: GetObjectEntryDocument, variables: {id}}
+        ]
+    });
 
     const documentedBy = useRelated({
         catalogEntries: entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? [],
@@ -60,6 +85,13 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
                 versionId={entry.versionId}
                 versionDate={entry.versionDate}
             />
+
+            <FormSet
+                title="Einheiten"
+                description="Einheiten, in denen dieses Bemaßung bestimmt wird."
+            >
+                {assignsUnits}
+            </FormSet>
 
             <MetaFormSet entry={entry}/>
 

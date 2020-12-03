@@ -21,6 +21,7 @@ import PropertyGroupForm from "../views/forms/PropertyGroupForm";
 import PropertyForm from "../views/forms/PropertyForm";
 import ValueForm from "../views/forms/ValueForm";
 import MeasureForm from "../views/forms/MeasureForm";
+import UnitForm from "../views/forms/UnitForm";
 
 const CatalogEntryRoutes = () => {
     const history = useHistory();
@@ -148,7 +149,7 @@ const CatalogEntryRoutes = () => {
                         tagged: UnitEntity.tags,
                     }}
                     renderForm={(id => (
-                        <MeasureForm
+                        <UnitForm
                             id={id}
                             onDelete={() => onDelete(UnitEntity.path)}
                         />
