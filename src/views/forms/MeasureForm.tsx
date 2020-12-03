@@ -1,8 +1,9 @@
 import React, {FC} from "react";
 import {
     AssignsUnitsPropsFragment,
+    AssignsValuesPropsFragment,
     EntityTypes,
-    GetObjectEntryDocument,
+    GetMeasureEntryDocument,
     MeasureDetailPropsFragment,
     PropertyTreeDocument,
     useDeleteEntryMutation,
@@ -20,6 +21,7 @@ import FormView, {FormProps} from "./FormView";
 import {FormSet} from "../../components/forms/FormSet";
 import useRelated from "../../hooks/useRelated";
 import useAssignsUnits from "../../hooks/useAssignsUnits";
+import useAssignsValues from "../../hooks/useAssignsValues";
 
 const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
@@ -45,7 +47,23 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
         },
         refetchQueries: [
             {query: PropertyTreeDocument},
-            {query: GetObjectEntryDocument, variables: {id}}
+            {query: GetMeasureEntryDocument, variables: {id}}
+        ]
+    });
+
+    const assignsValues = useAssignsValues({
+        id,
+        relationships: entry?.assignedValues.nodes || [],
+        optionsSearchInput: {
+            pageSize: 100,
+            entityTypeIn: [EntityTypes.XtdValue]
+        },
+        renderLabel(relationship?: AssignsValuesPropsFragment): React.ReactNode {
+            return relationship ? `Werte (${relationship.id})` : `Werte`;
+        },
+        refetchQueries: [
+            {query: PropertyTreeDocument},
+            {query: GetMeasureEntryDocument, variables: {id}}
         ]
     });
 
@@ -91,6 +109,13 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
                 description="Einheiten, in denen dieses Bemaßung bestimmt wird."
             >
                 {assignsUnits}
+            </FormSet>
+
+            <FormSet
+                title="Werte"
+                description="Werte, die diese Bemaßung annehmen kann."
+            >
+                {assignsValues}
             </FormSet>
 
             <MetaFormSet entry={entry}/>

@@ -464,6 +464,7 @@ export type VersionInput = {
 
 
 
+
 export type UserProfileFragment = { username: string, firstName: string, lastName: string, email: string, organization: string };
 
 export type PagePropsFragment = { totalPages: number, pageNumber: number, hasNext: boolean, hasPrevious: boolean };
@@ -882,6 +883,11 @@ export type AssignsUnitsPropsFragment = (
   & RelationshipProps_XtdRelAssignsUnits_Fragment
 );
 
+export type AssignsValuesPropsFragment = (
+  { relatingMeasure: SearchResultProps_XtdMeasureWithUnit_Fragment, relatedValues: Array<SearchResultProps_XtdValue_Fragment> }
+  & RelationshipProps_XtdRelAssignsValues_Fragment
+);
+
 type MetaProps_XtdActivity_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
 
 type MetaProps_XtdActor_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
@@ -996,7 +1002,7 @@ export type PropertyDetailPropsFragment = (
 );
 
 export type MeasureDetailPropsFragment = (
-  { assignedTo: { nodes: Array<AssignsMeasuresPropsFragment> }, assignedUnits: { nodes: Array<AssignsUnitsPropsFragment> } }
+  { assignedTo: { nodes: Array<AssignsMeasuresPropsFragment> }, assignedUnits: { nodes: Array<AssignsUnitsPropsFragment> }, assignedValues: { nodes: Array<AssignsValuesPropsFragment> } }
   & ObjectDetailProps_XtdMeasureWithUnit_Fragment
 );
 
@@ -1492,6 +1498,18 @@ export const AssignsUnitsPropsFragmentDoc = gql`
 }
     ${RelationshipPropsFragmentDoc}
 ${SearchResultPropsFragmentDoc}`;
+export const AssignsValuesPropsFragmentDoc = gql`
+    fragment AssignsValuesProps on XtdRelAssignsValues {
+  ...RelationshipProps
+  relatingMeasure {
+    ...SearchResultProps
+  }
+  relatedValues {
+    ...SearchResultProps
+  }
+}
+    ${RelationshipPropsFragmentDoc}
+${SearchResultPropsFragmentDoc}`;
 export const MeasureDetailPropsFragmentDoc = gql`
     fragment MeasureDetailProps on XtdMeasureWithUnit {
   ...ObjectDetailProps
@@ -1505,10 +1523,16 @@ export const MeasureDetailPropsFragmentDoc = gql`
       ...AssignsUnitsProps
     }
   }
+  assignedValues {
+    nodes {
+      ...AssignsValuesProps
+    }
+  }
 }
     ${ObjectDetailPropsFragmentDoc}
 ${AssignsMeasuresPropsFragmentDoc}
-${AssignsUnitsPropsFragmentDoc}`;
+${AssignsUnitsPropsFragmentDoc}
+${AssignsValuesPropsFragmentDoc}`;
 export const UnitPropsFragmentDoc = gql`
     fragment UnitProps on XtdUnit {
   assignedTo {
