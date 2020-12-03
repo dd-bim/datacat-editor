@@ -2,7 +2,7 @@ import React, {FC} from "react";
 import {
     AssignsMeasuresPropsFragment,
     EntityTypes,
-    GetObjectEntryDocument,
+    GetPropertyEntryDocument,
     PropertyDetailPropsFragment,
     PropertyTreeDocument,
     useDeleteEntryMutation,
@@ -49,7 +49,7 @@ const PropertyForm: FC<FormProps<PropertyDetailPropsFragment>> = (props) => {
         },
         refetchQueries: [
             {query: PropertyTreeDocument},
-            {query: GetObjectEntryDocument, variables: {id}}
+            {query: GetPropertyEntryDocument, variables: {id}}
         ]
     });
 

@@ -2,7 +2,7 @@ import React, {FC} from "react";
 import {
     DocumentsPropsFragment,
     ExternalDocumentDetailPropsFragment,
-    GetObjectEntryDocument,
+    GetDocumentEntryDocument,
     PropertyTreeDocument,
     useDeleteEntryMutation,
     useGetDocumentEntryQuery
@@ -43,7 +43,7 @@ const DocumentForm: FC<FormProps<ExternalDocumentDetailPropsFragment>> = (props)
         },
         refetchQueries: [
             {query: PropertyTreeDocument},
-            {query: GetObjectEntryDocument, variables: {id}}
+            {query: GetDocumentEntryDocument, variables: {id}}
         ]
     });
 

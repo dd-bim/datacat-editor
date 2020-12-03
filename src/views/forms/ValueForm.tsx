@@ -40,6 +40,11 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
         emptyMessage: "Gruppe ist mit keinem Referenzdokument verlinkt."
     });
 
+    const assignedTo = useRelated({
+        catalogEntries: entry?.assignedTo.nodes.map(node => node.relatingMeasure) ?? [],
+        emptyMessage: "Wert ist keiner Bemaßung zugewiesen."
+    });
+
     if (loading) return <Typography>Lade Wert..</Typography>;
     if (error || !entry) return <Typography>Es ist ein Fehler aufgetreten..</Typography>;
 
@@ -85,6 +90,10 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
 
             <FormSet title="Referenzen...">
                 {documentedBy}
+            </FormSet>
+
+            <FormSet title="Bemaßungen...">
+                {assignedTo}
             </FormSet>
 
             <Button
