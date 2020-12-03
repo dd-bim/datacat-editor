@@ -23,6 +23,7 @@ import useAssignsProperties from "../../hooks/useAssignsProperties";
 import {PropertyGroupEntity} from "../../domain";
 import FormView, {FormProps} from "./FormView";
 import useRelated from "../../hooks/useRelated";
+import CatalogEntryChip from "../../components/CatalogEntryChip";
 
 const DomainClassForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
@@ -122,6 +123,21 @@ const DomainClassForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
                 description="Merkmale, die dieser Klasse direkt zugeordnet sind."
             >
                 {assignedProperties}
+            </FormSet>
+
+            <FormSet title="Wertezuweisungen">
+                {entry.assignedPropertiesWithValues.nodes.map(node => (
+                    <div key={node.id}>
+                        <CatalogEntryChip catalogEntry={node.relatedProperty}/>
+                        <ul>
+                            {node.relatedValues.map(value => (
+                                <li key={value.id}>
+                                    <CatalogEntryChip catalogEntry={value}/>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ))}
             </FormSet>
 
             <MetaFormSet entry={entry}>
