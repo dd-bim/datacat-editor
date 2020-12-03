@@ -4,10 +4,10 @@ import {
     AssignsPropertiesPropsFragment,
     EntityTypes,
     GetObjectEntryDocument,
-    ObjectDetailPropsFragment,
     PropertyTreeDocument,
+    SubjectDetailPropsFragment,
     useDeleteEntryMutation,
-    useGetObjectEntryQuery
+    useGetSubjectEntryQuery
 } from "../../generated/types";
 import {Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
@@ -24,7 +24,7 @@ import {PropertyGroupEntity} from "../../domain";
 import FormView, {FormProps} from "./FormView";
 import useRelated from "../../hooks/useRelated";
 
-const DomainClassForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
+const DomainClassForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
 
@@ -33,11 +33,11 @@ const DomainClassForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
     };
 
     // fetch domain model
-    const {loading, error, data} = useGetObjectEntryQuery({
+    const {loading, error, data} = useGetSubjectEntryQuery({
         fetchPolicy: "network-only",
         variables: {id}
     });
-    let entry = data?.node as ObjectDetailPropsFragment | undefined;
+    let entry = data?.node as SubjectDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation(baseOptions);
 
     const assignedCollections = useAssignsCollections({

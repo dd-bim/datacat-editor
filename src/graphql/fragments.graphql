@@ -186,6 +186,15 @@ fragment ExternalDocumentDetailProps on XtdExternalDocument {
 fragment ObjectDetailProps on XtdObject {
     ...MetaProps
     ...ConceptProps
+    documentedBy {
+        nodes {
+            ...DocumentsProps
+        }
+    }
+}
+
+fragment SubjectDetailProps on XtdSubject {
+    ...ObjectDetailProps
     assignedCollections {
         nodes {
             ...AssignsCollectionsProps
@@ -196,14 +205,14 @@ fragment ObjectDetailProps on XtdObject {
             ...AssignsPropertiesProps
         }
     }
+    assignedPropertiesWithValues {
+        nodes {
+            ...AssignsPropertyWithValuesProps
+        }
+    }
     collectedBy {
         nodes {
             ...CollectsProps
-        }
-    }
-    documentedBy {
-        nodes {
-            ...DocumentsProps
         }
     }
 }
@@ -218,6 +227,11 @@ fragment PropertyDetailProps on XtdProperty {
     assignedTo {
         nodes {
             ...AssignsPropertiesProps
+        }
+    }
+    collectedBy {
+        nodes {
+            ...CollectsProps
         }
     }
 }

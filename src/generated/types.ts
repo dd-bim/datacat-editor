@@ -929,57 +929,62 @@ export type ExternalDocumentDetailPropsFragment = (
 );
 
 type ObjectDetailProps_XtdActivity_Fragment = (
-  { assignedCollections: { nodes: Array<AssignsCollectionsPropsFragment> }, assignedProperties: { nodes: Array<AssignsPropertiesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, documentedBy: { nodes: Array<DocumentsPropsFragment> } }
+  { documentedBy: { nodes: Array<DocumentsPropsFragment> } }
   & MetaProps_XtdActivity_Fragment
   & ConceptProps_XtdActivity_Fragment
 );
 
 type ObjectDetailProps_XtdActor_Fragment = (
-  { assignedCollections: { nodes: Array<AssignsCollectionsPropsFragment> }, assignedProperties: { nodes: Array<AssignsPropertiesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, documentedBy: { nodes: Array<DocumentsPropsFragment> } }
+  { documentedBy: { nodes: Array<DocumentsPropsFragment> } }
   & MetaProps_XtdActor_Fragment
   & ConceptProps_XtdActor_Fragment
 );
 
 type ObjectDetailProps_XtdClassification_Fragment = (
-  { assignedCollections: { nodes: Array<AssignsCollectionsPropsFragment> }, assignedProperties: { nodes: Array<AssignsPropertiesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, documentedBy: { nodes: Array<DocumentsPropsFragment> } }
+  { documentedBy: { nodes: Array<DocumentsPropsFragment> } }
   & MetaProps_XtdClassification_Fragment
   & ConceptProps_XtdClassification_Fragment
 );
 
 type ObjectDetailProps_XtdMeasureWithUnit_Fragment = (
-  { assignedCollections: { nodes: Array<AssignsCollectionsPropsFragment> }, assignedProperties: { nodes: Array<AssignsPropertiesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, documentedBy: { nodes: Array<DocumentsPropsFragment> } }
+  { documentedBy: { nodes: Array<DocumentsPropsFragment> } }
   & MetaProps_XtdMeasureWithUnit_Fragment
   & ConceptProps_XtdMeasureWithUnit_Fragment
 );
 
 type ObjectDetailProps_XtdProperty_Fragment = (
-  { assignedCollections: { nodes: Array<AssignsCollectionsPropsFragment> }, assignedProperties: { nodes: Array<AssignsPropertiesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, documentedBy: { nodes: Array<DocumentsPropsFragment> } }
+  { documentedBy: { nodes: Array<DocumentsPropsFragment> } }
   & MetaProps_XtdProperty_Fragment
   & ConceptProps_XtdProperty_Fragment
 );
 
 type ObjectDetailProps_XtdSubject_Fragment = (
-  { assignedCollections: { nodes: Array<AssignsCollectionsPropsFragment> }, assignedProperties: { nodes: Array<AssignsPropertiesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, documentedBy: { nodes: Array<DocumentsPropsFragment> } }
+  { documentedBy: { nodes: Array<DocumentsPropsFragment> } }
   & MetaProps_XtdSubject_Fragment
   & ConceptProps_XtdSubject_Fragment
 );
 
 type ObjectDetailProps_XtdUnit_Fragment = (
-  { assignedCollections: { nodes: Array<AssignsCollectionsPropsFragment> }, assignedProperties: { nodes: Array<AssignsPropertiesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, documentedBy: { nodes: Array<DocumentsPropsFragment> } }
+  { documentedBy: { nodes: Array<DocumentsPropsFragment> } }
   & MetaProps_XtdUnit_Fragment
   & ConceptProps_XtdUnit_Fragment
 );
 
 type ObjectDetailProps_XtdValue_Fragment = (
-  { assignedCollections: { nodes: Array<AssignsCollectionsPropsFragment> }, assignedProperties: { nodes: Array<AssignsPropertiesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, documentedBy: { nodes: Array<DocumentsPropsFragment> } }
+  { documentedBy: { nodes: Array<DocumentsPropsFragment> } }
   & MetaProps_XtdValue_Fragment
   & ConceptProps_XtdValue_Fragment
 );
 
 export type ObjectDetailPropsFragment = ObjectDetailProps_XtdActivity_Fragment | ObjectDetailProps_XtdActor_Fragment | ObjectDetailProps_XtdClassification_Fragment | ObjectDetailProps_XtdMeasureWithUnit_Fragment | ObjectDetailProps_XtdProperty_Fragment | ObjectDetailProps_XtdSubject_Fragment | ObjectDetailProps_XtdUnit_Fragment | ObjectDetailProps_XtdValue_Fragment;
 
+export type SubjectDetailPropsFragment = (
+  { assignedCollections: { nodes: Array<AssignsCollectionsPropsFragment> }, assignedProperties: { nodes: Array<AssignsPropertiesPropsFragment> }, assignedPropertiesWithValues: { nodes: Array<AssignsPropertyWithValuesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> } }
+  & ObjectDetailProps_XtdSubject_Fragment
+);
+
 export type PropertyDetailPropsFragment = (
-  { assignedMeasures: { nodes: Array<AssignsMeasuresPropsFragment> }, assignedTo: { nodes: Array<AssignsPropertiesPropsFragment> } }
+  { assignedMeasures: { nodes: Array<AssignsMeasuresPropsFragment> }, assignedTo: { nodes: Array<AssignsPropertiesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> } }
   & ObjectDetailProps_XtdProperty_Fragment
 );
 
@@ -1202,6 +1207,13 @@ export type GetObjectEntryQueryVariables = Exact<{
 
 export type GetObjectEntryQuery = { node?: Maybe<ObjectDetailProps_XtdActivity_Fragment | ObjectDetailProps_XtdActor_Fragment | ObjectDetailProps_XtdClassification_Fragment | ObjectDetailProps_XtdMeasureWithUnit_Fragment | ObjectDetailProps_XtdProperty_Fragment | ObjectDetailProps_XtdSubject_Fragment | ObjectDetailProps_XtdUnit_Fragment | ObjectDetailProps_XtdValue_Fragment> };
 
+export type GetSubjectEntryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetSubjectEntryQuery = { node?: Maybe<SubjectDetailPropsFragment> };
+
 export type GetPropertyEntryQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -1283,6 +1295,14 @@ export const SearchResultPropsFragmentDoc = gql`
   en: name(input: {languageTags: ["en-US, en-GB"]})
 }
     ${ItemPropsFragmentDoc}`;
+export const MetaPropsFragmentDoc = gql`
+    fragment MetaProps on Entity {
+  created
+  createdBy
+  lastModified
+  lastModifiedBy
+}
+    `;
 export const LanguagePropsFragmentDoc = gql`
     fragment LanguageProps on Language {
   id
@@ -1314,33 +1334,13 @@ export const ConceptPropsFragmentDoc = gql`
 }
     ${ItemPropsFragmentDoc}
 ${TranslationPropsFragmentDoc}`;
-export const RelationshipPropsFragmentDoc = gql`
-    fragment RelationshipProps on XtdRelationship {
+export const ExternalDocumentPropsFragmentDoc = gql`
+    fragment ExternalDocumentProps on XtdExternalDocument {
   ...ConceptProps
 }
     ${ConceptPropsFragmentDoc}`;
-export const AssignsPropertyWithValuesPropsFragmentDoc = gql`
-    fragment AssignsPropertyWithValuesProps on XtdRelAssignsPropertyWithValues {
-  ...RelationshipProps
-  relatedProperty {
-    ...ItemProps
-  }
-  relatedValues {
-    ...ItemProps
-  }
-}
-    ${RelationshipPropsFragmentDoc}
-${ItemPropsFragmentDoc}`;
-export const MetaPropsFragmentDoc = gql`
-    fragment MetaProps on Entity {
-  created
-  createdBy
-  lastModified
-  lastModifiedBy
-}
-    `;
-export const ExternalDocumentPropsFragmentDoc = gql`
-    fragment ExternalDocumentProps on XtdExternalDocument {
+export const RelationshipPropsFragmentDoc = gql`
+    fragment RelationshipProps on XtdRelationship {
   ...ConceptProps
 }
     ${ConceptPropsFragmentDoc}`;
@@ -1369,6 +1369,19 @@ export const ExternalDocumentDetailPropsFragmentDoc = gql`
     ${MetaPropsFragmentDoc}
 ${ExternalDocumentPropsFragmentDoc}
 ${DocumentsPropsFragmentDoc}`;
+export const ObjectDetailPropsFragmentDoc = gql`
+    fragment ObjectDetailProps on XtdObject {
+  ...MetaProps
+  ...ConceptProps
+  documentedBy {
+    nodes {
+      ...DocumentsProps
+    }
+  }
+}
+    ${MetaPropsFragmentDoc}
+${ConceptPropsFragmentDoc}
+${DocumentsPropsFragmentDoc}`;
 export const AssignsCollectionsPropsFragmentDoc = gql`
     fragment AssignsCollectionsProps on XtdRelAssignsCollections {
   ...RelationshipProps
@@ -1393,6 +1406,18 @@ export const AssignsPropertiesPropsFragmentDoc = gql`
 }
     ${RelationshipPropsFragmentDoc}
 ${ItemPropsFragmentDoc}`;
+export const AssignsPropertyWithValuesPropsFragmentDoc = gql`
+    fragment AssignsPropertyWithValuesProps on XtdRelAssignsPropertyWithValues {
+  ...RelationshipProps
+  relatedProperty {
+    ...ItemProps
+  }
+  relatedValues {
+    ...ItemProps
+  }
+}
+    ${RelationshipPropsFragmentDoc}
+${ItemPropsFragmentDoc}`;
 export const CollectsPropsFragmentDoc = gql`
     fragment CollectsProps on XtdRelCollects {
   ...RelationshipProps
@@ -1409,10 +1434,9 @@ export const CollectsPropsFragmentDoc = gql`
     ${RelationshipPropsFragmentDoc}
 ${ItemPropsFragmentDoc}
 ${TagPropsFragmentDoc}`;
-export const ObjectDetailPropsFragmentDoc = gql`
-    fragment ObjectDetailProps on XtdObject {
-  ...MetaProps
-  ...ConceptProps
+export const SubjectDetailPropsFragmentDoc = gql`
+    fragment SubjectDetailProps on XtdSubject {
+  ...ObjectDetailProps
   assignedCollections {
     nodes {
       ...AssignsCollectionsProps
@@ -1423,23 +1447,22 @@ export const ObjectDetailPropsFragmentDoc = gql`
       ...AssignsPropertiesProps
     }
   }
+  assignedPropertiesWithValues {
+    nodes {
+      ...AssignsPropertyWithValuesProps
+    }
+  }
   collectedBy {
     nodes {
       ...CollectsProps
     }
   }
-  documentedBy {
-    nodes {
-      ...DocumentsProps
-    }
-  }
 }
-    ${MetaPropsFragmentDoc}
-${ConceptPropsFragmentDoc}
+    ${ObjectDetailPropsFragmentDoc}
 ${AssignsCollectionsPropsFragmentDoc}
 ${AssignsPropertiesPropsFragmentDoc}
-${CollectsPropsFragmentDoc}
-${DocumentsPropsFragmentDoc}`;
+${AssignsPropertyWithValuesPropsFragmentDoc}
+${CollectsPropsFragmentDoc}`;
 export const AssignsMeasuresPropsFragmentDoc = gql`
     fragment AssignsMeasuresProps on XtdRelAssignsMeasures {
   ...RelationshipProps
@@ -1465,10 +1488,16 @@ export const PropertyDetailPropsFragmentDoc = gql`
       ...AssignsPropertiesProps
     }
   }
+  collectedBy {
+    nodes {
+      ...CollectsProps
+    }
+  }
 }
     ${ObjectDetailPropsFragmentDoc}
 ${AssignsMeasuresPropsFragmentDoc}
-${AssignsPropertiesPropsFragmentDoc}`;
+${AssignsPropertiesPropsFragmentDoc}
+${CollectsPropsFragmentDoc}`;
 export const AssignsUnitsPropsFragmentDoc = gql`
     fragment AssignsUnitsProps on XtdRelAssignsUnits {
   ...RelationshipProps
@@ -2520,6 +2549,39 @@ export function useGetObjectEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetObjectEntryQueryHookResult = ReturnType<typeof useGetObjectEntryQuery>;
 export type GetObjectEntryLazyQueryHookResult = ReturnType<typeof useGetObjectEntryLazyQuery>;
 export type GetObjectEntryQueryResult = Apollo.QueryResult<GetObjectEntryQuery, GetObjectEntryQueryVariables>;
+export const GetSubjectEntryDocument = gql`
+    query GetSubjectEntry($id: ID!) {
+  node: getSubject(id: $id) {
+    ...SubjectDetailProps
+  }
+}
+    ${SubjectDetailPropsFragmentDoc}`;
+
+/**
+ * __useGetSubjectEntryQuery__
+ *
+ * To run a query within a React component, call `useGetSubjectEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSubjectEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSubjectEntryQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetSubjectEntryQuery(baseOptions: Apollo.QueryHookOptions<GetSubjectEntryQuery, GetSubjectEntryQueryVariables>) {
+        return Apollo.useQuery<GetSubjectEntryQuery, GetSubjectEntryQueryVariables>(GetSubjectEntryDocument, baseOptions);
+      }
+export function useGetSubjectEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSubjectEntryQuery, GetSubjectEntryQueryVariables>) {
+          return Apollo.useLazyQuery<GetSubjectEntryQuery, GetSubjectEntryQueryVariables>(GetSubjectEntryDocument, baseOptions);
+        }
+export type GetSubjectEntryQueryHookResult = ReturnType<typeof useGetSubjectEntryQuery>;
+export type GetSubjectEntryLazyQueryHookResult = ReturnType<typeof useGetSubjectEntryLazyQuery>;
+export type GetSubjectEntryQueryResult = Apollo.QueryResult<GetSubjectEntryQuery, GetSubjectEntryQueryVariables>;
 export const GetPropertyEntryDocument = gql`
     query GetPropertyEntry($id: ID!) {
   node: getProperty(id: $id) {

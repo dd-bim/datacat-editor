@@ -57,6 +57,12 @@ query GetObjectEntry($id: ID!) {
     }
 }
 
+query GetSubjectEntry($id: ID!) {
+    node: getSubject(id: $id) {
+        ...SubjectDetailProps
+    }
+}
+
 query GetPropertyEntry($id: ID!) {
     node: getProperty(id: $id) {
         ...PropertyDetailProps
