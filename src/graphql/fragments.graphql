@@ -46,8 +46,6 @@ fragment ItemProps on Concept {
 
 fragment SearchResultProps on Concept {
     ...ItemProps
-    versionId
-    versionDate
     de: name(input: { languageTags: ["de-DE"] })
     en: name(input: { languageTags: ["en-US, en-GB"] })
 }
@@ -56,8 +54,6 @@ fragment ConceptProps on Concept {
     ...ItemProps
     versionId
     versionDate
-    de: name(input: { languageTags: ["de-DE"] })
-    en: name(input: { languageTags: ["en-US, en-GB"] })
     names {
         ...TranslationProps
     }
@@ -70,12 +66,8 @@ fragment ExternalDocumentProps on XtdExternalDocument {
     ...ConceptProps
 }
 
-fragment ObjectProps on XtdObject {
-    ...ConceptProps
-}
-
 fragment ValueProps on XtdValue {
-    ...ObjectProps
+    ...ConceptProps
     valueType
     valueRole
     nominalValue
@@ -95,21 +87,21 @@ fragment RelationshipProps on XtdRelationship {
 fragment DocumentsProps on XtdRelDocuments {
     ...RelationshipProps
     relatingDocument {
-        ...ExternalDocumentProps
+        ...ItemProps
     }
     relatedThings {
-        ...SearchResultProps
+        ...ItemProps
     }
 }
 
 fragment CollectsProps on XtdRelCollects {
     ...RelationshipProps
     relatingCollection {
-        ...SearchResultProps
+        ...ItemProps
         tags { ...TagProps }
     }
     relatedThings {
-        ...SearchResultProps
+        ...ItemProps
     }
 }
 
@@ -117,60 +109,60 @@ fragment CollectsProps on XtdRelCollects {
 fragment AssignsCollectionsProps on XtdRelAssignsCollections {
     ...RelationshipProps
     relatingObject {
-        ...SearchResultProps
+        ...ItemProps
     }
     relatedCollections {
-        ...SearchResultProps
+        ...ItemProps
     }
 }
 
 fragment AssignsPropertiesProps on XtdRelAssignsProperties {
     ...RelationshipProps
     relatingObject {
-        ...SearchResultProps
+        ...ItemProps
     }
     relatedProperties {
-        ...SearchResultProps
+        ...ItemProps
     }
 }
 
 fragment AssignsMeasuresProps on XtdRelAssignsMeasures {
     ...RelationshipProps
     relatingProperty {
-        ...SearchResultProps
+        ...ItemProps
     }
     relatedMeasures {
-        ...SearchResultProps
+        ...ItemProps
     }
 }
 
 fragment AssignsPropertyWithValuesProps on XtdRelAssignsPropertyWithValues {
     ...RelationshipProps
     relatedProperty {
-        ...SearchResultProps
+        ...ItemProps
     }
     relatedValues {
-        ...SearchResultProps
+        ...ItemProps
     }
 }
 
 fragment AssignsUnitsProps on XtdRelAssignsUnits {
     ...RelationshipProps
     relatingMeasure {
-        ...SearchResultProps
+        ...ItemProps
     }
     relatedUnits {
-        ...SearchResultProps
+        ...ItemProps
     }
 }
 
 fragment AssignsValuesProps on XtdRelAssignsValues {
     ...RelationshipProps
     relatingMeasure {
-        ...SearchResultProps
+        ...ItemProps
     }
     relatedValues {
-        ...SearchResultProps
+        ...ItemProps
     }
 }
 
@@ -193,7 +185,7 @@ fragment ExternalDocumentDetailProps on XtdExternalDocument {
 
 fragment ObjectDetailProps on XtdObject {
     ...MetaProps
-    ...ObjectProps
+    ...ConceptProps
     assignedCollections {
         nodes {
             ...AssignsCollectionsProps
@@ -260,6 +252,11 @@ fragment UnitProps on XtdUnit {
 fragment ValueDetailProps on XtdValue {
     ...ObjectDetailProps
     ...ValueProps
+    assignedTo {
+        nodes {
+            ...AssignsValuesProps
+        }
+    }
 }
 
 fragment CollectionDetailProps on XtdCollection {
