@@ -1,5 +1,5 @@
 import React, {FC} from "react";
-import {ObjectDetailPropsFragment, useDeleteEntryMutation, useGetObjectEntryQuery} from "../../generated/types";
+import {UnitDetailPropsFragment, useDeleteEntryMutation, useGetUnitEntryQuery} from "../../generated/types";
 import {Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
@@ -12,21 +12,26 @@ import FormView, {FormProps} from "./FormView";
 import {FormSet} from "../../components/forms/FormSet";
 import useRelated from "../../hooks/useRelated";
 
-const UnitForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
+const UnitForm: FC<FormProps<UnitDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
 
     // fetch domain model
-    const {loading, error, data} = useGetObjectEntryQuery({
+    const {loading, error, data} = useGetUnitEntryQuery({
         fetchPolicy: "network-only",
         variables: {id}
     });
-    let entry = data?.node as ObjectDetailPropsFragment | undefined;
+    let entry = data?.node as UnitDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation();
 
     const documentedBy = useRelated({
         catalogEntries: entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? [],
         emptyMessage: "Einheit ist mit keinem Referenzdokument verlinkt."
+    });
+
+    const assignedTo = useRelated({
+        catalogEntries: entry?.assignedTo.nodes.map(node => node.relatingMeasure) ?? [],
+        emptyMessage: "Einheit wird durch keine Bemaßung verwendet."
     });
 
     if (loading) return <Typography>Lade Maßeinheit..</Typography>;
@@ -60,6 +65,10 @@ const UnitForm: FC<FormProps<ObjectDetailPropsFragment>> = (props) => {
 
             <FormSet title="Referenzen...">
                 {documentedBy}
+            </FormSet>
+
+            <FormSet title="Bemaßungen...">
+                {assignedTo}
             </FormSet>
 
             <Button

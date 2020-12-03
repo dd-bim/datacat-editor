@@ -69,6 +69,12 @@ query GetMeasureEntry($id: ID!) {
     }
 }
 
+query GetUnitEntry($id: ID!) {
+    node: getUnit(id: $id) {
+        ...UnitDetailProps
+    }
+}
+
 query GetValueEntry($id: ID!) {
     node: getValue(id: $id) {
         ...ValueDetailProps

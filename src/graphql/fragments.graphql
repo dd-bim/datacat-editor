@@ -241,7 +241,8 @@ fragment MeasureDetailProps on XtdMeasureWithUnit {
     }
 }
 
-fragment UnitProps on XtdUnit {
+fragment UnitDetailProps on XtdUnit {
+    ...ObjectDetailProps
     assignedTo {
         nodes {
             ...AssignsUnitsProps

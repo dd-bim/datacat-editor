@@ -988,7 +988,10 @@ export type MeasureDetailPropsFragment = (
   & ObjectDetailProps_XtdMeasureWithUnit_Fragment
 );
 
-export type UnitPropsFragment = { assignedTo: { nodes: Array<AssignsUnitsPropsFragment> } };
+export type UnitDetailPropsFragment = (
+  { assignedTo: { nodes: Array<AssignsUnitsPropsFragment> } }
+  & ObjectDetailProps_XtdUnit_Fragment
+);
 
 export type ValueDetailPropsFragment = (
   { assignedTo: { nodes: Array<AssignsValuesPropsFragment> } }
@@ -1212,6 +1215,13 @@ export type GetMeasureEntryQueryVariables = Exact<{
 
 
 export type GetMeasureEntryQuery = { node?: Maybe<MeasureDetailPropsFragment> };
+
+export type GetUnitEntryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetUnitEntryQuery = { node?: Maybe<UnitDetailPropsFragment> };
 
 export type GetValueEntryQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -1506,15 +1516,17 @@ export const MeasureDetailPropsFragmentDoc = gql`
 ${AssignsMeasuresPropsFragmentDoc}
 ${AssignsUnitsPropsFragmentDoc}
 ${AssignsValuesPropsFragmentDoc}`;
-export const UnitPropsFragmentDoc = gql`
-    fragment UnitProps on XtdUnit {
+export const UnitDetailPropsFragmentDoc = gql`
+    fragment UnitDetailProps on XtdUnit {
+  ...ObjectDetailProps
   assignedTo {
     nodes {
       ...AssignsUnitsProps
     }
   }
 }
-    ${AssignsUnitsPropsFragmentDoc}`;
+    ${ObjectDetailPropsFragmentDoc}
+${AssignsUnitsPropsFragmentDoc}`;
 export const ValuePropsFragmentDoc = gql`
     fragment ValueProps on XtdValue {
   ...ConceptProps
@@ -2574,6 +2586,39 @@ export function useGetMeasureEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetMeasureEntryQueryHookResult = ReturnType<typeof useGetMeasureEntryQuery>;
 export type GetMeasureEntryLazyQueryHookResult = ReturnType<typeof useGetMeasureEntryLazyQuery>;
 export type GetMeasureEntryQueryResult = Apollo.QueryResult<GetMeasureEntryQuery, GetMeasureEntryQueryVariables>;
+export const GetUnitEntryDocument = gql`
+    query GetUnitEntry($id: ID!) {
+  node: getUnit(id: $id) {
+    ...UnitDetailProps
+  }
+}
+    ${UnitDetailPropsFragmentDoc}`;
+
+/**
+ * __useGetUnitEntryQuery__
+ *
+ * To run a query within a React component, call `useGetUnitEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUnitEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUnitEntryQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetUnitEntryQuery(baseOptions: Apollo.QueryHookOptions<GetUnitEntryQuery, GetUnitEntryQueryVariables>) {
+        return Apollo.useQuery<GetUnitEntryQuery, GetUnitEntryQueryVariables>(GetUnitEntryDocument, baseOptions);
+      }
+export function useGetUnitEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUnitEntryQuery, GetUnitEntryQueryVariables>) {
+          return Apollo.useLazyQuery<GetUnitEntryQuery, GetUnitEntryQueryVariables>(GetUnitEntryDocument, baseOptions);
+        }
+export type GetUnitEntryQueryHookResult = ReturnType<typeof useGetUnitEntryQuery>;
+export type GetUnitEntryLazyQueryHookResult = ReturnType<typeof useGetUnitEntryLazyQuery>;
+export type GetUnitEntryQueryResult = Apollo.QueryResult<GetUnitEntryQuery, GetUnitEntryQueryVariables>;
 export const GetValueEntryDocument = gql`
     query GetValueEntry($id: ID!) {
   node: getValue(id: $id) {
