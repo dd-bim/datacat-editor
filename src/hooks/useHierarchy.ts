@@ -14,15 +14,13 @@ export type PropertyTreeNode = {
 
 type UsePropertyTreeOptions = {
     leaves: ItemPropsFragment[],
-    paths: string[][],
-    hideRelationships: boolean
+    paths: string[][]
 }
 
 const useHierarchy = (options: UsePropertyTreeOptions) => {
     const {
         leaves,
-        paths,
-        hideRelationships
+        paths
     } = options;
     // memoize a lookup object fasten tree generation
     const lookupMap = useMemo(() => {
@@ -42,14 +40,11 @@ const useHierarchy = (options: UsePropertyTreeOptions) => {
             path.forEach((id, idx) => {
                 const data = lookupMap[id];
 
-                // hide relationships in tree view
-                if (hideRelationships && data.__typename.startsWith("XtdRel")) return;
-
                 // the node may have been introduced in another path already
                 let node = parent.children.find(n => n.id === id);
                 if (!node) {
                     const nodeId = path.slice(0, idx + 1).join(':') + ':' + id;
-                    node = { id, nodeId, data, children: [] };
+                    node = {id, nodeId, data, children: []};
                     parent.children.push(node);
                     parent.children.sort((a, b) => {
                         if (a.data.__typename === b.data.__typename) {
@@ -65,7 +60,7 @@ const useHierarchy = (options: UsePropertyTreeOptions) => {
         });
 
         return result;
-    }, [hideRelationships, paths, lookupMap]);
+    }, [paths, lookupMap]);
 
     return {
         nodes: rootNode.children,

@@ -7,13 +7,11 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import Grid from "@material-ui/core/Grid";
 import {Route, Switch} from "react-router";
 import DomainModelForm from "./forms/DomainModelForm";
-import IconButton from "@material-ui/core/IconButton";
 import {Hierarchy} from "../components/Hierarchy";
 import {ConceptPropsFragment, usePropertyTreeQuery} from "../generated/types";
 import DomainGroupForm from "./forms/DomainGroupForm";
 import DomainClassForm from "./forms/DomainClassForm";
 import PropertyGroupForm from "./forms/PropertyGroupForm";
-import useLocalStorage from "../hooks/useLocalStorage";
 import {
     ClassEntity,
     DomainClassIcon,
@@ -27,7 +25,6 @@ import {
     PropertyGroupIcon,
     PropertyIcon
 } from "../domain";
-import {RelationshipIcon} from "../components/ConceptIcon";
 import PropertyForm from "./forms/PropertyForm";
 
 const useStyles = makeStyles(theme => ({
@@ -57,7 +54,6 @@ const HierarchyView: FC = () => {
     const history = useHistory();
     let {path, url} = useRouteMatch();
     const classes = useStyles();
-    const [hideRelationships, setHideRelationships] = useLocalStorage<boolean>("hide-relationships", true);
     const {loading, error, data} = usePropertyTreeQuery({});
 
     const handleOnSelect = ({id, __typename, tags}: ConceptPropsFragment) => {
@@ -73,10 +69,6 @@ const HierarchyView: FC = () => {
         history.push(path);
     };
 
-    const handleOnShowRelationsClick = () => {
-        setHideRelationships(!hideRelationships);
-    };
-
     let content;
     if (loading) {
         content = <LinearProgress/>;
@@ -87,7 +79,6 @@ const HierarchyView: FC = () => {
             <Hierarchy
                 leaves={data!.hierarchy.nodes}
                 paths={data!.hierarchy.paths}
-                hideRelationships={hideRelationships}
                 onSelect={handleOnSelect}
             />
         );
@@ -99,7 +90,6 @@ const HierarchyView: FC = () => {
                 <Paper className={classes.paper}>
                     <Typography variant="h5">
                         Katalog durchsuchen
-                        <IconButton onClick={handleOnShowRelationsClick}><RelationshipIcon/></IconButton>
                     </Typography>
                     {content}
                 </Paper>

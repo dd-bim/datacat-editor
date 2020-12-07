@@ -16,7 +16,6 @@ const usePropertyTreeStyles = makeStyles({
 type HierarchyProps = {
     leaves: ItemPropsFragment[]
     paths: string[][],
-    hideRelationships: boolean,
     onSelect(selection: ItemPropsFragment): void
 }
 export const Hierarchy: FC<HierarchyProps> = (props) => {
@@ -24,9 +23,8 @@ export const Hierarchy: FC<HierarchyProps> = (props) => {
     const {
         leaves,
         paths,
-        hideRelationships
     } = props;
-    const {nodes, lookupMap} = useHierarchy({leaves, paths, hideRelationships});
+    const {nodes, lookupMap} = useHierarchy({leaves, paths});
     const [expanded, setExpanded] = useLocalStorage<string[]>("expanded-hierarchy-nodes", []);
     const [defaultExpanded] = useState(expanded);
 
