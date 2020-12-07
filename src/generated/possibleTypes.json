@@ -1,4 +1,17 @@
 {
+    "CatalogEntry": [
+        "XtdActor",
+        "XtdActivity",
+        "XtdBag",
+        "XtdClassification",
+        "XtdExternalDocument",
+        "XtdMeasureWithUnit",
+        "XtdNest",
+        "XtdSubject",
+        "XtdProperty",
+        "XtdUnit",
+        "XtdValue"
+    ],
     "Concept": [
         "XtdActivity",
         "XtdActor",
@@ -50,19 +63,6 @@
         "XtdRelSequences",
         "XtdRelSpecializes",
         "XtdSubject",
-        "XtdUnit",
-        "XtdValue"
-    ],
-    "Entry": [
-        "XtdActor",
-        "XtdActivity",
-        "XtdBag",
-        "XtdClassification",
-        "XtdExternalDocument",
-        "XtdMeasureWithUnit",
-        "XtdNest",
-        "XtdSubject",
-        "XtdProperty",
         "XtdUnit",
         "XtdValue"
     ],

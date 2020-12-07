@@ -215,6 +215,9 @@ fragment SubjectDetailProps on XtdSubject {
             ...CollectsProps
         }
     }
+    properties {
+        ...ItemProps
+    }
 }
 
 fragment PropertyDetailProps on XtdProperty {

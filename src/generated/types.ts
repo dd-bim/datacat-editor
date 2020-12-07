@@ -979,7 +979,7 @@ type ObjectDetailProps_XtdValue_Fragment = (
 export type ObjectDetailPropsFragment = ObjectDetailProps_XtdActivity_Fragment | ObjectDetailProps_XtdActor_Fragment | ObjectDetailProps_XtdClassification_Fragment | ObjectDetailProps_XtdMeasureWithUnit_Fragment | ObjectDetailProps_XtdProperty_Fragment | ObjectDetailProps_XtdSubject_Fragment | ObjectDetailProps_XtdUnit_Fragment | ObjectDetailProps_XtdValue_Fragment;
 
 export type SubjectDetailPropsFragment = (
-  { assignedCollections: { nodes: Array<AssignsCollectionsPropsFragment> }, assignedProperties: { nodes: Array<AssignsPropertiesPropsFragment> }, assignedPropertiesWithValues: { nodes: Array<AssignsPropertyWithValuesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> } }
+  { assignedCollections: { nodes: Array<AssignsCollectionsPropsFragment> }, assignedProperties: { nodes: Array<AssignsPropertiesPropsFragment> }, assignedPropertiesWithValues: { nodes: Array<AssignsPropertyWithValuesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, properties: Array<ItemProps_XtdProperty_Fragment> }
   & ObjectDetailProps_XtdSubject_Fragment
 );
 
@@ -1457,12 +1457,16 @@ export const SubjectDetailPropsFragmentDoc = gql`
       ...CollectsProps
     }
   }
+  properties {
+    ...ItemProps
+  }
 }
     ${ObjectDetailPropsFragmentDoc}
 ${AssignsCollectionsPropsFragmentDoc}
 ${AssignsPropertiesPropsFragmentDoc}
 ${AssignsPropertyWithValuesPropsFragmentDoc}
-${CollectsPropsFragmentDoc}`;
+${CollectsPropsFragmentDoc}
+${ItemPropsFragmentDoc}`;
 export const AssignsMeasuresPropsFragmentDoc = gql`
     fragment AssignsMeasuresProps on XtdRelAssignsMeasures {
   ...RelationshipProps
