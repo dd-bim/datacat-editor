@@ -121,6 +121,14 @@ export type CreateQualifiedOneToOneRelationshipInput = {
 };
 
 
+export type CreateRelationshipInput = {
+  relationshipType: RelationshipType;
+  properties?: Maybe<PropertiesInput>;
+  fromId: Scalars['ID'];
+  toIds: Array<Scalars['ID']>;
+};
+
+
 export type CreateTagInput = {
   name: Scalars['String'];
 };
@@ -144,7 +152,7 @@ export type DeleteNameInput = {
 
 
 export type DeleteRelationshipInput = {
-  id: Scalars['ID'];
+  relationshipId: Scalars['ID'];
 };
 
 
@@ -284,6 +292,23 @@ export enum QualifiedOneToOneRelationshipType {
 
 
 
+export enum RelationshipType {
+  ActsUpon = 'ActsUpon',
+  AssignsCollections = 'AssignsCollections',
+  AssignsMeasures = 'AssignsMeasures',
+  AssignsProperties = 'AssignsProperties',
+  AssignsPropertiesWithValues = 'AssignsPropertiesWithValues',
+  AssignsUnits = 'AssignsUnits',
+  AssignsValues = 'AssignsValues',
+  Associates = 'Associates',
+  Collects = 'Collects',
+  Composes = 'Composes',
+  Documents = 'Documents',
+  Groups = 'Groups',
+  Sequences = 'Sequences',
+  Specializes = 'Specializes'
+}
+
 export type RemoveTagInput = {
   catalogEntryId: Scalars['ID'];
   tagId: Scalars['ID'];
@@ -306,6 +331,12 @@ export type SearchInput = {
 export type SetNominalValueInput = {
   valueId: Scalars['ID'];
   nominalValue: NominalValueInput;
+};
+
+
+export type SetRelatedEntriesInput = {
+  relationshipId: Scalars['ID'];
+  toIds: Array<Scalars['ID']>;
 };
 
 
@@ -1152,13 +1183,6 @@ export type UpdateOneToManyRelationshipMutationVariables = Exact<{
 
 export type UpdateOneToManyRelationshipMutation = { deleteRelationship?: Maybe<{ relationship?: Maybe<{ id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string }> }>, createOneToManyRelationship?: Maybe<{ relationship?: Maybe<{ id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string }> }> };
 
-export type DeleteRelationshipMutationVariables = Exact<{
-  input: DeleteRelationshipInput;
-}>;
-
-
-export type DeleteRelationshipMutation = { deleteRelationship?: Maybe<{ relationship?: Maybe<{ id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string }> }> };
-
 export type TagBagMutationVariables = Exact<{
   bagId: Scalars['ID'];
   tagId: Scalars['ID'];
@@ -1167,6 +1191,27 @@ export type TagBagMutationVariables = Exact<{
 
 export type TagBagMutation = { addTag?: Maybe<{ catalogEntry?: Maybe<CollectionDetailProps_XtdBag_Fragment | CollectionDetailProps_XtdNest_Fragment> }> };
 
+export type CreateRelationshipMutationVariables = Exact<{
+  input: CreateRelationshipInput;
+}>;
+
+
+export type CreateRelationshipMutation = { createRelationship?: Maybe<{ relationship?: Maybe<{ __typename: 'XtdRelActsUpon', id: string } | { __typename: 'XtdRelAssignsCollections', id: string } | { __typename: 'XtdRelAssignsMeasures', id: string } | { __typename: 'XtdRelAssignsProperties', id: string } | { __typename: 'XtdRelAssignsPropertyWithValues', id: string } | { __typename: 'XtdRelAssignsUnits', id: string } | { __typename: 'XtdRelAssignsValues', id: string } | { __typename: 'XtdRelAssociates', id: string } | { __typename: 'XtdRelCollects', id: string } | { __typename: 'XtdRelComposes', id: string } | { __typename: 'XtdRelDocuments', id: string } | { __typename: 'XtdRelGroups', id: string } | { __typename: 'XtdRelSequences', id: string } | { __typename: 'XtdRelSpecializes', id: string }> }> };
+
+export type SetRelatedEntriesMutationVariables = Exact<{
+  input: SetRelatedEntriesInput;
+}>;
+
+
+export type SetRelatedEntriesMutation = { setRelatedEntries?: Maybe<{ relationship?: Maybe<{ __typename: 'XtdRelActsUpon', id: string } | { __typename: 'XtdRelAssignsCollections', id: string } | { __typename: 'XtdRelAssignsMeasures', id: string } | { __typename: 'XtdRelAssignsProperties', id: string } | { __typename: 'XtdRelAssignsPropertyWithValues', id: string } | { __typename: 'XtdRelAssignsUnits', id: string } | { __typename: 'XtdRelAssignsValues', id: string } | { __typename: 'XtdRelAssociates', id: string } | { __typename: 'XtdRelCollects', id: string } | { __typename: 'XtdRelComposes', id: string } | { __typename: 'XtdRelDocuments', id: string } | { __typename: 'XtdRelGroups', id: string } | { __typename: 'XtdRelSequences', id: string } | { __typename: 'XtdRelSpecializes', id: string }> }> };
+
+export type DeleteRelationshipMutationVariables = Exact<{
+  input: DeleteRelationshipInput;
+}>;
+
+
+export type DeleteRelationshipMutation = { deleteRelationship?: Maybe<{ relationship?: Maybe<{ id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string }> }> };
+
 export type FindLanguagesQueryVariables = Exact<{
   input: LanguageFilterInput;
 }>;
@@ -1174,8 +1219,19 @@ export type FindLanguagesQueryVariables = Exact<{
 
 export type FindLanguagesQuery = { languages?: Maybe<{ totalElements: number, nodes: Array<LanguagePropsFragment> }> };
 
+export type QuicksearchQueryVariables = Exact<{
+  input: SearchInput;
+  pageSize?: Maybe<Scalars['Int']>;
+  pageNumber?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type QuicksearchQuery = { quicksearch: { totalElements: number, nodes: Array<ItemProps_XtdActivity_Fragment | ItemProps_XtdActor_Fragment | ItemProps_XtdBag_Fragment | ItemProps_XtdClassification_Fragment | ItemProps_XtdExternalDocument_Fragment | ItemProps_XtdMeasureWithUnit_Fragment | ItemProps_XtdNest_Fragment | ItemProps_XtdProperty_Fragment | ItemProps_XtdRelActsUpon_Fragment | ItemProps_XtdRelAssignsCollections_Fragment | ItemProps_XtdRelAssignsMeasures_Fragment | ItemProps_XtdRelAssignsProperties_Fragment | ItemProps_XtdRelAssignsPropertyWithValues_Fragment | ItemProps_XtdRelAssignsUnits_Fragment | ItemProps_XtdRelAssignsValues_Fragment | ItemProps_XtdRelAssociates_Fragment | ItemProps_XtdRelCollects_Fragment | ItemProps_XtdRelComposes_Fragment | ItemProps_XtdRelDocuments_Fragment | ItemProps_XtdRelGroups_Fragment | ItemProps_XtdRelSequences_Fragment | ItemProps_XtdRelSpecializes_Fragment | ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+
 export type FindItemQueryVariables = Exact<{
   input: SearchInput;
+  pageSize?: Maybe<Scalars['Int']>;
+  pageNumber?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -2221,7 +2277,7 @@ export type CreateOneToManyRelationshipMutationResult = Apollo.MutationResult<Cr
 export type CreateOneToManyRelationshipMutationOptions = Apollo.BaseMutationOptions<CreateOneToManyRelationshipMutation, CreateOneToManyRelationshipMutationVariables>;
 export const UpdateOneToManyRelationshipDocument = gql`
     mutation UpdateOneToManyRelationship($oldId: ID!, $input: CreateOneToManyRelationshipInput!) {
-  deleteRelationship(input: {id: $oldId}) {
+  deleteRelationship(input: {relationshipId: $oldId}) {
     relationship {
       ... on XtdRelationship {
         id
@@ -2263,6 +2319,115 @@ export function useUpdateOneToManyRelationshipMutation(baseOptions?: Apollo.Muta
 export type UpdateOneToManyRelationshipMutationHookResult = ReturnType<typeof useUpdateOneToManyRelationshipMutation>;
 export type UpdateOneToManyRelationshipMutationResult = Apollo.MutationResult<UpdateOneToManyRelationshipMutation>;
 export type UpdateOneToManyRelationshipMutationOptions = Apollo.BaseMutationOptions<UpdateOneToManyRelationshipMutation, UpdateOneToManyRelationshipMutationVariables>;
+export const TagBagDocument = gql`
+    mutation TagBag($bagId: ID!, $tagId: ID!) {
+  addTag(input: {catalogEntryId: $bagId, tagId: $tagId}) {
+    catalogEntry {
+      ...CollectionDetailProps
+    }
+  }
+}
+    ${CollectionDetailPropsFragmentDoc}`;
+export type TagBagMutationFn = Apollo.MutationFunction<TagBagMutation, TagBagMutationVariables>;
+
+/**
+ * __useTagBagMutation__
+ *
+ * To run a mutation, you first call `useTagBagMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTagBagMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [tagBagMutation, { data, loading, error }] = useTagBagMutation({
+ *   variables: {
+ *      bagId: // value for 'bagId'
+ *      tagId: // value for 'tagId'
+ *   },
+ * });
+ */
+export function useTagBagMutation(baseOptions?: Apollo.MutationHookOptions<TagBagMutation, TagBagMutationVariables>) {
+        return Apollo.useMutation<TagBagMutation, TagBagMutationVariables>(TagBagDocument, baseOptions);
+      }
+export type TagBagMutationHookResult = ReturnType<typeof useTagBagMutation>;
+export type TagBagMutationResult = Apollo.MutationResult<TagBagMutation>;
+export type TagBagMutationOptions = Apollo.BaseMutationOptions<TagBagMutation, TagBagMutationVariables>;
+export const CreateRelationshipDocument = gql`
+    mutation CreateRelationship($input: CreateRelationshipInput!) {
+  createRelationship(input: $input) {
+    relationship {
+      ... on XtdRelationship {
+        __typename
+        id
+      }
+    }
+  }
+}
+    `;
+export type CreateRelationshipMutationFn = Apollo.MutationFunction<CreateRelationshipMutation, CreateRelationshipMutationVariables>;
+
+/**
+ * __useCreateRelationshipMutation__
+ *
+ * To run a mutation, you first call `useCreateRelationshipMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateRelationshipMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createRelationshipMutation, { data, loading, error }] = useCreateRelationshipMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateRelationshipMutation(baseOptions?: Apollo.MutationHookOptions<CreateRelationshipMutation, CreateRelationshipMutationVariables>) {
+        return Apollo.useMutation<CreateRelationshipMutation, CreateRelationshipMutationVariables>(CreateRelationshipDocument, baseOptions);
+      }
+export type CreateRelationshipMutationHookResult = ReturnType<typeof useCreateRelationshipMutation>;
+export type CreateRelationshipMutationResult = Apollo.MutationResult<CreateRelationshipMutation>;
+export type CreateRelationshipMutationOptions = Apollo.BaseMutationOptions<CreateRelationshipMutation, CreateRelationshipMutationVariables>;
+export const SetRelatedEntriesDocument = gql`
+    mutation SetRelatedEntries($input: SetRelatedEntriesInput!) {
+  setRelatedEntries(input: $input) {
+    relationship {
+      ... on XtdRelationship {
+        __typename
+        id
+      }
+    }
+  }
+}
+    `;
+export type SetRelatedEntriesMutationFn = Apollo.MutationFunction<SetRelatedEntriesMutation, SetRelatedEntriesMutationVariables>;
+
+/**
+ * __useSetRelatedEntriesMutation__
+ *
+ * To run a mutation, you first call `useSetRelatedEntriesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetRelatedEntriesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setRelatedEntriesMutation, { data, loading, error }] = useSetRelatedEntriesMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSetRelatedEntriesMutation(baseOptions?: Apollo.MutationHookOptions<SetRelatedEntriesMutation, SetRelatedEntriesMutationVariables>) {
+        return Apollo.useMutation<SetRelatedEntriesMutation, SetRelatedEntriesMutationVariables>(SetRelatedEntriesDocument, baseOptions);
+      }
+export type SetRelatedEntriesMutationHookResult = ReturnType<typeof useSetRelatedEntriesMutation>;
+export type SetRelatedEntriesMutationResult = Apollo.MutationResult<SetRelatedEntriesMutation>;
+export type SetRelatedEntriesMutationOptions = Apollo.BaseMutationOptions<SetRelatedEntriesMutation, SetRelatedEntriesMutationVariables>;
 export const DeleteRelationshipDocument = gql`
     mutation DeleteRelationship($input: DeleteRelationshipInput!) {
   deleteRelationship(input: $input) {
@@ -2299,41 +2464,6 @@ export function useDeleteRelationshipMutation(baseOptions?: Apollo.MutationHookO
 export type DeleteRelationshipMutationHookResult = ReturnType<typeof useDeleteRelationshipMutation>;
 export type DeleteRelationshipMutationResult = Apollo.MutationResult<DeleteRelationshipMutation>;
 export type DeleteRelationshipMutationOptions = Apollo.BaseMutationOptions<DeleteRelationshipMutation, DeleteRelationshipMutationVariables>;
-export const TagBagDocument = gql`
-    mutation TagBag($bagId: ID!, $tagId: ID!) {
-  addTag(input: {catalogEntryId: $bagId, tagId: $tagId}) {
-    catalogEntry {
-      ...CollectionDetailProps
-    }
-  }
-}
-    ${CollectionDetailPropsFragmentDoc}`;
-export type TagBagMutationFn = Apollo.MutationFunction<TagBagMutation, TagBagMutationVariables>;
-
-/**
- * __useTagBagMutation__
- *
- * To run a mutation, you first call `useTagBagMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useTagBagMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [tagBagMutation, { data, loading, error }] = useTagBagMutation({
- *   variables: {
- *      bagId: // value for 'bagId'
- *      tagId: // value for 'tagId'
- *   },
- * });
- */
-export function useTagBagMutation(baseOptions?: Apollo.MutationHookOptions<TagBagMutation, TagBagMutationVariables>) {
-        return Apollo.useMutation<TagBagMutation, TagBagMutationVariables>(TagBagDocument, baseOptions);
-      }
-export type TagBagMutationHookResult = ReturnType<typeof useTagBagMutation>;
-export type TagBagMutationResult = Apollo.MutationResult<TagBagMutation>;
-export type TagBagMutationOptions = Apollo.BaseMutationOptions<TagBagMutation, TagBagMutationVariables>;
 export const FindLanguagesDocument = gql`
     query FindLanguages($input: LanguageFilterInput!) {
   languages(input: $input) {
@@ -2370,9 +2500,47 @@ export function useFindLanguagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type FindLanguagesQueryHookResult = ReturnType<typeof useFindLanguagesQuery>;
 export type FindLanguagesLazyQueryHookResult = ReturnType<typeof useFindLanguagesLazyQuery>;
 export type FindLanguagesQueryResult = Apollo.QueryResult<FindLanguagesQuery, FindLanguagesQueryVariables>;
+export const QuicksearchDocument = gql`
+    query Quicksearch($input: SearchInput!, $pageSize: Int, $pageNumber: Int) {
+  quicksearch: search(input: $input, pageSize: $pageSize, pageNumber: $pageNumber) {
+    nodes {
+      ...ItemProps
+    }
+    totalElements
+  }
+}
+    ${ItemPropsFragmentDoc}`;
+
+/**
+ * __useQuicksearchQuery__
+ *
+ * To run a query within a React component, call `useQuicksearchQuery` and pass it any options that fit your needs.
+ * When your component renders, `useQuicksearchQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useQuicksearchQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *      pageSize: // value for 'pageSize'
+ *      pageNumber: // value for 'pageNumber'
+ *   },
+ * });
+ */
+export function useQuicksearchQuery(baseOptions: Apollo.QueryHookOptions<QuicksearchQuery, QuicksearchQueryVariables>) {
+        return Apollo.useQuery<QuicksearchQuery, QuicksearchQueryVariables>(QuicksearchDocument, baseOptions);
+      }
+export function useQuicksearchLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<QuicksearchQuery, QuicksearchQueryVariables>) {
+          return Apollo.useLazyQuery<QuicksearchQuery, QuicksearchQueryVariables>(QuicksearchDocument, baseOptions);
+        }
+export type QuicksearchQueryHookResult = ReturnType<typeof useQuicksearchQuery>;
+export type QuicksearchLazyQueryHookResult = ReturnType<typeof useQuicksearchLazyQuery>;
+export type QuicksearchQueryResult = Apollo.QueryResult<QuicksearchQuery, QuicksearchQueryVariables>;
 export const FindItemDocument = gql`
-    query FindItem($input: SearchInput!) {
-  search(input: $input) {
+    query FindItem($input: SearchInput!, $pageSize: Int, $pageNumber: Int) {
+  search(input: $input, pageSize: $pageSize, pageNumber: $pageNumber) {
     nodes {
       ...ItemProps
     }
@@ -2398,6 +2566,8 @@ ${PagePropsFragmentDoc}`;
  * const { data, loading, error } = useFindItemQuery({
  *   variables: {
  *      input: // value for 'input'
+ *      pageSize: // value for 'pageSize'
+ *      pageNumber: // value for 'pageNumber'
  *   },
  * });
  */
