@@ -7,8 +7,17 @@ query FindLanguages($input: LanguageFilterInput!) {
     }
 }
 
-query FindItem($input: SearchInput!) {
-    search(input: $input) {
+query Quicksearch($input: SearchInput!, $pageSize: Int, $pageNumber: Int) {
+    quicksearch: search(input: $input, pageSize: $pageSize, pageNumber: $pageNumber) {
+        nodes {
+            ...ItemProps
+        }
+        totalElements
+    }
+}
+
+query FindItem($input: SearchInput!, $pageSize: Int, $pageNumber: Int) {
+    search(input: $input, pageSize: $pageSize, pageNumber: $pageNumber) {
         nodes {
             ...ItemProps
         }

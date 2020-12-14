@@ -131,7 +131,7 @@ mutation CreateOneToManyRelationship($input: CreateOneToManyRelationshipInput!) 
 }
 
 mutation UpdateOneToManyRelationship($oldId: ID!, $input: CreateOneToManyRelationshipInput!) {
-    deleteRelationship(input: { id: $oldId }) {
+    deleteRelationship(input: { relationshipId: $oldId }) {
         relationship {
             ... on XtdRelationship {
                 id
@@ -147,20 +147,42 @@ mutation UpdateOneToManyRelationship($oldId: ID!, $input: CreateOneToManyRelatio
     }
 }
 
-mutation DeleteRelationship($input: DeleteRelationshipInput!) {
-    deleteRelationship(input: $input) {
+mutation TagBag($bagId: ID!, $tagId: ID!) {
+    addTag(input: { catalogEntryId: $bagId, tagId: $tagId}) {
+        catalogEntry {
+            ...CollectionDetailProps
+        }
+    }
+}
+
+mutation CreateRelationship($input: CreateRelationshipInput!) {
+    createRelationship(input: $input) {
         relationship {
             ... on XtdRelationship {
+                __typename
                 id
             }
         }
     }
 }
 
-mutation TagBag($bagId: ID!, $tagId: ID!) {
-    addTag(input: { catalogEntryId: $bagId, tagId: $tagId}) {
-        catalogEntry {
-            ...CollectionDetailProps
+mutation SetRelatedEntries($input: SetRelatedEntriesInput!) {
+    setRelatedEntries(input: $input) {
+        relationship {
+            ... on XtdRelationship {
+                __typename
+                id
+            }
+        }
+    }
+}
+
+mutation DeleteRelationship($input: DeleteRelationshipInput!) {
+    deleteRelationship(input: $input) {
+        relationship {
+            ... on XtdRelationship {
+                id
+            }
         }
     }
 }
