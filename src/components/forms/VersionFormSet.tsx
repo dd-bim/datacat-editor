@@ -1,5 +1,5 @@
 import VersionForm from "./VersionForm";
-import {FormSet} from "./FormSet";
+import FormSet, {FormSetDescription, FormSetTitle, useFieldSetStyles} from "./FormSet";
 import React, {FC} from "react";
 import {Maybe, useSetVersionMutation, VersionInput} from "../../generated/types";
 import {useSnackbar} from "notistack";
@@ -16,8 +16,12 @@ const VersionFormSet: FC<VersionFormSetProps> = (props) => {
         versionId,
         versionDate
     } = props;
-    const defaultValues = {versionId: versionId ?? "", versionDate: versionDate ?? ""};
+
+    const classes = useFieldSetStyles();
     const {enqueueSnackbar} = useSnackbar();
+
+    const defaultValues = {versionId: versionId ?? "", versionDate: versionDate ?? ""};
+
     const [setVersion] = useSetVersionMutation();
 
     const onSubmit = async (values: VersionInput) => {
@@ -30,10 +34,11 @@ const VersionFormSet: FC<VersionFormSetProps> = (props) => {
     }
 
     return (
-        <FormSet
-            title="Version"
-            description="Die Version kann für die Anwendungsdomäne frei bestimmt und formatiert werden."
-        >
+        <FormSet>
+            <FormSetTitle>Version</FormSetTitle>
+            <FormSetDescription className={classes.gutterBottom}>
+                Die Version kann für die Anwendungsdomäne frei bestimmt und formatiert werden.
+            </FormSetDescription>
             <VersionForm
                 onSubmit={onSubmit}
                 defaultValues={defaultValues}

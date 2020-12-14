@@ -1,23 +1,18 @@
-import {Typography} from "@material-ui/core";
 import {toLLL} from "../../dateUtil";
-import {FormSet} from "./FormSet";
+import FormSet, {FormSetDescription, FormSetTitle} from "./FormSet";
 import React from "react";
 import {ItemPropsFragment, MetaPropsFragment} from "../../generated/types";
-import Paper from "@material-ui/core/Paper";
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import {WithChildren} from "../../views/forms/FormView";
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        padding: theme.spacing(1)
-    }
-}));
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
 
 type MetaFormSetProps = WithChildren<{
     entry: ItemPropsFragment & MetaPropsFragment
 }>
 
-function MetaFormSet(props: MetaFormSetProps) {
+export default function MetaFormSet(props: MetaFormSetProps) {
     const {
         entry: {
             id,
@@ -27,37 +22,45 @@ function MetaFormSet(props: MetaFormSetProps) {
             lastModified,
             lastModifiedBy,
             tags
-        },
-        children
+        }
     } = props;
-    const classes = useStyles();
 
     return (
-        <Paper className={classes.root} variant="outlined">
-            <FormSet
-                title="Metainformationen"
-                description="Technische Informationen zum Konzept"
-            >
-                <Typography variant="body2">
-                    ID: {id}
-                </Typography>
-                <Typography variant="body2">
-                    ISO12006-3-Konzept: {__typename}
-                </Typography>
-                <Typography variant="body2">
-                    Tags: {tags.map(x => x.name).join(", ")}
-                </Typography>
-                <Typography variant="body2">
-                    Erstellt: {toLLL(created)} durch {createdBy}
-                </Typography>
-                <Typography variant="body2">
-                    Zuletzt bearbeitet: {toLLL(lastModified)} durch {lastModifiedBy}
-                </Typography>
-            </FormSet>
-
-            {children}
-        </Paper>
+        <FormSet>
+            <FormSetTitle>Metainformationen</FormSetTitle>
+            <FormSetDescription>Technische Informationen zum Konzept</FormSetDescription>
+            <Table size="small">
+                <TableBody>
+                    <TableRow>
+                        <TableCell>ID</TableCell>
+                        <TableCell>{id}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>ISO12006-3</TableCell>
+                        <TableCell>{__typename}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Schlagworte</TableCell>
+                        <TableCell>{tags.map(x => x.name).join(", ")}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Erstellt</TableCell>
+                        <TableCell>{toLLL(created)}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Erstellt durch</TableCell>
+                        <TableCell>{createdBy}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Aktualisiert</TableCell>
+                        <TableCell>{toLLL(lastModified)}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Aktualisiert durch</TableCell>
+                        <TableCell>{lastModifiedBy}</TableCell>
+                    </TableRow>
+                </TableBody>
+            </Table>
+        </FormSet>
     );
 }
-
-export default MetaFormSet;

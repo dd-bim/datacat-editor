@@ -1,4 +1,4 @@
-import {FormSet} from "./FormSet";
+import FormSet, {FormSetDescription, FormSetTitle} from "./FormSet";
 import React, {FC} from "react";
 import {
     Maybe,
@@ -55,10 +55,10 @@ const ToleranceFormSet: FC<ToleranceFormSetProps> = (props) => {
     };
 
     return (
-        <FormSet
-            title="Toleranz"
-            description="Die Toleranz eines Wertes kann absolut und prozentual angegeben werden."
-        >
+        <FormSet>
+            <FormSetTitle>Toleranz</FormSetTitle>
+            <FormSetDescription>Die Toleranz eines Wertes kann absolut und prozentual angegeben
+                werden.</FormSetDescription>
             <ToleranceForm
                 onSubmit={onSubmit}
                 onDelete={onDelete}

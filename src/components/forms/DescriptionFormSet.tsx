@@ -1,11 +1,5 @@
-import React, {FC, useState} from "react";
-import {Dialog, Typography} from "@material-ui/core";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import NewTranslationForm from "./NewTranslationForm";
-import Link from "@material-ui/core/Link";
-import TranslateIcon from "@material-ui/icons/Translate";
-import {FormSet, sortByLanguage} from "./FormSet";
+import React, {FC} from "react";
+import FormSet, {FormSetDescription, FormSetTitle} from "./FormSet";
 import {
     TranslationInput,
     TranslationPropsFragment,
@@ -14,124 +8,75 @@ import {
     useDeleteDescriptionMutation,
     useUpdateDescriptionMutation
 } from "../../generated/types";
-import TranslationForm from "./TranslationForm";
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import {useSnackbar} from "notistack";
-
-const useStyles = makeStyles(() => ({
-    addButton: {
-        textAlign: "right"
-    }
-}));
+import TranslationFormSet from "./TranslationFormSet";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 
 type DescriptionFormSetProps = {
     catalogEntryId: string,
     descriptions: TranslationPropsFragment[]
 }
 
+const useStyles = makeStyles(theme => ({
+    description: {
+        marginBottom: theme.spacing(1)
+    }
+}));
+
 const DescriptionFormSet: FC<DescriptionFormSetProps> = (props) => {
     const {catalogEntryId, descriptions} = props;
     const classes = useStyles();
 
     const {enqueueSnackbar} = useSnackbar();
-
-    const [open, setOpen] = useState(false);
-
     const [addDescription] = useAddDescriptionMutation();
     const [updateDescription] = useUpdateDescriptionMutation();
     const [deleteDescription] = useDeleteDescriptionMutation();
-    const onSubmitNewDescription = async (values: TranslationInput) => {
+
+    const handleOnAdd = async (description: TranslationInput) => {
         await addDescription({
             variables: {
-                input: {catalogEntryId, description: {...values}}
+                input: {catalogEntryId, description}
             }
         });
-        setOpen(false);
-        enqueueSnackbar("Beschreibung hinzugefügt.");
+        enqueueSnackbar("Name hinzugefügt.");
     };
 
-    const descriptionForms = [...descriptions]
-        .sort(sortByLanguage)
-        .map(translation => {
-            const onSubmit = async (values: TranslationUpdateInput) => {
-                await updateDescription({
-                    variables: {
-                        input: {
-                            catalogEntryId,
-                            description: {
-                                translationId: translation.id, value: values.value
-                            }
-                        }
-                    }
-                });
-                enqueueSnackbar("Beschreibung aktualisiert.");
+    const handleOnUpdate = async (description: TranslationUpdateInput) => {
+        await updateDescription({
+            variables: {
+                input: {catalogEntryId, description}
             }
-            const onDelete = async () => {
-                await deleteDescription({
-                    variables: {
-                        input: {catalogEntryId, descriptionId: translation.id}
-                    }
-                });
-                enqueueSnackbar("Beschreibung gelöscht.");
-            }
-
-            return (
-                <TranslationForm
-                    key={translation.id}
-                    translation={translation}
-                    onSubmit={onSubmit}
-                    onDelete={onDelete}
-                    TextFieldProps={{
-                        multiline: true,
-                        rowsMax: 10,
-                    }}
-                />
-            );
         });
-    const hasDescription = !!descriptionForms.length;
+        enqueueSnackbar("Name aktualisiert.");
+    };
 
-    if (!hasDescription) {
-        descriptionForms.push(
-            <Typography key="no-translation" variant="body2" align="center" color="textSecondary">
-                Kein Beschreibung vorhanden.
-            </Typography>
-        );
-    }
+    const handleOnDelete = async (descriptionId: string) => {
+        await deleteDescription({
+            variables: {
+                input: {catalogEntryId, descriptionId}
+            }
+        });
+        enqueueSnackbar("Name gelöscht.")
+    };
 
     return (
-        <FormSet
-            title="Beschreibung"
-            description="Charakterisiert das Konzept in Ausprägung und Anwendungskonzept näher."
-        >
-            {descriptionForms}
-
-            <Dialog open={open} onClose={() => setOpen(false)}>
-                <DialogTitle>Beschreibung hinzufügen..</DialogTitle>
-                <DialogContent>
-                    <NewTranslationForm
-                        languageFilter={{
-                            excludeLanguageTags: descriptions.map(x => x.language.languageTag)
-                        }}
-                        onCancel={() => setOpen(false)}
-                        onSubmit={onSubmitNewDescription}
-                        TextFieldProps={{
-                            label: "Beschreibung",
-                            multiline: true,
-                            rows: 5
-                        }}
-                    />
-                </DialogContent>
-            </Dialog>
-
-            <Link
-                className={classes.addButton}
-                component="button"
-                variant="body2"
-                onClick={() => setOpen(true)}
-            >
-                <TranslateIcon
-                    fontSize="inherit"/> {hasDescription ? "Beschreibung übersetzen" : "Beschreibung hinzufügen"}
-            </Link>
+        <FormSet>
+            <FormSetTitle>Beschreibung</FormSetTitle>
+            <FormSetDescription className={classes.description}>
+                Charakterisiert das Konzept in Ausprägung und Anwendungskonzept näher.
+            </FormSetDescription>
+            <TranslationFormSet
+                label="Beschreibung"
+                translations={descriptions}
+                min={0}
+                onAdd={handleOnAdd}
+                onUpdate={handleOnUpdate}
+                onDelete={handleOnDelete}
+                TextFieldProps={{
+                    multiline: true,
+                    rowsMax: 10,
+                }}
+            />
         </FormSet>
     );
 };

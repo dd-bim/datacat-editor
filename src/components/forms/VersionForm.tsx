@@ -81,7 +81,7 @@ const VersionForm: FC<VersionFormProps> = (props) => {
                     InputProps={{
                         onFocus: !isEditMode ? onEdit : undefined
                     }}
-                    as={<TextField {...defaultFormFieldOptions}/>}
+                    as={<TextField fullWidth {...defaultFormFieldOptions}/>}
                 />
                 <Typography variant="body1">/</Typography>
                 <Controller
@@ -94,7 +94,7 @@ const VersionForm: FC<VersionFormProps> = (props) => {
                         readOnly: !isEditMode,
                         onFocus: !isEditMode ? onEdit : undefined
                     }}
-                    as={<TextField {...defaultFormFieldOptions}/>}
+                    as={<TextField fullWidth {...defaultFormFieldOptions}/>}
                 />
                 {isEditMode && <InlineButtonGroup formState={formState} onReset={onReset}/>}
             </form>

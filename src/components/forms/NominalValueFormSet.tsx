@@ -1,4 +1,4 @@
-import {FormSet} from "./FormSet";
+import FormSet, {FormSetTitle} from "./FormSet";
 import React, {FC} from "react";
 import {
     Maybe,
@@ -54,10 +54,8 @@ const NominalValueFormSet: FC<NominalValueFormSetProps> = (props) => {
     };
 
     return (
-        <FormSet
-            title="Nennwert"
-            description=""
-        >
+        <FormSet>
+            <FormSetTitle>Nennwert</FormSetTitle>
             <NominalValueForm
                 onSubmit={onSubmit}
                 onDelete={onDelete}

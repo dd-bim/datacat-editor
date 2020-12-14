@@ -1,58 +1,47 @@
-import React, {FC} from "react";
-import {Typography} from "@material-ui/core";
+import React from "react";
+import {Typography, TypographyProps} from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import {TranslationPropsFragment} from "../../generated/types";
 
-export const sortByLanguage = ({language: a}: TranslationPropsFragment, {language: b}: TranslationPropsFragment) => {
-    return a.languageTag.localeCompare(b.languageTag);
+export type FormSetProps = {
+    className?: string;
+    children: React.ReactNode;
 };
 
-export const useFormSetStyles = makeStyles(theme => ({
-    root: {
-        display: "flex",
-        flexDirection: "column",
-        "& > *": {
-            marginBottom: theme.spacing(1)
-        },
-    },
-    title: {
-        marginBottom: theme.spacing(0)
-    },
-    description: {
-        marginBottom: theme.spacing(2)
-    },
-    addButton: {
-        textAlign: "right"
+export const useFieldSetStyles = makeStyles(theme => ({
+    gutterBottom: {
+        marginBottom: theme.spacing(1)
     }
 }));
-type FormSetProps = {
-    title: React.ReactNode
-    description?: string
-}
-export const FormSet: FC<FormSetProps> = (props) => {
-    const {title, description, children} = props;
-    const classes = useFormSetStyles();
+
+export default function FormSet(props: FormSetProps) {
+    const {className, children} = props;
 
     return (
-        <div className={classes.root}>
-            <Typography
-                variant="subtitle2"
-                className={classes.title}
-            >
-                {title}
-            </Typography>
-
-            {description && (
-                <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    className={classes.description}
-                >
-                    {description}
-                </Typography>
-            )}
-
+        <div className={className}>
             {children}
         </div>
+    );
+}
+
+export function FormSetTitle(props: TypographyProps) {
+    const {children, ...otherProps} = props;
+    return (
+        <Typography variant="subtitle1" {...otherProps}>{children}</Typography>
+    );
+}
+
+export function FormSetDescription(props: TypographyProps) {
+    const {children, ...otherProps} = props;
+    return (
+        <Typography variant="body2" color="textSecondary" {...otherProps}>{children}</Typography>
+    );
+}
+
+export function FormSetNotice(props: TypographyProps) {
+    const {children, ...otherProps} = props;
+    return (
+        <Typography variant="body2" {...otherProps}>
+            {children}
+        </Typography>
     );
 }

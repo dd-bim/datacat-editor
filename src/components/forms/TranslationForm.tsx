@@ -10,24 +10,23 @@ import {TranslationPropsFragment} from "../../generated/types";
 const useStyles = makeStyles(theme => ({
     root: {
         display: "flex",
-        flexDirection: "column",
-        alignItems: "end",
-        "& > *": {
-            marginBottom: theme.spacing(1)
-        }
+        flexDirection: "row",
+    },
+    input: {
+        flexGrow: 1
     }
 }));
 
-type TranslationFormValues = {
-    value: string
-}
+export type TranslationFormValues = {
+    value: string;
+};
 
-type TranslationFormProps = {
-    translation: TranslationPropsFragment,
-    onSubmit(values: TranslationFormValues): void
-    onDelete?(): void
-    TextFieldProps?: Partial<Omit<TextFieldProps, "name" | "onFocus">>
-}
+export type TranslationFormProps = {
+    translation: TranslationPropsFragment;
+    onSubmit(values: TranslationFormValues): void;
+    onDelete?(): void;
+    TextFieldProps?: Partial<Omit<TextFieldProps, "name" | "onFocus">>;
+};
 
 const TranslationForm: FC<TranslationFormProps> = (props) => {
     const {
@@ -81,7 +80,6 @@ const TranslationForm: FC<TranslationFormProps> = (props) => {
         id: `${translation.id}-value`,
         label: `${translation.language.displayLanguage} / ${translation.language.displayCountry}`,
         required: true,
-        // variant: isEditMode ? "outlined" : "standard",
         InputProps: {
             lang: translation.language.languageTag,
             readOnly: !isEditMode,
@@ -105,7 +103,7 @@ const TranslationForm: FC<TranslationFormProps> = (props) => {
                     rules={{required: true}}
                     {...TextFieldProps}
                     {...textFieldProps}
-                    as={<TextField {...defaultFormFieldOptions}/>}
+                    as={<TextField className={classes.input} {...defaultFormFieldOptions}/>}
                 />
                 {isEditMode && (
                         <InlineButtonGroup
