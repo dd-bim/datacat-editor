@@ -30,7 +30,7 @@ const useStyle = makeStyles(theme => ({
     }
 }));
 
-export default function ItemRow(props: ListChildComponentProps<ItemRowProps>) {
+export default function ItemRow(props: ListChildComponentProps) {
     const {
         data: {
             items,
@@ -45,7 +45,7 @@ export default function ItemRow(props: ListChildComponentProps<ItemRowProps>) {
     } = props;
     const classes = useStyle();
 
-    const item = items[index];
+    const item = (items as ItemPropsFragment[])[index];
 
     const entityType = getEntityType(item.__typename.substring(3), item.tags.map(t => t.id))!;
     const isDisabled = disabledItems.includes(item.id);
