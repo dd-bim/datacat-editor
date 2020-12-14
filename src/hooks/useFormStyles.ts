@@ -3,7 +3,7 @@ import {TextFieldProps} from "@material-ui/core/TextField";
 
 export const defaultFormFieldOptions: TextFieldProps = {
     autoComplete: "off",
-    fullWidth: true,
+    // fullWidth: true,
     size: "small",
     variant: "outlined",
 };
