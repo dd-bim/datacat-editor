@@ -1,11 +1,7 @@
 import React, {FC} from "react";
 import {
-    AssignsUnitsPropsFragment,
-    AssignsValuesPropsFragment,
-    EntityTypes,
-    GetMeasureEntryDocument,
     MeasureDetailPropsFragment,
-    PropertyTreeDocument,
+    RelationshipType,
     useDeleteEntryMutation,
     useGetMeasureEntryQuery
 } from "../../generated/types";
@@ -18,53 +14,31 @@ import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
-import {FormSet} from "../../components/forms/FormSet";
+import FormSet, {FormSetTitle} from "../../components/forms/FormSet";
 import useRelated from "../../hooks/useRelated";
-import useAssignsUnits from "../../hooks/useAssignsUnits";
-import useAssignsValues from "../../hooks/useAssignsValues";
+import TransferListView from "../TransferListView";
+import {UnitEntity, ValueEntity} from "../../domain";
 
 const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
 
     // fetch domain model
-    const {loading, error, data} = useGetMeasureEntryQuery({
+    const {loading, error, data, refetch} = useGetMeasureEntryQuery({
         fetchPolicy: "network-only",
         variables: {id}
     });
     let entry = data?.node as MeasureDetailPropsFragment | undefined;
-    const [deleteEntry] = useDeleteEntryMutation();
-
-    const assignsUnits = useAssignsUnits({
-        id,
-        relationships: entry?.assignedUnits.nodes || [],
-        optionsSearchInput: {
-            pageSize: 100,
-            entityTypeIn: [EntityTypes.XtdUnit]
-        },
-        renderLabel(relationship?: AssignsUnitsPropsFragment): React.ReactNode {
-            return relationship ? `Einheiten (${relationship.id})` : `Einheiten`;
-        },
-        refetchQueries: [
-            {query: PropertyTreeDocument},
-            {query: GetMeasureEntryDocument, variables: {id}}
-        ]
-    });
-
-    const assignsValues = useAssignsValues({
-        id,
-        relationships: entry?.assignedValues.nodes || [],
-        optionsSearchInput: {
-            pageSize: 100,
-            entityTypeIn: [EntityTypes.XtdValue]
-        },
-        renderLabel(relationship?: AssignsValuesPropsFragment): React.ReactNode {
-            return relationship ? `Werte (${relationship.id})` : `Werte`;
-        },
-        refetchQueries: [
-            {query: PropertyTreeDocument},
-            {query: GetMeasureEntryDocument, variables: {id}}
-        ]
+    const [deleteEntry] = useDeleteEntryMutation({
+        update: cache => {
+            cache.evict({id: `XtdMeasureWithUnit:${id}`});
+            cache.modify({
+                id: "ROOT_QUERY",
+                fields: {
+                    hierarchy: (value, {DELETE}) => DELETE
+                }
+            });
+        }
     });
 
     const documentedBy = useRelated({
@@ -80,11 +54,26 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
     if (loading) return <Typography>Lade Bemaßung..</Typography>;
     if (error || !entry) return <Typography>Es ist ein Fehler aufgetreten..</Typography>;
 
+    const handleOnUpdate = async () => {
+        await refetch();
+        enqueueSnackbar("Update erfolgreich.");
+    };
+
     const handleOnDelete = async () => {
         await deleteEntry({variables: {id}});
         enqueueSnackbar("Bemaßung gelöscht.")
-        onDelete(entry!);
+        onDelete?.();
     };
+
+    const assignsUnitsRelationships = entry.assignedUnits.nodes.map(({id, relatedUnits}) => ({
+        relationshipId: id,
+        relatedItems: relatedUnits
+    }));
+
+    const assignsValuesRelationships = entry.assignedValues.nodes.map(({id, relatedValues}) => ({
+        relationshipId: id,
+        relatedItems: relatedValues
+    }));
 
     return (
         <FormView>
@@ -104,27 +93,41 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
                 versionDate={entry.versionDate}
             />
 
-            <FormSet
-                title="Einheiten"
-                description="Einheiten, in denen dieses Bemaßung bestimmt wird."
-            >
-                {assignsUnits}
-            </FormSet>
+            <TransferListView
+                title="Anwendbare Maßeinheiten"
+                relatingItemId={id}
+                relationshipType={RelationshipType.AssignsUnits}
+                relationships={assignsUnitsRelationships}
+                searchInput={{
+                    entityTypeIn: [UnitEntity.entityType]
+                }}
+                onCreate={handleOnUpdate}
+                onUpdate={handleOnUpdate}
+                onDelete={handleOnUpdate}
+            />
 
-            <FormSet
-                title="Werte"
-                description="Werte, die diese Bemaßung annehmen kann."
-            >
-                {assignsValues}
-            </FormSet>
+            <TransferListView
+                title="Wertebereich der Bemaßung"
+                relatingItemId={id}
+                relationshipType={RelationshipType.AssignsValues}
+                relationships={assignsValuesRelationships}
+                searchInput={{
+                    entityTypeIn: [ValueEntity.entityType]
+                }}
+                onCreate={handleOnUpdate}
+                onUpdate={handleOnUpdate}
+                onDelete={handleOnUpdate}
+            />
 
             <MetaFormSet entry={entry}/>
 
-            <FormSet title="Referenzen...">
+            <FormSet>
+                <FormSetTitle>Referenzen</FormSetTitle>
                 {documentedBy}
             </FormSet>
 
-            <FormSet title="Merkmale...">
+            <FormSet>
+                <FormSetTitle>Merkmale</FormSetTitle>
                 {assignedTo}
             </FormSet>
 

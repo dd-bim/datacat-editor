@@ -1,10 +1,5 @@
 import React, {FC} from "react";
-import {
-    PropertyTreeDocument,
-    useDeleteEntryMutation,
-    useGetValueEntryQuery,
-    ValueDetailPropsFragment
-} from "../../generated/types";
+import {useDeleteEntryMutation, useGetValueEntryQuery, ValueDetailPropsFragment} from "../../generated/types";
 import {Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
@@ -17,15 +12,11 @@ import FormView, {FormProps} from "./FormView";
 import ToleranceFormSet from "../../components/forms/ToleranceFormSet";
 import NominalValueFormSet from "../../components/forms/NominalValueFormSet";
 import useRelated from "../../hooks/useRelated";
-import {FormSet} from "../../components/forms/FormSet";
+import FormSet, {FormSetTitle} from "../../components/forms/FormSet";
 
 const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
-
-    const baseOptions = {
-        refetchQueries: [{query: PropertyTreeDocument}]
-    };
 
     // fetch domain model
     const {loading, error, data} = useGetValueEntryQuery({
@@ -33,7 +24,17 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
         variables: {id}
     });
     let entry = data?.node as ValueDetailPropsFragment | undefined;
-    const [deleteEntry] = useDeleteEntryMutation(baseOptions);
+    const [deleteEntry] = useDeleteEntryMutation({
+        update: cache => {
+            cache.evict({id: `XtdValue:${id}`});
+            cache.modify({
+                id: "ROOT_QUERY",
+                fields: {
+                    hierarchy: (value, {DELETE}) => DELETE
+                }
+            });
+        }
+    });
 
     const documentedBy = useRelated({
         catalogEntries: entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? [],
@@ -51,7 +52,7 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
     const handleOnDelete = async () => {
         await deleteEntry({variables: {id}});
         enqueueSnackbar("Wert gelöscht.")
-        onDelete(entry!);
+        onDelete?.();
     };
 
     return (
@@ -88,11 +89,13 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
 
             <MetaFormSet entry={entry}/>
 
-            <FormSet title="Referenzen...">
+            <FormSet>
+                <FormSetTitle>Referenzen</FormSetTitle>
                 {documentedBy}
             </FormSet>
 
-            <FormSet title="Bemaßungen...">
+            <FormSet>
+                <FormSetTitle>Bemaßungen</FormSetTitle>
                 {assignedTo}
             </FormSet>
 

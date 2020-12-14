@@ -1,26 +1,21 @@
-import Typography from "@material-ui/core/Typography";
 import SearchField from "../components/forms/SearchInput";
 import CatalogEntryList from "../components/CatalogEntryList";
 import React from "react";
-import useQuerying from "../hooks/useQuerying";
 import {SearchInput, SearchResultPropsFragment, useFindConceptQuery} from "../generated/types";
 import usePaging from "../hooks/usePaging";
 import Grid from "@material-ui/core/Grid";
+import {useQueryParams} from "../hooks/useQueryParams";
 
 type CatalogEntryListViewProps = {
-    title: React.ReactNode,
     searchInput: SearchInput,
     selectedIds?: string[],
     onSelect(listItem: SearchResultPropsFragment): void
 }
 
 const CatalogEntryListView = (props: CatalogEntryListViewProps) => {
-    const {title, searchInput, selectedIds, onSelect} = props;
-    const initialQuery = searchInput.query ?? "";
-    const initialPageNumber = searchInput.pageNumber ?? 0;
-    const initialPageSize = searchInput.pageSize ?? 25;
+    const {searchInput, selectedIds, onSelect} = props;
 
-    const pagination = useQuerying(initialQuery, initialPageNumber, initialPageSize);
+    const pagination = useQueryParams();
     const {
         query: [query, setQuery],
         pageSize: [pageSize],
@@ -45,11 +40,6 @@ const CatalogEntryListView = (props: CatalogEntryListViewProps) => {
 
     return (
         <Grid container spacing={1}>
-            <Grid item xs={12}>
-                <Typography variant="h5">
-                    {title}
-                </Typography>
-            </Grid>
             <Grid item xs={12}>
                 <SearchField
                     value={query}

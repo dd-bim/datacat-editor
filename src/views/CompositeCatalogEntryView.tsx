@@ -1,14 +1,21 @@
-import React from "react";
+import React, {useState} from "react";
 import {useHistory, useParams} from "react-router-dom";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Paper} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import {Entity} from "../domain";
-import {SearchInput, SearchResultPropsFragment} from "../generated/types";
-import CatalogEntryListView from "./CatalogEntryListView";
+import PlusIcon from "@material-ui/icons/Add";
+import {SearchResultPropsFragment} from "../generated/types";
+import Button from "@material-ui/core/Button";
+import SearchList from "../components/list/SearchList";
 
 const useStyles = makeStyles(theme => ({
+    searchList: {
+        padding: theme.spacing(2),
+        position: "sticky",
+        top: "88px"
+    },
     paper: {
         padding: theme.spacing(2),
     },
@@ -22,20 +29,26 @@ const useStyles = makeStyles(theme => ({
 
 type CompositeCatalogEntryViewProps = {
     entryType: Entity,
-    searchInput: SearchInput,
     renderForm(id: string): React.ReactNode
 }
 
 const CompositeCatalogEntryView = (props: CompositeCatalogEntryViewProps) => {
     const {
         entryType: {
+            tags,
             path,
             title,
-            titlePlural
+            titlePlural,
+            entityType
         },
-        searchInput,
         renderForm
     } = props;
+    const [height, setHeight] = useState(500);
+    const [searchTerm, setSearchTerm] = useState("");
+    const searchInput = {
+        entityTypeIn: [entityType],
+        tagged: tags
+    }
     const classes = useStyles();
 
     const history = useHistory();
@@ -47,17 +60,31 @@ const CompositeCatalogEntryView = (props: CompositeCatalogEntryViewProps) => {
 
     return (
         <Grid container spacing={1}>
-            <Grid item xs={5}>
-                <Paper className={classes.paper}>
-                    <CatalogEntryListView
-                        title={titlePlural}
+            <Grid item xs={4}>
+                <Paper className={classes.searchList}>
+                    <Typography variant="h5">
+                        {titlePlural}
+                    </Typography>
+                    <SearchList
+                        showRecordIcons={false}
+                        height={height}
+                        searchTerm={searchTerm}
+                        onSearch={setSearchTerm}
                         searchInput={searchInput}
-                        selectedIds={id ? [id] : undefined}
+                        disabledItems={id ? [id] : undefined}
                         onSelect={handleOnSelect}
                     />
+                    <Button
+                        aria-label="Mehr Ergebnisse"
+                        disabled={height >= 1500}
+                        onClick={() => setHeight(height + 250)}
+                        startIcon={<PlusIcon/>}
+                    >
+                        Mehr Ergebnisse
+                    </Button>
                 </Paper>
             </Grid>
-            <Grid item xs={7}>
+            <Grid item xs={8}>
                 <Paper className={classes.paper}>
                     <Typography variant="h5">
                         {title} bearbeiten

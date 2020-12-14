@@ -1,15 +1,12 @@
 import React, {FC} from "react";
 import {
-    DocumentsPropsFragment,
     ExternalDocumentDetailPropsFragment,
-    GetDocumentEntryDocument,
-    PropertyTreeDocument,
+    RelationshipType,
     useDeleteEntryMutation,
     useGetDocumentEntryQuery
 } from "../../generated/types";
 import {Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
-import {FormSet} from "../../components/forms/FormSet";
 import MetaFormSet from "../../components/forms/MetaFormSet";
 import Button from "@material-ui/core/Button";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
@@ -17,44 +14,48 @@ import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
-import useDocuments from "../../hooks/useDocuments";
+import TransferListView from "../TransferListView";
 
 const DocumentForm: FC<FormProps<ExternalDocumentDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
 
-    const baseOptions = {
-        refetchQueries: [{query: PropertyTreeDocument}]
-    };
-
     // fetch domain model
-    const {loading, error, data} = useGetDocumentEntryQuery({
+    const {loading, error, data, refetch} = useGetDocumentEntryQuery({
         fetchPolicy: "network-only",
         variables: {id}
     });
     let entry = data?.node as ExternalDocumentDetailPropsFragment | undefined;
-    const [deleteEntry] = useDeleteEntryMutation(baseOptions);
-
-    const documented = useDocuments({
-        id,
-        relationships: entry?.documents.nodes || [],
-        renderLabel(relationship?: DocumentsPropsFragment): React.ReactNode {
-            return relationship ? `Konzepte (${relationship.id})` : `Konzepte`;
-        },
-        refetchQueries: [
-            {query: PropertyTreeDocument},
-            {query: GetDocumentEntryDocument, variables: {id}}
-        ]
+    const [deleteEntry] = useDeleteEntryMutation({
+        update: cache => {
+            cache.evict({id: `XtdExternalDocument:${id}`});
+            cache.modify({
+                id: "ROOT_QUERY",
+                fields: {
+                    hierarchy: (value, {DELETE}) => DELETE
+                }
+            });
+        }
     });
 
     if (loading) return <Typography>Lade Referenzdokument..</Typography>;
     if (error || !entry) return <Typography>Es ist ein Fehler aufgetreten..</Typography>;
 
+    const handleOnUpdate = async () => {
+        await refetch();
+        enqueueSnackbar("Update erfolgreich.");
+    }
+
     const handleOnDelete = async () => {
         await deleteEntry({variables: {id}});
         enqueueSnackbar("Referenzdokument gelöscht.")
-        onDelete(entry!);
+        onDelete?.();
     };
+
+    const documentsRelationships = entry.documents.nodes.map(({id, relatedThings}) => ({
+        relationshipId: id,
+        relatedItems: relatedThings
+    }));
 
     return (
         <FormView>
@@ -74,12 +75,18 @@ const DocumentForm: FC<FormProps<ExternalDocumentDetailPropsFragment>> = (props)
                 versionDate={entry.versionDate}
             />
 
-            <FormSet
-                title="Konzepte"
-                description="Konzepte, die durch dieses Referenzdokument beschrieben werden."
-            >
-                {documented}
-            </FormSet>
+            <TransferListView
+                title="Durch das Referenzdokument beschriebene Konzepte"
+                relatingItemId={id}
+                relationshipType={RelationshipType.Documents}
+                relationships={documentsRelationships}
+                searchInput={{
+                    idNotIn: [id]
+                }}
+                onCreate={handleOnUpdate}
+                onUpdate={handleOnUpdate}
+                onDelete={handleOnUpdate}
+            />
 
             <MetaFormSet entry={entry}/>
 

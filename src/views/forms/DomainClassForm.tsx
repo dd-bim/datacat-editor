@@ -1,76 +1,45 @@
 import React, {FC} from "react";
 import {
-    AssignsCollectionsPropsFragment,
-    AssignsPropertiesPropsFragment,
-    EntityTypes,
-    GetObjectEntryDocument,
-    PropertyTreeDocument,
+    RelationshipType,
     SubjectDetailPropsFragment,
     useDeleteEntryMutation,
     useGetSubjectEntryQuery
 } from "../../generated/types";
 import {Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
-import {FormSet} from "../../components/forms/FormSet";
 import MetaFormSet from "../../components/forms/MetaFormSet";
 import Button from "@material-ui/core/Button";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
-import useAssignsCollections from "../../hooks/useAssignsCollections";
-import useAssignsProperties from "../../hooks/useAssignsProperties";
-import {PropertyGroupEntity} from "../../domain";
+import {PropertyEntity, PropertyGroupEntity} from "../../domain";
 import FormView, {FormProps} from "./FormView";
 import useRelated from "../../hooks/useRelated";
-import CatalogEntryChip from "../../components/CatalogEntryChip";
+import TransferListView from "../TransferListView";
+import FormSet, {FormSetTitle, useFieldSetStyles} from "../../components/forms/FormSet";
 
 const DomainClassForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
+    const classes = useFieldSetStyles();
     const {enqueueSnackbar} = useSnackbar();
 
-    const baseOptions = {
-        refetchQueries: [{query: PropertyTreeDocument}]
-    };
-
     // fetch domain model
-    const {loading, error, data} = useGetSubjectEntryQuery({
+    const {loading, error, data, refetch} = useGetSubjectEntryQuery({
         fetchPolicy: "network-only",
         variables: {id}
     });
     let entry = data?.node as SubjectDetailPropsFragment | undefined;
-    const [deleteEntry] = useDeleteEntryMutation(baseOptions);
-
-    const assignedCollections = useAssignsCollections({
-        id,
-        relationships: entry?.assignedCollections.nodes || [],
-        optionsSearchInput: {
-            pageSize: 100,
-            tagged: PropertyGroupEntity.tags
-        },
-        renderLabel(relationship?: AssignsCollectionsPropsFragment): React.ReactNode {
-            return relationship ? `Merkmalsgruppen (${relationship.id})` : `Merkmalsgruppen`;
-        },
-        refetchQueries: [
-            {query: PropertyTreeDocument},
-            {query: GetObjectEntryDocument, variables: {id}}
-        ]
-    });
-
-    const assignedProperties = useAssignsProperties({
-        id,
-        relationships: entry?.assignedProperties.nodes || [],
-        optionsSearchInput: {
-            pageSize: 100,
-            entityTypeIn: [EntityTypes.XtdProperty]
-        },
-        renderLabel(relationship?: AssignsPropertiesPropsFragment): React.ReactNode {
-            return relationship ? `Merkmale (${relationship.id})` : `Merkmale`;
-        },
-        refetchQueries: [
-            {query: PropertyTreeDocument},
-            {query: GetObjectEntryDocument, variables: {id}}
-        ]
+    const [deleteEntry] = useDeleteEntryMutation({
+        update: cache => {
+            cache.evict({id: `XtdSubject:${id}`});
+            cache.modify({
+                id: "ROOT_QUERY",
+                fields: {
+                    hierarchy: (value, {DELETE}) => DELETE
+                }
+            });
+        }
     });
 
     const documentedBy = useRelated({
@@ -90,8 +59,23 @@ const DomainClassForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
     const handleOnDelete = async () => {
         await deleteEntry({variables: {id}});
         enqueueSnackbar("Klasse gelöscht.")
-        onDelete(entry!);
+        onDelete?.();
     };
+
+    const handleOnUpdate = async () => {
+        await refetch();
+        enqueueSnackbar("Update erfolgreich.");
+    }
+
+    const assignsCollectionsRelationships = entry.assignedCollections.nodes.map(({id, relatedCollections}) => ({
+        relationshipId: id,
+        relatedItems: relatedCollections
+    }));
+
+    const assignsPropertiesRelationships = entry.assignedProperties.nodes.map(({id, relatedProperties}) => ({
+        relationshipId: id,
+        relatedItems: relatedProperties
+    }));
 
     return (
         <FormView>
@@ -111,41 +95,42 @@ const DomainClassForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
                 versionDate={entry.versionDate}
             />
 
-            <FormSet
-                title="Merkmalsgruppen"
-                description="Merkmalsgruppen, die dieser Klasse zugeordnet sind."
-            >
-                {assignedCollections}
-            </FormSet>
+            <TransferListView
+                title="Zugewiesene Merkmalgruppen"
+                relatingItemId={id}
+                relationshipType={RelationshipType.AssignsCollections}
+                relationships={assignsCollectionsRelationships}
+                searchInput={{
+                    entityTypeIn: [PropertyGroupEntity.entityType],
+                    tagged: PropertyGroupEntity.tags
+                }}
+                onCreate={handleOnUpdate}
+                onUpdate={handleOnUpdate}
+                onDelete={handleOnUpdate}
+            />
 
-            <FormSet
-                title="Merkmale"
-                description="Merkmale, die dieser Klasse direkt zugeordnet sind."
-            >
-                {assignedProperties}
-            </FormSet>
-
-            <FormSet title="Wertezuweisungen">
-                {entry.assignedPropertiesWithValues.nodes.map(node => (
-                    <div key={node.id}>
-                        <CatalogEntryChip catalogEntry={node.relatedProperty}/>
-                        <ul>
-                            {node.relatedValues.map(value => (
-                                <li key={value.id}>
-                                    <CatalogEntryChip catalogEntry={value}/>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                ))}
-            </FormSet>
+            <TransferListView
+                title="Direkt zugewiesene Merkmale"
+                relatingItemId={id}
+                relationshipType={RelationshipType.AssignsProperties}
+                relationships={assignsPropertiesRelationships}
+                searchInput={{
+                    entityTypeIn: [PropertyEntity.entityType],
+                    tagged: PropertyEntity.tags
+                }}
+                onCreate={handleOnUpdate}
+                onUpdate={handleOnUpdate}
+                onDelete={handleOnUpdate}
+            />
 
             <MetaFormSet entry={entry}>
-                <FormSet title="Referenzen..." description="">
+                <FormSet>
+                    <FormSetTitle className={classes.gutterBottom}>Referenzen</FormSetTitle>
                     {documentedBy}
                 </FormSet>
 
-                <FormSet title="Gruppen...">
+                <FormSet>
+                    <FormSetTitle className={classes.gutterBottom}>Gruppen</FormSetTitle>
                     {collectedBy}
                 </FormSet>
             </MetaFormSet>

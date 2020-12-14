@@ -1,10 +1,7 @@
 import React, {FC} from "react";
 import {
-    AssignsMeasuresPropsFragment,
-    EntityTypes,
-    GetPropertyEntryDocument,
     PropertyDetailPropsFragment,
-    PropertyTreeDocument,
+    RelationshipType,
     useDeleteEntryMutation,
     useGetPropertyEntryQuery
 } from "../../generated/types";
@@ -17,40 +14,31 @@ import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
-import {FormSet} from "../../components/forms/FormSet";
-import useAssignsMeasures from "../../hooks/useAssignsMeasures";
+import FormSet, {FormSetTitle} from "../../components/forms/FormSet";
 import useRelated from "../../hooks/useRelated";
+import {MeasureEntity} from "../../domain";
+import TransferListView from "../TransferListView";
 
 const PropertyForm: FC<FormProps<PropertyDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
 
-    const baseOptions = {
-        refetchQueries: [{query: PropertyTreeDocument}]
-    };
-
     // fetch domain model
-    const {loading, error, data} = useGetPropertyEntryQuery({
+    const {loading, error, data, refetch} = useGetPropertyEntryQuery({
         fetchPolicy: "network-only",
         variables: {id}
     });
     let entry = data?.node as PropertyDetailPropsFragment | undefined;
-    const [deleteEntry] = useDeleteEntryMutation(baseOptions);
-
-    const assignedMeasures = useAssignsMeasures({
-        id,
-        relationships: entry?.assignedMeasures.nodes || [],
-        optionsSearchInput: {
-            pageSize: 100,
-            entityTypeIn: [EntityTypes.XtdMeasureWithUnit]
-        },
-        renderLabel(relationship?: AssignsMeasuresPropsFragment): React.ReactNode {
-            return relationship ? `Bemaßungen (${relationship.id})` : `Bemaßungen`;
-        },
-        refetchQueries: [
-            {query: PropertyTreeDocument},
-            {query: GetPropertyEntryDocument, variables: {id}}
-        ]
+    const [deleteEntry] = useDeleteEntryMutation({
+        update: cache => {
+            cache.evict({id: `XtdProperty:${id}`});
+            cache.modify({
+                id: "ROOT_QUERY",
+                fields: {
+                    hierarchy: (value, {DELETE}) => DELETE
+                }
+            });
+        }
     });
 
     const documentedBy = useRelated({
@@ -71,11 +59,21 @@ const PropertyForm: FC<FormProps<PropertyDetailPropsFragment>> = (props) => {
     if (loading) return <Typography>Lade Merkmal..</Typography>;
     if (error || !entry) return <Typography>Es ist ein Fehler aufgetreten..</Typography>;
 
+    const handleOnUpdate = async () => {
+        await refetch();
+        enqueueSnackbar("Update erfolgreich.");
+    };
+
     const handleOnDelete = async () => {
         await deleteEntry({variables: {id}});
         enqueueSnackbar("Merkmal gelöscht.")
-        onDelete(entry!);
+        onDelete?.();
     };
+
+    const assignsMeasuresRelationships = entry.assignedMeasures.nodes.map(({id, relatedMeasures}) => ({
+        relationshipId: id,
+        relatedItems: relatedMeasures
+    }));
 
     return (
         <FormView>
@@ -95,24 +93,33 @@ const PropertyForm: FC<FormProps<PropertyDetailPropsFragment>> = (props) => {
                 versionDate={entry.versionDate}
             />
 
-            <FormSet
-                title="Bemaßungen"
-                description="Bemaßungen, die diesem Merkmal zugeordnet sind."
-            >
-                {assignedMeasures}
-            </FormSet>
+            <TransferListView
+                title="Bemaßung des Merkmals"
+                relatingItemId={id}
+                relationshipType={RelationshipType.AssignsMeasures}
+                relationships={assignsMeasuresRelationships}
+                searchInput={{
+                    entityTypeIn: [MeasureEntity.entityType]
+                }}
+                onCreate={handleOnUpdate}
+                onUpdate={handleOnUpdate}
+                onDelete={handleOnUpdate}
+            />
 
             <MetaFormSet entry={entry}/>
 
-            <FormSet title="Referenzen...">
+            <FormSet>
+                <FormSetTitle>Referenzen</FormSetTitle>
                 {documentedBy}
             </FormSet>
 
-            <FormSet title="Merkmalsgruppen...">
+            <FormSet>
+                <FormSetTitle>Merkmalgruppen</FormSetTitle>
                 {collectedBy}
             </FormSet>
 
-            <FormSet title="Klassen...">
+            <FormSet>
+                <FormSetTitle>Klassen</FormSetTitle>
                 {assignedTo}
             </FormSet>
 

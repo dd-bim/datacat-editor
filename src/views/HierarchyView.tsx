@@ -19,13 +19,22 @@ import {
     DomainModelIcon,
     getEntityType,
     GroupEntity,
+    MeasureEntity,
+    MeasureIcon,
     ModelEntity,
     PropertyEntity,
     PropertyGroupEntity,
     PropertyGroupIcon,
-    PropertyIcon
+    PropertyIcon,
+    UnitEntity,
+    UnitIcon,
+    ValueEntity,
+    ValueIcon
 } from "../domain";
 import PropertyForm from "./forms/PropertyForm";
+import MeasureForm from "./forms/MeasureForm";
+import UnitForm from "./forms/UnitForm";
+import ValueForm from "./forms/ValueForm";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -149,6 +158,39 @@ const HierarchyView: FC = () => {
                                         <PropertyIcon/> Merkmal bearbeiten
                                     </Typography>
                                     <PropertyForm id={id} onDelete={handleOnDelete}/>
+                                </React.Fragment>
+                            );
+                        }}/>
+                        <Route exact path={`${path}/${MeasureEntity.path}/:id`} render={renderProps => {
+                            const id: string = renderProps.match.params.id;
+                            return (
+                                <React.Fragment>
+                                    <Typography variant="h5">
+                                        <MeasureIcon/> Bemaßung bearbeiten
+                                    </Typography>
+                                    <MeasureForm id={id} onDelete={handleOnDelete}/>
+                                </React.Fragment>
+                            );
+                        }}/>
+                        <Route exact path={`${path}/${UnitEntity.path}/:id`} render={renderProps => {
+                            const id: string = renderProps.match.params.id;
+                            return (
+                                <React.Fragment>
+                                    <Typography variant="h5">
+                                        <UnitIcon/> Einheit bearbeiten
+                                    </Typography>
+                                    <UnitForm id={id} onDelete={handleOnDelete}/>
+                                </React.Fragment>
+                            );
+                        }}/>
+                        <Route exact path={`${path}/${ValueEntity.path}/:id`} render={renderProps => {
+                            const id: string = renderProps.match.params.id;
+                            return (
+                                <React.Fragment>
+                                    <Typography variant="h5">
+                                        <ValueIcon/> Wert bearbeiten
+                                    </Typography>
+                                    <ValueForm id={id} onDelete={handleOnDelete}/>
                                 </React.Fragment>
                             );
                         }}/>

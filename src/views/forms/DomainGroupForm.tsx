@@ -1,56 +1,43 @@
 import React, {FC} from "react";
 import {
     CollectionDetailPropsFragment,
-    CollectsPropsFragment,
-    GetCollectionEntryDocument,
-    PropertyTreeDocument,
+    RelationshipType,
     useDeleteEntryMutation,
     useGetCollectionEntryQuery
 } from "../../generated/types";
-import {Typography} from "@material-ui/core";
-import useCollects from "../../hooks/useCollects";
+import {Button, Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
-import {FormSet} from "../../components/forms/FormSet";
-import MetaFormSet from "../../components/forms/MetaFormSet";
-import Button from "@material-ui/core/Button";
+import FormSet, {FormSetDescription, FormSetTitle} from "../../components/forms/FormSet";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
-import {ClassEntity} from "../../domain";
 import FormView, {FormProps} from "./FormView";
 import useRelated from "../../hooks/useRelated";
+import MetaFormSet from "../../components/forms/MetaFormSet";
+import {ClassEntity} from "../../domain";
+import TransferListView from "../TransferListView";
 
 const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
 
-    const baseOptions = {
-        refetchQueries: [{query: PropertyTreeDocument}]
-    };
-
     // fetch domain model
-    const {loading, error, data} = useGetCollectionEntryQuery({
+    const {loading, error, data, refetch} = useGetCollectionEntryQuery({
         fetchPolicy: "network-only",
         variables: {id}
     });
     let entry = data?.node as CollectionDetailPropsFragment | undefined;
-    const [deleteEntry] = useDeleteEntryMutation(baseOptions);
-
-    const collects = useCollects({
-        id,
-        relationships: entry?.collects.nodes || [],
-        optionsSearchInput: {
-            pageSize: 100,
-            tagged: ClassEntity.tags
-        },
-        renderLabel(relationship?: CollectsPropsFragment): React.ReactNode {
-            return relationship ? `Klassen (${relationship.id})` : `Klassen`;
-        },
-        refetchQueries: [
-            {query: PropertyTreeDocument},
-            {query: GetCollectionEntryDocument, variables: {id}}
-        ]
+    const [deleteEntry] = useDeleteEntryMutation({
+        update: cache => {
+            cache.evict({id: `XtdBag:${id}`});
+            cache.modify({
+                id: "ROOT_QUERY",
+                fields: {
+                    hierarchy: (value, {DELETE}) => DELETE
+                }
+            });
+        }
     });
 
     const documentedBy = useRelated({
@@ -69,8 +56,18 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
     const handleOnDelete = async () => {
         await deleteEntry({variables: {id}});
         enqueueSnackbar("Gruppe gelöscht.")
-        onDelete(entry!);
+        onDelete?.();
     };
+
+    const handleOnUpdate = async () => {
+        await refetch();
+        enqueueSnackbar("Update erfolgreich.");
+    }
+
+    const collectsRelationships = entry.collects.nodes.map(({id, relatedThings}) => ({
+        relationshipId: id,
+        relatedItems: relatedThings
+    }));
 
     return (
         <FormView>
@@ -90,23 +87,28 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
                 versionDate={entry.versionDate}
             />
 
-            <FormSet
-                title="Klassen"
+            <TransferListView
+                title="Gruppierte Klassen"
                 description="Klassen, die dieser Gruppe zugeordnet sind."
-            >
-                {collects}
-            </FormSet>
+                relatingItemId={id}
+                relationshipType={RelationshipType.Collects}
+                relationships={collectsRelationships}
+                searchInput={{tagged: ClassEntity.tags}}
+                onCreate={handleOnUpdate}
+                onUpdate={handleOnUpdate}
+                onDelete={handleOnUpdate}
+            />
 
             <MetaFormSet entry={entry}/>
 
-            <FormSet title="Referenzen...">
+            <FormSet>
+                <FormSetTitle>Referenzen</FormSetTitle>
                 {documentedBy}
             </FormSet>
 
-            <FormSet
-                title="Fachmodelle..."
-                description="Zeigt auf, welche Fachmodelle diese Gruppe nutzen."
-            >
+            <FormSet>
+                <FormSetTitle>Fachmodelle</FormSetTitle>
+                <FormSetDescription>Zeigt auf, welche Fachmodelle diese Gruppe nutzen.</FormSetDescription>
                 <div>{collectedBy}</div>
             </FormSet>
 

@@ -10,9 +10,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export type FormProps<T> = {
-    id: string,
-    onDelete(value: T): void
-}
+    id: string;
+    onDelete?(): void;
+};
 
 export type WithChildren<T> = T & {
     children?: ReactNode

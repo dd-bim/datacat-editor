@@ -9,7 +9,7 @@ import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
-import {FormSet} from "../../components/forms/FormSet";
+import FormSet, {FormSetTitle} from "../../components/forms/FormSet";
 import useRelated from "../../hooks/useRelated";
 
 const UnitForm: FC<FormProps<UnitDetailPropsFragment>> = (props) => {
@@ -22,7 +22,17 @@ const UnitForm: FC<FormProps<UnitDetailPropsFragment>> = (props) => {
         variables: {id}
     });
     let entry = data?.node as UnitDetailPropsFragment | undefined;
-    const [deleteEntry] = useDeleteEntryMutation();
+    const [deleteEntry] = useDeleteEntryMutation({
+        update: cache => {
+            cache.evict({id: `XtdUnit:${id}`});
+            cache.modify({
+                id: "ROOT_QUERY",
+                fields: {
+                    hierarchy: (value, {DELETE}) => DELETE
+                }
+            });
+        }
+    });
 
     const documentedBy = useRelated({
         catalogEntries: entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? [],
@@ -40,7 +50,7 @@ const UnitForm: FC<FormProps<UnitDetailPropsFragment>> = (props) => {
     const handleOnDelete = async () => {
         await deleteEntry({variables: {id}});
         enqueueSnackbar("Maßeinheit gelöscht.")
-        onDelete(entry!);
+        onDelete?.();
     };
 
     return (
@@ -63,11 +73,13 @@ const UnitForm: FC<FormProps<UnitDetailPropsFragment>> = (props) => {
 
             <MetaFormSet entry={entry}/>
 
-            <FormSet title="Referenzen...">
+            <FormSet>
+                <FormSetTitle>Referenzen</FormSetTitle>
                 {documentedBy}
             </FormSet>
 
-            <FormSet title="Bemaßungen...">
+            <FormSet>
+                <FormSetTitle>Bemaßungen</FormSetTitle>
                 {assignedTo}
             </FormSet>
 
