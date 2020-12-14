@@ -8,8 +8,8 @@ export type ApiProviderProps = {
 }
 
 export default function ApiProvider(props: ApiProviderProps) {
-    const { children } = props;
-    const { token } = useAuthContext();
+    const {children} = props;
+    const {token} = useAuthContext();
     const headers = token ? {
         'Authorization': `Bearer ${token}`
     } : {};
@@ -17,6 +17,29 @@ export default function ApiProvider(props: ApiProviderProps) {
         connectToDevTools: true,
         cache: new InMemoryCache({
             typePolicies: {
+                Query: {
+                    fields: {
+                        search: {
+                            keyArgs: [
+                                "input"
+                            ],
+                            merge(existing, incoming, {args}) {
+                                const nodes = existing ? [...existing.nodes] : [];
+                                const start = args ? args.pageSize * args.pageNumber : nodes.length;
+                                const end = start + incoming.nodes.length;
+                                for (let i = start; i < end; ++i) {
+                                    nodes[i] = incoming.nodes[i - start];
+                                }
+                                return {
+                                    __typename: "SearchResultConnection",
+                                    nodes,
+                                    pageInfo: {...incoming.pageInfo},
+                                    totalElements: incoming.totalElements
+                                };
+                            }
+                        }
+                    }
+                },
                 'Account': {
                     keyFields: ['username']
                 },
