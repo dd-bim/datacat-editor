@@ -13,7 +13,6 @@ import {
 import React from "react";
 import CompositeCatalogEntryView from "../views/CompositeCatalogEntryView";
 import DocumentForm from "../views/forms/DocumentForm";
-import {EntityTypes} from "../generated/types";
 import DomainModelForm from "../views/forms/DomainModelForm";
 import DomainGroupForm from "../views/forms/DomainGroupForm";
 import DomainClassForm from "../views/forms/DomainClassForm";
@@ -33,13 +32,12 @@ const CatalogEntryRoutes = () => {
             <Route path={`/${DocumentEntity.path}/:id?`}>
                 <CompositeCatalogEntryView
                     entryType={DocumentEntity}
-                    searchInput={{
-                        entityTypeIn: [EntityTypes.XtdExternalDocument]
-                    }}
                     renderForm={(id => (
                         <DocumentForm
                             id={id}
-                            onDelete={() => onDelete(DocumentEntity.path)}
+                            onDelete={() => {
+                                onDelete(DocumentEntity.path)
+                            }}
                         />
                     ))}
                 />
@@ -48,10 +46,6 @@ const CatalogEntryRoutes = () => {
             <Route path={`/${ModelEntity.path}/:id?`}>
                 <CompositeCatalogEntryView
                     entryType={ModelEntity}
-                    searchInput={{
-                        entityTypeIn: [ModelEntity.entityType],
-                        tagged: ModelEntity.tags,
-                    }}
                     renderForm={(id => (
                         <DomainModelForm
                             id={id}
@@ -64,10 +58,6 @@ const CatalogEntryRoutes = () => {
             <Route path={`/${GroupEntity.path}/:id?`}>
                 <CompositeCatalogEntryView
                     entryType={GroupEntity}
-                    searchInput={{
-                        entityTypeIn: [GroupEntity.entityType],
-                        tagged: GroupEntity.tags,
-                    }}
                     renderForm={(id => (
                         <DomainGroupForm
                             id={id}
@@ -80,10 +70,6 @@ const CatalogEntryRoutes = () => {
             <Route path={`/${ClassEntity.path}/:id?`}>
                 <CompositeCatalogEntryView
                     entryType={ClassEntity}
-                    searchInput={{
-                        entityTypeIn: [ClassEntity.entityType],
-                        tagged: ClassEntity.tags,
-                    }}
                     renderForm={(id => (
                         <DomainClassForm
                             id={id}
@@ -96,10 +82,6 @@ const CatalogEntryRoutes = () => {
             <Route path={`/${PropertyGroupEntity.path}/:id?`}>
                 <CompositeCatalogEntryView
                     entryType={PropertyGroupEntity}
-                    searchInput={{
-                        entityTypeIn: [PropertyGroupEntity.entityType],
-                        tagged: PropertyGroupEntity.tags,
-                    }}
                     renderForm={(id => (
                         <PropertyGroupForm
                             id={id}
@@ -112,10 +94,6 @@ const CatalogEntryRoutes = () => {
             <Route path={`/${PropertyEntity.path}/:id?`}>
                 <CompositeCatalogEntryView
                     entryType={PropertyEntity}
-                    searchInput={{
-                        entityTypeIn: [PropertyEntity.entityType],
-                        tagged: PropertyEntity.tags,
-                    }}
                     renderForm={(id => (
                         <PropertyForm
                             id={id}
@@ -128,10 +106,6 @@ const CatalogEntryRoutes = () => {
             <Route path={`/${MeasureEntity.path}/:id?`}>
                 <CompositeCatalogEntryView
                     entryType={MeasureEntity}
-                    searchInput={{
-                        entityTypeIn: [MeasureEntity.entityType],
-                        tagged: MeasureEntity.tags,
-                    }}
                     renderForm={(id => (
                         <MeasureForm
                             id={id}
@@ -144,10 +118,6 @@ const CatalogEntryRoutes = () => {
             <Route path={`/${UnitEntity.path}/:id?`}>
                 <CompositeCatalogEntryView
                     entryType={UnitEntity}
-                    searchInput={{
-                        entityTypeIn: [UnitEntity.entityType],
-                        tagged: UnitEntity.tags,
-                    }}
                     renderForm={(id => (
                         <UnitForm
                             id={id}
@@ -160,10 +130,6 @@ const CatalogEntryRoutes = () => {
             <Route path={`/${ValueEntity.path}/:id?`}>
                 <CompositeCatalogEntryView
                     entryType={ValueEntity}
-                    searchInput={{
-                        entityTypeIn: [ValueEntity.entityType],
-                        tagged: ValueEntity.tags,
-                    }}
                     renderForm={(id => (
                         <ValueForm
                             id={id}

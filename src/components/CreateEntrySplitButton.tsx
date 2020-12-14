@@ -1,5 +1,5 @@
 import React, {FC, useState} from "react";
-import {CatalogEntryType, PropertyTreeDocument, useCreateEntryMutation} from "../generated/types";
+import {useCreateEntryMutation} from "../generated/types";
 import {ButtonGroup, ButtonGroupProps, Dialog} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
@@ -27,13 +27,6 @@ import {
     UnitEntity,
     ValueEntity
 } from "../domain";
-import {dispatch, EventAction} from 'use-bus';
-
-export type NewEntryAction = {
-    entryType: CatalogEntryType
-    id: string
-} & EventAction
-
 
 type CreateEntrySplitButtonProps = {
     ButtonGroupProps?: ButtonGroupProps
@@ -60,9 +53,20 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
     const {enqueueSnackbar} = useSnackbar();
 
     const [create] = useCreateEntryMutation({
-        refetchQueries: [
-            {query: PropertyTreeDocument}
-        ]
+        update: cache => {
+            cache.modify({
+                id: "ROOT_QUERY",
+                fields: {
+                    hierarchy: (value, {DELETE}) => DELETE
+                }
+            });
+            cache.modify({
+                id: "ROOT_QUERY",
+                fields: {
+                    search: (value, {DELETE}) => DELETE
+                }
+            });
+        }
     });
 
     const [lastUsedOption, setLastUsedOption] = React.useState(ClassEntity);
@@ -113,23 +117,18 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
             names: names,
             descriptions
         };
-        const {data} = await create({
+        await create({
             variables: {
                 input: {
                     catalogEntryType,
                     properties: properties,
-                    tags: input?.tags!
+                    tags: input?.tags
                 }
             }
         });
 
-        // TODO: Add error handling to give feedback in forms
-
         setDialogOpen(false);
         enqueueSnackbar(`${input!.title} erstellt.`);
-
-        const newId = data?.createCatalogEntry?.catalogEntry?.id;
-        dispatch({type: `new/entry`, entryType: input!.entryType, id: newId});
     };
 
     return (
@@ -140,7 +139,12 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
                 ref={anchorRef}
                 aria-label="Eintrag hinzufügen"
             >
-                <Button onClick={() => onClick(lastUsedOption)} startIcon={<AddIcon/>}>{lastUsedOption.title}</Button>
+                <Button
+                    onClick={() => onClick(lastUsedOption)}
+                    startIcon={<AddIcon/>}
+                >
+                    {lastUsedOption.title}
+                </Button>
                 <Button
                     color="inherit"
                     aria-controls={menuOpen ? 'split-button-menu' : undefined}
@@ -165,7 +169,7 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
                             <ClickAwayListener onClickAway={handleClose}>
                                 <MenuList id="split-button-menu">
                                     {options.filter(entityType => entityType !== lastUsedOption).map(option => (
-                                        <MenuItem onClick={() => onClick(option)}>
+                                        <MenuItem key={option.path} onClick={() => onClick(option)}>
                                             {option.title}
                                         </MenuItem>
                                     ))}

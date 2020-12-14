@@ -4,7 +4,6 @@ import Button from "@material-ui/core/Button";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import MaterialUIAppBar from "@material-ui/core/AppBar";
 import React from "react";
-import {QuickSearchWidget} from "./QuickSearchWidget";
 import useAuthContext, {useWriteAccess} from "../hooks/useAuthContext";
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
@@ -54,7 +53,8 @@ export function AppBar(props: AppBarProps) {
                 <AppTitle/>
                 {profile && (
                     <React.Fragment>
-                        <QuickSearchWidget key="search-input"/>
+                        {/*TODO: Seems to be broken right now...*/}
+                        {/*<QuickSearchWidget key="search-input"/>*/}
 
                         <CreateEntrySplitButton/>
 

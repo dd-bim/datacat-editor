@@ -31,20 +31,22 @@ export type Entity = {
     tags?: string[],
     title: string,
     titlePlural: string,
+    description?: string,
     entityType: EntityTypes // TODO: only used in search widget until API is migrated to EntryType
     entryType: CatalogEntryType,
     path: string,
-    Icon: SvgIconComponent
+    Icon: SvgIconComponent,
 };
 
 export const DocumentEntity: Entity = {
     tags: undefined,
     title: "Referenzdokument",
     titlePlural: "Referenzdokumente",
+    description: "Ein Eintrag vom Typ Referenzdokument wird genutzt, um externe Dokumente, Bücher oder andere schriftliche Informationen abzubilden.",
     entityType: EntityTypes.XtdExternalDocument,
     entryType: CatalogEntryType.ExternalDocument,
     path: "document",
-    Icon: ReferenceDocumentIcon
+    Icon: ReferenceDocumentIcon,
 };
 
 export const ModelEntity: Entity = {
@@ -54,7 +56,7 @@ export const ModelEntity: Entity = {
     entityType: EntityTypes.XtdBag,
     entryType: CatalogEntryType.Bag,
     path: "model",
-    Icon: DomainModelIcon
+    Icon: DomainModelIcon,
 };
 
 export const GroupEntity: Entity = {
@@ -64,7 +66,7 @@ export const GroupEntity: Entity = {
     entityType: EntityTypes.XtdBag,
     entryType: CatalogEntryType.Bag,
     path: "group",
-    Icon: DomainGroupIcon
+    Icon: DomainGroupIcon,
 };
 
 export const ClassEntity: Entity = {
