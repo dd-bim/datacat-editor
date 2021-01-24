@@ -103,8 +103,8 @@ export const PropertyEntity: Entity = {
 
 export const MeasureEntity: Entity = {
     tags: undefined,
-    title: "Bemaßung",
-    titlePlural: "Bemaßungen",
+    title: "Größe",
+    titlePlural: "Größen",
     recordType: CatalogRecordType.Measure,
     path: "measure",
     Icon: MeasureIcon
