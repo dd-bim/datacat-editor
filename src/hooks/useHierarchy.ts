@@ -47,12 +47,12 @@ const useHierarchy = (options: UsePropertyTreeOptions) => {
                     node = {id, nodeId, data, children: []};
                     parent.children.push(node);
                     parent.children.sort((a, b) => {
-                        if (a.data.__typename === b.data.__typename) {
+                        if (a.data.recordType === b.data.recordType) {
                             const nameA = a.data.name ?? a.data.id;
                             const nameB = b.data.name ?? b.data.id;
                             return nameA.localeCompare(nameB);
                         }
-                        return a.data.__typename.localeCompare(b.data.__typename);
+                        return a.data.recordType.localeCompare(b.data.recordType);
                     });
                 }
                 parent = node;
