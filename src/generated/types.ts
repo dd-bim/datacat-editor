@@ -1023,15 +1023,6 @@ export type FindLanguagesQueryVariables = Exact<{
 
 export type FindLanguagesQuery = { languages?: Maybe<{ totalElements: number, nodes: Array<LanguagePropsFragment> }> };
 
-export type QuicksearchQueryVariables = Exact<{
-  input: SearchInput;
-  pageSize?: Maybe<Scalars['Int']>;
-  pageNumber?: Maybe<Scalars['Int']>;
-}>;
-
-
-export type QuicksearchQuery = { quicksearch: { totalElements: number, nodes: Array<SearchResultPropsFragment> } };
-
 export type FindItemQueryVariables = Exact<{
   input: SearchInput;
   pageSize?: Maybe<Scalars['Int']>;
@@ -1040,13 +1031,6 @@ export type FindItemQueryVariables = Exact<{
 
 
 export type FindItemQuery = { search: { totalElements: number, nodes: Array<SearchResultPropsFragment>, pageInfo: PagePropsFragment } };
-
-export type FindConceptQueryVariables = Exact<{
-  input: SearchInput;
-}>;
-
-
-export type FindConceptQuery = { search: { totalElements: number, nodes: Array<SearchResultPropsFragment>, pageInfo: PagePropsFragment } };
 
 export type PropertyTreeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2230,44 +2214,6 @@ export function useFindLanguagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type FindLanguagesQueryHookResult = ReturnType<typeof useFindLanguagesQuery>;
 export type FindLanguagesLazyQueryHookResult = ReturnType<typeof useFindLanguagesLazyQuery>;
 export type FindLanguagesQueryResult = Apollo.QueryResult<FindLanguagesQuery, FindLanguagesQueryVariables>;
-export const QuicksearchDocument = gql`
-    query Quicksearch($input: SearchInput!, $pageSize: Int, $pageNumber: Int) {
-  quicksearch: search(input: $input, pageSize: $pageSize, pageNumber: $pageNumber) {
-    nodes {
-      ...SearchResultProps
-    }
-    totalElements
-  }
-}
-    ${SearchResultPropsFragmentDoc}`;
-
-/**
- * __useQuicksearchQuery__
- *
- * To run a query within a React component, call `useQuicksearchQuery` and pass it any options that fit your needs.
- * When your component renders, `useQuicksearchQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useQuicksearchQuery({
- *   variables: {
- *      input: // value for 'input'
- *      pageSize: // value for 'pageSize'
- *      pageNumber: // value for 'pageNumber'
- *   },
- * });
- */
-export function useQuicksearchQuery(baseOptions: Apollo.QueryHookOptions<QuicksearchQuery, QuicksearchQueryVariables>) {
-        return Apollo.useQuery<QuicksearchQuery, QuicksearchQueryVariables>(QuicksearchDocument, baseOptions);
-      }
-export function useQuicksearchLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<QuicksearchQuery, QuicksearchQueryVariables>) {
-          return Apollo.useLazyQuery<QuicksearchQuery, QuicksearchQueryVariables>(QuicksearchDocument, baseOptions);
-        }
-export type QuicksearchQueryHookResult = ReturnType<typeof useQuicksearchQuery>;
-export type QuicksearchLazyQueryHookResult = ReturnType<typeof useQuicksearchLazyQuery>;
-export type QuicksearchQueryResult = Apollo.QueryResult<QuicksearchQuery, QuicksearchQueryVariables>;
 export const FindItemDocument = gql`
     query FindItem($input: SearchInput!, $pageSize: Int, $pageNumber: Int) {
   search(input: $input, pageSize: $pageSize, pageNumber: $pageNumber) {
@@ -2310,46 +2256,6 @@ export function useFindItemLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<F
 export type FindItemQueryHookResult = ReturnType<typeof useFindItemQuery>;
 export type FindItemLazyQueryHookResult = ReturnType<typeof useFindItemLazyQuery>;
 export type FindItemQueryResult = Apollo.QueryResult<FindItemQuery, FindItemQueryVariables>;
-export const FindConceptDocument = gql`
-    query FindConcept($input: SearchInput!) {
-  search(input: $input) {
-    nodes {
-      ...SearchResultProps
-    }
-    pageInfo {
-      ...PageProps
-    }
-    totalElements
-  }
-}
-    ${SearchResultPropsFragmentDoc}
-${PagePropsFragmentDoc}`;
-
-/**
- * __useFindConceptQuery__
- *
- * To run a query within a React component, call `useFindConceptQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindConceptQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindConceptQuery({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useFindConceptQuery(baseOptions: Apollo.QueryHookOptions<FindConceptQuery, FindConceptQueryVariables>) {
-        return Apollo.useQuery<FindConceptQuery, FindConceptQueryVariables>(FindConceptDocument, baseOptions);
-      }
-export function useFindConceptLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindConceptQuery, FindConceptQueryVariables>) {
-          return Apollo.useLazyQuery<FindConceptQuery, FindConceptQueryVariables>(FindConceptDocument, baseOptions);
-        }
-export type FindConceptQueryHookResult = ReturnType<typeof useFindConceptQuery>;
-export type FindConceptLazyQueryHookResult = ReturnType<typeof useFindConceptLazyQuery>;
-export type FindConceptQueryResult = Apollo.QueryResult<FindConceptQuery, FindConceptQueryVariables>;
 export const PropertyTreeDocument = gql`
     query PropertyTree {
   hierarchy(
