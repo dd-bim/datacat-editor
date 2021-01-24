@@ -1,10 +1,11 @@
-import {ItemPropsFragment, SearchInput} from "../../generated/types";
+import {SearchInput} from "../../generated/types";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import React, {useState} from "react";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import FilterableList from "./FilterableList";
 import SearchList from "./SearchList";
+import {CatalogRecord} from "../../types";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -17,13 +18,13 @@ const useStyles = makeStyles(theme => ({
 }));
 type TransferListProps = {
     loading?: boolean
-    items: ItemPropsFragment[];
+    items: CatalogRecord[];
     enabled: boolean;
     searchInput: SearchInput;
     height?: number;
-    onSelect?(item: ItemPropsFragment): void;
-    onAdd?(item: ItemPropsFragment): void;
-    onRemove?(item: ItemPropsFragment): void;
+    onSelect?(item: CatalogRecord): void;
+    onAdd?(item: CatalogRecord): void;
+    onRemove?(item: CatalogRecord): void;
 };
 
 export default function TransferList(props: TransferListProps) {

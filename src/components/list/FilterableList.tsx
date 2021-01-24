@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import useDebounce from "../../hooks/useDebounce";
-import {ItemPropsFragment} from "../../generated/types";
 import ItemList, {ItemListProps} from "./ItemList";
+import {RowProps} from "./ItemRow";
 
 type FilterableListProps = Omit<ItemListProps, "onSearch"> & {
     searchDelay?: number;
@@ -16,7 +16,7 @@ export default function FilterableList(props: FilterableListProps) {
     } = props;
     const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
     const debouncedSearchTerm = useDebounce(searchTerm, searchDelay);
-    const predicate = (x: ItemPropsFragment) => (x.name?.toLowerCase().indexOf(debouncedSearchTerm) !== -1);
+    const predicate = (x: RowProps) => (x.name?.toLowerCase().indexOf(debouncedSearchTerm) !== -1);
     const visibleItems = items.filter(predicate);
     const searchLabel = `Liste filtern (${visibleItems.length}/${items.length})`;
 

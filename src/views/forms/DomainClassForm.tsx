@@ -1,6 +1,6 @@
 import React, {FC} from "react";
 import {
-    RelationshipType,
+    RelationshipRecordType,
     SubjectDetailPropsFragment,
     useDeleteEntryMutation,
     useGetSubjectEntryQuery
@@ -13,11 +13,12 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
-import {PropertyEntity, PropertyGroupEntity} from "../../domain";
+import {PropertyEntity, PropertyGroupEntity, ValueEntity} from "../../domain";
 import FormView, {FormProps} from "./FormView";
 import useRelated from "../../hooks/useRelated";
 import TransferListView from "../TransferListView";
 import FormSet, {FormSetTitle, useFieldSetStyles} from "../../components/forms/FormSet";
+import AssignsPropertyWithValuesTransferListView from "../AssignsPropertyWithValuesTransferListView";
 
 const DomainClassForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
@@ -77,6 +78,10 @@ const DomainClassForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
         relatedItems: relatedProperties
     }));
 
+    const assignsPropertyWithValuesRelationships = entry.assignedPropertiesWithValues.nodes.map(({id, relatedProperty, relatedValues}) => ({
+        relationshipId: id, relatedProperty, relatedValues
+    }));
+
     return (
         <FormView>
             <NameFormSet
@@ -98,10 +103,10 @@ const DomainClassForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
             <TransferListView
                 title="Zugewiesene Merkmalgruppen"
                 relatingItemId={id}
-                relationshipType={RelationshipType.AssignsCollections}
+                relationshipType={RelationshipRecordType.AssignsCollections}
                 relationships={assignsCollectionsRelationships}
                 searchInput={{
-                    entityTypeIn: [PropertyGroupEntity.entityType],
+                    entityTypeIn: [PropertyGroupEntity.recordType],
                     tagged: PropertyGroupEntity.tags
                 }}
                 onCreate={handleOnUpdate}
@@ -110,12 +115,12 @@ const DomainClassForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
             />
 
             <TransferListView
-                title="Direkt zugewiesene Merkmale"
+                title={`Direkt zugewiesene Merkmale von ${entry.name}`}
                 relatingItemId={id}
-                relationshipType={RelationshipType.AssignsProperties}
+                relationshipType={RelationshipRecordType.AssignsProperties}
                 relationships={assignsPropertiesRelationships}
                 searchInput={{
-                    entityTypeIn: [PropertyEntity.entityType],
+                    entityTypeIn: [PropertyEntity.recordType],
                     tagged: PropertyEntity.tags
                 }}
                 onCreate={handleOnUpdate}
@@ -123,17 +128,32 @@ const DomainClassForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
                 onDelete={handleOnUpdate}
             />
 
-            <MetaFormSet entry={entry}>
-                <FormSet>
-                    <FormSetTitle className={classes.gutterBottom}>Referenzen</FormSetTitle>
-                    {documentedBy}
-                </FormSet>
+            <AssignsPropertyWithValuesTransferListView
+                title="Gültige Wertelistenwerte, der zugewiesenen Merkmale"
+                relatingItemId={id}
+                assignedProperties={entry.properties}
+                relationships={assignsPropertyWithValuesRelationships}
+                searchInput={{
+                    entityTypeIn: [ValueEntity.recordType],
+                    tagged: ValueEntity.tags
+                }}
+                onCreate={handleOnUpdate}
+                onUpdate={handleOnUpdate}
+                onDelete={handleOnUpdate}
+            />
 
-                <FormSet>
-                    <FormSetTitle className={classes.gutterBottom}>Gruppen</FormSetTitle>
-                    {collectedBy}
-                </FormSet>
-            </MetaFormSet>
+
+            <MetaFormSet entry={entry}/>
+
+            <FormSet>
+                <FormSetTitle className={classes.gutterBottom}>Referenzen</FormSetTitle>
+                {documentedBy}
+            </FormSet>
+
+            <FormSet>
+                <FormSetTitle className={classes.gutterBottom}>Gruppen</FormSetTitle>
+                {collectedBy}
+            </FormSet>
 
             <Button
                 variant="contained"

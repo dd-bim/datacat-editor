@@ -43,7 +43,7 @@ export function QuickSearchWidget(props: QuickSearchWidgetProps) {
         variables: {
             input: {
                 query,
-                entityTypeIn: Domain.map(x => x.entityType)
+                entityTypeIn: Domain.map(x => x.recordType)
             }
         }
     })

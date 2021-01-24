@@ -120,33 +120,6 @@ mutation UnsetNominalValue($input: UnsetNominalValueInput!) {
     }
 }
 
-mutation CreateOneToManyRelationship($input: CreateOneToManyRelationshipInput!) {
-    createOneToManyRelationship(input: $input) {
-        relationship {
-            ... on XtdRelationship {
-                id
-            }
-        }
-    }
-}
-
-mutation UpdateOneToManyRelationship($oldId: ID!, $input: CreateOneToManyRelationshipInput!) {
-    deleteRelationship(input: { relationshipId: $oldId }) {
-        relationship {
-            ... on XtdRelationship {
-                id
-            }
-        }
-    }
-    createOneToManyRelationship(input: $input) {
-        relationship {
-            ... on XtdRelationship {
-                id
-            }
-        }
-    }
-}
-
 mutation TagBag($bagId: ID!, $tagId: ID!) {
     addTag(input: { catalogEntryId: $bagId, tagId: $tagId}) {
         catalogEntry {

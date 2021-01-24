@@ -37,6 +37,7 @@ fragment TagProps on Tag {
 fragment ItemProps on Concept {
     __typename
     id
+    recordType
     name(input: { languageTags: ["de-DE", "en-US"] })
     description(input: { languageTags: ["de-DE", "en-US"] })
     tags {
@@ -44,10 +45,15 @@ fragment ItemProps on Concept {
     }
 }
 
-fragment SearchResultProps on Concept {
-    ...ItemProps
-    de: name(input: { languageTags: ["de-DE"] })
-    en: name(input: { languageTags: ["en-US, en-GB"] })
+fragment SearchResultProps on SearchResult {
+    __typename
+    id
+    recordType
+    name(input: { languageTags: ["de-DE", "en-US"] })
+    description(input: { languageTags: ["de-DE", "en-US"] })
+    tags {
+        ...TagProps
+    }
 }
 
 fragment ConceptProps on Concept {
@@ -166,7 +172,7 @@ fragment AssignsValuesProps on XtdRelAssignsValues {
     }
 }
 
-fragment MetaProps on Entity {
+fragment MetaProps on Concept {
     created
     createdBy
     lastModified

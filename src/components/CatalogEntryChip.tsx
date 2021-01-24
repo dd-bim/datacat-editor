@@ -1,8 +1,8 @@
-import {SearchResultPropsFragment} from "../generated/types";
 import {getEntityType} from "../domain";
 import ConceptChip from "./ConceptChip";
 import React from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import {CatalogRecord} from "../types";
 
 const useStyles = makeStyles(() => ({
     chip: {
@@ -11,23 +11,22 @@ const useStyles = makeStyles(() => ({
 }));
 
 type CatalogEntryChipProps = {
-    catalogEntry: SearchResultPropsFragment
+    catalogEntry: CatalogRecord
 }
 
 export default function CatalogEntryChip(props: CatalogEntryChipProps) {
     const {
         catalogEntry: {
-            __typename,
             id,
+            recordType,
             name,
             description,
             tags
         }
     } = props;
     const classes = useStyles();
-    const entryType = __typename.substring(3);
     const tagIds = tags.map(tag => tag.id);
-    const domainEntityType = getEntityType(entryType, tagIds);
+    const domainEntityType = getEntityType(recordType, tagIds);
 
     return (
         <ConceptChip

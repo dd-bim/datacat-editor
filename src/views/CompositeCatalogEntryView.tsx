@@ -6,9 +6,9 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import {Entity} from "../domain";
 import PlusIcon from "@material-ui/icons/Add";
-import {SearchResultPropsFragment} from "../generated/types";
 import Button from "@material-ui/core/Button";
 import SearchList from "../components/list/SearchList";
+import {CatalogRecord} from "../types";
 
 const useStyles = makeStyles(theme => ({
     searchList: {
@@ -39,14 +39,14 @@ const CompositeCatalogEntryView = (props: CompositeCatalogEntryViewProps) => {
             path,
             title,
             titlePlural,
-            entityType
+            recordType
         },
         renderForm
     } = props;
     const [height, setHeight] = useState(500);
     const [searchTerm, setSearchTerm] = useState("");
     const searchInput = {
-        entityTypeIn: [entityType],
+        entityTypeIn: [recordType],
         tagged: tags
     }
     const classes = useStyles();
@@ -54,7 +54,7 @@ const CompositeCatalogEntryView = (props: CompositeCatalogEntryViewProps) => {
     const history = useHistory();
     const {id} = useParams<{ id?: string }>()
 
-    const handleOnSelect = (value: SearchResultPropsFragment) => {
+    const handleOnSelect = (value: CatalogRecord) => {
         history.push(`/${path}/${value.id}`);
     };
 

@@ -1,7 +1,7 @@
 import React, {FC} from "react";
 import {
     MeasureDetailPropsFragment,
-    RelationshipType,
+    RelationshipRecordType,
     useDeleteEntryMutation,
     useGetMeasureEntryQuery
 } from "../../generated/types";
@@ -96,10 +96,10 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
             <TransferListView
                 title="Anwendbare Maßeinheiten"
                 relatingItemId={id}
-                relationshipType={RelationshipType.AssignsUnits}
+                relationshipType={RelationshipRecordType.AssignsUnits}
                 relationships={assignsUnitsRelationships}
                 searchInput={{
-                    entityTypeIn: [UnitEntity.entityType]
+                    entityTypeIn: [UnitEntity.recordType]
                 }}
                 onCreate={handleOnUpdate}
                 onUpdate={handleOnUpdate}
@@ -109,10 +109,10 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
             <TransferListView
                 title="Wertebereich der Bemaßung"
                 relatingItemId={id}
-                relationshipType={RelationshipType.AssignsValues}
+                relationshipType={RelationshipRecordType.AssignsValues}
                 relationships={assignsValuesRelationships}
                 searchInput={{
-                    entityTypeIn: [ValueEntity.entityType]
+                    entityTypeIn: [ValueEntity.recordType]
                 }}
                 onCreate={handleOnUpdate}
                 onUpdate={handleOnUpdate}

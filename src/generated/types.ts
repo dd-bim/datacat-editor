@@ -62,67 +62,56 @@ export type AddTagInput = {
 };
 
 
-
 export type CatalogEntryFilterInput = {
   catalogEntryType?: Maybe<CatalogEntryTypeFilterInput>;
   tags?: Maybe<TagFilterInput>;
 };
 
-export enum CatalogEntryType {
-  Actor = 'Actor',
+/**  inputs */
+export type CatalogEntryTypeFilterInput = {
+  in?: Maybe<Array<CatalogRecordType>>;
+};
+
+
+export enum CatalogRecordType {
   Activity = 'Activity',
+  Actor = 'Actor',
   Bag = 'Bag',
   Classification = 'Classification',
   ExternalDocument = 'ExternalDocument',
   Measure = 'Measure',
   Nest = 'Nest',
-  Subject = 'Subject',
   Property = 'Property',
+  Subject = 'Subject',
   Unit = 'Unit',
-  Value = 'Value'
+  Value = 'Value',
+  ActsUpon = 'ActsUpon',
+  AssignsCollections = 'AssignsCollections',
+  AssignsMeasures = 'AssignsMeasures',
+  AssignsProperties = 'AssignsProperties',
+  AssignsPropertyWithValues = 'AssignsPropertyWithValues',
+  AssignsUnits = 'AssignsUnits',
+  AssignsValues = 'AssignsValues',
+  Associates = 'Associates',
+  Collects = 'Collects',
+  Composes = 'Composes',
+  Documents = 'Documents',
+  Groups = 'Groups',
+  Sequences = 'Sequences',
+  Specializes = 'Specializes'
 }
-
-export type CatalogEntryTypeFilterInput = {
-  in?: Maybe<Array<CatalogEntryType>>;
-};
-
 
 
 
 export type CreateCatalogEntryInput = {
-  catalogEntryType: CatalogEntryType;
+  catalogEntryType: SimpleRecordType;
   properties: PropertiesInput;
   tags?: Maybe<Array<Scalars['ID']>>;
 };
 
 
-export type CreateOneToManyRelationshipInput = {
-  relationshipType: OneToManyRelationshipType;
-  properties?: Maybe<PropertiesInput>;
-  from: Scalars['ID'];
-  to: Array<Scalars['ID']>;
-};
-
-
-export type CreateOneToOneRelationshipInput = {
-  relationshipType: OneToOneRelationshipType;
-  properties?: Maybe<PropertiesInput>;
-  from: Scalars['ID'];
-  to: Scalars['ID'];
-};
-
-
-export type CreateQualifiedOneToOneRelationshipInput = {
-  relationshipType: QualifiedOneToOneRelationshipType;
-  properties?: Maybe<PropertiesInput>;
-  from: Scalars['ID'];
-  to: Scalars['ID'];
-  with: Array<Scalars['ID']>;
-};
-
-
 export type CreateRelationshipInput = {
-  relationshipType: RelationshipType;
+  relationshipType: RelationshipRecordType;
   properties?: Maybe<PropertiesInput>;
   fromId: Scalars['ID'];
   toIds: Array<Scalars['ID']>;
@@ -161,41 +150,6 @@ export type DeleteTagInput = {
 };
 
 
-
-/**  inputs */
-export enum EntityTypes {
-  XtdExternalDocument = 'XtdExternalDocument',
-  XtdRoot = 'XtdRoot',
-  XtdObject = 'XtdObject',
-  XtdActivity = 'XtdActivity',
-  XtdActor = 'XtdActor',
-  XtdClassification = 'XtdClassification',
-  XtdMeasureWithUnit = 'XtdMeasureWithUnit',
-  XtdProperty = 'XtdProperty',
-  XtdSubject = 'XtdSubject',
-  XtdUnit = 'XtdUnit',
-  XtdValue = 'XtdValue',
-  XtdCollection = 'XtdCollection',
-  XtdBag = 'XtdBag',
-  XtdNest = 'XtdNest',
-  XtdRelationship = 'XtdRelationship',
-  XtdRelActsUpon = 'XtdRelActsUpon',
-  XtdRelAssignsCollections = 'XtdRelAssignsCollections',
-  XtdRelAssignsMeasures = 'XtdRelAssignsMeasures',
-  XtdRelAssignsProperties = 'XtdRelAssignsProperties',
-  XtdRelAssignsPropertyWithValues = 'XtdRelAssignsPropertyWithValues',
-  XtdRelAssignsUnit = 'XtdRelAssignsUnit',
-  XtdRelAssignsValues = 'XtdRelAssignsValues',
-  XtdRelAssociates = 'XtdRelAssociates',
-  XtdRelClassifies = 'XtdRelClassifies',
-  XtdRelCollects = 'XtdRelCollects',
-  XtdRelComposes = 'XtdRelComposes',
-  XtdRelDocuments = 'XtdRelDocuments',
-  XtdRelGroups = 'XtdRelGroups',
-  XtdRelSequences = 'XtdRelSequences',
-  XtdRelSpecializes = 'XtdRelSpecializes'
-}
-
 export type FilterInput = {
   query?: Maybe<Scalars['String']>;
   idIn?: Maybe<Array<Scalars['ID']>>;
@@ -211,8 +165,8 @@ export type HierarchyFilterInput = {
 
 
 export type HierarchyRootNodeFilterInput = {
-  catalogEntryTypeIn?: Maybe<Array<CatalogEntryType>>;
-  catalogEntryTypeNotIn?: Maybe<Array<CatalogEntryType>>;
+  catalogEntryTypeIn?: Maybe<Array<CatalogRecordType>>;
+  catalogEntryTypeNotIn?: Maybe<Array<CatalogRecordType>>;
   idIn?: Maybe<Array<Scalars['ID']>>;
   idNotIn?: Maybe<Array<Scalars['ID']>>;
   tagged?: Maybe<Array<Scalars['ID']>>;
@@ -248,27 +202,6 @@ export type NominalValueInput = {
 };
 
 
-export enum OneToManyRelationshipType {
-  ActsUpon = 'ActsUpon',
-  AssignsCollections = 'AssignsCollections',
-  AssignsMeasures = 'AssignsMeasures',
-  AssignsProperties = 'AssignsProperties',
-  AssignsUnits = 'AssignsUnits',
-  AssignsValues = 'AssignsValues',
-  Associates = 'Associates',
-  Collects = 'Collects',
-  Composes = 'Composes',
-  Documents = 'Documents',
-  Groups = 'Groups',
-  Specializes = 'Specializes'
-}
-
-
-export enum OneToOneRelationshipType {
-  Sequences = 'Sequences'
-}
-
-
 
 export type ProfileUpdateInput = {
   username: Scalars['ID'];
@@ -286,18 +219,13 @@ export type PropertiesInput = {
 };
 
 
-export enum QualifiedOneToOneRelationshipType {
-  AssignsPropertyWithValues = 'AssignsPropertyWithValues'
-}
 
-
-
-export enum RelationshipType {
+export enum RelationshipRecordType {
   ActsUpon = 'ActsUpon',
   AssignsCollections = 'AssignsCollections',
   AssignsMeasures = 'AssignsMeasures',
   AssignsProperties = 'AssignsProperties',
-  AssignsPropertiesWithValues = 'AssignsPropertiesWithValues',
+  AssignsPropertyWithValues = 'AssignsPropertyWithValues',
   AssignsUnits = 'AssignsUnits',
   AssignsValues = 'AssignsValues',
   Associates = 'Associates',
@@ -318,14 +246,15 @@ export type RemoveTagInput = {
 export type SearchInput = {
   query?: Maybe<Scalars['String']>;
   filters?: Maybe<Array<CatalogEntryFilterInput>>;
-  entityTypeIn?: Maybe<Array<EntityTypes>>;
-  entityTypeNotIn?: Maybe<Array<EntityTypes>>;
+  entityTypeIn?: Maybe<Array<CatalogRecordType>>;
+  entityTypeNotIn?: Maybe<Array<CatalogRecordType>>;
   idIn?: Maybe<Array<Scalars['ID']>>;
   idNotIn?: Maybe<Array<Scalars['ID']>>;
   tagged?: Maybe<Array<Scalars['ID']>>;
   pageNumber?: Maybe<Scalars['Int']>;
   pageSize?: Maybe<Scalars['Int']>;
 };
+
 
 
 export type SetNominalValueInput = {
@@ -360,6 +289,21 @@ export type SignupInput = {
   email: Scalars['String'];
   organization: Scalars['String'];
 };
+
+
+export enum SimpleRecordType {
+  Activity = 'Activity',
+  Actor = 'Actor',
+  Bag = 'Bag',
+  Classification = 'Classification',
+  ExternalDocument = 'ExternalDocument',
+  Measure = 'Measure',
+  Nest = 'Nest',
+  Property = 'Property',
+  Subject = 'Subject',
+  Unit = 'Unit',
+  Value = 'Value'
+}
 
 
 
@@ -506,184 +450,59 @@ export type TranslationPropsFragment = { id: string, value: string, language: La
 
 export type TagPropsFragment = { id: string, name: string };
 
-type ItemProps_XtdActivity_Fragment = { __typename: 'XtdActivity', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdActivity_Fragment = { __typename: 'XtdActivity', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdActor_Fragment = { __typename: 'XtdActor', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdActor_Fragment = { __typename: 'XtdActor', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdBag_Fragment = { __typename: 'XtdBag', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdBag_Fragment = { __typename: 'XtdBag', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdClassification_Fragment = { __typename: 'XtdClassification', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdClassification_Fragment = { __typename: 'XtdClassification', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdExternalDocument_Fragment = { __typename: 'XtdExternalDocument', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdExternalDocument_Fragment = { __typename: 'XtdExternalDocument', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdMeasureWithUnit_Fragment = { __typename: 'XtdMeasureWithUnit', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdMeasureWithUnit_Fragment = { __typename: 'XtdMeasureWithUnit', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdNest_Fragment = { __typename: 'XtdNest', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdNest_Fragment = { __typename: 'XtdNest', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdProperty_Fragment = { __typename: 'XtdProperty', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdProperty_Fragment = { __typename: 'XtdProperty', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdRelActsUpon_Fragment = { __typename: 'XtdRelActsUpon', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdRelActsUpon_Fragment = { __typename: 'XtdRelActsUpon', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdRelAssignsCollections_Fragment = { __typename: 'XtdRelAssignsCollections', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdRelAssignsCollections_Fragment = { __typename: 'XtdRelAssignsCollections', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdRelAssignsMeasures_Fragment = { __typename: 'XtdRelAssignsMeasures', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdRelAssignsMeasures_Fragment = { __typename: 'XtdRelAssignsMeasures', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdRelAssignsProperties_Fragment = { __typename: 'XtdRelAssignsProperties', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdRelAssignsProperties_Fragment = { __typename: 'XtdRelAssignsProperties', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdRelAssignsPropertyWithValues_Fragment = { __typename: 'XtdRelAssignsPropertyWithValues', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdRelAssignsPropertyWithValues_Fragment = { __typename: 'XtdRelAssignsPropertyWithValues', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdRelAssignsUnits_Fragment = { __typename: 'XtdRelAssignsUnits', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdRelAssignsUnits_Fragment = { __typename: 'XtdRelAssignsUnits', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdRelAssignsValues_Fragment = { __typename: 'XtdRelAssignsValues', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdRelAssignsValues_Fragment = { __typename: 'XtdRelAssignsValues', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdRelAssociates_Fragment = { __typename: 'XtdRelAssociates', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdRelAssociates_Fragment = { __typename: 'XtdRelAssociates', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdRelCollects_Fragment = { __typename: 'XtdRelCollects', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdRelCollects_Fragment = { __typename: 'XtdRelCollects', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdRelComposes_Fragment = { __typename: 'XtdRelComposes', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdRelComposes_Fragment = { __typename: 'XtdRelComposes', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdRelDocuments_Fragment = { __typename: 'XtdRelDocuments', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdRelDocuments_Fragment = { __typename: 'XtdRelDocuments', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdRelGroups_Fragment = { __typename: 'XtdRelGroups', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdRelGroups_Fragment = { __typename: 'XtdRelGroups', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdRelSequences_Fragment = { __typename: 'XtdRelSequences', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdRelSequences_Fragment = { __typename: 'XtdRelSequences', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdRelSpecializes_Fragment = { __typename: 'XtdRelSpecializes', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdRelSpecializes_Fragment = { __typename: 'XtdRelSpecializes', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdSubject_Fragment = { __typename: 'XtdSubject', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdSubject_Fragment = { __typename: 'XtdSubject', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdUnit_Fragment = { __typename: 'XtdUnit', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdUnit_Fragment = { __typename: 'XtdUnit', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdValue_Fragment = { __typename: 'XtdValue', id: string, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdValue_Fragment = { __typename: 'XtdValue', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
 export type ItemPropsFragment = ItemProps_XtdActivity_Fragment | ItemProps_XtdActor_Fragment | ItemProps_XtdBag_Fragment | ItemProps_XtdClassification_Fragment | ItemProps_XtdExternalDocument_Fragment | ItemProps_XtdMeasureWithUnit_Fragment | ItemProps_XtdNest_Fragment | ItemProps_XtdProperty_Fragment | ItemProps_XtdRelActsUpon_Fragment | ItemProps_XtdRelAssignsCollections_Fragment | ItemProps_XtdRelAssignsMeasures_Fragment | ItemProps_XtdRelAssignsProperties_Fragment | ItemProps_XtdRelAssignsPropertyWithValues_Fragment | ItemProps_XtdRelAssignsUnits_Fragment | ItemProps_XtdRelAssignsValues_Fragment | ItemProps_XtdRelAssociates_Fragment | ItemProps_XtdRelCollects_Fragment | ItemProps_XtdRelComposes_Fragment | ItemProps_XtdRelDocuments_Fragment | ItemProps_XtdRelGroups_Fragment | ItemProps_XtdRelSequences_Fragment | ItemProps_XtdRelSpecializes_Fragment | ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment;
 
-type SearchResultProps_XtdActivity_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdActivity_Fragment
-);
-
-type SearchResultProps_XtdActor_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdActor_Fragment
-);
-
-type SearchResultProps_XtdBag_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdBag_Fragment
-);
-
-type SearchResultProps_XtdClassification_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdClassification_Fragment
-);
-
-type SearchResultProps_XtdExternalDocument_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdExternalDocument_Fragment
-);
-
-type SearchResultProps_XtdMeasureWithUnit_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdMeasureWithUnit_Fragment
-);
-
-type SearchResultProps_XtdNest_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdNest_Fragment
-);
-
-type SearchResultProps_XtdProperty_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdProperty_Fragment
-);
-
-type SearchResultProps_XtdRelActsUpon_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdRelActsUpon_Fragment
-);
-
-type SearchResultProps_XtdRelAssignsCollections_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdRelAssignsCollections_Fragment
-);
-
-type SearchResultProps_XtdRelAssignsMeasures_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdRelAssignsMeasures_Fragment
-);
-
-type SearchResultProps_XtdRelAssignsProperties_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdRelAssignsProperties_Fragment
-);
-
-type SearchResultProps_XtdRelAssignsPropertyWithValues_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdRelAssignsPropertyWithValues_Fragment
-);
-
-type SearchResultProps_XtdRelAssignsUnits_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdRelAssignsUnits_Fragment
-);
-
-type SearchResultProps_XtdRelAssignsValues_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdRelAssignsValues_Fragment
-);
-
-type SearchResultProps_XtdRelAssociates_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdRelAssociates_Fragment
-);
-
-type SearchResultProps_XtdRelCollects_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdRelCollects_Fragment
-);
-
-type SearchResultProps_XtdRelComposes_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdRelComposes_Fragment
-);
-
-type SearchResultProps_XtdRelDocuments_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdRelDocuments_Fragment
-);
-
-type SearchResultProps_XtdRelGroups_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdRelGroups_Fragment
-);
-
-type SearchResultProps_XtdRelSequences_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdRelSequences_Fragment
-);
-
-type SearchResultProps_XtdRelSpecializes_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdRelSpecializes_Fragment
-);
-
-type SearchResultProps_XtdSubject_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdSubject_Fragment
-);
-
-type SearchResultProps_XtdUnit_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdUnit_Fragment
-);
-
-type SearchResultProps_XtdValue_Fragment = (
-  { de?: Maybe<string>, en?: Maybe<string> }
-  & ItemProps_XtdValue_Fragment
-);
-
-export type SearchResultPropsFragment = SearchResultProps_XtdActivity_Fragment | SearchResultProps_XtdActor_Fragment | SearchResultProps_XtdBag_Fragment | SearchResultProps_XtdClassification_Fragment | SearchResultProps_XtdExternalDocument_Fragment | SearchResultProps_XtdMeasureWithUnit_Fragment | SearchResultProps_XtdNest_Fragment | SearchResultProps_XtdProperty_Fragment | SearchResultProps_XtdRelActsUpon_Fragment | SearchResultProps_XtdRelAssignsCollections_Fragment | SearchResultProps_XtdRelAssignsMeasures_Fragment | SearchResultProps_XtdRelAssignsProperties_Fragment | SearchResultProps_XtdRelAssignsPropertyWithValues_Fragment | SearchResultProps_XtdRelAssignsUnits_Fragment | SearchResultProps_XtdRelAssignsValues_Fragment | SearchResultProps_XtdRelAssociates_Fragment | SearchResultProps_XtdRelCollects_Fragment | SearchResultProps_XtdRelComposes_Fragment | SearchResultProps_XtdRelDocuments_Fragment | SearchResultProps_XtdRelGroups_Fragment | SearchResultProps_XtdRelSequences_Fragment | SearchResultProps_XtdRelSpecializes_Fragment | SearchResultProps_XtdSubject_Fragment | SearchResultProps_XtdUnit_Fragment | SearchResultProps_XtdValue_Fragment;
+export type SearchResultPropsFragment = { __typename: 'SearchResult', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, tags: Array<TagPropsFragment> };
 
 type ConceptProps_XtdActivity_Fragment = (
   { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment> }
@@ -1168,21 +987,6 @@ export type UnsetNominalValueMutationVariables = Exact<{
 
 export type UnsetNominalValueMutation = { unsetNominalValue?: Maybe<{ catalogEntry?: Maybe<ValueDetailPropsFragment> }> };
 
-export type CreateOneToManyRelationshipMutationVariables = Exact<{
-  input: CreateOneToManyRelationshipInput;
-}>;
-
-
-export type CreateOneToManyRelationshipMutation = { createOneToManyRelationship?: Maybe<{ relationship?: Maybe<{ id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string }> }> };
-
-export type UpdateOneToManyRelationshipMutationVariables = Exact<{
-  oldId: Scalars['ID'];
-  input: CreateOneToManyRelationshipInput;
-}>;
-
-
-export type UpdateOneToManyRelationshipMutation = { deleteRelationship?: Maybe<{ relationship?: Maybe<{ id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string }> }>, createOneToManyRelationship?: Maybe<{ relationship?: Maybe<{ id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string }> }> };
-
 export type TagBagMutationVariables = Exact<{
   bagId: Scalars['ID'];
   tagId: Scalars['ID'];
@@ -1226,7 +1030,7 @@ export type QuicksearchQueryVariables = Exact<{
 }>;
 
 
-export type QuicksearchQuery = { quicksearch: { totalElements: number, nodes: Array<ItemProps_XtdActivity_Fragment | ItemProps_XtdActor_Fragment | ItemProps_XtdBag_Fragment | ItemProps_XtdClassification_Fragment | ItemProps_XtdExternalDocument_Fragment | ItemProps_XtdMeasureWithUnit_Fragment | ItemProps_XtdNest_Fragment | ItemProps_XtdProperty_Fragment | ItemProps_XtdRelActsUpon_Fragment | ItemProps_XtdRelAssignsCollections_Fragment | ItemProps_XtdRelAssignsMeasures_Fragment | ItemProps_XtdRelAssignsProperties_Fragment | ItemProps_XtdRelAssignsPropertyWithValues_Fragment | ItemProps_XtdRelAssignsUnits_Fragment | ItemProps_XtdRelAssignsValues_Fragment | ItemProps_XtdRelAssociates_Fragment | ItemProps_XtdRelCollects_Fragment | ItemProps_XtdRelComposes_Fragment | ItemProps_XtdRelDocuments_Fragment | ItemProps_XtdRelGroups_Fragment | ItemProps_XtdRelSequences_Fragment | ItemProps_XtdRelSpecializes_Fragment | ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+export type QuicksearchQuery = { quicksearch: { totalElements: number, nodes: Array<SearchResultPropsFragment> } };
 
 export type FindItemQueryVariables = Exact<{
   input: SearchInput;
@@ -1235,14 +1039,14 @@ export type FindItemQueryVariables = Exact<{
 }>;
 
 
-export type FindItemQuery = { search: { totalElements: number, nodes: Array<ItemProps_XtdActivity_Fragment | ItemProps_XtdActor_Fragment | ItemProps_XtdBag_Fragment | ItemProps_XtdClassification_Fragment | ItemProps_XtdExternalDocument_Fragment | ItemProps_XtdMeasureWithUnit_Fragment | ItemProps_XtdNest_Fragment | ItemProps_XtdProperty_Fragment | ItemProps_XtdRelActsUpon_Fragment | ItemProps_XtdRelAssignsCollections_Fragment | ItemProps_XtdRelAssignsMeasures_Fragment | ItemProps_XtdRelAssignsProperties_Fragment | ItemProps_XtdRelAssignsPropertyWithValues_Fragment | ItemProps_XtdRelAssignsUnits_Fragment | ItemProps_XtdRelAssignsValues_Fragment | ItemProps_XtdRelAssociates_Fragment | ItemProps_XtdRelCollects_Fragment | ItemProps_XtdRelComposes_Fragment | ItemProps_XtdRelDocuments_Fragment | ItemProps_XtdRelGroups_Fragment | ItemProps_XtdRelSequences_Fragment | ItemProps_XtdRelSpecializes_Fragment | ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment>, pageInfo: PagePropsFragment } };
+export type FindItemQuery = { search: { totalElements: number, nodes: Array<SearchResultPropsFragment>, pageInfo: PagePropsFragment } };
 
 export type FindConceptQueryVariables = Exact<{
   input: SearchInput;
 }>;
 
 
-export type FindConceptQuery = { search: { totalElements: number, nodes: Array<SearchResultProps_XtdActivity_Fragment | SearchResultProps_XtdActor_Fragment | SearchResultProps_XtdBag_Fragment | SearchResultProps_XtdClassification_Fragment | SearchResultProps_XtdExternalDocument_Fragment | SearchResultProps_XtdMeasureWithUnit_Fragment | SearchResultProps_XtdNest_Fragment | SearchResultProps_XtdProperty_Fragment | SearchResultProps_XtdRelActsUpon_Fragment | SearchResultProps_XtdRelAssignsCollections_Fragment | SearchResultProps_XtdRelAssignsMeasures_Fragment | SearchResultProps_XtdRelAssignsProperties_Fragment | SearchResultProps_XtdRelAssignsPropertyWithValues_Fragment | SearchResultProps_XtdRelAssignsUnits_Fragment | SearchResultProps_XtdRelAssignsValues_Fragment | SearchResultProps_XtdRelAssociates_Fragment | SearchResultProps_XtdRelCollects_Fragment | SearchResultProps_XtdRelComposes_Fragment | SearchResultProps_XtdRelDocuments_Fragment | SearchResultProps_XtdRelGroups_Fragment | SearchResultProps_XtdRelSequences_Fragment | SearchResultProps_XtdRelSpecializes_Fragment | SearchResultProps_XtdSubject_Fragment | SearchResultProps_XtdUnit_Fragment | SearchResultProps_XtdValue_Fragment>, pageInfo: PagePropsFragment } };
+export type FindConceptQuery = { search: { totalElements: number, nodes: Array<SearchResultPropsFragment>, pageInfo: PagePropsFragment } };
 
 export type PropertyTreeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1333,10 +1137,11 @@ export const TagPropsFragmentDoc = gql`
   name
 }
     `;
-export const ItemPropsFragmentDoc = gql`
-    fragment ItemProps on Concept {
+export const SearchResultPropsFragmentDoc = gql`
+    fragment SearchResultProps on SearchResult {
   __typename
   id
+  recordType
   name(input: {languageTags: ["de-DE", "en-US"]})
   description(input: {languageTags: ["de-DE", "en-US"]})
   tags {
@@ -1344,21 +1149,26 @@ export const ItemPropsFragmentDoc = gql`
   }
 }
     ${TagPropsFragmentDoc}`;
-export const SearchResultPropsFragmentDoc = gql`
-    fragment SearchResultProps on Concept {
-  ...ItemProps
-  de: name(input: {languageTags: ["de-DE"]})
-  en: name(input: {languageTags: ["en-US, en-GB"]})
-}
-    ${ItemPropsFragmentDoc}`;
 export const MetaPropsFragmentDoc = gql`
-    fragment MetaProps on Entity {
+    fragment MetaProps on Concept {
   created
   createdBy
   lastModified
   lastModifiedBy
 }
     `;
+export const ItemPropsFragmentDoc = gql`
+    fragment ItemProps on Concept {
+  __typename
+  id
+  recordType
+  name(input: {languageTags: ["de-DE", "en-US"]})
+  description(input: {languageTags: ["de-DE", "en-US"]})
+  tags {
+    ...TagProps
+  }
+}
+    ${TagPropsFragmentDoc}`;
 export const LanguagePropsFragmentDoc = gql`
     fragment LanguageProps on Language {
   id
@@ -2239,86 +2049,6 @@ export function useUnsetNominalValueMutation(baseOptions?: Apollo.MutationHookOp
 export type UnsetNominalValueMutationHookResult = ReturnType<typeof useUnsetNominalValueMutation>;
 export type UnsetNominalValueMutationResult = Apollo.MutationResult<UnsetNominalValueMutation>;
 export type UnsetNominalValueMutationOptions = Apollo.BaseMutationOptions<UnsetNominalValueMutation, UnsetNominalValueMutationVariables>;
-export const CreateOneToManyRelationshipDocument = gql`
-    mutation CreateOneToManyRelationship($input: CreateOneToManyRelationshipInput!) {
-  createOneToManyRelationship(input: $input) {
-    relationship {
-      ... on XtdRelationship {
-        id
-      }
-    }
-  }
-}
-    `;
-export type CreateOneToManyRelationshipMutationFn = Apollo.MutationFunction<CreateOneToManyRelationshipMutation, CreateOneToManyRelationshipMutationVariables>;
-
-/**
- * __useCreateOneToManyRelationshipMutation__
- *
- * To run a mutation, you first call `useCreateOneToManyRelationshipMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateOneToManyRelationshipMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createOneToManyRelationshipMutation, { data, loading, error }] = useCreateOneToManyRelationshipMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useCreateOneToManyRelationshipMutation(baseOptions?: Apollo.MutationHookOptions<CreateOneToManyRelationshipMutation, CreateOneToManyRelationshipMutationVariables>) {
-        return Apollo.useMutation<CreateOneToManyRelationshipMutation, CreateOneToManyRelationshipMutationVariables>(CreateOneToManyRelationshipDocument, baseOptions);
-      }
-export type CreateOneToManyRelationshipMutationHookResult = ReturnType<typeof useCreateOneToManyRelationshipMutation>;
-export type CreateOneToManyRelationshipMutationResult = Apollo.MutationResult<CreateOneToManyRelationshipMutation>;
-export type CreateOneToManyRelationshipMutationOptions = Apollo.BaseMutationOptions<CreateOneToManyRelationshipMutation, CreateOneToManyRelationshipMutationVariables>;
-export const UpdateOneToManyRelationshipDocument = gql`
-    mutation UpdateOneToManyRelationship($oldId: ID!, $input: CreateOneToManyRelationshipInput!) {
-  deleteRelationship(input: {relationshipId: $oldId}) {
-    relationship {
-      ... on XtdRelationship {
-        id
-      }
-    }
-  }
-  createOneToManyRelationship(input: $input) {
-    relationship {
-      ... on XtdRelationship {
-        id
-      }
-    }
-  }
-}
-    `;
-export type UpdateOneToManyRelationshipMutationFn = Apollo.MutationFunction<UpdateOneToManyRelationshipMutation, UpdateOneToManyRelationshipMutationVariables>;
-
-/**
- * __useUpdateOneToManyRelationshipMutation__
- *
- * To run a mutation, you first call `useUpdateOneToManyRelationshipMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateOneToManyRelationshipMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateOneToManyRelationshipMutation, { data, loading, error }] = useUpdateOneToManyRelationshipMutation({
- *   variables: {
- *      oldId: // value for 'oldId'
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useUpdateOneToManyRelationshipMutation(baseOptions?: Apollo.MutationHookOptions<UpdateOneToManyRelationshipMutation, UpdateOneToManyRelationshipMutationVariables>) {
-        return Apollo.useMutation<UpdateOneToManyRelationshipMutation, UpdateOneToManyRelationshipMutationVariables>(UpdateOneToManyRelationshipDocument, baseOptions);
-      }
-export type UpdateOneToManyRelationshipMutationHookResult = ReturnType<typeof useUpdateOneToManyRelationshipMutation>;
-export type UpdateOneToManyRelationshipMutationResult = Apollo.MutationResult<UpdateOneToManyRelationshipMutation>;
-export type UpdateOneToManyRelationshipMutationOptions = Apollo.BaseMutationOptions<UpdateOneToManyRelationshipMutation, UpdateOneToManyRelationshipMutationVariables>;
 export const TagBagDocument = gql`
     mutation TagBag($bagId: ID!, $tagId: ID!) {
   addTag(input: {catalogEntryId: $bagId, tagId: $tagId}) {
@@ -2504,12 +2234,12 @@ export const QuicksearchDocument = gql`
     query Quicksearch($input: SearchInput!, $pageSize: Int, $pageNumber: Int) {
   quicksearch: search(input: $input, pageSize: $pageSize, pageNumber: $pageNumber) {
     nodes {
-      ...ItemProps
+      ...SearchResultProps
     }
     totalElements
   }
 }
-    ${ItemPropsFragmentDoc}`;
+    ${SearchResultPropsFragmentDoc}`;
 
 /**
  * __useQuicksearchQuery__
@@ -2542,7 +2272,7 @@ export const FindItemDocument = gql`
     query FindItem($input: SearchInput!, $pageSize: Int, $pageNumber: Int) {
   search(input: $input, pageSize: $pageSize, pageNumber: $pageNumber) {
     nodes {
-      ...ItemProps
+      ...SearchResultProps
     }
     pageInfo {
       ...PageProps
@@ -2550,7 +2280,7 @@ export const FindItemDocument = gql`
     totalElements
   }
 }
-    ${ItemPropsFragmentDoc}
+    ${SearchResultPropsFragmentDoc}
 ${PagePropsFragmentDoc}`;
 
 /**

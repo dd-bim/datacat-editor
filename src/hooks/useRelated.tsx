@@ -1,14 +1,14 @@
 import React, {FC} from "react";
-import {ItemPropsFragment} from "../generated/types";
 import {Typography} from "@material-ui/core";
 import CatalogEntryChip from "../components/CatalogEntryChip";
+import {CatalogRecord} from "../types";
 
 type UseRelatedProps = {
-    catalogEntries: ItemPropsFragment[],
+    catalogEntries: CatalogRecord[],
     emptyMessage: string
 }
 
-const sortEntries = (left: ItemPropsFragment, right: ItemPropsFragment) => {
+const sortEntries = (left: CatalogRecord, right: CatalogRecord) => {
     const a = left.name ?? left.id;
     const b = right.name ?? right.id;
     return a.localeCompare(b);

@@ -6,20 +6,23 @@ import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/AddBox";
 import ClearIcon from "@material-ui/icons/Eject";
 import React from "react";
-import {ItemPropsFragment} from "../../generated/types";
+import {ItemPropsFragment, SearchResultPropsFragment} from "../../generated/types";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import {getEntityType} from "../../domain";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import {CatalogRecord} from "../../types";
 
 export const ITEM_ROW_SIZE = 36;
 
+export type RowProps = Pick<SearchResultPropsFragment, "id" | "name" | "description" | "tags">;
+
 export type ItemRowProps = {
-    items: ItemPropsFragment[];
+    items: RowProps[];
     disabledItems: string[];
     showRecordIcons: boolean;
-    onSelect?(item: ItemPropsFragment): void;
-    onAdd?(item: ItemPropsFragment): void;
-    onRemove?(item: ItemPropsFragment): void;
+    onSelect?(item: CatalogRecord): void;
+    onAdd?(item: CatalogRecord): void;
+    onRemove?(item: CatalogRecord): void;
 };
 
 const useStyle = makeStyles(theme => ({

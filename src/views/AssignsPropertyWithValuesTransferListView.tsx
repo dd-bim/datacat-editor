@@ -11,53 +11,35 @@ import TransferList from "../components/list/TransferList";
 import EditIcon from "@material-ui/icons/Edit";
 import CheckIcon from "@material-ui/icons/Check";
 import {Typography} from "@material-ui/core";
-import FormSet, {FormSetDescription, FormSetNotice, FormSetTitle} from "../components/forms/FormSet";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import FormSet, {FormSetDescription, FormSetTitle} from "../components/forms/FormSet";
 import Button from "@material-ui/core/Button";
 import {ApolloCache} from "@apollo/client";
-import {CatalogRecord} from "../types";
+import {sortItems, useStyles} from "./TransferListView";
 
-export type RelationshipProperties = {
+export type AssignsPropertyWithValuesProperties = {
     relationshipId: string;
-    relatedItems: CatalogRecord[];
+    relatedProperty: ItemPropsFragment;
+    relatedValues: ItemPropsFragment[];
 }
 
-export type TransferListViewProps = {
+export type AssignsPropertyWithValuesTransferListViewProps = {
     title: string;
     description?: string;
     relatingItemId: string;
-    relationshipType: RelationshipRecordType
-    relationships: RelationshipProperties[];
+    assignedProperties: ItemPropsFragment[];
+    relationships: AssignsPropertyWithValuesProperties[];
     searchInput: SearchInput;
     onCreate?(): void;
     onUpdate?(): void;
     onDelete?(): void;
 };
 
-export const useStyles = makeStyles(theme => ({
-    title: {
-        display: "flex",
-        alignContent: "space-between"
-    },
-    buttonRow: {
-        display: "flex",
-        justifyContent: "end",
-        marginTop: theme.spacing(1)
-    }
-}));
-
-export const sortItems = (a: CatalogRecord, b: CatalogRecord) => {
-    const x = a.name ?? a.id;
-    const y = b.name ?? b.id;
-    return x.localeCompare(y);
-};
-
-export default function TransferListView(props: TransferListViewProps) {
+export default function AssignsPropertyWithValuesTransferListView(props: AssignsPropertyWithValuesTransferListViewProps) {
     const {
         title,
         description,
         relatingItemId,
-        relationshipType,
+        assignedProperties,
         relationships,
         searchInput,
         onCreate,
@@ -82,7 +64,7 @@ export default function TransferListView(props: TransferListViewProps) {
         await createRelationship({
             variables: {
                 input: {
-                    relationshipType,
+                    relationshipType: RelationshipRecordType.AssignsPropertyWithValues,
                     fromId: relatingItemId,
                     toIds
                 }
@@ -91,12 +73,19 @@ export default function TransferListView(props: TransferListViewProps) {
         onCreate?.();
     };
 
-    const handleOnChangeRelationship = async (id: string, related: string[]) => {
+    const assignedPropertyIds = relationships.map(({relatedProperty}) => relatedProperty.id)
+    const unassignedProperties = assignedProperties.filter(({id}) => !assignedPropertyIds.includes(id));
+
+    const handleOnSelect = async (propertyId: string) => {
+        await handleOnCreateRelationship([propertyId]);
+    };
+
+    const handleOnChangeRelationship = async (id: string, relatedPropertyId: string, relatedValueIds: string[]) => {
         await setRelatedEntries({
             variables: {
                 input: {
                     relationshipId: id,
-                    toIds: related
+                    toIds: [relatedPropertyId, ...relatedValueIds]
                 }
             }
         });
@@ -112,21 +101,21 @@ export default function TransferListView(props: TransferListViewProps) {
         onDelete?.();
     };
 
-    let content = relationships.map(({relationshipId, relatedItems}) => {
-        const items = [...relatedItems].sort(sortItems);
+    let content = relationships.map(({relationshipId, relatedProperty, relatedValues}) => {
+        const items = [...relatedValues].sort(sortItems);
 
         const handleOnAdd = async (item: ItemPropsFragment) => {
-            const relatedIds = relatedItems.map(x => x.id);
+            const relatedIds = relatedValues.map(x => x.id);
             relatedIds.push(item.id);
-            await handleOnChangeRelationship(relationshipId, relatedIds);
+            await handleOnChangeRelationship(relationshipId, relatedProperty.id, relatedIds);
         };
 
         const handleOnRemove = async (item: ItemPropsFragment) => {
-            const relatedIds = relatedItems
+            const relatedIds = relatedValues
                 .map(x => x.id)
                 .filter(id => id !== item.id);
             if (relatedIds.length) {
-                await handleOnChangeRelationship(relationshipId, relatedIds);
+                await handleOnChangeRelationship(relationshipId, relatedProperty.id, relatedIds);
             } else {
                 await handleOnDeleteRelationship(relationshipId);
             }
@@ -134,7 +123,8 @@ export default function TransferListView(props: TransferListViewProps) {
 
         return (
             <React.Fragment key={relationshipId}>
-                <Typography variant="caption">{relationshipType}-Zuordnung ({relationshipId})</Typography>
+                <Typography variant="caption">AssignsPropertyWithValues-Zuordnung ({relationshipId})</Typography>
+                <Typography variant="body2">Zulässige Wertelistenwerte für Merkmal {relatedProperty.name}</Typography>
                 <TransferList
                     enabled={editState}
                     searchInput={searchInput}
@@ -146,33 +136,20 @@ export default function TransferListView(props: TransferListViewProps) {
         );
     });
 
-    if (!content.length) {
-        if (editState) {
-            content = [
-                <React.Fragment key="new-relationship">
-                    <Typography variant="caption">Neue Zuordnung</Typography>
-                    <TransferList
-                        enabled={true}
-                        searchInput={searchInput}
-                        items={[]}
-                        onAdd={async item => {
-                            await handleOnCreateRelationship([item.id]);
-                        }}
-                    />
-                </React.Fragment>
-            ];
-        } else {
-            content = [
-                <FormSetNotice key="no-relationship">Keine Zuordnung getroffen.</FormSetNotice>
-            ];
-        }
-    }
-
     return (
         <FormSet>
             <FormSetTitle>{title}</FormSetTitle>
             {description && <FormSetDescription>{description}</FormSetDescription>}
+
+            <FormSetDescription>Zulässige Werte des Merkmals bestimmen</FormSetDescription>
+            {unassignedProperties.map((option) => (
+                <Button key={option.id} onClick={() => handleOnSelect(option.id)}>
+                    {option.name}
+                </Button>
+            ))}
+
             {content}
+
             <div className={classes.buttonRow}>
                 {editState ? (
                     <Button

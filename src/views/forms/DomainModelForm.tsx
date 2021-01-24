@@ -1,7 +1,7 @@
 import React from "react";
 import {
     CollectionDetailPropsFragment,
-    RelationshipType,
+    RelationshipRecordType,
     useDeleteEntryMutation,
     useGetCollectionEntryQuery
 } from "../../generated/types";
@@ -87,10 +87,10 @@ function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
             <TransferListView
                 title="Im Fachmodell enthaltene Gruppen"
                 relatingItemId={id}
-                relationshipType={RelationshipType.Collects}
+                relationshipType={RelationshipRecordType.Collects}
                 relationships={collectsRelationships}
                 searchInput={{
-                    entityTypeIn: [GroupEntity.entityType],
+                    entityTypeIn: [GroupEntity.recordType],
                     tagged: GroupEntity.tags
                 }}
                 onCreate={handleOnUpdate}

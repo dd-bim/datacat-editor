@@ -1,5 +1,5 @@
 import React, {FC, useState} from "react";
-import {useCreateEntryMutation} from "../generated/types";
+import {SimpleRecordType, useCreateEntryMutation} from "../generated/types";
 import {ButtonGroup, ButtonGroupProps, Dialog} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
@@ -103,7 +103,7 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
     };
 
     const onSubmit = async ({id, versionId, versionDate, name, description}: CreateEntryFormValues) => {
-        const catalogEntryType = input?.entryType!;
+        const catalogRecordType = (input?.recordType! as unknown as SimpleRecordType);
         const names = [
             {languageTag: "de", value: name}
         ];
@@ -120,7 +120,7 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
         await create({
             variables: {
                 input: {
-                    catalogEntryType,
+                    catalogEntryType: catalogRecordType,
                     properties: properties,
                     tags: input?.tags
                 }

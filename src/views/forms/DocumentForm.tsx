@@ -1,7 +1,7 @@
 import React, {FC} from "react";
 import {
     ExternalDocumentDetailPropsFragment,
-    RelationshipType,
+    RelationshipRecordType,
     useDeleteEntryMutation,
     useGetDocumentEntryQuery
 } from "../../generated/types";
@@ -78,7 +78,7 @@ const DocumentForm: FC<FormProps<ExternalDocumentDetailPropsFragment>> = (props)
             <TransferListView
                 title="Durch das Referenzdokument beschriebene Konzepte"
                 relatingItemId={id}
-                relationshipType={RelationshipType.Documents}
+                relationshipType={RelationshipRecordType.Documents}
                 relationships={documentsRelationships}
                 searchInput={{
                     idNotIn: [id]

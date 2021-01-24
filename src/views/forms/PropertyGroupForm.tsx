@@ -1,7 +1,7 @@
 import React, {FC} from "react";
 import {
     CollectionDetailPropsFragment,
-    RelationshipType,
+    RelationshipRecordType,
     useDeleteEntryMutation,
     useGetCollectionEntryQuery
 } from "../../generated/types";
@@ -91,9 +91,9 @@ const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) 
             <TransferListView
                 title="Gruppierte Merkmale"
                 relatingItemId={id}
-                relationshipType={RelationshipType.Collects}
+                relationshipType={RelationshipRecordType.Collects}
                 relationships={collectsRelationships}
-                searchInput={{entityTypeIn: [PropertyEntity.entityType]}}
+                searchInput={{entityTypeIn: [PropertyEntity.recordType]}}
                 onCreate={handleOnUpdate}
                 onUpdate={handleOnUpdate}
                 onDelete={handleOnUpdate}

@@ -1,6 +1,5 @@
 import List from "@material-ui/core/List";
 import {InputAdornment} from "@material-ui/core";
-import {ItemPropsFragment} from "../../generated/types";
 import React from "react";
 import {FixedSizeList, ListOnItemsRenderedProps} from "react-window";
 import IconButton from "@material-ui/core/IconButton";
@@ -8,20 +7,21 @@ import ClearIcon from '@material-ui/icons/Clear';
 import TextField from "@material-ui/core/TextField";
 import SearchIcon from "@material-ui/icons/Search";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import ItemRow, {ITEM_ROW_SIZE, ItemRowProps} from "./ItemRow";
+import ItemRow, {ITEM_ROW_SIZE, ItemRowProps, RowProps} from "./ItemRow";
+import {CatalogRecord} from "../../types";
 
 export type ItemListProps = {
     loading?: boolean;
-    items: ItemPropsFragment[];
+    items: RowProps[];
     disabledItems?: string[];
     height?: number;
     showRecordIcons?: boolean;
     searchLabel?: string;
     searchTerm?: string;
-    onSelect?(item: ItemPropsFragment): void;
+    onSelect?(item: CatalogRecord): void;
     onSearch?(searchTerm: string): void;
-    onAdd?(item: ItemPropsFragment): void;
-    onRemove?(item: ItemPropsFragment): void;
+    onAdd?(item: CatalogRecord): void;
+    onRemove?(item: CatalogRecord): void;
     onItemsRendered?(props: ListOnItemsRenderedProps): void;
 };
 

@@ -1,17 +1,4 @@
 {
-    "CatalogEntry": [
-        "XtdActor",
-        "XtdActivity",
-        "XtdBag",
-        "XtdClassification",
-        "XtdExternalDocument",
-        "XtdMeasureWithUnit",
-        "XtdNest",
-        "XtdSubject",
-        "XtdProperty",
-        "XtdUnit",
-        "XtdValue"
-    ],
     "Concept": [
         "XtdActivity",
         "XtdActor",
@@ -39,68 +26,34 @@
         "XtdUnit",
         "XtdValue"
     ],
-    "Entity": [
-        "XtdActivity",
+    "RelationshipRecord": [
+        "XtdRelActsUpon",
+        "XtdRelAssignsCollections",
+        "XtdRelAssignsMeasures",
+        "XtdRelAssignsProperties",
+        "XtdRelAssignsPropertyWithValues",
+        "XtdRelAssignsUnits",
+        "XtdRelAssignsValues",
+        "XtdRelAssociates",
+        "XtdRelCollects",
+        "XtdRelComposes",
+        "XtdRelDocuments",
+        "XtdRelGroups",
+        "XtdRelSequences",
+        "XtdRelSpecializes"
+    ],
+    "SimpleRecord": [
         "XtdActor",
+        "XtdActivity",
         "XtdBag",
         "XtdClassification",
         "XtdExternalDocument",
         "XtdMeasureWithUnit",
         "XtdNest",
-        "XtdProperty",
-        "XtdRelActsUpon",
-        "XtdRelAssignsCollections",
-        "XtdRelAssignsMeasures",
-        "XtdRelAssignsProperties",
-        "XtdRelAssignsPropertyWithValues",
-        "XtdRelAssignsUnits",
-        "XtdRelAssignsValues",
-        "XtdRelAssociates",
-        "XtdRelCollects",
-        "XtdRelComposes",
-        "XtdRelDocuments",
-        "XtdRelGroups",
-        "XtdRelSequences",
-        "XtdRelSpecializes",
         "XtdSubject",
+        "XtdProperty",
         "XtdUnit",
         "XtdValue"
-    ],
-    "OneToManyRelationship": [
-        "XtdRelActsUpon",
-        "XtdRelAssignsCollections",
-        "XtdRelAssignsMeasures",
-        "XtdRelAssignsProperties",
-        "XtdRelAssignsUnits",
-        "XtdRelAssignsValues",
-        "XtdRelAssociates",
-        "XtdRelCollects",
-        "XtdRelComposes",
-        "XtdRelDocuments",
-        "XtdRelGroups",
-        "XtdRelSpecializes"
-    ],
-    "OneToOneRelationship": [
-        "XtdRelSequences"
-    ],
-    "QualifiedOneToOneRelationship": [
-        "XtdRelAssignsPropertyWithValues"
-    ],
-    "Relationship": [
-        "XtdRelActsUpon",
-        "XtdRelAssignsCollections",
-        "XtdRelAssignsMeasures",
-        "XtdRelAssignsProperties",
-        "XtdRelAssignsPropertyWithValues",
-        "XtdRelAssignsUnits",
-        "XtdRelAssignsValues",
-        "XtdRelAssociates",
-        "XtdRelCollects",
-        "XtdRelComposes",
-        "XtdRelDocuments",
-        "XtdRelGroups",
-        "XtdRelSequences",
-        "XtdRelSpecializes"
     ],
     "XtdCollection": [
         "XtdBag",

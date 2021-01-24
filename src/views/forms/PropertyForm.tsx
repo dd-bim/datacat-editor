@@ -1,7 +1,7 @@
 import React, {FC} from "react";
 import {
     PropertyDetailPropsFragment,
-    RelationshipType,
+    RelationshipRecordType,
     useDeleteEntryMutation,
     useGetPropertyEntryQuery
 } from "../../generated/types";
@@ -96,10 +96,10 @@ const PropertyForm: FC<FormProps<PropertyDetailPropsFragment>> = (props) => {
             <TransferListView
                 title="Bemaßung des Merkmals"
                 relatingItemId={id}
-                relationshipType={RelationshipType.AssignsMeasures}
+                relationshipType={RelationshipRecordType.AssignsMeasures}
                 relationships={assignsMeasuresRelationships}
                 searchInput={{
-                    entityTypeIn: [MeasureEntity.entityType]
+                    entityTypeIn: [MeasureEntity.recordType]
                 }}
                 onCreate={handleOnUpdate}
                 onUpdate={handleOnUpdate}

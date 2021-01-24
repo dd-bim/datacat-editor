@@ -1,7 +1,7 @@
 import React, {FC} from "react";
 import {
     CollectionDetailPropsFragment,
-    RelationshipType,
+    RelationshipRecordType,
     useDeleteEntryMutation,
     useGetCollectionEntryQuery
 } from "../../generated/types";
@@ -91,7 +91,7 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
                 title="Gruppierte Klassen"
                 description="Klassen, die dieser Gruppe zugeordnet sind."
                 relatingItemId={id}
-                relationshipType={RelationshipType.Collects}
+                relationshipType={RelationshipRecordType.Collects}
                 relationships={collectsRelationships}
                 searchInput={{tagged: ClassEntity.tags}}
                 onCreate={handleOnUpdate}
