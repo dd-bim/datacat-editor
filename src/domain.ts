@@ -28,13 +28,14 @@ export {
 }
 
 export type Entity = {
-    tags?: string[],
-    title: string,
-    titlePlural: string,
-    description?: string,
-    recordType: CatalogRecordType
-    path: string,
-    Icon: SvgIconComponent,
+    tags?: string[];
+    title: string;
+    titlePlural: string;
+    description?: string;
+    recordType: CatalogRecordType;
+    path: string;
+    Icon: SvgIconComponent;
+    export?: boolean;
 };
 
 export const DocumentEntity: Entity = {
@@ -45,6 +46,7 @@ export const DocumentEntity: Entity = {
     recordType: CatalogRecordType.ExternalDocument,
     path: "document",
     Icon: ReferenceDocumentIcon,
+
 };
 
 export const ModelEntity: Entity = {
@@ -54,6 +56,7 @@ export const ModelEntity: Entity = {
     recordType: CatalogRecordType.Bag,
     path: "model",
     Icon: DomainModelIcon,
+    export: true
 };
 
 export const GroupEntity: Entity = {
@@ -63,6 +66,7 @@ export const GroupEntity: Entity = {
     recordType: CatalogRecordType.Bag,
     path: "group",
     Icon: DomainGroupIcon,
+    export: true
 };
 
 export const ClassEntity: Entity = {
@@ -71,7 +75,8 @@ export const ClassEntity: Entity = {
     titlePlural: "Klassen",
     recordType: CatalogRecordType.Subject,
     path: "class",
-    Icon: DomainClassIcon
+    Icon: DomainClassIcon,
+    export: true
 }
 
 export const DataTemplateEntity: Entity = {

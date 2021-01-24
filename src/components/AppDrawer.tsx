@@ -112,7 +112,6 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
                         icon={<ImportExportIcon/>}
                         primary="Exportieren"
                         to="/export"
-                        disabled
                     />
 
                     <ListSubheader disableSticky>Katalog</ListSubheader>

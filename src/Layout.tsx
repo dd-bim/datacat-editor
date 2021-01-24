@@ -19,6 +19,7 @@ import CatalogEntryRoutes from "./routes/CatalogEntryRoutes";
 import GraphiQLEditor from "./GraphiQLEditor";
 import Container from "@material-ui/core/Container";
 import {HomePanel} from "./components/HomePanel";
+import {ExportView} from "./views/ExportView";
 
 const drawerWidth = 250;
 
@@ -98,6 +99,9 @@ export default function Layout() {
                     </Route>
                     <Route path="/search">
                         <HierarchyView/>
+                    </Route>
+                    <Route path="/export">
+                        <ExportView/>
                     </Route>
                     <Route path="/graphiql">
                         <Paper className={classes.graphiql}>
