@@ -11,8 +11,7 @@ import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
 import ToleranceFormSet from "../../components/forms/ToleranceFormSet";
 import NominalValueFormSet from "../../components/forms/NominalValueFormSet";
-import useRelated from "../../hooks/useRelated";
-import FormSet, {FormSetTitle} from "../../components/forms/FormSet";
+import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 
 const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
@@ -34,16 +33,6 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
                 }
             });
         }
-    });
-
-    const documentedBy = useRelated({
-        catalogEntries: entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? [],
-        emptyMessage: "Gruppe ist mit keinem Referenzdokument verlinkt."
-    });
-
-    const assignedTo = useRelated({
-        catalogEntries: entry?.assignedTo.nodes.map(node => node.relatingMeasure) ?? [],
-        emptyMessage: "Wert ist keiner Bemaßung zugewiesen."
     });
 
     if (loading) return <Typography>Lade Wert..</Typography>;
@@ -89,15 +78,17 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
 
             <MetaFormSet entry={entry}/>
 
-            <FormSet>
-                <FormSetTitle>Referenzen</FormSetTitle>
-                {documentedBy}
-            </FormSet>
+            <RelatingRecordsFormSet
+                title={"Zugewiesene Referenzdokumente"}
+                emptyMessage={"Durch kein Referenzdokument beschrieben"}
+                relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
+            />
 
-            <FormSet>
-                <FormSetTitle>Bemaßungen</FormSetTitle>
-                {assignedTo}
-            </FormSet>
+            <RelatingRecordsFormSet
+                title={"Zugewiesene Größe"}
+                emptyMessage={"Beschreibt keine Größe"}
+                relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingMeasure) ?? []}
+            />
 
             <Button
                 variant="contained"

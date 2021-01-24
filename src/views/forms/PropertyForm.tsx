@@ -14,10 +14,9 @@ import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
-import FormSet, {FormSetTitle} from "../../components/forms/FormSet";
-import useRelated from "../../hooks/useRelated";
 import {MeasureEntity} from "../../domain";
 import TransferListView from "../TransferListView";
+import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 
 const PropertyForm: FC<FormProps<PropertyDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
@@ -40,21 +39,6 @@ const PropertyForm: FC<FormProps<PropertyDetailPropsFragment>> = (props) => {
             });
         }
     });
-
-    const documentedBy = useRelated({
-        catalogEntries: entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? [],
-        emptyMessage: "Merkmal ist mit keinem Referenzdokument verlinkt."
-    });
-
-    const collectedBy = useRelated({
-        catalogEntries: entry?.collectedBy.nodes.map(node => node.relatingCollection) || [],
-        emptyMessage: "Merkmal kommt in keiner Sammlung vor."
-    });
-
-    const assignedTo = useRelated({
-        catalogEntries: entry?.assignedTo.nodes.map(node => node.relatingObject) || [],
-        emptyMessage: "Merkmal ist keinem Objekt direkt zugewiesen."
-    })
 
     if (loading) return <Typography>Lade Merkmal..</Typography>;
     if (error || !entry) return <Typography>Es ist ein Fehler aufgetreten..</Typography>;
@@ -94,7 +78,7 @@ const PropertyForm: FC<FormProps<PropertyDetailPropsFragment>> = (props) => {
             />
 
             <TransferListView
-                title="Bemaßung des Merkmals"
+                title="Größe des Merkmals"
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.AssignsMeasures}
                 relationships={assignsMeasuresRelationships}
@@ -108,20 +92,23 @@ const PropertyForm: FC<FormProps<PropertyDetailPropsFragment>> = (props) => {
 
             <MetaFormSet entry={entry}/>
 
-            <FormSet>
-                <FormSetTitle>Referenzen</FormSetTitle>
-                {documentedBy}
-            </FormSet>
+            <RelatingRecordsFormSet
+                title={"Zugewiesene Referenzdokumente"}
+                emptyMessage={"Durch kein Referenzdokument beschrieben"}
+                relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
+            />
 
-            <FormSet>
-                <FormSetTitle>Merkmalgruppen</FormSetTitle>
-                {collectedBy}
-            </FormSet>
+            <RelatingRecordsFormSet
+                title={"Zugewiesene Merkmalsgruppen"}
+                emptyMessage={"In keiner Merkmalsgruppe aufgeführt"}
+                relatingRecords={entry?.collectedBy.nodes.map(node => node.relatingCollection) ?? []}
+            />
 
-            <FormSet>
-                <FormSetTitle>Klassen</FormSetTitle>
-                {assignedTo}
-            </FormSet>
+            <RelatingRecordsFormSet
+                title={"Zugewiesene Klassen"}
+                emptyMessage={"Keiner Klasse direkt zugewiesen"}
+                relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingObject) ?? []}
+            />
 
             <Button
                 variant="contained"

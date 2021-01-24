@@ -7,16 +7,15 @@ import {
 } from "../../generated/types";
 import {Button, Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
-import FormSet, {FormSetDescription, FormSetTitle} from "../../components/forms/FormSet";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
-import useRelated from "../../hooks/useRelated";
 import MetaFormSet from "../../components/forms/MetaFormSet";
 import {ClassEntity} from "../../domain";
 import TransferListView from "../TransferListView";
+import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 
 const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
@@ -38,16 +37,6 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
                 }
             });
         }
-    });
-
-    const documentedBy = useRelated({
-        catalogEntries: entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? [],
-        emptyMessage: "Gruppe ist mit keinem Referenzdokument verlinkt."
-    });
-
-    const collectedBy = useRelated({
-        catalogEntries: entry?.collectedBy.nodes.map(node => node.relatingCollection) ?? [],
-        emptyMessage: "Gruppe kommt in keiner Sammlung vor."
     });
 
     if (loading) return <Typography>Lade Gruppe..</Typography>;
@@ -101,16 +90,17 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
 
             <MetaFormSet entry={entry}/>
 
-            <FormSet>
-                <FormSetTitle>Referenzen</FormSetTitle>
-                {documentedBy}
-            </FormSet>
+            <RelatingRecordsFormSet
+                title={"Zugewiesene Referenzdokumente"}
+                emptyMessage={"Durch kein Referenzdokument beschrieben"}
+                relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
+            />
 
-            <FormSet>
-                <FormSetTitle>Fachmodelle</FormSetTitle>
-                <FormSetDescription>Zeigt auf, welche Fachmodelle diese Gruppe nutzen.</FormSetDescription>
-                <div>{collectedBy}</div>
-            </FormSet>
+            <RelatingRecordsFormSet
+                title={"Zugewiesene Fachmodelle"}
+                emptyMessage={"In keinem Fachmodell aufgeführt"}
+                relatingRecords={entry?.collectedBy.nodes.map(node => node.relatingCollection) ?? []}
+            />
 
             <Button
                 variant="contained"

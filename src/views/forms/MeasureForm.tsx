@@ -14,10 +14,9 @@ import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
-import FormSet, {FormSetTitle} from "../../components/forms/FormSet";
-import useRelated from "../../hooks/useRelated";
 import TransferListView from "../TransferListView";
 import {UnitEntity, ValueEntity} from "../../domain";
+import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 
 const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
@@ -41,17 +40,7 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
         }
     });
 
-    const documentedBy = useRelated({
-        catalogEntries: entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? [],
-        emptyMessage: "Bemaßung ist mit keinem Referenzdokument verlinkt."
-    });
-
-    const assignedTo = useRelated({
-        catalogEntries: entry?.assignedTo.nodes.map(node => node.relatingProperty) || [],
-        emptyMessage: "Bemaßung wird durch kein Merkmal referenziert."
-    });
-
-    if (loading) return <Typography>Lade Bemaßung..</Typography>;
+    if (loading) return <Typography>Lade Größe..</Typography>;
     if (error || !entry) return <Typography>Es ist ein Fehler aufgetreten..</Typography>;
 
     const handleOnUpdate = async () => {
@@ -61,7 +50,7 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
 
     const handleOnDelete = async () => {
         await deleteEntry({variables: {id}});
-        enqueueSnackbar("Bemaßung gelöscht.")
+        enqueueSnackbar("Größe gelöscht.")
         onDelete?.();
     };
 
@@ -107,7 +96,7 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
             />
 
             <TransferListView
-                title="Wertebereich der Bemaßung"
+                title="Wertebereich der Größe"
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.AssignsValues}
                 relationships={assignsValuesRelationships}
@@ -121,15 +110,17 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
 
             <MetaFormSet entry={entry}/>
 
-            <FormSet>
-                <FormSetTitle>Referenzen</FormSetTitle>
-                {documentedBy}
-            </FormSet>
+            <RelatingRecordsFormSet
+                title={"Zugewiesene Referenzdokumente"}
+                emptyMessage={"Durch kein Referenzdokument beschrieben"}
+                relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
+            />
 
-            <FormSet>
-                <FormSetTitle>Merkmale</FormSetTitle>
-                {assignedTo}
-            </FormSet>
+            <RelatingRecordsFormSet
+                title={"Zugewiesene Merkmale"}
+                emptyMessage={"Keinem Merkmal zugewiesen"}
+                relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingProperty) ?? []}
+            />
 
             <Button
                 variant="contained"

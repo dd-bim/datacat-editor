@@ -7,7 +7,6 @@ import {
 } from "../../generated/types";
 import {Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
-import FormSet, {FormSetTitle} from "../../components/forms/FormSet";
 import MetaFormSet from "../../components/forms/MetaFormSet";
 import Button from "@material-ui/core/Button";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
@@ -16,8 +15,8 @@ import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import {GroupEntity} from "../../domain";
 import FormView, {FormProps} from "./FormView";
-import useRelated from "../../hooks/useRelated";
 import TransferListView from "../TransferListView";
+import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 
 
 function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
@@ -40,11 +39,6 @@ function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
                 }
             });
         }
-    });
-
-    const documentedBy = useRelated({
-        catalogEntries: entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? [],
-        emptyMessage: "Fachmodell ist mit keinem Referenzdokument verlinkt."
     });
 
     if (loading) return <Typography>Lade Fachmodel..</Typography>;
@@ -100,10 +94,11 @@ function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
 
             <MetaFormSet entry={entry}/>
 
-            <FormSet>
-                <FormSetTitle>Referenzen</FormSetTitle>
-                {documentedBy}
-            </FormSet>
+            <RelatingRecordsFormSet
+                title={"Zugewiesene Referenzdokumente"}
+                emptyMessage={"Durch kein Referenzdokument beschrieben"}
+                relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
+            />
 
             <Button
                 variant="contained"

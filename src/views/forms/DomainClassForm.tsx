@@ -15,14 +15,12 @@ import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import {PropertyEntity, PropertyGroupEntity, ValueEntity} from "../../domain";
 import FormView, {FormProps} from "./FormView";
-import useRelated from "../../hooks/useRelated";
 import TransferListView from "../TransferListView";
-import FormSet, {FormSetTitle, useFieldSetStyles} from "../../components/forms/FormSet";
 import AssignsPropertyWithValuesTransferListView from "../AssignsPropertyWithValuesTransferListView";
+import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 
 const DomainClassForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
-    const classes = useFieldSetStyles();
     const {enqueueSnackbar} = useSnackbar();
 
     // fetch domain model
@@ -42,17 +40,6 @@ const DomainClassForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
             });
         }
     });
-
-    const documentedBy = useRelated({
-        catalogEntries: entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? [],
-        emptyMessage: "Keine Referenzdokument verlinkt."
-    });
-
-    const collectedBy = useRelated({
-        catalogEntries: entry?.collectedBy.nodes.map(node => node.relatingCollection) ?? [],
-        emptyMessage: "Klasse kommt in keiner Sammlung vor."
-    })
-
 
     if (loading) return <Typography>Lade Klasse..</Typography>;
     if (error || !entry) return <Typography>Es ist ein Fehler aufgetreten..</Typography>;
@@ -145,15 +132,17 @@ const DomainClassForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
 
             <MetaFormSet entry={entry}/>
 
-            <FormSet>
-                <FormSetTitle className={classes.gutterBottom}>Referenzen</FormSetTitle>
-                {documentedBy}
-            </FormSet>
+            <RelatingRecordsFormSet
+                title={"Zugewiesene Referenzdokumente"}
+                emptyMessage={"Durch kein Referenzdokument beschrieben"}
+                relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
+            />
 
-            <FormSet>
-                <FormSetTitle className={classes.gutterBottom}>Gruppen</FormSetTitle>
-                {collectedBy}
-            </FormSet>
+            <RelatingRecordsFormSet
+                title={"Zugewiesen Gruppen"}
+                emptyMessage={"In keiner Gruppe aufgeführt"}
+                relatingRecords={entry?.collectedBy.nodes.map(node => node.relatingCollection) ?? []}
+            />
 
             <Button
                 variant="contained"

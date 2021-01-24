@@ -7,7 +7,6 @@ import {
 } from "../../generated/types";
 import {Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
-import FormSet, {FormSetTitle} from "../../components/forms/FormSet";
 import MetaFormSet from "../../components/forms/MetaFormSet";
 import Button from "@material-ui/core/Button";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
@@ -15,9 +14,9 @@ import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
-import useRelated from "../../hooks/useRelated";
 import {PropertyEntity} from "../../domain";
 import TransferListView from "../TransferListView";
+import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 
 const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
@@ -39,16 +38,6 @@ const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) 
                 }
             });
         }
-    });
-
-    const documentedBy = useRelated({
-        catalogEntries: entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? [],
-        emptyMessage: "Merkmalsgruppe ist mit keinem Referenzdokument verlinkt."
-    });
-
-    const collectionAssignedTo = useRelated({
-        catalogEntries: entry?.assignedTo.nodes.map(node => node.relatingObject) ?? [],
-        emptyMessage: "Merkmalsgruppe ist keiner Klasse zugewiesen."
     });
 
     if (loading) return <Typography>Lade Merkmalsgruppe..</Typography>;
@@ -101,15 +90,17 @@ const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) 
 
             <MetaFormSet entry={entry}/>
 
-            <FormSet>
-                <FormSetTitle>Referenzen..."</FormSetTitle>
-                {documentedBy}
-            </FormSet>
+            <RelatingRecordsFormSet
+                title={"Zugewiesene Referenzdokumente"}
+                emptyMessage={"Durch kein Referenzdokument beschrieben"}
+                relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
+            />
 
-            <FormSet>
-                <FormSetTitle>Klassen..."</FormSetTitle>
-                {collectionAssignedTo}
-            </FormSet>
+            <RelatingRecordsFormSet
+                title={"Zugewiesene Klassen"}
+                emptyMessage={"Keiner Klasse zugewiesen"}
+                relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingObject) ?? []}
+            />
 
             <Button
                 variant="contained"
