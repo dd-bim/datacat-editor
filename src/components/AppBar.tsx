@@ -13,6 +13,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from '@material-ui/icons/Menu';
 import CreateEntrySplitButton from "./CreateEntrySplitButton";
 import AppTitle from "./AppTitle";
+import {QuickSearchWidget} from "./QuickSearchWidget";
 
 const useStyles = makeStyles((theme: Theme) => ({
     appBar: {
@@ -53,8 +54,7 @@ export function AppBar(props: AppBarProps) {
                 <AppTitle/>
                 {profile && (
                     <React.Fragment>
-                        {/*TODO: Seems to be broken right now...*/}
-                        {/*<QuickSearchWidget key="search-input"/>*/}
+                        <QuickSearchWidget key="search-input"/>
 
                         <CreateEntrySplitButton/>
 

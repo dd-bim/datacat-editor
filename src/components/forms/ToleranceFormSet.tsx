@@ -30,8 +30,6 @@ const ToleranceFormSet: FC<ToleranceFormSetProps> = (props) => {
         upperTolerance: upperTolerance ?? ""
     };
 
-    console.log(defaultValues);
-
     const {enqueueSnackbar} = useSnackbar();
     const [setTolerance] = useSetToleranceMutation();
     const [unsetTolerance] = useUnsetToleranceMutation();

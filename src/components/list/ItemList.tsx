@@ -7,12 +7,12 @@ import ClearIcon from '@material-ui/icons/Clear';
 import TextField from "@material-ui/core/TextField";
 import SearchIcon from "@material-ui/icons/Search";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import ItemRow, {ITEM_ROW_SIZE, ItemRowProps, RowProps} from "./ItemRow";
+import ItemRow, {ITEM_ROW_SIZE, ItemRowProps} from "./ItemRow";
 import {CatalogRecord} from "../../types";
 
 export type ItemListProps = {
     loading?: boolean;
-    items: RowProps[];
+    items: CatalogRecord[];
     disabledItems?: string[];
     height?: number;
     showRecordIcons?: boolean;

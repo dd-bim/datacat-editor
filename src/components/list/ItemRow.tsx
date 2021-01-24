@@ -6,7 +6,6 @@ import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/AddBox";
 import ClearIcon from "@material-ui/icons/Eject";
 import React from "react";
-import {ItemPropsFragment, SearchResultPropsFragment} from "../../generated/types";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import {getEntityType} from "../../domain";
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -14,10 +13,8 @@ import {CatalogRecord} from "../../types";
 
 export const ITEM_ROW_SIZE = 36;
 
-export type RowProps = Pick<SearchResultPropsFragment, "id" | "name" | "description" | "tags">;
-
 export type ItemRowProps = {
-    items: RowProps[];
+    items: CatalogRecord[];
     disabledItems: string[];
     showRecordIcons: boolean;
     onSelect?(item: CatalogRecord): void;
@@ -48,9 +45,9 @@ export default function ItemRow(props: ListChildComponentProps) {
     } = props;
     const classes = useStyle();
 
-    const item = (items as ItemPropsFragment[])[index];
+    const item = (items as CatalogRecord[])[index];
 
-    const entityType = getEntityType(item.recordType, item.tags.map(t => t.id))!;
+    const entityType = getEntityType(item.recordType, item.tags.map(t => t.id));
     const isDisabled = disabledItems.includes(item.id);
     const lastItem = index === items.length - 1;
     return (

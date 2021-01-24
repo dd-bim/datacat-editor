@@ -1,18 +1,19 @@
-import {Link as RouterLink} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {makeStyles, Theme} from "@material-ui/core/styles";
 import React, {useRef, useState} from "react";
 import {Popper} from "@material-ui/core";
 import Fade from "@material-ui/core/Fade";
 import Paper from "@material-ui/core/Paper";
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Typography from "@material-ui/core/Typography";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import {useFindConceptQuery} from "../generated/types";
+import {useFindItemQuery} from "../generated/types";
 import SearchField from "./SearchField";
 import {Domain, getEntityType} from "../domain";
+import useDebounce from "../hooks/useDebounce";
+import ItemRow, {ITEM_ROW_SIZE, ItemRowProps} from "./list/ItemRow";
+import {FixedSizeList, ListOnItemsRenderedProps} from "react-window";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchResults: {
@@ -20,8 +21,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     searchContent: {
         'margin-top': theme.spacing(1),
-        'min-width': '150px',
-        'max-width': '400px',
+        'width': '100%',
         'padding': theme.spacing(2)
     },
     entityIcon: {
@@ -35,54 +35,62 @@ interface QuickSearchWidgetProps {
 
 export function QuickSearchWidget(props: QuickSearchWidgetProps) {
     const classes = useStyles();
+    const history = useHistory();
     const searchInput = useRef(null);
-    const [query, setQuery] = useState("");
-    const {loading, error, data} = useFindConceptQuery({
-        skip: !query,
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const debouncedSearchTerm = useDebounce(searchTerm, 500);
+    const input = {
+        query: debouncedSearchTerm,
+        entityTypeIn: Domain.map(x => x.recordType)
+    };
+    const {error, loading, data, fetchMore} = useFindItemQuery({
+        skip: !debouncedSearchTerm,
         variables: {
-            input: {
-                query,
-                entityTypeIn: Domain.map(x => x.recordType)
-            }
+            input,
+            pageSize: 10,
+            pageNumber: 0
         }
-    })
-    const open = Boolean(!error && !loading && query);
-    const id = open ? 'transitions-popper' : undefined;
+    });
+    const items = data?.search.nodes ?? [];
+    const pageInfo = data?.search.pageInfo;
 
-    const results: React.ReactNode[] = [];
-    if (data?.search.nodes) {
-        for (const item of data.search.nodes) {
-            const tags = item.tags.map(tag => tag.id);
-            const entityType = getEntityType(item.recordType, tags);
+    const handleOnScroll = async (props: ListOnItemsRenderedProps) => {
+        const {visibleStopIndex} = props;
 
-            if (!entityType) continue;
-
-            results.push(
-                <ListItem
-                    key={item.id}
-                    button
-                    component={RouterLink}
-                    to={`/${entityType.path}/${item.id}`}
-                    disableGutters
-                    onClick={() => setQuery("")}
-                >
-                    <ListItemIcon className={classes.entityIcon}>
-                        <entityType.Icon/>
-                    </ListItemIcon>
-                    <ListItemText primary={item.name} secondary={item.description}/>
-                </ListItem>
-            );
+        if (pageInfo?.hasNext && visibleStopIndex >= items.length - 5) {
+            await fetchMore({
+                variables: {
+                    input,
+                    pageSize: 10,
+                    pageNumber: pageInfo.pageNumber + 1
+                }
+            });
         }
     }
+
+    const open = Boolean(!error && !loading && debouncedSearchTerm);
+    const id = open ? 'transitions-popper' : undefined;
+
+    const listItems: ItemRowProps = {
+        items,
+        disabledItems: [],
+        showRecordIcons: true,
+        onSelect: item => {
+            const definition = getEntityType(item.recordType, item.tags.map(x => x.id));
+            setSearchTerm("");
+            history.push(`/${definition.path}/${item.id}`);
+        }
+    };
 
     return (
         <div ref={searchInput} className={props.className}>
             <SearchField
                 placeholder="Search..."
-                value={query}
-                onChange={e => setQuery(e.target.value)}
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
             />
-            <ClickAwayListener onClickAway={() => setQuery("")}>
+            <ClickAwayListener onClickAway={() => setSearchTerm("")}>
                 <Popper
                     id={id}
                     open={open}
@@ -95,9 +103,18 @@ export function QuickSearchWidget(props: QuickSearchWidgetProps) {
                         <Fade {...TransitionProps} timeout={350}>
                             <Paper className={classes.searchContent}>
                                 <Typography variant="body1">{data?.search.totalElements} Ergebnisse</Typography>
-                                <List dense disablePadding>
-                                    {results}
-                                </List>
+                                {loading && <LinearProgress/>}
+                                <FixedSizeList
+                                    height={200}
+                                    width={400}
+                                    itemSize={ITEM_ROW_SIZE}
+                                    itemCount={items.length}
+                                    itemData={listItems}
+                                    outerElementType={List}
+                                    onItemsRendered={handleOnScroll}
+                                >
+                                    {ItemRow}
+                                </FixedSizeList>
                             </Paper>
                         </Fade>
                     )}
