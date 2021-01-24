@@ -50,7 +50,7 @@ export default function ItemRow(props: ListChildComponentProps) {
 
     const item = (items as ItemPropsFragment[])[index];
 
-    const entityType = getEntityType(item.__typename.substring(3), item.tags.map(t => t.id))!;
+    const entityType = getEntityType(item.recordType, item.tags.map(t => t.id))!;
     const isDisabled = disabledItems.includes(item.id);
     const lastItem = index === items.length - 1;
     return (

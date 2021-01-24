@@ -7,7 +7,6 @@ import Paper from "@material-ui/core/Paper";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import ConceptIcon from "./ConceptIcon";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Typography from "@material-ui/core/Typography";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
@@ -53,9 +52,8 @@ export function QuickSearchWidget(props: QuickSearchWidgetProps) {
     const results: React.ReactNode[] = [];
     if (data?.search.nodes) {
         for (const item of data.search.nodes) {
-            const entryType = item.__typename.substring(3);
             const tags = item.tags.map(tag => tag.id);
-            const entityType = getEntityType(entryType, tags);
+            const entityType = getEntityType(item.recordType, tags);
 
             if (!entityType) continue;
 
@@ -69,7 +67,7 @@ export function QuickSearchWidget(props: QuickSearchWidgetProps) {
                     onClick={() => setQuery("")}
                 >
                     <ListItemIcon className={classes.entityIcon}>
-                        <ConceptIcon typeName={item.__typename} tags={item.tags}/>
+                        <entityType.Icon/>
                     </ListItemIcon>
                     <ListItemText primary={item.name} secondary={item.description}/>
                 </ListItem>

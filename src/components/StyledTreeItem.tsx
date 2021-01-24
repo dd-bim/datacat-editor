@@ -1,11 +1,11 @@
 import {PropertyTreeNode} from "../hooks/useHierarchy";
 import React, {FC} from "react";
 import {TreeItem, TreeItemProps} from "@material-ui/lab";
-import ConceptIcon from "./ConceptIcon";
 import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {ItemPropsFragment} from "../generated/types";
+import {getEntityType} from "../domain";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -73,6 +73,8 @@ export const StyledTreeItem: FC<StyleTreeItemProps & TreeItemProps> = (props) =>
         ...other
     } = props;
 
+    const recordTypeDefinition = getEntityType(data.recordType, data.tags.map(tag => tag.id))!;
+
     const handleOnLabelClick = (event: React.MouseEvent) => {
         event.preventDefault();
     }
@@ -85,12 +87,10 @@ export const StyledTreeItem: FC<StyleTreeItemProps & TreeItemProps> = (props) =>
 
             label={
                 <div className={classes.labelRoot}>
-                    <ConceptIcon
+                    <recordTypeDefinition.Icon
                         className={classes.labelIcon}
                         fontSize="small"
                         color="inherit"
-                        typeName={data.__typename}
-                        tags={data.tags}
                     />
                     <Tooltip title={data.description ?? ""} arrow>
                         <Typography variant="body2" className={classes.labelText}>

@@ -24,9 +24,8 @@ const useStyles = makeStyles(theme => ({
 
 export const toSearchBoxOptions = (results: SearchResultPropsFragment[]): SearchBoxOption[] => results
     .map((result): [typeof result, Entity | null] => {
-        const {__typename, tags} = result;
-        const entryType = __typename.substring(3);
-        return [result, getEntityType(entryType, tags.map(tag => tag.id))];
+        const {tags} = result;
+        return [result, getEntityType(result.recordType, tags.map(tag => tag.id))];
     })
     .filter(([, entityType]) => entityType)
     .map(([{id, name, description}, entityType]) => ({

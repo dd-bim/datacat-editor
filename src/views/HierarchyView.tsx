@@ -65,8 +65,8 @@ const HierarchyView: FC = () => {
     const classes = useStyles();
     const {loading, error, data} = usePropertyTreeQuery({});
 
-    const handleOnSelect = ({id, __typename, tags}: ConceptPropsFragment) => {
-        const entityType = getEntityType(__typename.substring(3), tags.map(x => x.id));
+    const handleOnSelect = ({id, recordType, tags}: ConceptPropsFragment) => {
+        const entityType = getEntityType(recordType, tags.map(x => x.id));
         if (entityType) {
             history.push(`${url}/${entityType.path}/${id}`);
         } else {
@@ -166,7 +166,7 @@ const HierarchyView: FC = () => {
                             return (
                                 <React.Fragment>
                                     <Typography variant="h5">
-                                        <MeasureIcon/> Bemaßung bearbeiten
+                                        <MeasureIcon/> Größe bearbeiten
                                     </Typography>
                                     <MeasureForm id={id} onDelete={handleOnDelete}/>
                                 </React.Fragment>
