@@ -141,7 +141,7 @@ export const Domain = [
     ValueEntity
 ];
 
-export function getEntityType(recordType: string, tags?: string[]): Entity | null {
+export function getEntityType(recordType: string, tags?: string[]): Entity {
 
     for (const id of tags ?? []) {
         for (const entityType of Domain) {
@@ -157,5 +157,5 @@ export function getEntityType(recordType: string, tags?: string[]): Entity | nul
         }
     }
 
-    return null;
+    throw new Error(`No domain entity definition found for record type ${recordType} tagged ${tags}`);
 }
