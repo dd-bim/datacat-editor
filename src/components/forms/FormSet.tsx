@@ -7,17 +7,20 @@ export type FormSetProps = {
     children: React.ReactNode;
 };
 
-export const useFieldSetStyles = makeStyles(theme => ({
-    gutterBottom: {
-        marginBottom: theme.spacing(1)
+const useStyles = makeStyles(theme => ({
+    root: {
+        marginBottom: theme.spacing(3),
+        border: `1px solid ${theme.palette.grey[100]}`,
+        padding: theme.spacing(1)
     }
 }));
 
 export default function FormSet(props: FormSetProps) {
     const {className, children} = props;
+    const classes = useStyles();
 
     return (
-        <div className={className}>
+        <div className={`${classes.root} ${className}`}>
             {children}
         </div>
     );

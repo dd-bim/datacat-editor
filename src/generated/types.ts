@@ -829,7 +829,7 @@ type ObjectDetailProps_XtdValue_Fragment = (
 export type ObjectDetailPropsFragment = ObjectDetailProps_XtdActivity_Fragment | ObjectDetailProps_XtdActor_Fragment | ObjectDetailProps_XtdClassification_Fragment | ObjectDetailProps_XtdMeasureWithUnit_Fragment | ObjectDetailProps_XtdProperty_Fragment | ObjectDetailProps_XtdSubject_Fragment | ObjectDetailProps_XtdUnit_Fragment | ObjectDetailProps_XtdValue_Fragment;
 
 export type SubjectDetailPropsFragment = (
-  { assignedCollections: { nodes: Array<AssignsCollectionsPropsFragment> }, assignedProperties: { nodes: Array<AssignsPropertiesPropsFragment> }, assignedPropertiesWithValues: { nodes: Array<AssignsPropertyWithValuesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, properties: Array<ItemProps_XtdProperty_Fragment> }
+  { assignedCollections: { nodes: Array<AssignsCollectionsPropsFragment> }, assignedProperties: { nodes: Array<AssignsPropertiesPropsFragment> }, assignedPropertiesWithValues: { nodes: Array<AssignsPropertyWithValuesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, properties: Array<{ id: string, name?: Maybe<string>, description?: Maybe<string>, assignedMeasures: { nodes: Array<{ id: string, relatedMeasures: Array<{ id: string, name?: Maybe<string>, description?: Maybe<string>, assignedValues: { nodes: Array<{ id: string, relatedValues: Array<{ id: string, name?: Maybe<string>, description?: Maybe<string>, nominalValue?: Maybe<string> }> }> } }> }> } }> }
   & ObjectDetailProps_XtdSubject_Fragment
 );
 
@@ -1308,15 +1308,37 @@ export const SubjectDetailPropsFragmentDoc = gql`
     }
   }
   properties {
-    ...ItemProps
+    id
+    name
+    description
+    assignedMeasures {
+      nodes {
+        id
+        relatedMeasures {
+          id
+          name
+          description
+          assignedValues {
+            nodes {
+              id
+              relatedValues {
+                id
+                name
+                description
+                nominalValue
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
     ${ObjectDetailPropsFragmentDoc}
 ${AssignsCollectionsPropsFragmentDoc}
 ${AssignsPropertiesPropsFragmentDoc}
 ${AssignsPropertyWithValuesPropsFragmentDoc}
-${CollectsPropsFragmentDoc}
-${ItemPropsFragmentDoc}`;
+${CollectsPropsFragmentDoc}`;
 export const AssignsMeasuresPropsFragmentDoc = gql`
     fragment AssignsMeasuresProps on XtdRelAssignsMeasures {
   ...RelationshipProps

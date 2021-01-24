@@ -61,7 +61,9 @@ const NameFormSet: FC<NameFormSetProps> = (props) => {
 
     return (
         <FormSet>
-            <FormSetTitle>Name</FormSetTitle>
+            <FormSetTitle>
+                <b>Name</b>
+            </FormSetTitle>
             <FormSetDescription className={classes.description}>
                 Identifiziert das Konzept in der jeweiligen Sprache.
             </FormSetDescription>

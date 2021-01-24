@@ -1,11 +1,12 @@
-import FormSet, {FormSetProps, FormSetTitle, useFieldSetStyles} from "./FormSet";
+import FormSet, {FormSetProps, FormSetTitle} from "./FormSet";
 import React from "react";
 import CatalogEntryChip from "../CatalogEntryChip";
 import {Typography} from "@material-ui/core";
 import {CatalogRecord} from "../../types";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 
 export type MemberFormSetProps = {
-    title: string;
+    title: React.ReactNode;
     emptyMessage: string;
     relatingRecords: CatalogRecord[];
     FormSetProps?: FormSetProps;
@@ -17,6 +18,12 @@ export const sortEntries = (left: CatalogRecord, right: CatalogRecord) => {
     return a.localeCompare(b);
 };
 
+const useStyles = makeStyles(theme => ({
+    gutterBottom: {
+        marginBottom: theme.spacing(1)
+    }
+}));
+
 export default function RelatingRecordsFormSet(props: MemberFormSetProps) {
     const {
         title,
@@ -25,7 +32,7 @@ export default function RelatingRecordsFormSet(props: MemberFormSetProps) {
         FormSetProps
     } = props;
 
-    const classes = useFieldSetStyles();
+    const classes = useStyles();
     const chips = Array.from(relatingRecords)
         .sort(sortEntries)
         .map(record => (

@@ -16,6 +16,8 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import Button from "@material-ui/core/Button";
 import {ApolloCache} from "@apollo/client";
 import {CatalogRecord} from "../types";
+import {useHistory} from "react-router-dom";
+import {getEntityType} from "../domain";
 
 export type RelationshipProperties = {
     relationshipId: string;
@@ -23,7 +25,7 @@ export type RelationshipProperties = {
 }
 
 export type TransferListViewProps = {
-    title: string;
+    title: React.ReactNode;
     description?: string;
     relatingItemId: string;
     relationshipType: RelationshipRecordType
@@ -66,6 +68,7 @@ export default function TransferListView(props: TransferListViewProps) {
     } = props;
 
     const classes = useStyles();
+    const history = useHistory();
     const [editState, setEditState] = useState(false);
 
     const update = (cache: ApolloCache<any>) => cache.modify({
@@ -140,6 +143,10 @@ export default function TransferListView(props: TransferListViewProps) {
                     searchInput={searchInput}
                     items={items}
                     onAdd={handleOnAdd}
+                    onSelect={item => {
+                        const definition = getEntityType(item.recordType, item.tags.map(x => x.id));
+                        history.push(`/${definition.path}/${item.id}`);
+                    }}
                     onRemove={handleOnRemove}
                 />
             </React.Fragment>

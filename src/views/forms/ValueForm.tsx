@@ -76,19 +76,19 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
                 upperTolerance={entry.upperTolerance}
             />
 
-            <MetaFormSet entry={entry}/>
-
             <RelatingRecordsFormSet
-                title={"Zugewiesene Referenzdokumente"}
+                title={<span>Zugewiesene <b>Referenzdokumente</b></span>}
                 emptyMessage={"Durch kein Referenzdokument beschrieben"}
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
             />
 
             <RelatingRecordsFormSet
-                title={"Zugewiesene Größe"}
+                title={<span>Zugewiesene <b>Größe</b></span>}
                 emptyMessage={"Beschreibt keine Größe"}
                 relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingMeasure) ?? []}
             />
+
+            <MetaFormSet entry={entry}/>
 
             <Button
                 variant="contained"

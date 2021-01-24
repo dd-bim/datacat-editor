@@ -79,7 +79,7 @@ function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
             />
 
             <TransferListView
-                title="Im Fachmodell enthaltene Gruppen"
+                title={<span>Im Fachmodell beschriebene <b>Gruppen</b></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.Collects}
                 relationships={collectsRelationships}
@@ -92,13 +92,13 @@ function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
                 onDelete={handleOnUpdate}
             />
 
-            <MetaFormSet entry={entry}/>
-
             <RelatingRecordsFormSet
-                title={"Zugewiesene Referenzdokumente"}
+                title={<span>Zugewiesene <b>Referenzdokumente</b></span>}
                 emptyMessage={"Durch kein Referenzdokument beschrieben"}
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
             />
+
+            <MetaFormSet entry={entry}/>
 
             <Button
                 variant="contained"

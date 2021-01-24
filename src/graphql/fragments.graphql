@@ -222,7 +222,30 @@ fragment SubjectDetailProps on XtdSubject {
         }
     }
     properties {
-        ...ItemProps
+        id
+        name
+        description
+        assignedMeasures {
+            nodes {
+                id
+                relatedMeasures {
+                    id
+                    name
+                    description
+                    assignedValues {
+                        nodes {
+                            id
+                            relatedValues {
+                                id
+                                name
+                                description
+                                nominalValue
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

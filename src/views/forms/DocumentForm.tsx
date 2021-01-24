@@ -76,7 +76,7 @@ const DocumentForm: FC<FormProps<ExternalDocumentDetailPropsFragment>> = (props)
             />
 
             <TransferListView
-                title="Durch das Referenzdokument beschriebene Konzepte"
+                title={<span>Durch das Referenzdokument beschriebene <b>Konzepte</b></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.Documents}
                 relationships={documentsRelationships}

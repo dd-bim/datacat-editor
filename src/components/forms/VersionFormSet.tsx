@@ -1,14 +1,21 @@
 import VersionForm from "./VersionForm";
-import FormSet, {FormSetDescription, FormSetTitle, useFieldSetStyles} from "./FormSet";
+import FormSet, {FormSetDescription, FormSetTitle} from "./FormSet";
 import React, {FC} from "react";
 import {Maybe, useSetVersionMutation, VersionInput} from "../../generated/types";
 import {useSnackbar} from "notistack";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 
 type VersionFormSetProps = {
     id: string
     versionId?: Maybe<string>
     versionDate?: Maybe<string>
 }
+
+const useStyles = makeStyles((theme) => ({
+    description: {
+        marginBottom: theme.spacing(1)
+    }
+}));
 
 const VersionFormSet: FC<VersionFormSetProps> = (props) => {
     const {
@@ -17,7 +24,7 @@ const VersionFormSet: FC<VersionFormSetProps> = (props) => {
         versionDate
     } = props;
 
-    const classes = useFieldSetStyles();
+    const classes = useStyles();
     const {enqueueSnackbar} = useSnackbar();
 
     const defaultValues = {versionId: versionId ?? "", versionDate: versionDate ?? ""};
@@ -35,8 +42,8 @@ const VersionFormSet: FC<VersionFormSetProps> = (props) => {
 
     return (
         <FormSet>
-            <FormSetTitle>Version</FormSetTitle>
-            <FormSetDescription className={classes.gutterBottom}>
+            <FormSetTitle><b>Version</b></FormSetTitle>
+            <FormSetDescription className={classes.description}>
                 Die Version kann für die Anwendungsdomäne frei bestimmt und formatiert werden.
             </FormSetDescription>
             <VersionForm

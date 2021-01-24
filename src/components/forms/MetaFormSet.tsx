@@ -27,7 +27,7 @@ export default function MetaFormSet(props: MetaFormSetProps) {
 
     return (
         <FormSet>
-            <FormSetTitle>Metainformationen</FormSetTitle>
+            <FormSetTitle><b>Metainformationen</b></FormSetTitle>
             <FormSetDescription>Technische Informationen zum Konzept</FormSetDescription>
             <Table size="small">
                 <TableBody>

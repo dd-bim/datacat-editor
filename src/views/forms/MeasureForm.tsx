@@ -83,7 +83,7 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
             />
 
             <TransferListView
-                title="Anwendbare Maßeinheiten"
+                title={<span>Auf die Größe anwendbare <b>Maßeinheiten</b></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.AssignsUnits}
                 relationships={assignsUnitsRelationships}
@@ -96,7 +96,7 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
             />
 
             <TransferListView
-                title="Wertebereich der Größe"
+                title={<span><b>Wertebereich</b> der Größe</span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.AssignsValues}
                 relationships={assignsValuesRelationships}
@@ -108,19 +108,19 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
                 onDelete={handleOnUpdate}
             />
 
-            <MetaFormSet entry={entry}/>
-
             <RelatingRecordsFormSet
-                title={"Zugewiesene Referenzdokumente"}
+                title={<span>Zugewiesene <b>Referenzdokumente</b></span>}
                 emptyMessage={"Durch kein Referenzdokument beschrieben"}
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
             />
 
             <RelatingRecordsFormSet
-                title={"Zugewiesene Merkmale"}
+                title={<span>Zugewiesene <b>Merkmale</b></span>}
                 emptyMessage={"Keinem Merkmal zugewiesen"}
                 relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingProperty) ?? []}
             />
+
+            <MetaFormSet entry={entry}/>
 
             <Button
                 variant="contained"

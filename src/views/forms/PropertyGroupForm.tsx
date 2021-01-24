@@ -78,7 +78,7 @@ const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) 
             />
 
             <TransferListView
-                title="Gruppierte Merkmale"
+                title={<span>In der Merkmalsgruppe gruppierte <b>Merkmale</b></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.Collects}
                 relationships={collectsRelationships}
@@ -88,19 +88,19 @@ const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) 
                 onDelete={handleOnUpdate}
             />
 
-            <MetaFormSet entry={entry}/>
-
             <RelatingRecordsFormSet
-                title={"Zugewiesene Referenzdokumente"}
+                title={<span>Zugewiesene <b>Referenzdokumente</b></span>}
                 emptyMessage={"Durch kein Referenzdokument beschrieben"}
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
             />
 
             <RelatingRecordsFormSet
-                title={"Zugewiesene Klassen"}
+                title={<span>Zugewiesene <b>Klassen</b></span>}
                 emptyMessage={"Keiner Klasse zugewiesen"}
                 relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingObject) ?? []}
             />
+
+            <MetaFormSet entry={entry}/>
 
             <Button
                 variant="contained"

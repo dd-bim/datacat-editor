@@ -78,7 +78,7 @@ const PropertyForm: FC<FormProps<PropertyDetailPropsFragment>> = (props) => {
             />
 
             <TransferListView
-                title="Größe des Merkmals"
+                title={<span><b>Größe</b> des Merkmals</span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.AssignsMeasures}
                 relationships={assignsMeasuresRelationships}
@@ -90,25 +90,25 @@ const PropertyForm: FC<FormProps<PropertyDetailPropsFragment>> = (props) => {
                 onDelete={handleOnUpdate}
             />
 
-            <MetaFormSet entry={entry}/>
-
             <RelatingRecordsFormSet
-                title={"Zugewiesene Referenzdokumente"}
+                title={<span>Zugewiesene <b>Referenzdokumente</b></span>}
                 emptyMessage={"Durch kein Referenzdokument beschrieben"}
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
             />
 
             <RelatingRecordsFormSet
-                title={"Zugewiesene Merkmalsgruppen"}
+                title={<span>Zugewiesene <b>Merkmalsgruppen</b></span>}
                 emptyMessage={"In keiner Merkmalsgruppe aufgeführt"}
                 relatingRecords={entry?.collectedBy.nodes.map(node => node.relatingCollection) ?? []}
             />
 
             <RelatingRecordsFormSet
-                title={"Zugewiesene Klassen"}
+                title={<span>Zugewiesene <b>Klassen</b></span>}
                 emptyMessage={"Keiner Klasse direkt zugewiesen"}
                 relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingObject) ?? []}
             />
+
+            <MetaFormSet entry={entry}/>
 
             <Button
                 variant="contained"

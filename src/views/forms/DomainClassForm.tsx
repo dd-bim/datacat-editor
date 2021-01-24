@@ -1,4 +1,4 @@
-import React, {FC} from "react";
+import React from "react";
 import {
     RelationshipRecordType,
     SubjectDetailPropsFragment,
@@ -13,13 +13,13 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
-import {PropertyEntity, PropertyGroupEntity, ValueEntity} from "../../domain";
+import {PropertyEntity, PropertyGroupEntity} from "../../domain";
 import FormView, {FormProps} from "./FormView";
 import TransferListView from "../TransferListView";
-import AssignsPropertyWithValuesTransferListView from "../AssignsPropertyWithValuesTransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
+import AssignsPropertyWithValuesFormset from "./AssignsPropertyWithValuesFormset";
 
-const DomainClassForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
+export default function DomainClassForm(props: FormProps<SubjectDetailPropsFragment>) {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
 
@@ -65,10 +65,6 @@ const DomainClassForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
         relatedItems: relatedProperties
     }));
 
-    const assignsPropertyWithValuesRelationships = entry.assignedPropertiesWithValues.nodes.map(({id, relatedProperty, relatedValues}) => ({
-        relationshipId: id, relatedProperty, relatedValues
-    }));
-
     return (
         <FormView>
             <NameFormSet
@@ -88,7 +84,7 @@ const DomainClassForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
             />
 
             <TransferListView
-                title="Zugewiesene Merkmalgruppen"
+                title={<span>Der Klasse <b>{entry?.name}</b> zugewiesene <b>Merkmalsgruppen</b></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.AssignsCollections}
                 relationships={assignsCollectionsRelationships}
@@ -102,7 +98,7 @@ const DomainClassForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
             />
 
             <TransferListView
-                title={`Direkt zugewiesene Merkmale von ${entry.name}`}
+                title={<span>Direkt zugewiesene <b>Merkmale</b> der Klasse {entry.name}</span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.AssignsProperties}
                 relationships={assignsPropertiesRelationships}
@@ -115,34 +111,24 @@ const DomainClassForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
                 onDelete={handleOnUpdate}
             />
 
-            <AssignsPropertyWithValuesTransferListView
-                title="Gültige Wertelistenwerte, der zugewiesenen Merkmale"
-                relatingItemId={id}
-                assignedProperties={entry.properties}
-                relationships={assignsPropertyWithValuesRelationships}
-                searchInput={{
-                    entityTypeIn: [ValueEntity.recordType],
-                    tagged: ValueEntity.tags
-                }}
-                onCreate={handleOnUpdate}
-                onUpdate={handleOnUpdate}
-                onDelete={handleOnUpdate}
+            <AssignsPropertyWithValuesFormset
+                subject={entry}
+                onChange={handleOnUpdate}
             />
 
-
-            <MetaFormSet entry={entry}/>
-
             <RelatingRecordsFormSet
-                title={"Zugewiesene Referenzdokumente"}
+                title={<span>Verweisende <b>Referenzdokumente</b></span>}
                 emptyMessage={"Durch kein Referenzdokument beschrieben"}
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
             />
 
             <RelatingRecordsFormSet
-                title={"Zugewiesen Gruppen"}
+                title={<span>Zugewiesene <b>Gruppen</b></span>}
                 emptyMessage={"In keiner Gruppe aufgeführt"}
                 relatingRecords={entry?.collectedBy.nodes.map(node => node.relatingCollection) ?? []}
             />
+
+            <MetaFormSet entry={entry}/>
 
             <Button
                 variant="contained"
@@ -155,5 +141,3 @@ const DomainClassForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
         </FormView>
     );
 }
-
-export default DomainClassForm;

@@ -61,7 +61,7 @@ const DescriptionFormSet: FC<DescriptionFormSetProps> = (props) => {
 
     return (
         <FormSet>
-            <FormSetTitle>Beschreibung</FormSetTitle>
+            <FormSetTitle><b>Beschreibung</b></FormSetTitle>
             <FormSetDescription className={classes.description}>
                 Charakterisiert das Konzept in Ausprägung und Anwendungskonzept näher.
             </FormSetDescription>

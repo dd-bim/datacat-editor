@@ -77,7 +77,7 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
             />
 
             <TransferListView
-                title="Gruppierte Klassen"
+                title={<span>Gruppierte <b>Klassen</b></span>}
                 description="Klassen, die dieser Gruppe zugeordnet sind."
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.Collects}
@@ -88,19 +88,19 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
                 onDelete={handleOnUpdate}
             />
 
-            <MetaFormSet entry={entry}/>
-
             <RelatingRecordsFormSet
-                title={"Zugewiesene Referenzdokumente"}
+                title={<span>Zugewiesene <b>Referenzdokumente</b></span>}
                 emptyMessage={"Durch kein Referenzdokument beschrieben"}
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
             />
 
             <RelatingRecordsFormSet
-                title={"Zugewiesene Fachmodelle"}
+                title={<span>Zugewiesene <b>Fachmodelle</b></span>}
                 emptyMessage={"In keinem Fachmodell aufgeführt"}
                 relatingRecords={entry?.collectedBy.nodes.map(node => node.relatingCollection) ?? []}
             />
+
+            <MetaFormSet entry={entry}/>
 
             <Button
                 variant="contained"
