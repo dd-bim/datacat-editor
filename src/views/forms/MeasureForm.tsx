@@ -109,14 +109,14 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
             />
 
             <RelatingRecordsFormSet
-                title={<span>Zugewiesene <b>Referenzdokumente</b></span>}
-                emptyMessage={"Durch kein Referenzdokument beschrieben"}
+                title={<span><b>Referenzdokumente</b>, die diese Größe beschreiben</span>}
+                emptyMessage={"Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben"}
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
             />
 
             <RelatingRecordsFormSet
-                title={<span>Zugewiesene <b>Merkmale</b></span>}
-                emptyMessage={"Keinem Merkmal zugewiesen"}
+                title={<span><b>Merkmale</b>, die durch diese Größe quantifiziert werden</span>}
+                emptyMessage={"Die Größe wird durch kein Merkmal genutzt"}
                 relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingProperty) ?? []}
             />
 

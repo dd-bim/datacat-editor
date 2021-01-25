@@ -77,14 +77,14 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
             />
 
             <RelatingRecordsFormSet
-                title={<span>Zugewiesene <b>Referenzdokumente</b></span>}
-                emptyMessage={"Durch kein Referenzdokument beschrieben"}
+                title={<span><b>Referenzdokumente</b>, die diesen Wert beschreiben</span>}
+                emptyMessage={"Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben"}
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
             />
 
             <RelatingRecordsFormSet
-                title={<span>Zugewiesene <b>Größe</b></span>}
-                emptyMessage={"Beschreibt keine Größe"}
+                title={<span><b>Größen</b>, denen dieser Wert zugewiesen wurde</span>}
+                emptyMessage={"Der Wert wurde keiner Größe zugewiesen"}
                 relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingMeasure) ?? []}
             />
 

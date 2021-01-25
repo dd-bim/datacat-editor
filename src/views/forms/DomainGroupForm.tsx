@@ -89,14 +89,14 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
             />
 
             <RelatingRecordsFormSet
-                title={<span>Zugewiesene <b>Referenzdokumente</b></span>}
-                emptyMessage={"Durch kein Referenzdokument beschrieben"}
+                title={<span><b>Referenzdokumente</b>, die diese Gruppe beschreiben</span>}
+                emptyMessage={"Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben"}
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
             />
 
             <RelatingRecordsFormSet
-                title={<span>Zugewiesene <b>Fachmodelle</b></span>}
-                emptyMessage={"In keinem Fachmodell aufgeführt"}
+                title={<span><b>Fachmodelle</b>, die diese Gruppe anwenden</span>}
+                emptyMessage={"Die Gruppe wird durch kein Fachmodell genutzt"}
                 relatingRecords={entry?.collectedBy.nodes.map(node => node.relatingCollection) ?? []}
             />
 

@@ -61,14 +61,14 @@ const UnitForm: FC<FormProps<UnitDetailPropsFragment>> = (props) => {
             />
 
             <RelatingRecordsFormSet
-                title={<span>Zugewiesene <b>Referenzdokumente</b></span>}
-                emptyMessage={"Durch kein Referenzdokument beschrieben"}
+                title={<span><b>Referenzdokumente</b>, die diese Einheit beschreiben</span>}
+                emptyMessage={"Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben"}
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
             />
 
             <RelatingRecordsFormSet
-                title={<span>Zugewiesene <b>Größe</b></span>}
-                emptyMessage={"Beschreibt keine Größe"}
+                title={<span><b>Größen</b>, denen diese Einheit zugewiesen wurde</span>}
+                emptyMessage={"Die Einheit wird durch keine Größe genutzt"}
                 relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingMeasure) ?? []}
             />
 

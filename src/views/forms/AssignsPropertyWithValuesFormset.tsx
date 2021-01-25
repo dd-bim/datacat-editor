@@ -1,5 +1,16 @@
-import FormSet, {FormSetTitle} from "../../components/forms/FormSet";
-import {Checkbox, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, Typography} from "@material-ui/core";
+import FormSet, {FormSetDescription, FormSetTitle} from "../../components/forms/FormSet";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Checkbox,
+    ListItem,
+    ListItemIcon,
+    ListItemSecondaryAction,
+    ListItemText,
+    Typography
+} from "@material-ui/core";
 import List from "@material-ui/core/List";
 import {ValueIcon} from "../../domain";
 import React from "react";
@@ -68,9 +79,14 @@ export default function AssignsPropertyWithValuesFormset(props: AssignsPropertyW
     };
 
     return (
-        <React.Fragment>
-            {subject.properties
-                .filter(property => property.assignedMeasures.nodes.length)
+        <FormSet>
+            <FormSetTitle><b>Abgeleitete Merkmale</b> der Klasse {subject.name}</FormSetTitle>
+            {!subject.properties.length && (
+                <FormSetDescription>Der Klasse sind keine Merkmale oder nichtleere Merkmalsgruppen
+                    zugewiesen</FormSetDescription>
+            )}
+            {[...subject.properties]
+                .sort((a, b) => (a.name ?? a.id).localeCompare(b.name ?? b.id))
                 .map(property => {
                     const assignment = subject?.assignedPropertiesWithValues.nodes.find(assignsPropertyWithValues => (
                         assignsPropertyWithValues.relatedProperty.id === property.id
@@ -78,69 +94,84 @@ export default function AssignsPropertyWithValuesFormset(props: AssignsPropertyW
                     const restrictedValues = assignment?.relatedValues.map(x => x.id) ?? [];
                     const unrestricted = !assignment;
 
-                    return (
-                        <FormSet key={property.id}>
-                            <FormSetTitle>Mögliche <b>Werte</b> der Größen <b>des Merkmals {property.name}</b> der
-                                Klasse {subject?.name}</FormSetTitle>
-                            {property.assignedMeasures.nodes.map(assignedMeasures => (
-                                <div key={assignedMeasures.id}>
-                                    {assignedMeasures.relatedMeasures.map(measure => (
-                                        <div key={measure.id}>
-                                            <Typography variant={"body2"}>Größe <b>{measure.name}</b></Typography>
-                                            {measure.assignedValues.nodes.map(assignedValues => (
-                                                <List key={assignedValues.id} dense>
-                                                    {assignedValues.relatedValues.map(value => {
-                                                        const labelId = `checkbox-label-${value.id}`;
-                                                        const label = value.name + (value.nominalValue ? ` (${value.nominalValue})` : "");
-                                                        const checked = restrictedValues.includes(value.id);
+                    const hasAssignedMeasures = property.assignedMeasures.nodes.length;
+                    const summaryLabel = property.name;
 
-                                                        const handleToggle = async () => {
-                                                            if (unrestricted) {
-                                                                await handleOnCreate(property.id, [value.id]);
-                                                            } else {
-                                                                const relatedValueIds = [...restrictedValues];
-                                                                if (checked) {
-                                                                    const idx = relatedValueIds.indexOf(value.id);
-                                                                    relatedValueIds.splice(idx, 1);
+
+                    return (
+                        <Accordion key={property.id}>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
+                                <Typography>{summaryLabel}</Typography>
+                            </AccordionSummary>
+
+                            <AccordionDetails>
+                                {!hasAssignedMeasures && (
+                                    <FormSetDescription>Dem Merkmal ist keine Größe zugewiesen</FormSetDescription>
+                                )}
+                                {property.assignedMeasures.nodes.map(assignedMeasures => (
+                                    <div key={assignedMeasures.id}>
+                                        {assignedMeasures.relatedMeasures.map(measure => (
+                                            <div key={measure.id}>
+                                                <Typography variant={"body2"}>Größe <b>{measure.name}</b></Typography>
+                                                {!measure.assignedValues.nodes.length && (
+                                                    <ListItem key={measure.id} dense>Kein Wertebereich
+                                                        festgelegt</ListItem>
+                                                )}
+                                                {measure.assignedValues.nodes.map(assignedValues => (
+                                                    <List key={assignedValues.id} dense>
+                                                        {assignedValues.relatedValues.map(value => {
+                                                            const labelId = `checkbox-label-${value.id}`;
+                                                            const label = value.name + (value.nominalValue ? ` (${value.nominalValue})` : "");
+                                                            const checked = restrictedValues.includes(value.id);
+
+                                                            const handleToggle = async () => {
+                                                                if (unrestricted) {
+                                                                    await handleOnCreate(property.id, [value.id]);
                                                                 } else {
-                                                                    relatedValueIds.push(value.id);
-                                                                }
-                                                                if (relatedValueIds.length) {
-                                                                    await handleOnUpdate(assignment!.id, property.id, relatedValueIds);
-                                                                } else {
-                                                                    await handleOnDelete(assignment!.id);
+                                                                    const relatedValueIds = [...restrictedValues];
+                                                                    if (checked) {
+                                                                        const idx = relatedValueIds.indexOf(value.id);
+                                                                        relatedValueIds.splice(idx, 1);
+                                                                    } else {
+                                                                        relatedValueIds.push(value.id);
+                                                                    }
+                                                                    if (relatedValueIds.length) {
+                                                                        await handleOnUpdate(assignment!.id, property.id, relatedValueIds);
+                                                                    } else {
+                                                                        await handleOnDelete(assignment!.id);
+                                                                    }
                                                                 }
                                                             }
-                                                        }
 
-                                                        return (
-                                                            <ListItem key={value.id} dense>
-                                                                <ListItemIcon>
-                                                                    <ValueIcon/>
-                                                                </ListItemIcon>
-                                                                <ListItemText id={labelId}>{label}</ListItemText>
-                                                                <ListItemSecondaryAction>
-                                                                    <Checkbox
-                                                                        edge="end"
-                                                                        onChange={handleToggle}
-                                                                        indeterminate={unrestricted}
-                                                                        checked={checked}
-                                                                        inputProps={{'aria-labelledby': labelId}}
-                                                                    />
-                                                                </ListItemSecondaryAction>
-                                                            </ListItem>
-                                                        );
-                                                    })}
-                                                </List>
-                                            ))}
+                                                            return (
+                                                                <ListItem key={value.id} dense>
+                                                                    <ListItemIcon>
+                                                                        <ValueIcon/>
+                                                                    </ListItemIcon>
+                                                                    <ListItemText id={labelId}>{label}</ListItemText>
+                                                                    <ListItemSecondaryAction>
+                                                                        <Checkbox
+                                                                            edge="end"
+                                                                            onChange={handleToggle}
+                                                                            indeterminate={unrestricted}
+                                                                            checked={checked}
+                                                                            inputProps={{'aria-labelledby': labelId}}
+                                                                        />
+                                                                    </ListItemSecondaryAction>
+                                                                </ListItem>
+                                                            );
+                                                        })}
+                                                    </List>
+                                                ))}
 
-                                        </div>
-                                    ))}
-                                </div>
-                            ))}
-                        </FormSet>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ))}
+                            </AccordionDetails>
+                        </Accordion>
                     );
                 })}
-        </React.Fragment>
+        </FormSet>
     );
 }

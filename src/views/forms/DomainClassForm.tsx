@@ -117,14 +117,14 @@ export default function DomainClassForm(props: FormProps<SubjectDetailPropsFragm
             />
 
             <RelatingRecordsFormSet
-                title={<span>Verweisende <b>Referenzdokumente</b></span>}
-                emptyMessage={"Durch kein Referenzdokument beschrieben"}
+                title={<span><b>Referenzdokumente</b>, die diese Klasse beschreiben</span>}
+                emptyMessage={"Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben"}
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
             />
 
             <RelatingRecordsFormSet
-                title={<span>Zugewiesene <b>Gruppen</b></span>}
-                emptyMessage={"In keiner Gruppe aufgeführt"}
+                title={<span><b>Gruppen</b>, die diese Klasse anwenden</span>}
+                emptyMessage={"Die Klasse wird durch keine Gruppe genutzt"}
                 relatingRecords={entry?.collectedBy.nodes.map(node => node.relatingCollection) ?? []}
             />
 

@@ -91,20 +91,20 @@ const PropertyForm: FC<FormProps<PropertyDetailPropsFragment>> = (props) => {
             />
 
             <RelatingRecordsFormSet
-                title={<span>Zugewiesene <b>Referenzdokumente</b></span>}
-                emptyMessage={"Durch kein Referenzdokument beschrieben"}
+                title={<span><b>Referenzdokumente</b>, die dieses Merkmal beschreiben</span>}
+                emptyMessage={"Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben"}
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
             />
 
             <RelatingRecordsFormSet
-                title={<span>Zugewiesene <b>Merkmalsgruppen</b></span>}
-                emptyMessage={"In keiner Merkmalsgruppe aufgeführt"}
+                title={<span><b>Merkmalsgruppen</b>, die dieses Merkmal aggregieren</span>}
+                emptyMessage={"Das Merkmal wird in keiner Merkmalsgruppe genutzt"}
                 relatingRecords={entry?.collectedBy.nodes.map(node => node.relatingCollection) ?? []}
             />
 
             <RelatingRecordsFormSet
-                title={<span>Zugewiesene <b>Klassen</b></span>}
-                emptyMessage={"Keiner Klasse direkt zugewiesen"}
+                title={<span><b>Klassen</b>, denen dieses Merkmal direkt zugewiesen wurde</span>}
+                emptyMessage={"Das Merkmal wurde keiner Klasse direkt zugewiesen"}
                 relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingObject) ?? []}
             />
 
