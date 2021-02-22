@@ -14,6 +14,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import StorageIcon from '@material-ui/icons/Storage';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ImportExportIcon from '@material-ui/icons/ImportExport';
+import CodeIcon from '@material-ui/icons/Code';
 import {
     ClassEntity,
     DataTemplateEntity,
@@ -27,6 +28,7 @@ import {
     ValueEntity
 } from "../domain";
 import AppTitle from "./AppTitle";
+import {useAdminAccess} from "../hooks/useAuthContext";
 
 const useStyles = makeStyles(theme => ({
     drawerContainer: {
@@ -46,7 +48,7 @@ type AppDrawerItemProps = {
 }
 
 export const AppDrawerItem: FunctionComponent<AppDrawerItemProps & ListItemProps> = (props) => {
-    const {icon, primary, secondary, tooltip = '', to, disabled} = props
+    const {icon, primary, secondary, tooltip = '', to, disabled} = props;
 
     return (
         <Tooltip title={tooltip} aria-label={tooltip} arrow enterDelay={500}>
@@ -73,6 +75,8 @@ export const AppDrawerItem: FunctionComponent<AppDrawerItemProps & ListItemProps
 
 const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
     const classes = useStyles();
+    const isAdmin = useAdminAccess();
+
     return (
         <Drawer {...props}>
             <div className={classes.drawerContainer}>
@@ -113,6 +117,14 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
                         primary="Exportieren"
                         to="/export"
                     />
+
+                    {isAdmin && (
+                        <AppDrawerItem
+                            icon={<CodeIcon/>}
+                            primary="GraphiQL Interface"
+                            to="/graphiql"
+                        />
+                    )}
 
                     <ListSubheader disableSticky>Katalog</ListSubheader>
 
