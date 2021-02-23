@@ -74,8 +74,8 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 # Docker image
 
-This application is published as a self-contained Docker image with all npm packages needed
-pre-installed. The entrypoint of the container is the `npm start` script, which means a development
+This application is published as a [self-contained Docker image](https://hub.docker.com/repository/docker/bentrm/datacat-editor) 
+with all npm packages needed pre-installed. The entrypoint of the container is the `npm start` script, which means a development
 server is executed by default. It should only be used for development and local testing.
 
 A static application bundle (see `npm run build`) for production use can be generated from this image
