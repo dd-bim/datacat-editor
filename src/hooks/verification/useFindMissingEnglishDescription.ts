@@ -1,28 +1,28 @@
 import {useMemo} from "react";
-import {ItemPropsFragment} from "../generated/types";
+import {ItemPropsFragment} from "../../generated/types";
 
-export type PropertyTreeRootNode = {
-    children: PropertyTreeNode[]
+export type VTreeRootNode = {
+    children: VTreeNode[]
 }
 
-export type PropertyTreeNode = {
+export type VTreeNode = {
     id: string,
     nodeId: string,
     data: ItemPropsFragment,
-    children: PropertyTreeNode[]
+    children: VTreeNode[]
 }
 
-type UsePropertyTreeOptions = {
+type UseVTreeOptions = {
     leaves: ItemPropsFragment[],
     paths: string[][]
 }
 
-const useHierarchy = (options: UsePropertyTreeOptions) => {
+const useFindMissingEnglishDescription = (options: UseVTreeOptions) => {
     const {
         leaves,
         paths
     } = options;
-    // memorize a lookup object fasten tree generation
+    // Speichern eines lookup-Objektes; Beschleunigung der Baumerzeugung
     const lookupMap = useMemo(() => {
         return leaves.reduce((agg, cur) => {
             agg[cur.id] = cur;
@@ -30,17 +30,17 @@ const useHierarchy = (options: UsePropertyTreeOptions) => {
         }, {} as { [key: string]: ItemPropsFragment });
     }, [leaves]);
 
-    // generate tree structure
+    // Baumstruktur erzeugen
     const rootNode = useMemo(() => {
-        const result: PropertyTreeRootNode = {children: []};
+        const result: VTreeRootNode = {children: []};
 
         paths.forEach(path => {
-            let parent = result; // start mapping at root node
+            let parent = result; // Mapping am Wurzelknoten beginnen
 
             path.forEach((id, idx) => {
                 const data = lookupMap[id];
 
-                // the node may have been introduced in another path already
+                // der Knoten kann bereits auf einem anderen Weg eingeführt worden sein; Kontrolle auf Dopplungen
                 let node = parent.children.find(n => n.id === id);
                 if (!node) {
                     const nodeId = path.slice(0, idx + 1).join(':') + ':' + id;
@@ -62,10 +62,11 @@ const useHierarchy = (options: UsePropertyTreeOptions) => {
         return result;
     }, [paths, lookupMap]);
 
+    // Darstellung über TreeView in Verification.tsx
     return {
         nodes: rootNode.children,
         lookupMap
     };
 };
 
-export default useHierarchy;
+export default useFindMissingEnglishDescription;

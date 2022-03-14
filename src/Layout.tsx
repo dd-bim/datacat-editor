@@ -19,6 +19,7 @@ import CatalogEntryRoutes from "./routes/CatalogEntryRoutes";
 import GraphiQLEditor from "./GraphiQLEditor";
 import Container from "@material-ui/core/Container";
 import {HomePanel} from "./components/HomePanel";
+import {VerificationView} from "./views/VerificationView";
 import {ExportView} from "./views/ExportView";
 
 const drawerWidth = 250;
@@ -99,6 +100,9 @@ export default function Layout() {
                     </Route>
                     <Route path="/search">
                         <HierarchyView/>
+                    </Route>
+                    <Route path="/audit">
+                        <VerificationView/>
                     </Route>
                     <Route path="/export">
                         <ExportView/>

@@ -46,7 +46,7 @@ export const DocumentEntity: Entity = {
     recordType: CatalogRecordType.ExternalDocument,
     path: "document",
     Icon: ReferenceDocumentIcon,
-
+    export: true
 };
 
 export const ModelEntity: Entity = {
@@ -94,7 +94,8 @@ export const PropertyGroupEntity: Entity = {
     titlePlural: "Merkmalsgruppen",
     recordType: CatalogRecordType.Nest,
     path: "property-group",
-    Icon: PropertyGroupIcon
+    Icon: PropertyGroupIcon,
+    export: true
 }
 
 export const PropertyEntity: Entity = {
@@ -103,7 +104,8 @@ export const PropertyEntity: Entity = {
     titlePlural: "Merkmale",
     recordType: CatalogRecordType.Property,
     path: "property",
-    Icon: PropertyIcon
+    Icon: PropertyIcon,
+    export: true
 }
 
 export const MeasureEntity: Entity = {
@@ -112,7 +114,8 @@ export const MeasureEntity: Entity = {
     titlePlural: "Größen",
     recordType: CatalogRecordType.Measure,
     path: "measure",
-    Icon: MeasureIcon
+    Icon: MeasureIcon,
+    export: true
 }
 
 export const UnitEntity: Entity = {
@@ -121,7 +124,8 @@ export const UnitEntity: Entity = {
     titlePlural: "Maßeinheiten",
     recordType: CatalogRecordType.Unit,
     path: "unit",
-    Icon: UnitIcon
+    Icon: UnitIcon,
+    export: true
 }
 
 export const ValueEntity: Entity = {
@@ -130,7 +134,8 @@ export const ValueEntity: Entity = {
     titlePlural: "Werte",
     recordType: CatalogRecordType.Value,
     path: "value",
-    Icon: ValueIcon
+    Icon: ValueIcon,
+    export: true
 }
 
 export const Domain = [

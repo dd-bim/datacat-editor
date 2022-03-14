@@ -172,6 +172,33 @@ export type HierarchyRootNodeFilterInput = {
   tagged?: Maybe<Array<Scalars['ID']>>;
 };
 
+export type VerificationRootNodeFilterInput = {
+  catalogEntryType?: Maybe<Array<CatalogRecordType>>;
+};
+
+export type FindMissingTagsFilterInput = {
+  nodeTypeFilter: VerificationRootNodeFilterInput;
+};
+
+export type FindMissingEnglishNameFilterInput = {
+  nodeTypeFilter: VerificationRootNodeFilterInput;
+};
+
+export type FindMultipleIDsFilterInput = {
+  nodeTypeFilter: VerificationRootNodeFilterInput;
+};
+
+export type findMissingDescriptionFilterInput = {
+  nodeTypeFilter: VerificationRootNodeFilterInput;
+};
+
+export type FindMissingEnglishDescriptionFilterInput = {
+  nodeTypeFilter: VerificationRootNodeFilterInput;
+};
+
+export type FindMultipleNamesFilterInput = {
+  nodeTypeFilter: VerificationRootNodeFilterInput;
+};
 
 
 /**  Query type */
@@ -1041,6 +1068,60 @@ export type GetDocumentEntryQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
+export type FindPropGroupWithoutPropTreeQueryVariables = Exact<{ [key: string]: never; }>;
+
+export type FindPropWithoutSubjectOrPropGroupTreeQueryVariables = Exact<{ [key: string]: never; }>;
+
+export type FindModelWithoutGroupTreeQueryVariables = Exact<{ [key: string]: never; }>;
+
+export type FindGroupWithoutSubjectTreeQueryVariables = Exact<{ [key: string]: never; }>;
+
+export type FindSubjectWithoutPropTreeQueryVariables = Exact<{ [key: string]: never; }>;
+
+export type FindMeasureWithoutPropTreeQueryVariables = Exact<{ [key: string]: never; }>;
+
+export type FindUnitWithoutMeasureTreeQueryVariables = Exact<{ [key: string]: never; }>;
+
+export type FindValueWithoutMeasureTreeQueryVariables = Exact<{ [key: string]: never; }>;
+
+export type FindMissingTagsTreeQueryVariables = Exact<{ [key: string]: never; }>;
+
+export type FindMissingEnglishNameTreeQueryVariables = Exact<{ [key: string]: never; }>;
+
+export type FindMultipleIDsTreeQueryVariables = Exact<{ [key: string]: never; }>;
+
+export type FindMissingDescriptionTreeQueryVariables = Exact<{ [key: string]: never; }>;
+
+export type FindMissingEnglishDescriptionTreeQueryVariables = Exact<{ [key: string]: never; }>;
+
+export type FindMultipleNamesTreeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FindPropGroupWithoutPropTreeQuery = { findPropGroupWithoutProp: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+
+export type FindPropWithoutSubjectOrPropGroupTreeQuery = { findPropWithoutSubjectOrPropGroup: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+
+export type FindModelWithoutGroupTreeQuery = { findModelWithoutGroup: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+
+export type FindGroupWithoutSubjectTreeQuery = { findGroupWithoutSubject: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+
+export type FindSubjectWithoutPropTreeQuery = { findSubjectWithoutProp: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+
+export type FindMeasureWithoutPropTreeQuery = { findMeasureWithoutProp: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+
+export type FindUnitWithoutMeasureTreeQuery = { findUnitWithoutMeasure: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+
+export type FindValueWithoutMeasureTreeQuery = { findValueWithoutMeasure: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+
+export type FindMissingEnglishNameTreeQuery = { findMissingEnglishName: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+
+export type FindMultipleIDsTreeQuery = { findMultipleIDs: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+
+export type FindMissingDescriptionTreeQuery = { findMissingDescription: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+
+export type FindMissingEnglishDescriptionTreeQuery = { findMissingEnglishDescription: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+
+export type FindMultipleNamesTreeQuery = { findMultipleNames: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
 
 export type GetDocumentEntryQuery = { node?: Maybe<ExternalDocumentDetailPropsFragment> };
 
@@ -2290,6 +2371,315 @@ export const PropertyTreeDocument = gql`
   }
 }
     ${ItemPropsFragmentDoc}`;
+
+// FindPropGroupWithoutProp
+
+export const FindPropGroupWithoutPropTreeDocument = gql`
+    query FindPropGroupWithoutPropTree {
+      findPropGroupWithoutProp{
+    nodes {
+      ...ItemProps
+    }
+    paths
+  }
+}
+    ${ItemPropsFragmentDoc}`;
+    
+export function useFindPropGroupWithoutPropTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindPropGroupWithoutPropTreeQuery, FindPropGroupWithoutPropTreeQueryVariables>) {
+  return Apollo.useQuery<FindPropGroupWithoutPropTreeQuery, FindPropGroupWithoutPropTreeQueryVariables>(FindPropGroupWithoutPropTreeDocument, baseOptions);
+}
+export function useFindPropGroupWithoutPropTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindPropGroupWithoutPropTreeQuery, FindPropGroupWithoutPropTreeQueryVariables>) {
+    return Apollo.useLazyQuery<FindPropGroupWithoutPropTreeQuery, FindPropGroupWithoutPropTreeQueryVariables>(FindPropGroupWithoutPropTreeDocument, baseOptions);
+  }
+export type FindPropGroupWithoutPropTreeQueryHookResult = ReturnType<typeof useFindPropGroupWithoutPropTreeQuery>;
+export type FindPropGroupWithoutPropTreeLazyQueryHookResult = ReturnType<typeof useFindPropGroupWithoutPropTreeLazyQuery>;
+export type FindPropGroupWithoutPropTreeQueryResult = Apollo.QueryResult<FindPropGroupWithoutPropTreeQuery, FindPropGroupWithoutPropTreeQueryVariables>;
+
+// FindPropWithoutSubjectOrPropGroup
+
+export const FindPropWithoutSubjectOrPropGroupTreeDocument = gql`
+    query FindPropWithoutSubjectOrPropGroupTree {
+      findPropWithoutSubjectOrPropGroup{
+    nodes {
+      ...ItemProps
+    }
+    paths
+  }
+}
+    ${ItemPropsFragmentDoc}`;
+    
+export function useFindPropWithoutSubjectOrPropGroupTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindPropWithoutSubjectOrPropGroupTreeQuery, FindPropWithoutSubjectOrPropGroupTreeQueryVariables>) {
+  return Apollo.useQuery<FindPropWithoutSubjectOrPropGroupTreeQuery, FindPropWithoutSubjectOrPropGroupTreeQueryVariables>(FindPropWithoutSubjectOrPropGroupTreeDocument, baseOptions);
+}
+export function useFindPropWithoutSubjectOrPropGroupTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindPropWithoutSubjectOrPropGroupTreeQuery, FindPropWithoutSubjectOrPropGroupTreeQueryVariables>) {
+    return Apollo.useLazyQuery<FindPropWithoutSubjectOrPropGroupTreeQuery, FindPropWithoutSubjectOrPropGroupTreeQueryVariables>(FindPropWithoutSubjectOrPropGroupTreeDocument, baseOptions);
+  }
+export type FindPropWithoutSubjectOrPropGroupTreeQueryHookResult = ReturnType<typeof useFindPropWithoutSubjectOrPropGroupTreeQuery>;
+export type FindPropWithoutSubjectOrPropGroupTreeLazyQueryHookResult = ReturnType<typeof useFindPropWithoutSubjectOrPropGroupTreeLazyQuery>;
+export type FindPropWithoutSubjectOrPropGroupTreeQueryResult = Apollo.QueryResult<FindPropWithoutSubjectOrPropGroupTreeQuery, FindPropWithoutSubjectOrPropGroupTreeQueryVariables>;
+
+// FindModelWithoutGroup
+
+export const FindModelWithoutGroupTreeDocument = gql`
+    query FindModelWithoutGroupTree {
+      findModelWithoutGroup{
+    nodes {
+      ...ItemProps
+    }
+    paths
+  }
+}
+    ${ItemPropsFragmentDoc}`;
+    
+export function useFindModelWithoutGroupTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindModelWithoutGroupTreeQuery, FindModelWithoutGroupTreeQueryVariables>) {
+  return Apollo.useQuery<FindModelWithoutGroupTreeQuery, FindModelWithoutGroupTreeQueryVariables>(FindModelWithoutGroupTreeDocument, baseOptions);
+}
+export function useFindModelWithoutGroupTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindModelWithoutGroupTreeQuery, FindModelWithoutGroupTreeQueryVariables>) {
+    return Apollo.useLazyQuery<FindModelWithoutGroupTreeQuery, FindModelWithoutGroupTreeQueryVariables>(FindModelWithoutGroupTreeDocument, baseOptions);
+  }
+export type FindModelWithoutGroupTreeQueryHookResult = ReturnType<typeof useFindModelWithoutGroupTreeQuery>;
+export type FindModelWithoutGroupTreeLazyQueryHookResult = ReturnType<typeof useFindModelWithoutGroupTreeLazyQuery>;
+export type FindModelWithoutGroupTreeQueryResult = Apollo.QueryResult<FindModelWithoutGroupTreeQuery, FindModelWithoutGroupTreeQueryVariables>;
+
+// FindGroupWithoutSubject
+
+export const FindGroupWithoutSubjectTreeDocument = gql`
+    query FindGroupWithoutSubjectTree {
+      findGroupWithoutSubject{
+    nodes {
+      ...ItemProps
+    }
+    paths
+  }
+}
+    ${ItemPropsFragmentDoc}`;
+    
+export function useFindGroupWithoutSubjectTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindGroupWithoutSubjectTreeQuery, FindGroupWithoutSubjectTreeQueryVariables>) {
+  return Apollo.useQuery<FindGroupWithoutSubjectTreeQuery, FindGroupWithoutSubjectTreeQueryVariables>(FindGroupWithoutSubjectTreeDocument, baseOptions);
+}
+export function useFindGroupWithoutSubjectTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindGroupWithoutSubjectTreeQuery, FindGroupWithoutSubjectTreeQueryVariables>) {
+    return Apollo.useLazyQuery<FindGroupWithoutSubjectTreeQuery, FindGroupWithoutSubjectTreeQueryVariables>(FindGroupWithoutSubjectTreeDocument, baseOptions);
+  }
+export type FindGroupWithoutSubjectTreeQueryHookResult = ReturnType<typeof useFindGroupWithoutSubjectTreeQuery>;
+export type FindGroupWithoutSubjectTreeLazyQueryHookResult = ReturnType<typeof useFindGroupWithoutSubjectTreeLazyQuery>;
+export type FindGroupWithoutSubjectTreeQueryResult = Apollo.QueryResult<FindGroupWithoutSubjectTreeQuery, FindGroupWithoutSubjectTreeQueryVariables>;
+
+// FindSubjectWithoutProp
+
+export const FindSubjectWithoutPropTreeDocument = gql`
+    query FindSubjectWithoutPropTree {
+      findSubjectWithoutProp{
+    nodes {
+      ...ItemProps
+    }
+    paths
+  }
+}
+    ${ItemPropsFragmentDoc}`;
+    
+export function useFindSubjectWithoutPropTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindSubjectWithoutPropTreeQuery, FindSubjectWithoutPropTreeQueryVariables>) {
+  return Apollo.useQuery<FindSubjectWithoutPropTreeQuery, FindSubjectWithoutPropTreeQueryVariables>(FindSubjectWithoutPropTreeDocument, baseOptions);
+}
+export function useFindSubjectWithoutPropTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindSubjectWithoutPropTreeQuery, FindSubjectWithoutPropTreeQueryVariables>) {
+    return Apollo.useLazyQuery<FindSubjectWithoutPropTreeQuery, FindSubjectWithoutPropTreeQueryVariables>(FindSubjectWithoutPropTreeDocument, baseOptions);
+  }
+export type FindSubjectWithoutPropTreeQueryHookResult = ReturnType<typeof useFindSubjectWithoutPropTreeQuery>;
+export type FindSubjectWithoutPropTreeLazyQueryHookResult = ReturnType<typeof useFindSubjectWithoutPropTreeLazyQuery>;
+export type FindSubjectWithoutPropTreeQueryResult = Apollo.QueryResult<FindSubjectWithoutPropTreeQuery, FindSubjectWithoutPropTreeQueryVariables>;
+
+// FindMeasureWithoutProp
+
+export const FindMeasureWithoutPropTreeDocument = gql`
+    query FindMeasureWithoutPropTree {
+      findMeasureWithoutProp{
+    nodes {
+      ...ItemProps
+    }
+    paths
+  }
+}
+    ${ItemPropsFragmentDoc}`;
+    
+export function useFindMeasureWithoutPropTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMeasureWithoutPropTreeQuery, FindMeasureWithoutPropTreeQueryVariables>) {
+  return Apollo.useQuery<FindMeasureWithoutPropTreeQuery, FindMeasureWithoutPropTreeQueryVariables>(FindMeasureWithoutPropTreeDocument, baseOptions);
+}
+export function useFindMeasureWithoutPropTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMeasureWithoutPropTreeQuery, FindMeasureWithoutPropTreeQueryVariables>) {
+    return Apollo.useLazyQuery<FindMeasureWithoutPropTreeQuery, FindMeasureWithoutPropTreeQueryVariables>(FindMeasureWithoutPropTreeDocument, baseOptions);
+  }
+export type FindMeasureWithoutPropTreeQueryHookResult = ReturnType<typeof useFindMeasureWithoutPropTreeQuery>;
+export type FindMeasureWithoutPropTreeLazyQueryHookResult = ReturnType<typeof useFindMeasureWithoutPropTreeLazyQuery>;
+export type FindMeasureWithoutPropTreeQueryResult = Apollo.QueryResult<FindMeasureWithoutPropTreeQuery, FindMeasureWithoutPropTreeQueryVariables>;
+
+// FindUnitWithoutMeasure
+
+export const FindUnitWithoutMeasureTreeDocument = gql`
+    query FindUnitWithoutMeasureTree {
+      findUnitWithoutMeasure{
+    nodes {
+      ...ItemProps
+    }
+    paths
+  }
+}
+    ${ItemPropsFragmentDoc}`;
+    
+export function useFindUnitWithoutMeasureTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindUnitWithoutMeasureTreeQuery, FindUnitWithoutMeasureTreeQueryVariables>) {
+  return Apollo.useQuery<FindUnitWithoutMeasureTreeQuery, FindUnitWithoutMeasureTreeQueryVariables>(FindUnitWithoutMeasureTreeDocument, baseOptions);
+}
+export function useFindUnitWithoutMeasureTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindUnitWithoutMeasureTreeQuery, FindUnitWithoutMeasureTreeQueryVariables>) {
+    return Apollo.useLazyQuery<FindUnitWithoutMeasureTreeQuery, FindUnitWithoutMeasureTreeQueryVariables>(FindUnitWithoutMeasureTreeDocument, baseOptions);
+  }
+export type FindUnitWithoutMeasureTreeQueryHookResult = ReturnType<typeof useFindUnitWithoutMeasureTreeQuery>;
+export type FindUnitWithoutMeasureTreeLazyQueryHookResult = ReturnType<typeof useFindUnitWithoutMeasureTreeLazyQuery>;
+export type FindUnitWithoutMeasureTreeQueryResult = Apollo.QueryResult<FindUnitWithoutMeasureTreeQuery, FindUnitWithoutMeasureTreeQueryVariables>;
+
+// FindValueWithoutMeasure
+
+export const FindValueWithoutMeasureTreeDocument = gql`
+    query FindValueWithoutMeasureTree {
+      findValueWithoutMeasure{
+    nodes {
+      ...ItemProps
+    }
+    paths
+  }
+}
+    ${ItemPropsFragmentDoc}`;
+    
+export function useFindValueWithoutMeasureTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindValueWithoutMeasureTreeQuery, FindValueWithoutMeasureTreeQueryVariables>) {
+  return Apollo.useQuery<FindValueWithoutMeasureTreeQuery, FindValueWithoutMeasureTreeQueryVariables>(FindValueWithoutMeasureTreeDocument, baseOptions);
+}
+export function useFindValueWithoutMeasureTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindValueWithoutMeasureTreeQuery, FindValueWithoutMeasureTreeQueryVariables>) {
+    return Apollo.useLazyQuery<FindValueWithoutMeasureTreeQuery, FindValueWithoutMeasureTreeQueryVariables>(FindValueWithoutMeasureTreeDocument, baseOptions);
+  }
+export type FindValueWithoutMeasureTreeQueryHookResult = ReturnType<typeof useFindValueWithoutMeasureTreeQuery>;
+export type FindValueWithoutMeasureTreeLazyQueryHookResult = ReturnType<typeof useFindValueWithoutMeasureTreeLazyQuery>;
+export type FindValueWithoutMeasureTreeQueryResult = Apollo.QueryResult<FindValueWithoutMeasureTreeQuery, FindValueWithoutMeasureTreeQueryVariables>;
+
+// FindMissingEnglishNameTree
+
+export const FindMissingEnglishNameTreeDocument = gql`
+    query FindMissingEnglishNameTree {
+      findMissingEnglishName(
+    input: {nodeTypeFilter: {}}
+  ) {
+    nodes {
+      ...ItemProps
+    }
+    paths
+  }
+}
+    ${ItemPropsFragmentDoc}`;
+    
+export function useFindMissingEnglishNameTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMissingEnglishNameTreeQuery, FindMissingEnglishNameTreeQueryVariables>) {
+  return Apollo.useQuery<FindMissingEnglishNameTreeQuery, FindMissingEnglishNameTreeQueryVariables>(FindMissingEnglishNameTreeDocument, baseOptions);
+}
+export function useFindMissingEnglishNameTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMissingEnglishNameTreeQuery, FindMissingEnglishNameTreeQueryVariables>) {
+    return Apollo.useLazyQuery<FindMissingEnglishNameTreeQuery, FindMissingEnglishNameTreeQueryVariables>(FindMissingEnglishNameTreeDocument, baseOptions);
+  }
+export type FindMissingEnglishNameTreeQueryHookResult = ReturnType<typeof useFindMissingEnglishNameTreeQuery>;
+export type FindMissingEnglishNameTreeLazyQueryHookResult = ReturnType<typeof useFindMissingEnglishNameTreeLazyQuery>;
+export type FindMissingEnglishNameTreeQueryResult = Apollo.QueryResult<FindMissingEnglishNameTreeQuery, FindMissingEnglishNameTreeQueryVariables>;
+
+// FindMultipleIDsTree
+
+export const FindMultipleIDsTreeDocument = gql`
+    query FindMultipleIDsTree {
+      findMultipleIDs(
+    input: {nodeTypeFilter: {}}
+  ) {
+    nodes {
+      ...ItemProps
+    }
+    paths
+  }
+}
+    ${ItemPropsFragmentDoc}`;
+    
+export function useFindMultipleIDsTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMultipleIDsTreeQuery, FindMultipleIDsTreeQueryVariables>) {
+  return Apollo.useQuery<FindMultipleIDsTreeQuery, FindMultipleIDsTreeQueryVariables>(FindMultipleIDsTreeDocument, baseOptions);
+}
+export function useFindMultipleIDsTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMultipleIDsTreeQuery, FindMultipleIDsTreeQueryVariables>) {
+    return Apollo.useLazyQuery<FindMultipleIDsTreeQuery, FindMultipleIDsTreeQueryVariables>(FindMultipleIDsTreeDocument, baseOptions);
+  }
+export type FindMultipleIDsTreeQueryHookResult = ReturnType<typeof useFindMultipleIDsTreeQuery>;
+export type FindMultipleIDsTreeLazyQueryHookResult = ReturnType<typeof useFindMultipleIDsTreeLazyQuery>;
+export type FindMultipleIDsTreeQueryResult = Apollo.QueryResult<FindMultipleIDsTreeQuery, FindMultipleIDsTreeQueryVariables>;
+
+// FindMissingDescription
+
+export const FindMissingDescriptionTreeDocument = gql`
+    query FindMissingDescriptionTree {
+      findMissingDescription(
+    input: {nodeTypeFilter: {}}
+  ) {
+    nodes {
+      ...ItemProps
+    }
+    paths
+  }
+}
+    ${ItemPropsFragmentDoc}`;
+    
+export function useFindMissingDescriptionTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMissingDescriptionTreeQuery, FindMissingDescriptionTreeQueryVariables>) {
+  return Apollo.useQuery<FindMissingDescriptionTreeQuery, FindMissingDescriptionTreeQueryVariables>(FindMissingDescriptionTreeDocument, baseOptions);
+}
+export function useFindMissingDescriptionTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMissingDescriptionTreeQuery, FindMissingDescriptionTreeQueryVariables>) {
+    return Apollo.useLazyQuery<FindMissingDescriptionTreeQuery, FindMissingDescriptionTreeQueryVariables>(FindMissingDescriptionTreeDocument, baseOptions);
+  }
+export type FindMissingDescriptionTreeQueryHookResult = ReturnType<typeof useFindMissingDescriptionTreeQuery>;
+export type FindMissingDescriptionTreeLazyQueryHookResult = ReturnType<typeof useFindMissingDescriptionTreeLazyQuery>;
+export type FindMissingDescriptionTreeQueryResult = Apollo.QueryResult<FindMissingDescriptionTreeQuery, FindMissingDescriptionTreeQueryVariables>;
+
+// FindMissingEnglishDescription
+
+export const FindMissingEnglishDescriptionTreeDocument = gql`
+    query FindMissingEnglishDescriptionTree {
+      findMissingEnglishDescription(
+    input: {nodeTypeFilter: {}}
+  ) {
+    nodes {
+      ...ItemProps
+    }
+    paths
+  }
+}
+    ${ItemPropsFragmentDoc}`;
+    
+export function useFindMissingEnglishDescriptionTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMissingEnglishDescriptionTreeQuery, FindMissingEnglishDescriptionTreeQueryVariables>) {
+  return Apollo.useQuery<FindMissingEnglishDescriptionTreeQuery, FindMissingEnglishDescriptionTreeQueryVariables>(FindMissingEnglishDescriptionTreeDocument, baseOptions);
+}
+export function useFindMissingEnglishDescriptionTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMissingEnglishDescriptionTreeQuery, FindMissingEnglishDescriptionTreeQueryVariables>) {
+    return Apollo.useLazyQuery<FindMissingEnglishDescriptionTreeQuery, FindMissingEnglishDescriptionTreeQueryVariables>(FindMissingEnglishDescriptionTreeDocument, baseOptions);
+  }
+export type FindMissingEnglishDescriptionTreeQueryHookResult = ReturnType<typeof useFindMissingEnglishDescriptionTreeQuery>;
+export type FindMissingEnglishDescriptionTreeLazyQueryHookResult = ReturnType<typeof useFindMissingEnglishDescriptionTreeLazyQuery>;
+export type FindMissingEnglishDescriptionTreeQueryResult = Apollo.QueryResult<FindMissingEnglishDescriptionTreeQuery, FindMissingEnglishDescriptionTreeQueryVariables>;
+
+// FindMultipleNames
+
+export const FindMultipleNamesTreeDocument = gql`
+    query FindMultipleNamesTree {
+      findMultipleNames(
+    input: {nodeTypeFilter: {}}
+  ) {
+    nodes {
+      ...ItemProps
+    }
+    paths
+  }
+}
+    ${ItemPropsFragmentDoc}`;
+    
+export function useFindMultipleNamesTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMultipleNamesTreeQuery, FindMultipleNamesTreeQueryVariables>) {
+  return Apollo.useQuery<FindMultipleNamesTreeQuery, FindMultipleNamesTreeQueryVariables>(FindMultipleNamesTreeDocument, baseOptions);
+}
+export function useFindMultipleNamesTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMultipleNamesTreeQuery, FindMultipleNamesTreeQueryVariables>) {
+    return Apollo.useLazyQuery<FindMultipleNamesTreeQuery, FindMultipleNamesTreeQueryVariables>(FindMultipleNamesTreeDocument, baseOptions);
+  }
+export type FindMultipleNamesTreeQueryHookResult = ReturnType<typeof useFindMultipleNamesTreeQuery>;
+export type FindMultipleNamesTreeLazyQueryHookResult = ReturnType<typeof useFindMultipleNamesTreeLazyQuery>;
+export type FindMultipleNamesTreeQueryResult = Apollo.QueryResult<FindMultipleNamesTreeQuery, FindMultipleNamesTreeQueryVariables>;
 
 /**
  * __usePropertyTreeQuery__
