@@ -1,42 +1,44 @@
 import React from "react";
-import {useHistory, useRouteMatch} from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import {ButtonGroup, Paper} from "@material-ui/core";
+import { ButtonGroup, Paper } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Grid from "@material-ui/core/Grid";
-import {Route, Switch} from "react-router";
+import { Route, Switch } from "react-router";
 import DomainModelForm from "./forms/DomainModelForm";
-import {FindPropGroupWithoutProp,
-        FindPropWithoutSubjectOrPropGroup,
-        FindModelWithoutGroup,
-        FindGroupWithoutSubject,
-        FindSubjectWithoutProp,
-        FindMeasureWithoutProp,
-        FindUnitWithoutMeasure,
-        FindValueWithoutMeasure,
-        FindMissingEnglishName,
-        FindMultipleIDs,
-        FindMissingDescription,
-        FindMissingEnglishDescription,
-        FindMultipleNames
-        } from "../components/Verification";
-import {ConceptPropsFragment, 
-        useFindPropGroupWithoutPropTreeQuery,
-        useFindPropWithoutSubjectOrPropGroupTreeQuery,
-        useFindModelWithoutGroupTreeQuery,
-        useFindGroupWithoutSubjectTreeQuery,
-        useFindSubjectWithoutPropTreeQuery,
-        useFindMeasureWithoutPropTreeQuery,
-        useFindUnitWithoutMeasureTreeQuery,
-        useFindValueWithoutMeasureTreeQuery,
-        useFindMissingEnglishNameTreeQuery,
-        useFindMultipleIDsTreeQuery,
-        useFindMissingDescriptionTreeQuery,
-        useFindMissingEnglishDescriptionTreeQuery,
-        useFindMultipleNamesTreeQuery
-        } 
-        from "../generated/types";
+import {
+    FindPropGroupWithoutProp,
+    FindPropWithoutSubjectOrPropGroup,
+    FindModelWithoutGroup,
+    FindGroupWithoutSubject,
+    FindSubjectWithoutProp,
+    FindMeasureWithoutProp,
+    FindUnitWithoutMeasure,
+    FindValueWithoutMeasure,
+    FindMissingEnglishName,
+    FindMultipleIDs,
+    FindMissingDescription,
+    FindMissingEnglishDescription,
+    FindMultipleNames
+} from "../components/Verification";
+import {
+    ConceptPropsFragment,
+    useFindPropGroupWithoutPropTreeQuery,
+    useFindPropWithoutSubjectOrPropGroupTreeQuery,
+    useFindModelWithoutGroupTreeQuery,
+    useFindGroupWithoutSubjectTreeQuery,
+    useFindSubjectWithoutPropTreeQuery,
+    useFindMeasureWithoutPropTreeQuery,
+    useFindUnitWithoutMeasureTreeQuery,
+    useFindValueWithoutMeasureTreeQuery,
+    useFindMissingEnglishNameTreeQuery,
+    useFindMultipleIDsTreeQuery,
+    useFindMissingDescriptionTreeQuery,
+    useFindMissingEnglishDescriptionTreeQuery,
+    useFindMultipleNamesTreeQuery
+}
+    from "../generated/types";
 import DomainGroupForm from "./forms/DomainGroupForm";
 import DomainClassForm from "./forms/DomainClassForm";
 import PropertyGroupForm from "./forms/PropertyGroupForm";
@@ -93,14 +95,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function VerificationView() {
-    
+
     const history = useHistory();
-    let {path, url} = useRouteMatch();
+    let { path, url } = useRouteMatch();
     const classes = useStyles();
     const [selectButton, setSelectButton] = React.useState("");
     const [selectCategory, setSelectCategory] = React.useState("");
 
-    const handleOnSelect = ({id, recordType, tags}: ConceptPropsFragment) => {
+    const handleOnSelect = ({ id, recordType, tags }: ConceptPropsFragment) => {
         const entityType = getEntityType(recordType, tags.map(x => x.id));
         if (entityType) {
             history.push(`${url}/${entityType.path}/${id}`);
@@ -125,7 +127,7 @@ export function VerificationView() {
         setSelectButton('Sprache');
     };
 
-    
+
     const handleVollständigkeit1 = () => {
         setSelectCategory('Fachmodelle ohne Gruppe');
     }
@@ -149,7 +151,7 @@ export function VerificationView() {
     const handleVollständigkeit6 = () => {
         setSelectCategory('Größen die keinem Merkmal zugeordnet sind');
     }
-    
+
     const handleVollständigkeit7 = () => {
         setSelectCategory('Einheiten ohne Größe');
     }
@@ -179,182 +181,208 @@ export function VerificationView() {
     const handleSprache3 = () => {
         setSelectCategory('Fehlende Namens-Übersetzung (englisch)');
     }
-    
+
+    function Kategorie() {
+        return (
+            <div>
+                <Typography variant="h5">
+                    Kategorie
+                </Typography>
+                <p></p>
+            </div>
+        )
+    }
 
     function ShowButtons() {
-        switch(selectButton) {
+        switch (selectButton) {
             case 'Vollständigkeit':
-                return(
-                    <ButtonGroup orientation="vertical">
-                        <Button onClick={() => handleVollständigkeit1()}>Fachmodelle ohne Gruppe</Button>
-                        <Button onClick={() => handleVollständigkeit2()}>Gruppen ohne Klasse</Button>
-                        <Button onClick={() => handleVollständigkeit3()}>Klassen ohne Merkmale/Merkmalsgruppen</Button>
-                        <Button onClick={() => handleVollständigkeit4()}>Merkmalsgruppen ohne Merkmale</Button>
-                        <Button onClick={() => handleVollständigkeit5()}>Merkmale ohne Klasse oder Merkmalsgruppe</Button>
-                        <Button onClick={() => handleVollständigkeit6()}>Größen ohne Merkmal</Button>
-                        <Button onClick={() => handleVollständigkeit7()}>Einheiten ohne Größe</Button>
-                        <Button onClick={() => handleVollständigkeit8()}>Werte ohne Größe</Button>
-                    </ButtonGroup>
+                return (
+                    <div>
+                        <Kategorie />
+                        {/* <ButtonGroup orientation="vertical"> */}
+                        <Grid container direction="column" alignItems="stretch">
+                            <Grid item><Button onClick={() => handleVollständigkeit1()} style={{ textAlign: 'left' }}>Fachmodelle ohne Gruppe</Button></Grid>
+                            <Grid item><Button onClick={() => handleVollständigkeit2()} style={{ textAlign: 'left' }}>Gruppen ohne Klasse</Button></Grid>
+                            <Grid item><Button onClick={() => handleVollständigkeit3()} style={{ textAlign: 'left' }}>Klassen ohne Merkmale oder Merkmalsgruppen</Button></Grid>
+                            <Grid item><Button onClick={() => handleVollständigkeit4()} style={{ textAlign: 'left' }}>Merkmalsgruppen ohne Merkmale</Button></Grid>
+                            <Grid item><Button onClick={() => handleVollständigkeit5()} style={{ textAlign: 'left' }}>Merkmale ohne Klasse oder Merkmalsgruppe</Button></Grid>
+                            <Grid item><Button onClick={() => handleVollständigkeit6()} style={{ textAlign: 'left' }}>Größen ohne Merkmal</Button></Grid>
+                            <Grid item><Button onClick={() => handleVollständigkeit7()} style={{ textAlign: 'left' }}>Einheiten ohne Größe</Button></Grid>
+                            <Grid item><Button onClick={() => handleVollständigkeit8()} style={{ textAlign: 'left' }}>Werte ohne Größe</Button></Grid>
+                            {/* </ButtonGroup> */}
+                        </Grid>
+                    </div>
                 )
 
             case 'Eindeutigkeit':
                 return (
-                    <ButtonGroup orientation="vertical">
-                        <Button onClick={() => handleEindeutigkeit1()}>ID-Duplikate</Button>
-                        <Button onClick={() => handleEindeutigkeit2()}>Namen-Duplikate</Button>
-                    </ButtonGroup>
+                    <div>
+                        <Kategorie />
+                        {/* <ButtonGroup orientation="vertical"> */}
+                        <Grid container direction="column" alignItems="stretch">
+                            <Grid item><Button onClick={() => handleEindeutigkeit1()} style={{ textAlign: 'left' }}>ID-Duplikate</Button></Grid>
+                            <Grid item><Button onClick={() => handleEindeutigkeit2()} style={{ textAlign: 'left' }}>Namen-Duplikate</Button></Grid>
+                            {/* </ButtonGroup> */}
+                        </Grid>
+                    </div>
                 )
 
             case 'Sprache':
                 return (
-                    <ButtonGroup orientation="vertical">
-                        <Button onClick={() => handleSprache1()}>Fehlende Beschreibung (deutsch)</Button>
-                        <Button onClick={() => handleSprache2()}>Fehlende Beschreibung (englisch)</Button>
-                        <Button onClick={() => handleSprache3()}>Fehlende Namens-Übersetzung (englisch)</Button>
-                    </ButtonGroup>
+                    <div>
+                        <Kategorie />
+                        {/* <ButtonGroup orientation="vertical"> */}
+                        <Grid container direction="column" alignItems="stretch" >
+                            <Grid item><Button onClick={() => handleSprache1()} style={{ textAlign: 'left' }}>Fehlende Beschreibung (deutsch)</Button></Grid>
+                            <Grid item><Button onClick={() => handleSprache2()} style={{ textAlign: 'left' }}>Fehlende Beschreibung (englisch)</Button></Grid>
+                            <Grid item><Button onClick={() => handleSprache3()} style={{ textAlign: 'left' }}>Fehlende Namens-Übersetzung (englisch)</Button></Grid>
+                            {/* </ButtonGroup> */}
+                        </Grid>
+                    </div>
                 )
 
             default:
                 return (
-                    <Paper className={classes.paper}>
-                        <Typography variant="h6">
-                            Bitte Kategorie zur Überprüfung auswählen!
-                        </Typography>
-                    </Paper>
+                    // <Paper className={classes.paper}>
+                    //     <Typography variant="h5">
+                    //         Bitte Kategorie zur Überprüfung auswählen!
+                    //     </Typography>
+                    // </Paper>
+                    <div></div>
                 );
         }
     }
 
     function ShowElements() {
-        switch(selectCategory) {
+        switch (selectCategory) {
 
             case 'Merkmalsgruppen ohne Merkmale':
                 return (
                     <Paper className={classes.paper}>
-                        <Typography variant="h6">
+                        <Typography variant="h5">
                             Merkmalsgruppen ohne Merkmale
                         </Typography>
-                        <ThisFindPropGroupWithoutProp/>
+                        <ThisFindPropGroupWithoutProp />
                     </Paper>
                 )
 
             case 'Merkmale ohne Klasse oder Merkmalsgruppe':
                 return (
                     <Paper className={classes.paper}>
-                        <Typography variant="h6">
+                        <Typography variant="h5">
                             Merkmale ohne Klasse oder Merkmalsgruppe
                         </Typography>
-                        <ThisFindPropWithoutSubjectOrPropGroup/>
+                        <ThisFindPropWithoutSubjectOrPropGroup />
                     </Paper>
                 )
 
             case 'Fachmodelle ohne Gruppe':
                 return (
                     <Paper className={classes.paper}>
-                        <Typography variant="h6">
+                        <Typography variant="h5">
                             Fachmodelle ohne Gruppe
                         </Typography>
-                        <ThisFindModelWithoutGroup/>
+                        <ThisFindModelWithoutGroup />
                     </Paper>
                 )
 
             case 'Gruppen ohne Klasse':
                 return (
                     <Paper className={classes.paper}>
-                        <Typography variant="h6">
+                        <Typography variant="h5">
                             Gruppen ohne Klasse
                         </Typography>
-                        <ThisFindGroupWithoutSubject/>
+                        <ThisFindGroupWithoutSubject />
                     </Paper>
                 )
 
             case 'Klassen ohne Merkmale/Merkmalsgruppen':
                 return (
                     <Paper className={classes.paper}>
-                        <Typography variant="h6">
-                            Klassen ohne Merkmale/Merkmalsgruppen
+                        <Typography variant="h5">
+                            Klassen ohne Merkmale oder Merkmalsgruppen
                         </Typography>
-                        <ThisFindSubjectWithoutProp/>
+                        <ThisFindSubjectWithoutProp />
                     </Paper>
                 )
 
             case 'Werte ohne Größe':
                 return (
                     <Paper className={classes.paper}>
-                        <Typography variant="h6">
+                        <Typography variant="h5">
                             Werte ohne Größe
                         </Typography>
-                        <ThisFindValueWithoutMeasure/>
+                        <ThisFindValueWithoutMeasure />
                     </Paper>
                 )
 
             case 'Einheiten ohne Größe':
                 return (
                     <Paper className={classes.paper}>
-                        <Typography variant="h6">
+                        <Typography variant="h5">
                             Einheiten ohne Größe
                         </Typography>
-                        <ThisFindUnitWithoutMeasure/>
+                        <ThisFindUnitWithoutMeasure />
                     </Paper>
                 )
 
             case 'Größen die keinem Merkmal zugeordnet sind':
                 return (
                     <Paper className={classes.paper}>
-                        <Typography variant="h6">
+                        <Typography variant="h5">
                             Größen die keinem Merkmal zugeordnet sind
                         </Typography>
-                        <ThisFindMeasureWithoutProp/>
+                        <ThisFindMeasureWithoutProp />
                     </Paper>
                 )
 
             case 'Fehlende Namens-Übersetzung (englisch)':
-                return(
+                return (
                     <Paper className={classes.paper}>
-                        <Typography variant="h6">
+                        <Typography variant="h5">
                             Fehlende Namens-Übersetzung (englisch)
                         </Typography>
-                        <ThisFindMissingEnglishName/>
+                        <ThisFindMissingEnglishName />
                     </Paper>
                 );
 
             case 'ID-Duplikate':
-                return(
+                return (
                     <Paper className={classes.paper}>
-                        <Typography variant="h6">
+                        <Typography variant="h5">
                             ID-Duplikate
                         </Typography>
-                        <ThisFindMultipleIDs/>
+                        <ThisFindMultipleIDs />
                     </Paper>
                 );
 
             case 'Fehlende Beschreibung (deutsch)':
-                return(
+                return (
                     <Paper className={classes.paper}>
-                        <Typography variant="h6">
+                        <Typography variant="h5">
                             Fehlende Beschreibung (deutsch)
                         </Typography>
-                        <ThisFindMissingDescription/>
+                        <ThisFindMissingDescription />
                     </Paper>
                 );
 
             case 'Fehlende Beschreibung (englisch)':
-                return(
+                return (
                     <Paper className={classes.paper}>
-                        <Typography variant="h6">
+                        <Typography variant="h5">
                             Fehlende Beschreibung (englisch)
                         </Typography>
-                        <ThisFindMissingEnglishDescription/>
+                        <ThisFindMissingEnglishDescription />
                     </Paper>
                 );
 
             case 'Namen-Duplikate':
-                return(
+                return (
                     <Paper className={classes.paper}>
-                        <Typography variant="h6">
+                        <Typography variant="h5">
                             Namen-Duplikate
                         </Typography>
-                        <ThisFindMultipleNames/>
+                        <ThisFindMultipleNames />
                     </Paper>
                 );
 
@@ -362,8 +390,8 @@ export function VerificationView() {
                 return (
                     <Paper className={classes.paper}>
 
-                        <Typography variant="h6">
-                            Bitte Kriterium zur Überprüfung auswählen!
+                        <Typography className={classes.hint} variant="body1">
+                            Prüfkriterium und Kategorie auswählen.
                         </Typography>
 
                     </Paper>
@@ -372,10 +400,10 @@ export function VerificationView() {
     }
 
     function ThisFindPropGroupWithoutProp() {
-        const {loading, error, data} = useFindPropGroupWithoutPropTreeQuery({});
+        const { loading, error, data } = useFindPropGroupWithoutPropTreeQuery({});
         let content;
         if (loading) {
-            content = <LinearProgress/>;
+            content = <LinearProgress />;
         } else if (error) {
             content = <p>Beim Aufrufen der Prüfroutine ist ein Fehler aufgetreten.</p>;
         } else {
@@ -387,14 +415,14 @@ export function VerificationView() {
                 />
             );
         }
-    return content;
+        return content;
     }
 
     function ThisFindPropWithoutSubjectOrPropGroup() {
-        const {loading, error, data} = useFindPropWithoutSubjectOrPropGroupTreeQuery({});
+        const { loading, error, data } = useFindPropWithoutSubjectOrPropGroupTreeQuery({});
         let content;
         if (loading) {
-            content = <LinearProgress/>;
+            content = <LinearProgress />;
         } else if (error) {
             content = <p>Beim Aufrufen der Prüfroutine ist ein Fehler aufgetreten.</p>;
         } else {
@@ -406,14 +434,14 @@ export function VerificationView() {
                 />
             );
         }
-    return content;
+        return content;
     }
 
     function ThisFindModelWithoutGroup() {
-        const {loading, error, data} = useFindModelWithoutGroupTreeQuery({});
+        const { loading, error, data } = useFindModelWithoutGroupTreeQuery({});
         let content;
         if (loading) {
-            content = <LinearProgress/>;
+            content = <LinearProgress />;
         } else if (error) {
             content = <p>Beim Aufrufen der Prüfroutine ist ein Fehler aufgetreten.</p>;
         } else {
@@ -425,14 +453,14 @@ export function VerificationView() {
                 />
             );
         }
-    return content;
+        return content;
     }
 
     function ThisFindGroupWithoutSubject() {
-        const {loading, error, data} = useFindGroupWithoutSubjectTreeQuery({});
+        const { loading, error, data } = useFindGroupWithoutSubjectTreeQuery({});
         let content;
         if (loading) {
-            content = <LinearProgress/>;
+            content = <LinearProgress />;
         } else if (error) {
             content = <p>Beim Aufrufen der Prüfroutine ist ein Fehler aufgetreten.</p>;
         } else {
@@ -444,14 +472,14 @@ export function VerificationView() {
                 />
             );
         }
-    return content;
+        return content;
     }
 
     function ThisFindSubjectWithoutProp() {
-        const {loading, error, data} = useFindSubjectWithoutPropTreeQuery({});
+        const { loading, error, data } = useFindSubjectWithoutPropTreeQuery({});
         let content;
         if (loading) {
-            content = <LinearProgress/>;
+            content = <LinearProgress />;
         } else if (error) {
             content = <p>Beim Aufrufen der Prüfroutine ist ein Fehler aufgetreten.</p>;
         } else {
@@ -463,14 +491,14 @@ export function VerificationView() {
                 />
             );
         }
-    return content;
+        return content;
     }
 
     function ThisFindMeasureWithoutProp() {
-        const {loading, error, data} = useFindMeasureWithoutPropTreeQuery({});
+        const { loading, error, data } = useFindMeasureWithoutPropTreeQuery({});
         let content;
         if (loading) {
-            content = <LinearProgress/>;
+            content = <LinearProgress />;
         } else if (error) {
             content = <p>Beim Aufrufen der Prüfroutine ist ein Fehler aufgetreten.</p>;
         } else {
@@ -482,15 +510,15 @@ export function VerificationView() {
                 />
             );
         }
-    return content;
+        return content;
     }
 
 
     function ThisFindUnitWithoutMeasure() {
-        const {loading, error, data} = useFindUnitWithoutMeasureTreeQuery({});
+        const { loading, error, data } = useFindUnitWithoutMeasureTreeQuery({});
         let content;
         if (loading) {
-            content = <LinearProgress/>;
+            content = <LinearProgress />;
         } else if (error) {
             content = <p>Beim Aufrufen der Prüfroutine ist ein Fehler aufgetreten.</p>;
         } else {
@@ -502,15 +530,15 @@ export function VerificationView() {
                 />
             );
         }
-    return content;
+        return content;
     }
 
 
     function ThisFindValueWithoutMeasure() {
-        const {loading, error, data} = useFindValueWithoutMeasureTreeQuery({});
+        const { loading, error, data } = useFindValueWithoutMeasureTreeQuery({});
         let content;
         if (loading) {
-            content = <LinearProgress/>;
+            content = <LinearProgress />;
         } else if (error) {
             content = <p>Beim Aufrufen der Prüfroutine ist ein Fehler aufgetreten.</p>;
         } else {
@@ -522,15 +550,15 @@ export function VerificationView() {
                 />
             );
         }
-    return content;
+        return content;
     }
 
 
     function ThisFindMissingEnglishName() {
-        const {loading, error, data} = useFindMissingEnglishNameTreeQuery({});
+        const { loading, error, data } = useFindMissingEnglishNameTreeQuery({});
         let content;
         if (loading) {
-            content = <LinearProgress/>;
+            content = <LinearProgress />;
         } else if (error) {
             content = <p>Beim Aufrufen der Prüfroutine ist ein Fehler aufgetreten.</p>;
         } else {
@@ -542,14 +570,14 @@ export function VerificationView() {
                 />
             );
         }
-    return content;
+        return content;
     }
 
     function ThisFindMultipleIDs() {
-        const {loading, error, data} = useFindMultipleIDsTreeQuery({});
+        const { loading, error, data } = useFindMultipleIDsTreeQuery({});
         let content;
         if (loading) {
-            content = <LinearProgress/>;
+            content = <LinearProgress />;
         } else if (error) {
             content = <p>Beim Aufrufen der Prüfroutine ist ein Fehler aufgetreten.</p>;
         } else {
@@ -561,14 +589,14 @@ export function VerificationView() {
                 />
             );
         }
-    return content;
+        return content;
     }
 
     function ThisFindMissingDescription() {
-        const {loading, error, data} = useFindMissingDescriptionTreeQuery({});
+        const { loading, error, data } = useFindMissingDescriptionTreeQuery({});
         let content;
         if (loading) {
-            content = <LinearProgress/>;
+            content = <LinearProgress />;
         } else if (error) {
             content = <p>Beim Aufrufen der Prüfroutine ist ein Fehler aufgetreten.</p>;
         } else {
@@ -580,14 +608,14 @@ export function VerificationView() {
                 />
             );
         }
-    return content;
+        return content;
     }
 
     function ThisFindMissingEnglishDescription() {
-        const {loading, error, data} = useFindMissingEnglishDescriptionTreeQuery({});
+        const { loading, error, data } = useFindMissingEnglishDescriptionTreeQuery({});
         let content;
         if (loading) {
-            content = <LinearProgress/>;
+            content = <LinearProgress />;
         } else if (error) {
             content = <p>Beim Aufrufen der Prüfroutine ist ein Fehler aufgetreten.</p>;
         } else {
@@ -599,14 +627,14 @@ export function VerificationView() {
                 />
             );
         }
-    return content;
+        return content;
     }
 
     function ThisFindMultipleNames() {
-        const {loading, error, data} = useFindMultipleNamesTreeQuery({});
+        const { loading, error, data } = useFindMultipleNamesTreeQuery({});
         let content;
         if (loading) {
-            content = <LinearProgress/>;
+            content = <LinearProgress />;
         } else if (error) {
             content = <p>Beim Aufrufen der Prüfroutine ist ein Fehler aufgetreten.</p>;
         } else {
@@ -618,7 +646,7 @@ export function VerificationView() {
                 />
             );
         }
-    return content;
+        return content;
     }
 
     return (
@@ -626,24 +654,24 @@ export function VerificationView() {
             <Grid item xs={2}>
                 <Paper className={classes.paper}>
 
-                    <Typography variant="h5" className={classes.headline}>
-                        Überprüfen auf:
+                    <Typography variant="h5">
+                        Prüfkriterium
                     </Typography>
-                    <ButtonGroup orientation="vertical">
-                        <Button onClick={() => handleVollständigkeit()}>Vollständigkeit</Button>
-                        <Button onClick={() => handleEindeutigkeit()}>Eindeutigkeit</Button>
-                        <Button onClick={() => handleSprache()}>Sprache</Button>
-                    </ButtonGroup>
-
-                    <Typography variant="h5" className={classes.headline}>
-                        Kategorie wählen:
-                    </Typography>
-                    <ShowButtons/>
-
+                    <p></p>
+                    <Grid container direction="column" alignItems="stretch">
+                        <Grid item ><Button onClick={() => handleVollständigkeit()}>Vollständigkeit</Button></Grid>
+                        <Grid item> <Button onClick={() => handleEindeutigkeit()}>Eindeutigkeit</Button></Grid>
+                        <Grid item> <Button onClick={() => handleSprache()}>Sprache</Button></Grid>
+                    </Grid>
+                    {/* <Typography variant="h5">
+                        Kategorie wählen
+                    </Typography> */}
+                    <p></p>
+                    <ShowButtons />
                 </Paper>
             </Grid>
             <Grid item xs={3}>
-                <ShowElements/>
+                <ShowElements />
             </Grid>
             <Grid item xs={7}>
                 <Paper className={classes.paper}>
@@ -653,92 +681,92 @@ export function VerificationView() {
                             return (
                                 <React.Fragment>
                                     <Typography variant="h5">
-                                        <DomainModelIcon/> Fachmodell bearbeiten
+                                        <DomainModelIcon /> Fachmodell bearbeiten
                                     </Typography>
-                                    <DomainModelForm id={id} onDelete={handleOnDelete}/>
+                                    <DomainModelForm id={id} onDelete={handleOnDelete} />
                                 </React.Fragment>
                             );
-                        }}/>
+                        }} />
                         <Route exact path={`${path}/${GroupEntity.path}/:id`} render={renderProps => {
                             const id: string = renderProps.match.params.id;
                             return (
                                 <React.Fragment>
                                     <Typography variant="h5">
-                                        <DomainGroupIcon/> Gruppe bearbeiten
+                                        <DomainGroupIcon /> Gruppe bearbeiten
                                     </Typography>
-                                    <DomainGroupForm id={id} onDelete={handleOnDelete}/>
+                                    <DomainGroupForm id={id} onDelete={handleOnDelete} />
                                 </React.Fragment>
                             );
-                        }}/>
+                        }} />
                         <Route exact path={`${path}/${ClassEntity.path}/:id`} render={renderProps => {
                             const id: string = renderProps.match.params.id;
                             return (
                                 <React.Fragment>
                                     <Typography variant="h5">
-                                        <DomainClassIcon/> Klasse bearbeiten
+                                        <DomainClassIcon /> Klasse bearbeiten
                                     </Typography>
-                                    <DomainClassForm id={id} onDelete={handleOnDelete}/>
+                                    <DomainClassForm id={id} onDelete={handleOnDelete} />
                                 </React.Fragment>
                             );
-                        }}/>
+                        }} />
                         <Route exact path={`${path}/${PropertyGroupEntity.path}/:id`} render={renderProps => {
                             const id: string = renderProps.match.params.id;
                             return (
                                 <React.Fragment>
                                     <Typography variant="h5">
-                                        <PropertyGroupIcon/> Merkmalsgruppe bearbeiten
+                                        <PropertyGroupIcon /> Merkmalsgruppe bearbeiten
                                     </Typography>
-                                    <PropertyGroupForm id={id} onDelete={handleOnDelete}/>
+                                    <PropertyGroupForm id={id} onDelete={handleOnDelete} />
                                 </React.Fragment>
                             );
-                        }}/>
+                        }} />
                         <Route exact path={`${path}/${PropertyEntity.path}/:id`} render={renderProps => {
                             const id: string = renderProps.match.params.id;
                             return (
                                 <React.Fragment>
                                     <Typography variant="h5">
-                                        <PropertyIcon/> Merkmal bearbeiten
+                                        <PropertyIcon /> Merkmal bearbeiten
                                     </Typography>
-                                    <PropertyForm id={id} onDelete={handleOnDelete}/>
+                                    <PropertyForm id={id} onDelete={handleOnDelete} />
                                 </React.Fragment>
                             );
-                        }}/>
+                        }} />
                         <Route exact path={`${path}/${MeasureEntity.path}/:id`} render={renderProps => {
                             const id: string = renderProps.match.params.id;
                             return (
                                 <React.Fragment>
                                     <Typography variant="h5">
-                                        <MeasureIcon/> Größe bearbeiten
+                                        <MeasureIcon /> Größe bearbeiten
                                     </Typography>
-                                    <MeasureForm id={id} onDelete={handleOnDelete}/>
+                                    <MeasureForm id={id} onDelete={handleOnDelete} />
                                 </React.Fragment>
                             );
-                        }}/>
+                        }} />
                         <Route exact path={`${path}/${UnitEntity.path}/:id`} render={renderProps => {
                             const id: string = renderProps.match.params.id;
                             return (
                                 <React.Fragment>
                                     <Typography variant="h5">
-                                        <UnitIcon/> Einheit bearbeiten
+                                        <UnitIcon /> Einheit bearbeiten
                                     </Typography>
-                                    <UnitForm id={id} onDelete={handleOnDelete}/>
+                                    <UnitForm id={id} onDelete={handleOnDelete} />
                                 </React.Fragment>
                             );
-                        }}/>
+                        }} />
                         <Route exact path={`${path}/${ValueEntity.path}/:id`} render={renderProps => {
                             const id: string = renderProps.match.params.id;
                             return (
                                 <React.Fragment>
                                     <Typography variant="h5">
-                                        <ValueIcon/> Wert bearbeiten
+                                        <ValueIcon /> Wert bearbeiten
                                     </Typography>
-                                    <ValueForm id={id} onDelete={handleOnDelete}/>
+                                    <ValueForm id={id} onDelete={handleOnDelete} />
                                 </React.Fragment>
                             );
-                        }}/>
+                        }} />
                         <Route>
                             <Typography className={classes.hint} variant="body1">
-                                Katalogüberprüfung auswählen um mangelhafte Datensätze anzuzeigen.
+                                Prüfergebnis in der Listenansicht auswählen um Eigenschaften anzuzeigen.
                             </Typography>
                         </Route>
                     </Switch>

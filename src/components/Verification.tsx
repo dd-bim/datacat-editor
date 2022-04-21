@@ -22,7 +22,9 @@ import {ItemPropsFragment} from "../generated/types";
 
 const useVerificationTreeStyles = makeStyles({
     root: {
-        flexGrow: 1
+        flexGrow: 1,
+        overflow: 'auto',
+        maxHeight: 600,
     }
 });
 
