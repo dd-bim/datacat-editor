@@ -115,8 +115,8 @@ export function VerificationView() {
         history.push(path);
     };
 
-    const handleVollständigkeit = () => {
-        setSelectButton('Vollständigkeit');
+    const handleIntegrität = () => {
+        setSelectButton('Integrität');
     };
 
     const handleEindeutigkeit = () => {
@@ -128,35 +128,35 @@ export function VerificationView() {
     };
 
 
-    const handleVollständigkeit1 = () => {
+    const handleIntegrität1 = () => {
         setSelectCategory('Fachmodelle ohne Gruppe');
     }
 
-    const handleVollständigkeit2 = () => {
+    const handleIntegrität2 = () => {
         setSelectCategory('Gruppen ohne Klasse');
     }
 
-    const handleVollständigkeit3 = () => {
+    const handleIntegrität3 = () => {
         setSelectCategory('Klassen ohne Merkmale/Merkmalsgruppen');
     }
 
-    const handleVollständigkeit4 = () => {
+    const handleIntegrität4 = () => {
         setSelectCategory('Merkmalsgruppen ohne Merkmale');
     }
 
-    const handleVollständigkeit5 = () => {
+    const handleIntegrität5 = () => {
         setSelectCategory('Merkmale ohne Klasse oder Merkmalsgruppe');
     }
 
-    const handleVollständigkeit6 = () => {
+    const handleIntegrität6 = () => {
         setSelectCategory('Größen die keinem Merkmal zugeordnet sind');
     }
 
-    const handleVollständigkeit7 = () => {
+    const handleIntegrität7 = () => {
         setSelectCategory('Einheiten ohne Größe');
     }
 
-    const handleVollständigkeit8 = () => {
+    const handleIntegrität8 = () => {
         setSelectCategory('Werte ohne Größe');
     }
 
@@ -171,7 +171,7 @@ export function VerificationView() {
 
 
     const handleSprache1 = () => {
-        setSelectCategory('Fehlende Beschreibung (deutsch)');
+        setSelectCategory('Fehlende Beschreibung');
     }
 
     const handleSprache2 = () => {
@@ -195,20 +195,20 @@ export function VerificationView() {
 
     function ShowButtons() {
         switch (selectButton) {
-            case 'Vollständigkeit':
+            case 'Integrität':
                 return (
                     <div>
                         <Kategorie />
                         {/* <ButtonGroup orientation="vertical"> */}
                         <Grid container direction="column" alignItems="stretch">
-                            <Grid item><Button onClick={() => handleVollständigkeit1()} style={{ textAlign: 'left' }}>Fachmodelle ohne Gruppe</Button></Grid>
-                            <Grid item><Button onClick={() => handleVollständigkeit2()} style={{ textAlign: 'left' }}>Gruppen ohne Klasse</Button></Grid>
-                            <Grid item><Button onClick={() => handleVollständigkeit3()} style={{ textAlign: 'left' }}>Klassen ohne Merkmale oder Merkmalsgruppen</Button></Grid>
-                            <Grid item><Button onClick={() => handleVollständigkeit4()} style={{ textAlign: 'left' }}>Merkmalsgruppen ohne Merkmale</Button></Grid>
-                            <Grid item><Button onClick={() => handleVollständigkeit5()} style={{ textAlign: 'left' }}>Merkmale ohne Klasse oder Merkmalsgruppe</Button></Grid>
-                            <Grid item><Button onClick={() => handleVollständigkeit6()} style={{ textAlign: 'left' }}>Größen ohne Merkmal</Button></Grid>
-                            <Grid item><Button onClick={() => handleVollständigkeit7()} style={{ textAlign: 'left' }}>Einheiten ohne Größe</Button></Grid>
-                            <Grid item><Button onClick={() => handleVollständigkeit8()} style={{ textAlign: 'left' }}>Werte ohne Größe</Button></Grid>
+                            <Grid item><Button onClick={() => handleIntegrität1()} style={{ textAlign: 'left' }}>Fachmodelle ohne Gruppe</Button></Grid>
+                            <Grid item><Button onClick={() => handleIntegrität2()} style={{ textAlign: 'left' }}>Gruppen ohne Klasse</Button></Grid>
+                            <Grid item><Button onClick={() => handleIntegrität3()} style={{ textAlign: 'left' }}>Klassen ohne Merkmale oder Merkmalsgruppen</Button></Grid>
+                            <Grid item><Button onClick={() => handleIntegrität4()} style={{ textAlign: 'left' }}>Merkmalsgruppen ohne Merkmale</Button></Grid>
+                            <Grid item><Button onClick={() => handleIntegrität5()} style={{ textAlign: 'left' }}>Merkmale ohne Klasse oder Merkmalsgruppe</Button></Grid>
+                            <Grid item><Button onClick={() => handleIntegrität6()} style={{ textAlign: 'left' }}>Größen ohne Merkmal</Button></Grid>
+                            <Grid item><Button onClick={() => handleIntegrität7()} style={{ textAlign: 'left' }}>Einheiten ohne Größe</Button></Grid>
+                            <Grid item><Button onClick={() => handleIntegrität8()} style={{ textAlign: 'left' }}>Werte ohne Größe</Button></Grid>
                             {/* </ButtonGroup> */}
                         </Grid>
                     </div>
@@ -233,7 +233,7 @@ export function VerificationView() {
                         <Kategorie />
                         {/* <ButtonGroup orientation="vertical"> */}
                         <Grid container direction="column" alignItems="stretch" >
-                            <Grid item><Button onClick={() => handleSprache1()} style={{ textAlign: 'left' }}>Fehlende Beschreibung (deutsch)</Button></Grid>
+                            <Grid item><Button onClick={() => handleSprache1()} style={{ textAlign: 'left' }}>Fehlende Beschreibung</Button></Grid>
                             <Grid item><Button onClick={() => handleSprache2()} style={{ textAlign: 'left' }}>Fehlende Beschreibung (englisch)</Button></Grid>
                             <Grid item><Button onClick={() => handleSprache3()} style={{ textAlign: 'left' }}>Fehlende Namens-Übersetzung (englisch)</Button></Grid>
                             {/* </ButtonGroup> */}
@@ -356,11 +356,11 @@ export function VerificationView() {
                     </Paper>
                 );
 
-            case 'Fehlende Beschreibung (deutsch)':
+            case 'Fehlende Beschreibung':
                 return (
                     <Paper className={classes.paper}>
                         <Typography variant="h5">
-                            Fehlende Beschreibung (deutsch)
+                            Fehlende Beschreibung
                         </Typography>
                         <ThisFindMissingDescription />
                     </Paper>
@@ -617,7 +617,8 @@ export function VerificationView() {
         if (loading) {
             content = <LinearProgress />;
         } else if (error) {
-            content = <p>Beim Aufrufen der Prüfroutine ist ein Fehler aufgetreten.</p>;
+            content = <div><p>Beim Aufrufen der Prüfroutine ist ein Fehler aufgetreten.</p><p>"Message: " + {error.message}</p></div>;
+            console.log(error.message);
         } else {
             content = (
                 <FindMissingEnglishDescription
@@ -659,7 +660,7 @@ export function VerificationView() {
                     </Typography>
                     <p></p>
                     <Grid container direction="column" alignItems="stretch">
-                        <Grid item ><Button onClick={() => handleVollständigkeit()}>Vollständigkeit</Button></Grid>
+                        <Grid item ><Button onClick={() => handleIntegrität()}>Integrität</Button></Grid>
                         <Grid item> <Button onClick={() => handleEindeutigkeit()}>Eindeutigkeit</Button></Grid>
                         <Grid item> <Button onClick={() => handleSprache()}>Sprache</Button></Grid>
                     </Grid>
