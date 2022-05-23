@@ -29,18 +29,30 @@ export function ExportView() {
             const definition = getEntityType(node.data.recordType, node.data.tags.map(x => x.id));
 
             if (definition.export) {
+                let description;
+                if (node.data.description) {
+                    description = node.data.description.replace(/(\r\n|\n|\r)/gm, " ");
+                }
                 rows.push([
                     definition.title,
                     node.id,
                     `"${node.data.name ?? ""}"`,
-                    `"${node.data.description ?? ""}"`
+                    `"${description ?? ""}"`
                 ]);
             }
             node.children.forEach(writeRow);
         };
         nodes.forEach(writeRow);
 
-        const csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
+        let set = new Set(rows.map(e => JSON.stringify(e)));
+        let uniqueArr: string[][] = [];
+
+        set.forEach(row => {
+            uniqueArr.push(JSON.parse(row));
+
+        })
+
+        const csvContent = "data:text/csv;charset=utf-8," + uniqueArr.map(e => e.join(",")).join("\n");
         const encodedUri = encodeURI(csvContent);
         const now = dateUtil().format("YYYY-MM-DD-HH-mm-ss");
         saveAs(encodedUri, `${now}_datacat_export.csv`);
