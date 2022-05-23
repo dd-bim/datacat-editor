@@ -13,6 +13,7 @@ import useFindMultipleIDs from "../hooks/verification/useFindMultipleIDs";
 import useFindMissingDescription from "../hooks/verification/useFindMissingDescription";
 import useFindMissingEnglishDescription from "../hooks/verification/useFindMissingEnglishDescription";
 import useFindMultipleNames from "../hooks/verification/useFindMultipleNames";
+import useFindMultipleNamesAcrossClasses from "../hooks/verification/useFindMultipleNamesAcrossClasses";
 import useLocalStorage from "../hooks/useLocalStorage";
 import TreeView from "@material-ui/lab/TreeView";
 import {StyledTreeItem} from "./StyledTreeItem";
@@ -425,6 +426,38 @@ export const FindMultipleNames: FC<VerificationProps> = (props) => {
         paths,
     } = props;
     const {nodes, lookupMap} = useFindMultipleNames({leaves, paths});
+    const [expanded, setExpanded] = useLocalStorage<string[]>("expanded-verification-nodes", []);
+    const [defaultExpanded] = useState(expanded);
+
+    const onNodeSelect = (event: ChangeEvent<{}>, nodeId: string) => {
+        const [id] = nodeId.split(":").slice(-1);
+        props.onSelect(lookupMap[id]);
+    };
+
+    return (
+        <TreeView
+            className={classes.root}
+            onNodeSelect={onNodeSelect}
+            onNodeToggle={(event, nodeIds) => setExpanded(nodeIds)}
+            defaultEndIcon={<div style={{width: 24}}/>}
+            defaultExpanded={defaultExpanded}
+        >
+            {nodes.map(child => (
+                <StyledTreeItem key={child.id} {...child}>
+                    {child.children}
+                </StyledTreeItem>
+            ))}
+        </TreeView>
+    );
+};
+
+export const FindMultipleNamesAcrossClasses: FC<VerificationProps> = (props) => {
+    const classes = useVerificationTreeStyles();
+    const {
+        leaves,
+        paths,
+    } = props;
+    const {nodes, lookupMap} = useFindMultipleNamesAcrossClasses({leaves, paths});
     const [expanded, setExpanded] = useLocalStorage<string[]>("expanded-verification-nodes", []);
     const [defaultExpanded] = useState(expanded);
 

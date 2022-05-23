@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
+import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
@@ -52,6 +53,11 @@ const UnitForm: FC<FormProps<UnitDetailPropsFragment>> = (props) => {
             <DescriptionFormSet
                 catalogEntryId={id}
                 descriptions={entry.descriptions}
+            />
+
+            <CommentFormSet
+                catalogEntryId={id}
+                comments={entry.comments}
             />
 
             <VersionFormSet

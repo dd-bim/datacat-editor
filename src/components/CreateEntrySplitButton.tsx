@@ -81,7 +81,8 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
         name: "",
         description: "",
         versionId: "",
-        versionDate: ""
+        versionDate: "",
+        comment: ""
     };
 
     const onClick = (tag: Entity) => {
@@ -102,7 +103,7 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
         setMenuOpen(false);
     };
 
-    const onSubmit = async ({id, versionId, versionDate, name, description}: CreateEntryFormValues) => {
+    const onSubmit = async ({id, versionId, versionDate, name, description, comment}: CreateEntryFormValues) => {
         const catalogRecordType = (input?.recordType! as unknown as SimpleRecordType);
         const names = [
             {languageTag: "de", value: name}
@@ -110,12 +111,16 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
         const descriptions = description
             ? [{languageTag: "de", value: description}]
             : [];
+        const comments = comment
+            ? [{languageTag: "de", value: comment}]
+            : [];
         const version = {versionId, versionDate};
         const properties = {
             id,
             version: version,
             names: names,
-            descriptions
+            descriptions,
+            comments
         };
         await create({
             variables: {

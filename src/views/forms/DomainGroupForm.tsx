@@ -10,6 +10,7 @@ import {useSnackbar} from "notistack";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
+import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
 import MetaFormSet from "../../components/forms/MetaFormSet";
@@ -68,6 +69,11 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
             <DescriptionFormSet
                 catalogEntryId={id}
                 descriptions={entry.descriptions}
+            />
+
+            <CommentFormSet
+                catalogEntryId={id}
+                comments={entry.comments}
             />
 
             <VersionFormSet

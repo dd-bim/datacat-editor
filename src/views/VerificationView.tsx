@@ -20,7 +20,8 @@ import {
     FindMultipleIDs,
     FindMissingDescription,
     FindMissingEnglishDescription,
-    FindMultipleNames
+    FindMultipleNames,
+    FindMultipleNamesAcrossClasses
 } from "../components/Verification";
 import {
     ConceptPropsFragment,
@@ -36,7 +37,8 @@ import {
     useFindMultipleIDsTreeQuery,
     useFindMissingDescriptionTreeQuery,
     useFindMissingEnglishDescriptionTreeQuery,
-    useFindMultipleNamesTreeQuery
+    useFindMultipleNamesTreeQuery,
+    useFindMultipleNamesAcrossClassesTreeQuery
 }
     from "../generated/types";
 import DomainGroupForm from "./forms/DomainGroupForm";
@@ -166,7 +168,11 @@ export function VerificationView() {
     }
 
     const handleEindeutigkeit2 = () => {
-        setSelectCategory('Namen-Duplikate');
+        setSelectCategory('Namen-Duplikate (innerhalb eines Types)');
+    }
+
+    const handleEindeutigkeit3 = () => {
+        setSelectCategory('Namen-Duplikate (gesamter Datenbestand)');
     }
 
 
@@ -221,7 +227,8 @@ export function VerificationView() {
                         {/* <ButtonGroup orientation="vertical"> */}
                         <Grid container direction="column" alignItems="stretch">
                             <Grid item><Button onClick={() => handleEindeutigkeit1()} style={{ textAlign: 'left' }}>ID-Duplikate</Button></Grid>
-                            <Grid item><Button onClick={() => handleEindeutigkeit2()} style={{ textAlign: 'left' }}>Namen-Duplikate</Button></Grid>
+                            <Grid item><Button onClick={() => handleEindeutigkeit2()} style={{ textAlign: 'left' }}>Namen-Duplikate (innerhalb eines Types)</Button></Grid>
+                            <Grid item><Button onClick={() => handleEindeutigkeit3()} style={{ textAlign: 'left' }}>Namen-Duplikate (gesamter Datenbestand)</Button></Grid>
                             {/* </ButtonGroup> */}
                         </Grid>
                     </div>
@@ -376,15 +383,25 @@ export function VerificationView() {
                     </Paper>
                 );
 
-            case 'Namen-Duplikate':
+            case 'Namen-Duplikate (innerhalb eines Types)':
                 return (
                     <Paper className={classes.paper}>
                         <Typography variant="h5">
-                            Namen-Duplikate
+                            Namen-Duplikate (innerhalb eines Types)
                         </Typography>
                         <ThisFindMultipleNames />
                     </Paper>
                 );
+
+            case 'Namen-Duplikate (gesamter Datenbestand)':
+                return (
+                    <Paper className={classes.paper}>
+                        <Typography variant="h5">
+                            Namen-Duplikate  (gesamter Datenbestand)
+                        </Typography>
+                        <ThisFindMultipleNamesAcrossClasses />
+                    </Paper>
+                    );
 
             default:
                 return (
@@ -643,6 +660,25 @@ export function VerificationView() {
                 <FindMultipleNames
                     leaves={data!.findMultipleNames.nodes}
                     paths={data!.findMultipleNames.paths}
+                    onSelect={handleOnSelect}
+                />
+            );
+        }
+        return content;
+    }
+
+    function ThisFindMultipleNamesAcrossClasses() {
+        const { loading, error, data } = useFindMultipleNamesAcrossClassesTreeQuery({});
+        let content;
+        if (loading) {
+            content = <LinearProgress />;
+        } else if (error) {
+            content = <p>Beim Aufrufen der Prüfroutine ist ein Fehler aufgetreten.</p>;
+        } else {
+            content = (
+                <FindMultipleNamesAcrossClasses
+                    leaves={data!.findMultipleNamesAcrossClasses.nodes}
+                    paths={data!.findMultipleNamesAcrossClasses.paths}
                     onSelect={handleOnSelect}
                 />
             );
