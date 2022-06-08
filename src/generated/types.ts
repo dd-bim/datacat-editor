@@ -543,6 +543,10 @@ type ItemProps_XtdUnit_Fragment = { __typename: 'XtdUnit', id: string, recordTyp
 
 type ItemProps_XtdValue_Fragment = { __typename: 'XtdValue', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
 
+export type ExportCatalogItem_Fragment = { __typename: 'ExportResult', id: string, typ?: Maybe<string>, schlagworte?: Maybe<string>, name?: Maybe<string>, name_en?: Maybe<string>, description?: Maybe<string>, versionId?: Maybe<string>, created?: Maybe<string>, createdBy?: Maybe<string>, lastModified?: Maybe<string>, lastModifiedBy?: Maybe<string>};
+
+export type ExportCatalogItemRelationship_Fragment = { __typename: 'ExportRelationshipResult', Entity1: string, Entity1Type: string, RelationId: string, RelationshipType: string, Entity2: string, Entity2Type: string};
+
 export type ItemPropsFragment = ItemProps_XtdActivity_Fragment | ItemProps_XtdActor_Fragment | ItemProps_XtdBag_Fragment | ItemProps_XtdClassification_Fragment | ItemProps_XtdExternalDocument_Fragment | ItemProps_XtdMeasureWithUnit_Fragment | ItemProps_XtdNest_Fragment | ItemProps_XtdProperty_Fragment | ItemProps_XtdRelActsUpon_Fragment | ItemProps_XtdRelAssignsCollections_Fragment | ItemProps_XtdRelAssignsMeasures_Fragment | ItemProps_XtdRelAssignsProperties_Fragment | ItemProps_XtdRelAssignsPropertyWithValues_Fragment | ItemProps_XtdRelAssignsUnits_Fragment | ItemProps_XtdRelAssignsValues_Fragment | ItemProps_XtdRelAssociates_Fragment | ItemProps_XtdRelCollects_Fragment | ItemProps_XtdRelComposes_Fragment | ItemProps_XtdRelDocuments_Fragment | ItemProps_XtdRelGroups_Fragment | ItemProps_XtdRelSequences_Fragment | ItemProps_XtdRelSpecializes_Fragment | ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment;
 
 export type SearchResultPropsFragment = { __typename: 'SearchResult', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
@@ -1136,6 +1140,10 @@ export type FindMultipleNamesTreeQueryVariables = Exact<{ [key: string]: never; 
 
 export type FindMultipleNamesAcrossClassesTreeQueryVariables = Exact<{ [key: string]: never; }>;
 
+export type FindExportCatalogItemsTreeQueryVariables = Exact<{ [key: string]: never; }>;
+
+export type FindExportCatalogItemsRelationshipsTreeQueryVariables = Exact<{ [key: string]: never; }>;
+
 
 export type FindPropGroupWithoutPropTreeQuery = { findPropGroupWithoutProp: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
 
@@ -1164,6 +1172,10 @@ export type FindMissingEnglishDescriptionTreeQuery = { findMissingEnglishDescrip
 export type FindMultipleNamesTreeQuery = { findMultipleNames: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
 
 export type FindMultipleNamesAcrossClassesTreeQuery = { findMultipleNamesAcrossClasses: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+
+export type FindExportCatalogItemsTreeQuery = { findExportCatalogItems: { paths: Array<Array<string>>, nodes: Array<ExportCatalogItem_Fragment> } };
+
+export type FindExportCatalogItemsRelationshipsTreeQuery = { findExportCatalogItemsRelationships: { paths: Array<Array<string>>, nodes: Array<ExportCatalogItemRelationship_Fragment> } };
 
 export type GetDocumentEntryQuery = { node?: Maybe<ExternalDocumentDetailPropsFragment> };
 
@@ -3179,3 +3191,59 @@ export function useProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Pr
 export type ProfileQueryHookResult = ReturnType<typeof useProfileQuery>;
 export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
 export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
+
+//__useExportCatalogItemsQuery__
+
+export function useExportCatalogItemsQuery(baseOptions?: Apollo.QueryHookOptions<FindExportCatalogItemsTreeQuery, FindExportCatalogItemsTreeQueryVariables>) {
+  return Apollo.useQuery<FindExportCatalogItemsTreeQuery, FindExportCatalogItemsTreeQueryVariables>(GetExportCatalogItems, baseOptions);
+}
+export function useExportCatalogItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindExportCatalogItemsTreeQuery, FindExportCatalogItemsTreeQueryVariables>) {
+    return Apollo.useLazyQuery<FindExportCatalogItemsTreeQuery, FindExportCatalogItemsTreeQueryVariables>(GetExportCatalogItems, baseOptions);
+  }
+export type ExportCatalogItemsQueryHookResult = ReturnType<typeof useExportCatalogItemsQuery>;
+export type ExportCatalogItemsLazyQueryHookResult = ReturnType<typeof useExportCatalogItemsLazyQuery>;
+export type ExportCatalogItemsQueryResult = Apollo.QueryResult<FindExportCatalogItemsTreeQuery, FindExportCatalogItemsTreeQueryVariables>;
+export const GetExportCatalogItems = gql`
+query findExportCatalogItems {
+  findExportCatalogItems {
+	  nodes {
+      id,
+      typ,
+      schlagworte,
+      name,
+      name_en,
+      description,
+      versionId,
+      created,
+      createdBy,
+      lastModified,
+      lastModifiedBy
+    }
+  }
+}`;
+
+//__useExportCatalogItemsRelationshipsQuery__
+
+export function useExportCatalogItemsRelationshipsQuery(baseOptions?: Apollo.QueryHookOptions<FindExportCatalogItemsRelationshipsTreeQuery, FindExportCatalogItemsRelationshipsTreeQueryVariables>) {
+  return Apollo.useQuery<FindExportCatalogItemsRelationshipsTreeQuery, FindExportCatalogItemsRelationshipsTreeQueryVariables>(GetExportCatalogItemsRelationships, baseOptions);
+}
+export function useExportCatalogItemsRelationshipsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindExportCatalogItemsRelationshipsTreeQuery, FindExportCatalogItemsRelationshipsTreeQueryVariables>) {
+    return Apollo.useLazyQuery<FindExportCatalogItemsRelationshipsTreeQuery, FindExportCatalogItemsRelationshipsTreeQueryVariables>(GetExportCatalogItemsRelationships, baseOptions);
+  }
+export type ExportCatalogItemsRelationshipsQueryHookResult = ReturnType<typeof useExportCatalogItemsRelationshipsQuery>;
+export type ExportCatalogItemsRelationshipsLazyQueryHookResult = ReturnType<typeof useExportCatalogItemsRelationshipsLazyQuery>;
+export type ExportCatalogItemsRelationshipsQueryResult = Apollo.QueryResult<FindExportCatalogItemsRelationshipsTreeQuery, FindExportCatalogItemsRelationshipsTreeQueryVariables>;
+export const GetExportCatalogItemsRelationships = gql`
+query findExportCatalogItemsRelationships {
+  findExportCatalogItemsRelationships {
+    nodes {
+      Entity1,
+      Entity1Type,
+      RelationId,
+      RelationshipType,
+      Entity2,
+      Entity2Type
+      __typename
+    }
+  }
+  }`;

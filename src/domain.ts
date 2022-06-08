@@ -39,7 +39,8 @@ export type Entity = {
 };
 
 export const DocumentEntity: Entity = {
-    tags: undefined,
+    // tags: undefined,
+    tags: ["992c8887-301e-4764-891c-ae954426fc22"],
     title: "Referenzdokument",
     titlePlural: "Referenzdokumente",
     description: "Ein Eintrag vom Typ Referenzdokument wird genutzt, um externe Dokumente, Bücher oder andere schriftliche Informationen abzubilden.",
@@ -99,7 +100,7 @@ export const PropertyGroupEntity: Entity = {
 }
 
 export const PropertyEntity: Entity = {
-    tags: undefined,
+    tags: ["d4b0ba83-eb40-4997-85e0-9d6181e85639"],
     title: "Merkmal",
     titlePlural: "Merkmale",
     recordType: CatalogRecordType.Property,
@@ -109,7 +110,7 @@ export const PropertyEntity: Entity = {
 }
 
 export const MeasureEntity: Entity = {
-    tags: undefined,
+    tags: ["57172977-a42f-4e05-8109-cd906ec7f43c"],
     title: "Größe",
     titlePlural: "Größen",
     recordType: CatalogRecordType.Measure,
@@ -119,7 +120,7 @@ export const MeasureEntity: Entity = {
 }
 
 export const UnitEntity: Entity = {
-    tags: undefined,
+    tags: ["09da1ebb-8641-47fa-b82e-8588c7fef09e"],
     title: "Maßeinheit",
     titlePlural: "Maßeinheiten",
     recordType: CatalogRecordType.Unit,
@@ -129,7 +130,7 @@ export const UnitEntity: Entity = {
 }
 
 export const ValueEntity: Entity = {
-    tags: undefined,
+    tags: ["a5d13c88-7d83-42c1-8da2-5dc6d8e8a749"],
     title: "Wert",
     titlePlural: "Werte",
     recordType: CatalogRecordType.Value,
