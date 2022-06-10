@@ -19,7 +19,8 @@ export type CreateEntryFormValues = {
     versionId: string,
     versionDate: string,
     name: string,
-    description: string
+    description: string,
+    comment: string
 }
 
 export type CreateEntryFormProps = {
@@ -60,6 +61,14 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
                 helperText="Beschreiben Sie das Konzept in seiner Bedeutung. Nutzen Sie die Beschreibung insbesondere, um es von womöglich gleich benannten, aber fachlich verschiedenen Konzepten abzugrenzen."
                 control={control}
                 error={errors.description}
+                as={<TextField {...defaultFormFieldOptions}/>}
+            />
+            <Controller
+                name="comment"
+                label="Kommentar (de)"
+                helperText="Hinterlassen Sie einen Kommentar zu diesem Konzept. Hier können zusätzliche Informationen zwischen Bearbeitern ausgetauscht werden."
+                control={control}
+                error={errors.comment}
                 as={<TextField {...defaultFormFieldOptions}/>}
             />
             <Controller

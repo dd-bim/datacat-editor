@@ -12,6 +12,7 @@ import Button from "@material-ui/core/Button";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
+import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import {GroupEntity} from "../../domain";
 import FormView, {FormProps} from "./FormView";
@@ -70,6 +71,11 @@ function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
             <DescriptionFormSet
                 catalogEntryId={id}
                 descriptions={entry.descriptions}
+            />
+
+            <CommentFormSet
+                catalogEntryId={id}
+                comments={entry.comments}
             />
 
             <VersionFormSet

@@ -109,7 +109,6 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
                         icon={<StorageIcon/>}
                         primary="Prüfen"
                         to="/audit"
-                        disabled
                     />
 
                     <AppDrawerItem

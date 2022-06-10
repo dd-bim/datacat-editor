@@ -12,6 +12,7 @@ import Button from "@material-ui/core/Button";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
+import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
 import {MeasureEntity} from "../../domain";
@@ -69,6 +70,11 @@ const PropertyForm: FC<FormProps<PropertyDetailPropsFragment>> = (props) => {
             <DescriptionFormSet
                 catalogEntryId={id}
                 descriptions={entry.descriptions}
+            />
+
+            <CommentFormSet
+                catalogEntryId={id}
+                comments={entry.comments}
             />
 
             <VersionFormSet

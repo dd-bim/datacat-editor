@@ -40,6 +40,7 @@ fragment ItemProps on Concept {
     recordType
     name(input: { languageTags: ["de-DE", "en-US"] })
     description(input: { languageTags: ["de-DE", "en-US"] })
+    comment(input: { languageTags: ["de-DE", "en-US"] })
     tags {
         ...TagProps
     }
@@ -51,6 +52,7 @@ fragment SearchResultProps on SearchResult {
     recordType
     name(input: { languageTags: ["de-DE", "en-US"] })
     description(input: { languageTags: ["de-DE", "en-US"] })
+    comment(input: { languageTags: ["de-DE", "en-US"] })
     tags {
         ...TagProps
     }
@@ -64,6 +66,9 @@ fragment ConceptProps on Concept {
         ...TranslationProps
     }
     descriptions {
+        ...TranslationProps
+    }
+    comments {
         ...TranslationProps
     }
 }
@@ -225,6 +230,7 @@ fragment SubjectDetailProps on XtdSubject {
         id
         name
         description
+        comment
         assignedMeasures {
             nodes {
                 id
@@ -232,6 +238,7 @@ fragment SubjectDetailProps on XtdSubject {
                     id
                     name
                     description
+                    comment
                     assignedValues {
                         nodes {
                             id
@@ -239,6 +246,7 @@ fragment SubjectDetailProps on XtdSubject {
                                 id
                                 name
                                 description
+                                comment
                                 nominalValue
                             }
                         }

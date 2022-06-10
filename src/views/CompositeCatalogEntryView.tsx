@@ -4,7 +4,19 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Paper} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import {Entity} from "../domain";
+import {
+    ClassEntity,
+    DocumentEntity,
+    Entity,
+    GroupEntity,
+    MeasureEntity,
+    ModelEntity,
+    PropertyEntity,
+    PropertyGroupEntity,
+    UnitEntity,
+    ValueEntity,
+} from "../domain";
+import CreateEntryButton from "../components/CreateEntryButton";
 import PlusIcon from "@material-ui/icons/Add";
 import Button from "@material-ui/core/Button";
 import SearchList from "../components/list/SearchList";
@@ -58,6 +70,40 @@ const CompositeCatalogEntryView = (props: CompositeCatalogEntryViewProps) => {
         history.push(`/${path}/${value.id}`);
     };
 
+    // Button-Zuweisung je nach gewählten Entitätstyp
+
+    var entryTypeName;
+    if (title === 'Referenzdokument') {
+        entryTypeName = DocumentEntity
+    } 
+    else if (title === 'Fachmodell') {
+        entryTypeName = ModelEntity
+    } 
+    else if (title === 'Gruppe') {
+        entryTypeName = GroupEntity
+    } 
+    else if (title === 'Klasse') {
+        entryTypeName = ClassEntity
+    } 
+    else if (title === 'Merkmalsgruppe') {
+        entryTypeName = PropertyGroupEntity
+    } 
+    else if (title === 'Merkmal') {
+        entryTypeName = PropertyEntity
+    } 
+    else if (title === 'Größe') {
+        entryTypeName = MeasureEntity
+    } 
+    else if (title === 'Maßeinheit') {
+        entryTypeName = UnitEntity
+    } 
+    else if (title === 'Wert') {
+        entryTypeName = ValueEntity
+    } 
+    else {
+        entryTypeName = ClassEntity
+    }
+
     return (
         <Grid container spacing={1}>
             <Grid item xs={4}>
@@ -82,6 +128,9 @@ const CompositeCatalogEntryView = (props: CompositeCatalogEntryViewProps) => {
                     >
                         Mehr Ergebnisse
                     </Button>
+
+                    <CreateEntryButton EntryType={entryTypeName}/>
+
                 </Paper>
             </Grid>
             <Grid item xs={8}>
