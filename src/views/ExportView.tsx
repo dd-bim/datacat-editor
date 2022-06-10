@@ -36,16 +36,16 @@ export function ExportView() {
                 }
                 entities.push([
                     node.id,
-                    `"${node.typ ?? ""}"`,
+                    `${node.typ ?? ""}`,
                     `"${node.schlagworte ?? ""}"`,
                     `"${node.name ?? ""}"`,
                     `"${node.name_en ?? ""}"`,
                     `"${description ?? ""}"`,
-                    `"${node.versionId ?? ""}"`,
-                    `"${node.createdBy ?? ""}"`,
-                    `"${node.created ?? ""}"`,
-                    `"${node.lastModified ?? ""}"`,
-                    `"${node.lastModifiedBy ?? ""}"`
+                    `${node.versionId ?? ""}`,
+                    `${node.createdBy ?? ""}`,
+                    `${node.created ?? ""}`,
+                    `${node.lastModified ?? ""}`,
+                    `${node.lastModifiedBy ?? ""}`
                 ]);
             
         };
@@ -58,9 +58,8 @@ export function ExportView() {
             entityArr.push(JSON.parse(row));
         })
 
-        const csvEntity = "data:text/csv;charset=utf-8," 
-        + "id,typ,schlagworte,name,name_en,description,versionId,createdBy,created,lastModified,lastModifiedBy\n"
-        + entityArr.map(e => e.join(",")).join("\n");
+        const csvEntity = "id;typ;schlagworte;name;name_en;description;versionId;createdBy;created;lastModified;lastModifiedBy\n"
+        + entityArr.map(e => e.join(";")).join("\n");
         var entityBlob = new Blob([csvEntity], { type:"text/csv;charset=utf-8"});
         zip.file(`Entities.csv`, entityBlob);
 
@@ -69,11 +68,11 @@ export function ExportView() {
             
                 relations.push([
                     node.Entity1,
-                    `"${node.Entity1Type}"`,
+                    node.Entity1Type,
                     node.RelationId,
-                    `"${node.RelationshipType}"`,
+                    node.RelationshipType,
                     node.Entity2,
-                    `"${node.Entity2Type}"`
+                    node.Entity2Type
                 ]);
        
         };
@@ -86,9 +85,8 @@ export function ExportView() {
             relationArr.push(JSON.parse(row));
         })
 
-        const csvRelation = "data:text/csv;charset=utf-8," 
-        + "Entity1,Entity1Type,RelationId,RelationshipType,Entity2,Entity2Type\n"
-        + relationArr.map(e => e.join(",")).join("\n");
+        const csvRelation = "Entity1;Entity1Type;RelationId;RelationshipType;Entity2;Entity2Type\n"
+        + relationArr.map(e => e.join(";")).join("\n");
         var relationBlob = new Blob([csvRelation], { type:"text/csv;charset=utf-8"});
         zip.file(`Relationships.csv`, relationBlob);
 
@@ -154,7 +152,8 @@ export function ExportView() {
                 Die Datei "Entities.csv" enthält alle Katalogeinträge mit deren Metadaten. 
                 In der Datei "Relationships.csv" sind die Relationen gespeichert, die zwischen den Katalogeinträgen bestehen.  <br/>
                 Die Ergebnisdatei ist in UTF-8 encodiert, verwendet Komma (,) als Trennzeichen und doppelte Anführungszeichen
-                (") als Textqualifizierer.
+                (") als Textqualifizierer. <br/><br/>
+                Die Daten stehen zum Export bereit, sobald der Button nicht mehr ausgegraut ist.
             </Typography>
             {/* <Button onClick={handleOnClick} disabled={!nodes.length}>CSV exportieren</Button> */}
             <Button onClick={handleOnClick} disabled={!loaded}>CSV exportieren</Button>
