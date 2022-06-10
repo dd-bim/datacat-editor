@@ -1,8 +1,7 @@
 import React, {FC, useState} from "react";
 import {SimpleRecordType, useCreateEntryMutation} from "../generated/types";
-import {ButtonGroup, ButtonGroupProps, Dialog} from "@material-ui/core";
+import {Dialog} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import Popper from "@material-ui/core/Popper";
 import Grow from "@material-ui/core/Grow";
 import Paper from "@material-ui/core/Paper";
@@ -25,12 +24,8 @@ import {
     PropertyEntity,
     PropertyGroupEntity,
     UnitEntity,
-    ValueEntity
+    ValueEntity,
 } from "../domain";
-
-type CreateEntrySplitButtonProps = {
-    ButtonGroupProps?: ButtonGroupProps
-}
 
 const options = [
     DocumentEntity,
@@ -44,11 +39,11 @@ const options = [
     ValueEntity
 ];
 
+type CreateEntryProps = {
+    EntryType: Entity
+}
 
-const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
-    const {
-        ButtonGroupProps
-    } = props;
+const CreateEntryButton: FC<CreateEntryProps> = props => {
 
     const {enqueueSnackbar} = useSnackbar();
 
@@ -69,7 +64,7 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
         }
     });
 
-    const [lastUsedOption, setLastUsedOption] = React.useState(ClassEntity);
+    const [lastUsedOption, setLastUsedOption] = React.useState(props.EntryType);
     const [menuOpen, setMenuOpen] = React.useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
     const anchorRef = React.useRef<HTMLDivElement>(null);
@@ -91,10 +86,6 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
         setInput(tag);
         setDialogOpen(true);
     }
-
-    const handleToggle = () => {
-        setMenuOpen((prevOpen) => !prevOpen);
-    };
 
     const handleClose = (event: React.MouseEvent<Document, MouseEvent>) => {
         if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
@@ -138,29 +129,12 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
 
     return (
         <React.Fragment>
-            <ButtonGroup
-                variant="outlined"
-                color="inherit" {...ButtonGroupProps}
-                ref={anchorRef}
-                aria-label="Eintrag hinzufügen"
-            >
                 <Button
                     onClick={() => onClick(lastUsedOption)}
                     startIcon={<AddIcon/>}
                 >
                     {lastUsedOption.title}
                 </Button>
-                <Button
-                    color="inherit"
-                    aria-controls={menuOpen ? 'split-button-menu' : undefined}
-                    aria-expanded={menuOpen ? 'true' : undefined}
-                    aria-label="Zeige weitere Optionen"
-                    aria-haspopup="menu"
-                    onClick={handleToggle}
-                >
-                    <ArrowDropDownIcon/>
-                </Button>
-            </ButtonGroup>
 
             <Popper open={menuOpen} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
                 {({TransitionProps, placement}) => (
@@ -199,4 +173,4 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
 
 }
 
-export default CreateEntrySplitButton;
+export default CreateEntryButton;

@@ -38,7 +38,7 @@ const DescriptionFormSet: FC<DescriptionFormSetProps> = (props) => {
                 input: {catalogEntryId, description}
             }
         });
-        enqueueSnackbar("Name hinzugefügt.");
+        enqueueSnackbar("Beschreibung hinzugefügt.");
     };
 
     const handleOnUpdate = async (description: TranslationUpdateInput) => {
@@ -47,7 +47,7 @@ const DescriptionFormSet: FC<DescriptionFormSetProps> = (props) => {
                 input: {catalogEntryId, description}
             }
         });
-        enqueueSnackbar("Name aktualisiert.");
+        enqueueSnackbar("Beschreibung aktualisiert.");
     };
 
     const handleOnDelete = async (descriptionId: string) => {
@@ -56,7 +56,7 @@ const DescriptionFormSet: FC<DescriptionFormSetProps> = (props) => {
                 input: {catalogEntryId, descriptionId}
             }
         });
-        enqueueSnackbar("Name gelöscht.")
+        enqueueSnackbar("Beschreibung gelöscht.")
     };
 
     return (
