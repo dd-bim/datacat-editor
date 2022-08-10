@@ -36,7 +36,7 @@ export default function ConfirmationView() {
         errorPolicy: "all",
         onCompleted: (result) => {
             if (result.success) {
-                enqueueSnackbar('Ihre Email-Adresse wurde bestätigt. Bitte nuten Sie Ihren gewählten Benutzernamen und Ihr Password um sich anzumelden.');
+                enqueueSnackbar('Ihre Email-Adresse wurde bestätigt. Bitte nutzen Sie Ihren gewählten Benutzernamen und Ihr Password um sich anzumelden.');
                 setSuccess(true);
             }
         }

@@ -44,7 +44,7 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={classes.root}>
-            <Controller
+            <Controller autoFocus
                 name="name"
                 label="Name (de)"
                 helperText="Benennen Sie das Konzept im fachlichen Kontext und möglichst genau. Trennen Sie Synonyme durch Semikolon voneinander ab."
