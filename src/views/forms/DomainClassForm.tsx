@@ -39,6 +39,12 @@ export default function DomainClassForm(props: FormProps<SubjectDetailPropsFragm
                     hierarchy: (value, {DELETE}) => DELETE
                 }
             });
+            cache.modify({
+                id: "ROOT_QUERY",
+                fields: {
+                    search: (value, {DELETE}) => DELETE
+                }
+            });
         }
     });
 
