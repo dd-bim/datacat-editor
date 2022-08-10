@@ -35,6 +35,12 @@ const DocumentForm: FC<FormProps<ExternalDocumentDetailPropsFragment>> = (props)
                     hierarchy: (value, {DELETE}) => DELETE
                 }
             });
+            cache.modify({
+                id: "ROOT_QUERY",
+                fields: {
+                    search: (value, {DELETE}) => DELETE
+                }
+            });
         }
     });
 

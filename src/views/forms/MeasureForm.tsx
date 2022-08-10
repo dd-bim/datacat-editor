@@ -38,6 +38,12 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
                     hierarchy: (value, {DELETE}) => DELETE
                 }
             });
+            cache.modify({
+                id: "ROOT_QUERY",
+                fields: {
+                    search: (value, {DELETE}) => DELETE
+                }
+            });
         }
     });
 
