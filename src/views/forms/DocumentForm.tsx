@@ -15,11 +15,12 @@ import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
 import TransferListView from "../TransferListView";
+import {Domain} from "../../domain";
 
 const DocumentForm: FC<FormProps<ExternalDocumentDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
-
+console.log("IDDocument :" + id)
     // fetch domain model
     const {loading, error, data, refetch} = useGetDocumentEntryQuery({
         fetchPolicy: "network-only",
@@ -87,6 +88,7 @@ const DocumentForm: FC<FormProps<ExternalDocumentDetailPropsFragment>> = (props)
                 relationshipType={RelationshipRecordType.Documents}
                 relationships={documentsRelationships}
                 searchInput={{
+                    entityTypeIn: Domain.map(x => x.recordType),
                     idNotIn: [id]
                 }}
                 onCreate={handleOnUpdate}
