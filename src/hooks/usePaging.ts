@@ -22,6 +22,8 @@ export default function usePaging(options: UsePagingOptions): Omit<TablePaginati
         rowsPerPage: pageSize,
         rowsPerPageOptions: [10, 25, 50, 100],
         onChangeRowsPerPage: e => setPageSize(parseInt(e.target.value, 10)),
-        onChangePage: (e, num) => setPageNumber(num)
+        // onChangePage: (e, num) => setPageNumber(num)
+        onPageChange: (e, num) => setPageNumber(num)
     };
 };
+
