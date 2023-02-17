@@ -543,9 +543,9 @@ type ItemProps_XtdUnit_Fragment = { __typename: 'XtdUnit', id: string, recordTyp
 
 type ItemProps_XtdValue_Fragment = { __typename: 'XtdValue', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-export type ExportCatalogItem_Fragment = { __typename: 'ExportResult', id: string, typ?: Maybe<string>, schlagworte?: Maybe<string>, name?: Maybe<string>, name_en?: Maybe<string>, description?: Maybe<string>, versionId?: Maybe<string>, created?: Maybe<string>, createdBy?: Maybe<string>, lastModified?: Maybe<string>, lastModifiedBy?: Maybe<string>};
+export type ExportCatalogItem_Fragment = { __typename: 'ExportResult', id: string, typ?: Maybe<string>, tags?: Maybe<string>, name?: Maybe<string>, name_en?: Maybe<string>, description?: Maybe<string>, versionId?: Maybe<string>, created?: Maybe<string>, createdBy?: Maybe<string>, lastModified?: Maybe<string>, lastModifiedBy?: Maybe<string>};
 
-export type ExportCatalogItemRelationship_Fragment = { __typename: 'ExportRelationshipResult', Entity1: string, Entity1Type: string, RelationId: string, RelationshipType: string, Entity2: string, Entity2Type: string};
+export type ExportCatalogItemRelationship_Fragment = { __typename: 'ExportRelationshipResult', entity1: string, entity1Type: string, relationId: string, relationshipType: string, entity2: string, entity2Type: string};
 
 export type ItemPropsFragment = ItemProps_XtdActivity_Fragment | ItemProps_XtdActor_Fragment | ItemProps_XtdBag_Fragment | ItemProps_XtdClassification_Fragment | ItemProps_XtdExternalDocument_Fragment | ItemProps_XtdMeasureWithUnit_Fragment | ItemProps_XtdNest_Fragment | ItemProps_XtdProperty_Fragment | ItemProps_XtdRelActsUpon_Fragment | ItemProps_XtdRelAssignsCollections_Fragment | ItemProps_XtdRelAssignsMeasures_Fragment | ItemProps_XtdRelAssignsProperties_Fragment | ItemProps_XtdRelAssignsPropertyWithValues_Fragment | ItemProps_XtdRelAssignsUnits_Fragment | ItemProps_XtdRelAssignsValues_Fragment | ItemProps_XtdRelAssociates_Fragment | ItemProps_XtdRelCollects_Fragment | ItemProps_XtdRelComposes_Fragment | ItemProps_XtdRelDocuments_Fragment | ItemProps_XtdRelGroups_Fragment | ItemProps_XtdRelSequences_Fragment | ItemProps_XtdRelSpecializes_Fragment | ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment;
 
@@ -3209,7 +3209,7 @@ query findExportCatalogItems {
 	  nodes {
       id,
       typ,
-      schlagworte,
+      tags,
       name,
       name_en,
       description,
@@ -3237,12 +3237,12 @@ export const GetExportCatalogItemsRelationships = gql`
 query findExportCatalogItemsRelationships {
   findExportCatalogItemsRelationships {
     nodes {
-      Entity1,
-      Entity1Type,
-      RelationId,
-      RelationshipType,
-      Entity2,
-      Entity2Type
+      entity1,
+      entity1Type,
+      relationId,
+      relationshipType,
+      entity2,
+      entity2Type
       __typename
     }
   }
