@@ -21,6 +21,7 @@ import Container from "@material-ui/core/Container";
 import {HomePanel} from "./components/HomePanel";
 import {VerificationView} from "./views/VerificationView";
 import {ExportView} from "./views/ExportView";
+import { ImportView } from "./views/ImportView";
 
 const drawerWidth = 250;
 
@@ -103,6 +104,9 @@ export default function Layout() {
                     </Route>
                     <Route path="/audit">
                         <VerificationView/>
+                    </Route>
+                    <Route path="/import">
+                        <ImportView/>
                     </Route>
                     <Route path="/export">
                         <ExportView/>

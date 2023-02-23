@@ -123,6 +123,7 @@ export type CreateRelationshipInput = {
 
 
 export type CreateTagInput = {
+  tagId?: Maybe<Scalars['ID']>;
   name: Scalars['String'];
 };
 
@@ -330,21 +331,37 @@ export type SignupInput = {
 };
 
 
-export enum SimpleRecordType {
-  Activity = 'Activity',
-  Actor = 'Actor',
-  Bag = 'Bag',
-  Classification = 'Classification',
-  ExternalDocument = 'ExternalDocument',
-  Measure = 'Measure',
-  Nest = 'Nest',
-  Property = 'Property',
-  Subject = 'Subject',
-  Unit = 'Unit',
-  Value = 'Value'
+export enum SimpleRecordType  {
+  Activity = 'Activity' as any,
+  Actor = 'Actor' as any,
+  Bag = 'Bag' as any,
+  Classification = 'Classification' as any,
+  ExternalDocument = 'ExternalDocument' as any,
+  MeasureWithUnit = 'Measure' as any,
+  Measure = 'Measure' as any,
+  Nest = 'Nest' as any,
+  Property = 'Property' as any,
+  Subject = 'Subject' as any,
+  Unit = 'Unit' as any,
+  Value = 'Value' as any
 }
 
+export type Tag = {
+  __typename?: 'Tag';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  created: Scalars['String'];
+  createdBy: Scalars['String'];
+  lastModified: Scalars['String'];
+  lastModifiedBy: Scalars['String'];
+};
 
+export type TagNode = {
+  nodes: {
+    id: string;
+    name: string;
+  }[]
+};
 
 export type TagFilterInput = {
   in?: Maybe<Array<Scalars['ID']>>;
@@ -550,6 +567,8 @@ export type ExportCatalogItemRelationship_Fragment = { __typename: 'ExportRelati
 export type ItemPropsFragment = ItemProps_XtdActivity_Fragment | ItemProps_XtdActor_Fragment | ItemProps_XtdBag_Fragment | ItemProps_XtdClassification_Fragment | ItemProps_XtdExternalDocument_Fragment | ItemProps_XtdMeasureWithUnit_Fragment | ItemProps_XtdNest_Fragment | ItemProps_XtdProperty_Fragment | ItemProps_XtdRelActsUpon_Fragment | ItemProps_XtdRelAssignsCollections_Fragment | ItemProps_XtdRelAssignsMeasures_Fragment | ItemProps_XtdRelAssignsProperties_Fragment | ItemProps_XtdRelAssignsPropertyWithValues_Fragment | ItemProps_XtdRelAssignsUnits_Fragment | ItemProps_XtdRelAssignsValues_Fragment | ItemProps_XtdRelAssociates_Fragment | ItemProps_XtdRelCollects_Fragment | ItemProps_XtdRelComposes_Fragment | ItemProps_XtdRelDocuments_Fragment | ItemProps_XtdRelGroups_Fragment | ItemProps_XtdRelSequences_Fragment | ItemProps_XtdRelSpecializes_Fragment | ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment;
 
 export type SearchResultPropsFragment = { __typename: 'SearchResult', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
+
+export type FindTagsResultFragment = { id: string, name: string };
 
 type ConceptProps_XtdActivity_Fragment = (
   { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
@@ -1064,6 +1083,21 @@ export type TagBagMutationVariables = Exact<{
 
 export type TagBagMutation = { addTag?: Maybe<{ catalogEntry?: Maybe<CollectionDetailProps_XtdBag_Fragment | CollectionDetailProps_XtdNest_Fragment> }> };
 
+export type CreateTagMutation = (
+  { __typename?: 'Mutation' }
+  & { createTag?: Maybe<(
+    { __typename?: 'CreateTagPayload' }
+    & { tag?: Maybe<(
+      { __typename?: 'Tag' }
+      & Pick<Tag, 'id'>
+    )> }
+  )> }
+);
+
+export type CreateTagMutationVariables = Exact<{
+  input: CreateTagInput;
+}>;
+
 export type CreateRelationshipMutationVariables = Exact<{
   input: CreateRelationshipInput;
 }>;
@@ -1100,6 +1134,12 @@ export type FindItemQueryVariables = Exact<{
 
 
 export type FindItemQuery = { search: { totalElements: number, nodes: Array<SearchResultPropsFragment>, pageInfo: PagePropsFragment } };
+
+export type FindTagsQuery = { findTags: { totalElements: number, nodes: Array<FindTagsResultFragment> } };
+
+export type FindTagsQueryVariables = Exact<{
+  pageSize?: Maybe<Scalars['Int']>;
+}>;
 
 export type PropertyTreeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2336,6 +2376,42 @@ export function useTagBagMutation(baseOptions?: Apollo.MutationHookOptions<TagBa
 export type TagBagMutationHookResult = ReturnType<typeof useTagBagMutation>;
 export type TagBagMutationResult = Apollo.MutationResult<TagBagMutation>;
 export type TagBagMutationOptions = Apollo.BaseMutationOptions<TagBagMutation, TagBagMutationVariables>;
+//-------------------
+export const CreateTagDocument = gql`
+    mutation addTag($input: CreateTagInput!) {
+      createTag(input: $input) {
+        tag {
+          id
+        }
+      }
+    }
+`;
+export type CreateTagMutationFn = Apollo.MutationFunction<CreateTagMutation, CreateTagMutationVariables>;
+
+/**
+ * __useCreateTagMutation__
+ *
+ * To run a mutation, you first call `useCreateTagMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTagMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTagMutation, { data, loading, error }] = useCreateTagMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateTagMutation(baseOptions?: Apollo.MutationHookOptions<CreateTagMutation, CreateTagMutationVariables>) {
+        return Apollo.useMutation<CreateTagMutation, CreateTagMutationVariables>(CreateTagDocument, baseOptions);
+      }
+export type CreateTagMutationHookResult = ReturnType<typeof useCreateTagMutation>;
+export type CreateTagMutationResult = Apollo.MutationResult<CreateTagMutation>;
+export type CreateTagOptions = Apollo.BaseMutationOptions<CreateTagMutation, CreateTagMutationVariables>;
+//----------------------------------------------------------
 export const CreateRelationshipDocument = gql`
     mutation CreateRelationship($input: CreateRelationshipInput!) {
   createRelationship(input: $input) {
@@ -2524,6 +2600,46 @@ export function useFindItemLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<F
 export type FindItemQueryHookResult = ReturnType<typeof useFindItemQuery>;
 export type FindItemLazyQueryHookResult = ReturnType<typeof useFindItemLazyQuery>;
 export type FindItemQueryResult = Apollo.QueryResult<FindItemQuery, FindItemQueryVariables>;
+export const FindTagsDocument = gql`
+    query FindTags($pageSize: Int) {  
+  findTags(input: {pageSize: $pageSize}) {
+    nodes {
+      id,
+      name
+    }
+    totalElements
+  }
+}
+`;
+
+/**
+ * __useFindTagsQuery__
+ *
+ * To run a query within a React component, call `useFindTagsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindTagsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindTagsQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *      pageSize: // value for 'pageSize'
+ *      pageNumber: // value for 'pageNumber'
+ *   },
+ * });
+ */
+export function useFindTagsQuery(baseOptions?: Apollo.QueryHookOptions<FindTagsQuery, FindTagsQueryVariables>) {
+        return Apollo.useQuery<FindTagsQuery, FindTagsQueryVariables>(FindTagsDocument, baseOptions);
+      }
+export function useFindTagsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindTagsQuery, FindTagsQueryVariables>) {
+          return Apollo.useLazyQuery<FindTagsQuery, FindTagsQueryVariables>(FindTagsDocument, baseOptions);
+        }
+export type FindTagsQueryHookResult = ReturnType<typeof useFindTagsQuery>;
+export type FindTagsLazyQueryHookResult = ReturnType<typeof useFindTagsLazyQuery>;
+export type FindTagsQueryResult = Apollo.QueryResult<FindTagsQuery, FindTagsQueryVariables>;
+// --------------------------------------
 export const PropertyTreeDocument = gql`
     query PropertyTree {
   hierarchy(

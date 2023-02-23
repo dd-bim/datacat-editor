@@ -113,6 +113,12 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
 
                     <AppDrawerItem
                         icon={<ImportExportIcon/>}
+                        primary="Importieren"
+                        to="/import"
+                    />
+
+                    <AppDrawerItem
+                        icon={<ImportExportIcon/>}
                         primary="Exportieren"
                         to="/export"
                     />
