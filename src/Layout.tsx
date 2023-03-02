@@ -22,6 +22,7 @@ import {HomePanel} from "./components/HomePanel";
 import {VerificationView} from "./views/VerificationView";
 import {ExportView} from "./views/ExportView";
 import { ImportView } from "./views/ImportView";
+import { DeleteImportView } from "./views/DeleteImportView";
 
 const drawerWidth = 250;
 
@@ -107,6 +108,7 @@ export default function Layout() {
                     </Route>
                     <Route path="/import">
                         <ImportView/>
+                        <DeleteImportView/>
                     </Route>
                     <Route path="/export">
                         <ExportView/>
