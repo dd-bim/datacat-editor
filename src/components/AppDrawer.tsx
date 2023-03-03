@@ -110,12 +110,13 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
                         primary="Prüfen"
                         to="/audit"
                     />
-
+                    {isAdmin && (
                     <AppDrawerItem
                         icon={<ImportExportIcon/>}
                         primary="Importieren"
                         to="/import"
                     />
+                    )}
 
                     <AppDrawerItem
                         icon={<ImportExportIcon/>}

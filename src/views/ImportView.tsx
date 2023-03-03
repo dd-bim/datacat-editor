@@ -6,6 +6,7 @@ import { FindTagsResultFragment, RelationshipRecordType, SimpleRecordType, useCr
 import { v4 as uuidv4 } from "uuid";
 import { ApolloCache } from "@apollo/client";
 import { Grid, TextField } from "@material-ui/core";
+import { useSnackbar } from "notistack";
 
 export const IMPORT_TAG_ID = "KATALOG-IMPORT";
 type entity = {
@@ -37,23 +38,18 @@ export function ImportView() {
     const fileRef = useRef<HTMLInputElement>(null);
     const [control, setControl] = useState(1);
 
-    const { data, refetch } = useFindTagsQuery({
+    // get list o tags
+    const { refetch } = useFindTagsQuery({
         variables: {
                 pageSize: 100
         }
     });
-
-    // load existing tags from database
-    useEffect(() => {
-        setTags(data?.findTags.nodes ?? [])
-        // console.log(data?.findTags.totalElements)
-    }, [data]);
+    
+    const {enqueueSnackbar} = useSnackbar();
+    
 
     const reload = () => {
         setControl(Math.random());
-        // setLoaded(false);
-        // setEntitiesFile(null);
-        // setRelationsFile(null);
     }
 
     // create new entity records by query
@@ -83,12 +79,15 @@ export function ImportView() {
     });
     const [createRelationship] = useCreateRelationshipMutation({ update });
 
-    // handle file selection
+    // handle file selection and update tag list
     const handleFileChange = (event: any) => {
         const selectedFile = event.target.files && event.target.files[0];
         if (selectedFile) {
             if (event.target.name === "entitiesFile") setEntitiesFile(selectedFile);
             if (event.target.name === "relationsFile") setRelationsFile(selectedFile);
+            refetch({pageSize: 100}).then((response) => {
+                setTags(response.data?.findTags.nodes ?? [])
+            });
         }
         setInit(false);
     };
@@ -115,8 +114,6 @@ export function ImportView() {
 
     // handle upload and file reading on import button click 
     const handleUpload = async () => {
-
-        // console.log(tags)
         if (entitiesFile) {
             const entitiesReader = new FileReader();
             entitiesReader.readAsText(entitiesFile);
@@ -264,9 +261,9 @@ export function ImportView() {
                     try {
                         handleOnCreateTag(tagId, tag);
                         tArr.push({ id: tagId, name: tag })
-                        console.log(`New tag ${tag} created`);
+                        enqueueSnackbar(`New tag ${tag} created`);
                     } catch (e) {
-                        console.log(`Create new tag ${tag} failed: ` + e);
+                        setOutput(`Create new tag ${tag} failed: ` + e);
                     }
                 }
                 tagIds.push(idOfTag(tArr, tag));
@@ -312,9 +309,9 @@ export function ImportView() {
                         }
                     }
                 });
-                console.log(`Created new record "${typ}"... ${name} (${id})`);
+                enqueueSnackbar(`Created new record ${name}`);
             } catch (e) {
-                console.log(`Error creating record "${typ}"... ${name} (${id}): ` + e);
+                setOutput(`Error creating record "${typ}"... ${name} (${id}): ` + e);
             }
         }
         setTags(tArr);
@@ -345,9 +342,9 @@ export function ImportView() {
                     }
                 });
 
-                console.log(`Created new "${relationshipType}" relationship from ${entity1} to ${entity2}`);
+                enqueueSnackbar(`Created new "${relationshipType}" relationship from ${entity1} to ${entity2}`);
             } catch (e) {
-                console.log(`Error creating relationship for ${relationshipType} from ${entity1} to ${entity2}: ` + e);
+                setOutput(`Error creating relationship for ${relationshipType} from ${entity1} to ${entity2}: ` + e);
             }
         }
     }

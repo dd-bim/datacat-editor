@@ -82,7 +82,7 @@ export function DeleteImportView() {
                         id: id
                     }
                 });
-                enqueueSnackbar(`Deleted catalog record ${name} (${id})`);
+                enqueueSnackbar(`Deleted catalog record ${name}`);
             }
         } catch (e) {
             setOutput(`An error has occured ...\n` + e);
