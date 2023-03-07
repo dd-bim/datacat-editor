@@ -82,7 +82,7 @@ const HierarchyView: FC = () => {
     if (loading) {
         content = <LinearProgress/>;
     } else if (error) {
-        content = <p>Beim Aufrufen des Merkmalbaums ist ein Fehler aufgetreten.</p>;
+        content = <p>Beim Aufrufen des Merkmalsbaums ist ein Fehler aufgetreten.</p>;
     } else {
         content = (
             <Hierarchy

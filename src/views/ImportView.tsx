@@ -300,7 +300,7 @@ export function ImportView() {
                                 },
                                 names: [
                                     {
-                                        languageTag: "de-DE",
+                                        languageTag: "de",
                                         value: name,
                                     },
                                 ],
@@ -361,15 +361,17 @@ export function ImportView() {
                     </tr>
                     <tr><td></td></tr>
                 </table>
-                <br />
+                <br/>
                 Mit <b>r</b> gekennzeichnete Spalten müssen für jede Entität ausgefüllt sein, mit <b>o</b> gekennzeichnete Spalten können optional Werte enthalten. Die restlichen Spalten werden beim Import nicht berücksichtigt und können daher leer bleiben.
-                <br />
+                <br/>
+                Damit die entitäten in der datacatEditor Oberfläche sichtbar sind, müssen ihnen Tags der dort gewählten Taxonomie gegeben werden. (Referenzdokument, Fachmodell, Gruppe, Klasse, Merkmalsgruppe, Merkmal, Größe, Wert, Maßeinheit)
+                <br/>
                 Die andere Datei enthält optional die Relationen zwischen Entitäten mit den folgenden Spalten:
-                <br />
+                <br/>
                 <b>entity1<sup>r</sup>	entity1Type	relationId<sup>r</sup>	relationshipType<sup>r</sup>	entity2<sup>r</sup>	entity2Type</b>
-                <br />
+                <br/>
                 Die Entitätstypen können hier leer gelassen werden.
-                <br /><br />
+                <br/><br/>
 
             </Typography>
             <div >
