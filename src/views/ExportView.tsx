@@ -1,4 +1,4 @@
-import {useExportCatalogItemsQuery, ExportCatalogItem_Fragment, useExportCatalogItemsRelationshipsQuery, ExportCatalogItemRelationship_Fragment} from "../generated/types";
+import {useExportCatalogRecordsQuery, ExportCatalogRecord_Fragment, useExportCatalogRecordsRelationshipsQuery, ExportCatalogRecordRelationship_Fragment} from "../generated/types";
 import Button from "@material-ui/core/Button";
 import View from "./View";
 import Typography from "@material-ui/core/Typography";
@@ -7,8 +7,8 @@ import JSZip from "jszip";
 import FileSaver from "file-saver";
 
 export function ExportView() {
-    const {data: entity} = useExportCatalogItemsQuery();
-    const {data: relation} = useExportCatalogItemsRelationshipsQuery();
+    const {data: entity} = useExportCatalogRecordsQuery();
+    const {data: relation} = useExportCatalogRecordsRelationshipsQuery();
     let loaded = false;
     if(relation && entity) loaded = true;
 
@@ -16,7 +16,7 @@ export function ExportView() {
 
     const handleOnClick = () => {
         const entities: string[][] = [];
-        const writeEntities = (node: ExportCatalogItem_Fragment) => {
+        const writeEntities = (node: ExportCatalogRecord_Fragment) => {
             
                 let description;
                 if (node.description) {
@@ -37,7 +37,7 @@ export function ExportView() {
                 ]);
             
         };
-        entity?.findExportCatalogItems.nodes.forEach(writeEntities);
+        entity?.findExportCatalogRecords.nodes.forEach(writeEntities);
         let entitySet = new Set(entities.map(e => JSON.stringify(e)));
         let entityArr: string[][] = [];
 
@@ -51,7 +51,7 @@ export function ExportView() {
         zip.file(`Entities.csv`, entityBlob);
 
         const relations: string[][] = [];
-        const writeRelations = (node: ExportCatalogItemRelationship_Fragment) => {
+        const writeRelations = (node: ExportCatalogRecordRelationship_Fragment) => {
             
                 relations.push([
                     node.entity1,
@@ -63,7 +63,7 @@ export function ExportView() {
                 ]);
        
         };
-        relation?.findExportCatalogItemsRelationships.nodes.forEach(writeRelations);
+        relation?.findExportCatalogRecordsRelationships.nodes.forEach(writeRelations);
         
         let relationSet = new Set(relations.map(e => JSON.stringify(e)));
         let relationArr: string[][] = [];

@@ -123,7 +123,7 @@ export function ImportView() {
                 const lines = text.split("\n");
                 for (let index = 0; index < lines.length; index++) {
                     const line = lines[index];
-                    const content = line.replaceAll("\"", "").replace(/\s/g, '').split(';');
+                    const content = line.replaceAll("\"", "").split(';'); // .replace(/\s/g, '')
                     if (index === 0) {
                         const header = ["id", "typ", "tags", "name", "name_en", "description", "version", "createdBy", "created", "lastModified", "lastModifiedBy"];
                         let result = true;
