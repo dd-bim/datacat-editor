@@ -421,11 +421,8 @@ export const FindMissingEnglishDescription: FC<VerificationProps> = (props) => {
 
 export const FindMultipleNames: FC<VerificationProps> = (props) => {
     const classes = useVerificationTreeStyles();
-    const {
-        leaves,
-        paths,
-    } = props;
-    const {nodes, lookupMap} = useFindMultipleNames({leaves, paths});
+    const { leaves, paths } = props;
+    const { nodes, lookupMap } = useFindMultipleNames({ leaves, paths });
     const [expanded, setExpanded] = useLocalStorage<string[]>("expanded-verification-nodes", []);
     const [defaultExpanded] = useState(expanded);
 
@@ -439,7 +436,7 @@ export const FindMultipleNames: FC<VerificationProps> = (props) => {
             className={classes.root}
             onNodeSelect={onNodeSelect}
             onNodeToggle={(event, nodeIds) => setExpanded(nodeIds)}
-            defaultEndIcon={<div style={{width: 24}}/>}
+            defaultEndIcon={<div style={{width: 24}} />}
             defaultExpanded={defaultExpanded}
         >
             {nodes.map(child => (
@@ -453,11 +450,8 @@ export const FindMultipleNames: FC<VerificationProps> = (props) => {
 
 export const FindMultipleNamesAcrossClasses: FC<VerificationProps> = (props) => {
     const classes = useVerificationTreeStyles();
-    const {
-        leaves,
-        paths,
-    } = props;
-    const {nodes, lookupMap} = useFindMultipleNamesAcrossClasses({leaves, paths});
+    const { leaves, paths } = props;
+    const { nodes, lookupMap } = useFindMultipleNamesAcrossClasses({ leaves, paths });
     const [expanded, setExpanded] = useLocalStorage<string[]>("expanded-verification-nodes", []);
     const [defaultExpanded] = useState(expanded);
 
@@ -471,7 +465,7 @@ export const FindMultipleNamesAcrossClasses: FC<VerificationProps> = (props) => 
             className={classes.root}
             onNodeSelect={onNodeSelect}
             onNodeToggle={(event, nodeIds) => setExpanded(nodeIds)}
-            defaultEndIcon={<div style={{width: 24}}/>}
+            defaultEndIcon={<div style={{width: 24}} />}
             defaultExpanded={defaultExpanded}
         >
             {nodes.map(child => (

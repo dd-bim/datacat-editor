@@ -560,9 +560,9 @@ type ItemProps_XtdUnit_Fragment = { __typename: 'XtdUnit', id: string, recordTyp
 
 type ItemProps_XtdValue_Fragment = { __typename: 'XtdValue', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-export type ExportCatalogRecord_Fragment = { __typename: 'ExportResult', id: string, typ?: Maybe<string>, tags?: Maybe<string>, name?: Maybe<string>, name_en?: Maybe<string>, description?: Maybe<string>, versionId?: Maybe<string>, created?: Maybe<string>, createdBy?: Maybe<string>, lastModified?: Maybe<string>, lastModifiedBy?: Maybe<string>};
+export type ExportCatalogRecord_Fragment = { __typename: 'ExportResult', id: string, typ?: Maybe<string>, schlagworte?: Maybe<string>, name?: Maybe<string>, name_en?: Maybe<string>, description?: Maybe<string>, versionId?: Maybe<string>, created?: Maybe<string>, createdBy?: Maybe<string>, lastModified?: Maybe<string>, lastModifiedBy?: Maybe<string>};
 
-export type ExportCatalogRecordRelationship_Fragment = { __typename: 'ExportRelationshipResult', entity1: string, entity1Type: string, relationId: string, relationshipType: string, entity2: string, entity2Type: string};
+export type ExportCatalogRecordRelationship_Fragment = { __typename: 'ExportRelationshipResult', Entity1: string, Entity1Type: string, RelationId: string, RelationshipType: string, Entity2: string, Entity2Type: string};
 
 export type ItemPropsFragment = ItemProps_XtdActivity_Fragment | ItemProps_XtdActor_Fragment | ItemProps_XtdBag_Fragment | ItemProps_XtdClassification_Fragment | ItemProps_XtdExternalDocument_Fragment | ItemProps_XtdMeasureWithUnit_Fragment | ItemProps_XtdNest_Fragment | ItemProps_XtdProperty_Fragment | ItemProps_XtdRelActsUpon_Fragment | ItemProps_XtdRelAssignsCollections_Fragment | ItemProps_XtdRelAssignsMeasures_Fragment | ItemProps_XtdRelAssignsProperties_Fragment | ItemProps_XtdRelAssignsPropertyWithValues_Fragment | ItemProps_XtdRelAssignsUnits_Fragment | ItemProps_XtdRelAssignsValues_Fragment | ItemProps_XtdRelAssociates_Fragment | ItemProps_XtdRelCollects_Fragment | ItemProps_XtdRelComposes_Fragment | ItemProps_XtdRelDocuments_Fragment | ItemProps_XtdRelGroups_Fragment | ItemProps_XtdRelSequences_Fragment | ItemProps_XtdRelSpecializes_Fragment | ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment;
 
@@ -1181,9 +1181,9 @@ export type FindMultipleNamesTreeQueryVariables = Exact<{ [key: string]: never; 
 
 export type FindMultipleNamesAcrossClassesTreeQueryVariables = Exact<{ [key: string]: never; }>;
 
-export type FindExportCatalogRecordsTreeQueryVariables = Exact<{ [key: string]: never; }>;
+export type FindExportCatalogItemsTreeQueryVariables = Exact<{ [key: string]: never; }>;
 
-export type FindExportCatalogRecordsRelationshipsTreeQueryVariables = Exact<{ [key: string]: never; }>;
+export type FindExportCatalogItemsRelationshipsTreeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type FindPropGroupWithoutPropTreeQuery = { findPropGroupWithoutProp: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
@@ -1214,9 +1214,9 @@ export type FindMultipleNamesTreeQuery = { findMultipleNames: { paths: Array<Arr
 
 export type FindMultipleNamesAcrossClassesTreeQuery = { findMultipleNamesAcrossClasses: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
 
-export type FindExportCatalogRecordsTreeQuery = { findExportCatalogRecords: { paths: Array<Array<string>>, nodes: Array<ExportCatalogRecord_Fragment> } };
+export type FindExportCatalogItemsTreeQuery = { findExportCatalogItems: { paths: Array<Array<string>>, nodes: Array<ExportCatalogRecord_Fragment> } };
 
-export type FindExportCatalogRecordsRelationshipsTreeQuery = { findExportCatalogRecordsRelationships: { paths: Array<Array<string>>, nodes: Array<ExportCatalogRecordRelationship_Fragment> } };
+export type FindExportCatalogItemsRelationshipsTreeQuery = { findExportCatalogItemsRelationships: { paths: Array<Array<string>>, nodes: Array<ExportCatalogRecordRelationship_Fragment> } };
 
 export type GetDocumentEntryQuery = { node?: Maybe<ExternalDocumentDetailPropsFragment> };
 
@@ -3310,24 +3310,24 @@ export type ProfileQueryHookResult = ReturnType<typeof useProfileQuery>;
 export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
 export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
 
-//__useExportCatalogRecordsQuery__
+//__useExportCatalogItemsQuery__
 
-export function useExportCatalogRecordsQuery(baseOptions?: Apollo.QueryHookOptions<FindExportCatalogRecordsTreeQuery, FindExportCatalogRecordsTreeQueryVariables>) {
-  return Apollo.useQuery<FindExportCatalogRecordsTreeQuery, FindExportCatalogRecordsTreeQueryVariables>(GetExportCatalogRecords, baseOptions);
+export function useExportCatalogItemsQuery(baseOptions?: Apollo.QueryHookOptions<FindExportCatalogItemsTreeQuery, FindExportCatalogItemsTreeQueryVariables>) {
+  return Apollo.useQuery<FindExportCatalogItemsTreeQuery, FindExportCatalogItemsTreeQueryVariables>(GetExportCatalogItems, baseOptions);
 }
-export function useExportCatalogRecordsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindExportCatalogRecordsTreeQuery, FindExportCatalogRecordsTreeQueryVariables>) {
-    return Apollo.useLazyQuery<FindExportCatalogRecordsTreeQuery, FindExportCatalogRecordsTreeQueryVariables>(GetExportCatalogRecords, baseOptions);
+export function useExportCatalogItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindExportCatalogItemsTreeQuery, FindExportCatalogItemsTreeQueryVariables>) {
+    return Apollo.useLazyQuery<FindExportCatalogItemsTreeQuery, FindExportCatalogItemsTreeQueryVariables>(GetExportCatalogItems, baseOptions);
   }
-export type ExportCatalogRecordsQueryHookResult = ReturnType<typeof useExportCatalogRecordsQuery>;
-export type ExportCatalogRecordsLazyQueryHookResult = ReturnType<typeof useExportCatalogRecordsLazyQuery>;
-export type ExportCatalogRecordsQueryResult = Apollo.QueryResult<FindExportCatalogRecordsTreeQuery, FindExportCatalogRecordsTreeQueryVariables>;
-export const GetExportCatalogRecords = gql`
-query findExportCatalogRecords {
-  findExportCatalogRecords {
+export type ExportCatalogItemsQueryHookResult = ReturnType<typeof useExportCatalogItemsQuery>;
+export type ExportCatalogItemsLazyQueryHookResult = ReturnType<typeof useExportCatalogItemsLazyQuery>;
+export type ExportCatalogItemsQueryResult = Apollo.QueryResult<FindExportCatalogItemsTreeQuery, FindExportCatalogItemsTreeQueryVariables>;
+export const GetExportCatalogItems = gql`
+query findExportCatalogItems {
+  findExportCatalogItems {
 	  nodes {
       id,
       typ,
-      tags,
+      schlagworte,
       name,
       name_en,
       description,
@@ -3340,27 +3340,27 @@ query findExportCatalogRecords {
   }
 }`;
 
-//__useExportCatalogRecordsRelationshipsQuery__
+//__useExportCatalogItemsRelationshipsQuery__
 
-export function useExportCatalogRecordsRelationshipsQuery(baseOptions?: Apollo.QueryHookOptions<FindExportCatalogRecordsRelationshipsTreeQuery, FindExportCatalogRecordsRelationshipsTreeQueryVariables>) {
-  return Apollo.useQuery<FindExportCatalogRecordsRelationshipsTreeQuery, FindExportCatalogRecordsRelationshipsTreeQueryVariables>(GetExportCatalogRecordsRelationships, baseOptions);
+export function useExportCatalogItemsRelationshipsQuery(baseOptions?: Apollo.QueryHookOptions<FindExportCatalogItemsRelationshipsTreeQuery, FindExportCatalogItemsRelationshipsTreeQueryVariables>) {
+  return Apollo.useQuery<FindExportCatalogItemsRelationshipsTreeQuery, FindExportCatalogItemsRelationshipsTreeQueryVariables>(GetExportCatalogItemsRelationships, baseOptions);
 }
-export function useExportCatalogRecordsRelationshipsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindExportCatalogRecordsRelationshipsTreeQuery, FindExportCatalogRecordsRelationshipsTreeQueryVariables>) {
-    return Apollo.useLazyQuery<FindExportCatalogRecordsRelationshipsTreeQuery, FindExportCatalogRecordsRelationshipsTreeQueryVariables>(GetExportCatalogRecordsRelationships, baseOptions);
+export function useExportCatalogItemsRelationshipsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindExportCatalogItemsRelationshipsTreeQuery, FindExportCatalogItemsRelationshipsTreeQueryVariables>) {
+    return Apollo.useLazyQuery<FindExportCatalogItemsRelationshipsTreeQuery, FindExportCatalogItemsRelationshipsTreeQueryVariables>(GetExportCatalogItemsRelationships, baseOptions);
   }
-export type ExportCatalogRecordsRelationshipsQueryHookResult = ReturnType<typeof useExportCatalogRecordsRelationshipsQuery>;
-export type ExportCatalogRecordsRelationshipsLazyQueryHookResult = ReturnType<typeof useExportCatalogRecordsRelationshipsLazyQuery>;
-export type ExportCatalogRecordsRelationshipsQueryResult = Apollo.QueryResult<FindExportCatalogRecordsRelationshipsTreeQuery, FindExportCatalogRecordsRelationshipsTreeQueryVariables>;
-export const GetExportCatalogRecordsRelationships = gql`
-query findExportCatalogRecordsRelationships {
-  findExportCatalogRecordsRelationships {
+export type ExportCatalogItemsRelationshipsQueryHookResult = ReturnType<typeof useExportCatalogItemsRelationshipsQuery>;
+export type ExportCatalogItemsRelationshipsLazyQueryHookResult = ReturnType<typeof useExportCatalogItemsRelationshipsLazyQuery>;
+export type ExportCatalogItemsRelationshipsQueryResult = Apollo.QueryResult<FindExportCatalogItemsRelationshipsTreeQuery, FindExportCatalogItemsRelationshipsTreeQueryVariables>;
+export const GetExportCatalogItemsRelationships = gql`
+query findExportCatalogItemsRelationships {
+  findExportCatalogItemsRelationships {
     nodes {
-      entity1,
-      entity1Type,
-      relationId,
-      relationshipType,
-      entity2,
-      entity2Type
+      Entity1,
+      Entity1Type,
+      RelationId,
+      RelationshipType,
+      Entity2,
+      Entity2Type
       __typename
     }
   }

@@ -91,7 +91,7 @@ export default function BoardingView() {
                     </Tabs>
                     <TabPanel value={tab} index="login">
                         <Typography>
-                            Bitte nuten Sie Ihren Benutzernamen und Ihr Password um sich beim Editor anzumelden.
+                            Bitte nutzen Sie Ihren Benutzernamen und Ihr Password um sich beim Editor anzumelden.
                         </Typography>
                         <LoginForm onLogin={handleLogin}/>
                     </TabPanel>

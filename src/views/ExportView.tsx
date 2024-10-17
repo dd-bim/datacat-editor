@@ -1,4 +1,4 @@
-import {useExportCatalogRecordsQuery, ExportCatalogRecord_Fragment, useExportCatalogRecordsRelationshipsQuery, ExportCatalogRecordRelationship_Fragment} from "../generated/types";
+import {useExportCatalogItemsQuery, ExportCatalogRecord_Fragment, useExportCatalogItemsRelationshipsQuery, ExportCatalogRecordRelationship_Fragment} from "../generated/types";
 import Button from "@material-ui/core/Button";
 import View from "./View";
 import Typography from "@material-ui/core/Typography";
@@ -7,8 +7,8 @@ import JSZip from "jszip";
 import FileSaver from "file-saver";
 
 export function ExportView() {
-    const {data: entity} = useExportCatalogRecordsQuery();
-    const {data: relation} = useExportCatalogRecordsRelationshipsQuery();
+    const {data: entity} = useExportCatalogItemsQuery();
+    const {data: relation} = useExportCatalogItemsRelationshipsQuery();
     let loaded = false;
     if(relation && entity) loaded = true;
 
@@ -25,7 +25,7 @@ export function ExportView() {
                 entities.push([
                     node.id,
                     `${node.typ ?? ""}`,
-                    `"${node.tags ?? ""}"`,
+                    `"${node.schlagworte ?? ""}"`,
                     `"${node.name ?? ""}"`,
                     `"${node.name_en ?? ""}"`,
                     `"${description ?? ""}"`,
@@ -37,7 +37,7 @@ export function ExportView() {
                 ]);
             
         };
-        entity?.findExportCatalogRecords.nodes.forEach(writeEntities);
+        entity?.findExportCatalogItems.nodes.forEach(writeEntities);
         let entitySet = new Set(entities.map(e => JSON.stringify(e)));
         let entityArr: string[][] = [];
 
@@ -54,16 +54,16 @@ export function ExportView() {
         const writeRelations = (node: ExportCatalogRecordRelationship_Fragment) => {
             
                 relations.push([
-                    node.entity1,
-                    node.entity1Type,
-                    node.relationId,
-                    node.relationshipType,
-                    node.entity2,
-                    node.entity2Type
+                    node.Entity1,
+                    node.Entity1Type,
+                    node.RelationId,
+                    node.RelationshipType,
+                    node.Entity2,
+                    node.Entity2Type
                 ]);
        
         };
-        relation?.findExportCatalogRecordsRelationships.nodes.forEach(writeRelations);
+        relation?.findExportCatalogItemsRelationships.nodes.forEach(writeRelations);
         
         let relationSet = new Set(relations.map(e => JSON.stringify(e)));
         let relationArr: string[][] = [];
