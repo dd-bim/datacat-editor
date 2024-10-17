@@ -147,15 +147,15 @@ fragment AssignsMeasuresProps on XtdRelAssignsMeasures {
     }
 }
 
-fragment AssignsPropertyWithValuesProps on XtdRelAssignsPropertyWithValues {
-    ...RelationshipProps
-    relatedProperty {
-        ...ItemProps
-    }
-    relatedValues {
-        ...ItemProps
-    }
-}
+# fragment AssignsPropertyWithValuesProps on XtdRelAssignsPropertyWithValues {
+#     ...RelationshipProps
+#     relatedProperty {
+#         ...ItemProps
+#     }
+#     relatedValues {
+#         ...ItemProps
+#     }
+# }
 
 fragment AssignsUnitsProps on XtdRelAssignsUnits {
     ...RelationshipProps
@@ -216,11 +216,11 @@ fragment SubjectDetailProps on XtdSubject {
             ...AssignsPropertiesProps
         }
     }
-    assignedPropertiesWithValues {
-        nodes {
-            ...AssignsPropertyWithValuesProps
-        }
-    }
+    # assignedPropertiesWithValues {
+    #     nodes {
+    #         ...AssignsPropertyWithValuesProps
+    #     }
+    # }
     collectedBy {
         nodes {
             ...CollectsProps

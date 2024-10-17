@@ -88,11 +88,11 @@ export default function AssignsPropertyWithValuesFormset(props: AssignsPropertyW
             {[...subject.properties]
                 .sort((a, b) => (a.name ?? a.id).localeCompare(b.name ?? b.id))
                 .map(property => {
-                    const assignment = subject?.assignedPropertiesWithValues.nodes.find(assignsPropertyWithValues => (
-                        assignsPropertyWithValues.relatedProperty.id === property.id
-                    ));
-                    const restrictedValues = assignment?.relatedValues.map(x => x.id) ?? [];
-                    const unrestricted = !assignment;
+                    // const assignment = subject?.assignedPropertiesWithValues.nodes.find(assignsPropertyWithValues => (
+                    //     assignsPropertyWithValues.relatedProperty.id === property.id
+                    // ));
+                    // const restrictedValues = assignment?.relatedValues.map(x => x.id) ?? [];
+                    // const unrestricted = !assignment;
 
                     const hasAssignedMeasures = property.assignedMeasures.nodes.length;
                     const summaryLabel = property.name;
@@ -122,26 +122,26 @@ export default function AssignsPropertyWithValuesFormset(props: AssignsPropertyW
                                                         {assignedValues.relatedValues.map(value => {
                                                             const labelId = `checkbox-label-${value.id}`;
                                                             const label = value.name + (value.nominalValue ? ` (${value.nominalValue})` : "");
-                                                            const checked = restrictedValues.includes(value.id);
+                                                            // const checked = restrictedValues.includes(value.id);
 
-                                                            const handleToggle = async () => {
-                                                                if (unrestricted) {
-                                                                    await handleOnCreate(property.id, [value.id]);
-                                                                } else {
-                                                                    const relatedValueIds = [...restrictedValues];
-                                                                    if (checked) {
-                                                                        const idx = relatedValueIds.indexOf(value.id);
-                                                                        relatedValueIds.splice(idx, 1);
-                                                                    } else {
-                                                                        relatedValueIds.push(value.id);
-                                                                    }
-                                                                    if (relatedValueIds.length) {
-                                                                        await handleOnUpdate(assignment!.id, property.id, relatedValueIds);
-                                                                    } else {
-                                                                        await handleOnDelete(assignment!.id);
-                                                                    }
-                                                                }
-                                                            }
+                                                            // const handleToggle = async () => {
+                                                            //     if (unrestricted) {
+                                                            //         await handleOnCreate(property.id, [value.id]);
+                                                            //     } else {
+                                                            //         const relatedValueIds = [...restrictedValues];
+                                                            //         if (checked) {
+                                                            //             const idx = relatedValueIds.indexOf(value.id);
+                                                            //             relatedValueIds.splice(idx, 1);
+                                                            //         } else {
+                                                            //             relatedValueIds.push(value.id);
+                                                            //         }
+                                                            //         if (relatedValueIds.length) {
+                                                            //             await handleOnUpdate(assignment!.id, property.id, relatedValueIds);
+                                                            //         } else {
+                                                            //             await handleOnDelete(assignment!.id);
+                                                            //         }
+                                                            //     }
+                                                            // }
 
                                                             return (
                                                                 <ListItem key={value.id} dense>
@@ -150,13 +150,13 @@ export default function AssignsPropertyWithValuesFormset(props: AssignsPropertyW
                                                                     </ListItemIcon>
                                                                     <ListItemText id={labelId}>{label}</ListItemText>
                                                                     <ListItemSecondaryAction>
-                                                                        <Checkbox
+                                                                        {/* <Checkbox
                                                                             edge="end"
                                                                             onChange={handleToggle}
                                                                             indeterminate={unrestricted}
                                                                             checked={checked}
                                                                             inputProps={{'aria-labelledby': labelId}}
-                                                                        />
+                                                                        /> */}
                                                                     </ListItemSecondaryAction>
                                                                 </ListItem>
                                                             );

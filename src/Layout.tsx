@@ -21,6 +21,10 @@ import Container from "@material-ui/core/Container";
 import {HomePanel} from "./components/HomePanel";
 import {VerificationView} from "./views/VerificationView";
 import {ExportView} from "./views/ExportView";
+import { ImportView } from "./views/ImportView";
+import { DeleteImportView } from "./views/DeleteImportView";
+import { ImportViewExcel} from "./views/ImportViewExcel";
+import GridViewView from "./views/GridViewView";
 
 const drawerWidth = 250;
 
@@ -104,6 +108,11 @@ export default function Layout() {
                     <Route path="/audit">
                         <VerificationView/>
                     </Route>
+                    <Route path="/import">
+                        <ImportView/>
+                        <ImportViewExcel/>
+                        <DeleteImportView/>
+                    </Route>
                     <Route path="/export">
                         <ExportView/>
                     </Route>
@@ -111,6 +120,9 @@ export default function Layout() {
                         <Paper className={classes.graphiql}>
                             <GraphiQLEditor/>
                         </Paper>
+                    </Route>
+                    <Route path="/gridview">
+                        <GridViewView/>
                     </Route>
                     <CatalogEntryRoutes/>
                 </Switch>

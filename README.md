@@ -1,4 +1,4 @@
-# datacat editor
+# datacat Editor
 
 This application is a simple client implementation compatible with the datacat API.
 It offers an opinionated view to manage a data catalog structured after ISO 12006-3.

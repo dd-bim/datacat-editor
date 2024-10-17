@@ -74,7 +74,7 @@ const DescriptionFormSet: FC<DescriptionFormSetProps> = (props) => {
                 onDelete={handleOnDelete}
                 TextFieldProps={{
                     multiline: true,
-                    rowsMax: 10,
+                    maxRows: 10,
                 }}
             />
         </FormSet>
