@@ -1124,6 +1124,23 @@ export type FindLanguagesQueryVariables = Exact<{
   input: LanguageFilterInput;
 }>;
 
+// Define the types for the query and variables (Referenzdokument Query)
+export type GetBagQuery = {
+  getBag: {
+    documentedBy: {
+      nodes: {
+        relatingDocument: {
+          id: string;
+        };
+      }[];
+    };
+  };
+};
+
+export type GetBagQueryVariables = {
+  id: string;
+};
+
 
 export type FindLanguagesQuery = { languages?: Maybe<{ totalElements: number, nodes: Array<LanguagePropsFragment> }> };
 
@@ -2534,6 +2551,46 @@ export const FindLanguagesDocument = gql`
   }
 }
     ${LanguagePropsFragmentDoc}`;
+
+/**
+ * __useGetBagQuery__ Referenzdokument 
+ *
+ * To run a query within a React component, call `useGetBagQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBagQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetBagQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetBagQuery(baseOptions: Apollo.QueryHookOptions<GetBagQuery, GetBagQueryVariables>) {
+  return Apollo.useQuery<GetBagQuery, GetBagQueryVariables>(GetBagDocument, baseOptions);
+}
+export function useGetBagLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBagQuery, GetBagQueryVariables>) {
+  return Apollo.useLazyQuery<GetBagQuery, GetBagQueryVariables>(GetBagDocument, baseOptions);
+}
+export type GetBagQueryHookResult = ReturnType<typeof useGetBagQuery>;
+export type GetBagLazyQueryHookResult = ReturnType<typeof useGetBagLazyQuery>;
+export type GetBagQueryResult = Apollo.QueryResult<GetBagQuery, GetBagQueryVariables>;
+
+export const GetBagDocument = gql`
+  query getBag($id: ID!) {
+    getBag(id: $id) {
+      documentedBy {
+        nodes {
+          relatingDocument {
+            id
+          }
+        }
+      }
+    }
+  }
+`;
 
 /**
  * __useFindLanguagesQuery__
