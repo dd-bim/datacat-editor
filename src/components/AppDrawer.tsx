@@ -1,24 +1,24 @@
-import * as React from 'react';
-import { FunctionComponent } from 'react';
-import Drawer, { DrawerProps } from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import ListItem, { ListItemProps } from '@material-ui/core/ListItem';
-import Tooltip from '@material-ui/core/Tooltip';
-import { Link as RouterLink } from 'react-router-dom';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import SearchIcon from '@material-ui/icons/Search';
-import HomeIcon from '@material-ui/icons/Home';
-import StorageIcon from '@material-ui/icons/Storage';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import ImportExportIcon from '@material-ui/icons/ImportExport';
-import CodeIcon from '@material-ui/icons/Code';
-import ChecklistIcon from '@mui/icons-material/Checklist';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import PublishIcon from '@mui/icons-material/Publish';
+import * as React from "react";
+import { FunctionComponent } from "react";
+import Drawer, { DrawerProps } from "@material-ui/core/Drawer";
+import List from "@material-ui/core/List";
+import ListSubheader from "@material-ui/core/ListSubheader";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import ListItem, { ListItemProps } from "@material-ui/core/ListItem";
+import Tooltip from "@material-ui/core/Tooltip";
+import { Link as RouterLink } from "react-router-dom";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import SearchIcon from "@material-ui/icons/Search";
+import HomeIcon from "@material-ui/icons/Home";
+import StorageIcon from "@material-ui/icons/Storage";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import CodeIcon from "@material-ui/icons/Code";
+import ChecklistIcon from "@mui/icons-material/Checklist";
+import BookmarksIcon from "@mui/icons-material/Bookmarks";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import PublishIcon from "@mui/icons-material/Publish";
 import {
   ClassEntity,
   DataTemplateEntity,
@@ -30,13 +30,13 @@ import {
   PropertyGroupEntity,
   UnitEntity,
   ValueEntity,
-} from '../domain';
-import AppTitle from './AppTitle';
-import { useAdminAccess } from '../hooks/useAuthContext';
+} from "../domain";
+import AppTitle from "./AppTitle";
+import { useAdminAccess } from "../hooks/useAuthContext";
 
 const useStyles = makeStyles((theme) => ({
   drawerContainer: {
-    overflow: 'auto',
+    overflow: "auto",
   },
   heading: {
     padding: theme.spacing(2),
@@ -52,10 +52,18 @@ type AppDrawerItemProps = {
   onClick: () => void;
 };
 
-export const AppDrawerItem: FunctionComponent<AppDrawerItemProps & ListItemProps> = (
-  props
-) => {
-  const { icon, primary, secondary, tooltip = '', to, disabled, onClick } = props;
+export const AppDrawerItem: FunctionComponent<
+  AppDrawerItemProps & ListItemProps
+> = (props) => {
+  const {
+    icon,
+    primary,
+    secondary,
+    tooltip = "",
+    to,
+    disabled,
+    onClick,
+  } = props;
 
   return (
     <Tooltip title={tooltip} aria-label={tooltip} arrow enterDelay={500}>
@@ -80,7 +88,7 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
 
   const handleItemClick = () => {
     if (onClose) {
-      onClose({}, 'backdropClick');
+      onClose({}, "backdropClick");
     }
   };
 
@@ -131,7 +139,7 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
           )}
 
           <AppDrawerItem
-            icon={<FileDownloadIcon />} 
+            icon={<FileDownloadIcon />}
             primary="Exportieren"
             to="/export"
             onClick={handleItemClick}
@@ -146,11 +154,20 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
             />
           )}
 
-          <AppDrawerItem 
+          {isAdmin && (
+            <AppDrawerItem
+              icon={<LocalOfferIcon />}
+              primary="Neue Tags anlegen"
+              to="/tagview"
+              onClick={handleItemClick}
+            />
+          )}
+
+          <AppDrawerItem
             icon={<StorageIcon />}
             primary="Tabellenansicht"
             to="/gridview"
-            onClick={handleItemClick} 
+            onClick={handleItemClick}
           />
 
           <ListSubheader disableSticky>Katalog</ListSubheader>
@@ -220,7 +237,7 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
           />
 
           <AppDrawerItem
-            icon={<ValueEntity.Icon />}
+            icon={<BookmarksIcon />}
             primary={ValueEntity.titlePlural}
             to={`/${ValueEntity.path}`}
             onClick={handleItemClick}
