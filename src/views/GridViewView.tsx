@@ -344,6 +344,15 @@ const GridViewView: FC = () => {
   
     let tagAdded = false;
   
+    // Finde die passende tagId für den ausgewählten newTag
+    const selectedTagObject = data?.findTags.nodes.find((tag) => tag.name === newTag);
+    const tagId = selectedTagObject ? selectedTagObject.id : null;
+  
+    if (!tagId) {
+      enqueueSnackbar("Tag ID nicht gefunden.", { variant: "error" });
+      return;
+    }
+  
     for (const [rowId, isSelected] of Object.entries(selectedRows)) {
       if (isSelected) {
         const row = filteredRows.find((r) => r.uniqueId.toString() === rowId);
@@ -371,7 +380,7 @@ const GridViewView: FC = () => {
               variables: {
                 input: {
                   catalogEntryId: entryId as string,
-                  tagId: newTag,
+                  tagId: tagId,
                 },
               },
             });
