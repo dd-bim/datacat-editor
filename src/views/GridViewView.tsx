@@ -1,12 +1,23 @@
-import React, { FC, useState, useEffect, useMemo, useCallback } from "react";
+import { FC, useState, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { usePropertyTreeQuery, useGetBagQuery } from "../generated/types";
+import {
+  usePropertyTreeQuery,
+  useGetBagLazyQuery,
+  useAddTagMutation,
+  useFindTagsQuery,
+} from "../generated/types";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Button from "@material-ui/core/Button";
-import Chip from "@material-ui/core/Chip";
-import { gql } from "@apollo/client";
+import {
+  Chip,
+  Button,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+} from "@material-ui/core";
+import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -37,12 +48,6 @@ const useStyles = makeStyles((theme) => ({
   clickableRow: {
     cursor: "pointer",
   },
-  filterContainer: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100%",
-  },
   buttonContainer: {
     display: "flex",
     gap: theme.spacing(2),
@@ -67,20 +72,33 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: "wrap",
     marginBottom: theme.spacing(2),
   },
-  tagButton: {
-    margin: theme.spacing(0.5),
-  },
   tagChip: {
     margin: theme.spacing(0.5),
     fontSize: theme.typography.fontSize,
-    height: '36px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontWeight: 'bold',
+    height: "36px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontWeight: "bold",
   },
   tagFilterTitle: {
     marginBottom: theme.spacing(1),
+  },
+  headerContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    marginBottom: theme.spacing(2),
+  },
+  tagControls: {
+    display: "flex",
+    justifyContent: "flex-end",
+    gap: theme.spacing(1),
+  },
+  formControl: {
+    minWidth: 200,
+    marginRight: theme.spacing(2),
   },
 }));
 
@@ -96,10 +114,13 @@ interface VisibleColumns {
 const GridViewView: FC = () => {
   const classes = useStyles();
   const history = useHistory();
-  const { loading: propertyTreeLoading, error: propertyTreeError, data: propertyTreeData } = usePropertyTreeQuery({});
-  const { loading: bagLoading, error: bagError, data: bagData } = useGetBagQuery({
-    variables: { id: "861c8539-bfaf-4b7d-acab-462ff06faa4a" },
-  });
+  const {
+    loading: propertyTreeLoading,
+    error: propertyTreeError,
+    data: propertyTreeData,
+  } = usePropertyTreeQuery({});
+  const [getBag, { error: bagError }] = useGetBagLazyQuery();
+  const [addTag] = useAddTagMutation();
 
   const [visibleColumns, setVisibleColumns] = useState<VisibleColumns>({
     document: true,
@@ -113,6 +134,18 @@ const GridViewView: FC = () => {
   const [entityCount, setEntityCount] = useState<number | null>(null);
   const [filteredRows, setFilteredRows] = useState<any[]>([]);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [documentNames, setDocumentNames] = useState<{
+    [key: string]: string | null;
+  }>({});
+  const [modelIds, setModelIds] = useState<string[]>([]);
+  const [selectedRows, setSelectedRows] = useState<{ [key: number]: boolean }>(
+    {}
+  );
+  const [allSelected, setAllSelected] = useState<boolean>(false);
+  const [newTag, setNewTag] = useState("");
+  const { data, refetch } = useFindTagsQuery({ variables: { pageSize: 100 } });
+  const [tags, setTags] = useState<string[]>([]);
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleCheckboxChange = useCallback((column: keyof VisibleColumns) => {
     setVisibleColumns((prev) => ({
@@ -184,8 +217,6 @@ const GridViewView: FC = () => {
     }
   };
 
-  const getNodeById = (id: string) => nodes.find(node => node.id === id);
-
   const handleOnSelect = (id: string, column: string) => {
     let entityTypePath = "";
     switch (column) {
@@ -219,7 +250,7 @@ const GridViewView: FC = () => {
     const rows: any[] = [];
     const seenCombinations = new Set();
 
-    paths.forEach(path => {
+    paths.forEach((path, index) => {
       const row: any = {
         document: "",
         model: "",
@@ -236,13 +267,21 @@ const GridViewView: FC = () => {
           propertyGroup: "",
         },
         recordType: "",
-        tags: []
+        tags: [],
+        uniqueId: index,
       };
 
       path.forEach((id: string) => {
-        const node = nodes.find(node => node.id === id);
+        const node = nodes.find((node) => node.id === id);
         if (node) {
-          ["document", "model", "group", "class", "property", "propertyGroup"].forEach(column => {
+          [
+            "document",
+            "model",
+            "group",
+            "class",
+            "property",
+            "propertyGroup",
+          ].forEach((column) => {
             const value = mapRecordTypeToColumn(node, column);
             if (value) {
               row[column] = value;
@@ -262,11 +301,13 @@ const GridViewView: FC = () => {
     });
 
     rows.sort((a, b) => {
-      if (a.document !== b.document) return a.document.localeCompare(b.document);
+      if (a.document !== b.document)
+        return a.document.localeCompare(b.document);
       if (a.model !== b.model) return a.model.localeCompare(b.model);
       if (a.group !== b.group) return a.group.localeCompare(b.group);
       if (a.class !== b.class) return a.class.localeCompare(b.class);
-      if (a.propertyGroup !== b.propertyGroup) return a.propertyGroup.localeCompare(b.propertyGroup);
+      if (a.propertyGroup !== b.propertyGroup)
+        return a.propertyGroup.localeCompare(b.propertyGroup);
       return a.property.localeCompare(b.property);
     });
 
@@ -277,18 +318,119 @@ const GridViewView: FC = () => {
     setSelectedTag(tag);
   };
 
+  const handleRowSelection = (id: number) => {
+    setSelectedRows((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const handleSelectAll = () => {
+    const newSelectedRows = filteredRows.reduce((acc, row) => {
+      acc[row.uniqueId] = !allSelected;
+      return acc;
+    }, {} as { [key: number]: boolean });
+    setSelectedRows(newSelectedRows);
+    setAllSelected(!allSelected);
+  };
+
+  const handleAddTag = async () => {
+    if (!newTag) {
+      enqueueSnackbar("Bitte wählen Sie ein Tag aus.", { variant: "error" });
+      return;
+    }
+
+    let tagAdded = false;
+
+    for (const [rowId, isSelected] of Object.entries(selectedRows)) {
+      if (isSelected) {
+        const row = filteredRows.find((r) => r.uniqueId.toString() === rowId);
+        if (!row) continue;
+
+        const entriesToUpdate = Object.entries(row.ids).filter(
+          ([, id]) => typeof id === "string" && id.trim() !== ""
+        );
+
+        for (const [column, entryId] of entriesToUpdate) {
+          const entryTags = row.tags.filter(
+            (tag: { entryId: string }) => tag.entryId === entryId
+          );
+
+          const tagAlreadyExists = entryTags.some(
+            (tag: { name: string }) => tag.name === newTag
+          );
+
+          if (tagAlreadyExists) {
+            enqueueSnackbar(
+              `Das Tag "${newTag}" ist bereits bei Eintrag in Spalte "${column}" vorhanden.`,
+              { variant: "info" }
+            );
+            continue;
+          }
+
+          try {
+            const { data } = await addTag({
+              variables: {
+                input: {
+                  catalogEntryId: entryId as string,
+                  tagId: newTag,
+                },
+              },
+            });
+
+            if (data) {
+              enqueueSnackbar(
+                `Tag "${newTag}" erfolgreich zu Eintrag in Spalte "${column}" hinzugefügt.`,
+                { variant: "success" }
+              );
+              tagAdded = true;
+              row.tags.push({ entryId, name: newTag });
+            }
+          } catch (error) {
+            enqueueSnackbar(
+              `Fehler beim Hinzufügen des Tags "${newTag}" zu Eintrag in Spalte "${column}".`,
+              { variant: "error" }
+            );
+            console.error(
+              `Fehler beim Hinzufügen des Tags zu Eintrag ${entryId}:`,
+              error
+            );
+          }
+        }
+      }
+    }
+
+    try {
+      if (tagAdded) {
+        await refetch();
+        enqueueSnackbar("Tags wurden erfolgreich aktualisiert.", {
+          variant: "info",
+        });
+      }
+    } catch (error) {
+      enqueueSnackbar("Fehler beim Aktualisieren der Tags.", {
+        variant: "error",
+      });
+      console.error("Fehler beim Aktualisieren der Tags:", error);
+    }
+  };
+
   useEffect(() => {
     let rows = buildRows();
 
     if (selectedTag) {
-      rows = rows.filter(row => row.tags.some((tag: any) => tag.name === selectedTag));
+      rows = rows.filter((row) =>
+        row.tags.some((tag: any) => tag.name === selectedTag)
+      );
     }
 
-    const visibleColumnsArray = Object.keys(visibleColumns).filter(key => visibleColumns[key as keyof VisibleColumns]);
+    const visibleColumnsArray = Object.keys(visibleColumns).filter(
+      (key) => visibleColumns[key as keyof VisibleColumns]
+    );
     if (visibleColumnsArray.length === 1) {
       const uniqueValues = new Set();
       const column = visibleColumnsArray[0];
-      rows = rows.filter(row => {
+      rows = rows.filter((row) => {
         const value = row.ids[column];
         if (uniqueValues.has(value)) {
           return false;
@@ -299,8 +441,8 @@ const GridViewView: FC = () => {
       });
 
       rows.sort((a, b) => {
-        const valueA = a[column] || '';
-        const valueB = b[column] || '';
+        const valueA = a[column] || "";
+        const valueB = b[column] || "";
         return valueA.localeCompare(valueB);
       });
 
@@ -312,22 +454,113 @@ const GridViewView: FC = () => {
     setFilteredRows(rows);
   }, [visibleColumns, propertyTreeData, selectedTag]);
 
-  if (propertyTreeLoading || bagLoading) return <p>Tabelleninhalte werden geladen</p>;
+  useEffect(() => {
+    const modelIds = Array.from(
+      new Set(
+        filteredRows.map((row) => row.ids.model).filter((id: string) => id)
+      )
+    );
+    setModelIds(modelIds);
+  }, [filteredRows]);
+
+  useEffect(() => {
+    const fetchDocumentNames = async () => {
+      const newDocumentNames: { [key: string]: string | null } = {
+        ...documentNames,
+      };
+      for (const id of modelIds) {
+        if (!newDocumentNames[id]) {
+          const response = await getBag({ variables: { id } });
+          const documentName =
+            response.data?.getBag?.documentedBy?.nodes[0]?.relatingDocument
+              ?.name || null;
+          newDocumentNames[id] = documentName;
+          console.log(`Response for modelId ${id}:`, response.data);
+        }
+      }
+      setDocumentNames(newDocumentNames);
+      console.log("Model IDs:", modelIds);
+      console.log("Document Names:", newDocumentNames);
+    };
+
+    fetchDocumentNames();
+  }, [modelIds, getBag]);
+
+  useEffect(() => {
+    if (data) {
+      setTags(data.findTags.nodes.map((tag) => tag.name));
+    }
+  }, [data]);
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
+  const isAnyColumnHidden = Object.values(visibleColumns).some(
+    (value) => !value
+  );
+
+  const excludedTags = [
+    "Fachmodell",
+    "Gruppe",
+    "Klasse",
+    "Merkmal",
+    "Masseinheit",
+    "Grösse",
+    "Wert",
+    "Maßeinheit",
+    "Größe",
+  ];
+
+  const filterTags = (tags: string[]) =>
+    tags.filter((tag) => !excludedTags.includes(tag));
+
+  const allTags = filterTags(tags).sort();
+
+  const handleTagChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setNewTag(event.target.value as string);
+  };
+
+  if (propertyTreeLoading) return <p>Tabelleninhalte werden geladen</p>;
   if (propertyTreeError) return <p>Error: {propertyTreeError.message}</p>;
   if (bagError) return <p>Error: {bagError.message}</p>;
 
-  const isAnyColumnHidden = Object.values(visibleColumns).some(value => !value);
-
-  const excludedTags = ["Fachmodell", "Gruppe", "Klasse", "Merkmal", "Masseinheit", "Grösse", "Wert", "Maßeinheit", "Größe"];
-  const allTags = Array.from(new Set(nodes.flatMap(node => node.tags.map((tag: any) => tag.name))))
-  .filter(tag => !excludedTags.includes(tag))
-  .sort(); // Tags alphabetisch sortieren
-
   return (
     <div className={classes.tableContainer}>
-      <h3 className={classes.tagFilterTitle}>Filtermöglichkeit nach Tags</h3>
+      <div className={classes.headerContainer}>
+        <h3 className={classes.tagFilterTitle}>Filtermöglichkeit nach Tags</h3>
+        <div className={classes.tagControls}>
+          <FormControl variant="outlined" className={classes.formControl}>
+            <InputLabel id="importTag-label">Tag auswählen</InputLabel>
+            <Select
+              labelId="importTag-label"
+              id="importTag"
+              label="Tag auswählen"
+              name="importTag"
+              value={newTag}
+              onChange={handleTagChange}
+            >
+              <MenuItem value="">
+                <em>Tag auswählen</em>
+              </MenuItem>
+              {allTags.map((tag) => (
+                <MenuItem key={tag} value={tag}>
+                  {tag}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleAddTag}
+          >
+            Add Tag
+          </Button>
+        </div>
+      </div>
       <div className={classes.tagButtonContainer}>
-        {allTags.map(tag => (
+        {allTags.map((tag) => (
           <Chip
             key={tag}
             label={tag}
@@ -346,26 +579,54 @@ const GridViewView: FC = () => {
         />
       </div>
       <div className={classes.buttonContainer}>
-        <Button variant="contained" color="primary" onClick={() => handleShowOnlyColumn("document")}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => handleShowOnlyColumn("document")}
+        >
           Nur Referenzdokumente anzeigen
         </Button>
-        <Button variant="contained" color="primary" onClick={() => handleShowOnlyColumn("model")}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => handleShowOnlyColumn("model")}
+        >
           Nur Fachmodelle anzeigen
         </Button>
-        <Button variant="contained" color="primary" onClick={() => handleShowOnlyColumn("group")}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => handleShowOnlyColumn("group")}
+        >
           Nur Gruppen anzeigen
         </Button>
-        <Button variant="contained" color="primary" onClick={() => handleShowOnlyColumn("class")}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => handleShowOnlyColumn("class")}
+        >
           Nur Klassen anzeigen
         </Button>
-        <Button variant="contained" color="primary" onClick={() => handleShowOnlyColumn("propertyGroup")}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => handleShowOnlyColumn("propertyGroup")}
+        >
           Nur Merkmalsgruppen anzeigen
         </Button>
-        <Button variant="contained" color="primary" onClick={() => handleShowOnlyColumn("property")}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => handleShowOnlyColumn("property")}
+        >
           Nur Merkmale anzeigen
         </Button>
         {isAnyColumnHidden && (
-          <Button variant="contained" color="secondary" onClick={handleShowAllColumns}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleShowAllColumns}
+          >
             Alle Anzeigen
           </Button>
         )}
@@ -373,6 +634,17 @@ const GridViewView: FC = () => {
       <table className={classes.table}>
         <thead>
           <tr>
+            <th className={`${classes.th} ${classes.thTd}`}>
+              <div className={classes.headerCell}>
+                <div className={classes.headerContent}>
+                  <Checkbox
+                    color="primary"
+                    checked={allSelected}
+                    onChange={handleSelectAll}
+                  />
+                </div>
+              </div>
+            </th>
             {visibleColumns.document && (
               <th className={`${classes.th} ${classes.thTd}`}>
                 <div className={classes.headerCell}>
@@ -385,7 +657,11 @@ const GridViewView: FC = () => {
                           color="primary"
                         />
                       }
-                      label={`Referenzdokumente${entityCount !== null && visibleColumns.document ? ` (${entityCount})` : ''}`}
+                      label={`Referenzdokumente${
+                        entityCount !== null && visibleColumns.document
+                          ? ` (${entityCount})`
+                          : ""
+                      }`}
                       className={classes.checkboxLabel}
                     />
                   </div>
@@ -404,7 +680,11 @@ const GridViewView: FC = () => {
                           color="primary"
                         />
                       }
-                      label={`Fachmodelle${entityCount !== null && visibleColumns.model ? ` (${entityCount})` : ''}`}
+                      label={`Fachmodelle${
+                        entityCount !== null && visibleColumns.model
+                          ? ` (${entityCount})`
+                          : ""
+                      }`}
                       className={classes.checkboxLabel}
                     />
                   </div>
@@ -423,7 +703,11 @@ const GridViewView: FC = () => {
                           color="primary"
                         />
                       }
-                      label={`Gruppen${entityCount !== null && visibleColumns.group ? ` (${entityCount})` : ''}`}
+                      label={`Gruppen${
+                        entityCount !== null && visibleColumns.group
+                          ? ` (${entityCount})`
+                          : ""
+                      }`}
                       className={classes.checkboxLabel}
                     />
                   </div>
@@ -442,7 +726,11 @@ const GridViewView: FC = () => {
                           color="primary"
                         />
                       }
-                      label={`Klassen${entityCount !== null && visibleColumns.class ? ` (${entityCount})` : ''}`}
+                      label={`Klassen${
+                        entityCount !== null && visibleColumns.class
+                          ? ` (${entityCount})`
+                          : ""
+                      }`}
                       className={classes.checkboxLabel}
                     />
                   </div>
@@ -461,7 +749,11 @@ const GridViewView: FC = () => {
                           color="primary"
                         />
                       }
-                      label={`Merkmalsgruppen${entityCount !== null && visibleColumns.propertyGroup ? ` (${entityCount})` : ''}`}
+                      label={`Merkmalsgruppen${
+                        entityCount !== null && visibleColumns.propertyGroup
+                          ? ` (${entityCount})`
+                          : ""
+                      }`}
                       className={classes.checkboxLabel}
                     />
                   </div>
@@ -480,7 +772,11 @@ const GridViewView: FC = () => {
                           color="primary"
                         />
                       }
-                      label={`Merkmale${entityCount !== null && visibleColumns.property ? ` (${entityCount})` : ''}`}
+                      label={`Merkmale${
+                        entityCount !== null && visibleColumns.property
+                          ? ` (${entityCount})`
+                          : ""
+                      }`}
                       className={classes.checkboxLabel}
                     />
                   </div>
@@ -491,54 +787,98 @@ const GridViewView: FC = () => {
         </thead>
         <tbody>
           {filteredRows.map((row, index) => (
-            <tr key={index} className={index % 2 === 0 ? classes.trEven : undefined}>
+            <tr
+              key={row.uniqueId}
+              className={index % 2 === 0 ? classes.trEven : undefined}
+            >
+              <td className={classes.thTd}>
+                <Checkbox
+                  checked={!!selectedRows[row.uniqueId]} // Zustand der Checkbox basierend auf der eindeutigen ID
+                  onChange={() => handleRowSelection(row.uniqueId)} // Checkbox-Zustand für die eindeutige ID ändern
+                  color="primary"
+                />
+              </td>
               {visibleColumns.document && (
                 <td
-                  className={`${classes.thTd} ${row.document ? classes.clickableRow : ''}`}
-                  onClick={row.document ? () => handleOnSelect(row.ids.document, "document") : undefined}
+                  className={`${classes.thTd} ${
+                    row.document ? classes.clickableRow : ""
+                  }`}
+                  onClick={
+                    row.document
+                      ? () => handleOnSelect(row.ids.document, "document")
+                      : undefined
+                  }
                 >
-                  {row.document}
-                  {bagData?.getBag?.documentedBy?.nodes.map((node, idx) => (
-                    <div key={idx}>{node.relatingDocument.id}</div>
-                  ))}
+                  {documentNames[row.ids.model] || row.document}
                 </td>
               )}
               {visibleColumns.model && (
                 <td
-                  className={`${classes.thTd} ${row.model ? classes.clickableRow : ''}`}
-                  onClick={row.model ? () => handleOnSelect(row.ids.model, "model") : undefined}
+                  className={`${classes.thTd} ${
+                    row.model ? classes.clickableRow : ""
+                  }`}
+                  onClick={
+                    row.model
+                      ? () => handleOnSelect(row.ids.model, "model")
+                      : undefined
+                  }
                 >
                   {row.model}
                 </td>
               )}
               {visibleColumns.group && (
                 <td
-                  className={`${classes.thTd} ${row.group ? classes.clickableRow : ''}`}
-                  onClick={row.group ? () => handleOnSelect(row.ids.group, "group") : undefined}
+                  className={`${classes.thTd} ${
+                    row.group ? classes.clickableRow : ""
+                  }`}
+                  onClick={
+                    row.group
+                      ? () => handleOnSelect(row.ids.group, "group")
+                      : undefined
+                  }
                 >
                   {row.group}
                 </td>
               )}
               {visibleColumns.class && (
                 <td
-                  className={`${classes.thTd} ${row.class ? classes.clickableRow : ''}`}
-                  onClick={row.class ? () => handleOnSelect(row.ids.class, "class") : undefined}
+                  className={`${classes.thTd} ${
+                    row.class ? classes.clickableRow : ""
+                  }`}
+                  onClick={
+                    row.class
+                      ? () => handleOnSelect(row.ids.class, "class")
+                      : undefined
+                  }
                 >
                   {row.class}
                 </td>
               )}
               {visibleColumns.propertyGroup && (
                 <td
-                  className={`${classes.thTd} ${row.propertyGroup ? classes.clickableRow : ''}`}
-                  onClick={row.propertyGroup ? () => handleOnSelect(row.ids.propertyGroup, "propertyGroup") : undefined}
+                  className={`${classes.thTd} ${
+                    row.propertyGroup ? classes.clickableRow : ""
+                  }`}
+                  onClick={
+                    row.propertyGroup
+                      ? () =>
+                          handleOnSelect(row.ids.propertyGroup, "propertyGroup")
+                      : undefined
+                  }
                 >
                   {row.propertyGroup}
                 </td>
               )}
               {visibleColumns.property && (
                 <td
-                  className={`${classes.thTd} ${row.property ? classes.clickableRow : ''}`}
-                  onClick={row.property ? () => handleOnSelect(row.ids.property, "property") : undefined}
+                  className={`${classes.thTd} ${
+                    row.property ? classes.clickableRow : ""
+                  }`}
+                  onClick={
+                    row.property
+                      ? () => handleOnSelect(row.ids.property, "property")
+                      : undefined
+                  }
                 >
                   {row.property}
                 </td>

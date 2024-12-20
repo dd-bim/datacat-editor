@@ -25,6 +25,7 @@ import { ImportView } from "./views/ImportView";
 import { DeleteImportView } from "./views/DeleteImportView";
 import { ImportViewExcel} from "./views/ImportViewExcel";
 import GridViewView from "./views/GridViewView";
+import TagView from "./views/TagView";
 
 const drawerWidth = 250;
 
@@ -120,6 +121,9 @@ export default function Layout() {
                         <Paper className={classes.graphiql}>
                             <GraphiQLEditor/>
                         </Paper>
+                    </Route>
+                    <Route path="/tagview">
+                        <TagView/>
                     </Route>
                     <Route path="/gridview">
                         <GridViewView/>

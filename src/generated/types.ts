@@ -1,5 +1,5 @@
 import * as Apollo from '@apollo/client';
-import {gql} from '@apollo/client';
+import { gql } from '@apollo/client';
 
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -331,7 +331,7 @@ export type SignupInput = {
 };
 
 
-export enum SimpleRecordType  {
+export enum SimpleRecordType {
   Activity = 'Activity' as any,
   Actor = 'Actor' as any,
   Bag = 'Bag' as any,
@@ -560,9 +560,9 @@ type ItemProps_XtdUnit_Fragment = { __typename: 'XtdUnit', id: string, recordTyp
 
 type ItemProps_XtdValue_Fragment = { __typename: 'XtdValue', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
 
-export type ExportCatalogRecord_Fragment = { __typename: 'ExportResult', id: string, typ?: Maybe<string>, schlagworte?: Maybe<string>, name?: Maybe<string>, name_en?: Maybe<string>, description?: Maybe<string>, versionId?: Maybe<string>, created?: Maybe<string>, createdBy?: Maybe<string>, lastModified?: Maybe<string>, lastModifiedBy?: Maybe<string>};
+export type ExportCatalogRecord_Fragment = { __typename: 'ExportResult', id: string, typ?: Maybe<string>, schlagworte?: Maybe<string>, name?: Maybe<string>, name_en?: Maybe<string>, description?: Maybe<string>, versionId?: Maybe<string>, created?: Maybe<string>, createdBy?: Maybe<string>, lastModified?: Maybe<string>, lastModifiedBy?: Maybe<string> };
 
-export type ExportCatalogRecordRelationship_Fragment = { __typename: 'ExportRelationshipResult', Entity1: string, Entity1Type: string, RelationId: string, RelationshipType: string, Entity2: string, Entity2Type: string};
+export type ExportCatalogRecordRelationship_Fragment = { __typename: 'ExportRelationshipResult', Entity1: string, Entity1Type: string, RelationId: string, RelationshipType: string, Entity2: string, Entity2Type: string };
 
 export type ItemPropsFragment = ItemProps_XtdActivity_Fragment | ItemProps_XtdActor_Fragment | ItemProps_XtdBag_Fragment | ItemProps_XtdClassification_Fragment | ItemProps_XtdExternalDocument_Fragment | ItemProps_XtdMeasureWithUnit_Fragment | ItemProps_XtdNest_Fragment | ItemProps_XtdProperty_Fragment | ItemProps_XtdRelActsUpon_Fragment | ItemProps_XtdRelAssignsCollections_Fragment | ItemProps_XtdRelAssignsMeasures_Fragment | ItemProps_XtdRelAssignsProperties_Fragment | ItemProps_XtdRelAssignsPropertyWithValues_Fragment | ItemProps_XtdRelAssignsUnits_Fragment | ItemProps_XtdRelAssignsValues_Fragment | ItemProps_XtdRelAssociates_Fragment | ItemProps_XtdRelCollects_Fragment | ItemProps_XtdRelComposes_Fragment | ItemProps_XtdRelDocuments_Fragment | ItemProps_XtdRelGroups_Fragment | ItemProps_XtdRelSequences_Fragment | ItemProps_XtdRelSpecializes_Fragment | ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment;
 
@@ -746,13 +746,15 @@ export type DocumentsPropsFragment = (
 );
 
 export type CollectsPropsFragment = (
-  { relatingCollection: (
-    { tags: Array<TagPropsFragment> }
-    & ItemProps_XtdBag_Fragment
-  ) | (
-    { tags: Array<TagPropsFragment> }
-    & ItemProps_XtdNest_Fragment
-  ), relatedThings: Array<ItemProps_XtdActivity_Fragment | ItemProps_XtdActor_Fragment | ItemProps_XtdBag_Fragment | ItemProps_XtdClassification_Fragment | ItemProps_XtdMeasureWithUnit_Fragment | ItemProps_XtdNest_Fragment | ItemProps_XtdProperty_Fragment | ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> }
+  {
+    relatingCollection: (
+      { tags: Array<TagPropsFragment> }
+      & ItemProps_XtdBag_Fragment
+    ) | (
+      { tags: Array<TagPropsFragment> }
+      & ItemProps_XtdNest_Fragment
+    ), relatedThings: Array<ItemProps_XtdActivity_Fragment | ItemProps_XtdActor_Fragment | ItemProps_XtdBag_Fragment | ItemProps_XtdClassification_Fragment | ItemProps_XtdMeasureWithUnit_Fragment | ItemProps_XtdNest_Fragment | ItemProps_XtdProperty_Fragment | ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment>
+  }
   & RelationshipProps_XtdRelCollects_Fragment
 );
 
@@ -895,7 +897,7 @@ type ObjectDetailProps_XtdValue_Fragment = (
 export type ObjectDetailPropsFragment = ObjectDetailProps_XtdActivity_Fragment | ObjectDetailProps_XtdActor_Fragment | ObjectDetailProps_XtdClassification_Fragment | ObjectDetailProps_XtdMeasureWithUnit_Fragment | ObjectDetailProps_XtdProperty_Fragment | ObjectDetailProps_XtdSubject_Fragment | ObjectDetailProps_XtdUnit_Fragment | ObjectDetailProps_XtdValue_Fragment;
 
 export type SubjectDetailPropsFragment = (
-  { assignedCollections: { nodes: Array<AssignsCollectionsPropsFragment> }, assignedProperties: { nodes: Array<AssignsPropertiesPropsFragment> },collectedBy: { nodes: Array<CollectsPropsFragment> }, properties: Array<{ id: string, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, assignedMeasures: { nodes: Array<{ id: string, relatedMeasures: Array<{ id: string, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, assignedValues: { nodes: Array<{ id: string, relatedValues: Array<{ id: string, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, nominalValue?: Maybe<string> }> }> } }> }> } }> }
+  { assignedCollections: { nodes: Array<AssignsCollectionsPropsFragment> }, assignedProperties: { nodes: Array<AssignsPropertiesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, properties: Array<{ id: string, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, assignedMeasures: { nodes: Array<{ id: string, relatedMeasures: Array<{ id: string, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, assignedValues: { nodes: Array<{ id: string, relatedValues: Array<{ id: string, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, nominalValue?: Maybe<string> }> }> } }> }> } }> }
   & ObjectDetailProps_XtdSubject_Fragment
 );
 // assignedPropertiesWithValues: { nodes: Array<AssignsPropertyWithValuesPropsFragment> }, 
@@ -1086,13 +1088,17 @@ export type TagBagMutation = { addTag?: Maybe<{ catalogEntry?: Maybe<CollectionD
 
 export type CreateTagMutation = (
   { __typename?: 'Mutation' }
-  & { createTag?: Maybe<(
-    { __typename?: 'CreateTagPayload' }
-    & { tag?: Maybe<(
-      { __typename?: 'Tag' }
-      & Pick<Tag, 'id'>
-    )> }
-  )> }
+  & {
+    createTag?: Maybe<(
+      { __typename?: 'CreateTagPayload' }
+      & {
+        tag?: Maybe<(
+          { __typename?: 'Tag' }
+          & Pick<Tag, 'id'>
+        )>
+      }
+    )>
+  }
 );
 
 export type CreateTagMutationVariables = Exact<{
@@ -1128,11 +1134,12 @@ export type FindLanguagesQueryVariables = Exact<{
 export type GetBagQuery = {
   getBag: {
     documentedBy: {
-      nodes: {
+      nodes: Array<{
         relatingDocument: {
           id: string;
+          name: string;
         };
-      }[];
+      }>;
     };
   };
 };
@@ -1718,8 +1725,8 @@ export type SignupFormMutationFn = Apollo.MutationFunction<SignupFormMutation, S
  * });
  */
 export function useSignupFormMutation(baseOptions?: Apollo.MutationHookOptions<SignupFormMutation, SignupFormMutationVariables>) {
-        return Apollo.useMutation<SignupFormMutation, SignupFormMutationVariables>(SignupFormDocument, baseOptions);
-      }
+  return Apollo.useMutation<SignupFormMutation, SignupFormMutationVariables>(SignupFormDocument, baseOptions);
+}
 export type SignupFormMutationHookResult = ReturnType<typeof useSignupFormMutation>;
 export type SignupFormMutationResult = Apollo.MutationResult<SignupFormMutation>;
 export type SignupFormMutationOptions = Apollo.BaseMutationOptions<SignupFormMutation, SignupFormMutationVariables>;
@@ -1748,8 +1755,8 @@ export type ConfirmEmailMutationFn = Apollo.MutationFunction<ConfirmEmailMutatio
  * });
  */
 export function useConfirmEmailMutation(baseOptions?: Apollo.MutationHookOptions<ConfirmEmailMutation, ConfirmEmailMutationVariables>) {
-        return Apollo.useMutation<ConfirmEmailMutation, ConfirmEmailMutationVariables>(ConfirmEmailDocument, baseOptions);
-      }
+  return Apollo.useMutation<ConfirmEmailMutation, ConfirmEmailMutationVariables>(ConfirmEmailDocument, baseOptions);
+}
 export type ConfirmEmailMutationHookResult = ReturnType<typeof useConfirmEmailMutation>;
 export type ConfirmEmailMutationResult = Apollo.MutationResult<ConfirmEmailMutation>;
 export type ConfirmEmailMutationOptions = Apollo.BaseMutationOptions<ConfirmEmailMutation, ConfirmEmailMutationVariables>;
@@ -1778,8 +1785,8 @@ export type LoginFormMutationFn = Apollo.MutationFunction<LoginFormMutation, Log
  * });
  */
 export function useLoginFormMutation(baseOptions?: Apollo.MutationHookOptions<LoginFormMutation, LoginFormMutationVariables>) {
-        return Apollo.useMutation<LoginFormMutation, LoginFormMutationVariables>(LoginFormDocument, baseOptions);
-      }
+  return Apollo.useMutation<LoginFormMutation, LoginFormMutationVariables>(LoginFormDocument, baseOptions);
+}
 export type LoginFormMutationHookResult = ReturnType<typeof useLoginFormMutation>;
 export type LoginFormMutationResult = Apollo.MutationResult<LoginFormMutation>;
 export type LoginFormMutationOptions = Apollo.BaseMutationOptions<LoginFormMutation, LoginFormMutationVariables>;
@@ -1810,8 +1817,8 @@ export type UpdateProfileMutationFn = Apollo.MutationFunction<UpdateProfileMutat
  * });
  */
 export function useUpdateProfileMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProfileMutation, UpdateProfileMutationVariables>) {
-        return Apollo.useMutation<UpdateProfileMutation, UpdateProfileMutationVariables>(UpdateProfileDocument, baseOptions);
-      }
+  return Apollo.useMutation<UpdateProfileMutation, UpdateProfileMutationVariables>(UpdateProfileDocument, baseOptions);
+}
 export type UpdateProfileMutationHookResult = ReturnType<typeof useUpdateProfileMutation>;
 export type UpdateProfileMutationResult = Apollo.MutationResult<UpdateProfileMutation>;
 export type UpdateProfileMutationOptions = Apollo.BaseMutationOptions<UpdateProfileMutation, UpdateProfileMutationVariables>;
@@ -1844,8 +1851,8 @@ export type CreateEntryMutationFn = Apollo.MutationFunction<CreateEntryMutation,
  * });
  */
 export function useCreateEntryMutation(baseOptions?: Apollo.MutationHookOptions<CreateEntryMutation, CreateEntryMutationVariables>) {
-        return Apollo.useMutation<CreateEntryMutation, CreateEntryMutationVariables>(CreateEntryDocument, baseOptions);
-      }
+  return Apollo.useMutation<CreateEntryMutation, CreateEntryMutationVariables>(CreateEntryDocument, baseOptions);
+}
 export type CreateEntryMutationHookResult = ReturnType<typeof useCreateEntryMutation>;
 export type CreateEntryMutationResult = Apollo.MutationResult<CreateEntryMutation>;
 export type CreateEntryMutationOptions = Apollo.BaseMutationOptions<CreateEntryMutation, CreateEntryMutationVariables>;
@@ -1878,8 +1885,8 @@ export type DeleteEntryMutationFn = Apollo.MutationFunction<DeleteEntryMutation,
  * });
  */
 export function useDeleteEntryMutation(baseOptions?: Apollo.MutationHookOptions<DeleteEntryMutation, DeleteEntryMutationVariables>) {
-        return Apollo.useMutation<DeleteEntryMutation, DeleteEntryMutationVariables>(DeleteEntryDocument, baseOptions);
-      }
+  return Apollo.useMutation<DeleteEntryMutation, DeleteEntryMutationVariables>(DeleteEntryDocument, baseOptions);
+}
 export type DeleteEntryMutationHookResult = ReturnType<typeof useDeleteEntryMutation>;
 export type DeleteEntryMutationResult = Apollo.MutationResult<DeleteEntryMutation>;
 export type DeleteEntryMutationOptions = Apollo.BaseMutationOptions<DeleteEntryMutation, DeleteEntryMutationVariables>;
@@ -1912,8 +1919,8 @@ export type SetVersionMutationFn = Apollo.MutationFunction<SetVersionMutation, S
  * });
  */
 export function useSetVersionMutation(baseOptions?: Apollo.MutationHookOptions<SetVersionMutation, SetVersionMutationVariables>) {
-        return Apollo.useMutation<SetVersionMutation, SetVersionMutationVariables>(SetVersionDocument, baseOptions);
-      }
+  return Apollo.useMutation<SetVersionMutation, SetVersionMutationVariables>(SetVersionDocument, baseOptions);
+}
 export type SetVersionMutationHookResult = ReturnType<typeof useSetVersionMutation>;
 export type SetVersionMutationResult = Apollo.MutationResult<SetVersionMutation>;
 export type SetVersionMutationOptions = Apollo.BaseMutationOptions<SetVersionMutation, SetVersionMutationVariables>;
@@ -1946,8 +1953,8 @@ export type AddNameMutationFn = Apollo.MutationFunction<AddNameMutation, AddName
  * });
  */
 export function useAddNameMutation(baseOptions?: Apollo.MutationHookOptions<AddNameMutation, AddNameMutationVariables>) {
-        return Apollo.useMutation<AddNameMutation, AddNameMutationVariables>(AddNameDocument, baseOptions);
-      }
+  return Apollo.useMutation<AddNameMutation, AddNameMutationVariables>(AddNameDocument, baseOptions);
+}
 export type AddNameMutationHookResult = ReturnType<typeof useAddNameMutation>;
 export type AddNameMutationResult = Apollo.MutationResult<AddNameMutation>;
 export type AddNameMutationOptions = Apollo.BaseMutationOptions<AddNameMutation, AddNameMutationVariables>;
@@ -1980,8 +1987,8 @@ export type UpdateNameMutationFn = Apollo.MutationFunction<UpdateNameMutation, U
  * });
  */
 export function useUpdateNameMutation(baseOptions?: Apollo.MutationHookOptions<UpdateNameMutation, UpdateNameMutationVariables>) {
-        return Apollo.useMutation<UpdateNameMutation, UpdateNameMutationVariables>(UpdateNameDocument, baseOptions);
-      }
+  return Apollo.useMutation<UpdateNameMutation, UpdateNameMutationVariables>(UpdateNameDocument, baseOptions);
+}
 export type UpdateNameMutationHookResult = ReturnType<typeof useUpdateNameMutation>;
 export type UpdateNameMutationResult = Apollo.MutationResult<UpdateNameMutation>;
 export type UpdateNameMutationOptions = Apollo.BaseMutationOptions<UpdateNameMutation, UpdateNameMutationVariables>;
@@ -2014,8 +2021,8 @@ export type DeleteNameMutationFn = Apollo.MutationFunction<DeleteNameMutation, D
  * });
  */
 export function useDeleteNameMutation(baseOptions?: Apollo.MutationHookOptions<DeleteNameMutation, DeleteNameMutationVariables>) {
-        return Apollo.useMutation<DeleteNameMutation, DeleteNameMutationVariables>(DeleteNameDocument, baseOptions);
-      }
+  return Apollo.useMutation<DeleteNameMutation, DeleteNameMutationVariables>(DeleteNameDocument, baseOptions);
+}
 export type DeleteNameMutationHookResult = ReturnType<typeof useDeleteNameMutation>;
 export type DeleteNameMutationResult = Apollo.MutationResult<DeleteNameMutation>;
 export type DeleteNameMutationOptions = Apollo.BaseMutationOptions<DeleteNameMutation, DeleteNameMutationVariables>;
@@ -2048,8 +2055,8 @@ export type AddDescriptionMutationFn = Apollo.MutationFunction<AddDescriptionMut
  * });
  */
 export function useAddDescriptionMutation(baseOptions?: Apollo.MutationHookOptions<AddDescriptionMutation, AddDescriptionMutationVariables>) {
-        return Apollo.useMutation<AddDescriptionMutation, AddDescriptionMutationVariables>(AddDescriptionDocument, baseOptions);
-      }
+  return Apollo.useMutation<AddDescriptionMutation, AddDescriptionMutationVariables>(AddDescriptionDocument, baseOptions);
+}
 export type AddDescriptionMutationHookResult = ReturnType<typeof useAddDescriptionMutation>;
 export type AddDescriptionMutationResult = Apollo.MutationResult<AddDescriptionMutation>;
 export type AddDescriptionMutationOptions = Apollo.BaseMutationOptions<AddDescriptionMutation, AddDescriptionMutationVariables>;
@@ -2082,8 +2089,8 @@ export type UpdateDescriptionMutationFn = Apollo.MutationFunction<UpdateDescript
  * });
  */
 export function useUpdateDescriptionMutation(baseOptions?: Apollo.MutationHookOptions<UpdateDescriptionMutation, UpdateDescriptionMutationVariables>) {
-        return Apollo.useMutation<UpdateDescriptionMutation, UpdateDescriptionMutationVariables>(UpdateDescriptionDocument, baseOptions);
-      }
+  return Apollo.useMutation<UpdateDescriptionMutation, UpdateDescriptionMutationVariables>(UpdateDescriptionDocument, baseOptions);
+}
 export type UpdateDescriptionMutationHookResult = ReturnType<typeof useUpdateDescriptionMutation>;
 export type UpdateDescriptionMutationResult = Apollo.MutationResult<UpdateDescriptionMutation>;
 export type UpdateDescriptionMutationOptions = Apollo.BaseMutationOptions<UpdateDescriptionMutation, UpdateDescriptionMutationVariables>;
@@ -2116,8 +2123,8 @@ export type DeleteDescriptionMutationFn = Apollo.MutationFunction<DeleteDescript
  * });
  */
 export function useDeleteDescriptionMutation(baseOptions?: Apollo.MutationHookOptions<DeleteDescriptionMutation, DeleteDescriptionMutationVariables>) {
-        return Apollo.useMutation<DeleteDescriptionMutation, DeleteDescriptionMutationVariables>(DeleteDescriptionDocument, baseOptions);
-      }
+  return Apollo.useMutation<DeleteDescriptionMutation, DeleteDescriptionMutationVariables>(DeleteDescriptionDocument, baseOptions);
+}
 export type DeleteDescriptionMutationHookResult = ReturnType<typeof useDeleteDescriptionMutation>;
 export type DeleteDescriptionMutationResult = Apollo.MutationResult<DeleteDescriptionMutation>;
 export type DeleteDescriptionMutationOptions = Apollo.BaseMutationOptions<DeleteDescriptionMutation, DeleteDescriptionMutationVariables>;
@@ -2149,7 +2156,7 @@ export type AddCommentMutationFn = Apollo.MutationFunction<AddCommentMutation, A
  *   },
  * });
  */
- export function useAddCommentMutation(baseOptions?: Apollo.MutationHookOptions<AddCommentMutation, AddCommentMutationVariables>) {
+export function useAddCommentMutation(baseOptions?: Apollo.MutationHookOptions<AddCommentMutation, AddCommentMutationVariables>) {
   return Apollo.useMutation<AddCommentMutation, AddCommentMutationVariables>(AddCommentDocument, baseOptions);
 }
 export type AddCommentMutationHookResult = ReturnType<typeof useAddCommentMutation>;
@@ -2253,8 +2260,8 @@ export type SetToleranceMutationFn = Apollo.MutationFunction<SetToleranceMutatio
  * });
  */
 export function useSetToleranceMutation(baseOptions?: Apollo.MutationHookOptions<SetToleranceMutation, SetToleranceMutationVariables>) {
-        return Apollo.useMutation<SetToleranceMutation, SetToleranceMutationVariables>(SetToleranceDocument, baseOptions);
-      }
+  return Apollo.useMutation<SetToleranceMutation, SetToleranceMutationVariables>(SetToleranceDocument, baseOptions);
+}
 export type SetToleranceMutationHookResult = ReturnType<typeof useSetToleranceMutation>;
 export type SetToleranceMutationResult = Apollo.MutationResult<SetToleranceMutation>;
 export type SetToleranceMutationOptions = Apollo.BaseMutationOptions<SetToleranceMutation, SetToleranceMutationVariables>;
@@ -2287,8 +2294,8 @@ export type UnsetToleranceMutationFn = Apollo.MutationFunction<UnsetToleranceMut
  * });
  */
 export function useUnsetToleranceMutation(baseOptions?: Apollo.MutationHookOptions<UnsetToleranceMutation, UnsetToleranceMutationVariables>) {
-        return Apollo.useMutation<UnsetToleranceMutation, UnsetToleranceMutationVariables>(UnsetToleranceDocument, baseOptions);
-      }
+  return Apollo.useMutation<UnsetToleranceMutation, UnsetToleranceMutationVariables>(UnsetToleranceDocument, baseOptions);
+}
 export type UnsetToleranceMutationHookResult = ReturnType<typeof useUnsetToleranceMutation>;
 export type UnsetToleranceMutationResult = Apollo.MutationResult<UnsetToleranceMutation>;
 export type UnsetToleranceMutationOptions = Apollo.BaseMutationOptions<UnsetToleranceMutation, UnsetToleranceMutationVariables>;
@@ -2321,8 +2328,8 @@ export type SetNominalValueMutationFn = Apollo.MutationFunction<SetNominalValueM
  * });
  */
 export function useSetNominalValueMutation(baseOptions?: Apollo.MutationHookOptions<SetNominalValueMutation, SetNominalValueMutationVariables>) {
-        return Apollo.useMutation<SetNominalValueMutation, SetNominalValueMutationVariables>(SetNominalValueDocument, baseOptions);
-      }
+  return Apollo.useMutation<SetNominalValueMutation, SetNominalValueMutationVariables>(SetNominalValueDocument, baseOptions);
+}
 export type SetNominalValueMutationHookResult = ReturnType<typeof useSetNominalValueMutation>;
 export type SetNominalValueMutationResult = Apollo.MutationResult<SetNominalValueMutation>;
 export type SetNominalValueMutationOptions = Apollo.BaseMutationOptions<SetNominalValueMutation, SetNominalValueMutationVariables>;
@@ -2355,8 +2362,8 @@ export type UnsetNominalValueMutationFn = Apollo.MutationFunction<UnsetNominalVa
  * });
  */
 export function useUnsetNominalValueMutation(baseOptions?: Apollo.MutationHookOptions<UnsetNominalValueMutation, UnsetNominalValueMutationVariables>) {
-        return Apollo.useMutation<UnsetNominalValueMutation, UnsetNominalValueMutationVariables>(UnsetNominalValueDocument, baseOptions);
-      }
+  return Apollo.useMutation<UnsetNominalValueMutation, UnsetNominalValueMutationVariables>(UnsetNominalValueDocument, baseOptions);
+}
 export type UnsetNominalValueMutationHookResult = ReturnType<typeof useUnsetNominalValueMutation>;
 export type UnsetNominalValueMutationResult = Apollo.MutationResult<UnsetNominalValueMutation>;
 export type UnsetNominalValueMutationOptions = Apollo.BaseMutationOptions<UnsetNominalValueMutation, UnsetNominalValueMutationVariables>;
@@ -2390,8 +2397,8 @@ export type TagBagMutationFn = Apollo.MutationFunction<TagBagMutation, TagBagMut
  * });
  */
 export function useTagBagMutation(baseOptions?: Apollo.MutationHookOptions<TagBagMutation, TagBagMutationVariables>) {
-        return Apollo.useMutation<TagBagMutation, TagBagMutationVariables>(TagBagDocument, baseOptions);
-      }
+  return Apollo.useMutation<TagBagMutation, TagBagMutationVariables>(TagBagDocument, baseOptions);
+}
 export type TagBagMutationHookResult = ReturnType<typeof useTagBagMutation>;
 export type TagBagMutationResult = Apollo.MutationResult<TagBagMutation>;
 export type TagBagMutationOptions = Apollo.BaseMutationOptions<TagBagMutation, TagBagMutationVariables>;
@@ -2406,6 +2413,58 @@ export const CreateTagDocument = gql`
     }
 `;
 export type CreateTagMutationFn = Apollo.MutationFunction<CreateTagMutation, CreateTagMutationVariables>;
+
+export type AddTagMutation = {
+  addTag: {
+    catalogEntry: {
+      __typename: string; // __typename ist erforderlich, da es explizit in der Mutation enthalten ist.
+    };
+  };
+};
+
+export type AddTagMutationVariables = {
+  input: {
+    catalogEntryId: string;
+    tagId: string;
+  };
+};
+
+/**
+ * __useAddTagMutation__
+ *
+ * To run a mutation, you first call `useAddTagMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddTagMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addTagMutation, { data, loading, error }] = useAddTagMutation({
+ *   variables: {
+ *      datasetId: // value for 'datasetId'
+ *      tag: // value for 'tag'
+ *   },
+ * });
+ */
+export function useAddTagMutation(baseOptions?: Apollo.MutationHookOptions<AddTagMutation, AddTagMutationVariables>) {
+  return Apollo.useMutation<AddTagMutation, AddTagMutationVariables>(AddTagDocument, baseOptions);
+}
+export type AddTagMutationHookResult = ReturnType<typeof useAddTagMutation>;
+export type AddTagMutationResult = Apollo.MutationResult<AddTagMutation>;
+export type AddTagMutationOptions = Apollo.BaseMutationOptions<AddTagMutation, AddTagMutationVariables>;
+//-------------------
+export const AddTagDocument = gql`
+  mutation addTag($input: AddTagInput!) {
+    addTag(input: $input) {
+      catalogEntry {
+        __typename
+      }
+    }
+  }
+`;
+
+export type AddTagMutationFn = Apollo.MutationFunction<AddTagMutation, AddTagMutationVariables>;
 
 /**
  * __useCreateTagMutation__
@@ -2425,8 +2484,8 @@ export type CreateTagMutationFn = Apollo.MutationFunction<CreateTagMutation, Cre
  * });
  */
 export function useCreateTagMutation(baseOptions?: Apollo.MutationHookOptions<CreateTagMutation, CreateTagMutationVariables>) {
-        return Apollo.useMutation<CreateTagMutation, CreateTagMutationVariables>(CreateTagDocument, baseOptions);
-      }
+  return Apollo.useMutation<CreateTagMutation, CreateTagMutationVariables>(CreateTagDocument, baseOptions);
+}
 export type CreateTagMutationHookResult = ReturnType<typeof useCreateTagMutation>;
 export type CreateTagMutationResult = Apollo.MutationResult<CreateTagMutation>;
 export type CreateTagOptions = Apollo.BaseMutationOptions<CreateTagMutation, CreateTagMutationVariables>;
@@ -2463,8 +2522,8 @@ export type CreateRelationshipMutationFn = Apollo.MutationFunction<CreateRelatio
  * });
  */
 export function useCreateRelationshipMutation(baseOptions?: Apollo.MutationHookOptions<CreateRelationshipMutation, CreateRelationshipMutationVariables>) {
-        return Apollo.useMutation<CreateRelationshipMutation, CreateRelationshipMutationVariables>(CreateRelationshipDocument, baseOptions);
-      }
+  return Apollo.useMutation<CreateRelationshipMutation, CreateRelationshipMutationVariables>(CreateRelationshipDocument, baseOptions);
+}
 export type CreateRelationshipMutationHookResult = ReturnType<typeof useCreateRelationshipMutation>;
 export type CreateRelationshipMutationResult = Apollo.MutationResult<CreateRelationshipMutation>;
 export type CreateRelationshipMutationOptions = Apollo.BaseMutationOptions<CreateRelationshipMutation, CreateRelationshipMutationVariables>;
@@ -2500,8 +2559,8 @@ export type SetRelatedEntriesMutationFn = Apollo.MutationFunction<SetRelatedEntr
  * });
  */
 export function useSetRelatedEntriesMutation(baseOptions?: Apollo.MutationHookOptions<SetRelatedEntriesMutation, SetRelatedEntriesMutationVariables>) {
-        return Apollo.useMutation<SetRelatedEntriesMutation, SetRelatedEntriesMutationVariables>(SetRelatedEntriesDocument, baseOptions);
-      }
+  return Apollo.useMutation<SetRelatedEntriesMutation, SetRelatedEntriesMutationVariables>(SetRelatedEntriesDocument, baseOptions);
+}
 export type SetRelatedEntriesMutationHookResult = ReturnType<typeof useSetRelatedEntriesMutation>;
 export type SetRelatedEntriesMutationResult = Apollo.MutationResult<SetRelatedEntriesMutation>;
 export type SetRelatedEntriesMutationOptions = Apollo.BaseMutationOptions<SetRelatedEntriesMutation, SetRelatedEntriesMutationVariables>;
@@ -2536,8 +2595,8 @@ export type DeleteRelationshipMutationFn = Apollo.MutationFunction<DeleteRelatio
  * });
  */
 export function useDeleteRelationshipMutation(baseOptions?: Apollo.MutationHookOptions<DeleteRelationshipMutation, DeleteRelationshipMutationVariables>) {
-        return Apollo.useMutation<DeleteRelationshipMutation, DeleteRelationshipMutationVariables>(DeleteRelationshipDocument, baseOptions);
-      }
+  return Apollo.useMutation<DeleteRelationshipMutation, DeleteRelationshipMutationVariables>(DeleteRelationshipDocument, baseOptions);
+}
 export type DeleteRelationshipMutationHookResult = ReturnType<typeof useDeleteRelationshipMutation>;
 export type DeleteRelationshipMutationResult = Apollo.MutationResult<DeleteRelationshipMutation>;
 export type DeleteRelationshipMutationOptions = Apollo.BaseMutationOptions<DeleteRelationshipMutation, DeleteRelationshipMutationVariables>;
@@ -2579,12 +2638,13 @@ export type GetBagLazyQueryHookResult = ReturnType<typeof useGetBagLazyQuery>;
 export type GetBagQueryResult = Apollo.QueryResult<GetBagQuery, GetBagQueryVariables>;
 
 export const GetBagDocument = gql`
-  query getBag($id: ID!) {
+  query GetBag($id: ID!) {
     getBag(id: $id) {
       documentedBy {
         nodes {
           relatingDocument {
             id
+            name
           }
         }
       }
@@ -2609,11 +2669,11 @@ export const GetBagDocument = gql`
  * });
  */
 export function useFindLanguagesQuery(baseOptions: Apollo.QueryHookOptions<FindLanguagesQuery, FindLanguagesQueryVariables>) {
-        return Apollo.useQuery<FindLanguagesQuery, FindLanguagesQueryVariables>(FindLanguagesDocument, baseOptions);
-      }
+  return Apollo.useQuery<FindLanguagesQuery, FindLanguagesQueryVariables>(FindLanguagesDocument, baseOptions);
+}
 export function useFindLanguagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindLanguagesQuery, FindLanguagesQueryVariables>) {
-          return Apollo.useLazyQuery<FindLanguagesQuery, FindLanguagesQueryVariables>(FindLanguagesDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<FindLanguagesQuery, FindLanguagesQueryVariables>(FindLanguagesDocument, baseOptions);
+}
 export type FindLanguagesQueryHookResult = ReturnType<typeof useFindLanguagesQuery>;
 export type FindLanguagesLazyQueryHookResult = ReturnType<typeof useFindLanguagesLazyQuery>;
 export type FindLanguagesQueryResult = Apollo.QueryResult<FindLanguagesQuery, FindLanguagesQueryVariables>;
@@ -2651,11 +2711,11 @@ ${PagePropsFragmentDoc}`;
  * });
  */
 export function useFindItemQuery(baseOptions: Apollo.QueryHookOptions<FindItemQuery, FindItemQueryVariables>) {
-        return Apollo.useQuery<FindItemQuery, FindItemQueryVariables>(FindItemDocument, baseOptions);
-      }
+  return Apollo.useQuery<FindItemQuery, FindItemQueryVariables>(FindItemDocument, baseOptions);
+}
 export function useFindItemLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindItemQuery, FindItemQueryVariables>) {
-          return Apollo.useLazyQuery<FindItemQuery, FindItemQueryVariables>(FindItemDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<FindItemQuery, FindItemQueryVariables>(FindItemDocument, baseOptions);
+}
 export type FindItemQueryHookResult = ReturnType<typeof useFindItemQuery>;
 export type FindItemLazyQueryHookResult = ReturnType<typeof useFindItemLazyQuery>;
 export type FindItemQueryResult = Apollo.QueryResult<FindItemQuery, FindItemQueryVariables>;
@@ -2690,11 +2750,11 @@ export const FindTagsDocument = gql`
  * });
  */
 export function useFindTagsQuery(baseOptions?: Apollo.QueryHookOptions<FindTagsQuery, FindTagsQueryVariables>) {
-        return Apollo.useQuery<FindTagsQuery, FindTagsQueryVariables>(FindTagsDocument, baseOptions);
-      }
+  return Apollo.useQuery<FindTagsQuery, FindTagsQueryVariables>(FindTagsDocument, baseOptions);
+}
 export function useFindTagsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindTagsQuery, FindTagsQueryVariables>) {
-          return Apollo.useLazyQuery<FindTagsQuery, FindTagsQueryVariables>(FindTagsDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<FindTagsQuery, FindTagsQueryVariables>(FindTagsDocument, baseOptions);
+}
 export type FindTagsQueryHookResult = ReturnType<typeof useFindTagsQuery>;
 export type FindTagsLazyQueryHookResult = ReturnType<typeof useFindTagsLazyQuery>;
 export type FindTagsQueryResult = Apollo.QueryResult<FindTagsQuery, FindTagsQueryVariables>;
@@ -2724,13 +2784,13 @@ export const FindPropGroupWithoutPropTreeDocument = gql`
   }
 }
     ${ItemPropsFragmentDoc}`;
-    
+
 export function useFindPropGroupWithoutPropTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindPropGroupWithoutPropTreeQuery, FindPropGroupWithoutPropTreeQueryVariables>) {
   return Apollo.useQuery<FindPropGroupWithoutPropTreeQuery, FindPropGroupWithoutPropTreeQueryVariables>(FindPropGroupWithoutPropTreeDocument, baseOptions);
 }
 export function useFindPropGroupWithoutPropTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindPropGroupWithoutPropTreeQuery, FindPropGroupWithoutPropTreeQueryVariables>) {
-    return Apollo.useLazyQuery<FindPropGroupWithoutPropTreeQuery, FindPropGroupWithoutPropTreeQueryVariables>(FindPropGroupWithoutPropTreeDocument, baseOptions);
-  }
+  return Apollo.useLazyQuery<FindPropGroupWithoutPropTreeQuery, FindPropGroupWithoutPropTreeQueryVariables>(FindPropGroupWithoutPropTreeDocument, baseOptions);
+}
 export type FindPropGroupWithoutPropTreeQueryHookResult = ReturnType<typeof useFindPropGroupWithoutPropTreeQuery>;
 export type FindPropGroupWithoutPropTreeLazyQueryHookResult = ReturnType<typeof useFindPropGroupWithoutPropTreeLazyQuery>;
 export type FindPropGroupWithoutPropTreeQueryResult = Apollo.QueryResult<FindPropGroupWithoutPropTreeQuery, FindPropGroupWithoutPropTreeQueryVariables>;
@@ -2747,13 +2807,13 @@ export const FindPropWithoutSubjectOrPropGroupTreeDocument = gql`
   }
 }
     ${ItemPropsFragmentDoc}`;
-    
+
 export function useFindPropWithoutSubjectOrPropGroupTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindPropWithoutSubjectOrPropGroupTreeQuery, FindPropWithoutSubjectOrPropGroupTreeQueryVariables>) {
   return Apollo.useQuery<FindPropWithoutSubjectOrPropGroupTreeQuery, FindPropWithoutSubjectOrPropGroupTreeQueryVariables>(FindPropWithoutSubjectOrPropGroupTreeDocument, baseOptions);
 }
 export function useFindPropWithoutSubjectOrPropGroupTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindPropWithoutSubjectOrPropGroupTreeQuery, FindPropWithoutSubjectOrPropGroupTreeQueryVariables>) {
-    return Apollo.useLazyQuery<FindPropWithoutSubjectOrPropGroupTreeQuery, FindPropWithoutSubjectOrPropGroupTreeQueryVariables>(FindPropWithoutSubjectOrPropGroupTreeDocument, baseOptions);
-  }
+  return Apollo.useLazyQuery<FindPropWithoutSubjectOrPropGroupTreeQuery, FindPropWithoutSubjectOrPropGroupTreeQueryVariables>(FindPropWithoutSubjectOrPropGroupTreeDocument, baseOptions);
+}
 export type FindPropWithoutSubjectOrPropGroupTreeQueryHookResult = ReturnType<typeof useFindPropWithoutSubjectOrPropGroupTreeQuery>;
 export type FindPropWithoutSubjectOrPropGroupTreeLazyQueryHookResult = ReturnType<typeof useFindPropWithoutSubjectOrPropGroupTreeLazyQuery>;
 export type FindPropWithoutSubjectOrPropGroupTreeQueryResult = Apollo.QueryResult<FindPropWithoutSubjectOrPropGroupTreeQuery, FindPropWithoutSubjectOrPropGroupTreeQueryVariables>;
@@ -2770,13 +2830,13 @@ export const FindModelWithoutGroupTreeDocument = gql`
   }
 }
     ${ItemPropsFragmentDoc}`;
-    
+
 export function useFindModelWithoutGroupTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindModelWithoutGroupTreeQuery, FindModelWithoutGroupTreeQueryVariables>) {
   return Apollo.useQuery<FindModelWithoutGroupTreeQuery, FindModelWithoutGroupTreeQueryVariables>(FindModelWithoutGroupTreeDocument, baseOptions);
 }
 export function useFindModelWithoutGroupTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindModelWithoutGroupTreeQuery, FindModelWithoutGroupTreeQueryVariables>) {
-    return Apollo.useLazyQuery<FindModelWithoutGroupTreeQuery, FindModelWithoutGroupTreeQueryVariables>(FindModelWithoutGroupTreeDocument, baseOptions);
-  }
+  return Apollo.useLazyQuery<FindModelWithoutGroupTreeQuery, FindModelWithoutGroupTreeQueryVariables>(FindModelWithoutGroupTreeDocument, baseOptions);
+}
 export type FindModelWithoutGroupTreeQueryHookResult = ReturnType<typeof useFindModelWithoutGroupTreeQuery>;
 export type FindModelWithoutGroupTreeLazyQueryHookResult = ReturnType<typeof useFindModelWithoutGroupTreeLazyQuery>;
 export type FindModelWithoutGroupTreeQueryResult = Apollo.QueryResult<FindModelWithoutGroupTreeQuery, FindModelWithoutGroupTreeQueryVariables>;
@@ -2793,13 +2853,13 @@ export const FindGroupWithoutSubjectTreeDocument = gql`
   }
 }
     ${ItemPropsFragmentDoc}`;
-    
+
 export function useFindGroupWithoutSubjectTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindGroupWithoutSubjectTreeQuery, FindGroupWithoutSubjectTreeQueryVariables>) {
   return Apollo.useQuery<FindGroupWithoutSubjectTreeQuery, FindGroupWithoutSubjectTreeQueryVariables>(FindGroupWithoutSubjectTreeDocument, baseOptions);
 }
 export function useFindGroupWithoutSubjectTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindGroupWithoutSubjectTreeQuery, FindGroupWithoutSubjectTreeQueryVariables>) {
-    return Apollo.useLazyQuery<FindGroupWithoutSubjectTreeQuery, FindGroupWithoutSubjectTreeQueryVariables>(FindGroupWithoutSubjectTreeDocument, baseOptions);
-  }
+  return Apollo.useLazyQuery<FindGroupWithoutSubjectTreeQuery, FindGroupWithoutSubjectTreeQueryVariables>(FindGroupWithoutSubjectTreeDocument, baseOptions);
+}
 export type FindGroupWithoutSubjectTreeQueryHookResult = ReturnType<typeof useFindGroupWithoutSubjectTreeQuery>;
 export type FindGroupWithoutSubjectTreeLazyQueryHookResult = ReturnType<typeof useFindGroupWithoutSubjectTreeLazyQuery>;
 export type FindGroupWithoutSubjectTreeQueryResult = Apollo.QueryResult<FindGroupWithoutSubjectTreeQuery, FindGroupWithoutSubjectTreeQueryVariables>;
@@ -2816,13 +2876,13 @@ export const FindSubjectWithoutPropTreeDocument = gql`
   }
 }
     ${ItemPropsFragmentDoc}`;
-    
+
 export function useFindSubjectWithoutPropTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindSubjectWithoutPropTreeQuery, FindSubjectWithoutPropTreeQueryVariables>) {
   return Apollo.useQuery<FindSubjectWithoutPropTreeQuery, FindSubjectWithoutPropTreeQueryVariables>(FindSubjectWithoutPropTreeDocument, baseOptions);
 }
 export function useFindSubjectWithoutPropTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindSubjectWithoutPropTreeQuery, FindSubjectWithoutPropTreeQueryVariables>) {
-    return Apollo.useLazyQuery<FindSubjectWithoutPropTreeQuery, FindSubjectWithoutPropTreeQueryVariables>(FindSubjectWithoutPropTreeDocument, baseOptions);
-  }
+  return Apollo.useLazyQuery<FindSubjectWithoutPropTreeQuery, FindSubjectWithoutPropTreeQueryVariables>(FindSubjectWithoutPropTreeDocument, baseOptions);
+}
 export type FindSubjectWithoutPropTreeQueryHookResult = ReturnType<typeof useFindSubjectWithoutPropTreeQuery>;
 export type FindSubjectWithoutPropTreeLazyQueryHookResult = ReturnType<typeof useFindSubjectWithoutPropTreeLazyQuery>;
 export type FindSubjectWithoutPropTreeQueryResult = Apollo.QueryResult<FindSubjectWithoutPropTreeQuery, FindSubjectWithoutPropTreeQueryVariables>;
@@ -2839,13 +2899,13 @@ export const FindMeasureWithoutPropTreeDocument = gql`
   }
 }
     ${ItemPropsFragmentDoc}`;
-    
+
 export function useFindMeasureWithoutPropTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMeasureWithoutPropTreeQuery, FindMeasureWithoutPropTreeQueryVariables>) {
   return Apollo.useQuery<FindMeasureWithoutPropTreeQuery, FindMeasureWithoutPropTreeQueryVariables>(FindMeasureWithoutPropTreeDocument, baseOptions);
 }
 export function useFindMeasureWithoutPropTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMeasureWithoutPropTreeQuery, FindMeasureWithoutPropTreeQueryVariables>) {
-    return Apollo.useLazyQuery<FindMeasureWithoutPropTreeQuery, FindMeasureWithoutPropTreeQueryVariables>(FindMeasureWithoutPropTreeDocument, baseOptions);
-  }
+  return Apollo.useLazyQuery<FindMeasureWithoutPropTreeQuery, FindMeasureWithoutPropTreeQueryVariables>(FindMeasureWithoutPropTreeDocument, baseOptions);
+}
 export type FindMeasureWithoutPropTreeQueryHookResult = ReturnType<typeof useFindMeasureWithoutPropTreeQuery>;
 export type FindMeasureWithoutPropTreeLazyQueryHookResult = ReturnType<typeof useFindMeasureWithoutPropTreeLazyQuery>;
 export type FindMeasureWithoutPropTreeQueryResult = Apollo.QueryResult<FindMeasureWithoutPropTreeQuery, FindMeasureWithoutPropTreeQueryVariables>;
@@ -2862,13 +2922,13 @@ export const FindUnitWithoutMeasureTreeDocument = gql`
   }
 }
     ${ItemPropsFragmentDoc}`;
-    
+
 export function useFindUnitWithoutMeasureTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindUnitWithoutMeasureTreeQuery, FindUnitWithoutMeasureTreeQueryVariables>) {
   return Apollo.useQuery<FindUnitWithoutMeasureTreeQuery, FindUnitWithoutMeasureTreeQueryVariables>(FindUnitWithoutMeasureTreeDocument, baseOptions);
 }
 export function useFindUnitWithoutMeasureTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindUnitWithoutMeasureTreeQuery, FindUnitWithoutMeasureTreeQueryVariables>) {
-    return Apollo.useLazyQuery<FindUnitWithoutMeasureTreeQuery, FindUnitWithoutMeasureTreeQueryVariables>(FindUnitWithoutMeasureTreeDocument, baseOptions);
-  }
+  return Apollo.useLazyQuery<FindUnitWithoutMeasureTreeQuery, FindUnitWithoutMeasureTreeQueryVariables>(FindUnitWithoutMeasureTreeDocument, baseOptions);
+}
 export type FindUnitWithoutMeasureTreeQueryHookResult = ReturnType<typeof useFindUnitWithoutMeasureTreeQuery>;
 export type FindUnitWithoutMeasureTreeLazyQueryHookResult = ReturnType<typeof useFindUnitWithoutMeasureTreeLazyQuery>;
 export type FindUnitWithoutMeasureTreeQueryResult = Apollo.QueryResult<FindUnitWithoutMeasureTreeQuery, FindUnitWithoutMeasureTreeQueryVariables>;
@@ -2885,13 +2945,13 @@ export const FindValueWithoutMeasureTreeDocument = gql`
   }
 }
     ${ItemPropsFragmentDoc}`;
-    
+
 export function useFindValueWithoutMeasureTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindValueWithoutMeasureTreeQuery, FindValueWithoutMeasureTreeQueryVariables>) {
   return Apollo.useQuery<FindValueWithoutMeasureTreeQuery, FindValueWithoutMeasureTreeQueryVariables>(FindValueWithoutMeasureTreeDocument, baseOptions);
 }
 export function useFindValueWithoutMeasureTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindValueWithoutMeasureTreeQuery, FindValueWithoutMeasureTreeQueryVariables>) {
-    return Apollo.useLazyQuery<FindValueWithoutMeasureTreeQuery, FindValueWithoutMeasureTreeQueryVariables>(FindValueWithoutMeasureTreeDocument, baseOptions);
-  }
+  return Apollo.useLazyQuery<FindValueWithoutMeasureTreeQuery, FindValueWithoutMeasureTreeQueryVariables>(FindValueWithoutMeasureTreeDocument, baseOptions);
+}
 export type FindValueWithoutMeasureTreeQueryHookResult = ReturnType<typeof useFindValueWithoutMeasureTreeQuery>;
 export type FindValueWithoutMeasureTreeLazyQueryHookResult = ReturnType<typeof useFindValueWithoutMeasureTreeLazyQuery>;
 export type FindValueWithoutMeasureTreeQueryResult = Apollo.QueryResult<FindValueWithoutMeasureTreeQuery, FindValueWithoutMeasureTreeQueryVariables>;
@@ -2910,13 +2970,13 @@ export const FindMissingEnglishNameTreeDocument = gql`
   }
 }
     ${ItemPropsFragmentDoc}`;
-    
+
 export function useFindMissingEnglishNameTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMissingEnglishNameTreeQuery, FindMissingEnglishNameTreeQueryVariables>) {
   return Apollo.useQuery<FindMissingEnglishNameTreeQuery, FindMissingEnglishNameTreeQueryVariables>(FindMissingEnglishNameTreeDocument, baseOptions);
 }
 export function useFindMissingEnglishNameTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMissingEnglishNameTreeQuery, FindMissingEnglishNameTreeQueryVariables>) {
-    return Apollo.useLazyQuery<FindMissingEnglishNameTreeQuery, FindMissingEnglishNameTreeQueryVariables>(FindMissingEnglishNameTreeDocument, baseOptions);
-  }
+  return Apollo.useLazyQuery<FindMissingEnglishNameTreeQuery, FindMissingEnglishNameTreeQueryVariables>(FindMissingEnglishNameTreeDocument, baseOptions);
+}
 export type FindMissingEnglishNameTreeQueryHookResult = ReturnType<typeof useFindMissingEnglishNameTreeQuery>;
 export type FindMissingEnglishNameTreeLazyQueryHookResult = ReturnType<typeof useFindMissingEnglishNameTreeLazyQuery>;
 export type FindMissingEnglishNameTreeQueryResult = Apollo.QueryResult<FindMissingEnglishNameTreeQuery, FindMissingEnglishNameTreeQueryVariables>;
@@ -2935,13 +2995,13 @@ export const FindMultipleIDsTreeDocument = gql`
   }
 }
     ${ItemPropsFragmentDoc}`;
-    
+
 export function useFindMultipleIDsTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMultipleIDsTreeQuery, FindMultipleIDsTreeQueryVariables>) {
   return Apollo.useQuery<FindMultipleIDsTreeQuery, FindMultipleIDsTreeQueryVariables>(FindMultipleIDsTreeDocument, baseOptions);
 }
 export function useFindMultipleIDsTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMultipleIDsTreeQuery, FindMultipleIDsTreeQueryVariables>) {
-    return Apollo.useLazyQuery<FindMultipleIDsTreeQuery, FindMultipleIDsTreeQueryVariables>(FindMultipleIDsTreeDocument, baseOptions);
-  }
+  return Apollo.useLazyQuery<FindMultipleIDsTreeQuery, FindMultipleIDsTreeQueryVariables>(FindMultipleIDsTreeDocument, baseOptions);
+}
 export type FindMultipleIDsTreeQueryHookResult = ReturnType<typeof useFindMultipleIDsTreeQuery>;
 export type FindMultipleIDsTreeLazyQueryHookResult = ReturnType<typeof useFindMultipleIDsTreeLazyQuery>;
 export type FindMultipleIDsTreeQueryResult = Apollo.QueryResult<FindMultipleIDsTreeQuery, FindMultipleIDsTreeQueryVariables>;
@@ -2960,13 +3020,13 @@ export const FindMissingDescriptionTreeDocument = gql`
   }
 }
     ${ItemPropsFragmentDoc}`;
-    
+
 export function useFindMissingDescriptionTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMissingDescriptionTreeQuery, FindMissingDescriptionTreeQueryVariables>) {
   return Apollo.useQuery<FindMissingDescriptionTreeQuery, FindMissingDescriptionTreeQueryVariables>(FindMissingDescriptionTreeDocument, baseOptions);
 }
 export function useFindMissingDescriptionTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMissingDescriptionTreeQuery, FindMissingDescriptionTreeQueryVariables>) {
-    return Apollo.useLazyQuery<FindMissingDescriptionTreeQuery, FindMissingDescriptionTreeQueryVariables>(FindMissingDescriptionTreeDocument, baseOptions);
-  }
+  return Apollo.useLazyQuery<FindMissingDescriptionTreeQuery, FindMissingDescriptionTreeQueryVariables>(FindMissingDescriptionTreeDocument, baseOptions);
+}
 export type FindMissingDescriptionTreeQueryHookResult = ReturnType<typeof useFindMissingDescriptionTreeQuery>;
 export type FindMissingDescriptionTreeLazyQueryHookResult = ReturnType<typeof useFindMissingDescriptionTreeLazyQuery>;
 export type FindMissingDescriptionTreeQueryResult = Apollo.QueryResult<FindMissingDescriptionTreeQuery, FindMissingDescriptionTreeQueryVariables>;
@@ -2985,13 +3045,13 @@ export const FindMissingEnglishDescriptionTreeDocument = gql`
   }
 }
     ${ItemPropsFragmentDoc}`;
-    
+
 export function useFindMissingEnglishDescriptionTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMissingEnglishDescriptionTreeQuery, FindMissingEnglishDescriptionTreeQueryVariables>) {
   return Apollo.useQuery<FindMissingEnglishDescriptionTreeQuery, FindMissingEnglishDescriptionTreeQueryVariables>(FindMissingEnglishDescriptionTreeDocument, baseOptions);
 }
 export function useFindMissingEnglishDescriptionTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMissingEnglishDescriptionTreeQuery, FindMissingEnglishDescriptionTreeQueryVariables>) {
-    return Apollo.useLazyQuery<FindMissingEnglishDescriptionTreeQuery, FindMissingEnglishDescriptionTreeQueryVariables>(FindMissingEnglishDescriptionTreeDocument, baseOptions);
-  }
+  return Apollo.useLazyQuery<FindMissingEnglishDescriptionTreeQuery, FindMissingEnglishDescriptionTreeQueryVariables>(FindMissingEnglishDescriptionTreeDocument, baseOptions);
+}
 export type FindMissingEnglishDescriptionTreeQueryHookResult = ReturnType<typeof useFindMissingEnglishDescriptionTreeQuery>;
 export type FindMissingEnglishDescriptionTreeLazyQueryHookResult = ReturnType<typeof useFindMissingEnglishDescriptionTreeLazyQuery>;
 export type FindMissingEnglishDescriptionTreeQueryResult = Apollo.QueryResult<FindMissingEnglishDescriptionTreeQuery, FindMissingEnglishDescriptionTreeQueryVariables>;
@@ -3010,13 +3070,13 @@ export const FindMultipleNamesTreeDocument = gql`
   }
 }
     ${ItemPropsFragmentDoc}`;
-    
+
 export function useFindMultipleNamesTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMultipleNamesTreeQuery, FindMultipleNamesTreeQueryVariables>) {
   return Apollo.useQuery<FindMultipleNamesTreeQuery, FindMultipleNamesTreeQueryVariables>(FindMultipleNamesTreeDocument, baseOptions);
 }
 export function useFindMultipleNamesTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMultipleNamesTreeQuery, FindMultipleNamesTreeQueryVariables>) {
-    return Apollo.useLazyQuery<FindMultipleNamesTreeQuery, FindMultipleNamesTreeQueryVariables>(FindMultipleNamesTreeDocument, baseOptions);
-  }
+  return Apollo.useLazyQuery<FindMultipleNamesTreeQuery, FindMultipleNamesTreeQueryVariables>(FindMultipleNamesTreeDocument, baseOptions);
+}
 export type FindMultipleNamesTreeQueryHookResult = ReturnType<typeof useFindMultipleNamesTreeQuery>;
 export type FindMultipleNamesTreeLazyQueryHookResult = ReturnType<typeof useFindMultipleNamesTreeLazyQuery>;
 export type FindMultipleNamesTreeQueryResult = Apollo.QueryResult<FindMultipleNamesTreeQuery, FindMultipleNamesTreeQueryVariables>;
@@ -3035,13 +3095,13 @@ export const FindMultipleNamesAcrossClassesTreeDocument = gql`
   }
 }
     ${ItemPropsFragmentDoc}`;
-    
+
 export function useFindMultipleNamesAcrossClassesTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMultipleNamesAcrossClassesTreeQuery, FindMultipleNamesAcrossClassesTreeQueryVariables>) {
   return Apollo.useQuery<FindMultipleNamesAcrossClassesTreeQuery, FindMultipleNamesAcrossClassesTreeQueryVariables>(FindMultipleNamesAcrossClassesTreeDocument, baseOptions);
 }
 export function useFindMultipleNamesAcrossClassesTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMultipleNamesAcrossClassesTreeQuery, FindMultipleNamesAcrossClassesTreeQueryVariables>) {
-    return Apollo.useLazyQuery<FindMultipleNamesAcrossClassesTreeQuery, FindMultipleNamesAcrossClassesTreeQueryVariables>(FindMultipleNamesAcrossClassesTreeDocument, baseOptions);
-  }
+  return Apollo.useLazyQuery<FindMultipleNamesAcrossClassesTreeQuery, FindMultipleNamesAcrossClassesTreeQueryVariables>(FindMultipleNamesAcrossClassesTreeDocument, baseOptions);
+}
 export type FindMultipleNamesAcrossClassesTreeQueryHookResult = ReturnType<typeof useFindMultipleNamesAcrossClassesTreeQuery>;
 export type FindMultipleNamesAcrossClassesTreeLazyQueryHookResult = ReturnType<typeof useFindMultipleNamesAcrossClassesTreeLazyQuery>;
 export type FindMultipleNamesAcrossClassesTreeQueryResult = Apollo.QueryResult<FindMultipleNamesAcrossClassesTreeQuery, FindMultipleNamesAcrossClassesTreeQueryVariables>;
@@ -3062,11 +3122,11 @@ export type FindMultipleNamesAcrossClassesTreeQueryResult = Apollo.QueryResult<F
  * });
  */
 export function usePropertyTreeQuery(baseOptions?: Apollo.QueryHookOptions<PropertyTreeQuery, PropertyTreeQueryVariables>) {
-        return Apollo.useQuery<PropertyTreeQuery, PropertyTreeQueryVariables>(PropertyTreeDocument, baseOptions);
-      }
+  return Apollo.useQuery<PropertyTreeQuery, PropertyTreeQueryVariables>(PropertyTreeDocument, baseOptions);
+}
 export function usePropertyTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PropertyTreeQuery, PropertyTreeQueryVariables>) {
-          return Apollo.useLazyQuery<PropertyTreeQuery, PropertyTreeQueryVariables>(PropertyTreeDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<PropertyTreeQuery, PropertyTreeQueryVariables>(PropertyTreeDocument, baseOptions);
+}
 export type PropertyTreeQueryHookResult = ReturnType<typeof usePropertyTreeQuery>;
 export type PropertyTreeLazyQueryHookResult = ReturnType<typeof usePropertyTreeLazyQuery>;
 export type PropertyTreeQueryResult = Apollo.QueryResult<PropertyTreeQuery, PropertyTreeQueryVariables>;
@@ -3095,11 +3155,11 @@ export const GetDocumentEntryDocument = gql`
  * });
  */
 export function useGetDocumentEntryQuery(baseOptions: Apollo.QueryHookOptions<GetDocumentEntryQuery, GetDocumentEntryQueryVariables>) {
-        return Apollo.useQuery<GetDocumentEntryQuery, GetDocumentEntryQueryVariables>(GetDocumentEntryDocument, baseOptions);
-      }
+  return Apollo.useQuery<GetDocumentEntryQuery, GetDocumentEntryQueryVariables>(GetDocumentEntryDocument, baseOptions);
+}
 export function useGetDocumentEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetDocumentEntryQuery, GetDocumentEntryQueryVariables>) {
-          return Apollo.useLazyQuery<GetDocumentEntryQuery, GetDocumentEntryQueryVariables>(GetDocumentEntryDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<GetDocumentEntryQuery, GetDocumentEntryQueryVariables>(GetDocumentEntryDocument, baseOptions);
+}
 export type GetDocumentEntryQueryHookResult = ReturnType<typeof useGetDocumentEntryQuery>;
 export type GetDocumentEntryLazyQueryHookResult = ReturnType<typeof useGetDocumentEntryLazyQuery>;
 export type GetDocumentEntryQueryResult = Apollo.QueryResult<GetDocumentEntryQuery, GetDocumentEntryQueryVariables>;
@@ -3128,11 +3188,11 @@ export const GetObjectEntryDocument = gql`
  * });
  */
 export function useGetObjectEntryQuery(baseOptions: Apollo.QueryHookOptions<GetObjectEntryQuery, GetObjectEntryQueryVariables>) {
-        return Apollo.useQuery<GetObjectEntryQuery, GetObjectEntryQueryVariables>(GetObjectEntryDocument, baseOptions);
-      }
+  return Apollo.useQuery<GetObjectEntryQuery, GetObjectEntryQueryVariables>(GetObjectEntryDocument, baseOptions);
+}
 export function useGetObjectEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetObjectEntryQuery, GetObjectEntryQueryVariables>) {
-          return Apollo.useLazyQuery<GetObjectEntryQuery, GetObjectEntryQueryVariables>(GetObjectEntryDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<GetObjectEntryQuery, GetObjectEntryQueryVariables>(GetObjectEntryDocument, baseOptions);
+}
 export type GetObjectEntryQueryHookResult = ReturnType<typeof useGetObjectEntryQuery>;
 export type GetObjectEntryLazyQueryHookResult = ReturnType<typeof useGetObjectEntryLazyQuery>;
 export type GetObjectEntryQueryResult = Apollo.QueryResult<GetObjectEntryQuery, GetObjectEntryQueryVariables>;
@@ -3161,11 +3221,11 @@ export const GetSubjectEntryDocument = gql`
  * });
  */
 export function useGetSubjectEntryQuery(baseOptions: Apollo.QueryHookOptions<GetSubjectEntryQuery, GetSubjectEntryQueryVariables>) {
-        return Apollo.useQuery<GetSubjectEntryQuery, GetSubjectEntryQueryVariables>(GetSubjectEntryDocument, baseOptions);
-      }
+  return Apollo.useQuery<GetSubjectEntryQuery, GetSubjectEntryQueryVariables>(GetSubjectEntryDocument, baseOptions);
+}
 export function useGetSubjectEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSubjectEntryQuery, GetSubjectEntryQueryVariables>) {
-          return Apollo.useLazyQuery<GetSubjectEntryQuery, GetSubjectEntryQueryVariables>(GetSubjectEntryDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<GetSubjectEntryQuery, GetSubjectEntryQueryVariables>(GetSubjectEntryDocument, baseOptions);
+}
 export type GetSubjectEntryQueryHookResult = ReturnType<typeof useGetSubjectEntryQuery>;
 export type GetSubjectEntryLazyQueryHookResult = ReturnType<typeof useGetSubjectEntryLazyQuery>;
 export type GetSubjectEntryQueryResult = Apollo.QueryResult<GetSubjectEntryQuery, GetSubjectEntryQueryVariables>;
@@ -3194,11 +3254,11 @@ export const GetPropertyEntryDocument = gql`
  * });
  */
 export function useGetPropertyEntryQuery(baseOptions: Apollo.QueryHookOptions<GetPropertyEntryQuery, GetPropertyEntryQueryVariables>) {
-        return Apollo.useQuery<GetPropertyEntryQuery, GetPropertyEntryQueryVariables>(GetPropertyEntryDocument, baseOptions);
-      }
+  return Apollo.useQuery<GetPropertyEntryQuery, GetPropertyEntryQueryVariables>(GetPropertyEntryDocument, baseOptions);
+}
 export function useGetPropertyEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPropertyEntryQuery, GetPropertyEntryQueryVariables>) {
-          return Apollo.useLazyQuery<GetPropertyEntryQuery, GetPropertyEntryQueryVariables>(GetPropertyEntryDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<GetPropertyEntryQuery, GetPropertyEntryQueryVariables>(GetPropertyEntryDocument, baseOptions);
+}
 export type GetPropertyEntryQueryHookResult = ReturnType<typeof useGetPropertyEntryQuery>;
 export type GetPropertyEntryLazyQueryHookResult = ReturnType<typeof useGetPropertyEntryLazyQuery>;
 export type GetPropertyEntryQueryResult = Apollo.QueryResult<GetPropertyEntryQuery, GetPropertyEntryQueryVariables>;
@@ -3227,11 +3287,11 @@ export const GetMeasureEntryDocument = gql`
  * });
  */
 export function useGetMeasureEntryQuery(baseOptions: Apollo.QueryHookOptions<GetMeasureEntryQuery, GetMeasureEntryQueryVariables>) {
-        return Apollo.useQuery<GetMeasureEntryQuery, GetMeasureEntryQueryVariables>(GetMeasureEntryDocument, baseOptions);
-      }
+  return Apollo.useQuery<GetMeasureEntryQuery, GetMeasureEntryQueryVariables>(GetMeasureEntryDocument, baseOptions);
+}
 export function useGetMeasureEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMeasureEntryQuery, GetMeasureEntryQueryVariables>) {
-          return Apollo.useLazyQuery<GetMeasureEntryQuery, GetMeasureEntryQueryVariables>(GetMeasureEntryDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<GetMeasureEntryQuery, GetMeasureEntryQueryVariables>(GetMeasureEntryDocument, baseOptions);
+}
 export type GetMeasureEntryQueryHookResult = ReturnType<typeof useGetMeasureEntryQuery>;
 export type GetMeasureEntryLazyQueryHookResult = ReturnType<typeof useGetMeasureEntryLazyQuery>;
 export type GetMeasureEntryQueryResult = Apollo.QueryResult<GetMeasureEntryQuery, GetMeasureEntryQueryVariables>;
@@ -3260,11 +3320,11 @@ export const GetUnitEntryDocument = gql`
  * });
  */
 export function useGetUnitEntryQuery(baseOptions: Apollo.QueryHookOptions<GetUnitEntryQuery, GetUnitEntryQueryVariables>) {
-        return Apollo.useQuery<GetUnitEntryQuery, GetUnitEntryQueryVariables>(GetUnitEntryDocument, baseOptions);
-      }
+  return Apollo.useQuery<GetUnitEntryQuery, GetUnitEntryQueryVariables>(GetUnitEntryDocument, baseOptions);
+}
 export function useGetUnitEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUnitEntryQuery, GetUnitEntryQueryVariables>) {
-          return Apollo.useLazyQuery<GetUnitEntryQuery, GetUnitEntryQueryVariables>(GetUnitEntryDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<GetUnitEntryQuery, GetUnitEntryQueryVariables>(GetUnitEntryDocument, baseOptions);
+}
 export type GetUnitEntryQueryHookResult = ReturnType<typeof useGetUnitEntryQuery>;
 export type GetUnitEntryLazyQueryHookResult = ReturnType<typeof useGetUnitEntryLazyQuery>;
 export type GetUnitEntryQueryResult = Apollo.QueryResult<GetUnitEntryQuery, GetUnitEntryQueryVariables>;
@@ -3293,11 +3353,11 @@ export const GetValueEntryDocument = gql`
  * });
  */
 export function useGetValueEntryQuery(baseOptions: Apollo.QueryHookOptions<GetValueEntryQuery, GetValueEntryQueryVariables>) {
-        return Apollo.useQuery<GetValueEntryQuery, GetValueEntryQueryVariables>(GetValueEntryDocument, baseOptions);
-      }
+  return Apollo.useQuery<GetValueEntryQuery, GetValueEntryQueryVariables>(GetValueEntryDocument, baseOptions);
+}
 export function useGetValueEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetValueEntryQuery, GetValueEntryQueryVariables>) {
-          return Apollo.useLazyQuery<GetValueEntryQuery, GetValueEntryQueryVariables>(GetValueEntryDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<GetValueEntryQuery, GetValueEntryQueryVariables>(GetValueEntryDocument, baseOptions);
+}
 export type GetValueEntryQueryHookResult = ReturnType<typeof useGetValueEntryQuery>;
 export type GetValueEntryLazyQueryHookResult = ReturnType<typeof useGetValueEntryLazyQuery>;
 export type GetValueEntryQueryResult = Apollo.QueryResult<GetValueEntryQuery, GetValueEntryQueryVariables>;
@@ -3326,11 +3386,11 @@ export const GetCollectionEntryDocument = gql`
  * });
  */
 export function useGetCollectionEntryQuery(baseOptions: Apollo.QueryHookOptions<GetCollectionEntryQuery, GetCollectionEntryQueryVariables>) {
-        return Apollo.useQuery<GetCollectionEntryQuery, GetCollectionEntryQueryVariables>(GetCollectionEntryDocument, baseOptions);
-      }
+  return Apollo.useQuery<GetCollectionEntryQuery, GetCollectionEntryQueryVariables>(GetCollectionEntryDocument, baseOptions);
+}
 export function useGetCollectionEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCollectionEntryQuery, GetCollectionEntryQueryVariables>) {
-          return Apollo.useLazyQuery<GetCollectionEntryQuery, GetCollectionEntryQueryVariables>(GetCollectionEntryDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<GetCollectionEntryQuery, GetCollectionEntryQueryVariables>(GetCollectionEntryDocument, baseOptions);
+}
 export type GetCollectionEntryQueryHookResult = ReturnType<typeof useGetCollectionEntryQuery>;
 export type GetCollectionEntryLazyQueryHookResult = ReturnType<typeof useGetCollectionEntryLazyQuery>;
 export type GetCollectionEntryQueryResult = Apollo.QueryResult<GetCollectionEntryQuery, GetCollectionEntryQueryVariables>;
@@ -3358,11 +3418,11 @@ export const ProfileDocument = gql`
  * });
  */
 export function useProfileQuery(baseOptions?: Apollo.QueryHookOptions<ProfileQuery, ProfileQueryVariables>) {
-        return Apollo.useQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, baseOptions);
-      }
+  return Apollo.useQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, baseOptions);
+}
 export function useProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProfileQuery, ProfileQueryVariables>) {
-          return Apollo.useLazyQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, baseOptions);
+}
 export type ProfileQueryHookResult = ReturnType<typeof useProfileQuery>;
 export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
 export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
@@ -3373,8 +3433,8 @@ export function useExportCatalogItemsQuery(baseOptions?: Apollo.QueryHookOptions
   return Apollo.useQuery<FindExportCatalogItemsTreeQuery, FindExportCatalogItemsTreeQueryVariables>(GetExportCatalogItems, baseOptions);
 }
 export function useExportCatalogItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindExportCatalogItemsTreeQuery, FindExportCatalogItemsTreeQueryVariables>) {
-    return Apollo.useLazyQuery<FindExportCatalogItemsTreeQuery, FindExportCatalogItemsTreeQueryVariables>(GetExportCatalogItems, baseOptions);
-  }
+  return Apollo.useLazyQuery<FindExportCatalogItemsTreeQuery, FindExportCatalogItemsTreeQueryVariables>(GetExportCatalogItems, baseOptions);
+}
 export type ExportCatalogItemsQueryHookResult = ReturnType<typeof useExportCatalogItemsQuery>;
 export type ExportCatalogItemsLazyQueryHookResult = ReturnType<typeof useExportCatalogItemsLazyQuery>;
 export type ExportCatalogItemsQueryResult = Apollo.QueryResult<FindExportCatalogItemsTreeQuery, FindExportCatalogItemsTreeQueryVariables>;
@@ -3403,8 +3463,8 @@ export function useExportCatalogItemsRelationshipsQuery(baseOptions?: Apollo.Que
   return Apollo.useQuery<FindExportCatalogItemsRelationshipsTreeQuery, FindExportCatalogItemsRelationshipsTreeQueryVariables>(GetExportCatalogItemsRelationships, baseOptions);
 }
 export function useExportCatalogItemsRelationshipsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindExportCatalogItemsRelationshipsTreeQuery, FindExportCatalogItemsRelationshipsTreeQueryVariables>) {
-    return Apollo.useLazyQuery<FindExportCatalogItemsRelationshipsTreeQuery, FindExportCatalogItemsRelationshipsTreeQueryVariables>(GetExportCatalogItemsRelationships, baseOptions);
-  }
+  return Apollo.useLazyQuery<FindExportCatalogItemsRelationshipsTreeQuery, FindExportCatalogItemsRelationshipsTreeQueryVariables>(GetExportCatalogItemsRelationships, baseOptions);
+}
 export type ExportCatalogItemsRelationshipsQueryHookResult = ReturnType<typeof useExportCatalogItemsRelationshipsQuery>;
 export type ExportCatalogItemsRelationshipsLazyQueryHookResult = ReturnType<typeof useExportCatalogItemsRelationshipsLazyQuery>;
 export type ExportCatalogItemsRelationshipsQueryResult = Apollo.QueryResult<FindExportCatalogItemsRelationshipsTreeQuery, FindExportCatalogItemsRelationshipsTreeQueryVariables>;
