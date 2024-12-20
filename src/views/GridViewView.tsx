@@ -339,35 +339,33 @@ const GridViewView: FC = () => {
       enqueueSnackbar("Bitte wählen Sie ein Tag aus.", { variant: "error" });
       return;
     }
-
+  
+    enqueueSnackbar("Start Add Tags", { variant: "info" });
+  
     let tagAdded = false;
-
+  
     for (const [rowId, isSelected] of Object.entries(selectedRows)) {
       if (isSelected) {
         const row = filteredRows.find((r) => r.uniqueId.toString() === rowId);
         if (!row) continue;
-
+  
         const entriesToUpdate = Object.entries(row.ids).filter(
           ([, id]) => typeof id === "string" && id.trim() !== ""
         );
-
+  
         for (const [column, entryId] of entriesToUpdate) {
           const entryTags = row.tags.filter(
             (tag: { entryId: string }) => tag.entryId === entryId
           );
-
+  
           const tagAlreadyExists = entryTags.some(
             (tag: { name: string }) => tag.name === newTag
           );
-
+  
           if (tagAlreadyExists) {
-            enqueueSnackbar(
-              `Das Tag "${newTag}" ist bereits bei Eintrag in Spalte "${column}" vorhanden.`,
-              { variant: "info" }
-            );
             continue;
           }
-
+  
           try {
             const { data } = await addTag({
               variables: {
@@ -377,20 +375,12 @@ const GridViewView: FC = () => {
                 },
               },
             });
-
+  
             if (data) {
-              enqueueSnackbar(
-                `Tag "${newTag}" erfolgreich zu Eintrag in Spalte "${column}" hinzugefügt.`,
-                { variant: "success" }
-              );
               tagAdded = true;
               row.tags.push({ entryId, name: newTag });
             }
           } catch (error) {
-            enqueueSnackbar(
-              `Fehler beim Hinzufügen des Tags "${newTag}" zu Eintrag in Spalte "${column}".`,
-              { variant: "error" }
-            );
             console.error(
               `Fehler beim Hinzufügen des Tags zu Eintrag ${entryId}:`,
               error
@@ -399,13 +389,11 @@ const GridViewView: FC = () => {
         }
       }
     }
-
+  
     try {
       if (tagAdded) {
         await refetch();
-        enqueueSnackbar("Tags wurden erfolgreich aktualisiert.", {
-          variant: "info",
-        });
+        enqueueSnackbar("End Add Tags", { variant: "info" });
       }
     } catch (error) {
       enqueueSnackbar("Fehler beim Aktualisieren der Tags.", {
