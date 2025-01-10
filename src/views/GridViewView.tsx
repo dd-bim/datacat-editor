@@ -27,17 +27,43 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
     margin: theme.spacing(2),
     overflowX: "auto",
+    backgroundColor: theme.palette.background.paper,
+  },
+  fixedContainer: {
+    position: "sticky",
+    top: 0,
+    backgroundColor: theme.palette.background.paper,
+    zIndex: 3,
+    padding: theme.spacing(2),
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+  },
+  scrollableContainer: {
+    maxHeight: "calc(100vh - 300px)", // Adjust this value based on the height of the fixed container
+    overflowY: "auto",
+    backgroundColor: theme.palette.background.paper,
   },
   table: {
     width: "100%",
     borderCollapse: "collapse" as const,
-    tableLayout: "auto",
+    tableLayout: "fixed",
   },
   thTd: {
     border: "1px solid #ddd",
     padding: theme.spacing(1),
     textAlign: "left" as const,
     wordWrap: "break-word",
+  },
+  checkboxThTd: {
+    border: "1px solid #ddd",
+    padding: theme.spacing(1),
+    textAlign: "center" as const,
+    width: "50px",
+  },
+  checkboxTd: {
+    border: "1px solid #ddd",
+    padding: theme.spacing(1),
+    textAlign: "center" as const,
+    width: "50px",
   },
   th: {
     backgroundColor: "#f2f2f2",
@@ -100,6 +126,38 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 200,
     marginRight: theme.spacing(2),
   },
+  stickyHeader: {
+    position: "sticky",
+    top: 0,
+    backgroundColor: theme.palette.background.paper,
+    zIndex: 1,
+  },
+  filterContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: theme.spacing(1),
+    backgroundColor: theme.palette.background.paper,
+    position: "sticky",
+    top: 0,
+    zIndex: 2,
+  },
+  chipContainer: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: theme.spacing(1),
+  },
+  tableHeader: {
+    position: "sticky",
+    top: 50, // Adjust this value based on the height of the filterContainer
+    backgroundColor: theme.palette.background.paper,
+    zIndex: 1,
+  },
+  scrollabletable: {
+    paddingLeft: "15px",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    backgroundColor: theme.palette.background.paper,
+  },
 }));
 
 interface VisibleColumns {
@@ -153,6 +211,8 @@ const GridViewView: FC = () => {
       [column]: !prev[column],
     }));
   }, []);
+
+  const [rows, setRows] = useState<any[]>([]);
 
   const handleShowOnlyColumn = useCallback((column: keyof VisibleColumns) => {
     setVisibleColumns({
@@ -241,8 +301,9 @@ const GridViewView: FC = () => {
       default:
         return;
     }
+    // Baue die URL korrekt zusammen
     const newUrl = `/${entityTypePath}/${id}`;
-    history.push(newUrl);
+    history.push(newUrl); // Navigiere zur neuen URL
     window.location.reload();
   };
 
@@ -339,42 +400,44 @@ const GridViewView: FC = () => {
       enqueueSnackbar("Bitte wählen Sie ein Tag aus.", { variant: "error" });
       return;
     }
-  
+
     enqueueSnackbar("Start Add Tags", { variant: "info" });
-  
+
     let tagAdded = false;
-  
+
     // Finde die passende tagId für den ausgewählten newTag
-    const selectedTagObject = data?.findTags.nodes.find((tag) => tag.name === newTag);
+    const selectedTagObject = data?.findTags.nodes.find(
+      (tag) => tag.name === newTag
+    );
     const tagId = selectedTagObject ? selectedTagObject.id : null;
-  
+
     if (!tagId) {
       enqueueSnackbar("Tag ID nicht gefunden.", { variant: "error" });
       return;
     }
-  
+
     for (const [rowId, isSelected] of Object.entries(selectedRows)) {
       if (isSelected) {
         const row = filteredRows.find((r) => r.uniqueId.toString() === rowId);
         if (!row) continue;
-  
+
         const entriesToUpdate = Object.entries(row.ids).filter(
           ([, id]) => typeof id === "string" && id.trim() !== ""
         );
-  
+
         for (const [column, entryId] of entriesToUpdate) {
           const entryTags = row.tags.filter(
             (tag: { entryId: string }) => tag.entryId === entryId
           );
-  
+
           const tagAlreadyExists = entryTags.some(
             (tag: { name: string }) => tag.name === newTag
           );
-  
+
           if (tagAlreadyExists) {
             continue;
           }
-  
+
           try {
             const { data } = await addTag({
               variables: {
@@ -384,7 +447,7 @@ const GridViewView: FC = () => {
                 },
               },
             });
-  
+
             if (data) {
               tagAdded = true;
               row.tags.push({ entryId, name: newTag });
@@ -398,7 +461,7 @@ const GridViewView: FC = () => {
         }
       }
     }
-  
+
     try {
       if (tagAdded) {
         await refetch();
@@ -461,26 +524,47 @@ const GridViewView: FC = () => {
   }, [filteredRows]);
 
   useEffect(() => {
+    let initialRows = buildRows();
+
+    if (selectedTag) {
+      initialRows = initialRows.filter((row) =>
+        row.tags.some((tag: any) => tag.name === selectedTag)
+      );
+    }
+
+    setRows(initialRows);
+  }, [propertyTreeData, selectedTag, visibleColumns]);
+
+  useEffect(() => {
     const fetchDocumentNames = async () => {
       const newDocumentNames: { [key: string]: string | null } = {
         ...documentNames,
       };
+
+      // Lade Dokumentennamen nur für IDs, die noch nicht aufgelöst wurden
       for (const id of modelIds) {
         if (!newDocumentNames[id]) {
-          const response = await getBag({ variables: { id } });
-          const documentName =
-            response.data?.getBag?.documentedBy?.nodes[0]?.relatingDocument
-              ?.name || null;
-          newDocumentNames[id] = documentName;
-          console.log(`Response for modelId ${id}:`, response.data);
+          try {
+            const response = await getBag({ variables: { id } });
+            const documentName =
+              response.data?.getBag?.documentedBy?.nodes[0]?.relatingDocument
+                ?.name || null;
+            newDocumentNames[id] = documentName;
+          } catch (error) {
+            console.error(
+              `Fehler beim Laden des Referenzdokuments für ID ${id}:`,
+              error
+            );
+          }
         }
       }
-      setDocumentNames(newDocumentNames);
-      console.log("Model IDs:", modelIds);
-      console.log("Document Names:", newDocumentNames);
+
+      setDocumentNames(newDocumentNames); // Dokumentnamen speichern
     };
 
-    fetchDocumentNames();
+    if (modelIds.length > 0) {
+      fetchDocumentNames();
+    }
   }, [modelIds, getBag]);
 
   useEffect(() => {
@@ -524,366 +608,377 @@ const GridViewView: FC = () => {
 
   return (
     <div className={classes.tableContainer}>
-      <div className={classes.headerContainer}>
-        <h3 className={classes.tagFilterTitle}>Filtermöglichkeit nach Tags</h3>
-        <div className={classes.tagControls}>
-          <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel id="importTag-label">Tag auswählen</InputLabel>
-            <Select
-              labelId="importTag-label"
-              id="importTag"
-              label="Tag auswählen"
-              name="importTag"
-              value={newTag}
-              onChange={handleTagChange}
-            >
-              <MenuItem value="">
-                <em>Tag auswählen</em>
-              </MenuItem>
-              {allTags.map((tag) => (
-                <MenuItem key={tag} value={tag}>
-                  {tag}
+      <div className={classes.fixedContainer}>
+        <div className={classes.headerContainer}>
+          <h3 className={classes.tagFilterTitle}>
+            Filtermöglichkeit nach Tags
+          </h3>
+          <div className={classes.tagControls}>
+            <FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel id="importTag-label">Tag auswählen</InputLabel>
+              <Select
+                labelId="importTag-label"
+                id="importTag"
+                label="Tag auswählen"
+                name="importTag"
+                value={newTag}
+                onChange={handleTagChange}
+              >
+                <MenuItem value="">
+                  <em>Tag auswählen</em>
                 </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+                {allTags.map((tag) => (
+                  <MenuItem key={tag} value={tag}>
+                    {tag}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <Button variant="contained" color="primary" onClick={handleAddTag}>
+              Add Tag
+            </Button>
+          </div>
+        </div>
+        <div className={classes.tagButtonContainer}>
+          {allTags.map((tag) => (
+            <Chip
+              key={tag}
+              label={tag}
+              clickable
+              color={selectedTag === tag ? "secondary" : "default"}
+              onClick={() => handleTagFilter(tag)}
+              className={classes.tagChip}
+            />
+          ))}
+          <Chip
+            label="Alle Anzeigen"
+            clickable
+            color={selectedTag === null ? "secondary" : "default"}
+            onClick={() => handleTagFilter(null)}
+            className={classes.tagChip}
+          />
+        </div>
+        <div className={classes.buttonContainer}>
           <Button
             variant="contained"
             color="primary"
-            onClick={handleAddTag}
+            onClick={() => handleShowOnlyColumn("document")}
           >
-            Add Tag
+            Nur Referenzdokumente anzeigen
           </Button>
-        </div>
-      </div>
-      <div className={classes.tagButtonContainer}>
-        {allTags.map((tag) => (
-          <Chip
-            key={tag}
-            label={tag}
-            clickable
-            color={selectedTag === tag ? "secondary" : "default"}
-            onClick={() => handleTagFilter(tag)}
-            className={classes.tagChip}
-          />
-        ))}
-        <Chip
-          label="Alle Anzeigen"
-          clickable
-          color={selectedTag === null ? "secondary" : "default"}
-          onClick={() => handleTagFilter(null)}
-          className={classes.tagChip}
-        />
-      </div>
-      <div className={classes.buttonContainer}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => handleShowOnlyColumn("document")}
-        >
-          Nur Referenzdokumente anzeigen
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => handleShowOnlyColumn("model")}
-        >
-          Nur Fachmodelle anzeigen
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => handleShowOnlyColumn("group")}
-        >
-          Nur Gruppen anzeigen
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => handleShowOnlyColumn("class")}
-        >
-          Nur Klassen anzeigen
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => handleShowOnlyColumn("propertyGroup")}
-        >
-          Nur Merkmalsgruppen anzeigen
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => handleShowOnlyColumn("property")}
-        >
-          Nur Merkmale anzeigen
-        </Button>
-        {isAnyColumnHidden && (
           <Button
             variant="contained"
-            color="secondary"
-            onClick={handleShowAllColumns}
+            color="primary"
+            onClick={() => handleShowOnlyColumn("model")}
           >
-            Alle Anzeigen
+            Nur Fachmodelle anzeigen
           </Button>
-        )}
-      </div>
-      <table className={classes.table}>
-        <thead>
-          <tr>
-            <th className={`${classes.th} ${classes.thTd}`}>
-              <div className={classes.headerCell}>
-                <div className={classes.headerContent}>
-                  <Checkbox
-                    color="primary"
-                    checked={allSelected}
-                    onChange={handleSelectAll}
-                  />
-                </div>
-              </div>
-            </th>
-            {visibleColumns.document && (
-              <th className={`${classes.th} ${classes.thTd}`}>
-                <div className={classes.headerCell}>
-                  <div className={classes.headerContent}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={visibleColumns.document}
-                          onChange={() => handleCheckboxChange("document")}
-                          color="primary"
-                        />
-                      }
-                      label={`Referenzdokumente${
-                        entityCount !== null && visibleColumns.document
-                          ? ` (${entityCount})`
-                          : ""
-                      }`}
-                      className={classes.checkboxLabel}
-                    />
-                  </div>
-                </div>
-              </th>
-            )}
-            {visibleColumns.model && (
-              <th className={`${classes.th} ${classes.thTd}`}>
-                <div className={classes.headerCell}>
-                  <div className={classes.headerContent}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={visibleColumns.model}
-                          onChange={() => handleCheckboxChange("model")}
-                          color="primary"
-                        />
-                      }
-                      label={`Fachmodelle${
-                        entityCount !== null && visibleColumns.model
-                          ? ` (${entityCount})`
-                          : ""
-                      }`}
-                      className={classes.checkboxLabel}
-                    />
-                  </div>
-                </div>
-              </th>
-            )}
-            {visibleColumns.group && (
-              <th className={`${classes.th} ${classes.thTd}`}>
-                <div className={classes.headerCell}>
-                  <div className={classes.headerContent}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={visibleColumns.group}
-                          onChange={() => handleCheckboxChange("group")}
-                          color="primary"
-                        />
-                      }
-                      label={`Gruppen${
-                        entityCount !== null && visibleColumns.group
-                          ? ` (${entityCount})`
-                          : ""
-                      }`}
-                      className={classes.checkboxLabel}
-                    />
-                  </div>
-                </div>
-              </th>
-            )}
-            {visibleColumns.class && (
-              <th className={`${classes.th} ${classes.thTd}`}>
-                <div className={classes.headerCell}>
-                  <div className={classes.headerContent}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={visibleColumns.class}
-                          onChange={() => handleCheckboxChange("class")}
-                          color="primary"
-                        />
-                      }
-                      label={`Klassen${
-                        entityCount !== null && visibleColumns.class
-                          ? ` (${entityCount})`
-                          : ""
-                      }`}
-                      className={classes.checkboxLabel}
-                    />
-                  </div>
-                </div>
-              </th>
-            )}
-            {visibleColumns.propertyGroup && (
-              <th className={`${classes.th} ${classes.thTd}`}>
-                <div className={classes.headerCell}>
-                  <div className={classes.headerContent}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={visibleColumns.propertyGroup}
-                          onChange={() => handleCheckboxChange("propertyGroup")}
-                          color="primary"
-                        />
-                      }
-                      label={`Merkmalsgruppen${
-                        entityCount !== null && visibleColumns.propertyGroup
-                          ? ` (${entityCount})`
-                          : ""
-                      }`}
-                      className={classes.checkboxLabel}
-                    />
-                  </div>
-                </div>
-              </th>
-            )}
-            {visibleColumns.property && (
-              <th className={`${classes.th} ${classes.thTd}`}>
-                <div className={classes.headerCell}>
-                  <div className={classes.headerContent}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={visibleColumns.property}
-                          onChange={() => handleCheckboxChange("property")}
-                          color="primary"
-                        />
-                      }
-                      label={`Merkmale${
-                        entityCount !== null && visibleColumns.property
-                          ? ` (${entityCount})`
-                          : ""
-                      }`}
-                      className={classes.checkboxLabel}
-                    />
-                  </div>
-                </div>
-              </th>
-            )}
-          </tr>
-        </thead>
-        <tbody>
-          {filteredRows.map((row, index) => (
-            <tr
-              key={row.uniqueId}
-              className={index % 2 === 0 ? classes.trEven : undefined}
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleShowOnlyColumn("group")}
+          >
+            Nur Gruppen anzeigen
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleShowOnlyColumn("class")}
+          >
+            Nur Klassen anzeigen
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleShowOnlyColumn("propertyGroup")}
+          >
+            Nur Merkmalsgruppen anzeigen
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleShowOnlyColumn("property")}
+          >
+            Nur Merkmale anzeigen
+          </Button>
+          {isAnyColumnHidden && (
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleShowAllColumns}
             >
-              <td className={classes.thTd}>
-                <Checkbox
-                  checked={!!selectedRows[row.uniqueId]} // Zustand der Checkbox basierend auf der eindeutigen ID
-                  onChange={() => handleRowSelection(row.uniqueId)} // Checkbox-Zustand für die eindeutige ID ändern
-                  color="primary"
-                />
-              </td>
+              Alle Anzeigen
+            </Button>
+          )}
+        </div>
+        <table className={classes.table}>
+          <thead className={classes.stickyHeader}>
+            <tr>
+              <th className={`${classes.th} ${classes.checkboxThTd}`}>
+                <div className={classes.headerCell}>
+                  <div className={classes.headerContent}>
+                    <Checkbox
+                      color="primary"
+                      checked={allSelected}
+                      onChange={handleSelectAll}
+                    />
+                  </div>
+                </div>
+              </th>
               {visibleColumns.document && (
-                <td
-                  className={`${classes.thTd} ${
-                    row.document ? classes.clickableRow : ""
-                  }`}
-                  onClick={
-                    row.document
-                      ? () => handleOnSelect(row.ids.document, "document")
-                      : undefined
-                  }
-                >
-                  {documentNames[row.ids.model] || row.document}
-                </td>
+                <th className={`${classes.th} ${classes.thTd}`}>
+                  <div className={classes.headerCell}>
+                    <div className={classes.headerContent}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={visibleColumns.document}
+                            onChange={() => handleCheckboxChange("document")}
+                            color="primary"
+                          />
+                        }
+                        label={`Referenzdokumente${
+                          entityCount !== null && visibleColumns.document
+                            ? ` (${entityCount})`
+                            : ""
+                        }`}
+                        className={classes.checkboxLabel}
+                      />
+                    </div>
+                  </div>
+                </th>
               )}
               {visibleColumns.model && (
-                <td
-                  className={`${classes.thTd} ${
-                    row.model ? classes.clickableRow : ""
-                  }`}
-                  onClick={
-                    row.model
-                      ? () => handleOnSelect(row.ids.model, "model")
-                      : undefined
-                  }
-                >
-                  {row.model}
-                </td>
+                <th className={`${classes.th} ${classes.thTd}`}>
+                  <div className={classes.headerCell}>
+                    <div className={classes.headerContent}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={visibleColumns.model}
+                            onChange={() => handleCheckboxChange("model")}
+                            color="primary"
+                          />
+                        }
+                        label={`Fachmodelle${
+                          entityCount !== null && visibleColumns.model
+                            ? ` (${entityCount})`
+                            : ""
+                        }`}
+                        className={classes.checkboxLabel}
+                      />
+                    </div>
+                  </div>
+                </th>
               )}
               {visibleColumns.group && (
-                <td
-                  className={`${classes.thTd} ${
-                    row.group ? classes.clickableRow : ""
-                  }`}
-                  onClick={
-                    row.group
-                      ? () => handleOnSelect(row.ids.group, "group")
-                      : undefined
-                  }
-                >
-                  {row.group}
-                </td>
+                <th className={`${classes.th} ${classes.thTd}`}>
+                  <div className={classes.headerCell}>
+                    <div className={classes.headerContent}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={visibleColumns.group}
+                            onChange={() => handleCheckboxChange("group")}
+                            color="primary"
+                          />
+                        }
+                        label={`Gruppen${
+                          entityCount !== null && visibleColumns.group
+                            ? ` (${entityCount})`
+                            : ""
+                        }`}
+                        className={classes.checkboxLabel}
+                      />
+                    </div>
+                  </div>
+                </th>
               )}
               {visibleColumns.class && (
-                <td
-                  className={`${classes.thTd} ${
-                    row.class ? classes.clickableRow : ""
-                  }`}
-                  onClick={
-                    row.class
-                      ? () => handleOnSelect(row.ids.class, "class")
-                      : undefined
-                  }
-                >
-                  {row.class}
-                </td>
+                <th className={`${classes.th} ${classes.thTd}`}>
+                  <div className={classes.headerCell}>
+                    <div className={classes.headerContent}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={visibleColumns.class}
+                            onChange={() => handleCheckboxChange("class")}
+                            color="primary"
+                          />
+                        }
+                        label={`Klassen${
+                          entityCount !== null && visibleColumns.class
+                            ? ` (${entityCount})`
+                            : ""
+                        }`}
+                        className={classes.checkboxLabel}
+                      />
+                    </div>
+                  </div>
+                </th>
               )}
               {visibleColumns.propertyGroup && (
-                <td
-                  className={`${classes.thTd} ${
-                    row.propertyGroup ? classes.clickableRow : ""
-                  }`}
-                  onClick={
-                    row.propertyGroup
-                      ? () =>
-                          handleOnSelect(row.ids.propertyGroup, "propertyGroup")
-                      : undefined
-                  }
-                >
-                  {row.propertyGroup}
-                </td>
+                <th className={`${classes.th} ${classes.thTd}`}>
+                  <div className={classes.headerCell}>
+                    <div className={classes.headerContent}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={visibleColumns.propertyGroup}
+                            onChange={() =>
+                              handleCheckboxChange("propertyGroup")
+                            }
+                            color="primary"
+                          />
+                        }
+                        label={`Merkmalsgruppen${
+                          entityCount !== null && visibleColumns.propertyGroup
+                            ? ` (${entityCount})`
+                            : ""
+                        }`}
+                        className={classes.checkboxLabel}
+                      />
+                    </div>
+                  </div>
+                </th>
               )}
               {visibleColumns.property && (
-                <td
-                  className={`${classes.thTd} ${
-                    row.property ? classes.clickableRow : ""
-                  }`}
-                  onClick={
-                    row.property
-                      ? () => handleOnSelect(row.ids.property, "property")
-                      : undefined
-                  }
-                >
-                  {row.property}
-                </td>
+                <th className={`${classes.th} ${classes.thTd}`}>
+                  <div className={classes.headerCell}>
+                    <div className={classes.headerContent}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={visibleColumns.property}
+                            onChange={() => handleCheckboxChange("property")}
+                            color="primary"
+                          />
+                        }
+                        label={`Merkmale${
+                          entityCount !== null && visibleColumns.property
+                            ? ` (${entityCount})`
+                            : ""
+                        }`}
+                        className={classes.checkboxLabel}
+                      />
+                    </div>
+                  </div>
+                </th>
               )}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+        </table>
+      </div>
+      <div className={classes.scrollabletable}>
+        <div className={classes.scrollableContainer}>
+          <table className={classes.table}>
+            <tbody>
+              {rows.map((row, index) => (
+                <tr
+                  key={row.uniqueId}
+                  className={index % 2 === 0 ? classes.trEven : undefined}
+                >
+                  <td className={classes.checkboxTd}>
+                    <Checkbox
+                      checked={!!selectedRows[row.uniqueId]} // Zustand der Checkbox basierend auf der eindeutigen ID
+                      onChange={() => handleRowSelection(row.uniqueId)} // Checkbox-Zustand für die eindeutige ID ändern
+                      color="primary"
+                    />
+                  </td>
+                  {visibleColumns.document && (
+                    <td
+                      className={`${classes.thTd} ${
+                        documentNames[row.ids.model] ? classes.clickableRow : ""
+                      }`}
+                      onClick={
+                        documentNames[row.ids.model]
+                          ? () => handleOnSelect(row.ids.document, "document")
+                          : undefined
+                      }
+                    >
+                      {documentNames[row.ids.model] || row.document}
+                    </td>
+                  )}
+                  {visibleColumns.model && (
+                    <td
+                      className={`${classes.thTd} ${
+                        row.model ? classes.clickableRow : ""
+                      }`}
+                      onClick={
+                        row.model
+                          ? () => handleOnSelect(row.ids.model, "model")
+                          : undefined
+                      }
+                    >
+                      {row.model}
+                    </td>
+                  )}
+                  {visibleColumns.group && (
+                    <td
+                      className={`${classes.thTd} ${
+                        row.group ? classes.clickableRow : ""
+                      }`}
+                      onClick={
+                        row.group
+                          ? () => handleOnSelect(row.ids.group, "group")
+                          : undefined
+                      }
+                    >
+                      {row.group}
+                    </td>
+                  )}
+                  {visibleColumns.class && (
+                    <td
+                      className={`${classes.thTd} ${
+                        row.class ? classes.clickableRow : ""
+                      }`}
+                      onClick={
+                        row.class
+                          ? () => handleOnSelect(row.ids.class, "class")
+                          : undefined
+                      }
+                    >
+                      {row.class}
+                    </td>
+                  )}
+                  {visibleColumns.propertyGroup && (
+                    <td
+                      className={`${classes.thTd} ${
+                        row.propertyGroup ? classes.clickableRow : ""
+                      }`}
+                      onClick={
+                        row.propertyGroup
+                          ? () =>
+                              handleOnSelect(
+                                row.ids.propertyGroup,
+                                "propertyGroup"
+                              )
+                          : undefined
+                      }
+                    >
+                      {row.propertyGroup}
+                    </td>
+                  )}
+                  {visibleColumns.property && (
+                    <td
+                      className={`${classes.thTd} ${
+                        row.property ? classes.clickableRow : ""
+                      }`}
+                      onClick={
+                        row.property
+                          ? () => handleOnSelect(row.ids.property, "property")
+                          : undefined
+                      }
+                    >
+                      {row.property}
+                    </td>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };
