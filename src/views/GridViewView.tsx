@@ -193,7 +193,7 @@ const GridViewView: FC = () => {
   const [filteredRows, setFilteredRows] = useState<any[]>([]);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [documentNames, setDocumentNames] = useState<{
-    [key: string]: string | null;
+    [key: string]: { name: string | null; id: string | null };
   }>({});
   const [modelIds, setModelIds] = useState<string[]>([]);
   const [selectedRows, setSelectedRows] = useState<{ [key: number]: boolean }>(
@@ -537,19 +537,22 @@ const GridViewView: FC = () => {
 
   useEffect(() => {
     const fetchDocumentNames = async () => {
-      const newDocumentNames: { [key: string]: string | null } = {
+      const newDocumentData: {
+        [key: string]: { name: string | null; id: string | null };
+      } = {
         ...documentNames,
       };
 
-      // Lade Dokumentennamen nur für IDs, die noch nicht aufgelöst wurden
+      // Lade Dokumentennamen und IDs nur für IDs, die noch nicht aufgelöst wurden
       for (const id of modelIds) {
-        if (!newDocumentNames[id]) {
+        if (!newDocumentData[id]) {
           try {
             const response = await getBag({ variables: { id } });
-            const documentName =
-              response.data?.getBag?.documentedBy?.nodes[0]?.relatingDocument
-                ?.name || null;
-            newDocumentNames[id] = documentName;
+            const documentNode =
+              response.data?.getBag?.documentedBy?.nodes[0]?.relatingDocument;
+            const documentName = documentNode?.name || null;
+            const documentId = documentNode?.id || null;
+            newDocumentData[id] = { name: documentName, id: documentId };
           } catch (error) {
             console.error(
               `Fehler beim Laden des Referenzdokuments für ID ${id}:`,
@@ -559,7 +562,7 @@ const GridViewView: FC = () => {
         }
       }
 
-      setDocumentNames(newDocumentNames); // Dokumentnamen speichern
+      setDocumentNames(newDocumentData); // Dokumentdaten speichern
     };
 
     if (modelIds.length > 0) {
@@ -888,15 +891,21 @@ const GridViewView: FC = () => {
                   {visibleColumns.document && (
                     <td
                       className={`${classes.thTd} ${
-                        documentNames[row.ids.model] ? classes.clickableRow : ""
+                        documentNames[row.ids.model]?.id
+                          ? classes.clickableRow
+                          : ""
                       }`}
                       onClick={
-                        documentNames[row.ids.model]
-                          ? () => handleOnSelect(row.ids.document, "document")
+                        documentNames[row.ids.model]?.id
+                          ? () =>
+                              handleOnSelect(
+                                documentNames[row.ids.model]!.id as string,
+                                "document"
+                              )
                           : undefined
                       }
                     >
-                      {documentNames[row.ids.model] || row.document}
+                      {documentNames[row.ids.model]?.name || row.document}
                     </td>
                   )}
                   {visibleColumns.model && (
