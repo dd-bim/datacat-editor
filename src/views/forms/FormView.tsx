@@ -1,5 +1,5 @@
 import React, {ReactNode} from "react";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import makeStyles from "@mui/styles/makeStyles";
 
 const useStyles = makeStyles(theme => ({
     root: {

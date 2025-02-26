@@ -1,13 +1,13 @@
 import {Controller, useForm} from "react-hook-form";
-import TextField, {TextFieldProps} from "@material-ui/core/TextField";
+import TextField, {TextFieldProps} from "@mui/material/TextField";
 import {defaultFormFieldOptions} from "../../hooks/useFormStyles";
 import LanguageSelectField from "./LanugageSelectField";
 import InlineButtonGroup from "./InlineButtonGroup";
 import React, {FC, useEffect} from "react";
 import {LanguageFilterInput, LanguagePropsFragment} from "../../generated/types";
-import {makeStyles} from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: { spacing: (factor: number) => number }) => ({
     root: {
         display: "flex",
         flexDirection: "column",
@@ -45,7 +45,7 @@ const NewTranslationForm: FC<NewTranslationFormProps> = (props) => {
         setValue,
         setError,
         handleSubmit,
-        errors,
+        formState: { errors },
         formState
     } = useForm<NewTranslationFormValues>({
         mode: "onChange",
@@ -53,8 +53,8 @@ const NewTranslationForm: FC<NewTranslationFormProps> = (props) => {
     });
 
     useEffect(() => {
-        register({name: "id"});
-        register({name: "languageTag"}, {required: true});
+        register("id");
+        register("languageTag", {required: true});
     }, [register])
 
     const lang = watch("languageTag");
@@ -82,11 +82,16 @@ const NewTranslationForm: FC<NewTranslationFormProps> = (props) => {
             <Controller
                 control={control}
                 name="value"
-                error={!!errors.value}
-                required={true}
-                rules={{ required: true}}
-                {...TextFieldProps}
-                as={<TextField {...defaultFormFieldOptions}/>}
+                rules={{ required: true }}
+                render={({ field }) => (
+                    <TextField
+                        {...field}
+                        {...defaultFormFieldOptions}
+                        {...TextFieldProps}
+                        error={!!errors.value}
+                        required
+                    />
+                )}
             />
             <div>
                 <InlineButtonGroup

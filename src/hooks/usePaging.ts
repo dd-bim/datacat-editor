@@ -1,4 +1,4 @@
-import {TablePaginationProps} from "@material-ui/core";
+import {TablePaginationProps} from "@mui/material";
 import {Pagination} from "./usePagination";
 
 type UsePagingOptions = {

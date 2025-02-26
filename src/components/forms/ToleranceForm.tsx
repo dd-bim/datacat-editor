@@ -1,144 +1,118 @@
-import React, {FC, useState} from "react";
-import {Controller, useForm} from "react-hook-form";
-import TextField from "@material-ui/core/TextField";
-import {defaultFormFieldOptions} from "../../hooks/useFormStyles";
-import {makeStyles} from "@material-ui/core/styles";
-import InlineButtonGroup from "./InlineButtonGroup";
-import {ClickAwayListener} from "@material-ui/core";
-import {ToleranceType} from "../../generated/types";
+import React, { FC } from 'react';
+import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { TextField, ClickAwayListener } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { ToleranceType } from '../../generated/types';
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        "& > *": {
-            marginRight: theme.spacing(1)
-        }
-    }
+const useStyles = makeStyles((theme: { spacing: (value: number) => number }) => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    '& > *': {
+      marginRight: theme.spacing(1),
+    },
+  },
 }));
 
 export type ToleranceFormValues = {
-    toleranceType: ToleranceType
-    lowerTolerance: string
-    upperTolerance: string
-}
+  toleranceType: ToleranceType;
+  lowerTolerance: string;
+  upperTolerance: string;
+};
 
 export type ToleranceDefaultFormValues = {
-    toleranceType: ToleranceType | ""
-    lowerTolerance: string
-    upperTolerance: string
-}
+  toleranceType: ToleranceType | '';
+  lowerTolerance: string;
+  upperTolerance: string;
+};
 
 type ToleranceFormProps = {
-    defaultValues: ToleranceDefaultFormValues
-    onSubmit(values: ToleranceFormValues): void
-    onDelete(): void
-}
+  defaultValues: ToleranceDefaultFormValues;
+  onSubmit(values: ToleranceFormValues): Promise<void>;
+  onDelete(): Promise<void>;
+};
 
-const ToleranceForm: FC<ToleranceFormProps> = (props) => {
-    const {
-        defaultValues,
-        onSubmit,
-        onDelete
-    } = props;
-    const classes = useStyles();
-    const [isEditMode, setIsEditMode] = useState(false);
-    const {
-        control,
-        handleSubmit,
-        errors,
-        reset,
-        formState
-    } = useForm<ToleranceDefaultFormValues>({
-        mode: "onChange",
-        defaultValues
-    });
-    const {
-        isDirty
-    } = formState;
+const ToleranceForm: FC<ToleranceFormProps> = ({ defaultValues, onSubmit, onDelete }) => {
+  const classes = useStyles();
+  const { control, handleSubmit, reset, formState: { isDirty } } = useForm<ToleranceDefaultFormValues>({ defaultValues });
+  const [isEditMode, setIsEditMode] = React.useState(false);
 
-    const handleOnEdit = () => {
-        setIsEditMode(true);
-    };
+  const handleOnEdit = () => {
+    setIsEditMode(true);
+  };
 
-    const handleOnReset = () => {
-        reset(defaultValues);
-        setIsEditMode(false);
-    };
+  const handleOnReset = () => {
+    setIsEditMode(false);
+    reset(defaultValues);
+  };
 
-    const handleOnDelete = async () => {
-        await onDelete();
-        setIsEditMode(false);
-        reset(defaultValues);
+  const handleOnDelete = async () => {
+    await onDelete();
+    setIsEditMode(false);
+    reset(defaultValues);
+  };
+
+  const handleOnSave: SubmitHandler<ToleranceDefaultFormValues> = async (values) => {
+    await onSubmit(values as ToleranceFormValues);
+    setIsEditMode(false);
+  };
+
+  const handleOnClickAway = () => {
+    if (isEditMode && !isDirty) {
+      handleOnReset();
     }
+  };
 
-    const HandleOnSave = async (values: ToleranceFormValues) => {
-        await onSubmit(values);
-        setIsEditMode(false);
-    };
-
-    const handleOnClickAway = () => {
-        if (isEditMode && !isDirty) {
-            handleOnReset();
-        }
-    };
-
-    return (
-        <ClickAwayListener onClickAway={handleOnClickAway}>
-            <form className={classes.root} onSubmit={handleSubmit(HandleOnSave)}>
-                <Controller
-                    id="toleranceType"
-                    name="toleranceType"
-                    label="Typ"
-                    InputProps={{
-                        onFocus: !isEditMode ? handleOnEdit : undefined
-                    }}
-                    as={
-                        <TextField
-                            {...defaultFormFieldOptions}
-                            select
-                            SelectProps={{native: true}}
-                        >
-                            <option value=""/>
-                            <option value={ToleranceType.Percentage}>Prozentualer Wert</option>
-                            <option value={ToleranceType.Realvalue}>Reeler Wert</option>
-                        </TextField>
-                    }
-                    control={control}
-                    rules={{required: true}}
-                />
-                <Controller
-                    control={control}
-                    id="lowerTolerance"
-                    name="lowerTolerance"
-                    label="Untere Schwelle"
-                    error={!!errors.lowerTolerance}
-                    InputProps={{
-                        onFocus: !isEditMode ? handleOnEdit : undefined
-                    }}
-                    as={<TextField {...defaultFormFieldOptions}/>}
-                />
-                <Controller
-                    control={control}
-                    id="upperTolerance"
-                    name="upperTolerance"
-                    label="Obere Schwelle"
-                    error={!!errors.upperTolerance}
-                    InputProps={{
-                        onFocus: !isEditMode ? handleOnEdit : undefined
-                    }}
-                    as={<TextField {...defaultFormFieldOptions}/>}
-                />
-                {isEditMode && (
-                    <InlineButtonGroup
-                        formState={formState}
-                        onDelete={handleOnDelete}
-                        onReset={handleOnReset}/>
-                )}
-            </form>
-        </ClickAwayListener>
-    );
-}
+  return (
+    <ClickAwayListener onClickAway={handleOnClickAway}>
+      <form className={classes.root} onSubmit={handleSubmit(handleOnSave)}>
+        <Controller
+          name="toleranceType"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Typ"
+              InputProps={{
+                onFocus: !isEditMode ? handleOnEdit : undefined,
+              }}
+              select
+            />
+          )}
+        />
+        <Controller
+          name="lowerTolerance"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Untere Toleranz"
+              InputProps={{
+                onFocus: !isEditMode ? handleOnEdit : undefined,
+              }}
+            />
+          )}
+        />
+        <Controller
+          name="upperTolerance"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Obere Toleranz"
+              InputProps={{
+                onFocus: !isEditMode ? handleOnEdit : undefined,
+              }}
+            />
+          )}
+        />
+        <button type="submit">Save</button>
+        <button type="button" onClick={handleOnDelete}>Delete</button>
+        <button type="button" onClick={handleOnReset}>Reset</button>
+      </form>
+    </ClickAwayListener>
+  );
+};
 
 export default ToleranceForm;

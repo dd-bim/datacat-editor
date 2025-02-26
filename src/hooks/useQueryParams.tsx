@@ -1,13 +1,13 @@
-import {useHistory, useLocation} from "react-router-dom";
-import {Querying} from "./useQuerying";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Querying } from "./useQuerying";
 
 const QUERY_PARAM = "q";
 const PAGE_SIZE_PARAM = "size";
 const PAGE_NUMBER_PARAM = "page";
 
 export function useQueryParams(): Querying {
-    const {pathname, search} = useLocation();
-    const history = useHistory();
+    const { pathname, search } = useLocation();
+    const navigate = useNavigate();
     const searchParams = new URLSearchParams(search);
 
     const queryParam = searchParams.get(QUERY_PARAM);
@@ -22,7 +22,7 @@ export function useQueryParams(): Querying {
     const pageNumber = isNaN(parsedPageNumberParam) ? 0 : parsedPageNumberParam;
 
     const updateLocation = () => {
-        history.push(`${pathname}?${searchParams.toString()}`);
+        navigate(`${pathname}?${searchParams.toString()}`);
     };
 
     const setQuery = (newQuery: string): void => {

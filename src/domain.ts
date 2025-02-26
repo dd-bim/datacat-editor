@@ -1,16 +1,16 @@
-import DomainModelIcon from "@material-ui/icons/Category";
-import DomainClassIcon from "@material-ui/icons/Class";
-import ReferenceDocumentIcon from "@material-ui/icons/Gavel";
-import DomainGroupIcon from "@material-ui/icons/FolderSpecial";
-import PropertyGroupIcon from "@material-ui/icons/AccountTree";
-import {SvgIconComponent} from "@material-ui/icons";
-import PropertyIcon from "@material-ui/icons/Palette";
-import ValueIcon from "@material-ui/icons/LocalOffer";
-import RelationshipIcon from '@material-ui/icons/SettingsEthernet';
-import DataTemplateIcon from '@material-ui/icons/DynamicFeed';
+import DomainModelIcon from "@mui/icons-material/Category";
+import DomainClassIcon from "@mui/icons-material/Class";
+import ReferenceDocumentIcon from "@mui/icons-material/Gavel";
+import DomainGroupIcon from "@mui/icons-material/FolderSpecial";
+import PropertyGroupIcon from "@mui/icons-material/AccountTree";
+import {SvgIconComponent} from "@mui/icons-material";
+import PropertyIcon from "@mui/icons-material/Palette";
+import ValueIcon from "@mui/icons-material/LocalOffer";
+import RelationshipIcon from '@mui/icons-material/SettingsEthernet';
+import DataTemplateIcon from '@mui/icons-material/DynamicFeed';
 import {CatalogRecordType} from "./generated/types";
-import MeasureIcon from '@material-ui/icons/Speed';
-import UnitIcon from '@material-ui/icons/AcUnit';
+import MeasureIcon from '@mui/icons-material/Speed';
+import UnitIcon from '@mui/icons-material/AcUnit';
 
 
 export {

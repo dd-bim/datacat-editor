@@ -1,7 +1,7 @@
 import {getEntityType} from "../domain";
 import ConceptChip from "./ConceptChip";
 import React from "react";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import makeStyles from "@mui/styles/makeStyles";
 import {CatalogRecord} from "../types";
 
 const useStyles = makeStyles(() => ({

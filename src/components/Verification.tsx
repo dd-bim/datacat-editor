@@ -1,4 +1,4 @@
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import makeStyles from "@mui/styles/makeStyles";
 import {ChangeEvent, FC, useState} from "react";
 import useFindPropGroupWithoutProp from "../hooks/verification/useFindPropGroupWithoutProp";
 import useFindPropWithoutSubjectOrPropGroup from "../hooks/verification/useFindPropWithoutSubjectOrPropGroup";
@@ -15,7 +15,7 @@ import useFindMissingEnglishDescription from "../hooks/verification/useFindMissi
 import useFindMultipleNames from "../hooks/verification/useFindMultipleNames";
 import useFindMultipleNamesAcrossClasses from "../hooks/verification/useFindMultipleNamesAcrossClasses";
 import useLocalStorage from "../hooks/useLocalStorage";
-import TreeView from "@material-ui/lab/TreeView";
+import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import {StyledTreeItem} from "./StyledTreeItem";
 import {ItemPropsFragment} from "../generated/types";
 
@@ -51,19 +51,19 @@ export const FindPropGroupWithoutProp: FC<VerificationProps> = (props) => {
     };
 
     return (
-        <TreeView
-            className={classes.root}
-            onNodeSelect={onNodeSelect}
-            onNodeToggle={(event, nodeIds) => setExpanded(nodeIds)}
-            defaultEndIcon={<div style={{width: 24}}/>}
-            defaultExpanded={defaultExpanded}
-        >
+        (<SimpleTreeView
+                    className={classes.root}
+                    onSelectedItemsChange={onNodeSelect}
+                    onExpandedItemsChange={(event, nodeIds) => setExpanded(nodeIds)}
+                    defaultEndIcon={<div style={{width: 24}}/>}
+                    defaultExpandedItems={defaultExpanded}
+                >
             {nodes.map(child => (
                 <StyledTreeItem key={child.id} {...child}>
                     {child.children}
                 </StyledTreeItem>
             ))}
-        </TreeView>
+        </SimpleTreeView>)
     );
 };
 
@@ -83,19 +83,19 @@ export const FindPropWithoutSubjectOrPropGroup: FC<VerificationProps> = (props) 
     };
 
     return (
-        <TreeView
-            className={classes.root}
-            onNodeSelect={onNodeSelect}
-            onNodeToggle={(event, nodeIds) => setExpanded(nodeIds)}
-            defaultEndIcon={<div style={{width: 24}}/>}
-            defaultExpanded={defaultExpanded}
-        >
+        (<SimpleTreeView
+                    className={classes.root}
+                    onSelectedItemsChange={onNodeSelect}
+                    onExpandedItemsChange={(event, nodeIds) => setExpanded(nodeIds)}
+                    defaultEndIcon={<div style={{width: 24}}/>}
+                    defaultExpandedItems={defaultExpanded}
+                >
             {nodes.map(child => (
                 <StyledTreeItem key={child.id} {...child}>
                     {child.children}
                 </StyledTreeItem>
             ))}
-        </TreeView>
+        </SimpleTreeView>)
     );
 };
 
@@ -115,19 +115,19 @@ export const FindModelWithoutGroup: FC<VerificationProps> = (props) => {
     };
 
     return (
-        <TreeView
-            className={classes.root}
-            onNodeSelect={onNodeSelect}
-            onNodeToggle={(event, nodeIds) => setExpanded(nodeIds)}
-            defaultEndIcon={<div style={{width: 24}}/>}
-            defaultExpanded={defaultExpanded}
-        >
+        (<SimpleTreeView
+                    className={classes.root}
+                    onSelectedItemsChange={onNodeSelect}
+                    onExpandedItemsChange={(event, nodeIds) => setExpanded(nodeIds)}
+                    defaultEndIcon={<div style={{width: 24}}/>}
+                    defaultExpandedItems={defaultExpanded}
+                >
             {nodes.map(child => (
                 <StyledTreeItem key={child.id} {...child}>
                     {child.children}
                 </StyledTreeItem>
             ))}
-        </TreeView>
+        </SimpleTreeView>)
     );
 };
 
@@ -147,19 +147,19 @@ export const FindGroupWithoutSubject: FC<VerificationProps> = (props) => {
     };
 
     return (
-        <TreeView
-            className={classes.root}
-            onNodeSelect={onNodeSelect}
-            onNodeToggle={(event, nodeIds) => setExpanded(nodeIds)}
-            defaultEndIcon={<div style={{width: 24}}/>}
-            defaultExpanded={defaultExpanded}
-        >
+        (<SimpleTreeView
+                    className={classes.root}
+                    onSelectedItemsChange={onNodeSelect}
+                    onExpandedItemsChange={(event, nodeIds) => setExpanded(nodeIds)}
+                    defaultEndIcon={<div style={{width: 24}}/>}
+                    defaultExpandedItems={defaultExpanded}
+                >
             {nodes.map(child => (
                 <StyledTreeItem key={child.id} {...child}>
                     {child.children}
                 </StyledTreeItem>
             ))}
-        </TreeView>
+        </SimpleTreeView>)
     );
 };
 
@@ -179,19 +179,19 @@ export const FindSubjectWithoutProp: FC<VerificationProps> = (props) => {
     };
 
     return (
-        <TreeView
-            className={classes.root}
-            onNodeSelect={onNodeSelect}
-            onNodeToggle={(event, nodeIds) => setExpanded(nodeIds)}
-            defaultEndIcon={<div style={{width: 24}}/>}
-            defaultExpanded={defaultExpanded}
-        >
+        (<SimpleTreeView
+                    className={classes.root}
+                    onSelectedItemsChange={onNodeSelect}
+                    onExpandedItemsChange={(event, nodeIds) => setExpanded(nodeIds)}
+                    defaultEndIcon={<div style={{width: 24}}/>}
+                    defaultExpandedItems={defaultExpanded}
+                >
             {nodes.map(child => (
                 <StyledTreeItem key={child.id} {...child}>
                     {child.children}
                 </StyledTreeItem>
             ))}
-        </TreeView>
+        </SimpleTreeView>)
     );
 };
 
@@ -211,19 +211,19 @@ export const FindMeasureWithoutProp: FC<VerificationProps> = (props) => {
     };
 
     return (
-        <TreeView
-            className={classes.root}
-            onNodeSelect={onNodeSelect}
-            onNodeToggle={(event, nodeIds) => setExpanded(nodeIds)}
-            defaultEndIcon={<div style={{width: 24}}/>}
-            defaultExpanded={defaultExpanded}
-        >
+        (<SimpleTreeView
+                    className={classes.root}
+                    onSelectedItemsChange={onNodeSelect}
+                    onExpandedItemsChange={(event, nodeIds) => setExpanded(nodeIds)}
+                    defaultEndIcon={<div style={{width: 24}}/>}
+                    defaultExpandedItems={defaultExpanded}
+                >
             {nodes.map(child => (
                 <StyledTreeItem key={child.id} {...child}>
                     {child.children}
                 </StyledTreeItem>
             ))}
-        </TreeView>
+        </SimpleTreeView>)
     );
 };
 
@@ -243,19 +243,19 @@ export const FindUnitWithoutMeasure: FC<VerificationProps> = (props) => {
     };
 
     return (
-        <TreeView
-            className={classes.root}
-            onNodeSelect={onNodeSelect}
-            onNodeToggle={(event, nodeIds) => setExpanded(nodeIds)}
-            defaultEndIcon={<div style={{width: 24}}/>}
-            defaultExpanded={defaultExpanded}
-        >
+        (<SimpleTreeView
+                    className={classes.root}
+                    onSelectedItemsChange={onNodeSelect}
+                    onExpandedItemsChange={(event, nodeIds) => setExpanded(nodeIds)}
+                    defaultEndIcon={<div style={{width: 24}}/>}
+                    defaultExpandedItems={defaultExpanded}
+                >
             {nodes.map(child => (
                 <StyledTreeItem key={child.id} {...child}>
                     {child.children}
                 </StyledTreeItem>
             ))}
-        </TreeView>
+        </SimpleTreeView>)
     );
 };
 
@@ -275,19 +275,19 @@ export const FindValueWithoutMeasure: FC<VerificationProps> = (props) => {
     };
 
     return (
-        <TreeView
-            className={classes.root}
-            onNodeSelect={onNodeSelect}
-            onNodeToggle={(event, nodeIds) => setExpanded(nodeIds)}
-            defaultEndIcon={<div style={{width: 24}}/>}
-            defaultExpanded={defaultExpanded}
-        >
+        (<SimpleTreeView
+                    className={classes.root}
+                    onSelectedItemsChange={onNodeSelect}
+                    onExpandedItemsChange={(event, nodeIds) => setExpanded(nodeIds)}
+                    defaultEndIcon={<div style={{width: 24}}/>}
+                    defaultExpandedItems={defaultExpanded}
+                >
             {nodes.map(child => (
                 <StyledTreeItem key={child.id} {...child}>
                     {child.children}
                 </StyledTreeItem>
             ))}
-        </TreeView>
+        </SimpleTreeView>)
     );
 };
 
@@ -307,19 +307,19 @@ export const FindMissingEnglishName: FC<VerificationProps> = (props) => {
     };
 
     return (
-        <TreeView
-            className={classes.root}
-            onNodeSelect={onNodeSelect}
-            onNodeToggle={(event, nodeIds) => setExpanded(nodeIds)}
-            defaultEndIcon={<div style={{width: 24}}/>}
-            defaultExpanded={defaultExpanded}
-        >
+        (<SimpleTreeView
+                    className={classes.root}
+                    onSelectedItemsChange={onNodeSelect}
+                    onExpandedItemsChange={(event, nodeIds) => setExpanded(nodeIds)}
+                    defaultEndIcon={<div style={{width: 24}}/>}
+                    defaultExpandedItems={defaultExpanded}
+                >
             {nodes.map(child => (
                 <StyledTreeItem key={child.id} {...child}>
                     {child.children}
                 </StyledTreeItem>
             ))}
-        </TreeView>
+        </SimpleTreeView>)
     );
 };
 
@@ -339,19 +339,19 @@ export const FindMultipleIDs: FC<VerificationProps> = (props) => {
     };
 
     return (
-        <TreeView
-            className={classes.root}
-            onNodeSelect={onNodeSelect}
-            onNodeToggle={(event, nodeIds) => setExpanded(nodeIds)}
-            defaultEndIcon={<div style={{width: 24}}/>}
-            defaultExpanded={defaultExpanded}
-        >
+        (<SimpleTreeView
+                    className={classes.root}
+                    onSelectedItemsChange={onNodeSelect}
+                    onExpandedItemsChange={(event, nodeIds) => setExpanded(nodeIds)}
+                    defaultEndIcon={<div style={{width: 24}}/>}
+                    defaultExpandedItems={defaultExpanded}
+                >
             {nodes.map(child => (
                 <StyledTreeItem key={child.id} {...child}>
                     {child.children}
                 </StyledTreeItem>
             ))}
-        </TreeView>
+        </SimpleTreeView>)
     );
 };
 
@@ -371,19 +371,19 @@ export const FindMissingDescription: FC<VerificationProps> = (props) => {
     };
 
     return (
-        <TreeView
-            className={classes.root}
-            onNodeSelect={onNodeSelect}
-            onNodeToggle={(event, nodeIds) => setExpanded(nodeIds)}
-            defaultEndIcon={<div style={{width: 24}}/>}
-            defaultExpanded={defaultExpanded}
-        >
+        (<SimpleTreeView
+                    className={classes.root}
+                    onSelectedItemsChange={onNodeSelect}
+                    onExpandedItemsChange={(event, nodeIds) => setExpanded(nodeIds)}
+                    defaultEndIcon={<div style={{width: 24}}/>}
+                    defaultExpandedItems={defaultExpanded}
+                >
             {nodes.map(child => (
                 <StyledTreeItem key={child.id} {...child}>
                     {child.children}
                 </StyledTreeItem>
             ))}
-        </TreeView>
+        </SimpleTreeView>)
     );
 };
 
@@ -403,19 +403,19 @@ export const FindMissingEnglishDescription: FC<VerificationProps> = (props) => {
     };
 
     return (
-        <TreeView
-            className={classes.root}
-            onNodeSelect={onNodeSelect}
-            onNodeToggle={(event, nodeIds) => setExpanded(nodeIds)}
-            defaultEndIcon={<div style={{width: 24}}/>}
-            defaultExpanded={defaultExpanded}
-        >
+        (<SimpleTreeView
+                    className={classes.root}
+                    onSelectedItemsChange={onNodeSelect}
+                    onExpandedItemsChange={(event, nodeIds) => setExpanded(nodeIds)}
+                    defaultEndIcon={<div style={{width: 24}}/>}
+                    defaultExpandedItems={defaultExpanded}
+                >
             {nodes.map(child => (
                 <StyledTreeItem key={child.id} {...child}>
                     {child.children}
                 </StyledTreeItem>
             ))}
-        </TreeView>
+        </SimpleTreeView>)
     );
 };
 
@@ -432,19 +432,19 @@ export const FindMultipleNames: FC<VerificationProps> = (props) => {
     };
 
     return (
-        <TreeView
-            className={classes.root}
-            onNodeSelect={onNodeSelect}
-            onNodeToggle={(event, nodeIds) => setExpanded(nodeIds)}
-            defaultEndIcon={<div style={{width: 24}} />}
-            defaultExpanded={defaultExpanded}
-        >
+        (<SimpleTreeView
+                    className={classes.root}
+                    onSelectedItemsChange={onNodeSelect}
+                    onExpandedItemsChange={(event, nodeIds) => setExpanded(nodeIds)}
+                    defaultEndIcon={<div style={{width: 24}} />}
+                    defaultExpandedItems={defaultExpanded}
+                >
             {nodes.map(child => (
                 <StyledTreeItem key={child.id} {...child}>
                     {child.children}
                 </StyledTreeItem>
             ))}
-        </TreeView>
+        </SimpleTreeView>)
     );
 };
 
@@ -461,18 +461,18 @@ export const FindMultipleNamesAcrossClasses: FC<VerificationProps> = (props) => 
     };
 
     return (
-        <TreeView
-            className={classes.root}
-            onNodeSelect={onNodeSelect}
-            onNodeToggle={(event, nodeIds) => setExpanded(nodeIds)}
-            defaultEndIcon={<div style={{width: 24}} />}
-            defaultExpanded={defaultExpanded}
-        >
+        (<SimpleTreeView
+                    className={classes.root}
+                    onSelectedItemsChange={onNodeSelect}
+                    onExpandedItemsChange={(event, nodeIds) => setExpanded(nodeIds)}
+                    defaultEndIcon={<div style={{width: 24}} />}
+                    defaultExpandedItems={defaultExpanded}
+                >
             {nodes.map(child => (
                 <StyledTreeItem key={child.id} {...child}>
                     {child.children}
                 </StyledTreeItem>
             ))}
-        </TreeView>
+        </SimpleTreeView>)
     );
 };

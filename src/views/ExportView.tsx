@@ -1,7 +1,7 @@
 import {useExportCatalogItemsQuery, ExportCatalogRecord_Fragment, useExportCatalogItemsRelationshipsQuery, ExportCatalogRecordRelationship_Fragment} from "../generated/types";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import View from "./View";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import dateUtil from "../dateUtil";
 import JSZip from "jszip";
 import FileSaver from "file-saver";

@@ -1,19 +1,21 @@
-import Toolbar from "@material-ui/core/Toolbar";
-import {makeStyles, Theme} from '@material-ui/core/styles';
-import Button from "@material-ui/core/Button";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import MaterialUIAppBar from "@material-ui/core/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import {makeStyles} from '@mui/styles';
+import {Theme} from '@mui/material/styles';
+import Button from "@mui/material/Button";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import MaterialUIAppBar from "@mui/material/AppBar";
 import React from "react";
 import useAuthContext, {useWriteAccess} from "../hooks/useAuthContext";
-import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import {Tooltip} from "@material-ui/core";
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import {Tooltip} from "@mui/material";
 import {useProfile} from "../providers/ProfileProvider";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from '@material-ui/icons/Menu';
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from '@mui/icons-material/Menu';
 import CreateEntrySplitButton from "./CreateEntrySplitButton";
 import AppTitle from "./AppTitle";
 import {QuickSearchWidget} from "./QuickSearchWidget";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const useStyles = makeStyles((theme: Theme) => ({
     appBar: {
@@ -57,6 +59,8 @@ export function AppBar(props: AppBarProps) {
                         <QuickSearchWidget key="search-input"/>
 
                         <CreateEntrySplitButton/>
+
+                        <LanguageSwitcher /> {/* Sprachumschalter hinzufügen */}
 
                         <Button key="logout-button"
                                 variant="outlined"

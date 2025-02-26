@@ -1,18 +1,18 @@
-import Typography from "@material-ui/core/Typography";
-import React, {useState} from "react";
-import {useForm} from "react-hook-form";
-import {ConfirmEmailMutationVariables, useConfirmEmailMutation} from "../generated/types";
-import TextField from "@material-ui/core/TextField";
-import {Button} from "@material-ui/core";
+import Typography from "@mui/material/Typography";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { ConfirmEmailMutationVariables, useConfirmEmailMutation } from "../generated/types";
+import TextField from "@mui/material/TextField";
+import { Button } from "@mui/material";
 import useLocationQueryParam from "../hooks/useLocationQueryParam";
-import {Alert} from "@material-ui/lab";
-import {Redirect} from "react-router-dom";
-import {useSnackbar} from "notistack";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { Alert } from "@mui/lab";
+import { Navigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import makeStyles from "@mui/styles/makeStyles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: { spacing: (factor: number) => number }) => ({
     paper: {
         padding: theme.spacing(2),
     },
@@ -29,10 +29,10 @@ const useStyles = makeStyles(theme => ({
 export default function ConfirmationView() {
     const classes = useStyles();
     const token = useLocationQueryParam('token', '');
-    const {register, errors, handleSubmit} = useForm<ConfirmEmailMutationVariables>();
+    const { register, handleSubmit, formState: { errors } } = useForm<ConfirmEmailMutationVariables>();
     const [success, setSuccess] = useState(false);
     const { enqueueSnackbar } = useSnackbar();
-    const [confirm, {error}] = useConfirmEmailMutation({
+    const [confirm, { error }] = useConfirmEmailMutation({
         errorPolicy: "all",
         onCompleted: (result) => {
             if (result.success) {
@@ -42,11 +42,11 @@ export default function ConfirmationView() {
         }
     });
     const onSubmit = async (value: ConfirmEmailMutationVariables) => {
-        await confirm({variables: value});
+        await confirm({ variables: value });
     }
 
     if (success) {
-        return <Redirect to="/" />;
+        return <Navigate to="/" />;
     }
 
     return (
@@ -81,7 +81,7 @@ export default function ConfirmationView() {
                             required
                             error={!!errors.token}
                             helperText={errors.token ? 'Der Bestätigungstoken ist notwendig um Ihre Email-Adresse zu bestätigen und wird Ihrem Postfach zugestellt.' : ''}
-                            inputRef={register({required: true})}
+                            inputRef={register("token", { required: true }).ref}
                             fullWidth
                         />
                         <Button

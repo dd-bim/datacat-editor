@@ -1,7 +1,7 @@
-import PetsIcon from "@material-ui/icons/Pets";
-import Typography from "@material-ui/core/Typography";
+import PetsIcon from "@mui/icons-material/Pets";
+import Typography from "@mui/material/Typography";
 import React, {FC} from "react";
-import {makeStyles, Theme} from "@material-ui/core/styles";
+import {makeStyles, Theme} from "@mui/styles";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {

@@ -10,7 +10,7 @@ export type ApiProviderProps = {
 export default function ApiProvider(props: ApiProviderProps) {
     const {children} = props;
     const {token} = useAuthContext();
-    const headers = token ? {
+    const headers: Record<string, string> = token ? {
         'Authorization': `Bearer ${token}`
     } : {};
     const apolloClient = new ApolloClient({
@@ -50,11 +50,11 @@ export default function ApiProvider(props: ApiProviderProps) {
             possibleTypes
         }),
         link: new HttpLink({
-            uri: process.env.REACT_APP_API,
+            uri: import.meta.env.VITE_API_URL,
             headers
         }),
-        name: process.env.REACT_APP_TITLE,
-        version: process.env.REACT_APP_VERSION,
+        name: import.meta.env.VITE_APP_TITLE,
+        version: import.meta.env.VITE_APP_VERSION,
     });
 
     return (

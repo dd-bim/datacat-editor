@@ -1,9 +1,9 @@
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import View from "./View";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import { SearchResultPropsFragment, useDeleteEntryMutation, useFindItemQuery, useFindTagsQuery } from "../generated/types";
-import { Grid, TextField } from "@material-ui/core";
+import { Grid, TextField } from "@mui/material";
 import { Domain } from "../domain";
 import { useSnackbar } from "notistack";
 

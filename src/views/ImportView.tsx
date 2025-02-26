@@ -1,6 +1,5 @@
 import View from "./View";
-import { Box } from "@mui/material";
-import { Button, TextField, Typography } from "@material-ui/core";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import {
   FindTagsResultFragment,

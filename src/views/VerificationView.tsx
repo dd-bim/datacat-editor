@@ -1,11 +1,11 @@
 import React from "react";
-import { useHistory, useRouteMatch } from "react-router-dom";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import { ButtonGroup, Paper } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import Grid from "@material-ui/core/Grid";
-import { Route, Switch } from "react-router";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
+import LinearProgress from "@mui/material/LinearProgress";
+import { ButtonGroup, Paper } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import makeStyles from "@mui/styles/makeStyles";
+import Grid from "@mui/material/Grid";
+import { Route, Routes } from "react-router-dom";
 import DomainModelForm from "./forms/DomainModelForm";
 import {
     FindPropGroupWithoutProp,
@@ -44,7 +44,7 @@ import {
 import DomainGroupForm from "./forms/DomainGroupForm";
 import DomainClassForm from "./forms/DomainClassForm";
 import PropertyGroupForm from "./forms/PropertyGroupForm";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import {
     ClassEntity,
     DomainClassIcon,
@@ -69,7 +69,7 @@ import MeasureForm from "./forms/MeasureForm";
 import UnitForm from "./forms/UnitForm";
 import ValueForm from "./forms/ValueForm";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: { spacing: (factor: number) => number; palette: { primary: { light: string }; grey: { [key: number]: string } }; shape: { borderRadius: number } }) => ({
     paper: {
         padding: theme.spacing(2),
     },
@@ -98,8 +98,10 @@ const useStyles = makeStyles(theme => ({
 
 export function VerificationView() {
 
-    const history = useHistory();
-    let { path, url } = useRouteMatch();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const path = location.pathname;
+    const url = location.pathname;
     const classes = useStyles();
     const [selectButton, setSelectButton] = React.useState("");
     const [selectCategory, setSelectCategory] = React.useState("");
@@ -107,14 +109,14 @@ export function VerificationView() {
     const handleOnSelect = ({ id, recordType, tags }: ConceptPropsFragment) => {
         const entityType = getEntityType(recordType, tags.map(x => x.id));
         if (entityType) {
-            history.push(`${url}/${entityType.path}/${id}`);
+            navigate(`${url}/${entityType.path}/${id}`);
         } else {
-            history.push(url);
+            navigate(url);
         }
     };
 
     const handleOnDelete = () => {
-        history.push(path);
+        navigate(path);
     };
 
     const handleIntegrität = () => {
@@ -255,7 +257,7 @@ export function VerificationView() {
                     //         Bitte Kategorie zur Überprüfung auswählen!
                     //     </Typography>
                     // </Paper>
-                    <div></div>
+                    (<div></div>)
                 );
         }
     }
@@ -712,101 +714,77 @@ export function VerificationView() {
             </Grid>
             <Grid item xs={7}>
                 <Paper className={classes.paper}>
-                    <Switch>
-                        <Route exact path={`${path}/${ModelEntity.path}/:id`} render={renderProps => {
-                            const id: string = renderProps.match.params.id;
-                            return (
-                                <React.Fragment>
-                                    <Typography variant="h5">
-                                        <DomainModelIcon /> Fachmodell bearbeiten
-                                    </Typography>
-                                    <DomainModelForm id={id} onDelete={handleOnDelete} />
-                                </React.Fragment>
-                            );
-                        }} />
-                        <Route exact path={`${path}/${GroupEntity.path}/:id`} render={renderProps => {
-                            const id: string = renderProps.match.params.id;
-                            return (
-                                <React.Fragment>
-                                    <Typography variant="h5">
-                                        <DomainGroupIcon /> Gruppe bearbeiten
-                                    </Typography>
-                                    <DomainGroupForm id={id} onDelete={handleOnDelete} />
-                                </React.Fragment>
-                            );
-                        }} />
-                        <Route exact path={`${path}/${ClassEntity.path}/:id`} render={renderProps => {
-                            const id: string = renderProps.match.params.id;
-                            return (
-                                <React.Fragment>
-                                    <Typography variant="h5">
-                                        <DomainClassIcon /> Klasse bearbeiten
-                                    </Typography>
-                                    <DomainClassForm id={id} onDelete={handleOnDelete} />
-                                </React.Fragment>
-                            );
-                        }} />
-                        <Route exact path={`${path}/${PropertyGroupEntity.path}/:id`} render={renderProps => {
-                            const id: string = renderProps.match.params.id;
-                            return (
-                                <React.Fragment>
-                                    <Typography variant="h5">
-                                        <PropertyGroupIcon /> Merkmalsgruppe bearbeiten
-                                    </Typography>
-                                    <PropertyGroupForm id={id} onDelete={handleOnDelete} />
-                                </React.Fragment>
-                            );
-                        }} />
-                        <Route exact path={`${path}/${PropertyEntity.path}/:id`} render={renderProps => {
-                            const id: string = renderProps.match.params.id;
-                            return (
-                                <React.Fragment>
-                                    <Typography variant="h5">
-                                        <PropertyIcon /> Merkmal bearbeiten
-                                    </Typography>
-                                    <PropertyForm id={id} onDelete={handleOnDelete} />
-                                </React.Fragment>
-                            );
-                        }} />
-                        <Route exact path={`${path}/${MeasureEntity.path}/:id`} render={renderProps => {
-                            const id: string = renderProps.match.params.id;
-                            return (
-                                <React.Fragment>
-                                    <Typography variant="h5">
-                                        <MeasureIcon /> Größe bearbeiten
-                                    </Typography>
-                                    <MeasureForm id={id} onDelete={handleOnDelete} />
-                                </React.Fragment>
-                            );
-                        }} />
-                        <Route exact path={`${path}/${UnitEntity.path}/:id`} render={renderProps => {
-                            const id: string = renderProps.match.params.id;
-                            return (
-                                <React.Fragment>
-                                    <Typography variant="h5">
-                                        <UnitIcon /> Einheit bearbeiten
-                                    </Typography>
-                                    <UnitForm id={id} onDelete={handleOnDelete} />
-                                </React.Fragment>
-                            );
-                        }} />
-                        <Route exact path={`${path}/${ValueEntity.path}/:id`} render={renderProps => {
-                            const id: string = renderProps.match.params.id;
-                            return (
-                                <React.Fragment>
-                                    <Typography variant="h5">
-                                        <ValueIcon /> Wert bearbeiten
-                                    </Typography>
-                                    <ValueForm id={id} onDelete={handleOnDelete} />
-                                </React.Fragment>
-                            );
-                        }} />
+                    <Routes>
+                        <Route path={`${path}/${ModelEntity.path}/:id`} element={
+                            <React.Fragment>
+                                <Typography variant="h5">
+                                    <DomainModelIcon /> Fachmodell bearbeiten
+                                </Typography>
+                                <DomainModelForm id={useParams().id ?? ''} onDelete={handleOnDelete} />
+                            </React.Fragment>
+                        } />
+                        <Route path={`${path}/${GroupEntity.path}/:id`} element={
+                            <React.Fragment>
+                                <Typography variant="h5">
+                                    <DomainGroupIcon /> Gruppe bearbeiten
+                                </Typography>
+                                <DomainGroupForm id={useParams().id ?? ''} onDelete={handleOnDelete} />
+                            </React.Fragment>
+                        } />
+                        <Route path={`${path}/${ClassEntity.path}/:id`} element={
+                            <React.Fragment>
+                                <Typography variant="h5">
+                                    <DomainClassIcon /> Klasse bearbeiten
+                                </Typography>
+                                <DomainClassForm id={useParams().id ?? ''} onDelete={handleOnDelete} />
+                            </React.Fragment>
+                        } />
+                        <Route path={`${path}/${PropertyGroupEntity.path}/:id`} element={
+                            <React.Fragment>
+                                <Typography variant="h5">
+                                    <PropertyGroupIcon /> Merkmalsgruppe bearbeiten
+                                </Typography>
+                                <PropertyGroupForm id={useParams().id ?? ''} onDelete={handleOnDelete} />
+                            </React.Fragment>
+                        } />
+                        <Route path={`${path}/${PropertyEntity.path}/:id`} element={
+                            <React.Fragment>
+                                <Typography variant="h5">
+                                    <PropertyIcon /> Merkmal bearbeiten
+                                </Typography>
+                                <PropertyForm id={useParams().id ?? ''} onDelete={handleOnDelete} />
+                            </React.Fragment>
+                        } />
+                        <Route path={`${path}/${MeasureEntity.path}/:id`} element={
+                            <React.Fragment>
+                                <Typography variant="h5">
+                                    <MeasureIcon /> Größe bearbeiten
+                                </Typography>
+                                <MeasureForm id={useParams().id ?? ''} onDelete={handleOnDelete} />
+                            </React.Fragment>
+                        } />
+                        <Route path={`${path}/${UnitEntity.path}/:id`} element={
+                            <React.Fragment>
+                                <Typography variant="h5">
+                                    <UnitIcon /> Einheit bearbeiten
+                                </Typography>
+                                <UnitForm id={useParams().id ?? ''} onDelete={handleOnDelete} />
+                            </React.Fragment>
+                        } />
+                        <Route path={`${path}/${ValueEntity.path}/:id`} element={
+                            <React.Fragment>
+                                <Typography variant="h5">
+                                    <ValueIcon /> Wert bearbeiten
+                                </Typography>
+                                <ValueForm id={useParams().id ?? ''} onDelete={handleOnDelete} />
+                            </React.Fragment>
+                        } />
                         <Route>
                             <Typography className={classes.hint} variant="body1">
                                 Prüfergebnis in der Listenansicht auswählen um Eigenschaften anzuzeigen.
                             </Typography>
                         </Route>
-                    </Switch>
+                    </Routes>
                 </Paper>
             </Grid>
         </Grid>

@@ -1,28 +1,26 @@
-import React, {useState} from "react";
-import {useHistory, useParams} from "react-router-dom";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import {Paper} from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
+import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { makeStyles } from "@mui/styles";
+import { Theme } from "@mui/material/styles";
+import { Paper, Typography, Grid, Button } from "@mui/material";
+import PlusIcon from "@mui/icons-material/Add";
 import {
-    ClassEntity,
-    DocumentEntity,
-    Entity,
-    GroupEntity,
-    MeasureEntity,
-    ModelEntity,
-    PropertyEntity,
-    PropertyGroupEntity,
-    UnitEntity,
-    ValueEntity,
+  ClassEntity,
+  DocumentEntity,
+  Entity,
+  GroupEntity,
+  MeasureEntity,
+  ModelEntity,
+  PropertyEntity,
+  PropertyGroupEntity,
+  UnitEntity,
+  ValueEntity,
 } from "../domain";
 import CreateEntryButton from "../components/CreateEntryButton";
-import PlusIcon from "@material-ui/icons/Add";
-import Button from "@material-ui/core/Button";
 import SearchList from "../components/list/SearchList";
-import {CatalogRecord} from "../types";
+import { CatalogRecord } from "../types";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
     searchList: {
         padding: theme.spacing(2),
         position: "sticky",
@@ -63,11 +61,11 @@ const CompositeCatalogEntryView = (props: CompositeCatalogEntryViewProps) => {
     }
     const classes = useStyles();
 
-    const history = useHistory();
+    const navigate = useNavigate();
     const {id} = useParams<{ id?: string }>()
 
     const handleOnSelect = (value: CatalogRecord) => {
-        history.push(`/${path}/${value.id}`);
+        navigate(`/${path}/${value.id}`);
     };
 
     // Button-Zuweisung je nach gewählten Entitätstyp

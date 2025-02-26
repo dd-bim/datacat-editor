@@ -1,5 +1,5 @@
 import FormSet, {FormSetDescription, FormSetTitle} from "../../components/forms/FormSet";
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
     Accordion,
     AccordionDetails,
@@ -10,8 +10,8 @@ import {
     ListItemSecondaryAction,
     ListItemText,
     Typography
-} from "@material-ui/core";
-import List from "@material-ui/core/List";
+} from "@mui/material";
+import List from "@mui/material/List";
 import {ValueIcon} from "../../domain";
 import React from "react";
 import {
@@ -168,6 +168,7 @@ export default function AssignsPropertyWithValuesFormset(props: AssignsPropertyW
                                         ))}
                                     </div>
                                 ))}
+
                             </AccordionDetails>
                         </Accordion>
                     );

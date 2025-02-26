@@ -1,9 +1,9 @@
 import React, {FC} from "react";
-import ClearIcon from '@material-ui/icons/Clear';
-import TextField from "@material-ui/core/TextField";
-import {InputAdornment} from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import SearchIcon from '@material-ui/icons/Search';
+import ClearIcon from '@mui/icons-material/Clear';
+import TextField from "@mui/material/TextField";
+import {InputAdornment} from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from '@mui/icons-material/Search';
 
 type SearchInputProps = {
     value: string,

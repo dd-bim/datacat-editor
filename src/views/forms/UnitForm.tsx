@@ -1,10 +1,10 @@
 import React, {FC} from "react";
 import {UnitDetailPropsFragment, useDeleteEntryMutation, useGetUnitEntryQuery} from "../../generated/types";
-import {Typography} from "@material-ui/core";
+import {Typography} from "@mui/material";
 import {useSnackbar} from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
-import Button from "@material-ui/core/Button";
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import Button from "@mui/material/Button";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import CommentFormSet from "../../components/forms/CommentFormSet";

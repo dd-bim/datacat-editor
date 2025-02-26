@@ -1,5 +1,5 @@
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import {TextFieldProps} from "@material-ui/core/TextField";
+import makeStyles from "@mui/styles/makeStyles";
+import {TextFieldProps} from "@mui/material/TextField";
 
 export const defaultFormFieldOptions: TextFieldProps = {
     autoComplete: "off",

@@ -5,11 +5,10 @@ import {
     useDeleteEntryMutation,
     useGetCollectionEntryQuery
 } from "../../generated/types";
-import {Typography} from "@material-ui/core";
+import {Typography, Button} from "@mui/material";
 import {useSnackbar} from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
-import Button from "@material-ui/core/Button";
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import CommentFormSet from "../../components/forms/CommentFormSet";
@@ -58,7 +57,7 @@ function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
 
     const handleOnDelete = async () => {
         await deleteEntry({variables: {id}});
-        enqueueSnackbar("Fachmodell gelöscht.")
+        enqueueSnackbar("Fachmodell gelöscht.");
         onDelete?.();
     };
 
@@ -91,7 +90,8 @@ function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
             />
 
             <TransferListView
-                title={<span>Im Fachmodell beschriebene <b>Gruppen</b></span>}
+title={<Typography>Im Fachmodell beschriebene <b>Gruppen</b></Typography>}
+
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.Collects}
                 relationships={collectsRelationships}
@@ -105,7 +105,7 @@ function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
             />
 
             <RelatingRecordsFormSet
-                title={<span><b>Referenzdokumente</b>, die diese Fachmodell beschreiben</span>}
+                title={<Typography><b>Referenzdokumente</b>, die diese Fachmodell beschreiben</Typography>}
                 emptyMessage={"Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben"}
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
             />

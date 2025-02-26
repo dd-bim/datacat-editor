@@ -8,9 +8,9 @@ import {
   Typography,
   Checkbox,
   FormControlLabel,
-} from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
-import { LinearProgress } from "@mui/material";
+  LinearProgress,
+} from "@mui/material";
+import { Alert } from "@mui/lab";
 import { useSnackbar } from "notistack";
 import View from "./View";
 import {

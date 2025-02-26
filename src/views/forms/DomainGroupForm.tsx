@@ -5,9 +5,9 @@ import {
     useDeleteEntryMutation,
     useGetCollectionEntryQuery
 } from "../../generated/types";
-import {Button, Typography} from "@material-ui/core";
+import {Button, Typography} from "@mui/material";
 import {useSnackbar} from "notistack";
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import CommentFormSet from "../../components/forms/CommentFormSet";

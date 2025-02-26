@@ -1,6 +1,6 @@
 import React from "react";
-import {Typography, TypographyProps} from "@material-ui/core";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import {Typography, TypographyProps} from "@mui/material";
+import makeStyles from "@mui/styles/makeStyles";
 
 export type FormSetProps = {
     className?: string;

@@ -1,14 +1,15 @@
 import React, {FC} from "react";
-import {Paper, TypographyProps} from "@material-ui/core";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import Typography from "@material-ui/core/Typography";
+import {Paper, TypographyProps} from "@mui/material";
+import makeStyles from "@mui/styles/makeStyles";
+import Typography from "@mui/material/Typography";
 
 type ViewProps = {
     heading: React.ReactNode
     HeadingProps?: TypographyProps
+    children?: React.ReactNode
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: { spacing: (factor: number) => number }) => ({
     root: {
         padding: theme.spacing(3)
     },

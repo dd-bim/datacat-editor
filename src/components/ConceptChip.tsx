@@ -1,7 +1,7 @@
 import React, {FC} from "react";
-import {Chip, ChipProps} from "@material-ui/core";
+import {Chip, ChipProps} from "@mui/material";
 import {Entity} from "../domain";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 type ConceptChipProps = {
     conceptType: Entity,
@@ -12,7 +12,7 @@ type ConceptChipProps = {
 
 const ConceptChip: FC<ConceptChipProps> = (props) => {
     const { conceptType, id, label, title, ...otherProps } = props;
-    const history = useHistory();
+    const navigate = useNavigate();
 
     return (
         <Chip
@@ -20,7 +20,7 @@ const ConceptChip: FC<ConceptChipProps> = (props) => {
             label={label}
             title={title}
             clickable
-            onClick={() => history.push(`/${conceptType.path}/${id}`)}
+            onClick={() => navigate(`/${conceptType.path}/${id}`)}
             size="small"
             {...otherProps}
         />

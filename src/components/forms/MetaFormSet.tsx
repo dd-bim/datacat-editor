@@ -3,10 +3,10 @@ import FormSet, {FormSetDescription, FormSetTitle} from "./FormSet";
 import React from "react";
 import {ItemPropsFragment, MetaPropsFragment} from "../../generated/types";
 import {WithChildren} from "../../views/forms/FormView";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
 
 type MetaFormSetProps = WithChildren<{
     entry: ItemPropsFragment & MetaPropsFragment

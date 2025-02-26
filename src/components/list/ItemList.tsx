@@ -1,12 +1,12 @@
-import List from "@material-ui/core/List";
-import {InputAdornment} from "@material-ui/core";
+import List from "@mui/material/List";
+import {InputAdornment} from "@mui/material";
 import React from "react";
 import {FixedSizeList, ListOnItemsRenderedProps} from "react-window";
-import IconButton from "@material-ui/core/IconButton";
-import ClearIcon from '@material-ui/icons/Clear';
-import TextField from "@material-ui/core/TextField";
-import SearchIcon from "@material-ui/icons/Search";
-import LinearProgress from "@material-ui/core/LinearProgress";
+import IconButton from "@mui/material/IconButton";
+import ClearIcon from '@mui/icons-material/Clear';
+import TextField from "@mui/material/TextField";
+import SearchIcon from "@mui/icons-material/Search";
+import LinearProgress from "@mui/material/LinearProgress";
 import ItemRow, {ITEM_ROW_SIZE, ItemRowProps} from "./ItemRow";
 import {CatalogRecord} from "../../types";
 
