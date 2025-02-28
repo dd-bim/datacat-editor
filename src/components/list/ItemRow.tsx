@@ -1,14 +1,14 @@
 import {ListChildComponentProps} from "react-window";
-import {ListItem, ListItemSecondaryAction} from "@material-ui/core";
-import Tooltip from "@material-ui/core/Tooltip";
-import ListItemText from "@material-ui/core/ListItemText";
-import IconButton from "@material-ui/core/IconButton";
-import AddIcon from "@material-ui/icons/AddBox";
-import ClearIcon from "@material-ui/icons/Eject";
+import {ListItem, ListItemSecondaryAction} from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
+import ListItemText from "@mui/material/ListItemText";
+import IconButton from "@mui/material/IconButton";
+import AddIcon from "@mui/icons-material/AddBox";
+import ClearIcon from "@mui/icons-material/Eject";
 import React from "react";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemIcon from "@mui/material/ListItemIcon";
 import {getEntityType} from "../../domain";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import makeStyles from "@mui/styles/makeStyles";
 import {CatalogRecord} from "../../types";
 
 export const ITEM_ROW_SIZE = 36;

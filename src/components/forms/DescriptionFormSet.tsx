@@ -10,7 +10,7 @@ import {
 } from "../../generated/types";
 import {useSnackbar} from "notistack";
 import TranslationFormSet from "./TranslationFormSet";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import makeStyles from "@mui/styles/makeStyles";
 
 type DescriptionFormSetProps = {
     catalogEntryId: string,

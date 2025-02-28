@@ -1,9 +1,7 @@
 import React, {FC} from "react";
 import useFormStyles, {defaultFormFieldOptions} from "../../hooks/useFormStyles";
 import {Controller, useForm} from "react-hook-form";
-import TextField from "@material-ui/core/TextField";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import Button from "@material-ui/core/Button";
+import TextField from "@mui/material/TextField";
 
 export const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -26,98 +24,102 @@ export const ProfileForm: FC<ProfileFormProps> = (props) => {
     } = props;
     const {
         handleSubmit,
-        errors,
+        formState: { errors, isDirty, isValid },
         reset,
-        control,
-        formState: {
-            isDirty,
-            isValid
-        }
+        control
     } = useForm<ProfileFormValues>({
         mode: "onChange",
         defaultValues
     });
 
     const handleOnCancel = () => {
-        reset(defaultValues, {isDirty:false});
+        reset(defaultValues);
     }
 
     return (
-        <form
-            className={classes.form}
-            onSubmit={handleSubmit(onSubmit)}
-        >
+        <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
             <Controller
-                id="firstName"
                 name="firstName"
-                label="Vorname"
-                required
                 control={control}
-                helperText={errors.firstName && "Die Angabe Ihres Vornamens ist zwingend notwendig. Er wird anderen Katalog-Nutzern angezeigt, um Einträge und Änderungen zuzuordnen und die Zusammenarbeit zu erleichtern."}
-                error={errors.firstName}
-                rules={{
-                    minLength: 2,
-                    required: true
-                }}
-                as={<TextField {...defaultFormFieldOptions} />}
+                rules={{ minLength: 2, required: true }}
+                render={({ field, fieldState }) => (
+                    <TextField
+                        {...field}
+                        id="firstName"
+                        label="Vorname"
+                        required
+                        error={!!fieldState.error}
+                        helperText={
+                            fieldState.error
+                                ? "Die Angabe Ihres Vornamens ist zwingend notwendig. Er wird anderen Katalog-Nutzern angezeigt, um Einträge und Änderungen zuzuordnen und die Zusammenarbeit zu erleichtern."
+                                : ""
+                        }
+                         margin="normal"
+                        {...defaultFormFieldOptions}
+                    />
+                )}
             />
-
+    
             <Controller
-                id="lastName"
                 name="lastName"
-                label="Name"
-                required
                 control={control}
-                helperText={errors.lastName && "Die Angabe Ihres Nachnamens ist zwingend notwendig. Er wird anderen Katalog-Nutzern angezeigt, um Einträge und Änderungen zuzuordnen und die Zusammenarbeit zu erleichtern."}
-                error={errors.lastName}
-                rules={{
-                    minLength: 3,
-                    required: true
-                }}
-                as={<TextField {...defaultFormFieldOptions} />}
+                rules={{ minLength: 3, required: true }}
+                render={({ field, fieldState }) => (
+                    <TextField
+                        {...field}
+                        id="lastName"
+                        label="Name"
+                        required
+                        error={!!fieldState.error}
+                        helperText={
+                            fieldState.error
+                                ? "Die Angabe Ihres Nachnamens ist zwingend notwendig. Er wird anderen Katalog-Nutzern angezeigt, um Einträge und Änderungen zuzuordnen und die Zusammenarbeit zu erleichtern."
+                                : ""
+                        }
+                         margin="normal"
+                        {...defaultFormFieldOptions}
+                    />
+                )}
             />
-
+    
             <Controller
-                id="email"
                 name="email"
-                label="Email"
-                required
                 control={control}
-                helperText={errors.email && "Die Angabe einer gültigen Email-Adresse ist zwingend notwendig. Sie wird genutzt, um Ihr Benutzerkonto zu validieren und Sie über Änderungen im Katalog zu informieren."}
-                error={errors.email}
-                rules={{
-                    required: true,
-                    pattern: emailRegex
-                }}
-                as={<TextField {...defaultFormFieldOptions} />}
+                rules={{ required: true, pattern: emailRegex }}
+                render={({ field, fieldState }) => (
+                    <TextField
+                        {...field}
+                        id="email"
+                        label="Email"
+                        required
+                        error={!!fieldState.error}
+                        helperText={
+                            fieldState.error
+                                ? "Die Angabe einer gültigen Email-Adresse ist zwingend notwendig. Sie wird genutzt, um Ihr Benutzerkonto zu validieren und Sie über Änderungen im Katalog zu informieren."
+                                : ""
+                        }
+                         margin="normal"
+                        {...defaultFormFieldOptions}
+                    />
+                )}
             />
-
+    
             <Controller
-                id="organization"
                 name="organization"
-                label="Organisation"
-                helperText="Wenn zutreffend, geben Sie bitte die Firma, die Organization oder das Institut an, für das Sie tätig sind."
-                error={errors.organization}
                 control={control}
-                as={<TextField {...defaultFormFieldOptions} />}
+                render={({ field, fieldState }) => (
+                    <TextField
+                        {...field}
+                        id="organization"
+                        label="Organisation"
+                        error={!!fieldState.error}
+                        helperText="Wenn zutreffend, geben Sie bitte die Firma, die Organisation oder das Institut an, für das Sie tätig sind."
+                         margin="normal"
+                        {...defaultFormFieldOptions}
+                    />
+                )}
             />
-
-            <ButtonGroup className={classes.buttonGroup}>
-                <Button
-                    color="default"
-                    disabled={!isDirty}
-                    onClick={handleOnCancel}
-                >
-                    Abbrechen
-                </Button>
-                <Button
-                    type="submit"
-                    color="primary"
-                    disabled={!isDirty || !isValid}
-                >
-                    Speichern
-                </Button>
-            </ButtonGroup>
         </form>
     );
+    
 }

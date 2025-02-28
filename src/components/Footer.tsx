@@ -1,48 +1,50 @@
-import Paper, {PaperProps} from "@material-ui/core/Paper";
+import Paper, { PaperProps } from "@mui/material/Paper";
 import React from "react";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import Typography from "@material-ui/core/Typography";
-import {Link} from "@material-ui/core";
+import makeStyles from "@mui/styles/makeStyles";
+import Typography from "@mui/material/Typography";
+import { Link } from "@mui/material";
 
-const useStyles = makeStyles(theme => ({
-    footer: {
-        display: "flex",
-        justifyContent: "end",
-        marginTop: theme.spacing(3)
-    },
-    paper: {
-        padding: theme.spacing(1)
-    }
+import { Theme } from "@mui/material/styles";
+
+const useStyles = makeStyles((theme: Theme) => ({
+  footer: {
+    display: "flex",
+    justifyContent: "end",
+    marginTop: theme.spacing(3),
+  },
+  paper: {
+    padding: theme.spacing(1),
+  },
 }));
 
 export default function Footer(props: PaperProps) {
-    const classes = useStyles();
+  const classes = useStyles();
 
-    return (
-        <div className={classes.footer}>
-            <Paper className={classes.paper} variant="outlined">
-                <Typography variant="body2">
-                    <Link
-                        target="_blank"
-                        rel="noopener"
-                        href="https://www.htw-dresden.de/hochschule/fakultaeten/geoinformation/ueber-uns/personen/professoren/prof-dr-ing-christian-clemen"
-                    >
-                        Fragen & Kontakt
-                    </Link>
-                </Typography>
-                <Typography variant="body2">
-                    <Link
-                        target="_blank"
-                        rel="noopener"
-                        href="https://github.com/dd-bim/datacat"
-                    >
-                        Problem melden
-                    </Link>
-                </Typography>
-                <Typography variant="caption">
-                    datacat editor {process.env.REACT_APP_VERSION}
-                </Typography>
-            </Paper>
-        </div>
-    );
+  return (
+    <div className={classes.footer}>
+      <Paper className={classes.paper} variant="outlined">
+        <Typography variant="body2">
+          <Link
+            target="_blank"
+            rel="noopener"
+            href="https://www.htw-dresden.de/hochschule/fakultaeten/geoinformation/ueber-uns/personen/professoren/prof-dr-ing-christian-clemen"
+          >
+            Fragen & Kontakt
+          </Link>
+        </Typography>
+        <Typography variant="body2">
+          <Link
+            target="_blank"
+            rel="noopener"
+            href="https://github.com/dd-bim/datacat"
+          >
+            Problem melden
+          </Link>
+        </Typography>
+        <Typography variant="caption">
+          datacat editor {import.meta.env.VITE_APP_VERSION}
+        </Typography>
+      </Paper>
+    </div>
+  );
 }

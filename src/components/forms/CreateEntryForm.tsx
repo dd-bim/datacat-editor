@@ -1,9 +1,9 @@
 import React, {FC} from "react";
 import {Controller, useForm} from "react-hook-form";
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import {defaultFormFieldOptions} from "../../hooks/useFormStyles";
-import {Button} from "@material-ui/core";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import {Button} from "@mui/material";
+import makeStyles from "@mui/styles/makeStyles";
 
 const useStyles = makeStyles(theme => ({
     root: {

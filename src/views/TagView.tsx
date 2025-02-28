@@ -8,11 +8,12 @@ import {
   Button,
   FormControl,
   InputLabel,
-  makeStyles,
-} from "@material-ui/core";
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { useSnackbar } from "notistack";
+import { Theme } from "@mui/material/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   container: {
     padding: theme.spacing(2),
     border: "2px solid #ccc",
@@ -56,25 +57,31 @@ const useStyles = makeStyles((theme) => ({
 const TagView: React.FC = () => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
-  const { data, loading, error, refetch } = useFindTagsQuery({ variables: { pageSize: 100 } });
+  const { data, loading, error, refetch } = useFindTagsQuery({
+    variables: { pageSize: 100 },
+  });
   const [createTag] = useCreateTagMutation();
   const [newTagName, setNewTagName] = useState("");
   const [tags, setTags] = useState<string[]>([]);
 
   useEffect(() => {
     if (data) {
-      setTags(data.findTags.nodes.map(tag => tag.name));
+      setTags(data.findTags.nodes.map((tag) => tag.name));
     }
   }, [data]);
 
   const handleAddTag = async () => {
     if (!newTagName.trim()) {
-      enqueueSnackbar("Bitte geben Sie einen Tag-Namen ein.", { variant: "error" });
+      enqueueSnackbar("Bitte geben Sie einen Tag-Namen ein.", {
+        variant: "error",
+      });
       return;
     }
 
     if (tags.includes(newTagName)) {
-      enqueueSnackbar(`Tag "${newTagName}" ist bereits vorhanden.`, { variant: "warning" });
+      enqueueSnackbar(`Tag "${newTagName}" ist bereits vorhanden.`, {
+        variant: "warning",
+      });
       return;
     }
 
@@ -86,11 +93,15 @@ const TagView: React.FC = () => {
           },
         },
       });
-      enqueueSnackbar(`Tag "${newTagName}" erfolgreich hinzugefügt.`, { variant: "success" });
+      enqueueSnackbar(`Tag "${newTagName}" erfolgreich hinzugefügt.`, {
+        variant: "success",
+      });
       setNewTagName("");
       refetch();
     } catch (error) {
-      enqueueSnackbar(`Fehler beim Hinzufügen des Tags "${newTagName}".`, { variant: "error" });
+      enqueueSnackbar(`Fehler beim Hinzufügen des Tags "${newTagName}".`, {
+        variant: "error",
+      });
       console.error("Fehler beim Hinzufügen des Tags:", error);
     }
   };
@@ -100,11 +111,17 @@ const TagView: React.FC = () => {
   }
 
   if (error) {
-    return <Typography variant="h6" color="error">Fehler beim Laden der Tags: {error.message}</Typography>;
+    return (
+      <Typography variant="h6" color="error">
+        Fehler beim Laden der Tags: {error.message}
+      </Typography>
+    );
   }
 
   // Sortiere die Tags alphabetisch nach Name
-  const sortedTags = data?.findTags.nodes.slice().sort((a, b) => a.name.localeCompare(b.name));
+  const sortedTags = data?.findTags.nodes
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <Paper className={classes.container}>
@@ -112,11 +129,15 @@ const TagView: React.FC = () => {
         Vorhandene Tags
       </Typography>
       <Typography variant="body1" className={classes.explanation}>
-        Diese Seite wird genutzt, um neue Tags zur Datenbank hinzuzufügen. Die Tags können dann in der Tabellenansicht genutzt werden, um den vorhandenen Einträgen neue Tags hinzuzufügen.
+        Diese Seite wird genutzt, um neue Tags zur Datenbank hinzuzufügen. Die
+        Tags können dann in der Tabellenansicht genutzt werden, um den
+        vorhandenen Einträgen neue Tags hinzuzufügen.
       </Typography>
       <form className={classes.form} onSubmit={(e) => e.preventDefault()}>
         <FormControl variant="outlined" className={classes.formControl}>
-          <InputLabel htmlFor="new-tag" shrink={newTagName !== ""}>Neue Tags anlegen</InputLabel>
+          <InputLabel htmlFor="new-tag" shrink={newTagName !== ""}>
+            Neue Tags anlegen
+          </InputLabel>
           <TextField
             id="new-tag"
             variant="outlined"
@@ -125,7 +146,12 @@ const TagView: React.FC = () => {
             InputLabelProps={{ shrink: true }}
           />
         </FormControl>
-        <Button variant="contained" color="primary" onClick={handleAddTag} className={classes.button}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleAddTag}
+          className={classes.button}
+        >
           Tag hinzufügen
         </Button>
       </form>

@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { FC, useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 import {
@@ -24,6 +24,7 @@ import { FixedSizeList as List } from "react-window";
 const useStyles = makeStyles((theme: { spacing: (factor: number) => number; shape: { borderRadius: number }; palette: { background: { paper: string } }; typography: { fontSize: number } }) => ({
   tableContainer: {
     border: "2px solid #ccc",
+    padding: theme.spacing(2),
     borderRadius: theme.shape.borderRadius,
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
     margin: theme.spacing(2),
@@ -45,13 +46,14 @@ const useStyles = makeStyles((theme: { spacing: (factor: number) => number; shap
   },
   table: {
     width: "100%",
-    borderCollapse: "collapse", // Entfernt Abstände zwischen Zellen
+    borderCollapse: "collapse" as const,
+    tableLayout: "fixed",
   },
   thTd: {
     border: "1px solid #ddd",
-    padding: "8px", // Einheitliches Padding
-    textAlign: "left",
-    backgroundColor: "#f9f9f9",
+    padding: theme.spacing(1),
+    textAlign: "left" as const,
+    wordWrap: "break-word",
   },
   checkboxThTd: {
     border: "1px solid #ddd",
@@ -64,19 +66,12 @@ const useStyles = makeStyles((theme: { spacing: (factor: number) => number; shap
     padding: theme.spacing(1),
     textAlign: "center" as const,
     width: "50px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
   },
   th: {
     backgroundColor: "#f2f2f2",
-    fontWeight: "bold",
   },
   trEven: {
     backgroundColor: "#f9f9f9",
-  },
-  trOdd: {
-    backgroundColor: "#ffffff",
   },
   clickableRow: {
     cursor: "pointer",
@@ -165,10 +160,6 @@ const useStyles = makeStyles((theme: { spacing: (factor: number) => number; shap
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
     backgroundColor: theme.palette.background.paper,
   },
-  row: {
-    display: "flex",
-    alignItems: "center",
-  },
 }));
 
 interface VisibleColumns {
@@ -201,7 +192,7 @@ const GridViewView: FC = () => {
   });
 
   const [entityCount, setEntityCount] = useState<number | null>(null);
-  const [memoizedFilteredRows, setFilteredRows] = useState<any[]>([]);
+  const [filteredRows, setFilteredRows] = useState<any[]>([]);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [documentNames, setDocumentNames] = useState<{
     [key: string]: { name: string | null; id: string | null };
@@ -222,31 +213,6 @@ const GridViewView: FC = () => {
       [column]: !prev[column],
     }));
   }, []);
-
-  const headerRef = useRef<HTMLTableElement>(null);
-  const [columnWidths, setColumnWidths] = useState<number[]>([]);
-  const headerHeight = headerRef.current
-    ? headerRef.current.getBoundingClientRect().height
-    : 50; // Fallback-Höhe
-
-  useEffect(() => {
-    if (headerRef.current) {
-      const headerCols = Array.from(headerRef.current.querySelectorAll("th"));
-      const widths = headerCols.map((col) => col.getBoundingClientRect().width);
-      setColumnWidths(widths);
-    }
-  }, [visibleColumns, headerRef.current]);
-
-  useEffect(() => {
-    if (columnWidths.length > 0) {
-      const bodyCols = Array.from(document.querySelectorAll("tbody td"));
-      bodyCols.forEach((col, index) => {
-        (col as HTMLElement).style.width = `${
-          columnWidths[index % columnWidths.length]
-        }px`;
-      });
-    }
-  }, [columnWidths]);
 
   const [rows, setRows] = useState<any[]>([]);
 
@@ -422,7 +388,7 @@ const GridViewView: FC = () => {
   };
 
   const handleSelectAll = () => {
-    const newSelectedRows = memoizedFilteredRows.reduce((acc, row) => {
+    const newSelectedRows = filteredRows.reduce((acc, row) => {
       acc[row.uniqueId] = !allSelected;
       return acc;
     }, {} as { [key: number]: boolean });
@@ -453,9 +419,7 @@ const GridViewView: FC = () => {
 
     for (const [rowId, isSelected] of Object.entries(selectedRows)) {
       if (isSelected) {
-        const row = memoizedFilteredRows.find(
-          (r) => r.uniqueId.toString() === rowId
-        );
+        const row = filteredRows.find((r) => r.uniqueId.toString() === rowId);
         if (!row) continue;
 
         const entriesToUpdate = Object.entries(row.ids).filter(
@@ -512,7 +476,7 @@ const GridViewView: FC = () => {
     }
   };
 
-  useMemo(() => {
+  useEffect(() => {
     let rows = buildRows();
 
     if (selectedTag) {
@@ -526,16 +490,17 @@ const GridViewView: FC = () => {
     );
 
     if (visibleColumnsArray.length === 1) {
+      const uniqueValues = new Set();
       const column = visibleColumnsArray[0];
-      const uniqueValues = new Set<string>();
 
       rows = rows.filter((row) => {
         const value = row[column];
         if (uniqueValues.has(value)) {
-          return false;
+          return false; // Duplikat entfernen
+        } else {
+          uniqueValues.add(value);
+          return true; // Einzigartiger Wert behalten
         }
-        uniqueValues.add(value);
-        return true;
       });
 
       setEntityCount(uniqueValues.size); // Anzahl der eindeutigen Werte setzen
@@ -549,13 +514,11 @@ const GridViewView: FC = () => {
   useEffect(() => {
     const modelIds = Array.from(
       new Set(
-        memoizedFilteredRows
-          .map((row) => row.ids.model)
-          .filter((id: string) => id)
+        filteredRows.map((row) => row.ids.model).filter((id: string) => id)
       )
     );
     setModelIds(modelIds);
-  }, [memoizedFilteredRows]);
+  }, [filteredRows]);
 
   useEffect(() => {
     let initialRows = buildRows();
@@ -748,7 +711,7 @@ const GridViewView: FC = () => {
             </Button>
           )}
         </div>
-        <table ref={headerRef} className={classes.table}>
+        <table className={classes.table}>
           <thead className={classes.stickyHeader}>
             <tr>
               <th className={`${classes.th} ${classes.checkboxThTd}`}>
@@ -908,173 +871,118 @@ const GridViewView: FC = () => {
       </div>
       <div className={classes.scrollabletable}>
         <div className={classes.scrollableContainer}>
-          <List
-            height={425} // Höhe des sichtbaren Bereichs
-            itemCount={memoizedFilteredRows.length} // Anzahl der Zeilen
-            itemSize={headerHeight} // Dynamische Höhe basierend auf dem Header
-            width="100%" // Breite der Liste
-          >
-            {({ index, style }) => {
-              const row = memoizedFilteredRows[index];
-              return (
-                <div style={style} key={row.uniqueId}>
-                  <div
-                    className={`${index % 2 === 0 ? classes.trEven : ""} ${
-                      classes.row
-                    }`}
-                  >
-                    <div
-                      className={classes.checkboxTd}
-                      style={{
-                        width: `${columnWidths[0] || "auto"}px`,
-                        wordWrap: "break-word",
-                        whiteSpace: "normal",
-                        overflowWrap: "break-word",
-                      }}
+          <table className={classes.table}>
+            <tbody>
+              {filteredRows.map((row, index) => (
+                <tr
+                  key={row.uniqueId}
+                  className={index % 2 === 0 ? classes.trEven : undefined}
+                >
+                  <td className={classes.checkboxTd}>
+                    <Checkbox
+                      checked={!!selectedRows[row.uniqueId]} // Zustand der Checkbox basierend auf der eindeutigen ID
+                      onChange={() => handleRowSelection(row.uniqueId)} // Checkbox-Zustand für die eindeutige ID ändern
+                      color="primary"
+                    />
+                  </td>
+                  {visibleColumns.document && (
+                    <td
+                      className={`${classes.thTd} ${
+                        documentNames[row.ids.model]?.id
+                          ? classes.clickableRow
+                          : ""
+                      }`}
+                      onClick={
+                        documentNames[row.ids.model]?.id
+                          ? () =>
+                              handleOnSelect(
+                                documentNames[row.ids.model]!.id as string,
+                                "document"
+                              )
+                          : undefined
+                      }
                     >
-                      <Checkbox
-                        checked={!!selectedRows[row.uniqueId]}
-                        onChange={() => handleRowSelection(row.uniqueId)}
-                        color="primary"
-                      />
-                    </div>
-                    {visibleColumns.document && (
-                      <div
-                        className={`${classes.thTd} ${
-                          documentNames[row.ids.model]?.id
-                            ? classes.clickableRow
-                            : ""
-                        }`}
-                        style={{
-                          width: `${columnWidths[1] || "auto"}px`,
-                          wordWrap: "break-word",
-                          whiteSpace: "normal",
-                          overflowWrap: "break-word",
-                        }}
-                        onClick={
-                          documentNames[row.ids.model]?.id
-                            ? () =>
-                                handleOnSelect(
-                                  documentNames[row.ids.model]!.id as string,
-                                  "document"
-                                )
-                            : undefined
-                        }
-                      >
-                        {documentNames[row.ids.model]?.name ||
-                          row.document ||
-                          "\u00A0"}
-                      </div>
-                    )}
-                    {visibleColumns.model && (
-                      <div
-                        className={`${classes.thTd} ${
-                          row.model ? classes.clickableRow : ""
-                        }`}
-                        style={{
-                          width: `${columnWidths[2] || "auto"}px`,
-                          wordWrap: "break-word",
-                          whiteSpace: "normal",
-                          overflowWrap: "break-word",
-                        }}
-                        onClick={
-                          row.model
-                            ? () => handleOnSelect(row.ids.model, "model")
-                            : undefined
-                        }
-                      >
-                        {row.model || "\u00A0"}
-                      </div>
-                    )}
-                    {visibleColumns.group && (
-                      <div
-                        className={`${classes.thTd} ${
-                          row.group ? classes.clickableRow : ""
-                        }`}
-                        style={{
-                          width: `${columnWidths[3] || "auto"}px`,
-                          wordWrap: "break-word",
-                          whiteSpace: "normal",
-                          overflowWrap: "break-word",
-                        }}
-                        onClick={
-                          row.group
-                            ? () => handleOnSelect(row.ids.group, "group")
-                            : undefined
-                        }
-                      >
-                        {row.group || "\u00A0"}
-                      </div>
-                    )}
-                    {visibleColumns.class && (
-                      <div
-                        className={`${classes.thTd} ${
-                          row.class ? classes.clickableRow : ""
-                        }`}
-                        style={{
-                          width: `${columnWidths[4] || "auto"}px`,
-                          wordWrap: "break-word",
-                          whiteSpace: "normal",
-                          overflowWrap: "break-word",
-                        }}
-                        onClick={
-                          row.class
-                            ? () => handleOnSelect(row.ids.class, "class")
-                            : undefined
-                        }
-                      >
-                        {row.class || "\u00A0"}
-                      </div>
-                    )}
-                    {visibleColumns.propertyGroup && (
-                      <div
-                        className={`${classes.thTd} ${
-                          row.propertyGroup ? classes.clickableRow : ""
-                        }`}
-                        style={{
-                          width: `${columnWidths[5] || "auto"}px`,
-                          wordWrap: "break-word",
-                          whiteSpace: "normal",
-                          overflowWrap: "break-word",
-                        }}
-                        onClick={
-                          row.propertyGroup
-                            ? () =>
-                                handleOnSelect(
-                                  row.ids.propertyGroup,
-                                  "propertyGroup"
-                                )
-                            : undefined
-                        }
-                      >
-                        {row.propertyGroup || "\u00A0"}
-                      </div>
-                    )}
-                    {visibleColumns.property && (
-                      <div
-                        className={`${classes.thTd} ${
-                          row.property ? classes.clickableRow : ""
-                        }`}
-                        style={{
-                          width: `${columnWidths[6] || "auto"}px`,
-                          wordWrap: "break-word",
-                          whiteSpace: "normal",
-                          overflowWrap: "break-word",
-                        }}
-                        onClick={
-                          row.property
-                            ? () => handleOnSelect(row.ids.property, "property")
-                            : undefined
-                        }
-                      >
-                        {row.property || "\u00A0"}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            }}
-          </List>
+                      {documentNames[row.ids.model]?.name || row.document}
+                    </td>
+                  )}
+                  {visibleColumns.model && (
+                    <td
+                      className={`${classes.thTd} ${
+                        row.model ? classes.clickableRow : ""
+                      }`}
+                      onClick={
+                        row.model
+                          ? () => handleOnSelect(row.ids.model, "model")
+                          : undefined
+                      }
+                    >
+                      {row.model}
+                    </td>
+                  )}
+                  {visibleColumns.group && (
+                    <td
+                      className={`${classes.thTd} ${
+                        row.group ? classes.clickableRow : ""
+                      }`}
+                      onClick={
+                        row.group
+                          ? () => handleOnSelect(row.ids.group, "group")
+                          : undefined
+                      }
+                    >
+                      {row.group}
+                    </td>
+                  )}
+                  {visibleColumns.class && (
+                    <td
+                      className={`${classes.thTd} ${
+                        row.class ? classes.clickableRow : ""
+                      }`}
+                      onClick={
+                        row.class
+                          ? () => handleOnSelect(row.ids.class, "class")
+                          : undefined
+                      }
+                    >
+                      {row.class}
+                    </td>
+                  )}
+                  {visibleColumns.propertyGroup && (
+                    <td
+                      className={`${classes.thTd} ${
+                        row.propertyGroup ? classes.clickableRow : ""
+                      }`}
+                      onClick={
+                        row.propertyGroup
+                          ? () =>
+                              handleOnSelect(
+                                row.ids.propertyGroup,
+                                "propertyGroup"
+                              )
+                          : undefined
+                      }
+                    >
+                      {row.propertyGroup}
+                    </td>
+                  )}
+                  {visibleColumns.property && (
+                    <td
+                      className={`${classes.thTd} ${
+                        row.property ? classes.clickableRow : ""
+                      }`}
+                      onClick={
+                        row.property
+                          ? () => handleOnSelect(row.ids.property, "property")
+                          : undefined
+                      }
+                    >
+                      {row.property}
+                    </td>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -1082,3 +990,167 @@ const GridViewView: FC = () => {
 };
 
 export default GridViewView;
+
+/* <tbody>
+  <List
+    height={500} // Höhe des sichtbaren Bereichs (kann angepasst werden)
+    itemCount={filteredRows.length} // Anzahl der Zeilen
+    itemSize={50} // Höhe einer einzelnen Zeile in Pixeln
+    width="100%" // Breite der Tabelle
+  >
+    {({ index, style }) => {
+      const row = filteredRows[index];
+      return (
+        <tr
+          key={row.uniqueId}
+          className={index % 2 === 0 ? classes.trEven : undefined}
+          style={style} // Wendet die von React Window bereitgestellten Styles an
+        >
+          <td className={classes.checkboxTd}>
+            <Checkbox
+              checked={!!selectedRows[row.uniqueId]}
+              onChange={() => handleRowSelection(row.uniqueId)}
+              color="primary"
+            />
+          </td>
+          {visibleColumns.document && (
+            <td
+              className={`${classes.thTd} ${
+                documentNames[row.ids.model]?.id
+                  ? classes.clickableRow
+                  : ""
+              }`}
+              onClick={
+                documentNames[row.ids.model]?.id
+                  ? () =>
+                      handleOnSelect(
+                        documentNames[row.ids.model]!.id as string,
+                        "document"
+                      )
+                  : undefined
+              }
+            >
+              {documentNames[row.ids.model]?.name || row.document}
+            </td>
+          )}
+          {visibleColumns.model && (
+            <td
+              className={`${classes.thTd} ${
+                row.model ? classes.clickableRow : ""
+              }`}
+              onClick={
+                row.model
+                  ? () => handleOnSelect(row.ids.model, "model")
+                  : undefined
+              }
+            >
+              {row.model}
+            </td>
+          )}
+          {visibleColumns.group && (
+            <td
+              className={`${classes.thTd} ${
+                row.group ? classes.clickableRow : ""
+              }`}
+              onClick={
+                row.group
+                  ? () => handleOnSelect(row.ids.group, "group")
+                  : undefined
+              }
+            >
+              {row.group}
+            </td>
+          )}
+          {visibleColumns.class && (
+            <td
+              className={`${classes.thTd} ${
+                row.class ? classes.clickableRow : ""
+              }`}
+              onClick={
+                row.class
+                  ? () => handleOnSelect(row.ids.class, "class")
+                  : undefined
+              }
+            >
+              {row.class}
+            </td>
+          )}
+          {visibleColumns.propertyGroup && (
+            <td
+              className={`${classes.thTd} ${
+                row.propertyGroup ? classes.clickableRow : ""
+              }`}
+              onClick={
+                row.propertyGroup
+                  ? () =>
+                      handleOnSelect(
+                        row.ids.propertyGroup,
+                        "propertyGroup"
+                      )
+                  : undefined
+              }
+            >
+              {row.propertyGroup}
+            </td>
+          )}
+          {visibleColumns.property && (
+            <td
+              className={`${classes.thTd} ${
+                row.property ? classes.clickableRow : ""
+              }`}
+              onClick={
+                row.property
+                  ? () => handleOnSelect(row.ids.property, "property")
+                  : undefined
+              }
+            >
+              {row.property}
+            </td>
+          )}
+        </tr>
+      );
+    }}
+  </List>
+</tbody> */
+
+// const memoizedFilteredRows = useMemo(() => { // Verwende useMemo, um die gefilterten Zeilen zu speichern
+// let rows = buildRows();
+
+//   if (selectedTag) {
+//     rows = rows.filter((row) =>
+//       row.tags.some((tag: any) => tag.name === selectedTag)
+//     );
+//   }
+
+//   const visibleColumnsArray = Object.keys(visibleColumns).filter(
+//     (key) => visibleColumns[key as keyof VisibleColumns]
+//   );
+
+//   if (visibleColumnsArray.length === 1) {
+//     const column = visibleColumnsArray[0];
+//     const uniqueValues = new Set<string>();
+
+//     rows = rows.filter((row) => {
+//       const value = row[column]?.trim();
+//       if (value && !uniqueValues.has(value)) {
+//         uniqueValues.add(value);
+//         return true;
+//       }
+//       return false;
+//     });
+
+//     rows.sort((a, b) => {
+//       const valueA = a[column]?.trim() || "";
+//       const valueB = b[column]?.trim() || "";
+//       return valueA.localeCompare(valueB);
+//     });
+
+//     setEntityCount(rows.length);
+//   } else {
+//     setEntityCount(null);
+//   }
+
+//   return rows;
+// }, [visibleColumns, propertyTreeData, selectedTag]); // Funktioniert aber Refernezdokumente wedern nicht mehr geladen bei Button 
+
+//Überall, wo filteredRows bisher verwendet wurde, ersetze es durch memoizedFilteredRows

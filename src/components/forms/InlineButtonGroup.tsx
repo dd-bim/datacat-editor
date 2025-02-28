@@ -1,9 +1,9 @@
-import IconButton from "@material-ui/core/IconButton";
-import UndoIcon from '@material-ui/icons/Undo';
-import SaveIcon from "@material-ui/icons/Save";
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import IconButton from "@mui/material/IconButton";
+import UndoIcon from '@mui/icons-material/Undo';
+import SaveIcon from "@mui/icons-material/Save";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import React, {FC} from "react";
-import {makeStyles} from "@material-ui/core/styles";
+import {makeStyles} from "@mui/styles";
 import {FormState} from "react-hook-form";
 
 const useStyles = makeStyles(theme => ({

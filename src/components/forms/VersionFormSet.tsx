@@ -3,7 +3,7 @@ import FormSet, {FormSetDescription, FormSetTitle} from "./FormSet";
 import React, {FC} from "react";
 import {Maybe, useSetVersionMutation, VersionInput} from "../../generated/types";
 import {useSnackbar} from "notistack";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import makeStyles from "@mui/styles/makeStyles";
 
 type VersionFormSetProps = {
     id: string

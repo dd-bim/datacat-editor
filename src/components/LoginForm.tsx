@@ -1,10 +1,10 @@
 import {useForm} from "react-hook-form";
 import React, {useState} from "react";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import TextField from "@material-ui/core/TextField";
-import {Button, IconButton, InputAdornment} from "@material-ui/core";
-import {Visibility, VisibilityOff} from "@material-ui/icons";
-import {Alert} from "@material-ui/lab";
+import makeStyles from "@mui/styles/makeStyles";
+import TextField from "@mui/material/TextField";
+import {Button, IconButton, InputAdornment} from "@mui/material";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
+import {Alert} from "@mui/lab";
 import {LoginInput, useLoginFormMutation} from "../generated/types";
 import {JwtToken} from "../providers/AuthProvider";
 
@@ -12,7 +12,7 @@ interface LoginFormProps {
     onLogin: (token: JwtToken) => void;
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: any) => ({
     root: {
         display: "flex",
         flexDirection: "column",
@@ -32,7 +32,7 @@ export default function LoginForm(props: LoginFormProps) {
             result.token && onLogin(result.token);
         }
     });
-    const {handleSubmit, register, errors} = useForm<LoginInput>();
+    const {handleSubmit, register, formState: {errors}} = useForm<LoginInput>();
     const onSubmit = async (input: LoginInput) => {
         await login({variables: {credentials: input}}).catch(e => console.warn(e.message));
     };
@@ -50,23 +50,21 @@ export default function LoginForm(props: LoginFormProps) {
             {error && <Alert severity="error">{error.message}</Alert>}
 
             <TextField
-                name="username"
                 label="Benutzername"
                 required
                 error={!!errors.username}
                 helperText={errors.username ? errors.username.message : ''}
-                inputRef={register({required: true})}
+                {...register("username", { required: true })}
                 fullWidth
             />
 
             <TextField
                 type={showPassword ? "text" : "password"}
-                name="password"
                 label="Passwort"
                 required
                 error={!!errors.password}
                 helperText={errors.password ? errors.password.message : ''}
-                inputRef={register({required: true})}
+                {...register("password", { required: true })}
                 fullWidth
                 InputProps={{
                     endAdornment: (

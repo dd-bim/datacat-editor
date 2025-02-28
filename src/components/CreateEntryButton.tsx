@@ -1,16 +1,16 @@
 import React, {FC, useState} from "react";
 import {SimpleRecordType, useCreateEntryMutation} from "../generated/types";
-import {Dialog} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import Popper from "@material-ui/core/Popper";
-import Grow from "@material-ui/core/Grow";
-import Paper from "@material-ui/core/Paper";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import MenuList from "@material-ui/core/MenuList";
-import MenuItem from "@material-ui/core/MenuItem";
-import AddIcon from '@material-ui/icons/Add';
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
+import {Dialog} from "@mui/material";
+import Button from "@mui/material/Button";
+import Popper from "@mui/material/Popper";
+import Grow from "@mui/material/Grow";
+import Paper from "@mui/material/Paper";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import MenuList from "@mui/material/MenuList";
+import MenuItem from "@mui/material/MenuItem";
+import AddIcon from '@mui/icons-material/Add';
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
 import CreateEntryForm, {CreateEntryFormValues} from "./forms/CreateEntryForm";
 import {Maybe} from "graphql/jsutils/Maybe";
 import {useSnackbar} from "notistack";
@@ -87,7 +87,7 @@ const CreateEntryButton: FC<CreateEntryProps> = props => {
         setDialogOpen(true);
     }
 
-    const handleClose = (event: React.MouseEvent<Document, MouseEvent>) => {
+    const handleClose = (event: MouseEvent | TouchEvent) => {
         if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
             return;
         }

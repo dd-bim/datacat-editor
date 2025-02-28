@@ -1,10 +1,10 @@
 import React, {FC, useEffect, useState} from "react";
 import {Controller, useForm} from "react-hook-form";
-import TextField, {TextFieldProps} from "@material-ui/core/TextField";
+import TextField, {TextFieldProps} from "@mui/material/TextField";
 import {defaultFormFieldOptions} from "../../hooks/useFormStyles";
-import {makeStyles} from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import InlineButtonGroup from "./InlineButtonGroup";
-import {ClickAwayListener} from "@material-ui/core";
+import {ClickAwayListener} from "@mui/material";
 import {TranslationPropsFragment} from "../../generated/types";
 
 const useStyles = makeStyles(theme => ({
@@ -43,7 +43,7 @@ const TranslationForm: FC<TranslationFormProps> = (props) => {
     const {
         control,
         handleSubmit,
-        errors,
+        formState: { errors },
         reset,
         formState
     } = useForm<TranslationFormValues>({
@@ -99,11 +99,17 @@ const TranslationForm: FC<TranslationFormProps> = (props) => {
                 <Controller
                     name="value"
                     control={control}
-                    error={!!errors.value}
                     rules={{required: true}}
-                    {...TextFieldProps}
-                    {...textFieldProps}
-                    as={<TextField className={classes.input} {...defaultFormFieldOptions}/>}
+                    render={({ field }) => (
+                        <TextField
+                            {...field}
+                            className={classes.input}
+                            {...defaultFormFieldOptions}
+                            {...TextFieldProps}
+                            {...textFieldProps}
+                            error={!!errors.value}
+                        />
+                    )}
                 />
                 {isEditMode && (
                         <InlineButtonGroup

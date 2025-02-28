@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import {Alert} from "@material-ui/lab";
-import {TextField} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
+import makeStyles from "@mui/styles/makeStyles";
+import {Alert} from "@mui/lab";
+import {TextField} from "@mui/material";
+import Button from "@mui/material/Button";
 import {SignupInput, useSignupFormMutation} from "../generated/types";
 
 const usernameHelperText = "A username is required. No whitespace. Must start with a letter and have a minimum length of 3."
@@ -45,9 +45,8 @@ export default function SignupForm(props: SignupFormProps) {
     });
 
     return (
-        <form className={classes.root} onSubmit={handleSubmit(onSubmit)} noValidate>
+        (<form className={classes.root} onSubmit={handleSubmit(onSubmit)} noValidate>
             {error && <Alert severity="error">{error.message}</Alert>}
-
             <TextField
                 name="username"
                 label="Benutername"
@@ -61,7 +60,6 @@ export default function SignupForm(props: SignupFormProps) {
                 })}
                 fullWidth
             />
-
             <TextField
                 type="password"
                 name="password"
@@ -75,7 +73,6 @@ export default function SignupForm(props: SignupFormProps) {
                 })}
                 fullWidth
             />
-
             <TextField
                 type="password"
                 name="password2"
@@ -92,7 +89,6 @@ export default function SignupForm(props: SignupFormProps) {
                 })}
                 fullWidth
             />
-
             <TextField
                 name="firstName"
                 label="Vorname"
@@ -102,7 +98,6 @@ export default function SignupForm(props: SignupFormProps) {
                 inputRef={register({required: true})}
                 fullWidth
             />
-
             <TextField
                 name="lastName"
                 label="Name"
@@ -112,7 +107,6 @@ export default function SignupForm(props: SignupFormProps) {
                 inputRef={register({required: true})}
                 fullWidth
             />
-
             <TextField
                 type="email"
                 name="email"
@@ -126,7 +120,6 @@ export default function SignupForm(props: SignupFormProps) {
                 })}
                 fullWidth
             />
-
             <TextField
                 name="organization"
                 label="Firma / Institut"
@@ -135,7 +128,6 @@ export default function SignupForm(props: SignupFormProps) {
                 inputRef={register()}
                 fullWidth
             />
-
             <Button
                 type="submit"
                 color="primary"
@@ -144,6 +136,6 @@ export default function SignupForm(props: SignupFormProps) {
             >
                 Signup
             </Button>
-        </form>
-    )
+        </form>)
+    );
 }

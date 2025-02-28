@@ -10,7 +10,7 @@ import React, {FC} from "react";
 import FormSet, {FormSetDescription, FormSetTitle} from "./FormSet";
 import {useSnackbar} from "notistack";
 import TranslationFormSet from "./TranslationFormSet";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import makeStyles from "@mui/styles/makeStyles";
 
 export type NameFormSetProps = {
     catalogEntryId: string;

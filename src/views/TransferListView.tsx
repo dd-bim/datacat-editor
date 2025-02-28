@@ -8,15 +8,14 @@ import {
 } from "../generated/types";
 import React, {useState} from "react";
 import TransferList from "../components/list/TransferList";
-import EditIcon from "@material-ui/icons/Edit";
-import CheckIcon from "@material-ui/icons/Check";
-import {Typography} from "@material-ui/core";
+import EditIcon from "@mui/icons-material/Edit";
+import CheckIcon from "@mui/icons-material/Check";
+import {Typography, Button} from "@mui/material";
 import FormSet, {FormSetDescription, FormSetNotice, FormSetTitle} from "../components/forms/FormSet";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import Button from "@material-ui/core/Button";
+import makeStyles from "@mui/styles/makeStyles";
 import {ApolloCache} from "@apollo/client";
 import {CatalogRecord} from "../types";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {getEntityType} from "../domain";
 
 export type RelationshipProperties = {
@@ -36,7 +35,9 @@ export type TransferListViewProps = {
     onDelete?(): void;
 };
 
-export const useStyles = makeStyles(theme => ({
+import { Theme } from "@mui/material/styles";
+
+export const useStyles = makeStyles((theme: Theme) => ({
     title: {
         display: "flex",
         alignContent: "space-between"
@@ -68,7 +69,7 @@ export default function TransferListView(props: TransferListViewProps) {
     } = props;
 
     const classes = useStyles();
-    const history = useHistory();
+    const navigate = useNavigate();
     const [editState, setEditState] = useState(false);
 
     const update = (cache: ApolloCache<any>) => cache.modify({
@@ -145,7 +146,7 @@ export default function TransferListView(props: TransferListViewProps) {
                     onAdd={handleOnAdd}
                     onSelect={item => {
                         const definition = getEntityType(item.recordType, item.tags.map(x => x.id));
-                        history.push(`/${definition.path}/${item.id}`);
+                        navigate(`/${definition.path}/${item.id}`);
                     }}
                     onRemove={handleOnRemove}
                 />

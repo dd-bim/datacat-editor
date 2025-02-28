@@ -1,9 +1,9 @@
 import React, {FC, useState} from "react";
-import {Autocomplete} from "@material-ui/lab";
+import {Autocomplete} from "@mui/lab";
 import {LanguageFilterInput, LanguagePropsFragment, Maybe, useFindLanguagesQuery} from "../../generated/types";
-import {TextField, TextFieldProps} from "@material-ui/core";
+import {TextField, TextFieldProps} from "@mui/material";
 import {defaultFormFieldOptions} from "../../hooks/useFormStyles";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import CircularProgress from "@mui/material/CircularProgress";
 
 type LanguageSelectFieldProps = {
     filter?: LanguageFilterInput,

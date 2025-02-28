@@ -1,9 +1,9 @@
 import FormSet, {FormSetProps, FormSetTitle} from "./FormSet";
 import React from "react";
 import CatalogEntryChip from "../CatalogEntryChip";
-import {Typography} from "@material-ui/core";
+import {Typography} from "@mui/material";
 import {CatalogRecord} from "../../types";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import makeStyles from "@mui/styles/makeStyles";
 
 export type MemberFormSetProps = {
     title: React.ReactNode;

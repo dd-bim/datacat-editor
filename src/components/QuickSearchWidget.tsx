@@ -1,19 +1,20 @@
-import {useHistory} from "react-router-dom";
-import {makeStyles, Theme} from "@material-ui/core/styles";
+import {useNavigate} from "react-router-dom";
+import {makeStyles} from "@mui/styles";
+import {Theme} from "@mui/material/styles";
 import React, {useRef, useState} from "react";
-import {Popper} from "@material-ui/core";
-import Fade from "@material-ui/core/Fade";
-import Paper from "@material-ui/core/Paper";
-import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import {Popper} from "@mui/material";
+import Fade from "@mui/material/Fade";
+import Paper from "@mui/material/Paper";
+import List from "@mui/material/List";
+import Typography from "@mui/material/Typography";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 import {useFindItemQuery} from "../generated/types";
 import SearchField from "./SearchField";
 import {Domain, getEntityType} from "../domain";
 import useDebounce from "../hooks/useDebounce";
 import ItemRow, {ITEM_ROW_SIZE, ItemRowProps} from "./list/ItemRow";
 import {FixedSizeList, ListOnItemsRenderedProps} from "react-window";
-import LinearProgress from "@material-ui/core/LinearProgress";
+import LinearProgress from "@mui/material/LinearProgress";
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchResults: {
@@ -35,7 +36,7 @@ interface QuickSearchWidgetProps {
 
 export function QuickSearchWidget(props: QuickSearchWidgetProps) {
     const classes = useStyles();
-    const history = useHistory();
+    const navigate = useNavigate();
     const searchInput = useRef(null);
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -79,7 +80,7 @@ export function QuickSearchWidget(props: QuickSearchWidgetProps) {
         onSelect: item => {
             const definition = getEntityType(item.recordType, item.tags.map(x => x.id));
             setSearchTerm("");
-            history.push(`/${definition.path}/${item.id}`);
+            navigate(`/${definition.path}/${item.id}`);
         }
     };
 

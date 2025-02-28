@@ -1,8 +1,8 @@
 import {SearchInput} from "../../generated/types";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import makeStyles from "@mui/styles/makeStyles";
 import React, {useState} from "react";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
 import FilterableList from "./FilterableList";
 import SearchList from "./SearchList";
 import {CatalogRecord} from "../../types";

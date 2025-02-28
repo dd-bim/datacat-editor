@@ -20,15 +20,18 @@ import {
 import { useSnackbar } from "notistack";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { FixedSizeList as List } from "react-window";
+import { Table, Column, AutoSizer } from "react-virtualized";
+import "react-virtualized/styles.css";
+import VirtualizedTable from "./VirtualizedTable"; // Passe den Pfad an, falls notwendig
 
-const useStyles = makeStyles((theme: { spacing: (factor: number) => number; shape: { borderRadius: number }; palette: { background: { paper: string } }; typography: { fontSize: number } }) => ({
+const useStyles = makeStyles((theme: any) => ({
   tableContainer: {
     border: "2px solid #ccc",
-    borderRadius: theme.shape.borderRadius,
+    borderRadius: theme.spacing(1),
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
     margin: theme.spacing(2),
-    overflowX: "auto",
     backgroundColor: theme.palette.background.paper,
+    overflow: "hidden",
   },
   fixedContainer: {
     position: "sticky",
@@ -89,6 +92,11 @@ const useStyles = makeStyles((theme: { spacing: (factor: number) => number; shap
   checkboxLabel: {
     marginLeft: theme.spacing(1),
   },
+  checkboxCell: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   headerCell: {
     display: "flex",
     alignItems: "center",
@@ -99,6 +107,12 @@ const useStyles = makeStyles((theme: { spacing: (factor: number) => number; shap
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+  },
+  headerStyle: {
+    backgroundColor: "#f2f2f2",
+    fontWeight: "bold",
+    textAlign: "left",
+    padding: theme.spacing(1),
   },
   tagButtonContainer: {
     display: "flex",
@@ -169,6 +183,9 @@ const useStyles = makeStyles((theme: { spacing: (factor: number) => number; shap
     display: "flex",
     alignItems: "center",
   },
+  rowStyle: {
+    borderBottom: "1px solid #ddd",
+  },
 }));
 
 interface VisibleColumns {
@@ -178,6 +195,30 @@ interface VisibleColumns {
   class: boolean;
   property: boolean;
   propertyGroup: boolean;
+}
+
+interface RowData {
+  uniqueId: number;
+  document?: string;
+  model?: string;
+  group?: string;
+  class?: string;
+  propertyGroup?: string;
+  property?: string;
+}
+
+interface Props {
+  rows: RowData[];
+  visibleColumns: {
+    document: boolean;
+    model: boolean;
+    group: boolean;
+    class: boolean;
+    propertyGroup: boolean;
+    property: boolean;
+  };
+  onSelectRow?: (uniqueId: number) => void;
+  selectedRows?: { [key: number]: boolean };
 }
 
 const GridViewView: FC = () => {
@@ -201,7 +242,7 @@ const GridViewView: FC = () => {
   });
 
   const [entityCount, setEntityCount] = useState<number | null>(null);
-  const [memoizedFilteredRows, setFilteredRows] = useState<any[]>([]);
+  const [setFilteredRows] = useState<any[]>([]);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [documentNames, setDocumentNames] = useState<{
     [key: string]: { name: string | null; id: string | null };
@@ -512,23 +553,24 @@ const GridViewView: FC = () => {
     }
   };
 
-  useMemo(() => {
+  const memoizedFilteredRows = useMemo(() => {
     let rows = buildRows();
-
+    console.log("Built rows:", rows);
+  
     if (selectedTag) {
       rows = rows.filter((row) =>
         row.tags.some((tag: any) => tag.name === selectedTag)
       );
     }
-
+  
     const visibleColumnsArray = Object.keys(visibleColumns).filter(
       (key) => visibleColumns[key as keyof VisibleColumns]
     );
-
+  
     if (visibleColumnsArray.length === 1) {
       const column = visibleColumnsArray[0];
       const uniqueValues = new Set<string>();
-
+  
       rows = rows.filter((row) => {
         const value = row[column];
         if (uniqueValues.has(value)) {
@@ -537,15 +579,16 @@ const GridViewView: FC = () => {
         uniqueValues.add(value);
         return true;
       });
-
-      setEntityCount(uniqueValues.size); // Anzahl der eindeutigen Werte setzen
+  
+      setEntityCount(uniqueValues.size);
     } else {
       setEntityCount(null);
     }
-
-    setFilteredRows(rows); // Aktualisiere die gefilterten Zeilen
+  
+    console.log("Filtered rows:", rows);
+    return rows;
   }, [visibleColumns, propertyTreeData, selectedTag]);
-
+  
   useEffect(() => {
     const modelIds = Array.from(
       new Set(
@@ -643,8 +686,11 @@ const GridViewView: FC = () => {
   if (propertyTreeError) return <p>Error: {propertyTreeError.message}</p>;
   if (bagError) return <p>Error: {bagError.message}</p>;
 
+  console.log("Rows passed to VirtualizedTable:", memoizedFilteredRows);
+
   return (
     <div className={classes.tableContainer}>
+      {/* Header: Filter und Aktionen */}
       <div className={classes.fixedContainer}>
         <div className={classes.headerContainer}>
           <h3 className={classes.tagFilterTitle}>
@@ -676,6 +722,7 @@ const GridViewView: FC = () => {
             </Button>
           </div>
         </div>
+
         <div className={classes.tagButtonContainer}>
           {allTags.map((tag) => (
             <Chip
@@ -695,6 +742,7 @@ const GridViewView: FC = () => {
             className={classes.tagChip}
           />
         </div>
+
         <div className={classes.buttonContainer}>
           <Button
             variant="contained"
@@ -748,335 +796,62 @@ const GridViewView: FC = () => {
             </Button>
           )}
         </div>
-        <table ref={headerRef} className={classes.table}>
-          <thead className={classes.stickyHeader}>
-            <tr>
-              <th className={`${classes.th} ${classes.checkboxThTd}`}>
-                <div className={classes.headerCell}>
-                  <div className={classes.headerContent}>
-                    <Checkbox
-                      color="primary"
-                      checked={allSelected}
-                      onChange={handleSelectAll}
-                    />
-                  </div>
-                </div>
+      </div>
+
+      {/* Tabellen-Header */}
+      <table ref={headerRef} className={classes.table}>
+        <thead className={classes.stickyHeader}>
+          <tr>
+            <th className={`${classes.th} ${classes.checkboxThTd}`}>
+              <div className={classes.headerCell}>
+                <Checkbox
+                  color="primary"
+                  checked={allSelected}
+                  onChange={handleSelectAll}
+                />
+              </div>
+            </th>
+            {visibleColumns.document && (
+              <th className={`${classes.th} ${classes.thTd}`}>
+                <div className={classes.headerCell}>Referenzdokumente</div>
               </th>
-              {visibleColumns.document && (
-                <th className={`${classes.th} ${classes.thTd}`}>
-                  <div className={classes.headerCell}>
-                    <div className={classes.headerContent}>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={visibleColumns.document}
-                            onChange={() => handleCheckboxChange("document")}
-                            color="primary"
-                          />
-                        }
-                        label={`Referenzdokumente${
-                          entityCount !== null && visibleColumns.document
-                            ? ` (${entityCount})`
-                            : ""
-                        }`}
-                        className={classes.checkboxLabel}
-                      />
-                    </div>
-                  </div>
-                </th>
-              )}
-              {visibleColumns.model && (
-                <th className={`${classes.th} ${classes.thTd}`}>
-                  <div className={classes.headerCell}>
-                    <div className={classes.headerContent}>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={visibleColumns.model}
-                            onChange={() => handleCheckboxChange("model")}
-                            color="primary"
-                          />
-                        }
-                        label={`Fachmodelle${
-                          entityCount !== null && visibleColumns.model
-                            ? ` (${entityCount})`
-                            : ""
-                        }`}
-                        className={classes.checkboxLabel}
-                      />
-                    </div>
-                  </div>
-                </th>
-              )}
-              {visibleColumns.group && (
-                <th className={`${classes.th} ${classes.thTd}`}>
-                  <div className={classes.headerCell}>
-                    <div className={classes.headerContent}>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={visibleColumns.group}
-                            onChange={() => handleCheckboxChange("group")}
-                            color="primary"
-                          />
-                        }
-                        label={`Gruppen${
-                          entityCount !== null && visibleColumns.group
-                            ? ` (${entityCount})`
-                            : ""
-                        }`}
-                        className={classes.checkboxLabel}
-                      />
-                    </div>
-                  </div>
-                </th>
-              )}
-              {visibleColumns.class && (
-                <th className={`${classes.th} ${classes.thTd}`}>
-                  <div className={classes.headerCell}>
-                    <div className={classes.headerContent}>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={visibleColumns.class}
-                            onChange={() => handleCheckboxChange("class")}
-                            color="primary"
-                          />
-                        }
-                        label={`Klassen${
-                          entityCount !== null && visibleColumns.class
-                            ? ` (${entityCount})`
-                            : ""
-                        }`}
-                        className={classes.checkboxLabel}
-                      />
-                    </div>
-                  </div>
-                </th>
-              )}
-              {visibleColumns.propertyGroup && (
-                <th className={`${classes.th} ${classes.thTd}`}>
-                  <div className={classes.headerCell}>
-                    <div className={classes.headerContent}>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={visibleColumns.propertyGroup}
-                            onChange={() =>
-                              handleCheckboxChange("propertyGroup")
-                            }
-                            color="primary"
-                          />
-                        }
-                        label={`Merkmalsgruppen${
-                          entityCount !== null && visibleColumns.propertyGroup
-                            ? ` (${entityCount})`
-                            : ""
-                        }`}
-                        className={classes.checkboxLabel}
-                      />
-                    </div>
-                  </div>
-                </th>
-              )}
-              {visibleColumns.property && (
-                <th className={`${classes.th} ${classes.thTd}`}>
-                  <div className={classes.headerCell}>
-                    <div className={classes.headerContent}>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={visibleColumns.property}
-                            onChange={() => handleCheckboxChange("property")}
-                            color="primary"
-                          />
-                        }
-                        label={`Merkmale${
-                          entityCount !== null && visibleColumns.property
-                            ? ` (${entityCount})`
-                            : ""
-                        }`}
-                        className={classes.checkboxLabel}
-                      />
-                    </div>
-                  </div>
-                </th>
-              )}
-            </tr>
-          </thead>
-        </table>
-      </div>
-      <div className={classes.scrollabletable}>
-        <div className={classes.scrollableContainer}>
-          <List
-            height={425} // Höhe des sichtbaren Bereichs
-            itemCount={memoizedFilteredRows.length} // Anzahl der Zeilen
-            itemSize={headerHeight} // Dynamische Höhe basierend auf dem Header
-            width="100%" // Breite der Liste
-          >
-            {({ index, style }) => {
-              const row = memoizedFilteredRows[index];
-              return (
-                <div style={style} key={row.uniqueId}>
-                  <div
-                    className={`${index % 2 === 0 ? classes.trEven : ""} ${
-                      classes.row
-                    }`}
-                  >
-                    <div
-                      className={classes.checkboxTd}
-                      style={{
-                        width: `${columnWidths[0] || "auto"}px`,
-                        wordWrap: "break-word",
-                        whiteSpace: "normal",
-                        overflowWrap: "break-word",
-                      }}
-                    >
-                      <Checkbox
-                        checked={!!selectedRows[row.uniqueId]}
-                        onChange={() => handleRowSelection(row.uniqueId)}
-                        color="primary"
-                      />
-                    </div>
-                    {visibleColumns.document && (
-                      <div
-                        className={`${classes.thTd} ${
-                          documentNames[row.ids.model]?.id
-                            ? classes.clickableRow
-                            : ""
-                        }`}
-                        style={{
-                          width: `${columnWidths[1] || "auto"}px`,
-                          wordWrap: "break-word",
-                          whiteSpace: "normal",
-                          overflowWrap: "break-word",
-                        }}
-                        onClick={
-                          documentNames[row.ids.model]?.id
-                            ? () =>
-                                handleOnSelect(
-                                  documentNames[row.ids.model]!.id as string,
-                                  "document"
-                                )
-                            : undefined
-                        }
-                      >
-                        {documentNames[row.ids.model]?.name ||
-                          row.document ||
-                          "\u00A0"}
-                      </div>
-                    )}
-                    {visibleColumns.model && (
-                      <div
-                        className={`${classes.thTd} ${
-                          row.model ? classes.clickableRow : ""
-                        }`}
-                        style={{
-                          width: `${columnWidths[2] || "auto"}px`,
-                          wordWrap: "break-word",
-                          whiteSpace: "normal",
-                          overflowWrap: "break-word",
-                        }}
-                        onClick={
-                          row.model
-                            ? () => handleOnSelect(row.ids.model, "model")
-                            : undefined
-                        }
-                      >
-                        {row.model || "\u00A0"}
-                      </div>
-                    )}
-                    {visibleColumns.group && (
-                      <div
-                        className={`${classes.thTd} ${
-                          row.group ? classes.clickableRow : ""
-                        }`}
-                        style={{
-                          width: `${columnWidths[3] || "auto"}px`,
-                          wordWrap: "break-word",
-                          whiteSpace: "normal",
-                          overflowWrap: "break-word",
-                        }}
-                        onClick={
-                          row.group
-                            ? () => handleOnSelect(row.ids.group, "group")
-                            : undefined
-                        }
-                      >
-                        {row.group || "\u00A0"}
-                      </div>
-                    )}
-                    {visibleColumns.class && (
-                      <div
-                        className={`${classes.thTd} ${
-                          row.class ? classes.clickableRow : ""
-                        }`}
-                        style={{
-                          width: `${columnWidths[4] || "auto"}px`,
-                          wordWrap: "break-word",
-                          whiteSpace: "normal",
-                          overflowWrap: "break-word",
-                        }}
-                        onClick={
-                          row.class
-                            ? () => handleOnSelect(row.ids.class, "class")
-                            : undefined
-                        }
-                      >
-                        {row.class || "\u00A0"}
-                      </div>
-                    )}
-                    {visibleColumns.propertyGroup && (
-                      <div
-                        className={`${classes.thTd} ${
-                          row.propertyGroup ? classes.clickableRow : ""
-                        }`}
-                        style={{
-                          width: `${columnWidths[5] || "auto"}px`,
-                          wordWrap: "break-word",
-                          whiteSpace: "normal",
-                          overflowWrap: "break-word",
-                        }}
-                        onClick={
-                          row.propertyGroup
-                            ? () =>
-                                handleOnSelect(
-                                  row.ids.propertyGroup,
-                                  "propertyGroup"
-                                )
-                            : undefined
-                        }
-                      >
-                        {row.propertyGroup || "\u00A0"}
-                      </div>
-                    )}
-                    {visibleColumns.property && (
-                      <div
-                        className={`${classes.thTd} ${
-                          row.property ? classes.clickableRow : ""
-                        }`}
-                        style={{
-                          width: `${columnWidths[6] || "auto"}px`,
-                          wordWrap: "break-word",
-                          whiteSpace: "normal",
-                          overflowWrap: "break-word",
-                        }}
-                        onClick={
-                          row.property
-                            ? () => handleOnSelect(row.ids.property, "property")
-                            : undefined
-                        }
-                      >
-                        {row.property || "\u00A0"}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            }}
-          </List>
-        </div>
-      </div>
+            )}
+            {visibleColumns.model && (
+              <th className={`${classes.th} ${classes.thTd}`}>
+                <div className={classes.headerCell}>Fachmodelle</div>
+              </th>
+            )}
+            {visibleColumns.group && (
+              <th className={`${classes.th} ${classes.thTd}`}>
+                <div className={classes.headerCell}>Gruppen</div>
+              </th>
+            )}
+            {visibleColumns.class && (
+              <th className={`${classes.th} ${classes.thTd}`}>
+                <div className={classes.headerCell}>Klassen</div>
+              </th>
+            )}
+            {visibleColumns.propertyGroup && (
+              <th className={`${classes.th} ${classes.thTd}`}>
+                <div className={classes.headerCell}>Merkmalsgruppen</div>
+              </th>
+            )}
+            {visibleColumns.property && (
+              <th className={`${classes.th} ${classes.thTd}`}>
+                <div className={classes.headerCell}>Merkmale</div>
+              </th>
+            )}
+          </tr>
+        </thead>
+      </table>
+
+      {/* Tabellenbody mit VirtualizedTable */}
+      <VirtualizedTable
+        rows={memoizedFilteredRows}
+        visibleColumns={visibleColumns}
+        selectedRows={selectedRows}
+        onSelectRow={(newSelectedRows) => setSelectedRows(newSelectedRows)}
+      />
     </div>
   );
 };
