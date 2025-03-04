@@ -1,43 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Switch, FormControlLabel } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { useTolgee } from "@tolgee/react";
 
 const CustomSwitch = styled(Switch)(({ theme }) => ({
-    '& .MuiSwitch-switchBase': {
-        color: "#ffffff", // White color
-        '&.Mui-checked': {
-            color: "#ffffff", // White color when checked
-        },
-        '&.Mui-checked + .MuiSwitch-track': {
-            backgroundColor: "#ffffff", // Track color when checked
-        },
-    },
-    '& .MuiSwitch-track': {
-        backgroundColor: "#a9a9a9", // Track color when unchecked (primary color)
-    },
+  "& .MuiSwitch-switchBase": {
+    color: "#ffffff",
+    "&.Mui-checked": { color: "#ffffff" },
+    "&.Mui-checked + .MuiSwitch-track": { backgroundColor: "#ffffff" },
+  },
+  "& .MuiSwitch-track": { backgroundColor: "#a9a9a9" },
 }));
-(Switch);
 
 const LanguageSwitcher: React.FC = () => {
-    const [language, setLanguage] = useState("de");
+  const tolgee = useTolgee();
+  const [language, setLanguage] = useState(localStorage.getItem("language") || "de");
 
-    const toggleLanguage = () => {
-        const newLanguage = language === "de" ? "en" : "de";
-        setLanguage(newLanguage);
-    };
+  useEffect(() => {
+    tolgee.changeLanguage(language);
+  }, [language, tolgee]);
 
-    return (
-        <FormControlLabel
-            control={
-                <CustomSwitch
-                    checked={language === "en"}
-                    onChange={toggleLanguage}
-                    color="primary"
-                />
-            }
-            label={language === "de" ? "DE" : "EN"}
-        />
-    );
+  const toggleLanguage = () => {
+    const newLanguage = language === "de" ? "en" : "de";
+    setLanguage(newLanguage);
+    localStorage.setItem("language", newLanguage);
+    tolgee.changeLanguage(newLanguage);
+  };
+
+  return (
+    <FormControlLabel
+      control={<CustomSwitch checked={language === "en"} onChange={toggleLanguage} />}
+      label={language.toUpperCase()}
+    />
+  );
 };
 
 export default LanguageSwitcher;

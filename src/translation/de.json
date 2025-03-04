@@ -1,0 +1,148 @@
+{
+  "verification": {
+    "title": "Prüfkriterium",
+    "criteria": {
+      "integrity": "Integrität",
+      "uniqueness": "Eindeutigkeit",
+      "language": "Sprache"
+    },
+    "category": {
+      "no_model_group": "Fachmodelle ohne Gruppe",
+      "no_group_class": "Gruppen ohne Klasse",
+      "no_class_properties": "Klassen ohne Merkmale/Merkmalsgruppen",
+      "no_property_group": "Merkmalsgruppen ohne Merkmale",
+      "no_property": "Merkmale ohne Klasse oder Merkmalsgruppe",
+      "no_measure": "Größen ohne Merkmal",
+      "no_unit": "Einheiten ohne Größe",
+      "no_value": "Werte ohne Größe",
+      "duplicate_id": "ID-Duplikate",
+      "duplicate_name_type": "Namen-Duplikate (innerhalb eines Types)",
+      "duplicate_name_all": "Namen-Duplikate (gesamter Datenbestand)",
+      "missing_description": "Fehlende Beschreibung",
+      "missing_description_en": "Fehlende Beschreibung (englisch)",
+      "missing_translation_en": "Fehlende Namens-Übersetzung (englisch)"
+    },
+    "result": {
+      "select_criteria": "Prüfkriterium und Kategorie auswählen.",
+      "select_entry": "Prüfergebnis in der Listenansicht auswählen, um Eigenschaften anzuzeigen."
+    },
+    "edit": {
+      "group": "Gruppe bearbeiten",
+      "class": "Klasse bearbeiten",
+      "property": "Merkmal bearbeiten",
+      "measure": "Größe bearbeiten",
+      "unit": "Einheit bearbeiten",
+      "value": "Wert bearbeiten",
+      "model": "Fachmodell bearbeiten"
+    }
+  },
+  "home": {
+    "title": "Willkommen bei datacat",
+    "about.title": "Über das Projekt",
+    "about.description": "Die datacat-Plattform stellt eine projektübergreifende Forschungsarbeit des Lehrbereichs \"Geodäsie und BIM\" der Fakultät Geoinformation der Hochschule für Technik und Wirtschaft Dresden (HTW Dresden) dar. Die Plattform zielt darauf ab, benutzer- und entwicklerfreundliche Komponenten für die Erarbeitung und Veröffentlichung von Klassifikationssystemen, Objektartenkatalogen und Merkmalsdatenbanken im Kontext der BIM-Methode zur Verfügung zu stellen.",
+    "components.title": "Die Komponenten",
+    "components.description": "Die Plattform gliedert sich derzeit in die Kernkomponenten datacat API, einer entwicklerfreundlichen, selbstdokumentierenden GraphQL-Schnittstelle für komplexe Abfragen auf den Datenkatalog und dem datacat editor, einem browsergestützten Benutzerwerkzeug zur Navigation und Bearbeitung des Datenbestands.",
+    "methodology.title": "Die Methodik",
+    "methodology.description": "Mittelpunkt der Entwicklung ist ein nah an den etablierten Standards DIN EN ISO 12006-3 und DIN EN ISO 23387 angelehntes Datenschema, das es ermöglichen soll, auch komplexe Klassifikationssysteme im Katalog zu pflegen. Die API ist völlig agnostisch gegenüber der anwendungsfallbezogenen Struktur, die im eigenen Datenkatalog umgesetzt werden soll.",
+    "opensource.title": "Open Source",
+    "opensource.description": "datacat wird als freie, quelloffene Software unter der GPLv3 Lizenz entwickelt und kann durch jeden, auch kommerziell genutzt und vervielfältigt werden. Der Quellcode wird auf GitHub gehostet. Jede Art der Unterstützung des Projekts ist willkommen."
+  },
+  "intro": {
+    "description1": "datacat editor ist ein webbasiertes, OpenSource Arbeitswerkzeug zum gemeinsamen Entwickeln von Datenkatalogen für die Bauindustrie. Der Quellcode wird unter der GPL v3 Lizenz zur Verfügung gestellt.",
+    "description2": "In einem Datenkatalog können Sie Konzepte wie Akteure, Aktivitäten, Bauteile und Merkmale mehrsprachig benennen, beschreiben und nach Ihrer Funktion und Gestalt standardkonform kategorisieren. Durch das Bilden von Beziehungen zwischen diesen Konzepten, kann die bebaute Umwelt schließlich näher beschrieben werden.",
+    "description3": "Der entwickelte Datenbestand steht zum Abruf über eine API für Entwickler von Import/Export-Werkzeugen und CAD/BIM-Plugins zur Verfügung. Zukünftig sollen Prüfroutinen entwickelt werden, die es erlauben, Inkonsistenzen wie ungenutzte Konzepte, mögliche Duplikate, und fehlende Übersetzungen im Katalog ausfindig zu machen.",
+    "description4": "datacat wird an der Hochschule für Technik und Wirtschaft Dresden (HTW Dresden) entwickelt. Wenn Sie weiteres Interesse am Projekt oder Fragen zur Anwendung haben, kontaktieren Sie uns gern direkt über die unten genannten Daten.",
+    "call_to_action": "Es handelt sich um ein Software-Preview. Ihre direkte Mitwirkung als OpenSource-Entwickler oder indirekt durch die Gabe von Feedback ist sehr erwünscht."
+  },
+  "profile": {
+    "heading": "Benutzerprofil bearbeiten",
+    "update_success": "Benutzerprofil aktualisiert!",
+    "error": "Beim Aufrufen des Benutzerprofils ist ein Fehler aufgetreten.",
+    "form": {
+      "first_name": "Vorname",
+      "first_name_helper": "Die Angabe Ihres Vornamens ist zwingend notwendig. Er wird anderen Katalog-Nutzern angezeigt, um Einträge und Änderungen zuzuordnen und die Zusammenarbeit zu erleichtern.",
+      "last_name": "Name",
+      "last_name_helper": "Die Angabe Ihres Nachnamens ist zwingend notwendig. Er wird anderen Katalog-Nutzern angezeigt, um Einträge und Änderungen zuzuordnen und die Zusammenarbeit zu erleichtern.",
+      "email": "Email",
+      "email_helper": "Die Angabe einer gültigen Email-Adresse ist zwingend notwendig. Sie wird genutzt, um Ihr Benutzerkonto zu validieren und Sie über Änderungen im Katalog zu informieren.",
+      "organization": "Organisation",
+      "organization_helper": "Wenn zutreffend, geben Sie bitte die Firma, die Organisation oder das Institut an, für das Sie tätig sind."
+    }
+  },
+  "boarding": {
+    "welcome": "Willkommen beim datacat editor",
+    "login_tab": "Anmelden",
+    "signup_tab": "Registrieren",
+    "login_message": "Bitte nutzen Sie Ihren Benutzernamen und Ihr Password um sich beim Editor anzumelden.",
+    "signup_message": "Sie können sich registrieren um lesenden Zugriff auf den Katalog zu erhalten. Möchten Sie sich an der Bearbeitung des Katalogs beteiligen, so informieren Sie bitte den Administrator.",
+    "signup_success": "Sie erhalten in den nächsten Minuten einen Bestätigungscode per Email, mit dem Sie Ihren Account aktivieren können.",
+    "login_success": "Willkommen zurück!"
+  },
+  "import": {
+    "heading": "Katalog Importieren (CSV)",
+    "description": "Über diese Seite lassen sich Entitäten und deren Relationen importieren. Analog zum Export können hier zwei CSV-Dateien importiert werden. Die eine Datei enthält die Entitäten in folgendem Schema:",
+    "entity_columns": "id;typ;tags;name;name_en;description;version;createdBy;created;lastModified;lastModifiedBy",
+    "entity_columns_note": "Mit r gekennzeichnete Spalten müssen für jede Entität ausgefüllt sein, mit o gekennzeichnete Spalten können optional Werte enthalten. Die restlichen Spalten werden beim Import nicht berücksichtigt und können daher leer bleiben.",
+    "tags_note": "Damit die entitäten in der datacatEditor Oberfläche sichtbar sind, müssen ihnen Tags der dort gewählten Taxonomie gegeben werden. (Referenzdokument, Fachmodell, Gruppe, Klasse, Merkmalsgruppe, Merkmal, Größe, Wert, Maßeinheit)",
+    "relation_columns_note": "Die andere Datei enthält optional die Relationen zwischen Entitäten mit den folgenden Spalten:",
+    "relation_columns": "entity1;entity1Type;relationId;relationshipType;entity2;entity2Type",
+    "relation_columns_note_2": "Die Entitätstypen können hier leer gelassen werden.",
+    "entities_file_button": "Entitäten Datei auswählen",
+    "relations_file_button": "Relationen Datei auswählen",
+    "import_button": "Importieren",
+    "import_tag_label": "Import Tag (optional)",
+    "csv_templates_button": "CSV Templates",
+    "no_file_selected": "Keine Datei ausgewählt",
+    "note_entities_only": "HINWEIS: Es werden nur Entitäten, keine Relationen zwischen diesen importiert!",
+    "note_relations_only": "HINWEIS: Es werden nur Relationen importiert. Die Entitäten müssen bereits im Merkmalserver enthalten sein!",
+    "error_columns_mismatch": "Die Spaltennamen stimmen nicht mit der Vorgabe überein.",
+    "error_creating_record": "Fehler beim Erstellen des Datensatzes",
+    "error_creating_relationship": "Fehler beim Erstellen der Beziehung",
+    "new_tag_created": "Neues Tag erstellt",
+    "create_tag_failed": "Erstellen des neuen Tags fehlgeschlagen",
+    "created_record": "Neuer Datensatz erstellt",
+    "created_relationship": "Neue Beziehung erstellt"
+  },
+  "import_excel": {
+    "heading": "Katalog Importieren (Excel Tabelle)",
+    "description": "Über diese Seite lassen sich ebenfalls Entitäten und deren Relationen importieren. Anders als beim CSV-Import kann eine externe Excel-Tabelle verwendet werden. Damit der Import funktioniert müssen die Spalten korrekt angegeben werden in denen die jeweiligen Entitäten aufgeführt sind: Fachmodell, Gruppe, Klasse, Merkmal, Größe (Enum), Maßeinheit und Wert.",
+    "select_all": "Alle aus-/ abwählen",
+    "label": "Bezeichnung:",
+    "sheet": "Tabellenblatt",
+    "name": "Name",
+    "id": "ID",
+    "relations": "Relationen:",
+    "validation_failed": "Validierung fehlgeschlagen. Bitte prüfen Sie die Fehlermeldungen.",
+    "validation_success": "Validierung erfolgreich. Sie können jetzt die Excel-Datei importieren.",
+    "no_file_selected": "Keine Datei ausgewählt",
+    "select_file_button": "Excel-Tabelle auswählen",
+    "check_inputs_button": "Eingaben Prüfen",
+    "import_tag_label": "Import Tag (optional)",
+    "import_button": "Excel-Tabelle importieren",
+    "reset_button": "Eingaben Zurücksetzen",
+    "progress": "{progress}% abgeschlossen"
+  },
+  "app_drawer": {
+    "general": "Allgemein",
+    "home": "Startseite",
+    "edit_profile": "Profil bearbeiten",
+    "search_catalog": "Katalog durchsuchen",
+    "audit": "Prüfen",
+    "import": "Importieren",
+    "export": "Exportieren",
+    "graphiql": "GraphiQL Interface",
+    "new_tags": "Neue Tags anlegen",
+    "grid_view": "Tabellenansicht",
+    "catalog": "Katalog",
+    "documents": "Referenzdokumente",
+    "models": "Fachmodelle",
+    "groups": "Gruppen",
+    "classes": "Klassen",
+    "data_templates": "Datenvorlagen",
+    "property_groups": "Merkmalsgruppen",
+    "properties": "Merkmale",
+    "measures": "Größen",
+    "units": "Maßeinheiten",
+    "values": "Werte"
+  }
+}

@@ -321,7 +321,7 @@ export function ImportViewExcel() {
   };
 
   const handleSelectChange = (
-    event: React.ChangeEvent<{ value: unknown }>,
+    event: React.ChangeEvent<HTMLInputElement> | { target: { value: unknown } },
     key: string
   ) => {
     setSelectedLetters((prev) => ({
@@ -1037,113 +1037,80 @@ export function ImportViewExcel() {
           </b>
           <br />
           <br />
-          <Box style={tableStyle} component="table">
-            <thead>
-              <tr>
-                <th style={thStyle}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={Object.values(checkedRows.entities).every(
-                          Boolean
-                        )}
-                        onChange={() => handleSelectAll("entities")}
-                      />
-                    }
-                    label="Alle aus-/ abwählen"
-                  />
-                </th>
-                <th style={thStyle}>Bezeichnung:</th>
-                <th style={thStyle}>Tabellenblatt</th>
-                <th style={thStyle}>Name</th>
-                <th style={thStyle}>ID</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                { label: "Referenzdokumente", toggle: true },
-                { label: "Fachmodell", toggle: true },
-                { label: "Gruppe", toggle: true },
-                { label: "Klasse", toggle: true },
-                { label: "Merkmal", toggle: false },
-                { label: "Größen (Enums)", toggle: false },
-                { label: "Maßeinheiten", toggle: false },
-                { label: "Werte", toggle: false },
-              ].map((entity, index) => (
-                <tr key={index}>
-                  <td style={thTdStyle}>
+        </Typography>
+        <Box style={tableStyle} component="table">
+          <thead>
+            <tr>
+              <th style={thStyle}>
+                <FormControlLabel
+                  control={
                     <Checkbox
-                      checked={!!checkedRows.entities[index]}
-                      onChange={() => handleCheckboxChange(index, "entities")}
-                    />
-                  </td>
-                  <td style={thTdStyle}>{entity.label}</td>
-                  <td style={thTdStyle}>
-                    <TextField
-                      value={textFieldValues[`sheetField${index}`] || ""}
-                      onChange={(e) =>
-                        handleTextFieldChange(e, `sheetField${index}`)
-                      }
-                      fullWidth
-                      placeholder="Tabellenblatt"
-                      disabled={!checkedRows.entities[index]}
-                    />
-                  </td>
-                  <td style={thTdStyle}>
-                    <Box style={{ display: "flex", alignItems: "center" }}>
-                      {useTextField[`name${index}`] ? (
-                        <TextField
-                          value={textFieldValues[`name${index}`] || ""}
-                          onChange={(e) =>
-                            handleTextFieldChange(e, `name${index}`)
-                          }
-                          fullWidth
-                          placeholder="Name"
-                          disabled={!checkedRows.entities[index]}
-                        />
-                      ) : (
-                        <Select
-                          value={selectedLetters[`selectName${index}`] || ""}
-                          onChange={(e) =>
-                            handleSelectChange(e, `selectName${index}`)
-                          }
-                          displayEmpty
-                          style={tdSelectStyle}
-                          disabled={!checkedRows.entities[index]}
-                        >
-                          {alphabet.map((letter) => (
-                            <MenuItem key={letter} value={letter}>
-                              {letter}
-                            </MenuItem>
-                          ))}
-                        </Select>
+                      checked={Object.values(checkedRows.entities).every(
+                        Boolean
                       )}
-                      {entity.toggle && index <= 2 && (
-                        <Button
-                          onClick={() =>
-                            handleUseTextFieldToggle(`name${index}`)
-                          }
-                        >
-                          {useTextField[`name${index}`] ? "Dropdown" : "Text"}
-                        </Button>
-                      )}
-                    </Box>
-                  </td>
-                  <td style={thTdStyle}>
-                    <Box style={{ display: "flex", alignItems: "center" }}>
-                      <Select
-                        value={selectedLetters[`selectID${index}`] || ""}
+                      onChange={() => handleSelectAll("entities")}
+                    />
+                  }
+                  label="Alle aus-/ abwählen"
+                />
+              </th>
+              <th style={thStyle}>Bezeichnung:</th>
+              <th style={thStyle}>Tabellenblatt</th>
+              <th style={thStyle}>Name</th>
+              <th style={thStyle}>ID</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              { label: "Referenzdokumente", toggle: true },
+              { label: "Fachmodell", toggle: true },
+              { label: "Gruppe", toggle: true },
+              { label: "Klasse", toggle: true },
+              { label: "Merkmal", toggle: false },
+              { label: "Größen (Enums)", toggle: false },
+              { label: "Maßeinheiten", toggle: false },
+              { label: "Werte", toggle: false },
+            ].map((entity, index) => (
+              <tr key={index}>
+                <td style={thTdStyle}>
+                  <Checkbox
+                    checked={!!checkedRows.entities[index]}
+                    onChange={() => handleCheckboxChange(index, "entities")}
+                  />
+                </td>
+                <td style={thTdStyle}>{entity.label}</td>
+                <td style={thTdStyle}>
+                  <TextField
+                    value={textFieldValues[`sheetField${index}`] || ""}
+                    onChange={(e) =>
+                      handleTextFieldChange(e, `sheetField${index}`)
+                    }
+                    fullWidth
+                    placeholder="Tabellenblatt"
+                    disabled={!checkedRows.entities[index]}
+                  />
+                </td>
+                <td style={thTdStyle}>
+                  <Box style={{ display: "flex", alignItems: "center" }}>
+                    {useTextField[`name${index}`] ? (
+                      <TextField
+                        value={textFieldValues[`name${index}`] || ""}
                         onChange={(e) =>
-                          handleSelectChange(e, `selectID${index}`)
+                          handleTextFieldChange(e, `name${index}`)
+                        }
+                        fullWidth
+                        placeholder="Name"
+                        disabled={!checkedRows.entities[index]}
+                      />
+                    ) : (
+                      <Select
+                        value={selectedLetters[`selectName${index}`] || ""}
+                        onChange={(e) =>
+                          handleSelectChange(e, `selectName${index}`)
                         }
                         displayEmpty
                         style={tdSelectStyle}
-                        disabled={
-                          entity.toggle
-                            ? useTextField[`id${index}`] ||
-                              !checkedRows.entities[index]
-                            : !checkedRows.entities[index]
-                        }
+                        disabled={!checkedRows.entities[index]}
                       >
                         {alphabet.map((letter) => (
                           <MenuItem key={letter} value={letter}>
@@ -1151,124 +1118,151 @@ export function ImportViewExcel() {
                           </MenuItem>
                         ))}
                       </Select>
-                      {entity.toggle && (
-                        <TextField
-                          value={textFieldValues[`id${index}`] || ""}
-                          onChange={(e) =>
-                            handleTextFieldChange(e, `id${index}`)
-                          }
-                          fullWidth
-                          placeholder="ID"
-                          disabled={
-                            !useTextField[`id${index}`] ||
+                    )}
+                    {entity.toggle && index <= 2 && (
+                      <Button
+                        onClick={() =>
+                          handleUseTextFieldToggle(`name${index}`)
+                        }
+                      >
+                        {useTextField[`name${index}`] ? "Dropdown" : "Text"}
+                      </Button>
+                    )}
+                  </Box>
+                </td>
+                <td style={thTdStyle}>
+                  <Box style={{ display: "flex", alignItems: "center" }}>
+                    <Select
+                      value={selectedLetters[`selectID${index}`] || ""}
+                      onChange={(e) =>
+                        handleSelectChange(e, `selectID${index}`)
+                      }
+                      displayEmpty
+                      style={tdSelectStyle}
+                      disabled={
+                        entity.toggle
+                          ? useTextField[`id${index}`] ||
                             !checkedRows.entities[index]
-                          }
-                          style={{
-                            display: useTextField[`id${index}`]
-                              ? "block"
-                              : "none",
-                          }}
-                        />
-                      )}
-                    </Box>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Box>
-          <br />
-          <Box style={tableStyle} component="table">
-            <thead>
-              <tr>
-                <th style={thStyle}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={Object.values(checkedRows.relations).every(
-                          Boolean
-                        )}
-                        onChange={() => handleSelectAll("relations")}
+                          : !checkedRows.entities[index]
+                      }
+                    >
+                      {alphabet.map((letter) => (
+                        <MenuItem key={letter} value={letter}>
+                          {letter}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    {entity.toggle && (
+                      <TextField
+                        value={textFieldValues[`id${index}`] || ""}
+                        onChange={(e) => handleTextFieldChange(e, `id${index}`)}
+                        fullWidth
+                        placeholder="ID"
+                        disabled={
+                          !useTextField[`id${index}`] ||
+                          !checkedRows.entities[index]
+                        }
+                        style={{
+                          display: useTextField[`id${index}`] ? "block" : "none",
+                        }}
                       />
-                    }
-                    label="Alle aus-/ abwählen"
-                  />
-                </th>
-                <th style={thStyle}>Relationen:</th>
-                <th style={thStyle}>Tabellenblatt</th>
-                <th style={thStyle}>ID 1</th>
-                <th style={thStyle}>ID 2</th>
+                    )}
+                  </Box>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {[
-                "Relation Referenzdokument - Fachmodell",
-                "Relation Fachmodell - Gruppe",
-                "Relation Gruppe - Klasse",
-                "Relation Klasse - Merkmal",
-                "Relation Merkmal - Größe (Enum)",
-                "Relation Größe (Enum) - Maßeinheit",
-                "Relation Größe (Enum) - Wert",
-              ].map((relation, index) => (
-                <tr key={index}>
-                  <td style={thTdStyle}>
+            ))}
+          </tbody>
+        </Box>
+        <br />
+        <Box style={tableStyle} component="table">
+          <thead>
+            <tr>
+              <th style={thStyle}>
+                <FormControlLabel
+                  control={
                     <Checkbox
-                      checked={!!checkedRows.relations[index]}
-                      onChange={() => handleCheckboxChange(index, "relations")}
+                      checked={Object.values(checkedRows.relations).every(
+                        Boolean
+                      )}
+                      onChange={() => handleSelectAll("relations")}
                     />
-                  </td>
-                  <td style={thTdStyle}>{relation}</td>
-                  <td style={thTdStyle}>
-                    <TextField
-                      value={
-                        textFieldValues[`sheetFieldRelation${index}`] || ""
-                      }
-                      onChange={(e) =>
-                        handleTextFieldChange(e, `sheetFieldRelation${index}`)
-                      }
-                      fullWidth
-                      placeholder="Tabellenblatt"
-                      disabled={!checkedRows.relations[index]}
-                    />
-                  </td>
-                  <td style={thTdStyle}>
-                    <Select
-                      value={selectedLetters[`relationID1${index}`] || ""}
-                      onChange={(e) =>
-                        handleSelectChange(e, `relationID1${index}`)
-                      }
-                      displayEmpty
-                      style={tdSelectStyle}
-                      disabled={!checkedRows.relations[index]}
-                    >
-                      {alphabet.map((letter) => (
-                        <MenuItem key={letter} value={letter}>
-                          {letter}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </td>
-                  <td style={thTdStyle}>
-                    <Select
-                      value={selectedLetters[`relationID2${index}`] || ""}
-                      onChange={(e) =>
-                        handleSelectChange(e, `relationID2${index}`)
-                      }
-                      displayEmpty
-                      style={tdSelectStyle}
-                      disabled={!checkedRows.relations[index]}
-                    >
-                      {alphabet.map((letter) => (
-                        <MenuItem key={letter} value={letter}>
-                          {letter}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Box>
-        </Typography>
+                  }
+                  label="Alle aus-/ abwählen"
+                />
+              </th>
+              <th style={thStyle}>Relationen:</th>
+              <th style={thStyle}>Tabellenblatt</th>
+              <th style={thStyle}>ID 1</th>
+              <th style={thStyle}>ID 2</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              "Relation Referenzdokument - Fachmodell",
+              "Relation Fachmodell - Gruppe",
+              "Relation Gruppe - Klasse",
+              "Relation Klasse - Merkmal",
+              "Relation Merkmal - Größe (Enum)",
+              "Relation Größe (Enum) - Maßeinheit",
+              "Relation Größe (Enum) - Wert",
+            ].map((relation, index) => (
+              <tr key={index}>
+                <td style={thTdStyle}>
+                  <Checkbox
+                    checked={!!checkedRows.relations[index]}
+                    onChange={() => handleCheckboxChange(index, "relations")}
+                  />
+                </td>
+                <td style={thTdStyle}>{relation}</td>
+                <td style={thTdStyle}>
+                  <TextField
+                    value={textFieldValues[`sheetFieldRelation${index}`] || ""}
+                    onChange={(e) =>
+                      handleTextFieldChange(e, `sheetFieldRelation${index}`)
+                    }
+                    fullWidth
+                    placeholder="Tabellenblatt"
+                    disabled={!checkedRows.relations[index]}
+                  />
+                </td>
+                <td style={thTdStyle}>
+                  <Select
+                    value={selectedLetters[`relationID1${index}`] || ""}
+                    onChange={(e) =>
+                      handleSelectChange(e, `relationID1${index}`)
+                    }
+                    displayEmpty
+                    style={tdSelectStyle}
+                    disabled={!checkedRows.relations[index]}
+                  >
+                    {alphabet.map((letter) => (
+                      <MenuItem key={letter} value={letter}>
+                        {letter}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </td>
+                <td style={thTdStyle}>
+                  <Select
+                    value={selectedLetters[`relationID2${index}`] || ""}
+                    onChange={(e) =>
+                      handleSelectChange(e, `relationID2${index}`)
+                    }
+                    displayEmpty
+                    style={tdSelectStyle}
+                    disabled={!checkedRows.relations[index]}
+                  >
+                    {alphabet.map((letter) => (
+                      <MenuItem key={letter} value={letter}>
+                        {letter}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Box>
         <Box
           style={{
             display: "flex",
@@ -1342,7 +1336,7 @@ export function ImportViewExcel() {
             </Button>
             <Button
               variant="contained"
-              color="default"
+              color="inherit"
               onClick={handleClearTable}
             >
               Eingaben Zurücksetzen

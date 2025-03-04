@@ -65,6 +65,7 @@ import {
   ValueIcon,
 } from "../domain";
 import ButtonComponent from "@mui/material/Button";
+import { T } from "@tolgee/react";
 
 const useStyles = makeStyles((theme: any) => ({
   paper: {
@@ -104,7 +105,7 @@ export function VerificationView() {
   const [selectButton, setSelectButton] = useState("");
   const [selectCategory, setSelectCategory] = useState("");
   const [selectedConcept, setSelectedConcept] = useState<ConceptPropsFragment | null>(null);
-  const [title, setTitle] = useState(""); // <-- Hier die Variable `title` definieren
+  const [title, setTitle] = useState<React.ReactNode>(""); // <-- Hier die Variable `title` definieren
 
   // Statt navigate() nutzen wir hier den State:
   const handleOnSelect = (concept: ConceptPropsFragment) => {
@@ -118,21 +119,21 @@ export function VerificationView() {
   // Linke Spalte: Auswahl der Prüfkriterien
   const renderCriteriaButtons = () => (
     <Paper className={classes.paper}>
-      <Typography variant="h5">Prüfkriterium</Typography>
+      <T keyName="verification.title">Prüfkriterium</T>
       <Grid container direction="column" alignItems="stretch">
         <Grid item>
           <ButtonComponent onClick={() => setSelectButton("Integrität")}>
-            Integrität
+            <T keyName="verification.criteria.integrity">Integrität</T>
           </ButtonComponent>
         </Grid>
         <Grid item>
           <ButtonComponent onClick={() => setSelectButton("Eindeutigkeit")}>
-            Eindeutigkeit
+            <T keyName="verification.criteria.uniqueness">Eindeutigkeit</T>
           </ButtonComponent>
         </Grid>
         <Grid item>
           <ButtonComponent onClick={() => setSelectButton("Sprache")}>
-            Sprache
+            <T keyName="verification.criteria.language">Sprache</T>
           </ButtonComponent>
         </Grid>
       </Grid>
@@ -150,42 +151,42 @@ export function VerificationView() {
           <Grid container direction="column" alignItems="stretch">
             <Grid item>
               <ButtonComponent onClick={() => setSelectCategory("Fachmodelle ohne Gruppe")}>
-                Fachmodelle ohne Gruppe
+                <T keyName="verification.category.no_model_group">Fachmodelle ohne Gruppe</T>
               </ButtonComponent>
             </Grid>
             <Grid item>
               <ButtonComponent onClick={() => setSelectCategory("Gruppen ohne Klasse")}>
-                Gruppen ohne Klasse
+                <T keyName="verification.category.no_group_class">Gruppen ohne Klasse</T>
               </ButtonComponent>
             </Grid>
             <Grid item>
               <ButtonComponent onClick={() => setSelectCategory("Klassen ohne Merkmale/Merkmalsgruppen")}>
-                Klassen ohne Merkmale/Merkmalsgruppen
+                <T keyName="verification.category.no_class_properties">Klassen ohne Merkmale/Merkmalsgruppen</T>
               </ButtonComponent>
             </Grid>
             <Grid item>
               <ButtonComponent onClick={() => setSelectCategory("Merkmalsgruppen ohne Merkmale")}>
-                Merkmalsgruppen ohne Merkmale
+                <T keyName="verification.category.no_property_group">Merkmalsgruppen ohne Merkmale</T>
               </ButtonComponent>
             </Grid>
             <Grid item>
               <ButtonComponent onClick={() => setSelectCategory("Merkmale ohne Klasse oder Merkmalsgruppe")}>
-                Merkmale ohne Klasse oder Merkmalsgruppe
+                <T keyName="verification.category.no_property">Merkmale ohne Klasse oder Merkmalsgruppe</T>
               </ButtonComponent>
             </Grid>
             <Grid item>
               <ButtonComponent onClick={() => setSelectCategory("Größen die keinem Merkmal zugeordnet sind")}>
-                Größen ohne Merkmal
+                <T keyName="verification.category.no_measure">Größen ohne Merkmal</T>
               </ButtonComponent>
             </Grid>
             <Grid item>
               <ButtonComponent onClick={() => setSelectCategory("Einheiten ohne Größe")}>
-                Einheiten ohne Größe
+                <T keyName="verification.category.no_unit">Einheiten ohne Größe</T>
               </ButtonComponent>
             </Grid>
             <Grid item>
               <ButtonComponent onClick={() => setSelectCategory("Werte ohne Größe")}>
-                Werte ohne Größe
+                <T keyName="verification.category.no_value">Werte ohne Größe</T>
               </ButtonComponent>
             </Grid>
           </Grid>
@@ -195,17 +196,17 @@ export function VerificationView() {
           <Grid container direction="column" alignItems="stretch">
             <Grid item>
               <ButtonComponent onClick={() => setSelectCategory("ID-Duplikate")}>
-                ID-Duplikate
+                <T keyName="verification.category.duplicate_id">ID-Duplikate</T>
               </ButtonComponent>
             </Grid>
             <Grid item>
               <ButtonComponent onClick={() => setSelectCategory("Namen-Duplikate (innerhalb eines Types)")}>
-                Namen-Duplikate (innerhalb eines Types)
+                <T keyName="verification.category.duplicate_name_type">Namen-Duplikate (innerhalb eines Types)</T>
               </ButtonComponent>
             </Grid>
             <Grid item>
               <ButtonComponent onClick={() => setSelectCategory("Namen-Duplikate (gesamter Datenbestand)")}>
-                Namen-Duplikate (gesamter Datenbestand)
+                <T keyName="verification.category.duplicate_name_all">Namen-Duplikate (gesamter Datenbestand)</T>
               </ButtonComponent>
             </Grid>
           </Grid>
@@ -215,17 +216,17 @@ export function VerificationView() {
           <Grid container direction="column" alignItems="stretch">
             <Grid item>
               <ButtonComponent onClick={() => setSelectCategory("Fehlende Beschreibung")}>
-                Fehlende Beschreibung
+                <T keyName="verification.category.missing_description">Fehlende Beschreibung</T>
               </ButtonComponent>
             </Grid>
             <Grid item>
               <ButtonComponent onClick={() => setSelectCategory("Fehlende Beschreibung (englisch)")}>
-                Fehlende Beschreibung (englisch)
+                <T keyName="verification.category.missing_description_en">Fehlende Beschreibung (englisch)</T>
               </ButtonComponent>
             </Grid>
             <Grid item>
               <ButtonComponent onClick={() => setSelectCategory("Fehlende Namens-Übersetzung (englisch)")}>
-                Fehlende Namens-Übersetzung (englisch)
+                <T keyName="verification.category.missing_translation_en">Fehlende Namens-Übersetzung (englisch)</T>
               </ButtonComponent>
             </Grid>
           </Grid>
@@ -238,46 +239,46 @@ export function VerificationView() {
   useEffect(() => {
     switch (selectCategory) {
       case "Fachmodelle ohne Gruppe":
-        setTitle("Fachmodelle ohne Gruppe");
+        setTitle(<T keyName="verification.category.no_model_group">Fachmodelle ohne Gruppe</T>);
         break;
       case "Gruppen ohne Klasse":
-        setTitle("Gruppen ohne Klasse");
+        setTitle(<T keyName="verification.category.no_group_class">Gruppen ohne Klasse</T>);
         break;
       case "Klassen ohne Merkmale/Merkmalsgruppen":
-        setTitle("Klassen ohne Merkmale/Merkmalsgruppen");
+        setTitle(<T keyName="verification.category.no_class_properties">Klassen ohne Merkmale/Merkmalsgruppen</T>);
         break;
       case "Merkmalsgruppen ohne Merkmale":
-        setTitle("Merkmalsgruppen ohne Merkmale");
+        setTitle(<T keyName="verification.category.no_property_group">Merkmalsgruppen ohne Merkmale</T>);
         break;
       case "Merkmale ohne Klasse oder Merkmalsgruppe":
-        setTitle("Merkmale ohne Klasse oder Merkmalsgruppe");
+        setTitle(<T keyName="verification.category.no_property">Merkmale ohne Klasse oder Merkmalsgruppe</T>);
         break;
       case "Größen die keinem Merkmal zugeordnet sind":
-        setTitle("Größen ohne Merkmal");
+        setTitle(<T keyName="verification.category.no_measure">Größen ohne Merkmal</T>);
         break;
       case "Einheiten ohne Größe":
-        setTitle("Einheiten ohne Größe");
+        setTitle(<T keyName="verification.category.no_unit">Einheiten ohne Größe</T>);
         break;
       case "Werte ohne Größe":
-        setTitle("Werte ohne Größe");
+        setTitle(<T keyName="verification.category.no_value">Werte ohne Größe</T>);
         break;
       case "ID-Duplikate":
-        setTitle("ID-Duplikate");
+        setTitle(<T keyName="verification.category.duplicate_id">ID-Duplikate</T>);
         break;
       case "Namen-Duplikate (innerhalb eines Types)":
-        setTitle("Namen-Duplikate (innerhalb eines Types)");
+        setTitle(<T keyName="verification.category.duplicate_name_type">Namen-Duplikate (innerhalb eines Types)</T>);
         break;
       case "Namen-Duplikate (gesamter Datenbestand)":
-        setTitle("Namen-Duplikate (gesamter Datenbestand)");
+        setTitle(<T keyName="verification.category.duplicate_name_all">Namen-Duplikate (gesamter Datenbestand)</T>);
         break;
       case "Fehlende Beschreibung":
-        setTitle("Fehlende Beschreibung");
+        setTitle(<T keyName="verification.category.missing_description">Fehlende Beschreibung</T>);
         break;
       case "Fehlende Beschreibung (englisch)":
-        setTitle("Fehlende Beschreibung (englisch)");
+        setTitle(<T keyName="verification.category.missing_description_en">Fehlende Beschreibung (englisch)</T>);
         break;
       case "Fehlende Namens-Übersetzung (englisch)":
-        setTitle("Fehlende Namens-Übersetzung (englisch)");
+        setTitle(<T keyName="verification.category.missing_translation_en">Fehlende Namens-Übersetzung (englisch)</T>);
         break;
       default:
         setTitle("");
@@ -322,7 +323,7 @@ export function VerificationView() {
         return (
           <Paper className={classes.paper}>
             <Typography className={classes.hint} variant="body1">
-              Prüfkriterium und Kategorie auswählen.
+              <T keyName="verification.result.select_criteria">Prüfkriterium und Kategorie auswählen.</T>
             </Typography>
           </Paper>
         );
@@ -334,7 +335,7 @@ export function VerificationView() {
     if (!selectedConcept) {
       return (
         <Typography className={classes.hint} variant="body1">
-          Prüfergebnis in der Listenansicht auswählen um Eigenschaften anzuzeigen.
+          <T keyName="verification.result.select_entry">Prüfergebnis in der Listenansicht auswählen um Eigenschaften anzuzeigen.</T>
         </Typography>
       );
     }

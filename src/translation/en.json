@@ -1,0 +1,148 @@
+{
+  "verification": {
+    "title": "Verification Criterion",
+    "criteria": {
+      "integrity": "Integrity",
+      "uniqueness": "Uniqueness",
+      "language": "Language"
+    },
+    "category": {
+      "no_model_group": "Domain models without a group",
+      "no_group_class": "Groups without a class",
+      "no_class_properties": "Classes without properties/property groups",
+      "no_property_group": "Property groups without properties",
+      "no_property": "Properties without a class or property group",
+      "no_measure": "Measures without properties",
+      "no_unit": "Units without a measure",
+      "no_value": "Values without a measure",
+      "duplicate_id": "ID duplicates",
+      "duplicate_name_type": "Name duplicates (within a type)",
+      "duplicate_name_all": "Name duplicates (entire dataset)",
+      "missing_description": "Missing description",
+      "missing_description_en": "Missing description (English)",
+      "missing_translation_en": "Missing name translation (English)"
+    },
+    "result": {
+      "select_criteria": "Select a criterion and category.",
+      "select_entry": "Select a result from the list view to display properties."
+    },
+    "edit": {
+      "group": "Edit group",
+      "class": "Edit class",
+      "property": "Edit property",
+      "measure": "Edit measure",
+      "unit": "Edit unit",
+      "value": "Edit value",
+      "model": "Edit domain model"
+    }
+  },
+  "home": {
+    "title": "Welcome to datacat",
+    "about.title": "About the Project",
+    "about.description": "The datacat platform is a cross-project research effort by the Department of 'Geodesy and BIM' at the Faculty of Geoinformation at the University of Applied Sciences Dresden (HTW Dresden). The platform aims to provide user- and developer-friendly components for creating and publishing classification systems, object catalogs, and property databases in the context of the BIM methodology.",
+    "components.title": "The Components",
+    "components.description": "The platform is currently divided into the core components: datacat API, a developer-friendly, self-documenting GraphQL interface for complex queries on the data catalog, and the datacat editor, a browser-based user tool for navigating and editing the data.",
+    "methodology.title": "The Methodology",
+    "methodology.description": "The core of the development is a data schema closely aligned with established standards such as DIN EN ISO 12006-3 and DIN EN ISO 23387, making it possible to maintain even complex classification systems in the catalog. The API is entirely agnostic regarding the application-specific structure to be implemented in the data catalog.",
+    "opensource.title": "Open Source",
+    "opensource.description": "datacat is developed as free and open-source software under the GPLv3 license and can be freely used and distributed, including commercially. The source code is hosted on GitHub. Any form of support for the project is welcome."
+  },
+  "intro": {
+    "description1": "datacat editor is a web-based, open-source tool for collaboratively developing data catalogs for the construction industry. The source code is available under the GPL v3 license.",
+    "description2": "In a data catalog, you can name, describe, and categorize concepts such as actors, activities, building elements, and properties according to function and form. By creating relationships between these concepts, the built environment can be described more precisely.",
+    "description3": "The developed dataset is available for retrieval via an API for developers of import/export tools and CAD/BIM plugins. In the future, validation routines will be developed to identify inconsistencies such as unused concepts, potential duplicates, and missing translations in the catalog.",
+    "description4": "datacat is developed at the University of Applied Sciences Dresden (HTW Dresden). If you are interested in the project or have questions about the application, please feel free to contact us directly through the details provided below.",
+    "call_to_action": "This is a software preview. Your direct involvement as an open-source developer or indirect support through feedback is highly appreciated."
+  },
+  "profile": {
+    "heading": "Edit Profile",
+    "update_success": "Profile updated!",
+    "error": "An error occurred while fetching the profile.",
+    "form": {
+      "first_name": "First Name",
+      "first_name_helper": "Providing your first name is mandatory. It will be displayed to other catalog users to attribute entries and changes and facilitate collaboration.",
+      "last_name": "Last Name",
+      "last_name_helper": "Providing your last name is mandatory. It will be displayed to other catalog users to attribute entries and changes and facilitate collaboration.",
+      "email": "Email",
+      "email_helper": "Providing a valid email address is mandatory. It will be used to validate your user account and inform you about changes in the catalog.",
+      "organization": "Organization",
+      "organization_helper": "If applicable, please provide the company, organization, or institute you are affiliated with."
+    }
+  },
+  "boarding": {
+    "welcome": "Welcome to the datacat editor",
+    "login_tab": "Login",
+    "signup_tab": "Sign Up",
+    "login_message": "Please use your username and password to log in to the editor.",
+    "signup_message": "You can register to gain read access to the catalog. If you want to contribute to the catalog, please inform the administrator.",
+    "signup_success": "You will receive a confirmation code via email in the next few minutes to activate your account.",
+    "login_success": "Welcome back!"
+  },
+  "import": {
+    "heading": "Import Catalog (CSV)",
+    "description": "This page allows you to import entities and their relationships. Similar to the export, two CSV files can be imported here. One file contains the entities in the following schema:",
+    "entity_columns": "id;type;tags;name;name_en;description;version;createdBy;created;lastModified;lastModifiedBy",
+    "entity_columns_note": "Columns marked with r must be filled in for each entity, columns marked with o can optionally contain values. The remaining columns are not considered during import and can therefore remain empty.",
+    "tags_note": "To make the entities visible in the datacatEditor interface, they must be given tags of the chosen taxonomy there. (Reference document, domain model, group, class, property group, property, measure, value, unit of measure)",
+    "relation_columns_note": "The other file optionally contains the relationships between entities with the following columns:",
+    "relation_columns": "entity1;entity1Type;relationId;relationshipType;entity2;entity2Type",
+    "relation_columns_note_2": "The entity types can be left blank here.",
+    "entities_file_button": "Select Entities File",
+    "relations_file_button": "Select Relations File",
+    "import_button": "Import",
+    "import_tag_label": "Import Tag (optional)",
+    "csv_templates_button": "CSV Templates",
+    "no_file_selected": "No file selected",
+    "note_entities_only": "NOTE: Only entities will be imported, no relationships between them!",
+    "note_relations_only": "NOTE: Only relationships will be imported. The entities must already be present in the feature server!",
+    "error_columns_mismatch": "The column names do not match the specification.",
+    "error_creating_record": "Error creating record",
+    "error_creating_relationship": "Error creating relationship",
+    "new_tag_created": "New tag created",
+    "create_tag_failed": "Failed to create new tag",
+    "created_record": "Created new record",
+    "created_relationship": "Created new relationship"
+  },
+  "import_excel": {
+    "heading": "Import Catalog (Excel Table)",
+    "description": "This page also allows you to import entities and their relationships. Unlike the CSV import, an external Excel table can be used. For the import to work, the columns must be correctly specified in which the respective entities are listed: Domain model, group, class, property, measure (enum), unit of measure, and value.",
+    "select_all": "Select/Deselect All",
+    "label": "Label:",
+    "sheet": "Sheet",
+    "name": "Name",
+    "id": "ID",
+    "relations": "Relations:",
+    "validation_failed": "Validation failed. Please check the error messages.",
+    "validation_success": "Validation successful. You can now import the Excel file.",
+    "no_file_selected": "No file selected",
+    "select_file_button": "Select Excel Table",
+    "check_inputs_button": "Check Inputs",
+    "import_tag_label": "Import Tag (optional)",
+    "import_button": "Import Excel Table",
+    "reset_button": "Reset Inputs",
+    "progress": "{progress}% completed"
+  },
+  "app_drawer": {
+    "general": "General",
+    "home": "Home",
+    "edit_profile": "Edit Profile",
+    "search_catalog": "Search Catalog",
+    "audit": "Audit",
+    "import": "Import",
+    "export": "Export",
+    "graphiql": "GraphiQL Interface",
+    "new_tags": "Create New Tags",
+    "grid_view": "Grid View",
+    "catalog": "Catalog",
+    "documents": "External Documents",
+    "models": "Domain Models",
+    "groups": "Groups",
+    "classes": "Classes",
+    "data_templates": "Data Templates",
+    "property_groups": "Property Groups",
+    "properties": "Properties",
+    "measures": "Measures",
+    "units": "Units",
+    "values": "Values"
+  }
+}
