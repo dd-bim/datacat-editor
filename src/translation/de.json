@@ -78,6 +78,26 @@
     "signup_success": "Sie erhalten in den nächsten Minuten einen Bestätigungscode per Email, mit dem Sie Ihren Account aktivieren können.",
     "login_success": "Willkommen zurück!"
   },
+  "signup": {
+    "username_helper": "Ein Benutzername ist erforderlich. Keine Leerzeichen. Muss mit einem Buchstaben beginnen und eine Mindestlänge von 3 haben.",
+    "password_helper": "Ein Passwort ist erforderlich und muss eine Mindestlänge von 8 haben.",
+    "username_label": "Benutzername",
+    "username_error": "Der Benutzername kann nach der Registrierung nicht geändert werden.",
+    "password_label": "Passwort",
+    "password_repeat_label": "Passwort wiederholen",
+    "password_repeat_error": "Die Eingabe stimmt nicht mit dem Passwort überein.",
+    "first_name_label": "Vorname",
+    "last_name_label": "Name",
+    "email_label": "Email",
+    "email_error": "Bitte geben Sie eine gültige Email-Adresse an.",
+    "organization_label": "Firma / Institut",
+    "signup_button": "Registrieren"
+  },
+  "login": {
+    "username_label": "Benutzername",
+    "password_label": "Passwort",
+    "login_button": "Anmelden"
+  },
   "import": {
     "heading": "Katalog Importieren (CSV)",
     "description": "Über diese Seite lassen sich Entitäten und deren Relationen importieren. Analog zum Export können hier zwei CSV-Dateien importiert werden. Die eine Datei enthält die Entitäten in folgendem Schema:",
@@ -105,13 +125,29 @@
   },
   "import_excel": {
     "heading": "Katalog Importieren (Excel Tabelle)",
-    "description": "Über diese Seite lassen sich ebenfalls Entitäten und deren Relationen importieren. Anders als beim CSV-Import kann eine externe Excel-Tabelle verwendet werden. Damit der Import funktioniert müssen die Spalten korrekt angegeben werden in denen die jeweiligen Entitäten aufgeführt sind: Fachmodell, Gruppe, Klasse, Merkmal, Größe (Enum), Maßeinheit und Wert.",
+    "description": "Über diese Seite lassen sich ebenfalls Entitäten und deren Relationen importieren. Anders als beim CSV-Import kann eine externe Excel-Tabelle verwendet werden. Damit der Import funktioniert müssen die Spalten korrekt angegeben werden in denen die jeweiligen Entitäten aufgeführt sind: Referenzdokument, Fachmodell, Gruppe, Klasse, Merkmal, Größe (Enum), Maßeinheit und Wert.",
     "select_all": "Alle aus-/ abwählen",
     "label": "Bezeichnung:",
     "sheet": "Tabellenblatt",
     "name": "Name",
     "id": "ID",
+    "document": "Referenzdokumente",
+    "model": "Fachmodelle",
+    "group": "Gruppen",
+    "class": "Klassen",
+    "property": "Merkmale",
+    "measure": "Größen",
+    "unit": "Maßeinheiten",
+    "value": "Werte",
+    "sheetName": "Tabellenblatt",
     "relations": "Relationen:",
+    "rel_doc_model": "Referenzdokument - Fachmodell",
+    "rel_model_group": "Fachmodell - Gruppe",
+    "rel_group_class": "Gruppe - Klasse",
+    "rel_class_property": "Klasse - Merkmal",
+    "rel_property_measure": "Merkmal - Größe",
+    "rel_measure_unit": "Größe - Maßeinheit",
+    "rel_measure_value": "Größe - Wert",
     "validation_failed": "Validierung fehlgeschlagen. Bitte prüfen Sie die Fehlermeldungen.",
     "validation_success": "Validierung erfolgreich. Sie können jetzt die Excel-Datei importieren.",
     "no_file_selected": "Keine Datei ausgewählt",
@@ -144,5 +180,71 @@
     "measures": "Größen",
     "units": "Maßeinheiten",
     "values": "Werte"
+  },
+  "create_entry_form": {
+    "name_label": "Name (de)",
+    "name_helper": "Benennen Sie das Konzept im fachlichen Kontext und möglichst genau. Trennen Sie Synonyme durch Semikolon voneinander ab.",
+    "description_label": "Beschreibung (de)",
+    "description_helper": "Beschreiben Sie das Konzept in seiner Bedeutung. Nutzen Sie die Beschreibung insbesondere, um es von womöglich gleich benannten, aber fachlich verschiedenen Konzepten abzugrenzen.",
+    "comment_label": "Kommentar (de)",
+    "comment_helper": "Hinterlassen Sie einen Kommentar zu diesem Konzept. Hier können zusätzliche Informationen zwischen Bearbeitern ausgetauscht werden.",
+    "id_label": "ID",
+    "id_helper": "Die ID wird in der Regel automatisch generiert. Eine ID kann angegeben werden, wenn diese bereits in einem übergeordnetem Kontext für das Konzept vergeben wurde.",
+    "version_id_label": "Version ID",
+    "version_date_label": "Version date",
+    "save_button": "Speichern"
+  },
+  "create_entry_split_button": {
+    "add_entry": "Eintrag hinzufügen",
+    "show_more_options": "Zeige weitere Optionen",
+    "create_entry": "{title} erstellen"
+  },
+  "composite_catalog_entry_view": {
+    "more_results": "Mehr Ergebnisse",
+    "edit_entry": "{title} bearbeiten",
+    "select_entry": "{title} in der Listenansicht auswählen um Eigenschaften anzuzeigen."
+  },
+  "document_form": {
+    "loading": "Lade Referenzdokument...",
+    "error": "Es ist ein Fehler aufgetreten...",
+    "update_success": "Update erfolgreich.",
+    "delete_success": "Referenzdokument gelöscht.",
+    "described_concepts": "Durch das Referenzdokument beschriebene Konzepte",
+    "delete_button": "Löschen"
+  },
+  "domain_class_form": {
+    "loading": "Lade Klasse...",
+    "error": "Es ist ein Fehler aufgetreten...",
+    "update_success": "Update erfolgreich.",
+    "delete_success": "Klasse gelöscht.",
+    "assigned_property_groups": "Der Klasse {name} zugewiesene Merkmalsgruppen",
+    "assigned_properties": "Direkt zugewiesene Merkmale der Klasse {name}",
+    "reference_documents": "Referenzdokumente, die diese Klasse beschreiben",
+    "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
+    "groups_using_class": "Gruppen, die diese Klasse anwenden",
+    "no_groups_using_class": "Die Klasse wird durch keine Gruppe genutzt",
+    "delete_button": "Löschen"
+  },
+  "domain_group_form": {
+    "loading": "Lade Gruppe...",
+    "error": "Es ist ein Fehler aufgetreten...",
+    "update_success": "Update erfolgreich.",
+    "delete_success": "Gruppe gelöscht.",
+    "grouped_classes": "Gruppierte Klassen",
+    "grouped_classes_description": "Klassen, die dieser Gruppe zugeordnet sind.",
+    "reference_documents": "Referenzdokumente, die diese Gruppe beschreiben",
+    "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
+    "domain_models_using_group": "Fachmodelle, die diese Gruppe anwenden",
+    "no_domain_models_using_group": "Die Gruppe wird durch kein Fachmodell genutzt",
+    "delete_button": "Löschen"
+  },
+  "delete_import_view": {
+    "heading": "Katalogeinträge mit bestimmtem Tag löschen",
+    "description": "Entitäten, welche ein bestimmtes Tag aufweisen, können hier gelöscht werden. Alle an den Entitäten hängenden Relationen werden ebenfalls gelöscht.",
+    "tag_label": "Tag",
+    "delete_button": "Katalogeinträge löschen",
+    "tag_not_exist": "Das Tag {tag} existiert nicht!",
+    "delete_success": "Katalogeintrag {name} gelöscht",
+    "error_occurred": "Ein Fehler ist aufgetreten..."
   }
 }

@@ -25,6 +25,8 @@ import {
 import { ApolloCache } from "@apollo/client";
 import * as XLSX from "xlsx";
 import { v4 as uuidv4 } from "uuid";
+import { T, useTranslate } from '@tolgee/react';
+
 
 export const IMPORT_TAG_ID = "KATALOG-IMPORT";
 
@@ -88,6 +90,7 @@ export function ImportViewExcel() {
   const [createTag] = useCreateTagMutation();
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState("");
+  const { t } = useTranslate();
 
   const handleValidationClick = () => {
     const hasErrors = handleValidation();
@@ -1023,18 +1026,10 @@ export function ImportViewExcel() {
   };
 
   return (
-    <View heading="Katalog Importieren (Excel Tabelle)">
+    <View heading=<T keyName="import_excel.heading" />>
       <Box style={tableContainerStyle}>
         <Typography variant={"body1"} style={{ flexGrow: 1 }}>
-          Über diese Seite lassen sich ebenfalls Entitäten und deren Relationen
-          importieren. Anders als beim CSV-Import kann eine externe
-          Excel-Tabelle verwendet werden. Damit der Import funktioniert müssen
-          die Spalten korrekt angegeben werden in denen die jeweiligen Entitäten
-          aufgeführt sind:{" "}
-          <b>
-            Fachmodell, Gruppe, Klasse, Merkmal, Größe (Enum), Maßeinheit und
-            Wert.
-          </b>
+        <T keyName="import_excel.description" />
           <br />
           <br />
         </Typography>
@@ -1051,25 +1046,25 @@ export function ImportViewExcel() {
                       onChange={() => handleSelectAll("entities")}
                     />
                   }
-                  label="Alle aus-/ abwählen"
+                  label=<T keyName="import_excel.select_all" />
                 />
               </th>
-              <th style={thStyle}>Bezeichnung:</th>
-              <th style={thStyle}>Tabellenblatt</th>
-              <th style={thStyle}>Name</th>
-              <th style={thStyle}>ID</th>
+              <th style={thStyle}><T keyName="import_excel.label" /></th>
+              <th style={thStyle}><T keyName="import_excel.sheet" /></th>
+              <th style={thStyle}><T keyName="import_excel.name" /></th>
+              <th style={thStyle}><T keyName="import_excel.id" /></th>
             </tr>
           </thead>
           <tbody>
             {[
-              { label: "Referenzdokumente", toggle: true },
-              { label: "Fachmodell", toggle: true },
-              { label: "Gruppe", toggle: true },
-              { label: "Klasse", toggle: true },
-              { label: "Merkmal", toggle: false },
-              { label: "Größen (Enums)", toggle: false },
-              { label: "Maßeinheiten", toggle: false },
-              { label: "Werte", toggle: false },
+              { label: <T keyName="import_excel.document" />, toggle: true },
+              { label: <T keyName="import_excel.model" />, toggle: true },
+              { label: <T keyName="import_excel.group" />, toggle: true },
+              { label: <T keyName="import_excel.class" />, toggle: true },
+              { label: <T keyName="import_excel.property" />, toggle: false },
+              { label: <T keyName="import_excel.measure" />, toggle: false },
+              { label: <T keyName="import_excel.unit" />, toggle: false },
+              { label: <T keyName="import_excel.value" />, toggle: false },
             ].map((entity, index) => (
               <tr key={index}>
                 <td style={thTdStyle}>
@@ -1086,7 +1081,7 @@ export function ImportViewExcel() {
                       handleTextFieldChange(e, `sheetField${index}`)
                     }
                     fullWidth
-                    placeholder="Tabellenblatt"
+                    placeholder={t('import_excel.sheetName')}
                     disabled={!checkedRows.entities[index]}
                   />
                 </td>
@@ -1187,24 +1182,24 @@ export function ImportViewExcel() {
                       onChange={() => handleSelectAll("relations")}
                     />
                   }
-                  label="Alle aus-/ abwählen"
+                  label={t('import_excel.select_all')}
                 />
               </th>
-              <th style={thStyle}>Relationen:</th>
-              <th style={thStyle}>Tabellenblatt</th>
+              <th style={thStyle}>{t('import_excel.relations')}</th>
+              <th style={thStyle}>{t('import_excel.sheetName')}</th>
               <th style={thStyle}>ID 1</th>
               <th style={thStyle}>ID 2</th>
             </tr>
           </thead>
           <tbody>
             {[
-              "Relation Referenzdokument - Fachmodell",
-              "Relation Fachmodell - Gruppe",
-              "Relation Gruppe - Klasse",
-              "Relation Klasse - Merkmal",
-              "Relation Merkmal - Größe (Enum)",
-              "Relation Größe (Enum) - Maßeinheit",
-              "Relation Größe (Enum) - Wert",
+              <T keyName="import_excel.rel_doc_model" />,
+              <T keyName="import_excel.rel_model_group" />,
+              <T keyName="import_excel.rel_group_class" />,
+              <T keyName="import_excel.rel_class_property" />,
+              <T keyName="import_excel.rel_property_measure" />,
+              <T keyName="import_excel.rel_measure_unit" />,
+              <T keyName="import_excel.rel_measure_value" />,
             ].map((relation, index) => (
               <tr key={index}>
                 <td style={thTdStyle}>
@@ -1221,7 +1216,7 @@ export function ImportViewExcel() {
                       handleTextFieldChange(e, `sheetFieldRelation${index}`)
                     }
                     fullWidth
-                    placeholder="Tabellenblatt"
+                    placeholder={t('import_excel.sheetName')}
                     disabled={!checkedRows.relations[index]}
                   />
                 </td>
@@ -1280,7 +1275,7 @@ export function ImportViewExcel() {
             }}
           >
             <Button variant="contained" component="label" color="primary">
-              Excel-Tabelle auswählen
+            <T keyName="import_excel.select_file_button" />
               <input
                 type="file"
                 accept=".xlsx,.xls"
@@ -1300,7 +1295,7 @@ export function ImportViewExcel() {
               }}
             >
               <Typography color="textSecondary">
-                {entitiesFile === null ? "Keine Datei ausgewählt" : ""}
+                {entitiesFile === null ? <T keyName="import_excel.no_file_selected" /> : ""}
               </Typography>
             </Box>
           </Box>
@@ -1316,11 +1311,11 @@ export function ImportViewExcel() {
               color="secondary"
               onClick={handleValidationClick}
             >
-              Eingaben Prüfen
+              <T keyName="import_excel.check_inputs_button" />
             </Button>
             <TextField
               id="importTag"
-              label="Import Tag (optional)"
+              label= <T keyName="import_excel.import_tag_label" />
               name="importTag"
               variant="outlined"
               size="small"
@@ -1332,20 +1327,20 @@ export function ImportViewExcel() {
               disabled={!entitiesFile || !valid}
               onClick={handleimportExcel}
             >
-              Excel-Tabelle importieren
+              <T keyName="import_excel.import_button" />
             </Button>
             <Button
               variant="contained"
               color="inherit"
               onClick={handleClearTable}
             >
-              Eingaben Zurücksetzen
+              <T keyName="import_excel.reset_button" />
             </Button>
           </Box>
         </Box>
         {validationError === false && (
           <Alert severity="error">
-            Validierung fehlgeschlagen: Bitte prüfen Sie die Fehlermeldungen.
+            <T keyName="import_excel.validation_failed" />
           </Alert>
         )}
         {/* {!validationError && <Alert severity="success">Validierung erfolgreich. Sie können jetzt die Excel-Datei importieren.</Alert>} */}
@@ -1353,7 +1348,7 @@ export function ImportViewExcel() {
       <div>
         <LinearProgress variant="determinate" value={progress} />
         <Typography variant="body1">{status}</Typography>
-        <p>{progress.toFixed(2)}% abgeschlossen</p>{" "}
+        <p>{progress.toFixed(2)}% completed</p>{" "}
         {/* Fortschritt in Prozent anzeigen */}
       </div>
     </View>

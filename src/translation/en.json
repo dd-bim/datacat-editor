@@ -105,13 +105,29 @@
   },
   "import_excel": {
     "heading": "Import Catalog (Excel Table)",
-    "description": "This page also allows you to import entities and their relationships. Unlike the CSV import, an external Excel table can be used. For the import to work, the columns must be correctly specified in which the respective entities are listed: Domain model, group, class, property, measure (enum), unit of measure, and value.",
+    "description": "This page also allows you to import entities and their relationships. Unlike the CSV import, an external Excel table can be used. For the import to work, the columns must be correctly specified in which the respective entities are listed: External Document, Domain model, group, class, property, measure (enum), unit of measure, and value.",
     "select_all": "Select/Deselect All",
     "label": "Label:",
     "sheet": "Sheet",
     "name": "Name",
     "id": "ID",
+    "document": "External Documents",
+    "model": "Domain Models",
+    "group": "Groups",
+    "class": "Klasses",
+    "property": "Properties",
+    "measure": "Measures",
+    "unit": "Units",
+    "value": "Values",
+    "sheetName": "Sheet Name",
     "relations": "Relations:",
+    "rel_doc_model": "External Document to Domain Model",
+    "rel_model_group": "Domain Model to Group",
+    "rel_group_class": "Group to Class",
+    "rel_class_property": "Class to Property",
+    "rel_property_measure": "Property to Measure",
+    "rel_measure_unit": "Measure to Unit",
+    "rel_measure_value": "Measure to Value",
     "validation_failed": "Validation failed. Please check the error messages.",
     "validation_success": "Validation successful. You can now import the Excel file.",
     "no_file_selected": "No file selected",
@@ -144,5 +160,91 @@
     "measures": "Measures",
     "units": "Units",
     "values": "Values"
+  },
+  "signup": {
+    "username_helper": "A username is required. No whitespace. Must start with a letter and have a minimum length of 3.",
+    "password_helper": "A password is required and must have a minimum length of 8.",
+    "username_label": "Username",
+    "username_error": "The username cannot be changed after registration.",
+    "password_label": "Password",
+    "password_repeat_label": "Repeat Password",
+    "password_repeat_error": "The input does not match the password.",
+    "first_name_label": "First Name",
+    "last_name_label": "Last Name",
+    "email_label": "Email",
+    "email_error": "Please provide a valid email address.",
+    "organization_label": "Organization",
+    "signup_button": "Sign Up"
+  },
+  "login": {
+    "username_label": "Username",
+    "password_label": "Password",
+    "login_button": "Login"
+  },
+  "create_entry_form": {
+    "name_label": "Name (de)",
+    "name_helper": "Name the concept in the professional context and as precisely as possible. Separate synonyms with a semicolon.",
+    "description_label": "Description (de)",
+    "description_helper": "Describe the concept in its meaning. Use the description in particular to distinguish it from possibly similarly named but professionally different concepts.",
+    "comment_label": "Comment (de)",
+    "comment_helper": "Leave a comment on this concept. Additional information can be exchanged between editors here.",
+    "id_label": "ID",
+    "id_helper": "The ID is usually generated automatically. An ID can be specified if it has already been assigned to the concept in a higher context.",
+    "version_id_label": "Version ID",
+    "version_date_label": "Version date",
+    "save_button": "Save"
+  },
+  "create_entry_split_button": {
+    "add_entry": "Add Entry",
+    "show_more_options": "Show more options",
+    "create_entry": "Create {title}"
+  },
+  "composite_catalog_entry_view": {
+    "more_results": "More Results",
+    "edit_entry": "Edit {title}",
+    "select_entry": "Select {title} in the list view to display properties."
+  },
+  "document_form": {
+    "loading": "Loading reference document...",
+    "error": "An error occurred...",
+    "update_success": "Update successful.",
+    "delete_success": "Reference document deleted.",
+    "described_concepts": "Concepts described by the reference document",
+    "delete_button": "Delete"
+  },
+  "domain_class_form": {
+    "loading": "Loading class...",
+    "error": "An error occurred...",
+    "update_success": "Update successful.",
+    "delete_success": "Class deleted.",
+    "assigned_property_groups": "Property groups assigned to the class {name}",
+    "assigned_properties": "Properties directly assigned to the class {name}",
+    "reference_documents": "Reference documents describing this class",
+    "no_reference_documents": "Not described by any reference document in the data catalog",
+    "groups_using_class": "Groups using this class",
+    "no_groups_using_class": "The class is not used by any group",
+    "delete_button": "Delete"
+  },
+  "domain_group_form": {
+    "loading": "Loading group...",
+    "error": "An error occurred...",
+    "update_success": "Update successful.",
+    "delete_success": "Group deleted.",
+    "grouped_classes": "Grouped classes",
+    "grouped_classes_description": "Classes assigned to this group.",
+    "reference_documents": "Reference documents describing this group",
+    "no_reference_documents": "Not described by any reference document in the data catalog",
+    "domain_models_using_group": "Domain models using this group",
+    "no_domain_models_using_group": "The group is not used by any domain model",
+    "delete_button": "Delete"
+  },
+  "delete_import_view": {
+    "heading": "Delete catalog entries with a specific tag",
+    "description": "Entities with a specific tag can be deleted here. All relationships attached to the entities will also be deleted.",
+    "tag_label": "Tag",
+    "delete_button": "Delete catalog entries",
+    "tag_not_exist": "The tag {tag} does not exist!",
+    "delete_success": "Deleted catalog record {name}",
+    "error_occurred": "An error has occurred..."
   }
 }
