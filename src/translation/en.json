@@ -1,6 +1,7 @@
 {
   "verification": {
     "title": "Verification Criterion",
+    "category_title": "Category",
     "criteria": {
       "integrity": "Integrity",
       "uniqueness": "Uniqueness",
@@ -143,7 +144,7 @@
     "home": "Home",
     "edit_profile": "Edit Profile",
     "search_catalog": "Search Catalog",
-    "audit": "Audit",
+    "audit": "Check/Verify",
     "import": "Import",
     "export": "Export",
     "graphiql": "GraphiQL Interface",
@@ -246,5 +247,54 @@
     "tag_not_exist": "The tag {tag} does not exist!",
     "delete_success": "Deleted catalog record {name}",
     "error_occurred": "An error has occurred..."
+  },
+  "export_view": {
+    "heading": "Export catalog",
+    "description": "The following button starts the download of a ZIP file containing two CSV files inside.\nThe file 'Entities.csv' contains all catalog entries with their metadata.\nThe file 'Relationships.csv' stores the relationships between the catalog entries.\nThe result file is encoded in UTF-8, uses commas (,) as delimiters, and double quotes (\") as text qualifiers.\nThe data is ready for export as soon as the button is no longer grayed out.",
+    "export_button": "Export CSV"
+  },
+  "tag_view": {
+    "heading": "Existing Tags",
+    "explanation": "This page is used to add new tags to the database. The tags can then be used in the grid view to add new tags to the existing entries.",
+    "new_tag_label": "Create new tags",
+    "add_tag_button": "Add Tag",
+    "loading": "Loading...",
+    "error_loading": "Error loading tags: {error}",
+    "enter_tag_name": "Please enter a tag name.",
+    "tag_exists": "Tag \"{tag}\" already exists.",
+    "tag_added_success": "Tag \"{tag}\" added successfully.",
+    "tag_added_error": "Error adding tag \"{tag}\"."
+  },
+  "hierarchy": {
+    "error": "An error occurred while fetching the property tree.",
+    "select_concept": "Select a concept in the tree view to display properties.",
+    "edit_group": "Edit group",
+    "edit_class": "Edit class",
+    "edit_property": "Edit property",
+    "edit_measure": "Edit measure",
+    "edit_unit": "Edit unit",
+    "edit_value": "Edit value",
+    "edit_model": "Edit domain model",
+    "search_catalog": "Search catalog"
+  },
+  "grid_view": {
+    "loading": "Loading table contents",
+    "tag_filter_title": "Filter by tags",
+    "select_tag": "Select a tag",
+    "add_tag": "Add Tag",
+    "show_only_documents": "Show only reference documents",
+    "show_only_models": "Show only domain models",
+    "show_only_groups": "Show only groups",
+    "show_only_classes": "Show only classes",
+    "show_only_property_groups": "Show only property groups",
+    "show_only_properties": "Show only properties",
+    "show_all": "Show all",
+    "reference_documents": "Reference documents",
+    "domain_models": "Domain models",
+    "groups": "Groups",
+    "classes": "Classes",
+    "property_groups": "Property groups",
+    "properties": "Properties",
+    "tag_filter_placeholder": "Select a tag"
   }
 }

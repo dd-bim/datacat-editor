@@ -1,6 +1,7 @@
 {
   "verification": {
     "title": "Prüfkriterium",
+    "category_title": "Kategorie",
     "criteria": {
       "integrity": "Integrität",
       "uniqueness": "Eindeutigkeit",
@@ -246,5 +247,54 @@
     "tag_not_exist": "Das Tag {tag} existiert nicht!",
     "delete_success": "Katalogeintrag {name} gelöscht",
     "error_occurred": "Ein Fehler ist aufgetreten..."
+  },
+  "export_view": {
+    "heading": "Katalog exportieren",
+    "description": "Der folgende Button startet den Download einer ZIP-Datei mit zwei CSV-Dateien im Inneren.\nDie Datei 'Entities.csv' enthält alle Katalogeinträge mit deren Metadaten.\nIn der Datei 'Relationships.csv' sind die Relationen gespeichert, die zwischen den Katalogeinträgen bestehen.\nDie Ergebnisdatei ist in UTF-8 encodiert, verwendet Komma (,) als Trennzeichen und doppelte Anführungszeichen (\") als Textqualifizierer.\nDie Daten stehen zum Export bereit, sobald der Button nicht mehr ausgegraut ist.",
+    "export_button": "CSV exportieren"
+  },
+  "tag_view": {
+    "heading": "Vorhandene Tags",
+    "explanation": "Diese Seite wird genutzt, um neue Tags zur Datenbank hinzuzufügen. Die Tags können dann in der Tabellenansicht genutzt werden, um den vorhandenen Einträgen neue Tags hinzuzufügen.",
+    "new_tag_label": "Neue Tags anlegen",
+    "add_tag_button": "Tag hinzufügen",
+    "loading": "Laden...",
+    "error_loading": "Fehler beim Laden der Tags: {error}",
+    "enter_tag_name": "Bitte geben Sie einen Tag-Namen ein.",
+    "tag_exists": "Tag \"{tag}\" ist bereits vorhanden.",
+    "tag_added_success": "Tag \"{tag}\" erfolgreich hinzugefügt.",
+    "tag_added_error": "Fehler beim Hinzufügen des Tags \"{tag}\"."
+  },
+  "hierarchy": {
+    "error": "Beim Aufrufen des Merkmalsbaums ist ein Fehler aufgetreten.",
+    "select_concept": "Konzept in der Baumansicht auswählen, um Eigenschaften anzuzeigen.",
+    "edit_group": "Gruppe bearbeiten",
+    "edit_class": "Klasse bearbeiten",
+    "edit_property": "Merkmal bearbeiten",
+    "edit_measure": "Größe bearbeiten",
+    "edit_unit": "Einheit bearbeiten",
+    "edit_value": "Wert bearbeiten",
+    "edit_model": "Fachmodell bearbeiten",
+    "search_catalog": "Katalog durchsuchen"
+  },
+  "grid_view": {
+    "loading": "Tabelleninhalte werden geladen",
+    "tag_filter_title": "Filtermöglichkeit nach Tags",
+    "select_tag": "Tag auswählen",
+    "add_tag": "Tag hinzufügen",
+    "show_only_documents": "Nur Referenzdokumente anzeigen",
+    "show_only_models": "Nur Fachmodelle anzeigen",
+    "show_only_groups": "Nur Gruppen anzeigen",
+    "show_only_classes": "Nur Klassen anzeigen",
+    "show_only_property_groups": "Nur Merkmalsgruppen anzeigen",
+    "show_only_properties": "Nur Merkmale anzeigen",
+    "show_all": "Alle anzeigen",
+    "reference_documents": "Referenzdokumente",
+    "domain_models": "Fachmodelle",
+    "groups": "Gruppen",
+    "classes": "Klassen",
+    "property_groups": "Merkmalsgruppen",
+    "properties": "Merkmale",
+    "tag_filter_placeholder": "Tag auswählen"
   }
 }

@@ -95,6 +95,9 @@ const useStyles = makeStyles((theme: any) => ({
   buttonContainer: {
     marginBottom: theme.spacing(2),
   },
+  leftAlign: {
+    textAlign: "left",
+  },
 }));
 
 // Haupt-View: Drei Spalten: Links (Kriterien), Mitte (Ergebnisse), Rechts (Detailansicht)
@@ -119,8 +122,10 @@ export function VerificationView() {
   // Linke Spalte: Auswahl der Prüfkriterien
   const renderCriteriaButtons = () => (
     <Paper className={classes.paper}>
-      <T keyName="verification.title">Prüfkriterium</T>
-      <Grid container direction="column" alignItems="stretch">
+      <Typography variant="h6">
+        <T keyName="verification.title">Prüfkriterium</T>
+      </Typography>
+      <Grid container direction="column" alignItems="stretch" className={classes.leftAlign}>
         <Grid item>
           <ButtonComponent onClick={() => setSelectButton("Integrität")}>
             <T keyName="verification.criteria.integrity">Integrität</T>
@@ -137,9 +142,12 @@ export function VerificationView() {
           </ButtonComponent>
         </Grid>
       </Grid>
-      <div style={{ marginTop: 16 }}>
+      <Typography variant="h6" style={{ marginTop: 16 }}>
+        <T keyName="verification.category_title">Kategorie</T>
+      </Typography>
+      <Grid container direction="column" alignItems="stretch" className={classes.leftAlign}>
         {renderCategoryButtons()}
-      </div>
+      </Grid>
     </Paper>
   );
 
@@ -148,88 +156,60 @@ export function VerificationView() {
     switch (selectButton) {
       case "Integrität":
         return (
-          <Grid container direction="column" alignItems="stretch">
-            <Grid item>
-              <ButtonComponent onClick={() => setSelectCategory("Fachmodelle ohne Gruppe")}>
-                <T keyName="verification.category.no_model_group">Fachmodelle ohne Gruppe</T>
-              </ButtonComponent>
-            </Grid>
-            <Grid item>
-              <ButtonComponent onClick={() => setSelectCategory("Gruppen ohne Klasse")}>
-                <T keyName="verification.category.no_group_class">Gruppen ohne Klasse</T>
-              </ButtonComponent>
-            </Grid>
-            <Grid item>
-              <ButtonComponent onClick={() => setSelectCategory("Klassen ohne Merkmale/Merkmalsgruppen")}>
-                <T keyName="verification.category.no_class_properties">Klassen ohne Merkmale/Merkmalsgruppen</T>
-              </ButtonComponent>
-            </Grid>
-            <Grid item>
-              <ButtonComponent onClick={() => setSelectCategory("Merkmalsgruppen ohne Merkmale")}>
-                <T keyName="verification.category.no_property_group">Merkmalsgruppen ohne Merkmale</T>
-              </ButtonComponent>
-            </Grid>
-            <Grid item>
-              <ButtonComponent onClick={() => setSelectCategory("Merkmale ohne Klasse oder Merkmalsgruppe")}>
-                <T keyName="verification.category.no_property">Merkmale ohne Klasse oder Merkmalsgruppe</T>
-              </ButtonComponent>
-            </Grid>
-            <Grid item>
-              <ButtonComponent onClick={() => setSelectCategory("Größen die keinem Merkmal zugeordnet sind")}>
-                <T keyName="verification.category.no_measure">Größen ohne Merkmal</T>
-              </ButtonComponent>
-            </Grid>
-            <Grid item>
-              <ButtonComponent onClick={() => setSelectCategory("Einheiten ohne Größe")}>
-                <T keyName="verification.category.no_unit">Einheiten ohne Größe</T>
-              </ButtonComponent>
-            </Grid>
-            <Grid item>
-              <ButtonComponent onClick={() => setSelectCategory("Werte ohne Größe")}>
-                <T keyName="verification.category.no_value">Werte ohne Größe</T>
-              </ButtonComponent>
-            </Grid>
-          </Grid>
+          <>
+            <ButtonComponent onClick={() => setSelectCategory("Fachmodelle ohne Gruppe")}>
+              <T keyName="verification.category.no_model_group">Fachmodelle ohne Gruppe</T>
+            </ButtonComponent>
+            <ButtonComponent onClick={() => setSelectCategory("Gruppen ohne Klasse")}>
+              <T keyName="verification.category.no_group_class">Gruppen ohne Klasse</T>
+            </ButtonComponent>
+            <ButtonComponent onClick={() => setSelectCategory("Klassen ohne Merkmale/Merkmalsgruppen")}>
+              <T keyName="verification.category.no_class_properties">Klassen ohne Merkmale/Merkmalsgruppen</T>
+            </ButtonComponent>
+            <ButtonComponent onClick={() => setSelectCategory("Merkmalsgruppen ohne Merkmale")}>
+              <T keyName="verification.category.no_property_group">Merkmalsgruppen ohne Merkmale</T>
+            </ButtonComponent>
+            <ButtonComponent onClick={() => setSelectCategory("Merkmale ohne Klasse oder Merkmalsgruppe")}>
+              <T keyName="verification.category.no_property">Merkmale ohne Klasse oder Merkmalsgruppe</T>
+            </ButtonComponent>
+            <ButtonComponent onClick={() => setSelectCategory("Größen die keinem Merkmal zugeordnet sind")}>
+              <T keyName="verification.category.no_measure">Größen ohne Merkmal</T>
+            </ButtonComponent>
+            <ButtonComponent onClick={() => setSelectCategory("Einheiten ohne Größe")}>
+              <T keyName="verification.category.no_unit">Einheiten ohne Größe</T>
+            </ButtonComponent>
+            <ButtonComponent onClick={() => setSelectCategory("Werte ohne Größe")}>
+              <T keyName="verification.category.no_value">Werte ohne Größe</T>
+            </ButtonComponent>
+          </>
         );
       case "Eindeutigkeit":
         return (
-          <Grid container direction="column" alignItems="stretch">
-            <Grid item>
-              <ButtonComponent onClick={() => setSelectCategory("ID-Duplikate")}>
-                <T keyName="verification.category.duplicate_id">ID-Duplikate</T>
-              </ButtonComponent>
-            </Grid>
-            <Grid item>
-              <ButtonComponent onClick={() => setSelectCategory("Namen-Duplikate (innerhalb eines Types)")}>
-                <T keyName="verification.category.duplicate_name_type">Namen-Duplikate (innerhalb eines Types)</T>
-              </ButtonComponent>
-            </Grid>
-            <Grid item>
-              <ButtonComponent onClick={() => setSelectCategory("Namen-Duplikate (gesamter Datenbestand)")}>
-                <T keyName="verification.category.duplicate_name_all">Namen-Duplikate (gesamter Datenbestand)</T>
-              </ButtonComponent>
-            </Grid>
-          </Grid>
+          <>
+            <ButtonComponent onClick={() => setSelectCategory("ID-Duplikate")}>
+              <T keyName="verification.category.duplicate_id">ID-Duplikate</T>
+            </ButtonComponent>
+            <ButtonComponent onClick={() => setSelectCategory("Namen-Duplikate (innerhalb eines Types)")}>
+              <T keyName="verification.category.duplicate_name_type">Namen-Duplikate (innerhalb eines Types)</T>
+            </ButtonComponent>
+            <ButtonComponent onClick={() => setSelectCategory("Namen-Duplikate (gesamter Datenbestand)")}>
+              <T keyName="verification.category.duplicate_name_all">Namen-Duplikate (gesamter Datenbestand)</T>
+            </ButtonComponent>
+          </>
         );
       case "Sprache":
         return (
-          <Grid container direction="column" alignItems="stretch">
-            <Grid item>
-              <ButtonComponent onClick={() => setSelectCategory("Fehlende Beschreibung")}>
-                <T keyName="verification.category.missing_description">Fehlende Beschreibung</T>
-              </ButtonComponent>
-            </Grid>
-            <Grid item>
-              <ButtonComponent onClick={() => setSelectCategory("Fehlende Beschreibung (englisch)")}>
-                <T keyName="verification.category.missing_description_en">Fehlende Beschreibung (englisch)</T>
-              </ButtonComponent>
-            </Grid>
-            <Grid item>
-              <ButtonComponent onClick={() => setSelectCategory("Fehlende Namens-Übersetzung (englisch)")}>
-                <T keyName="verification.category.missing_translation_en">Fehlende Namens-Übersetzung (englisch)</T>
-              </ButtonComponent>
-            </Grid>
-          </Grid>
+          <>
+            <ButtonComponent onClick={() => setSelectCategory("Fehlende Beschreibung")}>
+              <T keyName="verification.category.missing_description">Fehlende Beschreibung</T>
+            </ButtonComponent>
+            <ButtonComponent onClick={() => setSelectCategory("Fehlende Beschreibung (englisch)")}>
+              <T keyName="verification.category.missing_description_en">Fehlende Beschreibung (englisch)</T>
+            </ButtonComponent>
+            <ButtonComponent onClick={() => setSelectCategory("Fehlende Namens-Übersetzung (englisch)")}>
+              <T keyName="verification.category.missing_translation_en">Fehlende Namens-Übersetzung (englisch)</T>
+            </ButtonComponent>
+          </>
         );
       default:
         return null;
