@@ -15,6 +15,7 @@ import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
 import TransferListView from "../TransferListView";
 import {Domain} from "../../domain";
+import {T} from "@tolgee/react";
 
 const DocumentForm: FC<FormProps<ExternalDocumentDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
@@ -44,8 +45,8 @@ console.log("IDDocument :" + id)
         }
     });
 
-    if (loading) return <Typography>Lade Referenzdokument..</Typography>;
-    if (error || !entry) return <Typography>Es ist ein Fehler aufgetreten..</Typography>;
+    if (loading) return <Typography><T keyName={"document.loading"}/></Typography>;
+    if (error || !entry) return <Typography><T keyName={"error.error"}/></Typography>;
 
     const handleOnUpdate = async () => {
         await refetch();
@@ -82,7 +83,7 @@ console.log("IDDocument :" + id)
             />
 
             <TransferListView
-                title={<span>Durch das Referenzdokument beschriebene <b>Konzepte</b></span>}
+                title={<span><T keyName={"document.TransferList"}/><b><T keyName={"document.TransferList2"}/></b></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.Documents}
                 relationships={documentsRelationships}

@@ -1,18 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { Switch, FormControlLabel } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { useTolgee } from "@tolgee/react";
+import { styled } from "@mui/material/styles";
 
-const CustomSwitch = styled(Switch)(({ theme }) => ({
-  "& .MuiSwitch-switchBase": {
-    color: "#ffffff",
-    "&.Mui-checked": { color: "#ffffff" },
-    "&.Mui-checked + .MuiSwitch-track": { backgroundColor: "#ffffff" },
+const WhiteSelect = styled(Select)<{ borderColor: string }>(({ borderColor }) => ({
+  color: "#ffffff",
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderColor: borderColor,
   },
-  "& .MuiSwitch-track": { backgroundColor: "#a9a9a9" },
+  "& .MuiSvgIcon-root": {
+    color: "#ffffff",
+  },
+  "& .MuiInputLabel-root": {
+    color: "#ffffff",
+  },
+  "& .MuiMenuItem-root": {
+    color: "#000000",
+  },
 }));
 
-const LanguageSwitcher: React.FC = () => {
+interface LanguageSwitcherProps {
+  textColor?: string;
+  dropdownColor?: string;
+  borderColor?: string;
+}
+
+const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
+  textColor = 'white',
+  dropdownColor = 'white',
+  borderColor = 'white',
+}) => {
   const tolgee = useTolgee();
   const [language, setLanguage] = useState(localStorage.getItem("language") || "de");
 
@@ -20,18 +37,54 @@ const LanguageSwitcher: React.FC = () => {
     tolgee.changeLanguage(language);
   }, [language, tolgee]);
 
-  const toggleLanguage = () => {
-    const newLanguage = language === "de" ? "en" : "de";
+  const handleLanguageChange = (event: SelectChangeEvent<unknown>) => {
+    const newLanguage = event.target.value as string;
     setLanguage(newLanguage);
     localStorage.setItem("language", newLanguage);
     tolgee.changeLanguage(newLanguage);
   };
 
+  const getPlaceholderText = () => {
+    switch (language) {
+      case "de":
+        return "Sprache";
+      case "en":
+        return "Language";
+      case "es":
+        return "Idioma";
+      case "it":
+        return "Lingua";
+      case "nl":
+        return "Taal";
+      case "zh":
+        return "语言";
+      default:
+        return "Sprache";
+    }
+  };
+
   return (
-    <FormControlLabel
-      control={<CustomSwitch checked={language === "en"} onChange={toggleLanguage} />}
-      label={language.toUpperCase()}
-    />
+    <FormControl variant="outlined" size="small" style={{ color: textColor }}>
+      <InputLabel id="language-select-label" style={{ color: textColor }}>
+        {getPlaceholderText()}
+      </InputLabel>
+      <WhiteSelect
+        labelId="language-select-label"
+        id="language-select"
+        value={language}
+        onChange={handleLanguageChange}
+        label={getPlaceholderText()}
+        style={{ color: dropdownColor }}
+        borderColor={borderColor}
+      >
+        <MenuItem value="de">Deutsch</MenuItem>
+        <MenuItem value="en">English</MenuItem>
+        <MenuItem value="es">Español</MenuItem>
+        <MenuItem value="it">Italiano</MenuItem>
+        <MenuItem value="nl">Nederlands</MenuItem>
+        <MenuItem value="zh">中文 (简体)</MenuItem>
+      </WhiteSelect>
+    </FormControl>
   );
 };
 

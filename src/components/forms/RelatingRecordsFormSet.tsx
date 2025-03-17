@@ -4,6 +4,7 @@ import CatalogEntryChip from "../CatalogEntryChip";
 import {Typography} from "@mui/material";
 import {CatalogRecord} from "../../types";
 import makeStyles from "@mui/styles/makeStyles";
+import {Theme} from "@mui/material/styles";
 
 export type MemberFormSetProps = {
     title: React.ReactNode;
@@ -17,8 +18,7 @@ export const sortEntries = (left: CatalogRecord, right: CatalogRecord) => {
     const b = right.name ?? right.id;
     return a.localeCompare(b);
 };
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
     gutterBottom: {
         marginBottom: theme.spacing(1)
     }

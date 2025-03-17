@@ -1,0 +1,134 @@
+{
+    "verification": {
+      "title": "验证标准",
+      "category_title": "类别",
+      "criteria": {
+        "integrity": "完整性",
+        "uniqueness": "唯一性",
+        "language": "语言"
+      },
+      "category": {
+        "no_model_group": "没有分组的专业模型",
+        "no_group_class": "没有类别的分组",
+        "no_class_properties": "没有特性/特性组的类别",
+        "no_property_group": "没有特性的特性组",
+        "no_property": "没有类别或特性组的特性",
+        "no_measure": "没有特性的尺寸",
+        "no_unit": "没有尺寸的单位",
+        "no_value": "没有尺寸的值",
+        "duplicate_id": "重复的ID",
+        "duplicate_name_type": "名称重复（同一类型内）",
+        "duplicate_name_all": "名称重复（整个数据集）",
+        "missing_description": "缺少描述",
+        "missing_description_en": "缺少描述（英文）",
+        "missing_translation_en": "缺少名称翻译（英文）"
+      },
+      "result": {
+        "select_criteria": "选择验证标准和类别。",
+        "select_entry": "在列表视图中选择验证结果以查看属性。"
+      },
+      "edit": {
+        "group": "编辑分组",
+        "class": "编辑类别",
+        "property": "编辑特性",
+        "measure": "编辑尺寸",
+        "unit": "编辑单位",
+        "value": "编辑值",
+        "model": "编辑专业模型"
+      }
+    },
+    "home": {
+      "title": "欢迎使用 datacat",
+      "about.title": "关于项目",
+      "about.description": "datacat 平台是德累斯顿应用技术大学 (HTW Dresden) 地理信息与 BIM 系研究领域的一项跨项目研究工作。该平台旨在为 BIM 方法的分类系统、对象类型目录和特性数据库的开发和发布提供用户和开发者友好的组件。",
+      "components.title": "组件",
+      "components.description": "该平台目前分为核心组件 datacat API（一个开发者友好的、自我记录的 GraphQL 接口，用于对数据目录进行复杂查询）和 datacat editor（一个基于浏览器的用户工具，用于导航和编辑数据集）。",
+      "methodology.title": "方法论",
+      "methodology.description": "开发的核心是一个基于 DIN EN ISO 12006-3 和 DIN EN ISO 23387 标准的数据模式，旨在维护复杂的分类系统。API 对于在自己的数据目录中实现的应用场景结构完全中立。",
+      "opensource.title": "开源",
+      "opensource.description": "datacat 作为自由开源软件在 GPLv3 许可证下开发，可以被任何人使用和复制，包括商业用途。源代码托管在 GitHub 上。欢迎任何形式的项目支持。"
+    },
+    "intro": {
+      "description1": "datacat editor 是一个基于网络的开源工具，用于建筑行业的数据目录的协同开发。源代码在 GPL v3 许可证下提供。",
+      "description2": "在数据目录中，您可以多语言命名、描述概念（如参与者、活动、构件和特性），并根据其功能和形状进行标准化分类。通过在这些概念之间建立关系，可以更详细地描述建成环境。",
+      "description3": "开发的数据集可以通过 API 提供给导入/导出工具和 CAD/BIM 插件的开发者。未来将开发验证例程，以发现目录中的不一致性，例如未使用的概念、可能的重复项和缺少的翻译。",
+      "description4": "datacat 由德累斯顿应用技术大学 (HTW Dresden) 开发。如果您对项目有进一步兴趣或有任何应用问题，请通过以下数据直接联系我们。",
+      "call_to_action": "这是一个软件预览。非常欢迎您作为开源开发者直接参与或通过提供反馈间接参与。"
+    },
+    "profile": {
+      "heading": "编辑用户资料",
+      "update_success": "用户资料已更新！",
+      "error": "调用用户资料时出错。",
+      "form": {
+        "first_name": "名字",
+        "first_name_helper": "您的名字是必填项。它将显示给其他目录用户，以便分配条目和更改并促进协作。",
+        "last_name": "姓氏",
+        "last_name_helper": "您的姓氏是必填项。它将显示给其他目录用户，以便分配条目和更改并促进协作。",
+        "email": "电子邮件",
+        "email_helper": "必须提供有效的电子邮件地址。它用于验证您的用户帐户并通知您目录中的更改。",
+        "organization": "组织",
+        "organization_helper": "如果适用，请提供您所属的公司、组织或机构。"
+      }
+    },
+    "boarding": {
+      "welcome": "欢迎使用 datacat editor",
+      "login_tab": "登录",
+      "signup_tab": "注册",
+      "login_message": "请使用您的用户名和密码登录编辑器。",
+      "signup_message": "您可以注册以获得目录的只读访问权限。如果您希望参与目录的编辑，请通知管理员。",
+      "signup_success": "您将在几分钟内收到一封包含确认码的电子邮件，用于激活您的帐户。",
+      "login_success": "欢迎回来！"
+    },
+    "signup": {
+      "username_helper": "需要一个用户名。不能包含空格。必须以字母开头，且至少有3个字符。",
+      "password_helper": "需要一个密码，且至少有8个字符。",
+      "username_label": "用户名",
+      "username_error": "注册后用户名无法更改。",
+      "password_label": "密码",
+      "password_repeat_label": "重复密码",
+      "password_repeat_error": "输入与密码不匹配。",
+      "first_name_label": "名字",
+      "last_name_label": "姓氏",
+      "email_label": "电子邮件",
+      "email_error": "请输入有效的电子邮件地址。",
+      "organization_label": "公司 / 机构",
+      "signup_button": "注册"
+    },
+    "login": {
+      "username_label": "用户名",
+      "password_label": "密码",
+      "login_button": "登录"
+    },
+    "import": {
+      "heading": "导入目录（CSV）",
+      "description": "通过此页面可以导入实体及其关系。与导出类似，可以导入两份 CSV 文件。一份文件包含以下模式的实体：",
+      "entity_columns": "id;typ;tags;name;name_en;description;version;createdBy;created;lastModified;lastModifiedBy",
+      "entity_columns_note": "标记为 r 的列必须为每个实体填写，标记为 o 的列可以选择性填写值。其余列在导入时将被忽略，因此可以留空。",
+      "tags_note": "为了使实体在 datacatEditor 界面中可见，必须为其分配界面中选择的分类法的标签。（参考文档、专业模型、分组、类别、特性组、特性、尺寸、值、单位）",
+      "relation_columns_note": "另一份文件可选地包含实体之间的关系，具有以下列：",
+      "relation_columns": "entity1;entity1Type;relationId;relationshipType;entity2;entity2Type",
+      "relation_columns_note_2": "实体类型可以留空。",
+      "entities_file_button": "选择实体文件",
+      "relations_file_button": "选择关系文件",
+      "import_button": "导入",
+      "import_tag_label": "导入标签（可选）",
+      "csv_templates_button": "CSV 模板",
+      "no_file_selected": "未选择文件",
+      "note_entities_only": "注意：仅导入实体，不导入它们之间的关系！",
+      "note_relations_only": "注意：仅导入关系。实体必须已包含在特性服务器中！",
+      "error_columns_mismatch": "列名与要求不匹配。",
+      "error_creating_record": "创建记录时出错",
+      "error_creating_relationship": "创建关系时出错",
+      "new_tag_created": "新标签已创建",
+      "create_tag_failed": "创建新标签失败",
+      "created_record": "新记录已创建",
+      "created_relationship": "新关系已创建"
+    },
+    "import_excel": {
+      "heading": "导入目录（Excel 表格）",
+      "description": "通过此页面也可以导入实体及其关系。与 CSV 导入不同，可以使用外部 Excel 表格。为了使导入成功，必须正确指定列，其中列出以下实体：参考文档、专业模型、分组、类别、特性、尺寸（枚举）、单位和值。",
+      "select_all": "全选/取消全选",
+      "label": "标签：",
+      "sheet": "工作表"
+    }
+}

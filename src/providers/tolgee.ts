@@ -1,22 +1,29 @@
 import { Tolgee, DevTools, FormatSimple } from "@tolgee/react";
 
+// Statische Importe der Übersetzungsdateien
+import de from "../translation/de.json";
+import en from "../translation/en.json";
+import es from "../translation/es.json";
+import it from "../translation/it.json";
+import nl from "../translation/nl.json";
+import zh from "../translation/zh.json";
+
 export const tolgee = Tolgee()
-  .use(FormatSimple()) // Falls du Formatierung benötigst
-  .use(DevTools()) // Optional für Debugging
+  .use(FormatSimple())
+  .use(DevTools())
   .init({
-    apiUrl: "http://localhost:3000", // Lokale Tolgee-Instanz
-    apiKey: "dummy", // Falls du Tolgee Cloud nicht nutzt, kann das leer bleiben
-    availableLanguages: ["de", "en"],
+    apiUrl: "http://localhost:3000",
+    apiKey: "dummy",
+    availableLanguages: ["de", "en", "es", "it", "nl", "zh"],
     defaultLanguage: localStorage.getItem("language") || "de",
     fallbackLanguage: "en",
+    // Hier werden die Übersetzungsdaten synchron bereitgestellt
     staticData: {
-      de: async () => {
-        const module = await import("../translation/de.json");
-        return module.default as Record<string, any>;
-      },
-      en: async () => {
-        const module = await import("../translation/en.json");
-        return module.default as Record<string, any>;
-      }
+      de,
+      en,
+      es,
+      it,
+      nl,
+      zh,
     },
   });

@@ -1,17 +1,34 @@
 import React, { FC } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-import { TextField, ClickAwayListener } from '@mui/material';
+import { TextField, ClickAwayListener, Box, Button, MenuItem } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { ToleranceType } from '../../generated/types';
+import { T } from '@tolgee/react';
 
 const useStyles = makeStyles((theme: { spacing: (value: number) => number }) => ({
   root: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    '& > *': {
-      marginRight: theme.spacing(1),
+    flexWrap: 'wrap',
+    gap: theme.spacing(2),
+  },
+  selectField: {
+    minWidth: 150, // Increased from 120px to ensure "Type" is always readable
+    '& .MuiInputBase-root': {
+      width: 'auto',
     },
+    '& .MuiSelect-select': {
+      minWidth: 80, // Ensures content area has minimum width
+    },
+  },
+  inputField: {
+    minWidth: 150,
+  },
+  buttonsContainer: {
+    display: 'flex',
+    gap: theme.spacing(2),
+    marginLeft: theme.spacing(1),
   },
 }));
 
@@ -73,43 +90,72 @@ const ToleranceForm: FC<ToleranceFormProps> = ({ defaultValues, onSubmit, onDele
           render={({ field }) => (
             <TextField
               {...field}
-              label="Typ"
+              className={classes.selectField}
+              label={<T keyName="tolerance_form.type_label">Typ</T>}
               InputProps={{
                 onFocus: !isEditMode ? handleOnEdit : undefined,
               }}
               select
-            />
+              SelectProps={{
+                MenuProps: {
+                  PaperProps: {
+                    style: { maxHeight: 300 }
+                  }
+                }
+              }}
+            >
+              {Object.values(ToleranceType).map((type) => (
+                <MenuItem key={type} value={type}>
+                  {type}
+                </MenuItem>
+              ))}
+            </TextField>
           )}
         />
+        
         <Controller
           name="lowerTolerance"
           control={control}
           render={({ field }) => (
             <TextField
               {...field}
-              label="Untere Toleranz"
+              className={classes.inputField}
+              label={<T keyName="tolerance_form.lower_tolerance_label">Untere Toleranz</T>}
               InputProps={{
                 onFocus: !isEditMode ? handleOnEdit : undefined,
               }}
             />
           )}
         />
+        
         <Controller
           name="upperTolerance"
           control={control}
           render={({ field }) => (
             <TextField
               {...field}
-              label="Obere Toleranz"
+              className={classes.inputField}
+              label={<T keyName="tolerance_form.upper_tolerance_label">Obere Toleranz</T>}
               InputProps={{
                 onFocus: !isEditMode ? handleOnEdit : undefined,
               }}
             />
           )}
         />
-        <button type="submit">Save</button>
-        <button type="button" onClick={handleOnDelete}>Delete</button>
-        <button type="button" onClick={handleOnReset}>Reset</button>
+        
+        <Box className={classes.buttonsContainer}>
+          <Button type="submit" variant="contained" color="primary">
+            <T keyName="tolerance_form.save_button">Save</T>
+          </Button>
+          
+          <Button type="button" variant="outlined" color="error" onClick={handleOnDelete}>
+            <T keyName="tolerance_form.delete_button">Delete</T>
+          </Button>
+          
+          <Button type="button" variant="outlined" onClick={handleOnReset}>
+            <T keyName="tolerance_form.reset_button">Reset</T>
+          </Button>
+        </Box>
       </form>
     </ClickAwayListener>
   );

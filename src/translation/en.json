@@ -220,9 +220,9 @@
     "delete_success": "Class deleted.",
     "assigned_property_groups": "Property groups assigned to the class {name}",
     "assigned_properties": "Properties directly assigned to the class {name}",
-    "reference_documents": "Reference documents describing this class",
+    "reference_documents": "describing this class",
     "no_reference_documents": "Not described by any reference document in the data catalog",
-    "groups_using_class": "Groups using this class",
+    "groups_using_class": "using this class",
     "no_groups_using_class": "The class is not used by any group",
     "delete_button": "Delete"
   },
@@ -233,10 +233,79 @@
     "delete_success": "Group deleted.",
     "grouped_classes": "Grouped classes",
     "grouped_classes_description": "Classes assigned to this group.",
-    "reference_documents": "Reference documents describing this group",
+    "reference_documents": " describing this group",
     "no_reference_documents": "Not described by any reference document in the data catalog",
-    "domain_models_using_group": "Domain models using this group",
+    "domain_models_using_group": "using this group",
     "no_domain_models_using_group": "The group is not used by any domain model",
+    "delete_button": "Delete"
+  },
+  "domain_model_form": {
+    "loading": "Loading Domain Model...",
+    "error": "An error occurred...",
+    "update_success": "Update successful.",
+    "delete_success": "Domain Model deleted.",
+    "reference_documents": "describing this domain model",
+    "no_reference_documents": "Not described by any reference document in the data catalog",
+    "delete_button": "Delete"
+  },
+  "property_group_form": {
+    "loading": "Loading property group...",
+    "error": "An error occurred...",
+    "update_success": "Update successful.",
+    "delete_success": "Property group deleted.",
+    "grouped_properties": "grouped in this property group",
+    "reference_documents": "describing this property group",
+    "no_reference_documents": "Not described by any reference document in the data catalog",
+    "assigned_classes": "to which this property group is assigned",
+    "no_assigned_classes": "This property group is not assigned to any class",
+    "delete_button": "Delete"
+  },
+  "property_form": {
+    "loading": "Loading property...",
+    "error": "An error occurred...",
+    "update_success": "Update successful.",
+    "delete_success": "Property deleted.",
+    "property_measure": "of the property",
+    "reference_documents": "describing this property",
+    "no_reference_documents": "Not described by any reference document in the data catalog",
+    "aggregating_property_groups": "that aggregate this property",
+    "no_aggregating_property_groups": "This property is not used in any property group",
+    "assigned_classes": "to which this property is directly assigned",
+    "no_assigned_classes": "This property is not directly assigned to any class",
+    "delete_button": "Delete"
+  },
+  "measure_form": {
+    "loading": "Loading measure...",
+    "error": "An error occurred...",
+    "update_success": "Update successful.",
+    "delete_success": "Measure deleted.",
+    "applicable_units": "applicable to this measure",
+    "value_range": "Value range of the",
+    "reference_documents": " describing this measure",
+    "no_reference_documents": "Not described by any reference document in the data catalog",
+    "quantified_properties": "quantified by this measure",
+    "no_quantified_properties": "This measure is not used by any property",
+    "delete_button": "Delete"
+  },
+  "unit_form": {
+    "loading": "Loading unit...",
+    "error": "An error occurred...",
+    "delete_success": "Unit deleted.",
+    "reference_documents": "describing this unit",
+    "no_reference_documents": "Not described by any reference document in the data catalog",
+    "assigned_measures": "to which this unit is assigned",
+    "no_assigned_measures": "This unit is not used by any measure",
+    "delete_button": "Delete"
+  },
+  "value_form": {
+    "loading": "Loading value...",
+    "error": "An error occurred...",
+    "update_success": "Update successful.",
+    "delete_success": "Value deleted.",
+    "reference_documents": "describing this value",
+    "no_reference_documents": "Not described by any reference document in the data catalog",
+    "assigned_measures": "to which this value is assigned",
+    "no_assigned_measures": "This value is not used by any measure",
     "delete_button": "Delete"
   },
   "delete_import_view": {
@@ -296,5 +365,126 @@
     "property_groups": "Property groups",
     "properties": "Properties",
     "tag_filter_placeholder": "Select a tag"
+  },
+  "error":{
+    "error": "An error occurred..."
+  },
+  "document": {
+    "title": "Reference Document",
+    "titlePlural": "Reference Documents",
+    "description": "An entry of the type external document is used to map external documents, books or other written information.",
+    "loading": "Loading external document...",
+    "TransferList": "By the external document described ",
+    "TransferList2": "concepts"
+  },
+  "model": {
+    "title": "Domain Model",
+    "titlePlural": "Domain Models",
+    "loading": "Loading Domain model...", 
+    "TransferList": "By the domain model described ",
+    "TransferList2": "Groups"
+  },
+  "group": {
+    "title": "Group",
+    "titlePlural": "Groups",
+    "loading": "Loading group...",
+    "TransferList": "Grouped ",
+    "TransferList2": "classes"
+  },
+  "class": {
+    "title": "Class",
+    "titlePlural": "Classes",
+    "loading": "Loading class...",
+    "TransferList": "Property groups ",
+    "TransferList2": " assigned to the ",
+    "TransferList3": "class"
+  },
+  "dataTemplate": {
+    "title": "Data Template",
+    "titlePlural": "Data Templates"
+  },
+  "propertyGroup": {
+    "title": "Property Group",
+    "titlePlural": "Property Groups"
+  },
+  "property": {
+    "title": "Property",
+    "titlePlural": "Properties"
+  },
+  "measure": {
+    "title": "Measure",
+    "titlePlural": "Measures"
+  },
+  "unit": {
+    "title": "Unit",
+    "titlePlural": "Units"
+  },
+  "value": {
+    "title": "Value",
+    "titlePlural": "Values"
+  },
+  "tolerance": {
+    "description": "The tolerance of a value can be specified in absolute and percentage terms."
+  },
+  "translation_form": {
+    "no_translations": "No translations available yet.",
+    "add_translation": "Add translation",
+    "add_translation_title": "Add translation",
+        "language": "Language",
+    "language_helper": "Language in which the translation is created."
+  },
+  "version": {
+    "title": "Version",
+    "description": "The version can be freely defined and formatted for the application domain.",
+    "date": "Date"
+  },
+  "meta": {
+    "title": "Meta information",
+    "description": "Technical information on the concept",
+    "keyword": "Keywords",
+    "created": "Created",
+    "created_by": "Created by",
+    "updated": "Last updated",
+    "updated_by": "Last updated by"
+  },
+  "name": {
+    "title": "Name",
+    "description": "Identifies the concept in the respective language."
+  },
+  "comment": {
+    "title": "Comment",
+    "description": "Enables editors to exchange additional information, e.g. on the processing status of the concept."
+  },
+  "description": {
+    "title": "Description",
+    "description": "Characterizes the concept in more detail in terms of its form and application concept."
+  },
+  "search":{
+    "search": "Search",
+    "search_placeholder": "Search catalog",
+    "search_results": "Search Results"
+  },
+  "footer": {
+    "contact": "Questions & Contact",
+    "report_issue": "Report Issue",
+    "version": "datacat editor {version}"
+  },
+  "nominal_value_form": {
+    "title": "Nominal Value",
+    "role_label": "Role",
+    "type_label": "Data Type",
+    "value_label": "Value",
+    "updated": "Nominal value updated.",
+    "removed": "Nominal value removed."
+  },
+  "tolerance_form": {
+    "title": "Tolerance",
+    "type_label": "Type",
+    "lower_tolerance_label": "Lower Tolerance",
+    "upper_tolerance_label": "Upper Tolerance",
+    "save_button": "Save",
+    "delete_button": "Delete",
+    "reset_button": "Reset",
+    "description": "The tolerance of a value can be specified in absolute and percentage terms."
   }
 }

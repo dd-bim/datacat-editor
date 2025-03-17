@@ -17,11 +17,13 @@ import {GroupEntity} from "../../domain";
 import FormView, {FormProps} from "./FormView";
 import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
+import {T, useTranslate} from "@tolgee/react";
 
 
 function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
+    const { t } = useTranslate(); // Moved to top level
 
     // fetch domain model
     const {loading, error, data, refetch} = useGetCollectionEntryQuery({
@@ -47,17 +49,17 @@ function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
         }
     });
 
-    if (loading) return <Typography>Lade Fachmodel..</Typography>;
-    if (error || !entry) return <Typography>Es ist ein Fehler aufgetreten..</Typography>;
+    if (loading) return <Typography><T keyName={"model.loading"}/></Typography>;
+    if (error || !entry) return <Typography><T keyName={"error.error"}/></Typography>;
 
     const handleOnUpdate = async () => {
         await refetch();
-        enqueueSnackbar("Update erfolgreich.");
+        enqueueSnackbar(<T keyName="domain_model_form.update_success">Update erfolgreich.</T>);
     }
 
     const handleOnDelete = async () => {
         await deleteEntry({variables: {id}});
-        enqueueSnackbar("Fachmodell gelöscht.");
+        enqueueSnackbar(<T keyName="domain_model_form.delete_success">Fachmodell gelöscht.</T>);
         onDelete?.();
     };
 
@@ -90,8 +92,7 @@ function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
             />
 
             <TransferListView
-title={<Typography>Im Fachmodell beschriebene <b>Gruppen</b></Typography>}
-
+                title={<Typography><T keyName={"model.TransferList"}/><b><T keyName={"model.TransferList2"}/></b></Typography>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.Collects}
                 relationships={collectsRelationships}
@@ -105,8 +106,8 @@ title={<Typography>Im Fachmodell beschriebene <b>Gruppen</b></Typography>}
             />
 
             <RelatingRecordsFormSet
-                title={<Typography><b>Referenzdokumente</b>, die diese Fachmodell beschreiben</Typography>}
-                emptyMessage={"Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben"}
+                title={<Typography><b><T keyName="document.titlePlural"/></b>, <T keyName="domain_model_form.reference_documents">die dieses Fachmodell beschreiben</T></Typography>}
+                emptyMessage={t('domain_model_form.no_reference_documents')}
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
             />
 
@@ -118,7 +119,7 @@ title={<Typography>Im Fachmodell beschriebene <b>Gruppen</b></Typography>}
                 startIcon={<DeleteForeverIcon/>}
                 onClick={handleOnDelete}
             >
-                Löschen
+                <T keyName="domain_model_form.delete_button">Löschen</T>
             </Button>
         </FormView>
     );

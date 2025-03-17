@@ -220,9 +220,9 @@
     "delete_success": "Klasse gelöscht.",
     "assigned_property_groups": "Der Klasse {name} zugewiesene Merkmalsgruppen",
     "assigned_properties": "Direkt zugewiesene Merkmale der Klasse {name}",
-    "reference_documents": "Referenzdokumente, die diese Klasse beschreiben",
+    "reference_documents": "die diese Klasse beschreiben",
     "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
-    "groups_using_class": "Gruppen, die diese Klasse anwenden",
+    "groups_using_class": "die diese Klasse anwenden",
     "no_groups_using_class": "Die Klasse wird durch keine Gruppe genutzt",
     "delete_button": "Löschen"
   },
@@ -233,10 +233,19 @@
     "delete_success": "Gruppe gelöscht.",
     "grouped_classes": "Gruppierte Klassen",
     "grouped_classes_description": "Klassen, die dieser Gruppe zugeordnet sind.",
-    "reference_documents": "Referenzdokumente, die diese Gruppe beschreiben",
+    "reference_documents": "die diese Gruppe beschreiben",
     "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
-    "domain_models_using_group": "Fachmodelle, die diese Gruppe anwenden",
+    "domain_models_using_group": "die diese Gruppe anwenden",
     "no_domain_models_using_group": "Die Gruppe wird durch kein Fachmodell genutzt",
+    "delete_button": "Löschen"
+  },
+  "domain_model_form": {
+    "loading": "Lade Fachmodell...",
+    "error": "Es ist ein Fehler aufgetreten...",
+    "update_success": "Update erfolgreich.",
+    "delete_success": "Fachmodell gelöscht.",
+    "reference_documents": "die dieses Fachmodell beschreiben",
+    "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
     "delete_button": "Löschen"
   },
   "delete_import_view": {
@@ -296,5 +305,186 @@
     "property_groups": "Merkmalsgruppen",
     "properties": "Merkmale",
     "tag_filter_placeholder": "Tag auswählen"
+  },
+  "error":{
+    "error": "An error occurred..."
+  },
+  "document": {
+    "title": "Referenzdokument",
+    "titlePlural": "Referenzdokumente",
+    "description": "Ein Eintrag vom Typ Referenzdokument wird genutzt, um externe Dokumente, Bücher oder andere schriftliche Informationen abzubilden.",
+    "loading": "Lade Referenzdokument...",
+    "TransferList": "Durch das Referenzdokument beschriebene ",
+    "TransferList2": "Konzepte"
+  },
+  "model": {
+    "title": "Fachmodell",
+    "titlePlural": "Fachmodelle",
+    "loading": "Lade Fachmodell...", 
+    "TransferList": "Durch das Fachmodell beschriebene ",
+    "TransferList2": "Gruppen"
+  },
+  "group": {
+    "title": "Gruppe",
+    "titlePlural": "Gruppen",
+    "loading": "Lade Gruppe...",
+    "TransferList": "Gruppierte ",
+    "TransferList2": "Klassen"
+  },
+  "class": {
+    "title": "Klasse",
+    "titlePlural": "Klassen",
+    "loading": "Lade Klasse...",
+    "TransferList": "Der Klasse ",
+    "TransferList2": " zugewiesene ",
+    "TransferList3": "Merkmalsgruppen"
+  },
+  "dataTemplate": {
+    "title": "Datenvorlage",
+    "titlePlural": "Datenvorlagen"
+  },
+  "propertyGroup": {
+    "title": "Merkmalsgruppe",
+    "titlePlural": "Merkmalsgruppen"
+  },
+  "property": {
+    "title": "Merkmal",
+    "titlePlural": "Merkmale"
+  },
+  "measure": {
+    "title": "Größe",
+    "titlePlural": "Größen"
+  },
+  "unit": {
+    "title": "Maßeinheit",
+    "titlePlural": "Maßeinheiten"
+  },
+  "value": {
+    "title": "Wert",
+    "titlePlural": "Werte"
+  },
+  "tolerance": {
+    "description": "Die Toleranz eines Wertes kann absolut und prozentual angegeben werden."
+  },
+  "translation_form": {
+    "no_translations": "Noch keine Übersetzung vorhanden.",
+    "add_translation": "Übersetzung hinzufügen",
+    "add_translation_title": "Übersetzung hinzufügen",
+    "language": "Sprache",
+    "language_helper": "Sprache in der die Übersetzung angelegt wird."
+  },
+  "version": {
+    "title": "Version",
+    "description": "Die Version kann für die Anwendungsdomäne frei bestimmt und formatiert werden.",
+    "date": "Datum"
+  },
+  "meta": {
+    "title": "Metainformationen",
+    "description": "Technische Informationen zum Konzept",
+    "keyword": "Schlagworte",
+    "created": "Erstellt",
+    "created_by": "Erstellt durch",
+    "updated": "Zuletzt aktualisiert",
+    "updated_by": "Zuletzt aktualisiert durch"
+  },
+  "name": {
+    "title": "Name",
+    "description": "Identifiziert das Konzept in der jeweiligen Sprache."
+  },
+  "comment": {
+    "title": "Kommentar",
+    "description": "Ermöglicht Bearbeitern den Austausch von zusätzlichen Informationen z.B. über den Bearbeitungsstand des Konzepts."
+  },
+  "description": {
+    "title": "Beschreibung",
+    "description": "Charakterisiert das Konzept in Ausprägung und Anwendungskonzept näher."
+  },
+  "search":{
+    "search": "Suchen",
+    "search_placeholder": "Katalog durchsuchen",
+    "search_results": "Ergebnisse der Suche"
+  },
+  "footer": {
+    "contact": "Fragen & Kontakt",
+    "report_issue": "Problem melden",
+    "version": "datacat editor {version}"
+  },
+  "property_group_form": {
+    "loading": "Lade Merkmalsgruppe...",
+    "error": "Es ist ein Fehler aufgetreten...",
+    "update_success": "Update erfolgreich.",
+    "delete_success": "Merkmalsgruppe gelöscht.",
+    "grouped_properties": "In der Merkmalsgruppe gruppierte Merkmale",
+    "reference_documents": "die diese Merkmalsgruppe beschreiben",
+    "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
+    "assigned_classes": "denen diese Merkmalsgruppe zugewiesen wurde",
+    "no_assigned_classes": "Diese Merkmalsgruppe wurde keiner Klasse zugewiesen",
+    "delete_button": "Löschen"
+  },
+  "property_form": {
+    "loading": "Lade Merkmal...",
+    "error": "Es ist ein Fehler aufgetreten...",
+    "update_success": "Update erfolgreich.",
+    "delete_success": "Merkmal gelöscht.",
+    "property_measure": "Größe des Merkmals",
+    "reference_documents": "die dieses Merkmal beschreiben",
+    "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
+    "aggregating_property_groups": "die dieses Merkmal aggregieren",
+    "no_aggregating_property_groups": "Das Merkmal wird in keiner Merkmalsgruppe genutzt",
+    "assigned_classes": "denen dieses Merkmal direkt zugewiesen wurde",
+    "no_assigned_classes": "Das Merkmal wurde keiner Klasse direkt zugewiesen",
+    "delete_button": "Löschen"
+  },
+  "measure_form": {
+    "loading": "Lade Größe...",
+    "error": "Es ist ein Fehler aufgetreten...",
+    "update_success": "Update erfolgreich.",
+    "delete_success": "Größe gelöscht.",
+    "applicable_units": "Auf die Größe anwendbare Maßeinheiten",
+    "value_range": "Wertebereich der Größe",
+    "reference_documents": "die diese Größe beschreiben",
+    "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
+    "quantified_properties": "die durch diese Größe quantifiziert werden",
+    "no_quantified_properties": "Die Größe wird durch kein Merkmal genutzt",
+    "delete_button": "Löschen"
+  },
+  "unit_form": {
+    "loading": "Lade Maßeinheit...",
+    "error": "Es ist ein Fehler aufgetreten...",
+    "delete_success": "Maßeinheit gelöscht.",
+    "reference_documents": " die diese Einheit beschreiben",
+    "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
+    "assigned_measures": "denen diese Einheit zugewiesen wurde",
+    "no_assigned_measures": "Die Einheit wird durch keine Größe genutzt",
+    "delete_button": "Löschen"
+  },
+  "value_form": {
+    "loading": "Lade Wert...",
+    "error": "Es ist ein Fehler aufgetreten...",
+    "update_success": "Update erfolgreich.",
+    "delete_success": "Wert gelöscht.",
+    "reference_documents": "die diesen Wert beschreiben",
+    "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
+    "assigned_measures": "denen dieser Wert zugewiesen wurde",
+    "no_assigned_measures": "Der Wert wird durch keine Größe genutzt",
+    "delete_button": "Löschen"
+  },
+  "nominal_value_form": {
+    "title": "Nennwert",
+    "role_label": "Rolle",
+    "type_label": "Datentyp",
+    "value_label": "Wert",
+    "updated": "Nennwert aktualisiert.",
+    "removed": "Nennwert entfernt."
+  },
+  "tolerance_form": {
+    "title": "Toleranz",
+    "type_label": "Typ",
+    "lower_tolerance_label": "Untere Toleranz",
+    "upper_tolerance_label": "Obere Toleranz",
+    "save_button": "Speichern",
+    "delete_button": "Löschen",
+    "reset_button": "Zurücksetzen",
+    "description": "Die Toleranz eines Wertes kann absolut und prozentual angegeben werden."
   }
 }

@@ -67,65 +67,67 @@ export default function BoardingView() {
   };
 
   return (
-    <Grid container direction="row" alignItems="stretch" spacing={3}>
-      <Grid item xs={12}>
-        <Paper className={classes.paper} variant="outlined">
-          <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item>
-              <Typography variant="h4">
-                <PetsIcon /> <T keyName="boarding.welcome">Willkommen beim datacat editor</T>
-              </Typography>
+    <div style={{ color: 'black' }}>
+      <Grid container direction="row" alignItems="stretch" spacing={3}>
+        <Grid item xs={12}>
+          <Paper className={classes.paper} variant="outlined">
+            <Grid container justifyContent="space-between" alignItems="center">
+              <Grid item>
+                <Typography variant="h4">
+                  <PetsIcon /> <T keyName="boarding.welcome">Willkommen beim datacat editor</T>
+                </Typography>
+              </Grid>
+              <Grid item className={classes.languageSwitcher}>
+                <LanguageSwitcher textColor="black" dropdownColor="black" borderColor="black" />
+              </Grid>
             </Grid>
-            <Grid item className={classes.languageSwitcher}>
-              <LanguageSwitcher />
-            </Grid>
-          </Grid>
-        </Paper>
-      </Grid>
-      <Grid item xs={12} sm={6} lg={8}>
-        <IntroPanel />
-      </Grid>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={6} lg={8}>
+          <IntroPanel />
+        </Grid>
 
-      <Grid item xs={12} sm={6} lg={4}>
-        <Paper>
-          <Tabs
-            value={tab}
-            onChange={(event, value) => setTab(value)}
-            indicatorColor="primary"
-            textColor="primary"
-            centered
-          >
-            <Tab label={<T keyName="boarding.login_tab">Anmelden</T>} value="login" />
-            <Tab label={<T keyName="boarding.signup_tab">Registrieren</T>} value="signup" />
-          </Tabs>
-          <TabPanel value={tab} index="login">
-            <Typography>
-              <T keyName="boarding.login_message">
-                Bitte nutzen Sie Ihren Benutzernamen und Ihr Password um sich beim Editor anzumelden.
-              </T>
-            </Typography>
-            <LoginForm onLogin={handleLogin} />
-          </TabPanel>
-          <TabPanel value={tab} index="signup">
-            {signupSent ? (
+        <Grid item xs={12} sm={6} lg={4}>
+          <Paper>
+            <Tabs
+              value={tab}
+              onChange={(event, value) => setTab(value)}
+              indicatorColor="primary"
+              textColor="primary"
+              centered
+            >
+              <Tab label={<T keyName="boarding.login_tab">Anmelden</T>} value="login" />
+              <Tab label={<T keyName="boarding.signup_tab">Registrieren</T>} value="signup" />
+            </Tabs>
+            <TabPanel value={tab} index="login">
               <Typography>
-                <T keyName="boarding.signup_success">
-                  Sie erhalten in den nächsten Minuten einen Bestätigungscode per Email, mit dem Sie Ihren Account aktivieren können.
+                <T keyName="boarding.login_message">
+                  Bitte nutzen Sie Ihren Benutzernamen und Ihr Password um sich beim Editor anzumelden.
                 </T>
               </Typography>
-            ) : (
-              <React.Fragment>
+              <LoginForm onLogin={handleLogin} />
+            </TabPanel>
+            <TabPanel value={tab} index="signup">
+              {signupSent ? (
                 <Typography>
-                  <T keyName="boarding.signup_message">
-                    Sie können sich registrieren um lesenden Zugriff auf den Katalog zu erhalten. Möchten Sie sich an der Bearbeitung des Katalogs beteiligen, so informieren Sie bitte den Administrator.
+                  <T keyName="boarding.signup_success">
+                    Sie erhalten in den nächsten Minuten einen Bestätigungscode per Email, mit dem Sie Ihren Account aktivieren können.
                   </T>
                 </Typography>
-                <SignupForm onSignup={handleSignup} />
-              </React.Fragment>
-            )}
-          </TabPanel>
-        </Paper>
+              ) : (
+                <React.Fragment>
+                  <Typography>
+                    <T keyName="boarding.signup_message">
+                      Sie können sich registrieren um lesenden Zugriff auf den Katalog zu erhalten. Möchten Sie sich an der Bearbeitung des Katalogs beteiligen, so informieren Sie bitte den Administrator.
+                    </T>
+                  </Typography>
+                  <SignupForm onSignup={handleSignup} />
+                </React.Fragment>
+              )}
+            </TabPanel>
+          </Paper>
+        </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 }

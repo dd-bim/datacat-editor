@@ -42,6 +42,8 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={classes.root}>
+      <div style={{ marginBottom: "12px" }}></div>
+
       <Controller
         name="name"
         control={control}
@@ -53,7 +55,8 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
             label={<T keyName="create_entry_form.name_label">Name (de)</T>}
             helperText={
               <T keyName="create_entry_form.name_helper">
-                Benennen Sie das Konzept im fachlichen Kontext und möglichst genau. Trennen Sie Synonyme durch Semikolon voneinander ab.
+                Benennen Sie das Konzept im fachlichen Kontext und möglichst
+                genau. Trennen Sie Synonyme durch Semikolon voneinander ab.
               </T>
             }
             error={!!errors.name}
@@ -62,16 +65,24 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
           />
         )}
       />
+      <div style={{ marginBottom: "12px" }}></div>
+
       <Controller
         name="description"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
-            label={<T keyName="create_entry_form.description_label">Beschreibung (de)</T>}
+            label={
+              <T keyName="create_entry_form.description_label">
+                Beschreibung (de)
+              </T>
+            }
             helperText={
               <T keyName="create_entry_form.description_helper">
-                Beschreiben Sie das Konzept in seiner Bedeutung. Nutzen Sie die Beschreibung insbesondere, um es von womöglich gleich benannten, aber fachlich verschiedenen Konzepten abzugrenzen.
+                Beschreiben Sie das Konzept in seiner Bedeutung. Nutzen Sie die
+                Beschreibung insbesondere, um es von womöglich gleich benannten,
+                aber fachlich verschiedenen Konzepten abzugrenzen.
               </T>
             }
             error={!!errors.description}
@@ -79,16 +90,22 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
           />
         )}
       />
+      <div style={{ marginBottom: "12px" }}></div>
+
       <Controller
         name="comment"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
-            label={<T keyName="create_entry_form.comment_label">Kommentar (de)</T>}
+            label={
+              <T keyName="create_entry_form.comment_label">Kommentar (de)</T>
+            }
             helperText={
               <T keyName="create_entry_form.comment_helper">
-                Hinterlassen Sie einen Kommentar zu diesem Konzept. Hier können zusätzliche Informationen zwischen Bearbeitern ausgetauscht werden.
+                Hinterlassen Sie einen Kommentar zu diesem Konzept. Hier können
+                zusätzliche Informationen zwischen Bearbeitern ausgetauscht
+                werden.
               </T>
             }
             error={!!errors.comment}
@@ -96,6 +113,8 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
           />
         )}
       />
+      <div style={{ marginBottom: "12px" }}></div>
+
       <Controller
         name="id"
         control={control}
@@ -105,7 +124,9 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
             label={<T keyName="create_entry_form.id_label">ID</T>}
             helperText={
               <T keyName="create_entry_form.id_helper">
-                Die ID wird in der Regel automatisch generiert. Eine ID kann angegeben werden, wenn diese bereits in einem übergeordnetem Kontext für das Konzept vergeben wurde.
+                Die ID wird in der Regel automatisch generiert. Eine ID kann
+                angegeben werden, wenn diese bereits in einem übergeordnetem
+                Kontext für das Konzept vergeben wurde.
               </T>
             }
             error={!!errors.id}
@@ -113,13 +134,17 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
           />
         )}
       />
+      <div style={{ marginBottom: "12px" }}></div>
+
       <Controller
         name="versionId"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
-            label={<T keyName="create_entry_form.version_id_label">Version ID</T>}
+            label={
+              <T keyName="create_entry_form.version_id_label">Version ID</T>
+            }
             error={!!errors.versionId}
             {...defaultFormFieldOptions}
           />
@@ -131,7 +156,9 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
         render={({ field }) => (
           <TextField
             {...field}
-            label={<T keyName="create_entry_form.version_date_label">Version date</T>}
+            label={
+              <T keyName="create_entry_form.version_date_label">Version date</T>
+            }
             error={!!errors.versionDate}
             {...defaultFormFieldOptions}
           />
