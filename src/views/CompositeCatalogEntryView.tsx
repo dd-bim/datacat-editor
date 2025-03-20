@@ -1,25 +1,17 @@
-import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 import { Theme } from "@mui/material/styles";
 import { Paper, Typography, Grid, Button } from "@mui/material";
 import PlusIcon from "@mui/icons-material/Add";
 import {
-  ClassEntity,
-  DocumentEntity,
-  Entity,
-  GroupEntity,
-  MeasureEntity,
-  ModelEntity,
-  PropertyEntity,
-  PropertyGroupEntity,
-  UnitEntity,
-  ValueEntity,
+  Entity
 } from "../domain";
 import CreateEntryButton from "../components/CreateEntryButton";
 import SearchList from "../components/list/SearchList";
 import { CatalogRecord } from "../types";
 import { T } from "@tolgee/react";
+import { AppContext } from "../context/AppContext";
 
 const useStyles = makeStyles((theme: Theme) => ({
   searchList: {
@@ -44,12 +36,28 @@ type CompositeCatalogEntryViewProps = {
 };
 
 const CompositeCatalogEntryView = (props: CompositeCatalogEntryViewProps) => {
+  // Add context to force re-render on language change
+  const { refreshCounter } = useContext(AppContext) || { refreshCounter: 0 };
+  
   const {
     entryType: { tags, path, title, titlePlural, recordType },
     renderForm,
   } = props;
+  
+  // Force extracting these values when refreshCounter changes to ensure they update
+  const currentTitle = title;
+  const currentTitlePlural = titlePlural;
+  
   const [height, setHeight] = useState(500);
   const [searchTerm, setSearchTerm] = useState("");
+  const location = useLocation();
+  
+  // Reset height and search term when changing entity types
+  useEffect(() => {
+    setHeight(500);
+    setSearchTerm("");
+  }, [path, recordType, refreshCounter]); // Add refreshCounter here
+
   const searchInput = {
     entityTypeIn: [recordType],
     tagged: tags,
@@ -63,36 +71,15 @@ const CompositeCatalogEntryView = (props: CompositeCatalogEntryViewProps) => {
     navigate(`/${path}/${value.id}`);
   };
 
-  // Button-Zuweisung je nach gewählten Entitätstyp
-
-  var entryTypeName;
-  if (title === "Referenzdokument") {
-    entryTypeName = DocumentEntity;
-  } else if (title === "Fachmodell") {
-    entryTypeName = ModelEntity;
-  } else if (title === "Gruppe") {
-    entryTypeName = GroupEntity;
-  } else if (title === "Klasse") {
-    entryTypeName = ClassEntity;
-  } else if (title === "Merkmalsgruppe") {
-    entryTypeName = PropertyGroupEntity;
-  } else if (title === "Merkmal") {
-    entryTypeName = PropertyEntity;
-  } else if (title === "Größe") {
-    entryTypeName = MeasureEntity;
-  } else if (title === "Maßeinheit") {
-    entryTypeName = UnitEntity;
-  } else if (title === "Wert") {
-    entryTypeName = ValueEntity;
-  } else {
-    entryTypeName = ClassEntity;
-  }
+  // Use the entryType directly instead of trying to compare translated titles
+  const entryTypeName = props.entryType;
 
   return (
-    <Grid container spacing={1}>
+    // Add refreshCounter to the key to force re-rendering on language changes
+    <Grid container spacing={1} key={`entity-view-${path}-${refreshCounter}`}>
       <Grid item xs={4}>
         <Paper className={classes.searchList}>
-          <Typography variant="h5">{titlePlural}</Typography>
+          <Typography variant="h5">{currentTitlePlural}</Typography>
           <SearchList
             showRecordIcons={false}
             height={height}
@@ -116,13 +103,13 @@ const CompositeCatalogEntryView = (props: CompositeCatalogEntryViewProps) => {
       <Grid item xs={8}>
         <Paper className={classes.paper}>
           <Typography variant="h5">
-            <T keyName="composite_catalog_entry_view.edit_entry" params={{ title }} />
+            <T keyName="composite_catalog_entry_view.edit_entry" params={{ title: currentTitle }} />
           </Typography>
           {id ? (
             renderForm(id)
           ) : (
             <Typography className={classes.hint} variant="body1">
-              <T keyName="composite_catalog_entry_view.select_entry" params={{ title }} />
+              <T keyName="composite_catalog_entry_view.select_entry" params={{ title: currentTitle }} />
             </Typography>
           )}
         </Paper>

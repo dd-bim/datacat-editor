@@ -206,11 +206,11 @@
     "select_entry": "Select {title} in the list view to display properties."
   },
   "document_form": {
-    "loading": "Loading reference document...",
+    "loading": "Loading external document...",
     "error": "An error occurred...",
     "update_success": "Update successful.",
-    "delete_success": "Reference document deleted.",
-    "described_concepts": "Concepts described by the reference document",
+    "delete_success": "External document deleted.",
+    "described_concepts": "Concepts described by the external document",
     "delete_button": "Delete"
   },
   "domain_class_form": {
@@ -221,7 +221,7 @@
     "assigned_property_groups": "Property groups assigned to the class {name}",
     "assigned_properties": "Properties directly assigned to the class {name}",
     "reference_documents": "describing this class",
-    "no_reference_documents": "Not described by any reference document in the data catalog",
+    "no_reference_documents": "Not described by any external document in the data catalog",
     "groups_using_class": "using this class",
     "no_groups_using_class": "The class is not used by any group",
     "delete_button": "Delete"
@@ -234,7 +234,7 @@
     "grouped_classes": "Grouped classes",
     "grouped_classes_description": "Classes assigned to this group.",
     "reference_documents": " describing this group",
-    "no_reference_documents": "Not described by any reference document in the data catalog",
+    "no_reference_documents": "Not described by any external document in the data catalog",
     "domain_models_using_group": "using this group",
     "no_domain_models_using_group": "The group is not used by any domain model",
     "delete_button": "Delete"
@@ -245,7 +245,7 @@
     "update_success": "Update successful.",
     "delete_success": "Domain Model deleted.",
     "reference_documents": "describing this domain model",
-    "no_reference_documents": "Not described by any reference document in the data catalog",
+    "no_reference_documents": "Not described by any external document in the data catalog",
     "delete_button": "Delete"
   },
   "property_group_form": {
@@ -255,7 +255,7 @@
     "delete_success": "Property group deleted.",
     "grouped_properties": "grouped in this property group",
     "reference_documents": "describing this property group",
-    "no_reference_documents": "Not described by any reference document in the data catalog",
+    "no_reference_documents": "Not described by any external document in the data catalog",
     "assigned_classes": "to which this property group is assigned",
     "no_assigned_classes": "This property group is not assigned to any class",
     "delete_button": "Delete"
@@ -267,7 +267,7 @@
     "delete_success": "Property deleted.",
     "property_measure": "of the property",
     "reference_documents": "describing this property",
-    "no_reference_documents": "Not described by any reference document in the data catalog",
+    "no_reference_documents": "Not described by any external document in the data catalog",
     "aggregating_property_groups": "that aggregate this property",
     "no_aggregating_property_groups": "This property is not used in any property group",
     "assigned_classes": "to which this property is directly assigned",
@@ -282,7 +282,7 @@
     "applicable_units": "applicable to this measure",
     "value_range": "Value range of the",
     "reference_documents": " describing this measure",
-    "no_reference_documents": "Not described by any reference document in the data catalog",
+    "no_reference_documents": "Not described by any external document in the data catalog",
     "quantified_properties": "quantified by this measure",
     "no_quantified_properties": "This measure is not used by any property",
     "delete_button": "Delete"
@@ -292,7 +292,7 @@
     "error": "An error occurred...",
     "delete_success": "Unit deleted.",
     "reference_documents": "describing this unit",
-    "no_reference_documents": "Not described by any reference document in the data catalog",
+    "no_reference_documents": "Not described by any external document in the data catalog",
     "assigned_measures": "to which this unit is assigned",
     "no_assigned_measures": "This unit is not used by any measure",
     "delete_button": "Delete"
@@ -303,7 +303,7 @@
     "update_success": "Update successful.",
     "delete_success": "Value deleted.",
     "reference_documents": "describing this value",
-    "no_reference_documents": "Not described by any reference document in the data catalog",
+    "no_reference_documents": "Not described by any external document in the data catalog",
     "assigned_measures": "to which this value is assigned",
     "no_assigned_measures": "This value is not used by any measure",
     "delete_button": "Delete"
@@ -351,14 +351,14 @@
     "tag_filter_title": "Filter by tags",
     "select_tag": "Select a tag",
     "add_tag": "Add Tag",
-    "show_only_documents": "Show only reference documents",
+    "show_only_documents": "Show only external documents",
     "show_only_models": "Show only domain models",
     "show_only_groups": "Show only groups",
     "show_only_classes": "Show only classes",
     "show_only_property_groups": "Show only property groups",
     "show_only_properties": "Show only properties",
     "show_all": "Show all",
-    "reference_documents": "Reference documents",
+    "reference_documents": "External documents",
     "domain_models": "Domain models",
     "groups": "Groups",
     "classes": "Classes",
@@ -370,8 +370,8 @@
     "error": "An error occurred..."
   },
   "document": {
-    "title": "Reference Document",
-    "titlePlural": "Reference Documents",
+    "title": "External Document",
+    "titlePlural": "External Documents",
     "description": "An entry of the type external document is used to map external documents, books or other written information.",
     "loading": "Loading external document...",
     "TransferList": "By the external document described ",

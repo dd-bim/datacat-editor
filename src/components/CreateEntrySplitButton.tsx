@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { SimpleRecordType, useCreateEntryMutation } from "../generated/types";
 import { ButtonGroup, ButtonGroupProps, Dialog } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -27,7 +27,7 @@ import {
   UnitEntity,
   ValueEntity,
 } from "../domain";
-import { T } from "@tolgee/react";
+import { T, useTolgee } from "@tolgee/react";
 
 type CreateEntrySplitButtonProps = {
   ButtonGroupProps?: ButtonGroupProps;
@@ -47,8 +47,23 @@ const options = [
 
 const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
   const { ButtonGroupProps } = props;
-
   const { enqueueSnackbar } = useSnackbar();
+  const tolgee = useTolgee();
+  const [currentLanguage, setCurrentLanguage] = useState(tolgee.getLanguage());
+
+  // Listen for language changes to force re-render
+  useEffect(() => {
+    const handleLanguageChange = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      setCurrentLanguage(customEvent.detail || tolgee.getLanguage());
+    };
+
+    window.addEventListener('languageChanged', handleLanguageChange);
+    
+    return () => {
+      window.removeEventListener('languageChanged', handleLanguageChange);
+    };
+  }, [tolgee]);
 
   const [create] = useCreateEntryMutation({
     update: (cache) => {
