@@ -1,1 +1,490 @@
-{}
+{
+  "verification": {
+    "title": "Verificatiecriterium",
+    "category_title": "Categorie",
+    "criteria": {
+      "integrity": "Integriteit",
+      "uniqueness": "Uniciteit",
+      "language": "Taal"
+    },
+    "category": {
+      "no_model_group": "Vakmodellen zonder groep",
+      "no_group_class": "Groepen zonder klasse",
+      "no_class_properties": "Klassen zonder kenmerken/kenmerkgroepen",
+      "no_property_group": "Kenmerkgroepen zonder kenmerken",
+      "no_property": "Kenmerken zonder klasse of kenmerkgroep",
+      "no_measure": "Grootheden zonder kenmerk",
+      "no_unit": "Eenheden zonder grootheid",
+      "no_value": "Waarden zonder grootheid",
+      "duplicate_id": "ID-duplicaten",
+      "duplicate_name_type": "Naam-duplicaten (binnen een type)",
+      "duplicate_name_all": "Naam-duplicaten (volledige databestand)",
+      "missing_description": "Ontbrekende beschrijving",
+      "missing_description_en": "Ontbrekende beschrijving (Engels)",
+      "missing_translation_en": "Ontbrekende naamvertaling (Engels)"
+    },
+    "result": {
+      "select_criteria": "Selecteer verificatiecriterium en categorie.",
+      "select_entry": "Selecteer verificatieresultaat in de lijstweergave om eigenschappen te tonen."
+    },
+    "edit": {
+      "group": "Groep bewerken",
+      "class": "Klasse bewerken",
+      "property": "Kenmerk bewerken",
+      "measure": "Grootheid bewerken",
+      "unit": "Eenheid bewerken",
+      "value": "Waarde bewerken",
+      "model": "Vakmodel bewerken"
+    }
+  },
+  "home": {
+    "title": "Welkom bij datacat",
+    "about.title": "Over het project",
+    "about.description": "Het datacat-platform vertegenwoordigt een projectoverschrijdend onderzoekswerk van de leerstoel \"Geodesie en BIM\" van de Faculteit Geo-informatie aan de Hogeschool voor Techniek en Economie Dresden (HTW Dresden). Het platform is gericht op het leveren van gebruikers- en ontwikkelaarsvriendelijke componenten voor het ontwikkelen en publiceren van classificatiesystemen, objecttypen catalogi en kenmerkdatabases in de context van de BIM-methode.",
+    "components.title": "De componenten",
+    "components.description": "Het platform bestaat momenteel uit de kerncomponenten datacat API, een ontwikkelaarsvriendelijke, zelf-documenterende GraphQL-interface voor complexe query's op de datacatalogus, en de datacat editor, een browsergebaseerde gebruikerstool voor navigatie en bewerking van de dataset.",
+    "methodology.title": "De methodologie",
+    "methodology.description": "Centraal in de ontwikkeling staat een dataschema dat nauw aansluit bij de gevestigde standaarden DIN EN ISO 12006-3 en DIN EN ISO 23387, waarmee ook complexe classificatiesystemen in de catalogus kunnen worden onderhouden. De API is volledig agnostisch ten opzichte van de toepassingsspecifieke structuur die in de eigen datacatalogus moet worden geïmplementeerd.",
+    "opensource.title": "Open Source",
+    "opensource.description": "datacat wordt ontwikkeld als vrije, open-source software onder de GPLv3-licentie en kan door iedereen, ook commercieel, worden gebruikt en vermenigvuldigd. De broncode wordt gehost op GitHub. Elke vorm van ondersteuning voor het project is welkom."
+  },
+  "intro": {
+    "description1": "datacat editor is een webgebaseerde, open-source werktool voor het gezamenlijk ontwikkelen van datacatalogi voor de bouwindustrie. De broncode wordt beschikbaar gesteld onder de GPL v3-licentie.",
+    "description2": "In een datacatalogus kunt u concepten zoals actoren, activiteiten, bouwcomponenten en kenmerken in meerdere talen benoemen, beschrijven en categoriseren volgens hun functie en vorm in overeenstemming met de standaarden. Door relaties tussen deze concepten te vormen, kan de gebouwde omgeving nader worden beschreven.",
+    "description3": "De ontwikkelde database is beschikbaar via een API voor ontwikkelaars van import/export-tools en CAD/BIM-plugins. In de toekomst zullen verificatieroutines worden ontwikkeld waarmee inconsistenties zoals ongebruikte concepten, mogelijke duplicaten en ontbrekende vertalingen in de catalogus kunnen worden opgespoord.",
+    "description4": "datacat wordt ontwikkeld aan de Hogeschool voor Techniek en Economie Dresden (HTW Dresden). Als u meer interesse heeft in het project of vragen heeft over de toepassing, neem dan gerust direct contact met ons op via de onderstaande gegevens.",
+    "call_to_action": "Dit is een software-preview. Uw directe deelname als open-source ontwikkelaar of indirect door feedback te geven is zeer gewenst."
+  },
+  "profile": {
+    "heading": "Gebruikersprofiel bewerken",
+    "update_success": "Gebruikersprofiel bijgewerkt!",
+    "error": "Er is een fout opgetreden bij het openen van het gebruikersprofiel.",
+    "form": {
+      "first_name": "Voornaam",
+      "first_name_helper": "Het opgeven van uw voornaam is verplicht. Deze wordt getoond aan andere catalogusgebruikers om items en wijzigingen toe te wijzen en samenwerking te vergemakkelijken.",
+      "last_name": "Achternaam",
+      "last_name_helper": "Het opgeven van uw achternaam is verplicht. Deze wordt getoond aan andere catalogusgebruikers om items en wijzigingen toe te wijzen en samenwerking te vergemakkelijken.",
+      "email": "E-mail",
+      "email_helper": "Het opgeven van een geldig e-mailadres is verplicht. Dit wordt gebruikt om uw account te valideren en u op de hoogte te houden van wijzigingen in de catalogus.",
+      "organization": "Organisatie",
+      "organization_helper": "Geef indien van toepassing het bedrijf, de organisatie of het instituut op waarvoor u werkt."
+    }
+  },
+  "boarding": {
+    "welcome": "Welkom bij de datacat editor",
+    "login_tab": "Inloggen",
+    "signup_tab": "Registreren",
+    "login_message": "Gebruik uw gebruikersnaam en wachtwoord om in te loggen bij de editor.",
+    "signup_message": "U kunt zich registreren om leestoegang tot de catalogus te krijgen. Als u wilt deelnemen aan het bewerken van de catalogus, informeer dan de beheerder.",
+    "signup_success": "U ontvangt binnen enkele minuten een bevestigingscode per e-mail, waarmee u uw account kunt activeren.",
+    "login_success": "Welkom terug!"
+  },
+  "signup": {
+    "username_helper": "Een gebruikersnaam is vereist. Geen spaties. Moet beginnen met een letter en minimaal 3 tekens bevatten.",
+    "password_helper": "Een wachtwoord is vereist en moet minimaal 8 tekens bevatten.",
+    "username_label": "Gebruikersnaam",
+    "username_error": "De gebruikersnaam kan na registratie niet worden gewijzigd.",
+    "password_label": "Wachtwoord",
+    "password_repeat_label": "Wachtwoord herhalen",
+    "password_repeat_error": "De invoer komt niet overeen met het wachtwoord.",
+    "first_name_label": "Voornaam",
+    "last_name_label": "Achternaam",
+    "email_label": "E-mail",
+    "email_error": "Voer een geldig e-mailadres in.",
+    "organization_label": "Bedrijf / Instituut",
+    "signup_button": "Registreren"
+  },
+  "login": {
+    "username_label": "Gebruikersnaam",
+    "password_label": "Wachtwoord",
+    "login_button": "Inloggen"
+  },
+  "import": {
+    "heading": "Catalogus importeren (CSV)",
+    "description": "Via deze pagina kunnen entiteiten en hun relaties worden geïmporteerd. Vergelijkbaar met de export kunnen hier twee CSV-bestanden worden geïmporteerd. Het ene bestand bevat de entiteiten in het volgende schema:",
+    "entity_columns": "id;typ;tags;name;name_en;description;version;createdBy;created;lastModified;lastModifiedBy",
+    "entity_columns_note": "Kolommen gemarkeerd met r moeten voor elke entiteit worden ingevuld, kolommen gemarkeerd met o kunnen optioneel waarden bevatten. De overige kolommen worden tijdens de import niet in aanmerking genomen en kunnen daarom leeg blijven.",
+    "tags_note": "Om de entiteiten zichtbaar te maken in de datacatEditor-interface, moeten ze tags van de daar gekozen taxonomie hebben. (Referentiedocument, Vakmodel, Groep, Klasse, Kenmerkgroep, Kenmerk, Grootheid, Waarde, Maateenheid)",
+    "relation_columns_note": "Het andere bestand bevat optioneel de relaties tussen entiteiten met de volgende kolommen:",
+    "relation_columns": "entity1;entity1Type;relationId;relationshipType;entity2;entity2Type",
+    "relation_columns_note_2": "De entiteitstypes kunnen hier leeg gelaten worden.",
+    "entities_file_button": "Entiteiten bestand selecteren",
+    "relations_file_button": "Relaties bestand selecteren",
+    "import_button": "Importeren",
+    "import_tag_label": "Import tag (optioneel)",
+    "csv_templates_button": "CSV sjablonen",
+    "no_file_selected": "Geen bestand geselecteerd",
+    "note_entities_only": "LET OP: Er worden alleen entiteiten geïmporteerd, geen relaties ertussen!",
+    "note_relations_only": "LET OP: Er worden alleen relaties geïmporteerd. De entiteiten moeten al in de kenmerkserver aanwezig zijn!",
+    "error_columns_mismatch": "De kolomnamen komen niet overeen met de specificatie.",
+    "error_creating_record": "Fout bij het aanmaken van het record",
+    "error_creating_relationship": "Fout bij het aanmaken van de relatie",
+    "new_tag_created": "Nieuwe tag aangemaakt",
+    "create_tag_failed": "Aanmaken van nieuwe tag mislukt",
+    "created_record": "Nieuw record aangemaakt",
+    "created_relationship": "Nieuwe relatie aangemaakt"
+  },
+  "import_excel": {
+    "heading": "Catalogus importeren (Excel tabel)",
+    "description": "Via deze pagina kunnen ook entiteiten en hun relaties worden geïmporteerd. Anders dan bij de CSV-import kan een externe Excel-tabel worden gebruikt. Voor een succesvolle import moeten de kolommen waarin de respectievelijke entiteiten worden vermeld correct worden gespecificeerd: Referentiedocument, Vakmodel, Groep, Klasse, Kenmerk, Grootheid (Enum), Maateenheid en Waarde.",
+    "select_all": "Alles selecteren/deselecteren",
+    "label": "Label:",
+    "sheet": "Werkblad",
+    "name": "Naam",
+    "id": "ID",
+    "document": "Referentiedocumenten",
+    "model": "Vakmodellen",
+    "group": "Groepen",
+    "class": "Klassen",
+    "property": "Kenmerken",
+    "measure": "Grootheden",
+    "unit": "Maateenheden",
+    "value": "Waarden",
+    "sheetName": "Werkbladnaam",
+    "relations": "Relaties:",
+    "rel_doc_model": "Referentiedocument - Vakmodel",
+    "rel_model_group": "Vakmodel - Groep",
+    "rel_group_class": "Groep - Klasse",
+    "rel_class_property": "Klasse - Kenmerk",
+    "rel_property_measure": "Kenmerk - Grootheid",
+    "rel_measure_unit": "Grootheid - Maateenheid",
+    "rel_measure_value": "Grootheid - Waarde",
+    "validation_failed": "Validatie mislukt. Controleer de foutmeldingen.",
+    "validation_success": "Validatie succesvol. U kunt nu het Excel-bestand importeren.",
+    "no_file_selected": "Geen bestand geselecteerd",
+    "select_file_button": "Excel-tabel selecteren",
+    "check_inputs_button": "Invoer controleren",
+    "import_tag_label": "Import tag (optioneel)",
+    "import_button": "Excel-tabel importeren",
+    "reset_button": "Invoer resetten",
+    "progress": "{progress}% voltooid"
+  },
+  "app_drawer": {
+    "general": "Algemeen",
+    "home": "Startpagina",
+    "edit_profile": "Profiel bewerken",
+    "search_catalog": "Catalogus doorzoeken",
+    "audit": "Controleren",
+    "import": "Importeren",
+    "export": "Exporteren",
+    "graphiql": "GraphiQL Interface",
+    "new_tags": "Nieuwe tags aanmaken",
+    "grid_view": "Tabelweergave",
+    "catalog": "Catalogus",
+    "documents": "Referentiedocumenten",
+    "models": "Vakmodellen",
+    "groups": "Groepen",
+    "classes": "Klassen",
+    "data_templates": "Datasjablonen",
+    "property_groups": "Kenmerkgroepen",
+    "properties": "Kenmerken",
+    "measures": "Grootheden",
+    "units": "Maateenheden",
+    "values": "Waarden"
+  },
+  "create_entry_form": {
+    "name_label": "Naam (de)",
+    "name_helper": "Benoem het concept in de vakspecifieke context en zo nauwkeurig mogelijk. Scheid synoniemen met een puntkomma.",
+    "description_label": "Beschrijving (de)",
+    "description_helper": "Beschrijf het concept in zijn betekenis. Gebruik de beschrijving vooral om het te onderscheiden van mogelijk gelijknamige maar vakinhoudelijk verschillende concepten.",
+    "comment_label": "Commentaar (de)",
+    "comment_helper": "Laat een opmerking achter over dit concept. Hier kan extra informatie worden uitgewisseld tussen bewerkers.",
+    "id_label": "ID",
+    "id_helper": "De ID wordt meestal automatisch gegenereerd. Een ID kan worden opgegeven als deze al in een overkoepelende context aan het concept is toegewezen.",
+    "version_id_label": "Versie ID",
+    "version_date_label": "Versiedatum",
+    "save_button": "Opslaan"
+  },
+  "create_entry_split_button": {
+    "add_entry": "Item toevoegen",
+    "show_more_options": "Meer opties tonen",
+    "create_entry": "{title} aanmaken"
+  },
+  "composite_catalog_entry_view": {
+    "more_results": "Meer resultaten",
+    "edit_entry": "{title} bewerken",
+    "select_entry": "{title} in de lijstweergave selecteren om eigenschappen te tonen."
+  },
+  "document_form": {
+    "loading": "Referentiedocument laden...",
+    "error": "Er is een fout opgetreden...",
+    "update_success": "Update succesvol.",
+    "delete_success": "Referentiedocument verwijderd.",
+    "described_concepts": "Door het referentiedocument beschreven concepten",
+    "delete_button": "Verwijderen"
+  },
+  "domain_class_form": {
+    "loading": "Klasse laden...",
+    "error": "Er is een fout opgetreden...",
+    "update_success": "Update succesvol.",
+    "delete_success": "Klasse verwijderd.",
+    "assigned_property_groups": "Aan de klasse {name} toegewezen kenmerkgroepen",
+    "assigned_properties": "Direct toegewezen kenmerken van de klasse {name}",
+    "reference_documents": "die deze klasse beschrijven",
+    "no_reference_documents": "Niet beschreven door een referentiedocument in de datacatalogus",
+    "groups_using_class": "die deze klasse gebruiken",
+    "no_groups_using_class": "De klasse wordt door geen enkele groep gebruikt",
+    "delete_button": "Verwijderen"
+  },
+  "domain_group_form": {
+    "loading": "Groep laden...",
+    "error": "Er is een fout opgetreden...",
+    "update_success": "Update succesvol.",
+    "delete_success": "Groep verwijderd.",
+    "grouped_classes": "Gegroepeerde klassen",
+    "grouped_classes_description": "Klassen die aan deze groep zijn toegewezen.",
+    "reference_documents": "die deze groep beschrijven",
+    "no_reference_documents": "Niet beschreven door een referentiedocument in de datacatalogus",
+    "domain_models_using_group": "die deze groep gebruiken",
+    "no_domain_models_using_group": "De groep wordt door geen enkel vakmodel gebruikt",
+    "delete_button": "Verwijderen"
+  },
+  "domain_model_form": {
+    "loading": "Vakmodel laden...",
+    "error": "Er is een fout opgetreden...",
+    "update_success": "Update succesvol.",
+    "delete_success": "Vakmodel verwijderd.",
+    "reference_documents": "die dit vakmodel beschrijven",
+    "no_reference_documents": "Niet beschreven door een referentiedocument in de datacatalogus",
+    "delete_button": "Verwijderen"
+  },
+  "delete_import_view": {
+    "heading": "Catalogusitems met een specifieke tag verwijderen",
+    "description": "Entiteiten met een specifieke tag kunnen hier worden verwijderd. Alle relaties die aan de entiteiten hangen worden ook verwijderd.",
+    "tag_label": "Tag",
+    "delete_button": "Catalogusitems verwijderen",
+    "tag_not_exist": "De tag {tag} bestaat niet!",
+    "delete_success": "Catalogusitem {name} verwijderd",
+    "error_occurred": "Er is een fout opgetreden..."
+  },
+  "export_view": {
+    "heading": "Catalogus exporteren",
+    "description": "De volgende knop start het downloaden van een ZIP-bestand met twee CSV-bestanden erin.\nHet bestand 'Entities.csv' bevat alle catalogusitems met hun metadata.\nIn het bestand 'Relationships.csv' zijn de relaties opgeslagen die tussen de catalogusitems bestaan.\nHet resulterende bestand is UTF-8 gecodeerd, gebruikt komma (,) als scheidingsteken en dubbele aanhalingstekens (\") als tekstkwalificeerder.\nDe gegevens zijn klaar voor export zodra de knop niet meer grijs is.",
+    "export_button": "CSV exporteren"
+  },
+  "tag_view": {
+    "heading": "Bestaande tags",
+    "explanation": "Deze pagina wordt gebruikt om nieuwe tags aan de database toe te voegen. De tags kunnen vervolgens in de tabelweergave worden gebruikt om nieuwe tags aan bestaande items toe te voegen.",
+    "new_tag_label": "Nieuwe tags aanmaken",
+    "add_tag_button": "Tag toevoegen",
+    "loading": "Laden...",
+    "error_loading": "Fout bij het laden van tags: {error}",
+    "enter_tag_name": "Voer een tagnaam in.",
+    "tag_exists": "Tag \"{tag}\" bestaat al.",
+    "tag_added_success": "Tag \"{tag}\" succesvol toegevoegd.",
+    "tag_added_error": "Fout bij het toevoegen van tag \"{tag}\"."
+  },
+  "hierarchy": {
+    "error": "Er is een fout opgetreden bij het ophalen van de kenmerkenboom.",
+    "select_concept": "Selecteer een concept in de boomweergave om eigenschappen te tonen.",
+    "edit_group": "Groep bewerken",
+    "edit_class": "Klasse bewerken",
+    "edit_property": "Kenmerk bewerken",
+    "edit_measure": "Grootheid bewerken",
+    "edit_unit": "Eenheid bewerken",
+    "edit_value": "Waarde bewerken",
+    "edit_model": "Vakmodel bewerken",
+    "search_catalog": "Catalogus doorzoeken"
+  },
+  "grid_view": {
+    "loading": "Tabelinhoud wordt geladen",
+    "tag_filter_title": "Filtermogelijkheid op tags",
+    "select_tag": "Tag selecteren",
+    "add_tag": "Tag toevoegen",
+    "show_only_documents": "Alleen referentiedocumenten tonen",
+    "show_only_models": "Alleen vakmodellen tonen",
+    "show_only_groups": "Alleen groepen tonen",
+    "show_only_classes": "Alleen klassen tonen",
+    "show_only_property_groups": "Alleen kenmerkgroepen tonen",
+    "show_only_properties": "Alleen kenmerken tonen",
+    "show_all": "Alles tonen",
+    "reference_documents": "Referentiedocumenten",
+    "domain_models": "Vakmodellen",
+    "groups": "Groepen",
+    "classes": "Klassen",
+    "property_groups": "Kenmerkgroepen",
+    "properties": "Kenmerken",
+    "tag_filter_placeholder": "Tag selecteren"
+  },
+  "error":{
+    "error": "Er is een fout opgetreden..."
+  },
+  "document": {
+    "title": "Referentiedocument",
+    "titlePlural": "Referentiedocumenten",
+    "description": "Een item van het type Referentiedocument wordt gebruikt om externe documenten, boeken of andere geschreven informatie weer te geven.",
+    "loading": "Referentiedocument laden...",
+    "TransferList": "Door het referentiedocument beschreven ",
+    "TransferList2": "concepten"
+  },
+  "model": {
+    "title": "Vakmodel",
+    "titlePlural": "Vakmodellen",
+    "loading": "Vakmodel laden...", 
+    "TransferList": "Door het vakmodel beschreven ",
+    "TransferList2": "groepen"
+  },
+  "group": {
+    "title": "Groep",
+    "titlePlural": "Groepen",
+    "loading": "Groep laden...",
+    "TransferList": "Gegroepeerde ",
+    "TransferList2": "klassen"
+  },
+  "class": {
+    "title": "Klasse",
+    "titlePlural": "Klassen",
+    "loading": "Klasse laden...",
+    "TransferList": "Aan de klasse ",
+    "TransferList2": " toegewezen ",
+    "TransferList3": "kenmerkgroepen"
+  },
+  "dataTemplate": {
+    "title": "Datasjabloon",
+    "titlePlural": "Datasjablonen"
+  },
+  "propertyGroup": {
+    "title": "Kenmerkgroep",
+    "titlePlural": "Kenmerkgroepen"
+  },
+  "property": {
+    "title": "Kenmerk",
+    "titlePlural": "Kenmerken"
+  },
+  "measure": {
+    "title": "Grootheid",
+    "titlePlural": "Grootheden"
+  },
+  "unit": {
+    "title": "Maateenheid",
+    "titlePlural": "Maateenheden"
+  },
+  "value": {
+    "title": "Waarde",
+    "titlePlural": "Waarden"
+  },
+  "tolerance": {
+    "description": "De tolerantie van een waarde kan absoluut en procentueel worden aangegeven."
+  },
+  "translation_form": {
+    "no_translations": "Nog geen vertaling beschikbaar.",
+    "add_translation": "Vertaling toevoegen",
+    "add_translation_title": "Vertaling toevoegen",
+    "language": "Taal",
+    "language_helper": "Taal waarin de vertaling wordt gemaakt."
+  },
+  "version": {
+    "title": "Versie",
+    "description": "De versie kan voor het toepassingsdomein vrij worden bepaald en geformatteerd.",
+    "date": "Datum"
+  },
+  "meta": {
+    "title": "Meta-informatie",
+    "description": "Technische informatie over het concept",
+    "keyword": "Trefwoorden",
+    "created": "Aangemaakt",
+    "created_by": "Aangemaakt door",
+    "updated": "Laatst bijgewerkt",
+    "updated_by": "Laatst bijgewerkt door"
+  },
+  "name": {
+    "title": "Naam",
+    "description": "Identificeert het concept in de respectieve taal."
+  },
+  "comment": {
+    "title": "Commentaar",
+    "description": "Stelt bewerkers in staat om aanvullende informatie uit te wisselen, bijvoorbeeld over de bewerkingsstatus van het concept."
+  },
+  "description": {
+    "title": "Beschrijving",
+    "description": "Karakteriseert het concept in zijn manifestatie en toepassingsconcept nader."
+  },
+  "search":{
+    "search": "Zoeken",
+    "search_placeholder": "Catalogus doorzoeken",
+    "search_results": "Zoekresultaten"
+  },
+  "footer": {
+    "contact": "Vragen & Contact",
+    "report_issue": "Probleem melden",
+    "version": "datacat editor {version}"
+  },
+  "property_group_form": {
+    "loading": "Kenmerkgroep laden...",
+    "error": "Er is een fout opgetreden...",
+    "update_success": "Update succesvol.",
+    "delete_success": "Kenmerkgroep verwijderd.",
+    "grouped_properties": "In de kenmerkgroep gegroepeerde kenmerken",
+    "reference_documents": "die deze kenmerkgroep beschrijven",
+    "no_reference_documents": "Niet beschreven door een referentiedocument in de datacatalogus",
+    "assigned_classes": "waaraan deze kenmerkgroep is toegewezen",
+    "no_assigned_classes": "Deze kenmerkgroep is aan geen enkele klasse toegewezen",
+    "delete_button": "Verwijderen"
+  },
+  "property_form": {
+    "loading": "Kenmerk laden...",
+    "error": "Er is een fout opgetreden...",
+    "update_success": "Update succesvol.",
+    "delete_success": "Kenmerk verwijderd.",
+    "property_measure": "Grootheid van het kenmerk",
+    "reference_documents": "die dit kenmerk beschrijven",
+    "no_reference_documents": "Niet beschreven door een referentiedocument in de datacatalogus",
+    "aggregating_property_groups": "die dit kenmerk aggregeren",
+    "no_aggregating_property_groups": "Het kenmerk wordt in geen enkele kenmerkgroep gebruikt",
+    "assigned_classes": "waaraan dit kenmerk direct is toegewezen",
+    "no_assigned_classes": "Het kenmerk is aan geen enkele klasse direct toegewezen",
+    "delete_button": "Verwijderen"
+  },
+  "measure_form": {
+    "loading": "Grootheid laden...",
+    "error": "Er is een fout opgetreden...",
+    "update_success": "Update succesvol.",
+    "delete_success": "Grootheid verwijderd.",
+    "applicable_units": "Op de grootheid toepasbare maateenheden",
+    "value_range": "Waardebereik van de grootheid",
+    "reference_documents": "die deze grootheid beschrijven",
+    "no_reference_documents": "Niet beschreven door een referentiedocument in de datacatalogus",
+    "quantified_properties": "die door deze grootheid worden gekwantificeerd",
+    "no_quantified_properties": "De grootheid wordt door geen enkel kenmerk gebruikt",
+    "delete_button": "Verwijderen"
+  },
+  "unit_form": {
+    "loading": "Maateenheid laden...",
+    "error": "Er is een fout opgetreden...",
+    "delete_success": "Maateenheid verwijderd.",
+    "reference_documents": "die deze eenheid beschrijven",
+    "no_reference_documents": "Niet beschreven door een referentiedocument in de datacatalogus",
+    "assigned_measures": "waaraan deze eenheid is toegewezen",
+    "no_assigned_measures": "De eenheid wordt door geen enkele grootheid gebruikt",
+    "delete_button": "Verwijderen"
+  },
+  "value_form": {
+    "loading": "Waarde laden...",
+    "error": "Er is een fout opgetreden...",
+    "update_success": "Update succesvol.",
+    "delete_success": "Waarde verwijderd.",
+    "reference_documents": "die deze waarde beschrijven",
+    "no_reference_documents": "Niet beschreven door een referentiedocument in de datacatalogus",
+    "assigned_measures": "waaraan deze waarde is toegewezen",
+    "no_assigned_measures": "De waarde wordt door geen enkele grootheid gebruikt",
+    "delete_button": "Verwijderen"
+  },
+  "nominal_value_form": {
+    "title": "Nominale waarde",
+    "role_label": "Rol",
+    "type_label": "Datatype",
+    "value_label": "Waarde",
+    "updated": "Nominale waarde bijgewerkt.",
+    "removed": "Nominale waarde verwijderd."
+  },
+  "tolerance_form": {
+    "title": "Tolerantie",
+    "type_label": "Type",
+    "lower_tolerance_label": "Onderste tolerantie",
+    "upper_tolerance_label": "Bovenste tolerantie",
+    "save_button": "Opslaan",
+    "delete_button": "Verwijderen",
+    "reset_button": "Resetten",
+    "description": "De tolerantie van een waarde kan absoluut en procentueel worden aangegeven."
+  }
+}
