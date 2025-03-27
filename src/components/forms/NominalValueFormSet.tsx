@@ -10,6 +10,7 @@ import {
 } from "../../generated/types";
 import {useSnackbar} from "notistack";
 import NominalValueForm, {NominalValueDefaultFormValues} from "./NominalValueForm";
+import { T } from '@tolgee/react';
 
 type NominalValueFormSetProps = {
     id: string
@@ -41,7 +42,7 @@ const NominalValueFormSet: FC<NominalValueFormSetProps> = (props) => {
                 input: {valueId: id, nominalValue}
             }
         });
-        enqueueSnackbar("Nennwert aktualisiert.");
+        enqueueSnackbar(<T keyName="nominal_value_form.updated">Nennwert aktualisiert.</T>);
     };
 
     const onDelete = async () => {
@@ -50,12 +51,12 @@ const NominalValueFormSet: FC<NominalValueFormSetProps> = (props) => {
                 input: {valueId: id}
             }
         });
-        enqueueSnackbar("Nennwert entfernt.");
+        enqueueSnackbar(<T keyName="nominal_value_form.removed">Nennwert entfernt.</T>);
     };
 
     return (
         <FormSet>
-            <FormSetTitle>Nennwert</FormSetTitle>
+            <FormSetTitle><T keyName="nominal_value_form.title">Nennwert</T></FormSetTitle>
             <NominalValueForm
                 onSubmit={onSubmit}
                 onDelete={onDelete}

@@ -3,6 +3,8 @@ import useDebounce from "../../hooks/useDebounce";
 import {ListOnItemsRenderedProps} from "react-window";
 import React from "react";
 import ItemList, {ItemListProps} from "./ItemList";
+import { T, useTranslate } from "@tolgee/react";
+import { Box } from "@mui/material";
 
 type SearchListProps = Omit<ItemListProps, "items"> & {
     searchTerm: string;
@@ -12,12 +14,13 @@ type SearchListProps = Omit<ItemListProps, "items"> & {
 
 export default function SearchList(props: SearchListProps) {
     const {
-        searchLabel = "Katalog durchsuchen",
+        searchLabel,
         searchTerm = "",
         pageSize = 10,
         searchInput,
         ...otherProps
     } = props;
+    const { t } = useTranslate();
     const debouncedSearchTerm = useDebounce(searchTerm, 500);
     const input = {
         ...searchInput,
@@ -48,13 +51,15 @@ export default function SearchList(props: SearchListProps) {
     }
 
     return (
-        <ItemList
-            loading={loading}
-            items={items}
-            searchLabel={searchLabel}
-            searchTerm={searchTerm}
-            onItemsRendered={handleOnScroll}
-            {...otherProps}
-        />
+        <Box sx={{ mt: 1.5 }}> {/* Add spacing of 12px (1.5 units in MUI) */}
+            <ItemList
+                loading={loading}
+                items={items}
+                searchLabel={searchLabel || t("search.search_placeholder")}
+                searchTerm={searchTerm}
+                onItemsRendered={handleOnScroll}
+                {...otherProps}
+            />
+        </Box>
     );
 }

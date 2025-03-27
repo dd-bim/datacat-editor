@@ -4,7 +4,9 @@ import Drawer, { DrawerProps } from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListSubheader from "@mui/material/ListSubheader";
 import makeStyles from "@mui/styles/makeStyles";
+import { Theme } from "@mui/material/styles";
 import ListItem, { ListItemProps } from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
 import Tooltip from "@mui/material/Tooltip";
 import { Link as RouterLink } from "react-router-dom";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -33,8 +35,9 @@ import {
 } from "../domain";
 import AppTitle from "./AppTitle";
 import { useAdminAccess } from "../hooks/useAuthContext";
+import { T } from "@tolgee/react";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   drawerContainer: {
     overflow: "auto",
   },
@@ -45,11 +48,12 @@ const useStyles = makeStyles((theme) => ({
 
 type AppDrawerItemProps = {
   icon?: React.ReactNode;
-  primary: string;
+  primary: React.ReactNode;
   secondary?: string;
   tooltip?: string;
   to: string;
   onClick: () => void;
+  disabled?: boolean;
 };
 
 export const AppDrawerItem: FunctionComponent<
@@ -64,18 +68,18 @@ export const AppDrawerItem: FunctionComponent<
     disabled,
     onClick,
   } = props;
-
   return (
     <Tooltip title={tooltip} aria-label={tooltip} arrow enterDelay={500}>
-      <ListItem
-        button
-        component={RouterLink}
-        to={to}
-        disabled={disabled}
-        onClick={onClick}
-      >
-        {icon && <ListItemIcon>{icon}</ListItemIcon>}
-        <ListItemText inset={!icon} primary={primary} secondary={secondary} />
+      <ListItem component="div" disablePadding>
+        <ListItemButton
+          component={RouterLink}
+          to={to}
+          disabled={disabled}
+          onClick={onClick}
+        >
+          {icon && <ListItemIcon>{icon}</ListItemIcon>}
+          <ListItemText inset={!icon} primary={primary} secondary={secondary} />
+        </ListItemButton>
       </ListItem>
     </Tooltip>
   );
@@ -100,39 +104,41 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
         </div>
 
         <List dense>
-          <ListSubheader disableSticky>Allgemein</ListSubheader>
+          <ListSubheader disableSticky>
+            <T keyName="app_drawer.general">Allgemein</T>
+          </ListSubheader>
 
           <AppDrawerItem
             icon={<HomeIcon />}
-            primary="Startseite"
+            primary={<T keyName="app_drawer.home">Startseite</T>}
             to="/"
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
             icon={<AccountCircleIcon />}
-            primary="Profil bearbeiten"
+            primary={<T keyName="app_drawer.edit_profile">Profil bearbeiten</T>}
             to="/profile"
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
             icon={<SearchIcon />}
-            primary="Katalog durchsuchen"
+            primary={<T keyName="app_drawer.search_catalog">Katalog durchsuchen</T>}
             to="/search"
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
             icon={<ChecklistIcon />}
-            primary="Prüfen"
+            primary={<T keyName="app_drawer.audit">Prüfen</T>}
             to="/audit"
             onClick={handleItemClick}
           />
           {isAdmin && (
             <AppDrawerItem
               icon={<PublishIcon />}
-              primary="Importieren"
+              primary={<T keyName="app_drawer.import">Importieren</T>}
               to="/import"
               onClick={handleItemClick}
             />
@@ -140,7 +146,7 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
 
           <AppDrawerItem
             icon={<FileDownloadIcon />}
-            primary="Exportieren"
+            primary={<T keyName="app_drawer.export">Exportieren</T>}
             to="/export"
             onClick={handleItemClick}
           />
@@ -148,7 +154,7 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
           {isAdmin && (
             <AppDrawerItem
               icon={<CodeIcon />}
-              primary="GraphiQL Interface"
+              primary={<T keyName="app_drawer.graphiql">GraphiQL Interface</T>}
               to="/graphiql"
               onClick={handleItemClick}
             />
@@ -157,7 +163,7 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
           {isAdmin && (
             <AppDrawerItem
               icon={<LocalOfferIcon />}
-              primary="Neue Tags anlegen"
+              primary={<T keyName="app_drawer.new_tags">Neue Tags anlegen</T>}
               to="/tagview"
               onClick={handleItemClick}
             />
@@ -165,44 +171,46 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
 
           <AppDrawerItem
             icon={<StorageIcon />}
-            primary="Tabellenansicht"
+            primary={<T keyName="app_drawer.grid_view">Tabellenansicht</T>}
             to="/gridview"
             onClick={handleItemClick}
           />
 
-          <ListSubheader disableSticky>Katalog</ListSubheader>
+          <ListSubheader disableSticky>
+            <T keyName="app_drawer.catalog">Katalog</T>
+          </ListSubheader>
 
           <AppDrawerItem
             icon={<DocumentEntity.Icon />}
-            primary={DocumentEntity.titlePlural}
+            primary={<T keyName="app_drawer.documents">Referenzdokumente</T>}
             to={`/${DocumentEntity.path}`}
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
             icon={<ModelEntity.Icon />}
-            primary={ModelEntity.titlePlural}
+            primary={<T keyName="app_drawer.models">Fachmodelle</T>}
             to={`/${ModelEntity.path}`}
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
             icon={<GroupEntity.Icon />}
-            primary={GroupEntity.titlePlural}
+            primary={<T keyName="app_drawer.groups">Gruppen</T>}
             to={`/${GroupEntity.path}`}
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
             icon={<ClassEntity.Icon />}
-            primary={ClassEntity.titlePlural}
+            primary={<T keyName="app_drawer.classes">Klassen</T>}
             to={`/${ClassEntity.path}`}
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
             icon={<DataTemplateEntity.Icon />}
-            primary={DataTemplateEntity.titlePlural}
+            primary={<T keyName="app_drawer.data_templates">Datenvorlagen</T>}
             to={`/${DataTemplateEntity.path}`}
             disabled
             onClick={handleItemClick}
@@ -210,35 +218,35 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
 
           <AppDrawerItem
             icon={<PropertyGroupEntity.Icon />}
-            primary={PropertyGroupEntity.titlePlural}
+            primary={<T keyName="app_drawer.property_groups">Merkmalsgruppen</T>}
             to={`/${PropertyGroupEntity.path}`}
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
             icon={<PropertyEntity.Icon />}
-            primary={PropertyEntity.titlePlural}
+            primary={<T keyName="app_drawer.properties">Merkmale</T>}
             to={`/${PropertyEntity.path}`}
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
             icon={<MeasureEntity.Icon />}
-            primary={MeasureEntity.titlePlural}
+            primary={<T keyName="app_drawer.measures">Größen</T>}
             to={`/${MeasureEntity.path}`}
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
             icon={<UnitEntity.Icon />}
-            primary={UnitEntity.titlePlural}
+            primary={<T keyName="app_drawer.units">Maßeinheiten</T>}
             to={`/${UnitEntity.path}`}
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
             icon={<BookmarksIcon />}
-            primary={ValueEntity.titlePlural}
+            primary={<T keyName="app_drawer.values">Werte</T>}
             to={`/${ValueEntity.path}`}
             onClick={handleItemClick}
           />

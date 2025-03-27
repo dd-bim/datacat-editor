@@ -10,6 +10,7 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import makeStyles from "@mui/styles/makeStyles";
 import Typography from "@mui/material/Typography";
+import { T } from "@tolgee/react";
 
 export type TranslationFormSetProps = {
     label: string;
@@ -86,7 +87,7 @@ export default function TranslationFormSet(props: TranslationFormSetProps) {
                             variant="body2"
                             color="textSecondary"
                         >
-                            Noch keine Übersetzung vorhanden.
+                            <T keyName="translation_form.no_translations" />
                         </Typography>
                     </Grid>
 
@@ -99,13 +100,13 @@ export default function TranslationFormSet(props: TranslationFormSetProps) {
                         onClick={() => setOpen(true)}
                         startIcon={<TranslateIcon/>}
                     >
-                        Übersetzung hinzufügen
+                        <T keyName="translation_form.add_translation" />
                     </Button>
                 </Grid>
             </Grid>
 
             <Dialog open={open} onClose={() => setOpen(false)}>
-                <DialogTitle>Übersetzung hinzufügen</DialogTitle>
+                <DialogTitle><T keyName="translation_form.add_translation_title" /></DialogTitle>
                 <DialogContent>
                     <NewTranslationForm
                         languageFilter={{

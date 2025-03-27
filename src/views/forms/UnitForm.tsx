@@ -11,10 +11,12 @@ import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
+import {T, useTranslate} from "@tolgee/react";
 
 const UnitForm: FC<FormProps<UnitDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
+    const {t} = useTranslate();
 
     // fetch domain model
     const {loading, error, data} = useGetUnitEntryQuery({
@@ -40,12 +42,12 @@ const UnitForm: FC<FormProps<UnitDetailPropsFragment>> = (props) => {
         }
     });
 
-    if (loading) return <Typography>Lade Maßeinheit..</Typography>;
-    if (error || !entry) return <Typography>Es ist ein Fehler aufgetreten..</Typography>;
+    if (loading) return <Typography><T keyName="unit_form.loading">Lade Maßeinheit..</T></Typography>;
+    if (error || !entry) return <Typography><T keyName="unit_form.error">Es ist ein Fehler aufgetreten..</T></Typography>;
 
     const handleOnDelete = async () => {
         await deleteEntry({variables: {id}});
-        enqueueSnackbar("Maßeinheit gelöscht.")
+        enqueueSnackbar(<T keyName="unit_form.delete_success">Maßeinheit gelöscht.</T>);
         onDelete?.();
     };
 
@@ -73,14 +75,14 @@ const UnitForm: FC<FormProps<UnitDetailPropsFragment>> = (props) => {
             />
 
             <RelatingRecordsFormSet
-                title={<span><b>Referenzdokumente</b>, die diese Einheit beschreiben</span>}
-                emptyMessage={"Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben"}
+                title={<span><b><T keyName="document.titlePlural">Referenzdokumente</T></b>, <T keyName="unit_form.reference_documents">die diese Einheit beschreiben</T></span>}
+                emptyMessage={t("unit_form.no_reference_documents")}
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
             />
 
             <RelatingRecordsFormSet
-                title={<span><b>Größen</b>, denen diese Einheit zugewiesen wurde</span>}
-                emptyMessage={"Die Einheit wird durch keine Größe genutzt"}
+                title={<span><b><T keyName="measure.titlePlural">Größen</T></b>, <T keyName="unit_form.assigned_measures">denen diese Einheit zugewiesen wurde</T></span>}
+                emptyMessage={t("unit_form.no_assigned_measures")}
                 relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingMeasure) ?? []}
             />
 
@@ -92,7 +94,7 @@ const UnitForm: FC<FormProps<UnitDetailPropsFragment>> = (props) => {
                 startIcon={<DeleteForeverIcon/>}
                 onClick={handleOnDelete}
             >
-                Löschen
+                <T keyName="unit_form.delete_button">Löschen</T>
             </Button>
         </FormView>
     );

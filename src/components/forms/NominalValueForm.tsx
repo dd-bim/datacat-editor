@@ -4,6 +4,7 @@ import { TextField, ClickAwayListener } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import InlineButtonGroup from './InlineButtonGroup';
 import { ValueRole, ValueType } from '../../generated/types';
+import { T } from '@tolgee/react';
 
 const useStyles = makeStyles((theme: { spacing: (value: number) => number }) => ({
   root: {
@@ -97,7 +98,7 @@ const NominalValueForm: FC<NominalValueFormProps> = (props) => {
           render={({ field }) => (
             <TextField
               {...field}
-              label="Rolle"
+              label={<T keyName="nominal_value_form.role_label">Rolle</T>}
               InputProps={{
                 onFocus: !isEditMode ? handleOnEdit : undefined,
               }}
@@ -121,7 +122,7 @@ const NominalValueForm: FC<NominalValueFormProps> = (props) => {
           render={({ field }) => (
             <TextField
               {...field}
-              label="Datentyp"
+              label={<T keyName="nominal_value_form.type_label">Datentyp</T>}
               InputProps={{
                 onFocus: !isEditMode ? handleOnEdit : undefined,
               }}
@@ -144,7 +145,7 @@ const NominalValueForm: FC<NominalValueFormProps> = (props) => {
           render={({ field }) => (
             <TextField
               {...field}
-              label="Wert"
+              label={<T keyName="nominal_value_form.value_label">Wert</T>}
               error={!!errors.nominalValue}
               InputProps={{
                 onFocus: !isEditMode ? handleOnEdit : undefined,

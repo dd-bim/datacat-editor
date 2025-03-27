@@ -10,6 +10,8 @@
 
 # production
 /build
+/dist
+/dev-dist
 
 # misc
 .DS_Store
@@ -17,6 +19,7 @@
 .env.development.local
 .env.test.local
 .env.production.local
+vite-env.d
 
 npm-debug.log*
 yarn-debug.log*

@@ -17,10 +17,12 @@ import FormView, {FormProps} from "./FormView";
 import TransferListView from "../TransferListView";
 import {UnitEntity, ValueEntity} from "../../domain";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
+import {T, useTranslate} from "@tolgee/react";
 
 const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
+    const {t} = useTranslate();
 
     // fetch domain model
     const {loading, error, data, refetch} = useGetMeasureEntryQuery({
@@ -46,17 +48,17 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
         }
     });
 
-    if (loading) return <Typography>Lade Größe..</Typography>;
-    if (error || !entry) return <Typography>Es ist ein Fehler aufgetreten..</Typography>;
+    if (loading) return <Typography><T keyName="measure_form.loading">Lade Größe..</T></Typography>;
+    if (error || !entry) return <Typography><T keyName="measure_form.error">Es ist ein Fehler aufgetreten..</T></Typography>;
 
     const handleOnUpdate = async () => {
         await refetch();
-        enqueueSnackbar("Update erfolgreich.");
+        enqueueSnackbar(<T keyName="measure_form.update_success">Update erfolgreich.</T>);
     };
 
     const handleOnDelete = async () => {
         await deleteEntry({variables: {id}});
-        enqueueSnackbar("Größe gelöscht.")
+        enqueueSnackbar(<T keyName="measure_form.delete_success">Größe gelöscht.</T>);
         onDelete?.();
     };
 
@@ -94,7 +96,7 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
             />
 
             <TransferListView
-                title={<span>Auf die Größe anwendbare <b>Maßeinheiten</b></span>}
+                title={<span><T keyName="measure_form.applicable_units"></T></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.AssignsUnits}
                 relationships={assignsUnitsRelationships}
@@ -107,7 +109,7 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
             />
 
             <TransferListView
-                title={<span><b>Wertebereich</b> der Größe</span>}
+                title={<span><T keyName="measure_form.value_range">Wertebereich</T> <b><T keyName="measure.title">der Größe</T></b></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.AssignsValues}
                 relationships={assignsValuesRelationships}
@@ -120,14 +122,14 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
             />
 
             <RelatingRecordsFormSet
-                title={<span><b>Referenzdokumente</b>, die diese Größe beschreiben</span>}
-                emptyMessage={"Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben"}
+                title={<span><b><T keyName="document.titlePlural">Referenzdokumente</T></b>, <T keyName="measure_form.reference_documents">die diese Größe beschreiben</T></span>}
+                emptyMessage={t("measure_form.no_reference_documents")}
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
             />
 
             <RelatingRecordsFormSet
-                title={<span><b>Merkmale</b>, die durch diese Größe quantifiziert werden</span>}
-                emptyMessage={"Die Größe wird durch kein Merkmal genutzt"}
+                title={<span><b><T keyName="property.titlePlural">Merkmale</T></b>, <T keyName="measure_form.quantified_properties">die durch diese Größe quantifiziert werden</T></span>}
+                emptyMessage={t("measure_form.no_quantified_properties")}
                 relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingProperty) ?? []}
             />
 
@@ -139,7 +141,7 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
                 startIcon={<DeleteForeverIcon/>}
                 onClick={handleOnDelete}
             >
-                Löschen
+                <T keyName="measure_form.delete_button">Löschen</T>
             </Button>
         </FormView>
     );

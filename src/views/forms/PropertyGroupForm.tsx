@@ -18,10 +18,12 @@ import FormView, {FormProps} from "./FormView";
 import {PropertyEntity} from "../../domain";
 import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
+import { T, useTranslate } from "@tolgee/react";
 
 const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
+    const { t } = useTranslate();
 
     // fetch domain model
     const {loading, error, data, refetch} = useGetCollectionEntryQuery({
@@ -47,17 +49,17 @@ const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) 
         }
     });
 
-    if (loading) return <Typography>Lade Merkmalsgruppe..</Typography>;
-    if (error || !entry) return <Typography>Es ist ein Fehler aufgetreten..</Typography>;
+    if (loading) return <Typography><T keyName="property_group_form.loading"></T></Typography>;
+    if (error || !entry) return <Typography><T keyName="property_group_form.error"></T></Typography>;
 
     const handleOnUpdate = async () => {
         await refetch();
-        enqueueSnackbar("Update erfolgreich.");
+        enqueueSnackbar(<T keyName="property_group_form.update_success"></T>);
     };
 
     const handleOnDelete = async () => {
         await deleteEntry({variables: {id}});
-        enqueueSnackbar("Merkmalsgruppe gelöscht.")
+        enqueueSnackbar(<T keyName="property_group_form.delete_success"></T>);
         onDelete?.();
     };
 
@@ -90,7 +92,7 @@ const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) 
             />
 
             <TransferListView
-                title={<span>In der Merkmalsgruppe gruppierte <b>Merkmale</b></span>}
+                title={<span><T keyName="property_group_form.grouped_properties"></T></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.Collects}
                 relationships={collectsRelationships}
@@ -101,14 +103,14 @@ const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) 
             />
 
             <RelatingRecordsFormSet
-                title={<span><b>Referenzdokumente</b>, die diese Merkmalsgruppe beschreiben</span>}
-                emptyMessage={"Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben"}
+                title={<span><b><T keyName="document.titlePlural"></T></b>, <T keyName="property_group_form.reference_documents"></T></span>}
+                emptyMessage={t("property_group_form.no_reference_documents", "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben")}
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
             />
 
             <RelatingRecordsFormSet
-                title={<span><b>Klassen</b>, denen diese Merkmalsgruppe zugewiesen wurde</span>}
-                emptyMessage={"Diese Merkmalsgruppe wurde keiner Klasse zugewiesen"}
+                title={<span><b><T keyName="class.titlePlural">Klassen</T></b>, <T keyName="property_group_form.assigned_classes"></T></span>}
+                emptyMessage={t("property_group_form.no_assigned_classes", "Diese Merkmalsgruppe wurde keiner Klasse zugewiesen")}
                 relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingObject) ?? []}
             />
 
@@ -120,7 +122,7 @@ const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) 
                 startIcon={<DeleteForeverIcon/>}
                 onClick={handleOnDelete}
             >
-                Löschen
+                <T keyName="property_group_form.delete_button">Löschen</T>
             </Button>
         </FormView>
     );

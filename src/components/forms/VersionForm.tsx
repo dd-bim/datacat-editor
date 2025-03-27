@@ -7,6 +7,7 @@ import InlineButtonGroup from "./InlineButtonGroup";
 import { ClickAwayListener } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Theme } from "@mui/material/styles";
+import { T } from "@tolgee/react";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -95,7 +96,7 @@ const VersionForm: FC<VersionFormProps> = (props) => {
             <TextField
               {...field}
               id="versionDate" // ✅ Hier setzen
-              label="Datum"
+              label=<T keyName="version.date" />
               error={!!fieldState.error}
               fullWidth
               InputProps={{

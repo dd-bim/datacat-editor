@@ -11,13 +11,14 @@ import {
 import {useSnackbar} from "notistack";
 import TranslationFormSet from "./TranslationFormSet";
 import makeStyles from "@mui/styles/makeStyles";
+import { Theme } from "@mui/material/styles";
+import {T} from "@tolgee/react";
 
 type CommentFormSetProps = {
     catalogEntryId: string,
     comments: TranslationPropsFragment[]
 }
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
     description: {
         marginBottom: theme.spacing(1)
     }
@@ -61,10 +62,14 @@ const CommentFormSet: FC<CommentFormSetProps> = (props) => {
 
     return (
         <FormSet>
-            <FormSetTitle><b>Kommentar</b></FormSetTitle>
+            <FormSetTitle><b><T keyName={"comment.title"}/></b></FormSetTitle>
             <FormSetDescription className={classes.description}>
-                Ermöglicht Bearbeitern den Austausch von zusätzlichen Informationen z.B. über den Bearbeitungsstand des Konzepts.
+            <T keyName={"comment.description"}/>
             </FormSetDescription>
+
+            <div style={{ marginBottom: "12px" }}></div>
+
+            
             <TranslationFormSet
                 label="Kommentar"
                 translations={comments}

@@ -17,10 +17,12 @@ import MetaFormSet from "../../components/forms/MetaFormSet";
 import {ClassEntity} from "../../domain";
 import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
+import {T, useTranslate} from "@tolgee/react";
 
 const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
+    const { t } = useTranslate(); // Moved to top level
 
     // fetch domain model
     const {loading, error, data, refetch} = useGetCollectionEntryQuery({
@@ -46,18 +48,18 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
         }
     });
 
-    if (loading) return <Typography>Lade Gruppe..</Typography>;
-    if (error || !entry) return <Typography>Es ist ein Fehler aufgetreten..</Typography>;
+    if (loading) return <Typography><T keyName={"group.loading"}/></Typography>;
+    if (error || !entry) return <Typography><T keyName={"error.error"}/></Typography>;
 
     const handleOnDelete = async () => {
         await deleteEntry({variables: {id}});
-        enqueueSnackbar("Gruppe gelöscht.")
+        enqueueSnackbar(<T keyName="domain_group_form.delete_success">Gruppe gelöscht.</T>)
         onDelete?.();
     };
 
     const handleOnUpdate = async () => {
         await refetch();
-        enqueueSnackbar("Update erfolgreich.");
+        enqueueSnackbar(<T keyName="domain_group_form.update_success">Update erfolgreich.</T>);
     }
 
     const collectsRelationships = entry.collects.nodes.map(({id, relatedThings}) => ({
@@ -89,8 +91,8 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
             />
 
             <TransferListView
-                title={<span>Gruppierte <b>Klassen</b></span>}
-                description="Klassen, die dieser Gruppe zugeordnet sind."
+                title={<span><T keyName={"group.TransferList"}/> <b><T keyName={"group.TransferList2"}/></b></span>}
+                description={t("domain_group_form.grouped_classes_description", "Klassen, die dieser Gruppe zugeordnet sind.")}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.Collects}
                 relationships={collectsRelationships}
@@ -101,14 +103,14 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
             />
 
             <RelatingRecordsFormSet
-                title={<span><b>Referenzdokumente</b>, die diese Gruppe beschreiben</span>}
-                emptyMessage={"Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben"}
+                title={<span><b><T keyName="document.titlePlural"/></b>, <T keyName="domain_group_form.reference_documents">die diese Gruppe beschreiben</T></span>}
+                emptyMessage={t("domain_group_form.no_reference_documents", "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben")}
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
             />
 
             <RelatingRecordsFormSet
-                title={<span><b>Fachmodelle</b>, die diese Gruppe anwenden</span>}
-                emptyMessage={"Die Gruppe wird durch kein Fachmodell genutzt"}
+                title={<span><b><T keyName="model.titlePlural"/></b>, <T keyName="domain_group_form.domain_models_using_group">die diese Gruppe anwenden</T></span>}
+                emptyMessage={t("domain_group_form.no_domain_models_using_group", "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben")}
                 relatingRecords={entry?.collectedBy.nodes.map(node => node.relatingCollection) ?? []}
             />
 
@@ -120,7 +122,7 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
                 startIcon={<DeleteForeverIcon/>}
                 onClick={handleOnDelete}
             >
-                Löschen
+                <T keyName="domain_group_form.delete_button">Löschen</T>
             </Button>
         </FormView>
     );

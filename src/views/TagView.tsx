@@ -12,6 +12,7 @@ import {
 import { makeStyles } from "@mui/styles";
 import { useSnackbar } from "notistack";
 import { Theme } from "@mui/material/styles";
+import { T } from "@tolgee/react";
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -32,6 +33,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: "center",
     gap: theme.spacing(2),
     marginBottom: theme.spacing(4),
+    marginTop: theme.spacing(4), // Add marginTop to increase the spacing
   },
   explanation: {
     marginBottom: theme.spacing(2),
@@ -51,6 +53,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: "center",
     justifyContent: "center",
     fontWeight: "bold",
+  },
+  buttonContainer: {
+    marginBottom: theme.spacing(4),
   },
 }));
 
@@ -72,14 +77,14 @@ const TagView: React.FC = () => {
 
   const handleAddTag = async () => {
     if (!newTagName.trim()) {
-      enqueueSnackbar("Bitte geben Sie einen Tag-Namen ein.", {
+      enqueueSnackbar(<T keyName="tag_view.enter_tag_name" />, {
         variant: "error",
       });
       return;
     }
 
     if (tags.includes(newTagName)) {
-      enqueueSnackbar(`Tag "${newTagName}" ist bereits vorhanden.`, {
+      enqueueSnackbar(<T keyName="tag_view.tag_exists" params={{ tag: newTagName }} />, {
         variant: "warning",
       });
       return;
@@ -93,13 +98,13 @@ const TagView: React.FC = () => {
           },
         },
       });
-      enqueueSnackbar(`Tag "${newTagName}" erfolgreich hinzugefügt.`, {
+      enqueueSnackbar(<T keyName="tag_view.tag_added_success" params={{ tag: newTagName }} />, {
         variant: "success",
       });
       setNewTagName("");
       refetch();
     } catch (error) {
-      enqueueSnackbar(`Fehler beim Hinzufügen des Tags "${newTagName}".`, {
+      enqueueSnackbar(<T keyName="tag_view.tag_added_error" params={{ tag: newTagName }} />, {
         variant: "error",
       });
       console.error("Fehler beim Hinzufügen des Tags:", error);
@@ -107,13 +112,13 @@ const TagView: React.FC = () => {
   };
 
   if (loading) {
-    return <Typography variant="h6">Laden...</Typography>;
+    return <Typography variant="h6"><T keyName="tag_view.loading" /></Typography>;
   }
 
   if (error) {
     return (
       <Typography variant="h6" color="error">
-        Fehler beim Laden der Tags: {error.message}
+        <T keyName="tag_view.error_loading" params={{ error: error.message }} />
       </Typography>
     );
   }
@@ -126,17 +131,15 @@ const TagView: React.FC = () => {
   return (
     <Paper className={classes.container}>
       <Typography variant="h4" gutterBottom>
-        Vorhandene Tags
+        <T keyName="tag_view.heading" />
       </Typography>
       <Typography variant="body1" className={classes.explanation}>
-        Diese Seite wird genutzt, um neue Tags zur Datenbank hinzuzufügen. Die
-        Tags können dann in der Tabellenansicht genutzt werden, um den
-        vorhandenen Einträgen neue Tags hinzuzufügen.
+        <T keyName="tag_view.explanation" />
       </Typography>
       <form className={classes.form} onSubmit={(e) => e.preventDefault()}>
         <FormControl variant="outlined" className={classes.formControl}>
           <InputLabel htmlFor="new-tag" shrink={newTagName !== ""}>
-            Neue Tags anlegen
+            <T keyName="tag_view.new_tag_label" />
           </InputLabel>
           <TextField
             id="new-tag"
@@ -152,9 +155,10 @@ const TagView: React.FC = () => {
           onClick={handleAddTag}
           className={classes.button}
         >
-          Tag hinzufügen
+          <T keyName="tag_view.add_tag_button" />
         </Button>
       </form>
+      <div className={classes.buttonContainer} />
       <div className={classes.chipContainer}>
         {sortedTags?.map((tag) => (
           <Chip key={tag.id} label={tag.name} className={classes.tagChip} />

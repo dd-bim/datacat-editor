@@ -3,8 +3,8 @@ import React from "react";
 import makeStyles from "@mui/styles/makeStyles";
 import Typography from "@mui/material/Typography";
 import { Link } from "@mui/material";
-
 import { Theme } from "@mui/material/styles";
+import { T } from "@tolgee/react";
 
 const useStyles = makeStyles((theme: Theme) => ({
   footer: {
@@ -29,16 +29,16 @@ export default function Footer(props: PaperProps) {
             rel="noopener"
             href="https://www.htw-dresden.de/hochschule/fakultaeten/geoinformation/ueber-uns/personen/professoren/prof-dr-ing-christian-clemen"
           >
-            Fragen & Kontakt
+            <T keyName="footer.contact">Fragen & Kontakt</T>
           </Link>
         </Typography>
         <Typography variant="body2">
           <Link
             target="_blank"
             rel="noopener"
-            href="https://github.com/dd-bim/datacat"
+            href="https://github.com/dd-bim/datacat/issues"
           >
-            Problem melden
+            <T keyName="footer.report_issue">Problem melden</T>
           </Link>
         </Typography>
         <Typography variant="caption">

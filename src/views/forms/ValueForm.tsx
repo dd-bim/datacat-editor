@@ -1,5 +1,5 @@
 import React, {FC} from "react";
-import {useDeleteEntryMutation, useGetValueEntryQuery, ValueDetailPropsFragment} from "../../generated/types";
+import {ValueDetailPropsFragment, useDeleteEntryMutation, useGetValueEntryQuery} from "../../generated/types";
 import {Typography} from "@mui/material";
 import {useSnackbar} from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
@@ -10,17 +10,19 @@ import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
-import ToleranceFormSet from "../../components/forms/ToleranceFormSet";
-import NominalValueFormSet from "../../components/forms/NominalValueFormSet";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
+import NominalValueFormSet from "../../components/forms/NominalValueFormSet";
+import ToleranceFormSet from "../../components/forms/ToleranceFormSet";
+import {T, useTranslate} from "@tolgee/react";
 
 const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
+    const {t} = useTranslate();
 
-    // fetch domain model
-    const {loading, error, data} = useGetValueEntryQuery({
-        fetchPolicy: "cache-and-network",
+    // fetch value
+    const {loading, error, data, refetch} = useGetValueEntryQuery({
+        fetchPolicy: "network-only",
         variables: {id}
     });
     let entry = data?.node as ValueDetailPropsFragment | undefined;
@@ -42,12 +44,17 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
         }
     });
 
-    if (loading) return <Typography>Lade Wert..</Typography>;
-    if (error || !entry) return <Typography>Es ist ein Fehler aufgetreten..</Typography>;
+    if (loading) return <Typography><T keyName="value_form.loading">Lade Wert..</T></Typography>;
+    if (error || !entry) return <Typography><T keyName="value_form.error">Es ist ein Fehler aufgetreten..</T></Typography>;
+
+    const handleOnUpdate = async () => {
+        await refetch();
+        enqueueSnackbar(<T keyName="value_form.update_success">Update erfolgreich.</T>);
+    };
 
     const handleOnDelete = async () => {
         await deleteEntry({variables: {id}});
-        enqueueSnackbar("Wert gelöscht.")
+        enqueueSnackbar(<T keyName="value_form.delete_success">Wert gelöscht.</T>);
         onDelete?.();
     };
 
@@ -89,15 +96,15 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
             />
 
             <RelatingRecordsFormSet
-                title={<span><b>Referenzdokumente</b>, die diesen Wert beschreiben</span>}
-                emptyMessage={"Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben"}
-                relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
+                title={<span><b><T keyName="document.titlePlural">Referenzdokumente</T></b>, <T keyName="value_form.reference_documents">die diesen Wert beschreiben</T></span>}
+                emptyMessage={t("value_form.no_reference_documents")}
+                relatingRecords={entry?.documentedBy?.nodes.map(node => node.relatingDocument) ?? []}
             />
 
             <RelatingRecordsFormSet
-                title={<span><b>Größen</b>, denen dieser Wert zugewiesen wurde</span>}
-                emptyMessage={"Der Wert wurde keiner Größe zugewiesen"}
-                relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingMeasure) ?? []}
+                title={<span><b><T keyName="measure.titlePlural">Größen</T></b>, <T keyName="value_form.assigned_measures">denen dieser Wert zugewiesen wurde</T></span>}
+                emptyMessage={t("value_form.no_assigned_measures")}
+                relatingRecords={entry?.assignedTo?.nodes.map(node => node.relatingMeasure) ?? []}
             />
 
             <MetaFormSet entry={entry}/>
@@ -108,7 +115,7 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
                 startIcon={<DeleteForeverIcon/>}
                 onClick={handleOnDelete}
             >
-                Löschen
+                <T keyName="value_form.delete_button">Löschen</T>
             </Button>
         </FormView>
     );

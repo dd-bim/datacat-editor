@@ -30,6 +30,7 @@ import {
   ValueEntity,
   getEntityType,
 } from "../domain";
+import { T } from "@tolgee/react";
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
@@ -59,7 +60,7 @@ const HierarchyView: FC = () => {
   if (loading) {
     leftContent = <LinearProgress />;
   } else if (error) {
-    leftContent = <p>Beim Aufrufen des Merkmalsbaums ist ein Fehler aufgetreten.</p>;
+    leftContent = <p><T keyName="hierarchy.error">Beim Aufrufen des Merkmalsbaums ist ein Fehler aufgetreten.</T></p>;
   } else {
     leftContent = (
       <Hierarchy
@@ -75,7 +76,7 @@ const HierarchyView: FC = () => {
   if (!selectedConcept) {
     rightContent = (
       <Typography className={classes.hint} variant="body1">
-        Konzept in der Baumansicht auswählen, um Eigenschaften anzuzeigen.
+        <T keyName="hierarchy.select_concept">Konzept in der Baumansicht auswählen, um Eigenschaften anzuzeigen.</T>
       </Typography>
     );
   } else {
@@ -87,7 +88,7 @@ const HierarchyView: FC = () => {
         rightContent = (
           <>
             <Typography variant="h5">
-              <DomainGroupIcon /> Gruppe bearbeiten
+              <DomainGroupIcon /> <T keyName="hierarchy.edit_group">Gruppe bearbeiten</T>
             </Typography>
             <DomainGroupForm id={id} onDelete={() => setSelectedConcept(null)} />
           </>
@@ -97,7 +98,7 @@ const HierarchyView: FC = () => {
         rightContent = (
           <>
             <Typography variant="h5">
-              <DomainClassIcon /> Klasse bearbeiten
+              <DomainClassIcon /> <T keyName="hierarchy.edit_class">Klasse bearbeiten</T>
             </Typography>
             <DomainClassForm id={id} onDelete={() => setSelectedConcept(null)} />
           </>
@@ -107,7 +108,7 @@ const HierarchyView: FC = () => {
         rightContent = (
           <>
             <Typography variant="h5">
-              <PropertyIcon /> Merkmal bearbeiten
+              <PropertyIcon /> <T keyName="hierarchy.edit_property">Merkmal bearbeiten</T>
             </Typography>
             <PropertyForm id={id} onDelete={() => setSelectedConcept(null)} />
           </>
@@ -117,7 +118,7 @@ const HierarchyView: FC = () => {
         rightContent = (
           <>
             <Typography variant="h5">
-              <MeasureIcon /> Größe bearbeiten
+              <MeasureIcon /> <T keyName="hierarchy.edit_measure">Größe bearbeiten</T>
             </Typography>
             <MeasureForm id={id} onDelete={() => setSelectedConcept(null)} />
           </>
@@ -127,7 +128,7 @@ const HierarchyView: FC = () => {
         rightContent = (
           <>
             <Typography variant="h5">
-              <UnitIcon /> Einheit bearbeiten
+              <UnitIcon /> <T keyName="hierarchy.edit_unit">Einheit bearbeiten</T>
             </Typography>
             <UnitForm id={id} onDelete={() => setSelectedConcept(null)} />
           </>
@@ -137,7 +138,7 @@ const HierarchyView: FC = () => {
         rightContent = (
           <>
             <Typography variant="h5">
-              <ValueIcon /> Wert bearbeiten
+              <ValueIcon /> <T keyName="hierarchy.edit_value">Wert bearbeiten</T>
             </Typography>
             <ValueForm id={id} onDelete={() => setSelectedConcept(null)} />
           </>
@@ -147,7 +148,7 @@ const HierarchyView: FC = () => {
         rightContent = (
           <>
             <Typography variant="h5">
-              <DomainModelIcon /> Fachmodell bearbeiten
+              <DomainModelIcon /> <T keyName="hierarchy.edit_model">Fachmodell bearbeiten</T>
             </Typography>
             <DomainModelForm id={id} onDelete={() => setSelectedConcept(null)} />
           </>
@@ -159,7 +160,7 @@ const HierarchyView: FC = () => {
     <Grid container spacing={1}>
       <Grid item xs={5}>
         <Paper className={classes.paper}>
-          <Typography variant="h5">Katalog durchsuchen</Typography>
+          <Typography variant="h5"><T keyName="hierarchy.search_catalog">Katalog durchsuchen</T></Typography>
           {leftContent}
         </Paper>
       </Grid>

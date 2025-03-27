@@ -1,17 +1,20 @@
 import React from "react";
 import {Typography, TypographyProps} from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
+import {Theme} from "@mui/material/styles";
 
 export type FormSetProps = {
     className?: string;
     children: React.ReactNode;
 };
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
     root: {
         marginBottom: theme.spacing(3),
         border: `1px solid ${theme.palette.grey[100]}`,
-        padding: theme.spacing(1)
+        padding: theme.spacing(1),
+        '& > .MuiTypography-root + *': {
+            marginTop: theme.spacing(1.5), // Adds space after any Typography component
+        },
     }
 }));
 

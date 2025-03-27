@@ -1,0 +1,490 @@
+{
+  "verification": {
+    "title": "Prüfkriterium",
+    "category_title": "Kategorie",
+    "criteria": {
+      "integrity": "Integrität",
+      "uniqueness": "Eindeutigkeit",
+      "language": "Sprache"
+    },
+    "category": {
+      "no_model_group": "Fachmodelle ohne Gruppe",
+      "no_group_class": "Gruppen ohne Klasse",
+      "no_class_properties": "Klassen ohne Merkmale/Merkmalsgruppen",
+      "no_property_group": "Merkmalsgruppen ohne Merkmale",
+      "no_property": "Merkmale ohne Klasse oder Merkmalsgruppe",
+      "no_measure": "Größen ohne Merkmal",
+      "no_unit": "Einheiten ohne Größe",
+      "no_value": "Werte ohne Größe",
+      "duplicate_id": "ID-Duplikate",
+      "duplicate_name_type": "Namen-Duplikate (innerhalb eines Types)",
+      "duplicate_name_all": "Namen-Duplikate (gesamter Datenbestand)",
+      "missing_description": "Fehlende Beschreibung",
+      "missing_description_en": "Fehlende Beschreibung (englisch)",
+      "missing_translation_en": "Fehlende Namens-Übersetzung (englisch)"
+    },
+    "result": {
+      "select_criteria": "Prüfkriterium und Kategorie auswählen.",
+      "select_entry": "Prüfergebnis in der Listenansicht auswählen, um Eigenschaften anzuzeigen."
+    },
+    "edit": {
+      "group": "Gruppe bearbeiten",
+      "class": "Klasse bearbeiten",
+      "property": "Merkmal bearbeiten",
+      "measure": "Größe bearbeiten",
+      "unit": "Einheit bearbeiten",
+      "value": "Wert bearbeiten",
+      "model": "Fachmodell bearbeiten"
+    }
+  },
+  "home": {
+    "title": "Willkommen bei datacat",
+    "about.title": "Über das Projekt",
+    "about.description": "Die datacat-Plattform stellt eine projektübergreifende Forschungsarbeit des Lehrbereichs \"Geodäsie und BIM\" der Fakultät Geoinformation der Hochschule für Technik und Wirtschaft Dresden (HTW Dresden) dar. Die Plattform zielt darauf ab, benutzer- und entwicklerfreundliche Komponenten für die Erarbeitung und Veröffentlichung von Klassifikationssystemen, Objektartenkatalogen und Merkmalsdatenbanken im Kontext der BIM-Methode zur Verfügung zu stellen.",
+    "components.title": "Die Komponenten",
+    "components.description": "Die Plattform gliedert sich derzeit in die Kernkomponenten datacat API, einer entwicklerfreundlichen, selbstdokumentierenden GraphQL-Schnittstelle für komplexe Abfragen auf den Datenkatalog und dem datacat editor, einem browsergestützten Benutzerwerkzeug zur Navigation und Bearbeitung des Datenbestands.",
+    "methodology.title": "Die Methodik",
+    "methodology.description": "Mittelpunkt der Entwicklung ist ein nah an den etablierten Standards DIN EN ISO 12006-3 und DIN EN ISO 23387 angelehntes Datenschema, das es ermöglichen soll, auch komplexe Klassifikationssysteme im Katalog zu pflegen. Die API ist völlig agnostisch gegenüber der anwendungsfallbezogenen Struktur, die im eigenen Datenkatalog umgesetzt werden soll.",
+    "opensource.title": "Open Source",
+    "opensource.description": "datacat wird als freie, quelloffene Software unter der GPLv3 Lizenz entwickelt und kann durch jeden, auch kommerziell genutzt und vervielfältigt werden. Der Quellcode wird auf GitHub gehostet. Jede Art der Unterstützung des Projekts ist willkommen."
+  },
+  "intro": {
+    "description1": "datacat editor ist ein webbasiertes, OpenSource Arbeitswerkzeug zum gemeinsamen Entwickeln von Datenkatalogen für die Bauindustrie. Der Quellcode wird unter der GPL v3 Lizenz zur Verfügung gestellt.",
+    "description2": "In einem Datenkatalog können Sie Konzepte wie Akteure, Aktivitäten, Bauteile und Merkmale mehrsprachig benennen, beschreiben und nach Ihrer Funktion und Gestalt standardkonform kategorisieren. Durch das Bilden von Beziehungen zwischen diesen Konzepten, kann die bebaute Umwelt schließlich näher beschrieben werden.",
+    "description3": "Der entwickelte Datenbestand steht zum Abruf über eine API für Entwickler von Import/Export-Werkzeugen und CAD/BIM-Plugins zur Verfügung. Zukünftig sollen Prüfroutinen entwickelt werden, die es erlauben, Inkonsistenzen wie ungenutzte Konzepte, mögliche Duplikate, und fehlende Übersetzungen im Katalog ausfindig zu machen.",
+    "description4": "datacat wird an der Hochschule für Technik und Wirtschaft Dresden (HTW Dresden) entwickelt. Wenn Sie weiteres Interesse am Projekt oder Fragen zur Anwendung haben, kontaktieren Sie uns gern direkt über die unten genannten Daten.",
+    "call_to_action": "Es handelt sich um ein Software-Preview. Ihre direkte Mitwirkung als OpenSource-Entwickler oder indirekt durch die Gabe von Feedback ist sehr erwünscht."
+  },
+  "profile": {
+    "heading": "Benutzerprofil bearbeiten",
+    "update_success": "Benutzerprofil aktualisiert!",
+    "error": "Beim Aufrufen des Benutzerprofils ist ein Fehler aufgetreten.",
+    "form": {
+      "first_name": "Vorname",
+      "first_name_helper": "Die Angabe Ihres Vornamens ist zwingend notwendig. Er wird anderen Katalog-Nutzern angezeigt, um Einträge und Änderungen zuzuordnen und die Zusammenarbeit zu erleichtern.",
+      "last_name": "Name",
+      "last_name_helper": "Die Angabe Ihres Nachnamens ist zwingend notwendig. Er wird anderen Katalog-Nutzern angezeigt, um Einträge und Änderungen zuzuordnen und die Zusammenarbeit zu erleichtern.",
+      "email": "Email",
+      "email_helper": "Die Angabe einer gültigen Email-Adresse ist zwingend notwendig. Sie wird genutzt, um Ihr Benutzerkonto zu validieren und Sie über Änderungen im Katalog zu informieren.",
+      "organization": "Organisation",
+      "organization_helper": "Wenn zutreffend, geben Sie bitte die Firma, die Organisation oder das Institut an, für das Sie tätig sind."
+    }
+  },
+  "boarding": {
+    "welcome": "Willkommen beim datacat editor",
+    "login_tab": "Anmelden",
+    "signup_tab": "Registrieren",
+    "login_message": "Bitte nutzen Sie Ihren Benutzernamen und Ihr Password um sich beim Editor anzumelden.",
+    "signup_message": "Sie können sich registrieren um lesenden Zugriff auf den Katalog zu erhalten. Möchten Sie sich an der Bearbeitung des Katalogs beteiligen, so informieren Sie bitte den Administrator.",
+    "signup_success": "Sie erhalten in den nächsten Minuten einen Bestätigungscode per Email, mit dem Sie Ihren Account aktivieren können.",
+    "login_success": "Willkommen zurück!"
+  },
+  "signup": {
+    "username_helper": "Ein Benutzername ist erforderlich. Keine Leerzeichen. Muss mit einem Buchstaben beginnen und eine Mindestlänge von 3 haben.",
+    "password_helper": "Ein Passwort ist erforderlich und muss eine Mindestlänge von 8 haben.",
+    "username_label": "Benutzername",
+    "username_error": "Der Benutzername kann nach der Registrierung nicht geändert werden.",
+    "password_label": "Passwort",
+    "password_repeat_label": "Passwort wiederholen",
+    "password_repeat_error": "Die Eingabe stimmt nicht mit dem Passwort überein.",
+    "first_name_label": "Vorname",
+    "last_name_label": "Name",
+    "email_label": "Email",
+    "email_error": "Bitte geben Sie eine gültige Email-Adresse an.",
+    "organization_label": "Firma / Institut",
+    "signup_button": "Registrieren"
+  },
+  "login": {
+    "username_label": "Benutzername",
+    "password_label": "Passwort",
+    "login_button": "Anmelden"
+  },
+  "import": {
+    "heading": "Katalog Importieren (CSV)",
+    "description": "Über diese Seite lassen sich Entitäten und deren Relationen importieren. Analog zum Export können hier zwei CSV-Dateien importiert werden. Die eine Datei enthält die Entitäten in folgendem Schema:",
+    "entity_columns": "id;typ;tags;name;name_en;description;version;createdBy;created;lastModified;lastModifiedBy",
+    "entity_columns_note": "Mit r gekennzeichnete Spalten müssen für jede Entität ausgefüllt sein, mit o gekennzeichnete Spalten können optional Werte enthalten. Die restlichen Spalten werden beim Import nicht berücksichtigt und können daher leer bleiben.",
+    "tags_note": "Damit die entitäten in der datacatEditor Oberfläche sichtbar sind, müssen ihnen Tags der dort gewählten Taxonomie gegeben werden. (Referenzdokument, Fachmodell, Gruppe, Klasse, Merkmalsgruppe, Merkmal, Größe, Wert, Maßeinheit)",
+    "relation_columns_note": "Die andere Datei enthält optional die Relationen zwischen Entitäten mit den folgenden Spalten:",
+    "relation_columns": "entity1;entity1Type;relationId;relationshipType;entity2;entity2Type",
+    "relation_columns_note_2": "Die Entitätstypen können hier leer gelassen werden.",
+    "entities_file_button": "Entitäten Datei auswählen",
+    "relations_file_button": "Relationen Datei auswählen",
+    "import_button": "Importieren",
+    "import_tag_label": "Import Tag (optional)",
+    "csv_templates_button": "CSV Templates",
+    "no_file_selected": "Keine Datei ausgewählt",
+    "note_entities_only": "HINWEIS: Es werden nur Entitäten, keine Relationen zwischen diesen importiert!",
+    "note_relations_only": "HINWEIS: Es werden nur Relationen importiert. Die Entitäten müssen bereits im Merkmalserver enthalten sein!",
+    "error_columns_mismatch": "Die Spaltennamen stimmen nicht mit der Vorgabe überein.",
+    "error_creating_record": "Fehler beim Erstellen des Datensatzes",
+    "error_creating_relationship": "Fehler beim Erstellen der Beziehung",
+    "new_tag_created": "Neues Tag erstellt",
+    "create_tag_failed": "Erstellen des neuen Tags fehlgeschlagen",
+    "created_record": "Neuer Datensatz erstellt",
+    "created_relationship": "Neue Beziehung erstellt"
+  },
+  "import_excel": {
+    "heading": "Katalog Importieren (Excel Tabelle)",
+    "description": "Über diese Seite lassen sich ebenfalls Entitäten und deren Relationen importieren. Anders als beim CSV-Import kann eine externe Excel-Tabelle verwendet werden. Damit der Import funktioniert müssen die Spalten korrekt angegeben werden in denen die jeweiligen Entitäten aufgeführt sind: Referenzdokument, Fachmodell, Gruppe, Klasse, Merkmal, Größe (Enum), Maßeinheit und Wert.",
+    "select_all": "Alle aus-/ abwählen",
+    "label": "Bezeichnung:",
+    "sheet": "Tabellenblatt",
+    "name": "Name",
+    "id": "ID",
+    "document": "Referenzdokumente",
+    "model": "Fachmodelle",
+    "group": "Gruppen",
+    "class": "Klassen",
+    "property": "Merkmale",
+    "measure": "Größen",
+    "unit": "Maßeinheiten",
+    "value": "Werte",
+    "sheetName": "Tabellenblatt",
+    "relations": "Relationen:",
+    "rel_doc_model": "Referenzdokument - Fachmodell",
+    "rel_model_group": "Fachmodell - Gruppe",
+    "rel_group_class": "Gruppe - Klasse",
+    "rel_class_property": "Klasse - Merkmal",
+    "rel_property_measure": "Merkmal - Größe",
+    "rel_measure_unit": "Größe - Maßeinheit",
+    "rel_measure_value": "Größe - Wert",
+    "validation_failed": "Validierung fehlgeschlagen. Bitte prüfen Sie die Fehlermeldungen.",
+    "validation_success": "Validierung erfolgreich. Sie können jetzt die Excel-Datei importieren.",
+    "no_file_selected": "Keine Datei ausgewählt",
+    "select_file_button": "Excel-Tabelle auswählen",
+    "check_inputs_button": "Eingaben Prüfen",
+    "import_tag_label": "Import Tag (optional)",
+    "import_button": "Excel-Tabelle importieren",
+    "reset_button": "Eingaben Zurücksetzen",
+    "progress": "{progress}% abgeschlossen"
+  },
+  "app_drawer": {
+    "general": "Allgemein",
+    "home": "Startseite",
+    "edit_profile": "Profil bearbeiten",
+    "search_catalog": "Katalog durchsuchen",
+    "audit": "Prüfen",
+    "import": "Importieren",
+    "export": "Exportieren",
+    "graphiql": "GraphiQL Interface",
+    "new_tags": "Neue Tags anlegen",
+    "grid_view": "Tabellenansicht",
+    "catalog": "Katalog",
+    "documents": "Referenzdokumente",
+    "models": "Fachmodelle",
+    "groups": "Gruppen",
+    "classes": "Klassen",
+    "data_templates": "Datenvorlagen",
+    "property_groups": "Merkmalsgruppen",
+    "properties": "Merkmale",
+    "measures": "Größen",
+    "units": "Maßeinheiten",
+    "values": "Werte"
+  },
+  "create_entry_form": {
+    "name_label": "Name (de)",
+    "name_helper": "Benennen Sie das Konzept im fachlichen Kontext und möglichst genau. Trennen Sie Synonyme durch Semikolon voneinander ab.",
+    "description_label": "Beschreibung (de)",
+    "description_helper": "Beschreiben Sie das Konzept in seiner Bedeutung. Nutzen Sie die Beschreibung insbesondere, um es von womöglich gleich benannten, aber fachlich verschiedenen Konzepten abzugrenzen.",
+    "comment_label": "Kommentar (de)",
+    "comment_helper": "Hinterlassen Sie einen Kommentar zu diesem Konzept. Hier können zusätzliche Informationen zwischen Bearbeitern ausgetauscht werden.",
+    "id_label": "ID",
+    "id_helper": "Die ID wird in der Regel automatisch generiert. Eine ID kann angegeben werden, wenn diese bereits in einem übergeordnetem Kontext für das Konzept vergeben wurde.",
+    "version_id_label": "Version ID",
+    "version_date_label": "Version date",
+    "save_button": "Speichern"
+  },
+  "create_entry_split_button": {
+    "add_entry": "Eintrag hinzufügen",
+    "show_more_options": "Zeige weitere Optionen",
+    "create_entry": "{title} erstellen"
+  },
+  "composite_catalog_entry_view": {
+    "more_results": "Mehr Ergebnisse",
+    "edit_entry": "{title} bearbeiten",
+    "select_entry": "{title} in der Listenansicht auswählen um Eigenschaften anzuzeigen."
+  },
+  "document_form": {
+    "loading": "Lade Referenzdokument...",
+    "error": "Es ist ein Fehler aufgetreten...",
+    "update_success": "Update erfolgreich.",
+    "delete_success": "Referenzdokument gelöscht.",
+    "described_concepts": "Durch das Referenzdokument beschriebene Konzepte",
+    "delete_button": "Löschen"
+  },
+  "domain_class_form": {
+    "loading": "Lade Klasse...",
+    "error": "Es ist ein Fehler aufgetreten...",
+    "update_success": "Update erfolgreich.",
+    "delete_success": "Klasse gelöscht.",
+    "assigned_property_groups": "Der Klasse {name} zugewiesene Merkmalsgruppen",
+    "assigned_properties": "Direkt zugewiesene Merkmale der Klasse {name}",
+    "reference_documents": "die diese Klasse beschreiben",
+    "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
+    "groups_using_class": "die diese Klasse anwenden",
+    "no_groups_using_class": "Die Klasse wird durch keine Gruppe genutzt",
+    "delete_button": "Löschen"
+  },
+  "domain_group_form": {
+    "loading": "Lade Gruppe...",
+    "error": "Es ist ein Fehler aufgetreten...",
+    "update_success": "Update erfolgreich.",
+    "delete_success": "Gruppe gelöscht.",
+    "grouped_classes": "Gruppierte Klassen",
+    "grouped_classes_description": "Klassen, die dieser Gruppe zugeordnet sind.",
+    "reference_documents": "die diese Gruppe beschreiben",
+    "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
+    "domain_models_using_group": "die diese Gruppe anwenden",
+    "no_domain_models_using_group": "Die Gruppe wird durch kein Fachmodell genutzt",
+    "delete_button": "Löschen"
+  },
+  "domain_model_form": {
+    "loading": "Lade Fachmodell...",
+    "error": "Es ist ein Fehler aufgetreten...",
+    "update_success": "Update erfolgreich.",
+    "delete_success": "Fachmodell gelöscht.",
+    "reference_documents": "die dieses Fachmodell beschreiben",
+    "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
+    "delete_button": "Löschen"
+  },
+  "delete_import_view": {
+    "heading": "Katalogeinträge mit bestimmtem Tag löschen",
+    "description": "Entitäten, welche ein bestimmtes Tag aufweisen, können hier gelöscht werden. Alle an den Entitäten hängenden Relationen werden ebenfalls gelöscht.",
+    "tag_label": "Tag",
+    "delete_button": "Katalogeinträge löschen",
+    "tag_not_exist": "Das Tag {tag} existiert nicht!",
+    "delete_success": "Katalogeintrag {name} gelöscht",
+    "error_occurred": "Ein Fehler ist aufgetreten..."
+  },
+  "export_view": {
+    "heading": "Katalog exportieren",
+    "description": "Der folgende Button startet den Download einer ZIP-Datei mit zwei CSV-Dateien im Inneren.\nDie Datei 'Entities.csv' enthält alle Katalogeinträge mit deren Metadaten.\nIn der Datei 'Relationships.csv' sind die Relationen gespeichert, die zwischen den Katalogeinträgen bestehen.\nDie Ergebnisdatei ist in UTF-8 encodiert, verwendet Komma (,) als Trennzeichen und doppelte Anführungszeichen (\") als Textqualifizierer.\nDie Daten stehen zum Export bereit, sobald der Button nicht mehr ausgegraut ist.",
+    "export_button": "CSV exportieren"
+  },
+  "tag_view": {
+    "heading": "Vorhandene Tags",
+    "explanation": "Diese Seite wird genutzt, um neue Tags zur Datenbank hinzuzufügen. Die Tags können dann in der Tabellenansicht genutzt werden, um den vorhandenen Einträgen neue Tags hinzuzufügen.",
+    "new_tag_label": "Neue Tags anlegen",
+    "add_tag_button": "Tag hinzufügen",
+    "loading": "Laden...",
+    "error_loading": "Fehler beim Laden der Tags: {error}",
+    "enter_tag_name": "Bitte geben Sie einen Tag-Namen ein.",
+    "tag_exists": "Tag \"{tag}\" ist bereits vorhanden.",
+    "tag_added_success": "Tag \"{tag}\" erfolgreich hinzugefügt.",
+    "tag_added_error": "Fehler beim Hinzufügen des Tags \"{tag}\"."
+  },
+  "hierarchy": {
+    "error": "Beim Aufrufen des Merkmalsbaums ist ein Fehler aufgetreten.",
+    "select_concept": "Konzept in der Baumansicht auswählen, um Eigenschaften anzuzeigen.",
+    "edit_group": "Gruppe bearbeiten",
+    "edit_class": "Klasse bearbeiten",
+    "edit_property": "Merkmal bearbeiten",
+    "edit_measure": "Größe bearbeiten",
+    "edit_unit": "Einheit bearbeiten",
+    "edit_value": "Wert bearbeiten",
+    "edit_model": "Fachmodell bearbeiten",
+    "search_catalog": "Katalog durchsuchen"
+  },
+  "grid_view": {
+    "loading": "Tabelleninhalte werden geladen",
+    "tag_filter_title": "Filtermöglichkeit nach Tags",
+    "select_tag": "Tag auswählen",
+    "add_tag": "Tag hinzufügen",
+    "show_only_documents": "Nur Referenzdokumente anzeigen",
+    "show_only_models": "Nur Fachmodelle anzeigen",
+    "show_only_groups": "Nur Gruppen anzeigen",
+    "show_only_classes": "Nur Klassen anzeigen",
+    "show_only_property_groups": "Nur Merkmalsgruppen anzeigen",
+    "show_only_properties": "Nur Merkmale anzeigen",
+    "show_all": "Alle anzeigen",
+    "reference_documents": "Referenzdokumente",
+    "domain_models": "Fachmodelle",
+    "groups": "Gruppen",
+    "classes": "Klassen",
+    "property_groups": "Merkmalsgruppen",
+    "properties": "Merkmale",
+    "tag_filter_placeholder": "Tag auswählen"
+  },
+  "error":{
+    "error": "An error occurred..."
+  },
+  "document": {
+    "title": "Referenzdokument",
+    "titlePlural": "Referenzdokumente",
+    "description": "Ein Eintrag vom Typ Referenzdokument wird genutzt, um externe Dokumente, Bücher oder andere schriftliche Informationen abzubilden.",
+    "loading": "Lade Referenzdokument...",
+    "TransferList": "Durch das Referenzdokument beschriebene ",
+    "TransferList2": "Konzepte"
+  },
+  "model": {
+    "title": "Fachmodell",
+    "titlePlural": "Fachmodelle",
+    "loading": "Lade Fachmodell...", 
+    "TransferList": "Durch das Fachmodell beschriebene ",
+    "TransferList2": "Gruppen"
+  },
+  "group": {
+    "title": "Gruppe",
+    "titlePlural": "Gruppen",
+    "loading": "Lade Gruppe...",
+    "TransferList": "Gruppierte ",
+    "TransferList2": "Klassen"
+  },
+  "class": {
+    "title": "Klasse",
+    "titlePlural": "Klassen",
+    "loading": "Lade Klasse...",
+    "TransferList": "Der Klasse ",
+    "TransferList2": " zugewiesene ",
+    "TransferList3": "Merkmalsgruppen"
+  },
+  "dataTemplate": {
+    "title": "Datenvorlage",
+    "titlePlural": "Datenvorlagen"
+  },
+  "propertyGroup": {
+    "title": "Merkmalsgruppe",
+    "titlePlural": "Merkmalsgruppen"
+  },
+  "property": {
+    "title": "Merkmal",
+    "titlePlural": "Merkmale"
+  },
+  "measure": {
+    "title": "Größe",
+    "titlePlural": "Größen"
+  },
+  "unit": {
+    "title": "Maßeinheit",
+    "titlePlural": "Maßeinheiten"
+  },
+  "value": {
+    "title": "Wert",
+    "titlePlural": "Werte"
+  },
+  "tolerance": {
+    "description": "Die Toleranz eines Wertes kann absolut und prozentual angegeben werden."
+  },
+  "translation_form": {
+    "no_translations": "Noch keine Übersetzung vorhanden.",
+    "add_translation": "Übersetzung hinzufügen",
+    "add_translation_title": "Übersetzung hinzufügen",
+    "language": "Sprache",
+    "language_helper": "Sprache in der die Übersetzung angelegt wird."
+  },
+  "version": {
+    "title": "Version",
+    "description": "Die Version kann für die Anwendungsdomäne frei bestimmt und formatiert werden.",
+    "date": "Datum"
+  },
+  "meta": {
+    "title": "Metainformationen",
+    "description": "Technische Informationen zum Konzept",
+    "keyword": "Schlagworte",
+    "created": "Erstellt",
+    "created_by": "Erstellt durch",
+    "updated": "Zuletzt aktualisiert",
+    "updated_by": "Zuletzt aktualisiert durch"
+  },
+  "name": {
+    "title": "Name",
+    "description": "Identifiziert das Konzept in der jeweiligen Sprache."
+  },
+  "comment": {
+    "title": "Kommentar",
+    "description": "Ermöglicht Bearbeitern den Austausch von zusätzlichen Informationen z.B. über den Bearbeitungsstand des Konzepts."
+  },
+  "description": {
+    "title": "Beschreibung",
+    "description": "Charakterisiert das Konzept in Ausprägung und Anwendungskonzept näher."
+  },
+  "search":{
+    "search": "Suchen",
+    "search_placeholder": "Katalog durchsuchen",
+    "search_results": "Ergebnisse der Suche"
+  },
+  "footer": {
+    "contact": "Fragen & Kontakt",
+    "report_issue": "Problem melden",
+    "version": "datacat editor {version}"
+  },
+  "property_group_form": {
+    "loading": "Lade Merkmalsgruppe...",
+    "error": "Es ist ein Fehler aufgetreten...",
+    "update_success": "Update erfolgreich.",
+    "delete_success": "Merkmalsgruppe gelöscht.",
+    "grouped_properties": "In der Merkmalsgruppe gruppierte Merkmale",
+    "reference_documents": "die diese Merkmalsgruppe beschreiben",
+    "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
+    "assigned_classes": "denen diese Merkmalsgruppe zugewiesen wurde",
+    "no_assigned_classes": "Diese Merkmalsgruppe wurde keiner Klasse zugewiesen",
+    "delete_button": "Löschen"
+  },
+  "property_form": {
+    "loading": "Lade Merkmal...",
+    "error": "Es ist ein Fehler aufgetreten...",
+    "update_success": "Update erfolgreich.",
+    "delete_success": "Merkmal gelöscht.",
+    "property_measure": "Größe des Merkmals",
+    "reference_documents": "die dieses Merkmal beschreiben",
+    "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
+    "aggregating_property_groups": "die dieses Merkmal aggregieren",
+    "no_aggregating_property_groups": "Das Merkmal wird in keiner Merkmalsgruppe genutzt",
+    "assigned_classes": "denen dieses Merkmal direkt zugewiesen wurde",
+    "no_assigned_classes": "Das Merkmal wurde keiner Klasse direkt zugewiesen",
+    "delete_button": "Löschen"
+  },
+  "measure_form": {
+    "loading": "Lade Größe...",
+    "error": "Es ist ein Fehler aufgetreten...",
+    "update_success": "Update erfolgreich.",
+    "delete_success": "Größe gelöscht.",
+    "applicable_units": "Auf die Größe anwendbare Maßeinheiten",
+    "value_range": "Wertebereich der Größe",
+    "reference_documents": "die diese Größe beschreiben",
+    "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
+    "quantified_properties": "die durch diese Größe quantifiziert werden",
+    "no_quantified_properties": "Die Größe wird durch kein Merkmal genutzt",
+    "delete_button": "Löschen"
+  },
+  "unit_form": {
+    "loading": "Lade Maßeinheit...",
+    "error": "Es ist ein Fehler aufgetreten...",
+    "delete_success": "Maßeinheit gelöscht.",
+    "reference_documents": " die diese Einheit beschreiben",
+    "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
+    "assigned_measures": "denen diese Einheit zugewiesen wurde",
+    "no_assigned_measures": "Die Einheit wird durch keine Größe genutzt",
+    "delete_button": "Löschen"
+  },
+  "value_form": {
+    "loading": "Lade Wert...",
+    "error": "Es ist ein Fehler aufgetreten...",
+    "update_success": "Update erfolgreich.",
+    "delete_success": "Wert gelöscht.",
+    "reference_documents": "die diesen Wert beschreiben",
+    "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
+    "assigned_measures": "denen dieser Wert zugewiesen wurde",
+    "no_assigned_measures": "Der Wert wird durch keine Größe genutzt",
+    "delete_button": "Löschen"
+  },
+  "nominal_value_form": {
+    "title": "Nennwert",
+    "role_label": "Rolle",
+    "type_label": "Datentyp",
+    "value_label": "Wert",
+    "updated": "Nennwert aktualisiert.",
+    "removed": "Nennwert entfernt."
+  },
+  "tolerance_form": {
+    "title": "Toleranz",
+    "type_label": "Typ",
+    "lower_tolerance_label": "Untere Toleranz",
+    "upper_tolerance_label": "Obere Toleranz",
+    "save_button": "Speichern",
+    "delete_button": "Löschen",
+    "reset_button": "Zurücksetzen",
+    "description": "Die Toleranz eines Wertes kann absolut und prozentual angegeben werden."
+  }
+}

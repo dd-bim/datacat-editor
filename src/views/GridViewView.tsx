@@ -20,6 +20,7 @@ import {
 import { useSnackbar } from "notistack";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { FixedSizeList as List } from "react-window";
+import { T, useTranslate } from "@tolgee/react";
 
 const useStyles = makeStyles((theme: { spacing: (factor: number) => number; shape: { borderRadius: number }; palette: { background: { paper: string } }; typography: { fontSize: number } }) => ({
   tableContainer: {
@@ -228,6 +229,8 @@ const GridViewView: FC = () => {
   const headerHeight = headerRef.current
     ? headerRef.current.getBoundingClientRect().height
     : 50; // Fallback-Höhe
+
+    const { t } = useTranslate();
 
   useEffect(() => {
     if (headerRef.current) {
@@ -639,7 +642,7 @@ const GridViewView: FC = () => {
     setNewTag(event.target.value as string);
   };
 
-  if (propertyTreeLoading) return <p>Tabelleninhalte werden geladen</p>;
+  if (propertyTreeLoading) return <p>{t('grid_view.loading')}</p>;
   if (propertyTreeError) return <p>Error: {propertyTreeError.message}</p>;
   if (bagError) return <p>Error: {bagError.message}</p>;
 
@@ -648,21 +651,22 @@ const GridViewView: FC = () => {
       <div className={classes.fixedContainer}>
         <div className={classes.headerContainer}>
           <h3 className={classes.tagFilterTitle}>
-            Filtermöglichkeit nach Tags
+          {t('grid_view.tag_filter_title')}
           </h3>
           <div className={classes.tagControls}>
             <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel id="importTag-label">Tag auswählen</InputLabel>
+              <InputLabel id="importTag-label">{t('grid_view.tag_filter_placeholder')}</InputLabel>
               <Select
                 labelId="importTag-label"
                 id="importTag"
-                label="Tag auswählen"
+                label= {t('grid_view.tag_filter_placeholder')}
                 name="importTag"
                 value={newTag}
                 onChange={handleTagChange}
+                style={{ minWidth: "200px" }} // Ensure the dropdown field is as long as the placeholder when no tag is selected
               >
                 <MenuItem value="">
-                  <em>Tag auswählen</em>
+                  <em>{t('grid_view.select_tag')}</em>
                 </MenuItem>
                 {allTags.map((tag) => (
                   <MenuItem key={tag} value={tag}>
@@ -672,7 +676,7 @@ const GridViewView: FC = () => {
               </Select>
             </FormControl>
             <Button variant="contained" color="primary" onClick={handleAddTag}>
-              Add Tag
+            {t('grid_view.add_tag')}
             </Button>
           </div>
         </div>
@@ -688,7 +692,7 @@ const GridViewView: FC = () => {
             />
           ))}
           <Chip
-            label="Alle Anzeigen"
+            label={t('grid_view.show_all')}
             clickable
             color={selectedTag === null ? "secondary" : "default"}
             onClick={() => handleTagFilter(null)}
@@ -701,42 +705,41 @@ const GridViewView: FC = () => {
             color="primary"
             onClick={() => handleShowOnlyColumn("document")}
           >
-            Nur Referenzdokumente anzeigen
+            {t('grid_view.show_only_documents')}
           </Button>
           <Button
             variant="contained"
             color="primary"
             onClick={() => handleShowOnlyColumn("model")}
           >
-            Nur Fachmodelle anzeigen
+            {t('grid_view.show_only_models')}
           </Button>
           <Button
             variant="contained"
             color="primary"
             onClick={() => handleShowOnlyColumn("group")}
           >
-            Nur Gruppen anzeigen
-          </Button>
+            {t('grid_view.show_only_groups')}          </Button>
           <Button
             variant="contained"
             color="primary"
             onClick={() => handleShowOnlyColumn("class")}
           >
-            Nur Klassen anzeigen
+            {t('grid_view.show_only_classes')}
           </Button>
           <Button
             variant="contained"
             color="primary"
             onClick={() => handleShowOnlyColumn("propertyGroup")}
           >
-            Nur Merkmalsgruppen anzeigen
+            {t('grid_view.show_only_property_groups')}
           </Button>
           <Button
             variant="contained"
             color="primary"
             onClick={() => handleShowOnlyColumn("property")}
           >
-            Nur Merkmale anzeigen
+            {t('grid_view.show_only_properties')}
           </Button>
           {isAnyColumnHidden && (
             <Button
@@ -744,7 +747,7 @@ const GridViewView: FC = () => {
               color="secondary"
               onClick={handleShowAllColumns}
             >
-              Alle Anzeigen
+              {t('grid_view.show_all')}
             </Button>
           )}
         </div>
@@ -774,7 +777,7 @@ const GridViewView: FC = () => {
                             color="primary"
                           />
                         }
-                        label={`Referenzdokumente${
+                        label={`${t('grid_view.reference_documents')}${
                           entityCount !== null && visibleColumns.document
                             ? ` (${entityCount})`
                             : ""
@@ -797,7 +800,7 @@ const GridViewView: FC = () => {
                             color="primary"
                           />
                         }
-                        label={`Fachmodelle${
+                        label={`${t('grid_view.domain_models')}${
                           entityCount !== null && visibleColumns.model
                             ? ` (${entityCount})`
                             : ""
@@ -820,7 +823,7 @@ const GridViewView: FC = () => {
                             color="primary"
                           />
                         }
-                        label={`Gruppen${
+                        label={`${t('grid_view.groups')}${
                           entityCount !== null && visibleColumns.group
                             ? ` (${entityCount})`
                             : ""
@@ -843,7 +846,7 @@ const GridViewView: FC = () => {
                             color="primary"
                           />
                         }
-                        label={`Klassen${
+                        label={`${t('grid_view.classes')}${
                           entityCount !== null && visibleColumns.class
                             ? ` (${entityCount})`
                             : ""
@@ -868,7 +871,7 @@ const GridViewView: FC = () => {
                             color="primary"
                           />
                         }
-                        label={`Merkmalsgruppen${
+                        label={`${t('grid_view.property_groups')}${
                           entityCount !== null && visibleColumns.propertyGroup
                             ? ` (${entityCount})`
                             : ""
@@ -891,7 +894,7 @@ const GridViewView: FC = () => {
                             color="primary"
                           />
                         }
-                        label={`Merkmale${
+                        label={`${t('grid_view.properties')}${
                           entityCount !== null && visibleColumns.property
                             ? ` (${entityCount})`
                             : ""

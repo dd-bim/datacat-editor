@@ -15,6 +15,7 @@ import { ApolloCache } from "@apollo/client";
 import { useSnackbar } from "notistack";
 import JSZip from "jszip";
 import FileSaver from "file-saver";
+import { T } from "@tolgee/react";
 
 export const IMPORT_TAG_ID = "KATALOG-IMPORT";
 type entity = {
@@ -40,7 +41,7 @@ export function ImportView() {
   const [createTag] = useCreateTagMutation();
   const [tags, setTags] = useState<FindTagsResultFragment[]>([]);
   const [loaded, setLoaded] = useState(false);
-  const [output, setOutput] = useState("");
+  const [output, setOutput] = useState<string | React.ReactNode>("");
   const [init, setInit] = useState(false);
   const [importTag, setImportTag] = useState(IMPORT_TAG_ID);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -109,12 +110,16 @@ export function ImportView() {
     if (entitiesFile != null && relationsFile == null) {
       setLoaded(true);
       setOutput(
-        "HINWEIS: Es werden nur Entitäten, keine Relationen zwischen diesen importiert!"
+        <T keyName="import.note_entities_only">
+          HINWEIS: Es werden nur Entitäten, keine Relationen zwischen diesen importiert!
+        </T>
       );
     } else if (entitiesFile == null && relationsFile != null) {
       setLoaded(true);
       setOutput(
-        "HINWEIS: Es werden nur Relationen importiert. Die Entitäten müssen bereits im Merkmalserver enthalten sein!"
+        <T keyName="import.note_relations_only">
+          HINWEIS: Es werden nur Relationen importiert. Die Entitäten müssen bereits im Merkmalserver enthalten sein!
+        </T>
       );
     } else if (entitiesFile != null && relationsFile != null) {
       setLoaded(true);
@@ -167,7 +172,9 @@ export function ImportView() {
             }
             if (!result) {
               setOutput(
-                "Die Spaltennamen stimmen nicht mit der Vorgabe überein."
+                <T keyName="import.error_columns_mismatch">
+                  Die Spaltennamen stimmen nicht mit der Vorgabe überein.
+                </T>
               );
               return;
             }
@@ -236,7 +243,9 @@ export function ImportView() {
             }
             if (!result) {
               setOutput(
-                "Die Spaltennamen stimmen nicht mit der Vorgabe überein."
+                <T keyName="import.error_columns_mismatch">
+                  Die Spaltennamen stimmen nicht mit der Vorgabe überein.
+                </T>
               );
               return;
             }
@@ -329,9 +338,9 @@ export function ImportView() {
           try {
             handleOnCreateTag(tagId, tag);
             tArr.push({ id: tagId, name: tag });
-            enqueueSnackbar(`New tag ${tag} created`);
+            enqueueSnackbar(<T keyName="import.new_tag_created" params={{ tag }} />);
           } catch (e) {
-            setOutput(`Create new tag ${tag} failed: ` + e);
+            setOutput(<T keyName="import.create_tag_failed" params={{ tag, error: e instanceof Error ? e.message : String(e) }} />);
           }
         }
         tagIds.push(idOfTag(tArr, tag));
@@ -379,9 +388,9 @@ export function ImportView() {
             },
           },
         });
-        enqueueSnackbar(`Created new record ${name}`);
+        enqueueSnackbar(<T keyName="import.created_record" params={{ name }} />);
       } catch (e) {
-        setOutput(`Error creating record "${typ}"... ${name} (${id}): ` + e);
+        setOutput(<T keyName="import.error_creating_record" params={{ typ, name, id, error: e instanceof Error ? e.message : String(e) }} />);
       }
     }
     setTags(tArr);
@@ -415,74 +424,89 @@ export function ImportView() {
         });
 
         enqueueSnackbar(
-          `Created new "${relationshipType}" relationship from ${entity1} to ${entity2}`
+          <T 
+            keyName="import.created_relationship"
+            params={{ relationshipType, entity1, entity2 }}
+          />
         );
       } catch (e) {
         setOutput(
-          `Error creating relationship for ${relationshipType} from ${entity1} to ${entity2}: ` +
-            e
+          <T 
+            keyName="import.error_creating_relationship"
+            params={{ relationshipType, entity1, entity2, error: e instanceof Error ? e.message : String(e) }}
+          />
         );
       }
     }
   };
 
   return (
-    <View heading="Katalog Importieren (CSV)">
-      <Typography variant={"body1"}>
-        Über diese Seite lassen sich Entitäten und deren Relationen importieren.
-        Analog zum Export können hier zwei CSV-Dateien importiert werden. Die
-        eine Datei enthält die Entitäten in folgendem Schema: <br />
-        {/* <b>id<sup>o</sup>    typ<sup>r</sup>	tags<sup>r</sup>	name<sup>r</sup>	name_en	description<sup>o</sup>	version<sup>o</sup>	createdBy	created	lastModified	lastModifiedBy</b> */}
-        <table>
-          <tr>
-            <th>
-              id<sup>o</sup>
-            </th>
-            <th>
-              typ<sup>r</sup>
-            </th>
-            <th>
-              tags<sup>r</sup>
-            </th>
-            <th>
-              name<sup>r</sup>
-            </th>
-            <th>name_en</th>
-            <th>
-              description<sup>o</sup>
-            </th>
-            <th>
-              version<sup>o</sup>
-            </th>
-            <th>createdBy</th>
-            <th>created</th>
-            <th>lastModified</th>
-            <th>lastModifiedBy</th>
-          </tr>
-          <tr>
-            <td></td>
-          </tr>
-        </table>
+    <View heading={<T keyName="import.heading">Katalog Importieren (CSV)</T>}>
+      <Typography variant={"body1"} component="div">
+        <T keyName="import.description">
+          Über diese Seite lassen sich Entitäten und deren Relationen importieren. Analog zum Export können hier zwei
+          CSV-Dateien importiert werden. Die eine Datei enthält die Entitäten in folgendem Schema:
+        </T>
         <br />
-        Mit <b>r</b> gekennzeichnete Spalten müssen für jede Entität ausgefüllt
-        sein, mit <b>o</b> gekennzeichnete Spalten können optional Werte
-        enthalten. Die restlichen Spalten werden beim Import nicht
-        berücksichtigt und können daher leer bleiben.
+        <Box component="div">
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  id<sup>o</sup>
+                </th>
+                <th>
+                  typ<sup>r</sup>
+                </th>
+                <th>
+                  tags<sup>r</sup>
+                </th>
+                <th>
+                  name<sup>r</sup>
+                </th>
+                <th>name_en</th>
+                <th>
+                  description<sup>o</sup>
+                </th>
+                <th>
+                  version<sup>o</sup>
+                </th>
+                <th>createdBy</th>
+                <th>created</th>
+                <th>lastModified</th>
+                <th>lastModifiedBy</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </Box>
         <br />
-        Damit die entitäten in der datacatEditor Oberfläche sichtbar sind,
-        müssen ihnen Tags der dort gewählten Taxonomie gegeben werden.
-        (Referenzdokument, Fachmodell, Gruppe, Klasse, Merkmalsgruppe, Merkmal,
-        Größe, Wert, Maßeinheit)
+        <T keyName="import.entity_columns_note">
+          Mit r gekennzeichnete Spalten müssen für jede Entität ausgefüllt sein, mit o gekennzeichnete Spalten können
+          optional Werte enthalten. Die restlichen Spalten werden beim Import nicht berücksichtigt und können daher leer
+          bleiben.
+        </T>
         <br />
-        Die andere Datei enthält optional die Relationen zwischen Entitäten mit
-        den folgenden Spalten:
+        <T keyName="import.tags_note">
+          Damit die entitäten in der datacatEditor Oberfläche sichtbar sind, müssen ihnen Tags der dort gewählten
+          Taxonomie gegeben werden. (Referenzdokument, Fachmodell, Gruppe, Klasse, Merkmalsgruppe, Merkmal, Größe, Wert,
+          Maßeinheit)
+        </T>
+        <br />
+        <T keyName="import.relation_columns_note">
+          Die andere Datei enthält optional die Relationen zwischen Entitäten mit den folgenden Spalten:
+        </T>
         <br />
         <b>
-          entity1<sup>r</sup> entity1Type relationId<sup>r</sup>{" "}
-          relationshipType<sup>r</sup> entity2<sup>r</sup> entity2Type
+          <T keyName="import.relation_columns">entity1</T><sup>r</sup> entity1Type <T keyName="import.relation_id">relationId</T><sup>r</sup> <T keyName="import.relationship_type">relationshipType</T><sup>r</sup> <T keyName="import.entity2">entity2</T><sup>r</sup>{" "}
+          entity2Type
         </b>
         <br />
-        Die Entitätstypen können hier leer gelassen werden.
+        <T keyName="import.relation_columns_note_2">Die Entitätstypen können hier leer gelassen werden.</T>
         <br />
         <br />
       </Typography>
@@ -510,7 +534,7 @@ export function ImportView() {
             color="primary" // Farbe anpassen
             style={{ marginBottom: "4px" }}
           >
-            Entitäten Datei auswählen
+            <T keyName="import.entities_file_button">Entitäten Datei auswählen</T>
             <input
               type="file"
               name="entitiesFile"
@@ -521,7 +545,7 @@ export function ImportView() {
             />
           </Button>
           <Typography color="textSecondary">
-            {entitiesFile === null ? "Keine Datei ausgewählt" : ""}
+            {entitiesFile === null ? <T keyName="import.no_file_selected">Keine Datei ausgewählt</T> : ""}
           </Typography>
         </Box>
 
@@ -540,7 +564,7 @@ export function ImportView() {
             color="primary" // Farbe anpassen
             style={{ marginBottom: "4px" }}
           >
-            Relationen Datei auswählen
+            <T keyName="import.relations_file_button">Relationen Datei auswählen</T>
             <input
               type="file"
               name="relationsFile"
@@ -551,7 +575,7 @@ export function ImportView() {
             />
           </Button>
           <Typography color="textSecondary">
-            {relationsFile === null ? "Keine Datei ausgewählt" : ""}
+            {relationsFile === null ? <T keyName="import.no_file_selected">Keine Datei ausgewählt</T> : ""}
           </Typography>
         </Box>
 
@@ -571,7 +595,7 @@ export function ImportView() {
             disabled={!loaded}
             style={{ marginBottom: "4px" }}
           >
-            Importieren
+            <T keyName="import.import_button">Importieren</T>
           </Button>
         </Box>
 
@@ -586,7 +610,7 @@ export function ImportView() {
         >
           <TextField
             id="importTag"
-            label="Import Tag (optional)"
+            label={<T keyName="import.import_tag_label">Import Tag (optional)</T>}
             name="importTag"
             variant="outlined"
             size="small"
@@ -607,10 +631,10 @@ export function ImportView() {
           <Button
             onClick={handleDownloadTemplate}
             variant="contained"
-            color="default"
+            color="inherit"
             style={{ marginBottom: "4px", width: "200px" }}
           >
-            CSV Templates
+            <T keyName="import.csv_templates_button">CSV Templates</T>
           </Button>
         </Box>
       </Box>

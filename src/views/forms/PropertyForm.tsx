@@ -18,10 +18,12 @@ import FormView, {FormProps} from "./FormView";
 import {MeasureEntity} from "../../domain";
 import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
+import { T, useTranslate } from "@tolgee/react";
 
 const PropertyForm: FC<FormProps<PropertyDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
+    const { t } = useTranslate();
 
     // fetch domain model
     const {loading, error, data, refetch} = useGetPropertyEntryQuery({
@@ -47,17 +49,17 @@ const PropertyForm: FC<FormProps<PropertyDetailPropsFragment>> = (props) => {
         }
     });
 
-    if (loading) return <Typography>Lade Merkmal..</Typography>;
-    if (error || !entry) return <Typography>Es ist ein Fehler aufgetreten..</Typography>;
+    if (loading) return <Typography><T keyName="property_form.loading">Lade Merkmal..</T></Typography>;
+    if (error || !entry) return <Typography><T keyName="property_form.error">Es ist ein Fehler aufgetreten..</T></Typography>;
 
     const handleOnUpdate = async () => {
         await refetch();
-        enqueueSnackbar("Update erfolgreich.");
+        enqueueSnackbar(<T keyName="property_form.update_success">Update erfolgreich.</T>);
     };
 
     const handleOnDelete = async () => {
         await deleteEntry({variables: {id}});
-        enqueueSnackbar("Merkmal gelöscht.")
+        enqueueSnackbar(<T keyName="property_form.delete_success">Merkmal gelöscht.</T>);
         onDelete?.();
     };
 
@@ -90,7 +92,7 @@ const PropertyForm: FC<FormProps<PropertyDetailPropsFragment>> = (props) => {
             />
 
             <TransferListView
-                title={<span><b>Größe</b> des Merkmals</span>}
+                title={<span><b><T keyName="measure.title">Größe</T></b> <T keyName="property_form.property_measure">des Merkmals</T></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.AssignsMeasures}
                 relationships={assignsMeasuresRelationships}
@@ -103,20 +105,20 @@ const PropertyForm: FC<FormProps<PropertyDetailPropsFragment>> = (props) => {
             />
 
             <RelatingRecordsFormSet
-                title={<span><b>Referenzdokumente</b>, die dieses Merkmal beschreiben</span>}
-                emptyMessage={"Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben"}
+                title={<span><b><T keyName="document.titlePlural">Referenzdokumente</T></b>, <T keyName="property_form.reference_documents">die dieses Merkmal beschreiben</T></span>}
+                emptyMessage={t("property_form.no_reference_documents", "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben")}
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
             />
 
             <RelatingRecordsFormSet
-                title={<span><b>Merkmalsgruppen</b>, die dieses Merkmal aggregieren</span>}
-                emptyMessage={"Das Merkmal wird in keiner Merkmalsgruppe genutzt"}
+                title={<span><b><T keyName="propertyGroup.titlePlural">Merkmalsgruppen</T></b>, <T keyName="property_form.aggregating_property_groups">die dieses Merkmal aggregieren</T></span>}
+                emptyMessage={t("property_form.no_aggregating_property_groups", "Das Merkmal wird in keiner Merkmalsgruppe genutzt")}
                 relatingRecords={entry?.collectedBy.nodes.map(node => node.relatingCollection) ?? []}
             />
 
             <RelatingRecordsFormSet
-                title={<span><b>Klassen</b>, denen dieses Merkmal direkt zugewiesen wurde</span>}
-                emptyMessage={"Das Merkmal wurde keiner Klasse direkt zugewiesen"}
+                title={<span><b><T keyName="class.titlePlural">Klassen</T></b>, <T keyName="property_form.assigned_classes">denen dieses Merkmal direkt zugewiesen wurde</T></span>}
+                emptyMessage={t("property_form.no_assigned_classes", "Das Merkmal wurde keiner Klasse direkt zugewiesen")}
                 relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingObject) ?? []}
             />
 
@@ -128,7 +130,7 @@ const PropertyForm: FC<FormProps<PropertyDetailPropsFragment>> = (props) => {
                 startIcon={<DeleteForeverIcon/>}
                 onClick={handleOnDelete}
             >
-                Löschen
+                <T keyName="property_form.delete_button">Löschen</T>
             </Button>
         </FormView>
     );
