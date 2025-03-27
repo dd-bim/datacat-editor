@@ -25,8 +25,8 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.<br />
 Your app is ready to be deployed!
 
-See the section about [Building for Production](https://vite.dev/guide/build.html) for more information.
-You may also see some [Build options](https://vite.dev/config/build-options.html).
+See the section about [Building for Production](https://vite.dev/guide/build.html) for more information.<br />
+You may also want to see some [Build options](https://vite.dev/config/build-options.html).
 
 ## Learn More
 
