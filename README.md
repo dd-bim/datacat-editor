@@ -33,7 +33,7 @@ Your app is ready to be deployed!
 See the section about [Building for Production](https://vite.dev/guide/build.html) for more information.
 You may also see some [Build options] (https://vite.dev/config/build-options.html). 
 
-%% ### `npm run eject`
+%% ### `npm run eject` %% 
 
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
