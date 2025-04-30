@@ -11,10 +11,17 @@ import AddIcon from "@mui/icons-material/AddBox";
 import ClearIcon from "@mui/icons-material/Eject";
 import React from "react";
 import { getEntityType } from "../../domain";
-import makeStyles from "@mui/styles/makeStyles";
+import { styled } from "@mui/material/styles";
 import { CatalogRecord } from "../../types";
 
 export const ITEM_ROW_SIZE = 36;
+
+// Replace makeStyles with styled component
+const StyledListItemText = styled(ListItemText)({
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+});
 
 export type ItemRowProps = {
   items: CatalogRecord[];
@@ -25,21 +32,12 @@ export type ItemRowProps = {
   onRemove?(item: CatalogRecord): void;
 };
 
-const useStyle = makeStyles((theme) => ({
-  text: {
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  },
-}));
-
 export default function ItemRow(props: ListChildComponentProps) {
   const {
     data: { items, disabledItems, showRecordIcons, onSelect, onAdd, onRemove },
     index,
     style,
   } = props;
-  const classes = useStyle();
 
   const item = (items as CatalogRecord[])[index];
 
@@ -71,6 +69,32 @@ export default function ItemRow(props: ListChildComponentProps) {
             backgroundColor: isDisabled ? "transparent" : "#f0f0f0", // Helle Hervorhebung beim Hover
           },
         }}
+        secondaryAction={
+          !isDisabled && (onAdd || onRemove) ? (
+            <>
+              {onAdd && (
+                <IconButton
+                  size="small"
+                  edge="end"
+                  aria-label="Hinzufügen"
+                  onClick={() => onAdd(item)}
+                >
+                  <AddIcon fontSize="small" />
+                </IconButton>
+              )}
+              {onRemove && (
+                <IconButton
+                  size="small"
+                  edge="end"
+                  aria-label="Entfernen"
+                  onClick={() => onRemove(item)}
+                >
+                  <ClearIcon fontSize="small" />
+                </IconButton>
+              )}
+            </>
+          ) : undefined
+        }
       >
         {showRecordIcons && (
           <ListItemIcon>
@@ -78,38 +102,13 @@ export default function ItemRow(props: ListChildComponentProps) {
           </ListItemIcon>
         )}
         <Tooltip title={item.description ?? ""} arrow>
-          <ListItemText
-            className={classes.text}
+          <StyledListItemText
             primary={item.name}
             primaryTypographyProps={{
               style: { fontStyle: item.description ? "italic" : undefined },
             }}
           />
         </Tooltip>
-        {!isDisabled && onAdd && (
-          <ListItemSecondaryAction>
-            <IconButton
-              size="small"
-              edge="end"
-              aria-label="Hinzufügen"
-              onClick={() => onAdd(item)}
-            >
-              <AddIcon fontSize="small" />
-            </IconButton>
-          </ListItemSecondaryAction>
-        )}
-        {!isDisabled && onRemove && (
-          <ListItemSecondaryAction>
-            <IconButton
-              size="small"
-              edge="end"
-              aria-label="Entfernen"
-              onClick={() => onRemove(item)}
-            >
-              <ClearIcon fontSize="small" />
-            </IconButton>
-          </ListItemSecondaryAction>
-        )}
       </ListItem>
     </div>
   );

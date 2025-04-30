@@ -1,4 +1,4 @@
-import makeStyles from "@mui/styles/makeStyles";
+import { styled } from "@mui/material/styles";
 import React, { FC, useState } from "react";
 import useHierarchy from "../hooks/useHierarchy";
 import useLocalStorage from "../hooks/useLocalStorage";
@@ -8,10 +8,9 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { StyledTreeItem } from "./StyledTreeItem";
 import { ItemPropsFragment } from "../generated/types";
 
-const usePropertyTreeStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-  },
+// Replace makeStyles with styled component
+const StyledTreeView = styled(SimpleTreeView)({
+  flexGrow: 1,
 });
 
 type HierarchyProps = {
@@ -21,7 +20,6 @@ type HierarchyProps = {
 };
 
 export const Hierarchy: FC<HierarchyProps> = (props) => {
-  const classes = usePropertyTreeStyles();
   const { leaves, paths, onSelect } = props;
   const { nodes, lookupMap } = useHierarchy({ leaves, paths });
   const [expandedItems, setExpandedItems] = useLocalStorage<string[]>(
@@ -32,10 +30,20 @@ export const Hierarchy: FC<HierarchyProps> = (props) => {
 
   const onSelectedItemsChange = (
     event: React.SyntheticEvent,
-    itemIds: string | null
+    itemIds: string | string[] | null
   ) => {
     if (!itemIds) return;
-    const id = itemIds.split(":").pop();
+    
+    let id: string | undefined;
+    
+    if (Array.isArray(itemIds)) {
+      // If itemIds is an array, use the first item
+      if (itemIds.length === 0) return;
+      id = itemIds[0].split(":").pop();
+    } else {
+      id = itemIds.split(":").pop();
+    }
+    
     if (!id || !lookupMap[id]) {
       console.error(
         `Fehler: Kein passender Eintrag in lookupMap für id: ${id}`
@@ -64,8 +72,7 @@ export const Hierarchy: FC<HierarchyProps> = (props) => {
   };
 
   return (
-    <SimpleTreeView
-      className={classes.root}
+    <StyledTreeView
       onSelectedItemsChange={onSelectedItemsChange}
       onExpandedItemsChange={(event: React.SyntheticEvent, itemIds: string[]) =>
         setExpandedItems(itemIds)
@@ -79,6 +86,6 @@ export const Hierarchy: FC<HierarchyProps> = (props) => {
       }}
     >
       {nodes.map((node: any) => renderTreeItems(node))}
-    </SimpleTreeView>
+    </StyledTreeView>
   );
 };

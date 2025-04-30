@@ -3,7 +3,7 @@ import useDebounce from "../../hooks/useDebounce";
 import {ListOnItemsRenderedProps} from "react-window";
 import React from "react";
 import ItemList, {ItemListProps} from "./ItemList";
-import { T, useTranslate } from "@tolgee/react";
+import { useTranslate } from "@tolgee/react";
 import { Box } from "@mui/material";
 
 type SearchListProps = Omit<ItemListProps, "items"> & {
@@ -51,7 +51,13 @@ export default function SearchList(props: SearchListProps) {
     }
 
     return (
-        <Box sx={{ mt: 1.5 }}> {/* Add spacing of 12px (1.5 units in MUI) */}
+        <Box sx={{ 
+            display: 'flex',
+            flexDirection: 'column',
+            height: 'auto',
+            width: '100%',
+            mt: 0 // Remove top margin
+        }}> 
             <ItemList
                 loading={loading}
                 items={items}

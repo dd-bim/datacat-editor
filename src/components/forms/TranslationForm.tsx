@@ -1,21 +1,21 @@
-import React, {FC, useEffect, useState} from "react";
+import React, {useState, useEffect} from "react";
 import {Controller, useForm} from "react-hook-form";
 import TextField, {TextFieldProps} from "@mui/material/TextField";
 import {defaultFormFieldOptions} from "../../hooks/useFormStyles";
-import makeStyles from "@mui/styles/makeStyles";
+import { styled } from "@mui/material/styles";
 import InlineButtonGroup from "./InlineButtonGroup";
 import {ClickAwayListener} from "@mui/material";
 import {TranslationPropsFragment} from "../../generated/types";
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        display: "flex",
-        flexDirection: "row",
-    },
-    input: {
-        flexGrow: 1
-    }
-}));
+// Replace makeStyles with styled components
+const FormContainer = styled('form')({
+    display: "flex",
+    flexDirection: "row",
+});
+
+const StyledTextField = styled(TextField)({
+    flexGrow: 1
+});
 
 export type TranslationFormValues = {
     value: string;
@@ -28,7 +28,7 @@ export type TranslationFormProps = {
     TextFieldProps?: Partial<Omit<TextFieldProps, "name" | "onFocus">>;
 };
 
-const TranslationForm: FC<TranslationFormProps> = (props) => {
+const TranslationForm = (props: TranslationFormProps) => {
     const {
         translation,
         onSubmit,
@@ -38,7 +38,6 @@ const TranslationForm: FC<TranslationFormProps> = (props) => {
     const defaultValues = {
         ...translation
     }
-    const classes = useStyles();
     const [isEditMode, setIsEditMode] = useState(false);
     const {
         control,
@@ -95,15 +94,14 @@ const TranslationForm: FC<TranslationFormProps> = (props) => {
 
     return (
         <ClickAwayListener onClickAway={onClickAway}>
-            <form className={classes.root} onSubmit={handleSubmit(onSave)}>
+            <FormContainer onSubmit={handleSubmit(onSave)}>
                 <Controller
                     name="value"
                     control={control}
                     rules={{required: true}}
                     render={({ field }) => (
-                        <TextField
+                        <StyledTextField
                             {...field}
-                            className={classes.input}
                             {...defaultFormFieldOptions}
                             {...TextFieldProps}
                             {...textFieldProps}
@@ -118,7 +116,7 @@ const TranslationForm: FC<TranslationFormProps> = (props) => {
                             onDelete={onDelete}
                         />
                 )}
-            </form>
+            </FormContainer>
         </ClickAwayListener>
     );
 }

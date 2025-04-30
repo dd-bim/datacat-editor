@@ -10,23 +10,21 @@ import {
 } from "../../generated/types";
 import { useSnackbar } from "notistack";
 import TranslationFormSet from "./TranslationFormSet";
-import makeStyles from "@mui/styles/makeStyles";
-import { Theme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { T } from "@tolgee/react";
+
+// Replace makeStyles with styled component
+const StyledFormSetDescription = styled(FormSetDescription)(({ theme }) => ({
+  marginBottom: theme.spacing(1),
+}));
 
 type DescriptionFormSetProps = {
   catalogEntryId: string;
   descriptions: TranslationPropsFragment[];
 };
-const useStyles = makeStyles((theme: Theme) => ({
-  description: {
-    marginBottom: theme.spacing(1),
-  },
-}));
 
 const DescriptionFormSet: FC<DescriptionFormSetProps> = (props) => {
   const { catalogEntryId, descriptions } = props;
-  const classes = useStyles();
 
   const { enqueueSnackbar } = useSnackbar();
   const [addDescription] = useAddDescriptionMutation();
@@ -67,9 +65,9 @@ const DescriptionFormSet: FC<DescriptionFormSetProps> = (props) => {
           <T keyName={"description.title"} />
         </b>
       </FormSetTitle>
-      <FormSetDescription className={classes.description}>
+      <StyledFormSetDescription>
         <T keyName={"description.description"} />
-      </FormSetDescription>
+      </StyledFormSetDescription>
 
       <div style={{ marginBottom: "12px" }}></div>
 

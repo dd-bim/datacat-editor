@@ -3,12 +3,11 @@ import { FunctionComponent } from "react";
 import Drawer, { DrawerProps } from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListSubheader from "@mui/material/ListSubheader";
-import makeStyles from "@mui/styles/makeStyles";
-import { Theme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import ListItem, { ListItemProps } from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import Tooltip from "@mui/material/Tooltip";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import SearchIcon from "@mui/icons-material/Search";
@@ -21,6 +20,7 @@ import ChecklistIcon from "@mui/icons-material/Checklist";
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import PublishIcon from "@mui/icons-material/Publish";
+import DescriptionIcon from "@mui/icons-material/Description";
 import {
   ClassEntity,
   DataTemplateEntity,
@@ -37,13 +37,13 @@ import AppTitle from "./AppTitle";
 import { useAdminAccess } from "../hooks/useAuthContext";
 import { T } from "@tolgee/react";
 
-const useStyles = makeStyles((theme: Theme) => ({
-  drawerContainer: {
-    overflow: "auto",
-  },
-  heading: {
-    padding: theme.spacing(2),
-  },
+// Replace makeStyles with styled components
+const DrawerContainer = styled('div')({
+  overflow: "auto",
+});
+
+const HeadingDiv = styled('div')(({ theme }) => ({
+  padding: theme.spacing(2),
 }));
 
 type AppDrawerItemProps = {
@@ -56,6 +56,7 @@ type AppDrawerItemProps = {
   disabled?: boolean;
 };
 
+// Enhanced AppDrawerItem with active state handling
 export const AppDrawerItem: FunctionComponent<
   AppDrawerItemProps & ListItemProps
 > = (props) => {
@@ -68,6 +69,11 @@ export const AppDrawerItem: FunctionComponent<
     disabled,
     onClick,
   } = props;
+  
+  const location = useLocation();
+  const isActive = location.pathname === to || 
+                  (to !== '/' && location.pathname.startsWith(to));
+  
   return (
     <Tooltip title={tooltip} aria-label={tooltip} arrow enterDelay={500}>
       <ListItem component="div" disablePadding>
@@ -76,9 +82,37 @@ export const AppDrawerItem: FunctionComponent<
           to={to}
           disabled={disabled}
           onClick={onClick}
+          selected={isActive}
+          sx={{
+            '&.Mui-selected': {
+              backgroundColor: 'rgba(0, 0, 0, 0.08)',
+              '&:hover': {
+                backgroundColor: 'rgba(0, 0, 0, 0.12)',
+              },
+            },
+          }}
         >
-          {icon && <ListItemIcon>{icon}</ListItemIcon>}
-          <ListItemText inset={!icon} primary={primary} secondary={secondary} />
+          {icon && (
+            <ListItemIcon
+              sx={{ 
+                color: isActive ? 'primary.main' : 'inherit',
+                minWidth: '40px' // Make icons more compact
+              }}
+            >
+              {icon}
+            </ListItemIcon>
+          )}
+          <ListItemText 
+            inset={!icon} 
+            primary={primary} 
+            secondary={secondary}
+            primaryTypographyProps={{
+              sx: { 
+                fontWeight: isActive ? 'bold' : 'normal',
+                color: isActive ? 'primary.main' : 'inherit'
+              }
+            }}
+          />
         </ListItemButton>
       </ListItem>
     </Tooltip>
@@ -86,7 +120,6 @@ export const AppDrawerItem: FunctionComponent<
 };
 
 const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
-  const classes = useStyles();
   const isAdmin = useAdminAccess();
   const { onClose } = props;
 
@@ -98,12 +131,28 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
 
   return (
     <Drawer {...props}>
-      <div className={classes.drawerContainer}>
-        <div className={classes.heading}>
+      <DrawerContainer>
+        <HeadingDiv>
           <AppTitle />
-        </div>
+        </HeadingDiv>
 
-        <List dense>
+        <List 
+          dense
+          sx={{
+            // Add dividers between categories
+            '& .MuiListSubheader-root': {
+              lineHeight: '32px',
+              backgroundColor: 'background.paper',
+              position: 'relative',
+              borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+              borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+              marginTop: 1,
+              paddingTop: 0.5,
+              paddingBottom: 0.5,
+              fontWeight: 'bold',
+            }
+          }}
+        >
           <ListSubheader disableSticky>
             <T keyName="app_drawer.general">Allgemein</T>
           </ListSubheader>
@@ -148,6 +197,14 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
             icon={<FileDownloadIcon />}
             primary={<T keyName="app_drawer.export">Exportieren</T>}
             to="/export"
+            onClick={handleItemClick}
+          />
+
+          {/* New IDS Export menu item */}
+          <AppDrawerItem
+            icon={<DescriptionIcon />}
+            primary={<T keyName="app_drawer.ids_export">IDS Export</T>}
+            to="/ids-export"
             onClick={handleItemClick}
           />
 
@@ -208,13 +265,13 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
             onClick={handleItemClick}
           />
 
-          <AppDrawerItem
+          {/* <AppDrawerItem
             icon={<DataTemplateEntity.Icon />}
             primary={<T keyName="app_drawer.data_templates">Datenvorlagen</T>}
             to={`/${DataTemplateEntity.path}`}
             disabled
             onClick={handleItemClick}
-          />
+          /> */}
 
           <AppDrawerItem
             icon={<PropertyGroupEntity.Icon />}
@@ -251,7 +308,7 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
             onClick={handleItemClick}
           />
         </List>
-      </div>
+      </DrawerContainer>
     </Drawer>
   );
 };

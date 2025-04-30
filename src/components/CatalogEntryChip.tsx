@@ -1,14 +1,13 @@
 import {getEntityType} from "../domain";
 import ConceptChip from "./ConceptChip";
 import React from "react";
-import makeStyles from "@mui/styles/makeStyles";
+import { styled } from "@mui/material/styles";
 import {CatalogRecord} from "../types";
 
-const useStyles = makeStyles(() => ({
-    chip: {
-        margin: 3
-    }
-}));
+// Replace makeStyles with styled component
+const StyledConceptChip = styled(ConceptChip)({
+    margin: 3
+});
 
 type CatalogEntryChipProps = {
     catalogEntry: CatalogRecord
@@ -24,14 +23,13 @@ export default function CatalogEntryChip(props: CatalogEntryChipProps) {
             tags
         }
     } = props;
-    const classes = useStyles();
+    
     const tagIds = tags.map(tag => tag.id);
     const domainEntityType = getEntityType(recordType, tagIds);
 
     return (
-        <ConceptChip
+        <StyledConceptChip
             key={id}
-            className={classes.chip}
             conceptType={domainEntityType!}
             id={id}
             label={name ?? id}

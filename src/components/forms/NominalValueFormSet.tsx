@@ -1,5 +1,5 @@
 import FormSet, {FormSetTitle} from "./FormSet";
-import React, {FC} from "react";
+import React from "react";
 import {
     Maybe,
     NominalValueInput,
@@ -19,7 +19,7 @@ type NominalValueFormSetProps = {
     nominalValue?: Maybe<string>
 }
 
-const NominalValueFormSet: FC<NominalValueFormSetProps> = (props) => {
+const NominalValueFormSet = (props: NominalValueFormSetProps) => {
     const {
         id,
         valueType,

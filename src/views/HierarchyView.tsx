@@ -1,8 +1,7 @@
-import React, { FC, useState } from "react";
-import { Paper, Typography, Grid } from "@mui/material";
+import React, { useState } from "react";
+import { Paper, Typography, Stack, Box } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
-import { makeStyles } from "@mui/styles";
-import { Theme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { Hierarchy } from "../components/Hierarchy";
 import { ConceptPropsFragment, usePropertyTreeQuery } from "../generated/types";
 import DomainModelForm from "./forms/DomainModelForm";
@@ -32,26 +31,28 @@ import {
 } from "../domain";
 import { T } from "@tolgee/react";
 
-const useStyles = makeStyles((theme: Theme) => ({
-  paper: {
-    padding: theme.spacing(2),
-  },
-  hint: {
-    flexGrow: 1,
-    textAlign: "center",
-    color: theme.palette.grey[600],
-    padding: theme.spacing(5),
-  },
+// Replace makeStyles with styled components
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(2),
+  height: 'auto', // Changed from 100% to auto
+  display: 'flex',
+  flexDirection: 'column',
 }));
 
-const HierarchyView: FC = () => {
-  const classes = useStyles();
+const HintTypography = styled(Typography)(({ theme }) => ({
+  flexGrow: 1,
+  textAlign: "center",
+  color: theme.palette.grey[600],
+  padding: theme.spacing(5),
+}));
+
+const HierarchyView = () => {
   const { loading, error, data } = usePropertyTreeQuery({});
-  // State für das aktuell ausgewählte Konzept:
+  // State for the currently selected concept:
   const [selectedConcept, setSelectedConcept] = useState<ConceptPropsFragment | null>(null);
 
-  // Dieser Callback wird an die Hierarchy-Komponente (TreeView) übergeben.
-  // Statt zu navigieren, wird das ausgewählte Konzept in den State gesetzt.
+  // This callback is passed to the Hierarchy component (TreeView).
+  // Instead of navigating, the selected concept is set in state.
   const handleOnSelect = (concept: ConceptPropsFragment) => {
     setSelectedConcept(concept);
   };
@@ -71,16 +72,16 @@ const HierarchyView: FC = () => {
     );
   }
 
-  // Je nach ausgewähltem Konzept wird der rechte Bereich gerendert:
+  // Depending on the selected concept, render the right area:
   let rightContent;
   if (!selectedConcept) {
     rightContent = (
-      <Typography className={classes.hint} variant="body1">
+      <HintTypography variant="body1">
         <T keyName="hierarchy.select_concept">Konzept in der Baumansicht auswählen, um Eigenschaften anzuzeigen.</T>
-      </Typography>
+      </HintTypography>
     );
   } else {
-    // Bestimme den Entity-Typ anhand der recordType und tags:
+    // Determine the entity type based on recordType and tags:
     const { id, recordType, tags } = selectedConcept;
     const entityType = getEntityType(recordType, tags.map(x => x.id));
     switch(entityType?.path) {
@@ -157,19 +158,39 @@ const HierarchyView: FC = () => {
   }
 
   return (
-    <Grid container spacing={1}>
-      <Grid item xs={5}>
-        <Paper className={classes.paper}>
-          <Typography variant="h5"><T keyName="hierarchy.search_catalog">Katalog durchsuchen</T></Typography>
-          {leftContent}
-        </Paper>
-      </Grid>
-      <Grid item xs={7}>
-        <Paper className={classes.paper}>
+    <Stack 
+      direction={{ xs: 'column', md: 'row' }} 
+      spacing={2} 
+      sx={{ 
+        minHeight: 'calc(100vh - 140px)', // Changed from height to minHeight
+        overflow: 'visible' // Changed from hidden to visible
+      }}
+    >
+      {/* Left panel - Tree View */}
+      <Box sx={{ 
+        flex: 1, 
+        minWidth: '300px', 
+        maxWidth: { md: '400px' }, 
+        overflow: 'visible', // Changed from auto to visible
+        height: 'fit-content' // Added to make container fit content
+      }}>
+        <StyledPaper>
+          <Typography variant="h5" sx={{ mb: 2 }}>
+            <T keyName="hierarchy.search_catalog">Katalog durchsuchen</T>
+          </Typography>
+          <Box>
+            {leftContent}
+          </Box>
+        </StyledPaper>
+      </Box>
+      
+      {/* Right panel - Selected item details */}
+      <Box sx={{ flex: 2, overflow: 'auto' }}>
+        <StyledPaper>
           {rightContent}
-        </Paper>
-      </Grid>
-    </Grid>
+        </StyledPaper>
+      </Box>
+    </Stack>
   );
 };
 

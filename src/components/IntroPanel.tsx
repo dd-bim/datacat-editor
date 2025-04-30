@@ -1,24 +1,17 @@
 import { Paper } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import React from "react";
-import makeStyles from "@mui/styles/makeStyles";
-import { Theme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { T } from "@tolgee/react";
 
-const useStyles = makeStyles((theme: Theme) => ({
-  paper: {
-    padding: theme.spacing(2),
-  },
-  paragraph: {
-    marginBottom: theme.spacing(3),
-  },
+// Replace makeStyles with styled components
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(2),
 }));
 
 export default function IntroPanel() {
-  const classes = useStyles();
-
   return (
-    <Paper className={classes.paper} variant={"outlined"}>
+    <StyledPaper variant="outlined">
       <Typography gutterBottom>
         <T keyName="intro.description1">
           datacat editor ist ein webbasiertes, OpenSource Arbeitswerkzeug zum gemeinsamen Entwickeln von Datenkatalogen
@@ -54,6 +47,6 @@ export default function IntroPanel() {
           </T>
         </b>
       </Typography>
-    </Paper>
+    </StyledPaper>
   );
 }

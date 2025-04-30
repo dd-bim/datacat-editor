@@ -1,8 +1,21 @@
-import React, { FC } from "react";
-import useFormStyles, { defaultFormFieldOptions } from "../../hooks/useFormStyles";
+import React from "react";
+import { styled } from "@mui/material/styles";
 import { Controller, useForm } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import { T } from "@tolgee/react";
+
+// Create styled component for the form
+const StyledForm = styled('form')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(2),
+}));
+
+// Define default form field options
+export const defaultFormFieldOptions = {
+  fullWidth: true,
+  variant: "outlined" as const,
+};
 
 export const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -18,8 +31,7 @@ export type ProfileFormProps = {
   onSubmit(values: ProfileFormValues): void;
 };
 
-export const ProfileForm: FC<ProfileFormProps> = (props) => {
-  const classes = useFormStyles();
+export const ProfileForm = (props: ProfileFormProps) => {
   const { defaultValues, onSubmit } = props;
   const {
     handleSubmit,
@@ -36,7 +48,7 @@ export const ProfileForm: FC<ProfileFormProps> = (props) => {
   };
 
   return (
-    <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+    <StyledForm onSubmit={handleSubmit(onSubmit)}>
       <Controller
         name="firstName"
         control={control}
@@ -134,6 +146,6 @@ export const ProfileForm: FC<ProfileFormProps> = (props) => {
           />
         )}
       />
-    </form>
+    </StyledForm>
   );
 };

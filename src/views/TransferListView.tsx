@@ -12,7 +12,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
 import {Typography, Button} from "@mui/material";
 import FormSet, {FormSetDescription, FormSetNotice, FormSetTitle} from "../components/forms/FormSet";
-import makeStyles from "@mui/styles/makeStyles";
+import { styled } from "@mui/material/styles";
 import {ApolloCache} from "@apollo/client";
 import {CatalogRecord} from "../types";
 import {useNavigate} from "react-router-dom";
@@ -35,18 +35,16 @@ export type TransferListViewProps = {
     onDelete?(): void;
 };
 
-import { Theme } from "@mui/material/styles";
+// Replace makeStyles with styled components
+const TitleContainer = styled('div')({
+    display: "flex",
+    alignContent: "space-between"
+});
 
-export const useStyles = makeStyles((theme: Theme) => ({
-    title: {
-        display: "flex",
-        alignContent: "space-between"
-    },
-    buttonRow: {
-        display: "flex",
-        justifyContent: "end",
-        marginTop: theme.spacing(1)
-    }
+const ButtonRow = styled('div')(({ theme }) => ({
+    display: "flex",
+    justifyContent: "end",
+    marginTop: theme.spacing(1)
 }));
 
 export const sortItems = (a: CatalogRecord, b: CatalogRecord) => {
@@ -68,7 +66,6 @@ export default function TransferListView(props: TransferListViewProps) {
         onDelete,
     } = props;
 
-    const classes = useStyles();
     const navigate = useNavigate();
     const [editState, setEditState] = useState(false);
 
@@ -181,7 +178,7 @@ export default function TransferListView(props: TransferListViewProps) {
             <FormSetTitle>{title}</FormSetTitle>
             {description && <FormSetDescription>{description}</FormSetDescription>}
             {content}
-            <div className={classes.buttonRow}>
+            <ButtonRow>
                 {editState ? (
                     <Button
                         variant="text"
@@ -202,7 +199,7 @@ export default function TransferListView(props: TransferListViewProps) {
                     </Button>
 
                 )}
-            </div>
+            </ButtonRow>
         </FormSet>
     );
 }

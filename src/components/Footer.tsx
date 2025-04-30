@@ -1,28 +1,25 @@
 import Paper, { PaperProps } from "@mui/material/Paper";
 import React from "react";
-import makeStyles from "@mui/styles/makeStyles";
+import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { Link } from "@mui/material";
-import { Theme } from "@mui/material/styles";
 import { T } from "@tolgee/react";
 
-const useStyles = makeStyles((theme: Theme) => ({
-  footer: {
-    display: "flex",
-    justifyContent: "end",
-    marginTop: theme.spacing(3),
-  },
-  paper: {
-    padding: theme.spacing(1),
-  },
+// Replace makeStyles with styled components
+const FooterContainer = styled('div')(({ theme }) => ({
+  display: "flex",
+  justifyContent: "end",
+  marginTop: theme.spacing(3),
+}));
+
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(1),
 }));
 
 export default function Footer(props: PaperProps) {
-  const classes = useStyles();
-
   return (
-    <div className={classes.footer}>
-      <Paper className={classes.paper} variant="outlined">
+    <FooterContainer>
+      <StyledPaper variant="outlined">
         <Typography variant="body2">
           <Link
             target="_blank"
@@ -44,7 +41,7 @@ export default function Footer(props: PaperProps) {
         <Typography variant="caption">
           datacat editor {import.meta.env.VITE_APP_VERSION}
         </Typography>
-      </Paper>
-    </div>
+      </StyledPaper>
+    </FooterContainer>
   );
 }

@@ -8,9 +8,15 @@ import NewTranslationForm from "./NewTranslationForm";
 import TranslateIcon from "@mui/icons-material/Translate";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import makeStyles from "@mui/styles/makeStyles";
+import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { T } from "@tolgee/react";
+
+// Replace makeStyles with styled component
+const ButtonRowGrid = styled(Grid)({
+    display: "flex",
+    justifyContent: "flex-end"
+});
 
 export type TranslationFormSetProps = {
     label: string;
@@ -21,13 +27,6 @@ export type TranslationFormSetProps = {
     onDelete(translationId: string): void;
     TextFieldProps?: TextFieldProps;
 };
-
-const useStyle = makeStyles(() => ({
-    buttonRow: {
-        display: "flex",
-        justifyContent: "flex-end"
-    }
-}));
 
 export const sortByLanguage = ({language: a}: TranslationPropsFragment, {language: b}: TranslationPropsFragment) => {
     return a.languageTag.localeCompare(b.languageTag);
@@ -42,7 +41,6 @@ export default function TranslationFormSet(props: TranslationFormSetProps) {
         onDelete,
         TextFieldProps
     } = props;
-    const classes = useStyle();
 
     const [open, setOpen] = useState(false);
 
@@ -64,7 +62,7 @@ export default function TranslationFormSet(props: TranslationFormSetProps) {
                 : undefined;
 
             return (
-                <Grid item xs={12} key={translation.id}>
+                <Grid key={translation.id}>
                     <TranslationForm
                         key={translation.id}
                         translation={translation}
@@ -82,7 +80,7 @@ export default function TranslationFormSet(props: TranslationFormSetProps) {
                 {translationForms.length ? (
                     translationForms
                 ): (
-                    <Grid item xs={12} key="no-translation">
+                    <Grid key="no-translation">
                         <Typography
                             variant="body2"
                             color="textSecondary"
@@ -93,7 +91,7 @@ export default function TranslationFormSet(props: TranslationFormSetProps) {
 
                 )}
 
-                <Grid className={classes.buttonRow} item xs={12}>
+                <ButtonRowGrid>
                     <Button
                         variant="text"
                         size="small"
@@ -102,7 +100,7 @@ export default function TranslationFormSet(props: TranslationFormSetProps) {
                     >
                         <T keyName="translation_form.add_translation" />
                     </Button>
-                </Grid>
+                </ButtonRowGrid>
             </Grid>
 
             <Dialog open={open} onClose={() => setOpen(false)}>

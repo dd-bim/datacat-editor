@@ -1,5 +1,5 @@
 import React, {FC, useState} from "react";
-import {Autocomplete} from "@mui/lab";
+import {Autocomplete} from "@mui/material";
 import {LanguageFilterInput, LanguagePropsFragment, Maybe, useFindLanguagesQuery} from "../../generated/types";
 import {TextField, TextFieldProps} from "@mui/material";
 import {defaultFormFieldOptions} from "../../hooks/useFormStyles";
@@ -32,7 +32,7 @@ const LanguageSelectField: FC<LanguageSelectFieldProps> = (props) => {
             onOpen={() => setOpen(true)}
             onClose={() => setOpen(false)}
             onChange={(event, value) => onChange(value)}
-            getOptionSelected={(option, value) => option.id === value.id}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
             getOptionLabel={(option) => `${option.displayLanguage} / ${option.displayCountry} (${option.languageTag})`}
             onInputChange={(event, value) => setQuery(value)}
             filterSelectedOptions={false}

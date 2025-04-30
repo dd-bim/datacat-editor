@@ -2,18 +2,19 @@ import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import React from "react";
 import { T } from "@tolgee/react";
+import { Box } from "@mui/material";
 
 export function HomePanel() {
   return (
-    <>
+    <Box sx={{ padding: 4 }}>
       <Typography variant="h4">
         <T keyName="home.title">Willkommen bei datacat</T>
       </Typography>
 
-      <Typography variant="h5">
+      <Typography variant="h5" sx={{ mt: 3 }}>
         <T keyName="home.about.title">Über das Projekt</T>
       </Typography>
-      <Typography variant="body1" paragraph>
+      <Typography variant="body1" component="p">
         <T keyName="home.about.description">
           Die datacat-Plattform stellt eine projektübergreifende Forschungsarbeit des Lehrbereichs "Geodäsie und BIM"
           der Fakultät Geoinformation der Hochschule für Technik und Wirtschaft Dresden (HTW Dresden) dar. Die Plattform
@@ -26,7 +27,7 @@ export function HomePanel() {
       <Typography variant="h5">
         <T keyName="home.components.title">Die Komponenten</T>
       </Typography>
-      <Typography variant="body1" paragraph>
+      <Typography variant="body1" component="p">
         <T keyName="home.components.description">
           Die Plattform gliedert sich derzeit in die Kernkomponenten datacat API, einer entwicklerfreundlichen,
           selbstdokumentierenden GraphQL-Schnittstelle für komplexe Abfragen auf den Datenkatalog und dem datacat
@@ -37,7 +38,7 @@ export function HomePanel() {
       <Typography variant="h5">
         <T keyName="home.methodology.title">Die Methodik</T>
       </Typography>
-      <Typography variant="body1" paragraph>
+      <Typography variant="body1" component="p">
         <T keyName="home.methodology.description">
           Mittelpunkt der Entwicklung ist ein nah an den etablierten Standards DIN EN ISO 12006-3 und DIN EN ISO 23387
           angelehntes Datenschema, das es ermöglichen soll auch komplexe Klassifikationssysteme im Katalog zu pflegen.
@@ -53,13 +54,13 @@ export function HomePanel() {
       <Typography variant="h5">
         <T keyName="home.opensource.title">Open Source</T>
       </Typography>
-      <Typography variant="body1" paragraph>
+      <Typography variant="body1" component="p">
         <T keyName="home.opensource.description">
           datacat wird als freie, quelloffene Software unter der GPLv3 Lizenz entwickelt und kann durch jeden, auch
           kommerziell genutzt und vervielfältigt werden. Der Quellcode wird auf GitHub gehostet. Jeder Art der
           Unterstützung des Projekts ist willkommen.
         </T>
       </Typography>
-    </>
+    </Box>
   );
 }
