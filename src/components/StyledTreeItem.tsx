@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { TreeItem, TreeItemProps, treeItemClasses } from "@mui/x-tree-view";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
@@ -56,41 +56,59 @@ type StyleTreeItemProps = {
   onSelect?: (item: ItemPropsFragment) => void;
 };
 
-export const StyledTreeItem = (props: StyleTreeItemProps & TreeItemProps) => {
+const StyledTreeItemComponent = (props: StyleTreeItemProps & TreeItemProps) => {
   const { itemId, data, children, onSelect, ...other } = props;
 
   const recordTypeDefinition = getEntityType(data.recordType, data.tags.map(tag => tag.id))!;
 
-  const handleOnLabelClick = (event: React.MouseEvent) => {
-    const isExpandIconClick = (event.target as HTMLElement).closest(".MuiTreeItem-iconContainer");
+  // Memoize handler to prevent unnecessary re-renders
+  const handleOnLabelClick = useCallback((event: React.MouseEvent) => {
+    // More precise check for expansion click using className
+    const target = event.target as HTMLElement;
+    const isExpandIconClick = 
+      target.classList.contains('MuiTreeItem-iconContainer') || 
+      target.closest('.MuiTreeItem-iconContainer');
   
     if (!isExpandIconClick && onSelect) {
       event.stopPropagation();
       onSelect(data);
     }
-  };
+  }, [data, onSelect]);
+
+  const labelContent = (
+    <LabelRoot onClick={handleOnLabelClick}>
+      <LabelIcon>
+        <recordTypeDefinition.Icon
+          fontSize="small"
+          color="inherit"
+        />
+      </LabelIcon>
+      <Tooltip title={data.description ?? ""} arrow>
+        <LabelText variant="body2">
+          {data.name ?? `${data.id} (${data.__typename})`}
+        </LabelText>
+      </Tooltip>
+    </LabelRoot>
+  );
 
   return (
     <StyledTreeItemRoot
       itemId={itemId}
-      label={
-        <LabelRoot onClick={handleOnLabelClick}>
-          <LabelIcon>
-            <recordTypeDefinition.Icon
-              fontSize="small"
-              color="inherit"
-            />
-          </LabelIcon>
-          <Tooltip title={data.description ?? ""} arrow>
-            <LabelText variant="body2">
-              {data.name ?? `${data.id} (${data.__typename})`}
-            </LabelText>
-          </Tooltip>
-        </LabelRoot>
-      }
+      label={labelContent}
       {...other}
     >
       {React.Children.toArray(children)}
     </StyledTreeItemRoot>
   );
 };
+
+// Memoize the component to prevent unnecessary re-renders
+export const StyledTreeItem = React.memo(StyledTreeItemComponent, (prevProps, nextProps) => {
+  // Custom comparison function for memoization
+  return (
+    prevProps.itemId === nextProps.itemId &&
+    prevProps.data.id === nextProps.data.id && 
+    prevProps.data.name === nextProps.data.name &&
+    prevProps.data.description === nextProps.data.description
+  );
+});

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Paper, Typography, Stack, Box } from "@mui/material";
+import React, { useState, useMemo, useCallback } from "react";
+import { Paper, Typography, Stack, Box, Skeleton, Alert } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 import { styled } from "@mui/material/styles";
 import { Hierarchy } from "../components/Hierarchy";
@@ -34,7 +34,7 @@ import { T } from "@tolgee/react";
 // Replace makeStyles with styled components
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
-  height: 'auto', // Changed from 100% to auto
+  height: 'auto', 
   display: 'flex',
   flexDirection: 'column',
 }));
@@ -46,146 +46,195 @@ const HintTypography = styled(Typography)(({ theme }) => ({
   padding: theme.spacing(5),
 }));
 
+// Scrollable container for the tree view
+const ScrollableTreeContainer = styled(Box)(({ theme }) => ({
+  maxHeight: 'calc(100vh - 220px)', // Adjustable height
+  overflow: 'auto',
+  '&::-webkit-scrollbar': {
+    width: '8px',
+  },
+  '&::-webkit-scrollbar-track': {
+    backgroundColor: theme.palette.background.default,
+  },
+  '&::-webkit-scrollbar-thumb': {
+    backgroundColor: theme.palette.grey[400],
+    borderRadius: '4px',
+  },
+}));
+
+// Loading skeleton for the form
+const FormSkeleton = () => (
+  <Box sx={{ mt: 2 }}>
+    <Skeleton variant="rectangular" height={40} sx={{ mb: 2 }} />
+    <Skeleton variant="rectangular" height={60} sx={{ mb: 2 }} />
+    <Skeleton variant="rectangular" height={40} sx={{ mb: 2 }} />
+    <Skeleton variant="rectangular" height={100} />
+  </Box>
+);
+
 const HierarchyView = () => {
-  const { loading, error, data } = usePropertyTreeQuery({});
+  const { loading, error, data } = usePropertyTreeQuery({
+    fetchPolicy: "cache-and-network" // Improve performance with caching
+  });
+  
   // State for the currently selected concept:
   const [selectedConcept, setSelectedConcept] = useState<ConceptPropsFragment | null>(null);
 
-  // This callback is passed to the Hierarchy component (TreeView).
-  // Instead of navigating, the selected concept is set in state.
-  const handleOnSelect = (concept: ConceptPropsFragment) => {
+  // Memoize the callback to prevent unnecessary re-renders
+  const handleOnSelect = useCallback((concept: ConceptPropsFragment) => {
     setSelectedConcept(concept);
-  };
+  }, []);
 
-  let leftContent;
-  if (loading) {
-    leftContent = <LinearProgress />;
-  } else if (error) {
-    leftContent = <p><T keyName="hierarchy.error">Beim Aufrufen des Merkmalsbaums ist ein Fehler aufgetreten.</T></p>;
-  } else {
-    leftContent = (
+  // Memoize the handler for clearing selected concept
+  const handleDelete = useCallback(() => setSelectedConcept(null), []);
+
+  // Memoize the left content to prevent re-renders
+  const leftContent = useMemo(() => {
+    if (loading && !data) {
+      return (
+        <>
+          <LinearProgress />
+          <Box sx={{ mt: 2 }}>
+            {[...Array(5)].map((_, i) => (
+              <Skeleton key={i} variant="rectangular" height={30} sx={{ my: 1 }} />
+            ))}
+          </Box>
+        </>
+      );
+    } 
+    
+    if (error) {
+      return (
+        <Alert severity="error" sx={{ mt: 2 }}>
+          <T keyName="hierarchy.error">Beim Aufrufen des Merkmalsbaums ist ein Fehler aufgetreten.</T>
+        </Alert>
+      );
+    } 
+    
+    return data && (
       <Hierarchy
-        leaves={data!.hierarchy.nodes}
-        paths={data!.hierarchy.paths}
+        leaves={data.hierarchy.nodes}
+        paths={data.hierarchy.paths}
         onSelect={handleOnSelect}
+        defaultCollapsed={true} // Ensure tree is collapsed by default
       />
     );
-  }
+  }, [loading, error, data, handleOnSelect]);
 
-  // Depending on the selected concept, render the right area:
-  let rightContent;
-  if (!selectedConcept) {
-    rightContent = (
-      <HintTypography variant="body1">
-        <T keyName="hierarchy.select_concept">Konzept in der Baumansicht auswählen, um Eigenschaften anzuzeigen.</T>
-      </HintTypography>
-    );
-  } else {
+  // Memoize the right content to prevent re-renders
+  const rightContent = useMemo(() => {
+    if (!selectedConcept) {
+      return (
+        <HintTypography variant="body1">
+          <T keyName="hierarchy.select_concept">Konzept in der Baumansicht auswählen, um Eigenschaften anzuzeigen.</T>
+        </HintTypography>
+      );
+    }
+
+    if (loading && !data) {
+      return <FormSkeleton />;
+    }
+
     // Determine the entity type based on recordType and tags:
     const { id, recordType, tags } = selectedConcept;
     const entityType = getEntityType(recordType, tags.map(x => x.id));
+    
     switch(entityType?.path) {
       case GroupEntity.path:
-        rightContent = (
+        return (
           <>
             <Typography variant="h5">
               <DomainGroupIcon /> <T keyName="hierarchy.edit_group">Gruppe bearbeiten</T>
             </Typography>
-            <DomainGroupForm id={id} onDelete={() => setSelectedConcept(null)} />
+            <DomainGroupForm id={id} onDelete={handleDelete} />
           </>
         );
-        break;
       case ClassEntity.path:
-        rightContent = (
+        return (
           <>
             <Typography variant="h5">
               <DomainClassIcon /> <T keyName="hierarchy.edit_class">Klasse bearbeiten</T>
             </Typography>
-            <DomainClassForm id={id} onDelete={() => setSelectedConcept(null)} />
+            <DomainClassForm id={id} onDelete={handleDelete} />
           </>
         );
-        break;
       case PropertyEntity.path:
-        rightContent = (
+        return (
           <>
             <Typography variant="h5">
               <PropertyIcon /> <T keyName="hierarchy.edit_property">Merkmal bearbeiten</T>
             </Typography>
-            <PropertyForm id={id} onDelete={() => setSelectedConcept(null)} />
+            <PropertyForm id={id} onDelete={handleDelete} />
           </>
         );
-        break;
       case MeasureEntity.path:
-        rightContent = (
+        return (
           <>
             <Typography variant="h5">
               <MeasureIcon /> <T keyName="hierarchy.edit_measure">Größe bearbeiten</T>
             </Typography>
-            <MeasureForm id={id} onDelete={() => setSelectedConcept(null)} />
+            <MeasureForm id={id} onDelete={handleDelete} />
           </>
         );
-        break;
       case UnitEntity.path:
-        rightContent = (
+        return (
           <>
             <Typography variant="h5">
               <UnitIcon /> <T keyName="hierarchy.edit_unit">Einheit bearbeiten</T>
             </Typography>
-            <UnitForm id={id} onDelete={() => setSelectedConcept(null)} />
+            <UnitForm id={id} onDelete={handleDelete} />
           </>
         );
-        break;
       case ValueEntity.path:
-        rightContent = (
+        return (
           <>
             <Typography variant="h5">
               <ValueIcon /> <T keyName="hierarchy.edit_value">Wert bearbeiten</T>
             </Typography>
-            <ValueForm id={id} onDelete={() => setSelectedConcept(null)} />
+            <ValueForm id={id} onDelete={handleDelete} />
           </>
         );
-        break;
       default:
-        rightContent = (
+        return (
           <>
             <Typography variant="h5">
               <DomainModelIcon /> <T keyName="hierarchy.edit_model">Fachmodell bearbeiten</T>
             </Typography>
-            <DomainModelForm id={id} onDelete={() => setSelectedConcept(null)} />
+            <DomainModelForm id={id} onDelete={handleDelete} />
           </>
         );
     }
-  }
+  }, [selectedConcept, loading, data, handleDelete]);
 
   return (
     <Stack 
       direction={{ xs: 'column', md: 'row' }} 
       spacing={2} 
       sx={{ 
-        minHeight: 'calc(100vh - 140px)', // Changed from height to minHeight
-        overflow: 'visible' // Changed from hidden to visible
+        minHeight: 'calc(100vh - 140px)',
+        overflow: 'visible'
       }}
     >
       {/* Left panel - Tree View */}
       <Box sx={{ 
         flex: 1, 
-        minWidth: '300px', 
+        minWidth: { xs: '100%', md: '300px' }, 
         maxWidth: { md: '400px' }, 
-        overflow: 'visible', // Changed from auto to visible
-        height: 'fit-content' // Added to make container fit content
+        overflow: 'visible',
+        height: 'fit-content'
       }}>
         <StyledPaper>
           <Typography variant="h5" sx={{ mb: 2 }}>
             <T keyName="hierarchy.search_catalog">Katalog durchsuchen</T>
           </Typography>
-          <Box>
+          <ScrollableTreeContainer>
             {leftContent}
-          </Box>
+          </ScrollableTreeContainer>
         </StyledPaper>
       </Box>
       
       {/* Right panel - Selected item details */}
-      <Box sx={{ flex: 2, overflow: 'auto' }}>
+      <Box sx={{ flex: 2, overflow: 'auto', width: { xs: '100%' } }}>
         <StyledPaper>
           {rightContent}
         </StyledPaper>
@@ -194,4 +243,4 @@ const HierarchyView = () => {
   );
 };
 
-export default HierarchyView;
+export default React.memo(HierarchyView);

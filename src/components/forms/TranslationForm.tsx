@@ -7,14 +7,29 @@ import InlineButtonGroup from "./InlineButtonGroup";
 import {ClickAwayListener} from "@mui/material";
 import {TranslationPropsFragment} from "../../generated/types";
 
-// Replace makeStyles with styled components
+// Verbesserte Formular-Container-Styles
 const FormContainer = styled('form')({
     display: "flex",
     flexDirection: "row",
+    width: "100%",
+    maxWidth: "100%",
+    alignItems: "flex-start", // Ausrichtung am Anfang, besser für mehrzeilige Textfelder
+    gap: "8px", // Abstand zwischen Textfeld und Button
 });
 
+// Verbesserte TextField-Styles
 const StyledTextField = styled(TextField)({
-    flexGrow: 1
+    flexGrow: 1,
+    flexBasis: 0, // Wichtig für gleichmäßige Expansion
+    minWidth: "60%", // Minimale Breite für das Textfeld
+});
+
+// Verbesserte Button-Container-Styles
+const ButtonContainer = styled('div')({
+    flexShrink: 0, // Verhindert, dass Buttons zusammengedrückt werden
+    display: "flex",
+    alignItems: "flex-start", // Ausrichtung am Anfang
+    paddingTop: "8px", // Ein bisschen Platz zum Textfeld-Label
 });
 
 export type TranslationFormValues = {
@@ -110,11 +125,13 @@ const TranslationForm = (props: TranslationFormProps) => {
                     )}
                 />
                 {isEditMode && (
+                    <ButtonContainer>
                         <InlineButtonGroup
                             formState={formState}
                             onReset={onReset}
                             onDelete={onDelete}
                         />
+                    </ButtonContainer>
                 )}
             </FormContainer>
         </ClickAwayListener>
