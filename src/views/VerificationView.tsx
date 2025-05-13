@@ -13,20 +13,7 @@ import UnitForm from "./forms/UnitForm";
 import ValueForm from "./forms/ValueForm";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import {
-  FindPropGroupWithoutProp,
-  FindPropWithoutSubjectOrPropGroup,
-  FindModelWithoutGroup,
-  FindGroupWithoutSubject,
-  FindSubjectWithoutProp,
-  FindMeasureWithoutProp,
-  FindUnitWithoutMeasure,
-  FindValueWithoutMeasure,
-  FindMissingEnglishName,
-  FindMultipleIDs,
-  FindMissingDescription,
-  FindMissingEnglishDescription,
-  FindMultipleNames,
-  FindMultipleNamesAcrossClasses,
+  FindVerification
 } from "../components/Verification";
 import {
   ConceptPropsFragment,
@@ -395,7 +382,7 @@ export function VerificationView() {
     if (loading) return <LinearProgress />;
     if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
     return (
-      <FindPropGroupWithoutProp
+      <FindVerification
         leaves={data!.findPropGroupWithoutProp.nodes}
         paths={data!.findPropGroupWithoutProp.paths}
         onSelect={handleOnSelect}
@@ -408,7 +395,7 @@ export function VerificationView() {
     if (loading) return <LinearProgress />;
     if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
     return (
-      <FindPropWithoutSubjectOrPropGroup
+      <FindVerification
         leaves={data!.findPropWithoutSubjectOrPropGroup.nodes}
         paths={data!.findPropWithoutSubjectOrPropGroup.paths}
         onSelect={handleOnSelect}
@@ -421,7 +408,7 @@ export function VerificationView() {
     if (loading) return <LinearProgress />;
     if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
     return (
-      <FindModelWithoutGroup
+      <FindVerification
         leaves={data!.findModelWithoutGroup.nodes}
         paths={data!.findModelWithoutGroup.paths}
         onSelect={handleOnSelect}
@@ -434,7 +421,7 @@ export function VerificationView() {
     if (loading) return <LinearProgress />;
     if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
     return (
-      <FindGroupWithoutSubject
+      <FindVerification
         leaves={data!.findGroupWithoutSubject.nodes}
         paths={data!.findGroupWithoutSubject.paths}
         onSelect={handleOnSelect}
@@ -447,7 +434,7 @@ export function VerificationView() {
     if (loading) return <LinearProgress />;
     if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
     return (
-      <FindSubjectWithoutProp
+      <FindVerification
         leaves={data!.findSubjectWithoutProp.nodes}
         paths={data!.findSubjectWithoutProp.paths}
         onSelect={handleOnSelect}
@@ -460,7 +447,7 @@ export function VerificationView() {
     if (loading) return <LinearProgress />;
     if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
     return (
-      <FindMeasureWithoutProp
+      <FindVerification
         leaves={data!.findMeasureWithoutProp.nodes}
         paths={data!.findMeasureWithoutProp.paths}
         onSelect={handleOnSelect}
@@ -473,7 +460,7 @@ export function VerificationView() {
     if (loading) return <LinearProgress />;
     if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
     return (
-      <FindUnitWithoutMeasure
+      <FindVerification
         leaves={data!.findUnitWithoutMeasure.nodes}
         paths={data!.findUnitWithoutMeasure.paths}
         onSelect={handleOnSelect}
@@ -486,7 +473,7 @@ export function VerificationView() {
     if (loading) return <LinearProgress />;
     if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
     return (
-      <FindValueWithoutMeasure
+      <FindVerification
         leaves={data!.findValueWithoutMeasure.nodes}
         paths={data!.findValueWithoutMeasure.paths}
         onSelect={handleOnSelect}
@@ -499,7 +486,7 @@ export function VerificationView() {
     if (loading) return <LinearProgress />;
     if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
     return (
-      <FindMissingEnglishName
+      <FindVerification
         leaves={data!.findMissingEnglishName.nodes}
         paths={data!.findMissingEnglishName.paths}
         onSelect={handleOnSelect}
@@ -512,7 +499,7 @@ export function VerificationView() {
     if (loading) return <LinearProgress />;
     if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
     return (
-      <FindMultipleIDs
+      <FindVerification
         leaves={data!.findMultipleIDs.nodes}
         paths={data!.findMultipleIDs.paths}
         onSelect={handleOnSelect}
@@ -525,7 +512,7 @@ export function VerificationView() {
     if (loading) return <LinearProgress />;
     if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
     return (
-      <FindMissingDescription
+      <FindVerification
         leaves={data!.findMissingDescription.nodes}
         paths={data!.findMissingDescription.paths}
         onSelect={handleOnSelect}
@@ -541,7 +528,7 @@ export function VerificationView() {
       return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
     }
     return (
-      <FindMissingEnglishDescription
+      <FindVerification
         leaves={data!.findMissingEnglishDescription.nodes}
         paths={data!.findMissingEnglishDescription.paths}
         onSelect={handleOnSelect}
@@ -554,7 +541,7 @@ export function VerificationView() {
     if (loading) return <LinearProgress />;
     if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
     return (
-      <FindMultipleNames
+      <FindVerification
         leaves={data!.findMultipleNames.nodes}
         paths={data!.findMultipleNames.paths}
         onSelect={handleOnSelect}
@@ -567,7 +554,7 @@ export function VerificationView() {
     if (loading) return <LinearProgress />;
     if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
     return (
-      <FindMultipleNamesAcrossClasses
+      <FindVerification
         leaves={data!.findMultipleNamesAcrossClasses.nodes}
         paths={data!.findMultipleNamesAcrossClasses.paths}
         onSelect={handleOnSelect}

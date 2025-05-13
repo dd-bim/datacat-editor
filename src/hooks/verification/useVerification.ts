@@ -17,7 +17,7 @@ type UseVTreeOptions = {
     paths: string[][]
 }
 
-const useFindMeasureWithoutProp = (options: UseVTreeOptions) => {
+const useVerification = (options: UseVTreeOptions) => {
     const {
         leaves,
         paths
@@ -69,4 +69,4 @@ const useFindMeasureWithoutProp = (options: UseVTreeOptions) => {
     };
 };
 
-export default useFindMeasureWithoutProp;
+export default useVerification;

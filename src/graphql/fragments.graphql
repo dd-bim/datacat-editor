@@ -1,3 +1,4 @@
+# v
 fragment UserProfile on Profile {
     username
     firstName
@@ -6,7 +7,7 @@ fragment UserProfile on Profile {
     organization
 }
 
-
+# v?
 fragment PageProps on PageInfo {
     totalPages
     pageNumber
@@ -14,21 +15,38 @@ fragment PageProps on PageInfo {
     hasPrevious
 }
 
+# v
+# fragment LanguageProps on Language {
+#     id
+#     languageTag
+#     displayCountry(input: { languageTag: "de" })
+#     displayLanguage(input: { languageTag: "de" })
+# }
 fragment LanguageProps on Language {
     id
-    languageTag
-    displayCountry(input: { languageTag: "de" })
-    displayLanguage(input: { languageTag: "de" })
+    code
+    englishName
+    nativeName
 }
 
+# fragment TranslationProps on Translation {
+#     id
+#     language {
+#         ...LanguageProps
+#     }
+#     value
+# }
 fragment TranslationProps on Translation {
     id
-    language {
-        ...LanguageProps
+    texts {
+        text
+        language {
+            ...LanguageProps
+        }
     }
-    value
 }
 
+# v
 fragment TagProps on Tag {
     id
     name

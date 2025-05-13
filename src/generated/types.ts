@@ -510,55 +510,41 @@ export type TranslationPropsFragment = { id: string, value: string, language: La
 
 export type TagPropsFragment = { id: string, name: string };
 
-type ItemProps_XtdActivity_Fragment = { __typename: 'XtdActivity', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps<T extends string> = {
+  __typename: T;
+  id: string;
+  recordType: CatalogRecordType;
+  name?: Maybe<string>;
+  description?: Maybe<string>;
+  comment?: Maybe<string>;
+  tags: Array<TagPropsFragment>;
+};
 
-type ItemProps_XtdActor_Fragment = { __typename: 'XtdActor', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
-
-type ItemProps_XtdBag_Fragment = { __typename: 'XtdBag', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
-
-type ItemProps_XtdClassification_Fragment = { __typename: 'XtdClassification', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
-
-type ItemProps_XtdExternalDocument_Fragment = { __typename: 'XtdExternalDocument', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
-
-type ItemProps_XtdMeasureWithUnit_Fragment = { __typename: 'XtdMeasureWithUnit', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
-
-type ItemProps_XtdNest_Fragment = { __typename: 'XtdNest', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
-
-type ItemProps_XtdProperty_Fragment = { __typename: 'XtdProperty', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
-
-type ItemProps_XtdRelActsUpon_Fragment = { __typename: 'XtdRelActsUpon', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
-
-type ItemProps_XtdRelAssignsCollections_Fragment = { __typename: 'XtdRelAssignsCollections', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
-
-type ItemProps_XtdRelAssignsMeasures_Fragment = { __typename: 'XtdRelAssignsMeasures', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
-
-type ItemProps_XtdRelAssignsProperties_Fragment = { __typename: 'XtdRelAssignsProperties', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
-
-type ItemProps_XtdRelAssignsPropertyWithValues_Fragment = { __typename: 'XtdRelAssignsPropertyWithValues', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
-
-type ItemProps_XtdRelAssignsUnits_Fragment = { __typename: 'XtdRelAssignsUnits', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
-
-type ItemProps_XtdRelAssignsValues_Fragment = { __typename: 'XtdRelAssignsValues', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
-
-type ItemProps_XtdRelAssociates_Fragment = { __typename: 'XtdRelAssociates', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
-
-type ItemProps_XtdRelCollects_Fragment = { __typename: 'XtdRelCollects', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
-
-type ItemProps_XtdRelComposes_Fragment = { __typename: 'XtdRelComposes', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
-
-type ItemProps_XtdRelDocuments_Fragment = { __typename: 'XtdRelDocuments', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
-
-type ItemProps_XtdRelGroups_Fragment = { __typename: 'XtdRelGroups', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
-
-type ItemProps_XtdRelSequences_Fragment = { __typename: 'XtdRelSequences', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
-
-type ItemProps_XtdRelSpecializes_Fragment = { __typename: 'XtdRelSpecializes', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
-
-type ItemProps_XtdSubject_Fragment = { __typename: 'XtdSubject', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
-
-type ItemProps_XtdUnit_Fragment = { __typename: 'XtdUnit', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
-
-type ItemProps_XtdValue_Fragment = { __typename: 'XtdValue', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
+type ItemProps_XtdActivity_Fragment = ItemProps<'XtdActivity'>;
+type ItemProps_XtdActor_Fragment = ItemProps<'XtdActor'>;
+type ItemProps_XtdBag_Fragment = ItemProps<'XtdBag'>;
+type ItemProps_XtdClassification_Fragment = ItemProps<'XtdClassification'>;
+type ItemProps_XtdExternalDocument_Fragment = ItemProps<'XtdExternalDocument'>;
+type ItemProps_XtdMeasureWithUnit_Fragment = ItemProps<'XtdMeasureWithUnit'>;
+type ItemProps_XtdNest_Fragment = ItemProps<'XtdNest'>;
+type ItemProps_XtdProperty_Fragment = ItemProps<'XtdProperty'>;
+type ItemProps_XtdRelActsUpon_Fragment = ItemProps<'XtdRelActsUpon'>;
+type ItemProps_XtdRelAssignsCollections_Fragment = ItemProps<'XtdRelAssignsCollections'>;
+type ItemProps_XtdRelAssignsMeasures_Fragment = ItemProps<'XtdRelAssignsMeasures'>;
+type ItemProps_XtdRelAssignsProperties_Fragment = ItemProps<'XtdRelAssignsProperties'>;
+type ItemProps_XtdRelAssignsPropertyWithValues_Fragment = ItemProps<'XtdRelAssignsPropertyWithValues'>;
+type ItemProps_XtdRelAssignsUnits_Fragment = ItemProps<'XtdRelAssignsUnits'>;
+type ItemProps_XtdRelAssignsValues_Fragment = ItemProps<'XtdRelAssignsValues'>;
+type ItemProps_XtdRelAssociates_Fragment = ItemProps<'XtdRelAssociates'>;
+type ItemProps_XtdRelCollects_Fragment = ItemProps<'XtdRelCollects'>;
+type ItemProps_XtdRelComposes_Fragment = ItemProps<'XtdRelComposes'>;
+type ItemProps_XtdRelDocuments_Fragment = ItemProps<'XtdRelDocuments'>;
+type ItemProps_XtdRelGroups_Fragment = ItemProps<'XtdRelGroups'>;
+type ItemProps_XtdRelSequences_Fragment = ItemProps<'XtdRelSequences'>;
+type ItemProps_XtdRelSpecializes_Fragment = ItemProps<'XtdRelSpecializes'>;
+type ItemProps_XtdSubject_Fragment = ItemProps<'XtdSubject'>;
+type ItemProps_XtdUnit_Fragment = ItemProps<'XtdUnit'>;
+type ItemProps_XtdValue_Fragment = ItemProps<'XtdValue'>;
 
 export type ExportCatalogRecord_Fragment = { __typename: 'ExportResult', id: string, typ?: Maybe<string>, schlagworte?: Maybe<string>, name?: Maybe<string>, name_en?: Maybe<string>, description?: Maybe<string>, versionId?: Maybe<string>, created?: Maybe<string>, createdBy?: Maybe<string>, lastModified?: Maybe<string>, lastModifiedBy?: Maybe<string> };
 
@@ -570,130 +556,41 @@ export type SearchResultPropsFragment = { __typename: 'SearchResult', id: string
 
 export type FindTagsResultFragment = { id: string, name: string };
 
-type ConceptProps_XtdActivity_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdActivity_Fragment
-);
+// Gemeinsame Basisstruktur für ConceptProps
+type ConceptProps_Base_Fragment = {
+  versionId?: Maybe<string>;
+  versionDate?: Maybe<string>;
+  names: Array<TranslationPropsFragment>;
+  descriptions: Array<TranslationPropsFragment>;
+  comments: Array<TranslationPropsFragment>;
+};
 
-type ConceptProps_XtdActor_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdActor_Fragment
-);
-
-type ConceptProps_XtdBag_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdBag_Fragment
-);
-
-type ConceptProps_XtdClassification_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdClassification_Fragment
-);
-
-type ConceptProps_XtdExternalDocument_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdExternalDocument_Fragment
-);
-
-type ConceptProps_XtdMeasureWithUnit_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdMeasureWithUnit_Fragment
-);
-
-type ConceptProps_XtdNest_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdNest_Fragment
-);
-
-type ConceptProps_XtdProperty_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdProperty_Fragment
-);
-
-type ConceptProps_XtdRelActsUpon_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdRelActsUpon_Fragment
-);
-
-type ConceptProps_XtdRelAssignsCollections_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdRelAssignsCollections_Fragment
-);
-
-type ConceptProps_XtdRelAssignsMeasures_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdRelAssignsMeasures_Fragment
-);
-
-type ConceptProps_XtdRelAssignsProperties_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdRelAssignsProperties_Fragment
-);
-
-type ConceptProps_XtdRelAssignsPropertyWithValues_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdRelAssignsPropertyWithValues_Fragment
-);
-
-type ConceptProps_XtdRelAssignsUnits_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdRelAssignsUnits_Fragment
-);
-
-type ConceptProps_XtdRelAssignsValues_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdRelAssignsValues_Fragment
-);
-
-type ConceptProps_XtdRelAssociates_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdRelAssociates_Fragment
-);
-
-type ConceptProps_XtdRelCollects_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdRelCollects_Fragment
-);
-
-type ConceptProps_XtdRelComposes_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdRelComposes_Fragment
-);
-
-type ConceptProps_XtdRelDocuments_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdRelDocuments_Fragment
-);
-
-type ConceptProps_XtdRelGroups_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdRelGroups_Fragment
-);
-
-type ConceptProps_XtdRelSequences_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdRelSequences_Fragment
-);
-
-type ConceptProps_XtdRelSpecializes_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdRelSpecializes_Fragment
-);
-
-type ConceptProps_XtdSubject_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdSubject_Fragment
-);
-
-type ConceptProps_XtdUnit_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdUnit_Fragment
-);
-
-type ConceptProps_XtdValue_Fragment = (
-  { versionId?: Maybe<string>, versionDate?: Maybe<string>, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment> }
-  & ItemProps_XtdValue_Fragment
-);
+// Spezifische Typen erweitern die Basisstruktur
+type ConceptProps_XtdActivity_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdActivity_Fragment;
+type ConceptProps_XtdActor_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdActor_Fragment;
+type ConceptProps_XtdBag_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdBag_Fragment;
+type ConceptProps_XtdClassification_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdClassification_Fragment;
+type ConceptProps_XtdExternalDocument_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdExternalDocument_Fragment;
+type ConceptProps_XtdMeasureWithUnit_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdMeasureWithUnit_Fragment;
+type ConceptProps_XtdNest_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdNest_Fragment;
+type ConceptProps_XtdProperty_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdProperty_Fragment;
+type ConceptProps_XtdRelActsUpon_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelActsUpon_Fragment;
+type ConceptProps_XtdRelAssignsCollections_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelAssignsCollections_Fragment;
+type ConceptProps_XtdRelAssignsMeasures_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelAssignsMeasures_Fragment;
+type ConceptProps_XtdRelAssignsProperties_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelAssignsProperties_Fragment;
+type ConceptProps_XtdRelAssignsPropertyWithValues_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelAssignsPropertyWithValues_Fragment;
+type ConceptProps_XtdRelAssignsUnits_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelAssignsUnits_Fragment;
+type ConceptProps_XtdRelAssignsValues_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelAssignsValues_Fragment;
+type ConceptProps_XtdRelAssociates_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelAssociates_Fragment;
+type ConceptProps_XtdRelCollects_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelCollects_Fragment;
+type ConceptProps_XtdRelComposes_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelComposes_Fragment;
+type ConceptProps_XtdRelDocuments_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelDocuments_Fragment;
+type ConceptProps_XtdRelGroups_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelGroups_Fragment;
+type ConceptProps_XtdRelSequences_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelSequences_Fragment;
+type ConceptProps_XtdRelSpecializes_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelSpecializes_Fragment;
+type ConceptProps_XtdSubject_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdSubject_Fragment;
+type ConceptProps_XtdUnit_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdUnit_Fragment;
+type ConceptProps_XtdValue_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdValue_Fragment;
 
 export type ConceptPropsFragment = ConceptProps_XtdActivity_Fragment | ConceptProps_XtdActor_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdRelActsUpon_Fragment | ConceptProps_XtdRelAssignsCollections_Fragment | ConceptProps_XtdRelAssignsMeasures_Fragment | ConceptProps_XtdRelAssignsProperties_Fragment | ConceptProps_XtdRelAssignsPropertyWithValues_Fragment | ConceptProps_XtdRelAssignsUnits_Fragment | ConceptProps_XtdRelAssignsValues_Fragment | ConceptProps_XtdRelAssociates_Fragment | ConceptProps_XtdRelCollects_Fragment | ConceptProps_XtdRelComposes_Fragment | ConceptProps_XtdRelDocuments_Fragment | ConceptProps_XtdRelGroups_Fragment | ConceptProps_XtdRelSequences_Fragment | ConceptProps_XtdRelSpecializes_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment;
 
@@ -704,45 +601,13 @@ export type ValuePropsFragment = (
   & ConceptProps_XtdValue_Fragment
 );
 
-type CollectionProps_XtdBag_Fragment = ConceptProps_XtdBag_Fragment;
+export type CollectionPropsFragment = ConceptProps_XtdBag_Fragment | ConceptProps_XtdNest_Fragment;
 
-type CollectionProps_XtdNest_Fragment = ConceptProps_XtdNest_Fragment;
-
-export type CollectionPropsFragment = CollectionProps_XtdBag_Fragment | CollectionProps_XtdNest_Fragment;
-
-type RelationshipProps_XtdRelActsUpon_Fragment = ConceptProps_XtdRelActsUpon_Fragment;
-
-type RelationshipProps_XtdRelAssignsCollections_Fragment = ConceptProps_XtdRelAssignsCollections_Fragment;
-
-type RelationshipProps_XtdRelAssignsMeasures_Fragment = ConceptProps_XtdRelAssignsMeasures_Fragment;
-
-type RelationshipProps_XtdRelAssignsProperties_Fragment = ConceptProps_XtdRelAssignsProperties_Fragment;
-
-type RelationshipProps_XtdRelAssignsPropertyWithValues_Fragment = ConceptProps_XtdRelAssignsPropertyWithValues_Fragment;
-
-type RelationshipProps_XtdRelAssignsUnits_Fragment = ConceptProps_XtdRelAssignsUnits_Fragment;
-
-type RelationshipProps_XtdRelAssignsValues_Fragment = ConceptProps_XtdRelAssignsValues_Fragment;
-
-type RelationshipProps_XtdRelAssociates_Fragment = ConceptProps_XtdRelAssociates_Fragment;
-
-type RelationshipProps_XtdRelCollects_Fragment = ConceptProps_XtdRelCollects_Fragment;
-
-type RelationshipProps_XtdRelComposes_Fragment = ConceptProps_XtdRelComposes_Fragment;
-
-type RelationshipProps_XtdRelDocuments_Fragment = ConceptProps_XtdRelDocuments_Fragment;
-
-type RelationshipProps_XtdRelGroups_Fragment = ConceptProps_XtdRelGroups_Fragment;
-
-type RelationshipProps_XtdRelSequences_Fragment = ConceptProps_XtdRelSequences_Fragment;
-
-type RelationshipProps_XtdRelSpecializes_Fragment = ConceptProps_XtdRelSpecializes_Fragment;
-
-export type RelationshipPropsFragment = RelationshipProps_XtdRelActsUpon_Fragment | RelationshipProps_XtdRelAssignsCollections_Fragment | RelationshipProps_XtdRelAssignsMeasures_Fragment | RelationshipProps_XtdRelAssignsProperties_Fragment | RelationshipProps_XtdRelAssignsPropertyWithValues_Fragment | RelationshipProps_XtdRelAssignsUnits_Fragment | RelationshipProps_XtdRelAssignsValues_Fragment | RelationshipProps_XtdRelAssociates_Fragment | RelationshipProps_XtdRelCollects_Fragment | RelationshipProps_XtdRelComposes_Fragment | RelationshipProps_XtdRelDocuments_Fragment | RelationshipProps_XtdRelGroups_Fragment | RelationshipProps_XtdRelSequences_Fragment | RelationshipProps_XtdRelSpecializes_Fragment;
+export type RelationshipPropsFragment = ConceptProps_XtdRelActsUpon_Fragment | ConceptProps_XtdRelAssignsCollections_Fragment | ConceptProps_XtdRelAssignsMeasures_Fragment | ConceptProps_XtdRelAssignsProperties_Fragment | ConceptProps_XtdRelAssignsPropertyWithValues_Fragment | ConceptProps_XtdRelAssignsUnits_Fragment | ConceptProps_XtdRelAssignsValues_Fragment | ConceptProps_XtdRelAssociates_Fragment | ConceptProps_XtdRelCollects_Fragment | ConceptProps_XtdRelComposes_Fragment | ConceptProps_XtdRelDocuments_Fragment | ConceptProps_XtdRelGroups_Fragment | ConceptProps_XtdRelSequences_Fragment | ConceptProps_XtdRelSpecializes_Fragment;
 
 export type DocumentsPropsFragment = (
   { relatingDocument: ItemProps_XtdExternalDocument_Fragment, relatedThings: Array<ItemProps_XtdActivity_Fragment | ItemProps_XtdActor_Fragment | ItemProps_XtdBag_Fragment | ItemProps_XtdClassification_Fragment | ItemProps_XtdMeasureWithUnit_Fragment | ItemProps_XtdNest_Fragment | ItemProps_XtdProperty_Fragment | ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> }
-  & RelationshipProps_XtdRelDocuments_Fragment
+  & ConceptProps_XtdRelDocuments_Fragment
 );
 
 export type CollectsPropsFragment = (
@@ -755,142 +620,94 @@ export type CollectsPropsFragment = (
       & ItemProps_XtdNest_Fragment
     ), relatedThings: Array<ItemProps_XtdActivity_Fragment | ItemProps_XtdActor_Fragment | ItemProps_XtdBag_Fragment | ItemProps_XtdClassification_Fragment | ItemProps_XtdMeasureWithUnit_Fragment | ItemProps_XtdNest_Fragment | ItemProps_XtdProperty_Fragment | ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment>
   }
-  & RelationshipProps_XtdRelCollects_Fragment
+  & ConceptProps_XtdRelCollects_Fragment
 );
 
 export type AssignsCollectionsPropsFragment = (
   { relatingObject: ItemProps_XtdActivity_Fragment | ItemProps_XtdActor_Fragment | ItemProps_XtdClassification_Fragment | ItemProps_XtdMeasureWithUnit_Fragment | ItemProps_XtdProperty_Fragment | ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment, relatedCollections: Array<ItemProps_XtdBag_Fragment | ItemProps_XtdNest_Fragment> }
-  & RelationshipProps_XtdRelAssignsCollections_Fragment
+  & ConceptProps_XtdRelAssignsCollections_Fragment
 );
 
 export type AssignsPropertiesPropsFragment = (
   { relatingObject: ItemProps_XtdActivity_Fragment | ItemProps_XtdActor_Fragment | ItemProps_XtdClassification_Fragment | ItemProps_XtdMeasureWithUnit_Fragment | ItemProps_XtdProperty_Fragment | ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment, relatedProperties: Array<ItemProps_XtdProperty_Fragment> }
-  & RelationshipProps_XtdRelAssignsProperties_Fragment
+  & ConceptProps_XtdRelAssignsProperties_Fragment
 );
 
 export type AssignsMeasuresPropsFragment = (
   { relatingProperty: ItemProps_XtdProperty_Fragment, relatedMeasures: Array<ItemProps_XtdMeasureWithUnit_Fragment> }
-  & RelationshipProps_XtdRelAssignsMeasures_Fragment
+  & ConceptProps_XtdRelAssignsMeasures_Fragment
 );
 
 export type AssignsPropertyWithValuesPropsFragment = (
   { relatedProperty: ItemProps_XtdProperty_Fragment, relatedValues: Array<ItemProps_XtdValue_Fragment> }
-  & RelationshipProps_XtdRelAssignsPropertyWithValues_Fragment
+  & ConceptProps_XtdRelAssignsPropertyWithValues_Fragment
 );
 
 export type AssignsUnitsPropsFragment = (
   { relatingMeasure: ItemProps_XtdMeasureWithUnit_Fragment, relatedUnits: Array<ItemProps_XtdUnit_Fragment> }
-  & RelationshipProps_XtdRelAssignsUnits_Fragment
+  & ConceptProps_XtdRelAssignsUnits_Fragment
 );
 
 export type AssignsValuesPropsFragment = (
   { relatingMeasure: ItemProps_XtdMeasureWithUnit_Fragment, relatedValues: Array<ItemProps_XtdValue_Fragment> }
-  & RelationshipProps_XtdRelAssignsValues_Fragment
+  & ConceptProps_XtdRelAssignsValues_Fragment
 );
 
-type MetaProps_XtdActivity_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
+type MetaProps_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
 
-type MetaProps_XtdActor_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type MetaProps_XtdBag_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type MetaProps_XtdClassification_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type MetaProps_XtdExternalDocument_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type MetaProps_XtdMeasureWithUnit_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type MetaProps_XtdNest_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type MetaProps_XtdProperty_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type MetaProps_XtdRelActsUpon_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type MetaProps_XtdRelAssignsCollections_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type MetaProps_XtdRelAssignsMeasures_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type MetaProps_XtdRelAssignsProperties_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type MetaProps_XtdRelAssignsPropertyWithValues_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type MetaProps_XtdRelAssignsUnits_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type MetaProps_XtdRelAssignsValues_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type MetaProps_XtdRelAssociates_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type MetaProps_XtdRelCollects_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type MetaProps_XtdRelComposes_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type MetaProps_XtdRelDocuments_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type MetaProps_XtdRelGroups_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type MetaProps_XtdRelSequences_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type MetaProps_XtdRelSpecializes_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type MetaProps_XtdSubject_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type MetaProps_XtdUnit_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-type MetaProps_XtdValue_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
-
-export type MetaPropsFragment = MetaProps_XtdActivity_Fragment | MetaProps_XtdActor_Fragment | MetaProps_XtdBag_Fragment | MetaProps_XtdClassification_Fragment | MetaProps_XtdExternalDocument_Fragment | MetaProps_XtdMeasureWithUnit_Fragment | MetaProps_XtdNest_Fragment | MetaProps_XtdProperty_Fragment | MetaProps_XtdRelActsUpon_Fragment | MetaProps_XtdRelAssignsCollections_Fragment | MetaProps_XtdRelAssignsMeasures_Fragment | MetaProps_XtdRelAssignsProperties_Fragment | MetaProps_XtdRelAssignsPropertyWithValues_Fragment | MetaProps_XtdRelAssignsUnits_Fragment | MetaProps_XtdRelAssignsValues_Fragment | MetaProps_XtdRelAssociates_Fragment | MetaProps_XtdRelCollects_Fragment | MetaProps_XtdRelComposes_Fragment | MetaProps_XtdRelDocuments_Fragment | MetaProps_XtdRelGroups_Fragment | MetaProps_XtdRelSequences_Fragment | MetaProps_XtdRelSpecializes_Fragment | MetaProps_XtdSubject_Fragment | MetaProps_XtdUnit_Fragment | MetaProps_XtdValue_Fragment;
+export type MetaPropsFragment = MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment;
 
 export type ExternalDocumentDetailPropsFragment = (
   { documents: { nodes: Array<DocumentsPropsFragment> } }
-  & MetaProps_XtdExternalDocument_Fragment
+  & MetaProps_Fragment
   & ExternalDocumentPropsFragment
 );
 
 type ObjectDetailProps_XtdActivity_Fragment = (
   { documentedBy: { nodes: Array<DocumentsPropsFragment> } }
-  & MetaProps_XtdActivity_Fragment
+  & MetaProps_Fragment
   & ConceptProps_XtdActivity_Fragment
 );
 
 type ObjectDetailProps_XtdActor_Fragment = (
   { documentedBy: { nodes: Array<DocumentsPropsFragment> } }
-  & MetaProps_XtdActor_Fragment
+  & MetaProps_Fragment
   & ConceptProps_XtdActor_Fragment
 );
 
 type ObjectDetailProps_XtdClassification_Fragment = (
   { documentedBy: { nodes: Array<DocumentsPropsFragment> } }
-  & MetaProps_XtdClassification_Fragment
+  & MetaProps_Fragment
   & ConceptProps_XtdClassification_Fragment
 );
 
 type ObjectDetailProps_XtdMeasureWithUnit_Fragment = (
   { documentedBy: { nodes: Array<DocumentsPropsFragment> } }
-  & MetaProps_XtdMeasureWithUnit_Fragment
+  & MetaProps_Fragment
   & ConceptProps_XtdMeasureWithUnit_Fragment
 );
 
 type ObjectDetailProps_XtdProperty_Fragment = (
   { documentedBy: { nodes: Array<DocumentsPropsFragment> } }
-  & MetaProps_XtdProperty_Fragment
+  & MetaProps_Fragment
   & ConceptProps_XtdProperty_Fragment
 );
 
 type ObjectDetailProps_XtdSubject_Fragment = (
   { documentedBy: { nodes: Array<DocumentsPropsFragment> } }
-  & MetaProps_XtdSubject_Fragment
+  & MetaProps_Fragment
   & ConceptProps_XtdSubject_Fragment
 );
 
 type ObjectDetailProps_XtdUnit_Fragment = (
   { documentedBy: { nodes: Array<DocumentsPropsFragment> } }
-  & MetaProps_XtdUnit_Fragment
+  & MetaProps_Fragment
   & ConceptProps_XtdUnit_Fragment
 );
 
 type ObjectDetailProps_XtdValue_Fragment = (
   { documentedBy: { nodes: Array<DocumentsPropsFragment> } }
-  & MetaProps_XtdValue_Fragment
+  & MetaProps_Fragment
   & ConceptProps_XtdValue_Fragment
 );
 
@@ -925,14 +742,14 @@ export type ValueDetailPropsFragment = (
 
 type CollectionDetailProps_XtdBag_Fragment = (
   { collects: { nodes: Array<CollectsPropsFragment> }, assignedTo: { nodes: Array<AssignsCollectionsPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, documentedBy: { nodes: Array<DocumentsPropsFragment> } }
-  & MetaProps_XtdBag_Fragment
-  & CollectionProps_XtdBag_Fragment
+  & MetaProps_Fragment
+  & ConceptProps_XtdBag_Fragment
 );
 
 type CollectionDetailProps_XtdNest_Fragment = (
   { collects: { nodes: Array<CollectsPropsFragment> }, assignedTo: { nodes: Array<AssignsCollectionsPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, documentedBy: { nodes: Array<DocumentsPropsFragment> } }
-  & MetaProps_XtdNest_Fragment
-  & CollectionProps_XtdNest_Fragment
+  & MetaProps_Fragment
+  & ConceptProps_XtdNest_Fragment
 );
 
 export type CollectionDetailPropsFragment = CollectionDetailProps_XtdBag_Fragment | CollectionDetailProps_XtdNest_Fragment;
@@ -1175,40 +992,7 @@ export type GetDocumentEntryQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
-export type FindPropGroupWithoutPropTreeQueryVariables = Exact<{ [key: string]: never; }>;
-
-export type FindPropWithoutSubjectOrPropGroupTreeQueryVariables = Exact<{ [key: string]: never; }>;
-
-export type FindModelWithoutGroupTreeQueryVariables = Exact<{ [key: string]: never; }>;
-
-export type FindGroupWithoutSubjectTreeQueryVariables = Exact<{ [key: string]: never; }>;
-
-export type FindSubjectWithoutPropTreeQueryVariables = Exact<{ [key: string]: never; }>;
-
-export type FindMeasureWithoutPropTreeQueryVariables = Exact<{ [key: string]: never; }>;
-
-export type FindUnitWithoutMeasureTreeQueryVariables = Exact<{ [key: string]: never; }>;
-
-export type FindValueWithoutMeasureTreeQueryVariables = Exact<{ [key: string]: never; }>;
-
-export type FindMissingTagsTreeQueryVariables = Exact<{ [key: string]: never; }>;
-
-export type FindMissingEnglishNameTreeQueryVariables = Exact<{ [key: string]: never; }>;
-
-export type FindMultipleIDsTreeQueryVariables = Exact<{ [key: string]: never; }>;
-
-export type FindMissingDescriptionTreeQueryVariables = Exact<{ [key: string]: never; }>;
-
-export type FindMissingEnglishDescriptionTreeQueryVariables = Exact<{ [key: string]: never; }>;
-
-export type FindMultipleNamesTreeQueryVariables = Exact<{ [key: string]: never; }>;
-
-export type FindMultipleNamesAcrossClassesTreeQueryVariables = Exact<{ [key: string]: never; }>;
-
-export type FindExportCatalogItemsTreeQueryVariables = Exact<{ [key: string]: never; }>;
-
-export type FindExportCatalogItemsRelationshipsTreeQueryVariables = Exact<{ [key: string]: never; }>;
-
+export type FindVerificationTreeQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type FindPropGroupWithoutPropTreeQuery = { findPropGroupWithoutProp: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
 
@@ -2785,15 +2569,15 @@ export const FindPropGroupWithoutPropTreeDocument = gql`
 }
     ${ItemPropsFragmentDoc}`;
 
-export function useFindPropGroupWithoutPropTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindPropGroupWithoutPropTreeQuery, FindPropGroupWithoutPropTreeQueryVariables>) {
-  return Apollo.useQuery<FindPropGroupWithoutPropTreeQuery, FindPropGroupWithoutPropTreeQueryVariables>(FindPropGroupWithoutPropTreeDocument, baseOptions);
+export function useFindPropGroupWithoutPropTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindPropGroupWithoutPropTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindPropGroupWithoutPropTreeQuery, FindVerificationTreeQueryVariables>(FindPropGroupWithoutPropTreeDocument, baseOptions);
 }
-export function useFindPropGroupWithoutPropTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindPropGroupWithoutPropTreeQuery, FindPropGroupWithoutPropTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindPropGroupWithoutPropTreeQuery, FindPropGroupWithoutPropTreeQueryVariables>(FindPropGroupWithoutPropTreeDocument, baseOptions);
+export function useFindPropGroupWithoutPropTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindPropGroupWithoutPropTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindPropGroupWithoutPropTreeQuery, FindVerificationTreeQueryVariables>(FindPropGroupWithoutPropTreeDocument, baseOptions);
 }
 export type FindPropGroupWithoutPropTreeQueryHookResult = ReturnType<typeof useFindPropGroupWithoutPropTreeQuery>;
 export type FindPropGroupWithoutPropTreeLazyQueryHookResult = ReturnType<typeof useFindPropGroupWithoutPropTreeLazyQuery>;
-export type FindPropGroupWithoutPropTreeQueryResult = Apollo.QueryResult<FindPropGroupWithoutPropTreeQuery, FindPropGroupWithoutPropTreeQueryVariables>;
+export type FindPropGroupWithoutPropTreeQueryResult = Apollo.QueryResult<FindPropGroupWithoutPropTreeQuery, FindVerificationTreeQueryVariables>;
 
 // FindPropWithoutSubjectOrPropGroup
 
@@ -2808,15 +2592,15 @@ export const FindPropWithoutSubjectOrPropGroupTreeDocument = gql`
 }
     ${ItemPropsFragmentDoc}`;
 
-export function useFindPropWithoutSubjectOrPropGroupTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindPropWithoutSubjectOrPropGroupTreeQuery, FindPropWithoutSubjectOrPropGroupTreeQueryVariables>) {
-  return Apollo.useQuery<FindPropWithoutSubjectOrPropGroupTreeQuery, FindPropWithoutSubjectOrPropGroupTreeQueryVariables>(FindPropWithoutSubjectOrPropGroupTreeDocument, baseOptions);
+export function useFindPropWithoutSubjectOrPropGroupTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindPropWithoutSubjectOrPropGroupTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindPropWithoutSubjectOrPropGroupTreeQuery, FindVerificationTreeQueryVariables>(FindPropWithoutSubjectOrPropGroupTreeDocument, baseOptions);
 }
-export function useFindPropWithoutSubjectOrPropGroupTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindPropWithoutSubjectOrPropGroupTreeQuery, FindPropWithoutSubjectOrPropGroupTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindPropWithoutSubjectOrPropGroupTreeQuery, FindPropWithoutSubjectOrPropGroupTreeQueryVariables>(FindPropWithoutSubjectOrPropGroupTreeDocument, baseOptions);
+export function useFindPropWithoutSubjectOrPropGroupTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindPropWithoutSubjectOrPropGroupTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindPropWithoutSubjectOrPropGroupTreeQuery, FindVerificationTreeQueryVariables>(FindPropWithoutSubjectOrPropGroupTreeDocument, baseOptions);
 }
 export type FindPropWithoutSubjectOrPropGroupTreeQueryHookResult = ReturnType<typeof useFindPropWithoutSubjectOrPropGroupTreeQuery>;
 export type FindPropWithoutSubjectOrPropGroupTreeLazyQueryHookResult = ReturnType<typeof useFindPropWithoutSubjectOrPropGroupTreeLazyQuery>;
-export type FindPropWithoutSubjectOrPropGroupTreeQueryResult = Apollo.QueryResult<FindPropWithoutSubjectOrPropGroupTreeQuery, FindPropWithoutSubjectOrPropGroupTreeQueryVariables>;
+export type FindPropWithoutSubjectOrPropGroupTreeQueryResult = Apollo.QueryResult<FindPropWithoutSubjectOrPropGroupTreeQuery, FindVerificationTreeQueryVariables>;
 
 // FindModelWithoutGroup
 
@@ -2831,15 +2615,15 @@ export const FindModelWithoutGroupTreeDocument = gql`
 }
     ${ItemPropsFragmentDoc}`;
 
-export function useFindModelWithoutGroupTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindModelWithoutGroupTreeQuery, FindModelWithoutGroupTreeQueryVariables>) {
-  return Apollo.useQuery<FindModelWithoutGroupTreeQuery, FindModelWithoutGroupTreeQueryVariables>(FindModelWithoutGroupTreeDocument, baseOptions);
+export function useFindModelWithoutGroupTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindModelWithoutGroupTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindModelWithoutGroupTreeQuery, FindVerificationTreeQueryVariables>(FindModelWithoutGroupTreeDocument, baseOptions);
 }
-export function useFindModelWithoutGroupTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindModelWithoutGroupTreeQuery, FindModelWithoutGroupTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindModelWithoutGroupTreeQuery, FindModelWithoutGroupTreeQueryVariables>(FindModelWithoutGroupTreeDocument, baseOptions);
+export function useFindModelWithoutGroupTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindModelWithoutGroupTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindModelWithoutGroupTreeQuery, FindVerificationTreeQueryVariables>(FindModelWithoutGroupTreeDocument, baseOptions);
 }
 export type FindModelWithoutGroupTreeQueryHookResult = ReturnType<typeof useFindModelWithoutGroupTreeQuery>;
 export type FindModelWithoutGroupTreeLazyQueryHookResult = ReturnType<typeof useFindModelWithoutGroupTreeLazyQuery>;
-export type FindModelWithoutGroupTreeQueryResult = Apollo.QueryResult<FindModelWithoutGroupTreeQuery, FindModelWithoutGroupTreeQueryVariables>;
+export type FindModelWithoutGroupTreeQueryResult = Apollo.QueryResult<FindModelWithoutGroupTreeQuery, FindVerificationTreeQueryVariables>;
 
 // FindGroupWithoutSubject
 
@@ -2854,15 +2638,15 @@ export const FindGroupWithoutSubjectTreeDocument = gql`
 }
     ${ItemPropsFragmentDoc}`;
 
-export function useFindGroupWithoutSubjectTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindGroupWithoutSubjectTreeQuery, FindGroupWithoutSubjectTreeQueryVariables>) {
-  return Apollo.useQuery<FindGroupWithoutSubjectTreeQuery, FindGroupWithoutSubjectTreeQueryVariables>(FindGroupWithoutSubjectTreeDocument, baseOptions);
+export function useFindGroupWithoutSubjectTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindGroupWithoutSubjectTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindGroupWithoutSubjectTreeQuery, FindVerificationTreeQueryVariables>(FindGroupWithoutSubjectTreeDocument, baseOptions);
 }
-export function useFindGroupWithoutSubjectTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindGroupWithoutSubjectTreeQuery, FindGroupWithoutSubjectTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindGroupWithoutSubjectTreeQuery, FindGroupWithoutSubjectTreeQueryVariables>(FindGroupWithoutSubjectTreeDocument, baseOptions);
+export function useFindGroupWithoutSubjectTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindGroupWithoutSubjectTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindGroupWithoutSubjectTreeQuery, FindVerificationTreeQueryVariables>(FindGroupWithoutSubjectTreeDocument, baseOptions);
 }
 export type FindGroupWithoutSubjectTreeQueryHookResult = ReturnType<typeof useFindGroupWithoutSubjectTreeQuery>;
 export type FindGroupWithoutSubjectTreeLazyQueryHookResult = ReturnType<typeof useFindGroupWithoutSubjectTreeLazyQuery>;
-export type FindGroupWithoutSubjectTreeQueryResult = Apollo.QueryResult<FindGroupWithoutSubjectTreeQuery, FindGroupWithoutSubjectTreeQueryVariables>;
+export type FindGroupWithoutSubjectTreeQueryResult = Apollo.QueryResult<FindGroupWithoutSubjectTreeQuery, FindVerificationTreeQueryVariables>;
 
 // FindSubjectWithoutProp
 
@@ -2877,15 +2661,15 @@ export const FindSubjectWithoutPropTreeDocument = gql`
 }
     ${ItemPropsFragmentDoc}`;
 
-export function useFindSubjectWithoutPropTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindSubjectWithoutPropTreeQuery, FindSubjectWithoutPropTreeQueryVariables>) {
-  return Apollo.useQuery<FindSubjectWithoutPropTreeQuery, FindSubjectWithoutPropTreeQueryVariables>(FindSubjectWithoutPropTreeDocument, baseOptions);
+export function useFindSubjectWithoutPropTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindSubjectWithoutPropTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindSubjectWithoutPropTreeQuery, FindVerificationTreeQueryVariables>(FindSubjectWithoutPropTreeDocument, baseOptions);
 }
-export function useFindSubjectWithoutPropTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindSubjectWithoutPropTreeQuery, FindSubjectWithoutPropTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindSubjectWithoutPropTreeQuery, FindSubjectWithoutPropTreeQueryVariables>(FindSubjectWithoutPropTreeDocument, baseOptions);
+export function useFindSubjectWithoutPropTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindSubjectWithoutPropTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindSubjectWithoutPropTreeQuery, FindVerificationTreeQueryVariables>(FindSubjectWithoutPropTreeDocument, baseOptions);
 }
 export type FindSubjectWithoutPropTreeQueryHookResult = ReturnType<typeof useFindSubjectWithoutPropTreeQuery>;
 export type FindSubjectWithoutPropTreeLazyQueryHookResult = ReturnType<typeof useFindSubjectWithoutPropTreeLazyQuery>;
-export type FindSubjectWithoutPropTreeQueryResult = Apollo.QueryResult<FindSubjectWithoutPropTreeQuery, FindSubjectWithoutPropTreeQueryVariables>;
+export type FindSubjectWithoutPropTreeQueryResult = Apollo.QueryResult<FindSubjectWithoutPropTreeQuery, FindVerificationTreeQueryVariables>;
 
 // FindMeasureWithoutProp
 
@@ -2900,15 +2684,15 @@ export const FindMeasureWithoutPropTreeDocument = gql`
 }
     ${ItemPropsFragmentDoc}`;
 
-export function useFindMeasureWithoutPropTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMeasureWithoutPropTreeQuery, FindMeasureWithoutPropTreeQueryVariables>) {
-  return Apollo.useQuery<FindMeasureWithoutPropTreeQuery, FindMeasureWithoutPropTreeQueryVariables>(FindMeasureWithoutPropTreeDocument, baseOptions);
+export function useFindMeasureWithoutPropTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMeasureWithoutPropTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindMeasureWithoutPropTreeQuery, FindVerificationTreeQueryVariables>(FindMeasureWithoutPropTreeDocument, baseOptions);
 }
-export function useFindMeasureWithoutPropTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMeasureWithoutPropTreeQuery, FindMeasureWithoutPropTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindMeasureWithoutPropTreeQuery, FindMeasureWithoutPropTreeQueryVariables>(FindMeasureWithoutPropTreeDocument, baseOptions);
+export function useFindMeasureWithoutPropTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMeasureWithoutPropTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindMeasureWithoutPropTreeQuery, FindVerificationTreeQueryVariables>(FindMeasureWithoutPropTreeDocument, baseOptions);
 }
 export type FindMeasureWithoutPropTreeQueryHookResult = ReturnType<typeof useFindMeasureWithoutPropTreeQuery>;
 export type FindMeasureWithoutPropTreeLazyQueryHookResult = ReturnType<typeof useFindMeasureWithoutPropTreeLazyQuery>;
-export type FindMeasureWithoutPropTreeQueryResult = Apollo.QueryResult<FindMeasureWithoutPropTreeQuery, FindMeasureWithoutPropTreeQueryVariables>;
+export type FindMeasureWithoutPropTreeQueryResult = Apollo.QueryResult<FindMeasureWithoutPropTreeQuery, FindVerificationTreeQueryVariables>;
 
 // FindUnitWithoutMeasure
 
@@ -2923,15 +2707,15 @@ export const FindUnitWithoutMeasureTreeDocument = gql`
 }
     ${ItemPropsFragmentDoc}`;
 
-export function useFindUnitWithoutMeasureTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindUnitWithoutMeasureTreeQuery, FindUnitWithoutMeasureTreeQueryVariables>) {
-  return Apollo.useQuery<FindUnitWithoutMeasureTreeQuery, FindUnitWithoutMeasureTreeQueryVariables>(FindUnitWithoutMeasureTreeDocument, baseOptions);
+export function useFindUnitWithoutMeasureTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindUnitWithoutMeasureTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindUnitWithoutMeasureTreeQuery, FindVerificationTreeQueryVariables>(FindUnitWithoutMeasureTreeDocument, baseOptions);
 }
-export function useFindUnitWithoutMeasureTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindUnitWithoutMeasureTreeQuery, FindUnitWithoutMeasureTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindUnitWithoutMeasureTreeQuery, FindUnitWithoutMeasureTreeQueryVariables>(FindUnitWithoutMeasureTreeDocument, baseOptions);
+export function useFindUnitWithoutMeasureTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindUnitWithoutMeasureTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindUnitWithoutMeasureTreeQuery, FindVerificationTreeQueryVariables>(FindUnitWithoutMeasureTreeDocument, baseOptions);
 }
 export type FindUnitWithoutMeasureTreeQueryHookResult = ReturnType<typeof useFindUnitWithoutMeasureTreeQuery>;
 export type FindUnitWithoutMeasureTreeLazyQueryHookResult = ReturnType<typeof useFindUnitWithoutMeasureTreeLazyQuery>;
-export type FindUnitWithoutMeasureTreeQueryResult = Apollo.QueryResult<FindUnitWithoutMeasureTreeQuery, FindUnitWithoutMeasureTreeQueryVariables>;
+export type FindUnitWithoutMeasureTreeQueryResult = Apollo.QueryResult<FindUnitWithoutMeasureTreeQuery, FindVerificationTreeQueryVariables>;
 
 // FindValueWithoutMeasure
 
@@ -2946,15 +2730,15 @@ export const FindValueWithoutMeasureTreeDocument = gql`
 }
     ${ItemPropsFragmentDoc}`;
 
-export function useFindValueWithoutMeasureTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindValueWithoutMeasureTreeQuery, FindValueWithoutMeasureTreeQueryVariables>) {
-  return Apollo.useQuery<FindValueWithoutMeasureTreeQuery, FindValueWithoutMeasureTreeQueryVariables>(FindValueWithoutMeasureTreeDocument, baseOptions);
+export function useFindValueWithoutMeasureTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindValueWithoutMeasureTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindValueWithoutMeasureTreeQuery, FindVerificationTreeQueryVariables>(FindValueWithoutMeasureTreeDocument, baseOptions);
 }
-export function useFindValueWithoutMeasureTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindValueWithoutMeasureTreeQuery, FindValueWithoutMeasureTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindValueWithoutMeasureTreeQuery, FindValueWithoutMeasureTreeQueryVariables>(FindValueWithoutMeasureTreeDocument, baseOptions);
+export function useFindValueWithoutMeasureTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindValueWithoutMeasureTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindValueWithoutMeasureTreeQuery, FindVerificationTreeQueryVariables>(FindValueWithoutMeasureTreeDocument, baseOptions);
 }
 export type FindValueWithoutMeasureTreeQueryHookResult = ReturnType<typeof useFindValueWithoutMeasureTreeQuery>;
 export type FindValueWithoutMeasureTreeLazyQueryHookResult = ReturnType<typeof useFindValueWithoutMeasureTreeLazyQuery>;
-export type FindValueWithoutMeasureTreeQueryResult = Apollo.QueryResult<FindValueWithoutMeasureTreeQuery, FindValueWithoutMeasureTreeQueryVariables>;
+export type FindValueWithoutMeasureTreeQueryResult = Apollo.QueryResult<FindValueWithoutMeasureTreeQuery, FindVerificationTreeQueryVariables>;
 
 // FindMissingEnglishNameTree
 
@@ -2971,15 +2755,15 @@ export const FindMissingEnglishNameTreeDocument = gql`
 }
     ${ItemPropsFragmentDoc}`;
 
-export function useFindMissingEnglishNameTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMissingEnglishNameTreeQuery, FindMissingEnglishNameTreeQueryVariables>) {
-  return Apollo.useQuery<FindMissingEnglishNameTreeQuery, FindMissingEnglishNameTreeQueryVariables>(FindMissingEnglishNameTreeDocument, baseOptions);
+export function useFindMissingEnglishNameTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMissingEnglishNameTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindMissingEnglishNameTreeQuery, FindVerificationTreeQueryVariables>(FindMissingEnglishNameTreeDocument, baseOptions);
 }
-export function useFindMissingEnglishNameTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMissingEnglishNameTreeQuery, FindMissingEnglishNameTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindMissingEnglishNameTreeQuery, FindMissingEnglishNameTreeQueryVariables>(FindMissingEnglishNameTreeDocument, baseOptions);
+export function useFindMissingEnglishNameTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMissingEnglishNameTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindMissingEnglishNameTreeQuery, FindVerificationTreeQueryVariables>(FindMissingEnglishNameTreeDocument, baseOptions);
 }
 export type FindMissingEnglishNameTreeQueryHookResult = ReturnType<typeof useFindMissingEnglishNameTreeQuery>;
 export type FindMissingEnglishNameTreeLazyQueryHookResult = ReturnType<typeof useFindMissingEnglishNameTreeLazyQuery>;
-export type FindMissingEnglishNameTreeQueryResult = Apollo.QueryResult<FindMissingEnglishNameTreeQuery, FindMissingEnglishNameTreeQueryVariables>;
+export type FindMissingEnglishNameTreeQueryResult = Apollo.QueryResult<FindMissingEnglishNameTreeQuery, FindVerificationTreeQueryVariables>;
 
 // FindMultipleIDsTree
 
@@ -2996,15 +2780,15 @@ export const FindMultipleIDsTreeDocument = gql`
 }
     ${ItemPropsFragmentDoc}`;
 
-export function useFindMultipleIDsTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMultipleIDsTreeQuery, FindMultipleIDsTreeQueryVariables>) {
-  return Apollo.useQuery<FindMultipleIDsTreeQuery, FindMultipleIDsTreeQueryVariables>(FindMultipleIDsTreeDocument, baseOptions);
+export function useFindMultipleIDsTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMultipleIDsTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindMultipleIDsTreeQuery, FindVerificationTreeQueryVariables>(FindMultipleIDsTreeDocument, baseOptions);
 }
-export function useFindMultipleIDsTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMultipleIDsTreeQuery, FindMultipleIDsTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindMultipleIDsTreeQuery, FindMultipleIDsTreeQueryVariables>(FindMultipleIDsTreeDocument, baseOptions);
+export function useFindMultipleIDsTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMultipleIDsTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindMultipleIDsTreeQuery, FindVerificationTreeQueryVariables>(FindMultipleIDsTreeDocument, baseOptions);
 }
 export type FindMultipleIDsTreeQueryHookResult = ReturnType<typeof useFindMultipleIDsTreeQuery>;
 export type FindMultipleIDsTreeLazyQueryHookResult = ReturnType<typeof useFindMultipleIDsTreeLazyQuery>;
-export type FindMultipleIDsTreeQueryResult = Apollo.QueryResult<FindMultipleIDsTreeQuery, FindMultipleIDsTreeQueryVariables>;
+export type FindMultipleIDsTreeQueryResult = Apollo.QueryResult<FindMultipleIDsTreeQuery, FindVerificationTreeQueryVariables>;
 
 // FindMissingDescription
 
@@ -3021,15 +2805,15 @@ export const FindMissingDescriptionTreeDocument = gql`
 }
     ${ItemPropsFragmentDoc}`;
 
-export function useFindMissingDescriptionTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMissingDescriptionTreeQuery, FindMissingDescriptionTreeQueryVariables>) {
-  return Apollo.useQuery<FindMissingDescriptionTreeQuery, FindMissingDescriptionTreeQueryVariables>(FindMissingDescriptionTreeDocument, baseOptions);
+export function useFindMissingDescriptionTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMissingDescriptionTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindMissingDescriptionTreeQuery, FindVerificationTreeQueryVariables>(FindMissingDescriptionTreeDocument, baseOptions);
 }
-export function useFindMissingDescriptionTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMissingDescriptionTreeQuery, FindMissingDescriptionTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindMissingDescriptionTreeQuery, FindMissingDescriptionTreeQueryVariables>(FindMissingDescriptionTreeDocument, baseOptions);
+export function useFindMissingDescriptionTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMissingDescriptionTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindMissingDescriptionTreeQuery, FindVerificationTreeQueryVariables>(FindMissingDescriptionTreeDocument, baseOptions);
 }
 export type FindMissingDescriptionTreeQueryHookResult = ReturnType<typeof useFindMissingDescriptionTreeQuery>;
 export type FindMissingDescriptionTreeLazyQueryHookResult = ReturnType<typeof useFindMissingDescriptionTreeLazyQuery>;
-export type FindMissingDescriptionTreeQueryResult = Apollo.QueryResult<FindMissingDescriptionTreeQuery, FindMissingDescriptionTreeQueryVariables>;
+export type FindMissingDescriptionTreeQueryResult = Apollo.QueryResult<FindMissingDescriptionTreeQuery, FindVerificationTreeQueryVariables>;
 
 // FindMissingEnglishDescription
 
@@ -3046,15 +2830,15 @@ export const FindMissingEnglishDescriptionTreeDocument = gql`
 }
     ${ItemPropsFragmentDoc}`;
 
-export function useFindMissingEnglishDescriptionTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMissingEnglishDescriptionTreeQuery, FindMissingEnglishDescriptionTreeQueryVariables>) {
-  return Apollo.useQuery<FindMissingEnglishDescriptionTreeQuery, FindMissingEnglishDescriptionTreeQueryVariables>(FindMissingEnglishDescriptionTreeDocument, baseOptions);
+export function useFindMissingEnglishDescriptionTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMissingEnglishDescriptionTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindMissingEnglishDescriptionTreeQuery, FindVerificationTreeQueryVariables>(FindMissingEnglishDescriptionTreeDocument, baseOptions);
 }
-export function useFindMissingEnglishDescriptionTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMissingEnglishDescriptionTreeQuery, FindMissingEnglishDescriptionTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindMissingEnglishDescriptionTreeQuery, FindMissingEnglishDescriptionTreeQueryVariables>(FindMissingEnglishDescriptionTreeDocument, baseOptions);
+export function useFindMissingEnglishDescriptionTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMissingEnglishDescriptionTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindMissingEnglishDescriptionTreeQuery, FindVerificationTreeQueryVariables>(FindMissingEnglishDescriptionTreeDocument, baseOptions);
 }
 export type FindMissingEnglishDescriptionTreeQueryHookResult = ReturnType<typeof useFindMissingEnglishDescriptionTreeQuery>;
 export type FindMissingEnglishDescriptionTreeLazyQueryHookResult = ReturnType<typeof useFindMissingEnglishDescriptionTreeLazyQuery>;
-export type FindMissingEnglishDescriptionTreeQueryResult = Apollo.QueryResult<FindMissingEnglishDescriptionTreeQuery, FindMissingEnglishDescriptionTreeQueryVariables>;
+export type FindMissingEnglishDescriptionTreeQueryResult = Apollo.QueryResult<FindMissingEnglishDescriptionTreeQuery, FindVerificationTreeQueryVariables>;
 
 // FindMultipleNames
 
@@ -3071,15 +2855,15 @@ export const FindMultipleNamesTreeDocument = gql`
 }
     ${ItemPropsFragmentDoc}`;
 
-export function useFindMultipleNamesTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMultipleNamesTreeQuery, FindMultipleNamesTreeQueryVariables>) {
-  return Apollo.useQuery<FindMultipleNamesTreeQuery, FindMultipleNamesTreeQueryVariables>(FindMultipleNamesTreeDocument, baseOptions);
+export function useFindMultipleNamesTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMultipleNamesTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindMultipleNamesTreeQuery, FindVerificationTreeQueryVariables>(FindMultipleNamesTreeDocument, baseOptions);
 }
-export function useFindMultipleNamesTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMultipleNamesTreeQuery, FindMultipleNamesTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindMultipleNamesTreeQuery, FindMultipleNamesTreeQueryVariables>(FindMultipleNamesTreeDocument, baseOptions);
+export function useFindMultipleNamesTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMultipleNamesTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindMultipleNamesTreeQuery, FindVerificationTreeQueryVariables>(FindMultipleNamesTreeDocument, baseOptions);
 }
 export type FindMultipleNamesTreeQueryHookResult = ReturnType<typeof useFindMultipleNamesTreeQuery>;
 export type FindMultipleNamesTreeLazyQueryHookResult = ReturnType<typeof useFindMultipleNamesTreeLazyQuery>;
-export type FindMultipleNamesTreeQueryResult = Apollo.QueryResult<FindMultipleNamesTreeQuery, FindMultipleNamesTreeQueryVariables>;
+export type FindMultipleNamesTreeQueryResult = Apollo.QueryResult<FindMultipleNamesTreeQuery, FindVerificationTreeQueryVariables>;
 
 // FindMultipleNamesAcrossClasses
 
@@ -3096,15 +2880,15 @@ export const FindMultipleNamesAcrossClassesTreeDocument = gql`
 }
     ${ItemPropsFragmentDoc}`;
 
-export function useFindMultipleNamesAcrossClassesTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMultipleNamesAcrossClassesTreeQuery, FindMultipleNamesAcrossClassesTreeQueryVariables>) {
-  return Apollo.useQuery<FindMultipleNamesAcrossClassesTreeQuery, FindMultipleNamesAcrossClassesTreeQueryVariables>(FindMultipleNamesAcrossClassesTreeDocument, baseOptions);
+export function useFindMultipleNamesAcrossClassesTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMultipleNamesAcrossClassesTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindMultipleNamesAcrossClassesTreeQuery, FindVerificationTreeQueryVariables>(FindMultipleNamesAcrossClassesTreeDocument, baseOptions);
 }
-export function useFindMultipleNamesAcrossClassesTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMultipleNamesAcrossClassesTreeQuery, FindMultipleNamesAcrossClassesTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindMultipleNamesAcrossClassesTreeQuery, FindMultipleNamesAcrossClassesTreeQueryVariables>(FindMultipleNamesAcrossClassesTreeDocument, baseOptions);
+export function useFindMultipleNamesAcrossClassesTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMultipleNamesAcrossClassesTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindMultipleNamesAcrossClassesTreeQuery, FindVerificationTreeQueryVariables>(FindMultipleNamesAcrossClassesTreeDocument, baseOptions);
 }
 export type FindMultipleNamesAcrossClassesTreeQueryHookResult = ReturnType<typeof useFindMultipleNamesAcrossClassesTreeQuery>;
 export type FindMultipleNamesAcrossClassesTreeLazyQueryHookResult = ReturnType<typeof useFindMultipleNamesAcrossClassesTreeLazyQuery>;
-export type FindMultipleNamesAcrossClassesTreeQueryResult = Apollo.QueryResult<FindMultipleNamesAcrossClassesTreeQuery, FindMultipleNamesAcrossClassesTreeQueryVariables>;
+export type FindMultipleNamesAcrossClassesTreeQueryResult = Apollo.QueryResult<FindMultipleNamesAcrossClassesTreeQuery, FindVerificationTreeQueryVariables>;
 
 /**
  * __usePropertyTreeQuery__
@@ -3429,15 +3213,15 @@ export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVa
 
 //__useExportCatalogItemsQuery__
 
-export function useExportCatalogItemsQuery(baseOptions?: Apollo.QueryHookOptions<FindExportCatalogItemsTreeQuery, FindExportCatalogItemsTreeQueryVariables>) {
-  return Apollo.useQuery<FindExportCatalogItemsTreeQuery, FindExportCatalogItemsTreeQueryVariables>(GetExportCatalogItems, baseOptions);
+export function useExportCatalogItemsQuery(baseOptions?: Apollo.QueryHookOptions<FindExportCatalogItemsTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindExportCatalogItemsTreeQuery, FindVerificationTreeQueryVariables>(GetExportCatalogItems, baseOptions);
 }
-export function useExportCatalogItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindExportCatalogItemsTreeQuery, FindExportCatalogItemsTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindExportCatalogItemsTreeQuery, FindExportCatalogItemsTreeQueryVariables>(GetExportCatalogItems, baseOptions);
+export function useExportCatalogItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindExportCatalogItemsTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindExportCatalogItemsTreeQuery, FindVerificationTreeQueryVariables>(GetExportCatalogItems, baseOptions);
 }
 export type ExportCatalogItemsQueryHookResult = ReturnType<typeof useExportCatalogItemsQuery>;
 export type ExportCatalogItemsLazyQueryHookResult = ReturnType<typeof useExportCatalogItemsLazyQuery>;
-export type ExportCatalogItemsQueryResult = Apollo.QueryResult<FindExportCatalogItemsTreeQuery, FindExportCatalogItemsTreeQueryVariables>;
+export type ExportCatalogItemsQueryResult = Apollo.QueryResult<FindExportCatalogItemsTreeQuery, FindVerificationTreeQueryVariables>;
 export const GetExportCatalogItems = gql`
 query findExportCatalogItems {
   findExportCatalogItems {
@@ -3459,15 +3243,15 @@ query findExportCatalogItems {
 
 //__useExportCatalogItemsRelationshipsQuery__
 
-export function useExportCatalogItemsRelationshipsQuery(baseOptions?: Apollo.QueryHookOptions<FindExportCatalogItemsRelationshipsTreeQuery, FindExportCatalogItemsRelationshipsTreeQueryVariables>) {
-  return Apollo.useQuery<FindExportCatalogItemsRelationshipsTreeQuery, FindExportCatalogItemsRelationshipsTreeQueryVariables>(GetExportCatalogItemsRelationships, baseOptions);
+export function useExportCatalogItemsRelationshipsQuery(baseOptions?: Apollo.QueryHookOptions<FindExportCatalogItemsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindExportCatalogItemsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>(GetExportCatalogItemsRelationships, baseOptions);
 }
-export function useExportCatalogItemsRelationshipsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindExportCatalogItemsRelationshipsTreeQuery, FindExportCatalogItemsRelationshipsTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindExportCatalogItemsRelationshipsTreeQuery, FindExportCatalogItemsRelationshipsTreeQueryVariables>(GetExportCatalogItemsRelationships, baseOptions);
+export function useExportCatalogItemsRelationshipsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindExportCatalogItemsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindExportCatalogItemsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>(GetExportCatalogItemsRelationships, baseOptions);
 }
 export type ExportCatalogItemsRelationshipsQueryHookResult = ReturnType<typeof useExportCatalogItemsRelationshipsQuery>;
 export type ExportCatalogItemsRelationshipsLazyQueryHookResult = ReturnType<typeof useExportCatalogItemsRelationshipsLazyQuery>;
-export type ExportCatalogItemsRelationshipsQueryResult = Apollo.QueryResult<FindExportCatalogItemsRelationshipsTreeQuery, FindExportCatalogItemsRelationshipsTreeQueryVariables>;
+export type ExportCatalogItemsRelationshipsQueryResult = Apollo.QueryResult<FindExportCatalogItemsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>;
 export const GetExportCatalogItemsRelationships = gql`
 query findExportCatalogItemsRelationships {
   findExportCatalogItemsRelationships {
