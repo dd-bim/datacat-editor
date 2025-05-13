@@ -70,6 +70,7 @@ const StyledTreeItemComponent = (props: StyleTreeItemProps & TreeItemProps) => {
       target.closest('.MuiTreeItem-iconContainer');
   
     if (!isExpandIconClick && onSelect) {
+      event.preventDefault();
       event.stopPropagation();
       onSelect(data);
     }

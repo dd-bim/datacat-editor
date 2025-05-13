@@ -325,7 +325,8 @@
     "confirm_delete_title": "Confirm Deletion",
     "confirm_delete_message": "Are you sure you want to delete all catalog entries with the tag '{{tag}}'? This action cannot be undone.",
     "cancel": "Cancel",
-    "confirm_delete": "Yes, delete"
+    "confirm_delete": "Yes, delete",
+    "search_error": "An error occurred during the search."
   },
   "export_view": {
     "heading": "Export catalog",
@@ -384,7 +385,15 @@
     "selection_help": "Selection help:",
     "for_range": "for range selection",
     "for_multiple": "for multiple selection",
-    "drag_to_select": "Drag to select multiple rows"
+    "drag_to_select": "Drag to select multiple rows",
+    "please_select_rows": "Please select at least one row",
+    "tag_id_not_found": "Tag ID not found",
+    "tags_added_with_skips": "Tags added successfully. {count} entries were skipped because they already have the tag",
+    "all_entries_already_tagged": "All {count} selected entries already have this tag",
+    "tags_added_with_existing": "Added tag to {added} entries. {existing} entries already had this tag.",
+    "tags_added_count": "Added tag to {count} entries.",
+    "no_tags_to_add": "No tags needed to be added.",
+    "tags_adding_failed": "Failed to add tags."
   },
   "error":{
     "error": "An error occurred..."

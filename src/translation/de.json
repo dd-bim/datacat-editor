@@ -265,6 +265,7 @@
     "entries_to_delete": "Katalogeinträge zum Löschen gefunden:",
     "confirm_delete_title": "Löschen bestätigen",
     "confirm_delete_message": "Sind Sie sicher, dass Sie alle Katalogeinträge mit dem Tag '{{tag}}' löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "confirm_delete_message_simple": "Sind Sie sicher, dass Sie alle Katalogeinträge mit dem Tag '{{tag}}' löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
     "cancel": "Abbrechen",
     "confirm_delete": "Ja, löschen"
   },
@@ -325,7 +326,15 @@
     "selection_help": "Auswahlhilfe:",
     "for_range": "für Bereichsauswahl",
     "for_multiple": "für Mehrfachauswahl",
-    "drag_to_select": "Ziehen, um mehrere Zeilen auszuwählen"
+    "drag_to_select": "Ziehen, um mehrere Zeilen auszuwählen",
+    "please_select_rows": "Bitte wählen Sie mindestens eine Zeile aus",
+    "tag_id_not_found": "Tag ID nicht gefunden",
+    "tags_added_with_skips": "Tags wurden hinzugefügt. {count} Einträge wurden übersprungen, weil sie das Tag bereits haben",
+    "all_entries_already_tagged": "Alle {count} ausgewählten Einträge haben das Tag bereits",
+    "tags_added_with_existing": "Tag zu {added} Einträgen hinzugefügt. {existing} Einträge hatten dieses Tag bereits.",
+    "tags_added_count": "Tag zu {count} Einträgen hinzugefügt.",
+    "no_tags_to_add": "Keine Tags zum Hinzufügen benötigt.",
+    "tags_adding_failed": "Hinzufügen von Tags fehlgeschlagen."
   },
   "error":{
     "error": "An error occurred..."

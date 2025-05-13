@@ -22,9 +22,14 @@ import {
   LinearProgress,
 } from "@mui/material";
 import { useSnackbar } from "notistack";
-import { DataGrid, GridColDef, GridRenderCellParams, GridToolbar } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridColDef,
+  GridRenderCellParams,
+  GridRowSelectionModel,
+} from "@mui/x-data-grid";
 import { T, useTranslate } from "@tolgee/react";
-import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 
 // Replace makeStyles with styled components
 const TableContainer = styled(Paper)(({ theme }) => ({
@@ -101,57 +106,63 @@ interface VisibleColumns {
 }
 
 // Extracted and memoized tag component for better performance
-const MemoizedTagChip = memo(({ tag, selectedTag, onTagClick }: { 
-  tag: string, 
-  selectedTag: string | null, 
-  onTagClick: (tag: string | null) => void 
-}) => (
-  <TagChip
-    key={tag}
-    label={tag}
-    clickable
-    color={selectedTag === tag ? "secondary" : "default"}
-    onClick={() => onTagClick(tag)}
-  />
-));
+const MemoizedTagChip = memo(
+  ({
+    tag,
+    selectedTag,
+    onTagClick,
+  }: {
+    tag: string;
+    selectedTag: string | null;
+    onTagClick: (tag: string | null) => void;
+  }) => (
+    <TagChip
+      key={tag}
+      label={tag}
+      clickable
+      color={selectedTag === tag ? "secondary" : "default"}
+      onClick={() => onTagClick(tag)}
+    />
+  )
+);
 
 // Extracted TagFilterSection component for better organization
-const TagFilterSection = ({ 
-  allTags, 
-  selectedTag, 
-  handleTagFilter, 
-  newTag, 
-  handleTagChange, 
-  handleAddTag, 
-  t 
+const TagFilterSection = ({
+  allTags,
+  selectedTag,
+  handleTagFilter,
+  newTag,
+  handleTagChange,
+  handleAddTag,
+  t,
 }: {
-  allTags: string[],
-  selectedTag: string | null,
-  handleTagFilter: (tag: string | null) => void,
-  newTag: string,
-  handleTagChange: (event: SelectChangeEvent<string>) => void,
-  handleAddTag: () => void,
-  t: any
+  allTags: string[];
+  selectedTag: string | null;
+  handleTagFilter: (tag: string | null) => void;
+  newTag: string;
+  handleTagChange: (event: SelectChangeEvent<string>) => void;
+  handleAddTag: () => void;
+  t: any;
 }) => (
   <>
     <HeaderContainer>
-      <Typography variant="h6">
-        {t('grid_view.tag_filter_title')}
-      </Typography>
+      <Typography variant="h6">{t("grid_view.tag_filter_title")}</Typography>
       <TagControls>
         <StyledFormControl variant="outlined">
-          <InputLabel id="importTag-label">{t('grid_view.tag_filter_placeholder')}</InputLabel>
+          <InputLabel id="importTag-label">
+            {t("grid_view.tag_filter_placeholder")}
+          </InputLabel>
           <Select
             labelId="importTag-label"
             id="importTag"
-            label={t('grid_view.tag_filter_placeholder')}
+            label={t("grid_view.tag_filter_placeholder")}
             name="importTag"
             value={newTag}
             onChange={handleTagChange}
             style={{ minWidth: "200px" }}
           >
             <MenuItem value="">
-              <em>{t('grid_view.select_tag')}</em>
+              <em>{t("grid_view.select_tag")}</em>
             </MenuItem>
             {allTags.map((tag) => (
               <MenuItem key={tag} value={tag}>
@@ -160,29 +171,29 @@ const TagFilterSection = ({
             ))}
           </Select>
         </StyledFormControl>
-        <Button 
-          variant="contained" 
-          color="primary" 
+        <Button
+          variant="contained"
+          color="primary"
           onClick={handleAddTag}
           startIcon={<LocalOfferIcon />}
           disabled={!newTag}
         >
-          {t('grid_view.add_tag')}
+          {t("grid_view.add_tag")}
         </Button>
       </TagControls>
     </HeaderContainer>
-    
+
     <TagButtonContainer>
       {allTags.map((tag) => (
-        <MemoizedTagChip 
-          key={tag} 
-          tag={tag} 
-          selectedTag={selectedTag} 
-          onTagClick={handleTagFilter} 
+        <MemoizedTagChip
+          key={tag}
+          tag={tag}
+          selectedTag={selectedTag}
+          onTagClick={handleTagFilter}
         />
       ))}
       <TagChip
-        label={t('grid_view.show_all')}
+        label={t("grid_view.show_all")}
         clickable
         color={selectedTag === null ? "secondary" : "default"}
         onClick={() => handleTagFilter(null)}
@@ -404,107 +415,137 @@ const GridViewView = () => {
   // Add state for tagging operation status
   const [isTagging, setIsTagging] = useState(false);
 
-  // Enhanced tag adding functionality with loading state
+  // Enhanced tag adding functionality with improved tag checking
   const handleAddTag = async () => {
     if (!newTag) {
-      enqueueSnackbar(t('grid_view.please_select_tag'), { variant: "error" });
+      enqueueSnackbar(t("grid_view.please_select_tag"), { variant: "error" });
+      return;
+    }
+    if (selectedRows.length === 0) {
+      enqueueSnackbar(t("grid_view.please_select_rows"), {
+        variant: "warning",
+      });
       return;
     }
 
-    // Start tagging and show loading state
     setIsTagging(true);
-    enqueueSnackbar(t('grid_view.adding_tags'), { variant: "info" });
+    enqueueSnackbar(t("grid_view.adding_tags"), { variant: "info" });
 
-    let tagAdded = false;
+    // Frische Daten ermitteln, damit lokale row.tags aktuell sind
+    try {
+      await refetch();
+    } catch {
+      enqueueSnackbar(t("grid_view.error_fetching_latest_tags"), {
+        variant: "warning",
+      });
+    }
 
-    // Find the tag ID for the selected tag name
-    const selectedTagObject = data?.findTags.nodes.find(
+    // Tag-ID ermitteln
+    const selectedTagObj = data?.findTags.nodes.find(
       (tag) => tag.name === newTag
     );
-    const tagId = selectedTagObject ? selectedTagObject.id : null;
-
+    const tagId = selectedTagObj?.id;
     if (!tagId) {
-      enqueueSnackbar("Tag ID nicht gefunden.", { variant: "error" });
+      enqueueSnackbar(t("grid_view.tag_id_not_found"), { variant: "error" });
+      setIsTagging(false);
       return;
     }
 
-    // Convert selectedRows from array to a Set for faster lookups
-    const selectedRowIds = new Set(selectedRows);
-    
-    // Process each selected row
-    for (const row of filteredRows) {
-      if (!selectedRowIds.has(row.uniqueId.toString())) {
-        continue; // Skip rows that aren't selected
-      }
-      
-      // Process each catalog entry ID in the row
-      for (const [column, entryId] of Object.entries(row.ids)) {
-        if (typeof entryId !== 'string' || !entryId.trim()) {
-          continue; // Skip empty IDs
+    // Ausgewählte Zeilen filtern
+    const selectedRowSet = new Set(selectedRows);
+    const entries = filteredRows.filter((row) =>
+      selectedRowSet.has(String(row.uniqueId))
+    );
+
+    // Map für eindeutige Katalog-Einträge
+    const catalogMap = new Map<string, { already: boolean }>();
+
+    // Prüfen, ob jeder Eintrag das Tag schon besitzt
+    entries.forEach((row) => {
+      Object.values(row.ids).forEach((entryId: any) => {
+        if (!entryId) return;
+        if (!catalogMap.has(entryId)) {
+          const hasTag =
+            Array.isArray(row.tags) &&
+            row.tags.some((tg: any) => tg.id === tagId);
+          catalogMap.set(entryId, { already: hasTag });
         }
-        
-        // Check if this tag already exists for this entry
-        const hasTagAlready = row.tags && row.tags.some(
-          (tag: any) => tag.name === newTag && 
-                        (tag.entryId === entryId || tag.catalogEntryId === entryId)
-        );
-        
-        if (hasTagAlready) {
-          continue; // Skip if tag already exists
-        }
-        
-        try {
-          const result = await addTag({
-            variables: {
-              input: {
-                catalogEntryId: entryId,
-                tagId: tagId,
-              },
-            },
+      });
+    });
+
+    let toAdd = 0,
+      alreadyCount = 0;
+    catalogMap.forEach((v) => (v.already ? alreadyCount++ : toAdd++));
+
+    // Falls nichts hinzuzufügen ist
+    if (toAdd === 0) {
+      setIsTagging(false);
+      enqueueSnackbar(
+        alreadyCount > 0
+          ? t("grid_view.all_entries_already_tagged", { count: alreadyCount })
+          : t("grid_view.no_tags_to_add"),
+        { variant: alreadyCount > 0 ? "info" : "warning" }
+      );
+      return;
+    }
+
+    // Tags hinzufügen
+    let added = 0,
+      failed = 0;
+    for (const [entryId, status] of catalogMap.entries()) {
+      if (status.already) continue;
+      try {
+        await addTag({
+          variables: { input: { catalogEntryId: entryId, tagId } },
+        });
+        added++;
+
+        // Zeilen-Tags lokal aktualisieren
+        entries.forEach((row) => {
+          Object.values(row.ids).forEach((id: any) => {
+            if (id === entryId) {
+              row.tags = Array.isArray(row.tags)
+                ? [
+                    ...row.tags,
+                    {
+                      id: tagId,
+                      name: newTag,
+                      catalogEntryId: entryId,
+                      entryId,
+                    },
+                  ]
+                : [
+                    {
+                      id: tagId,
+                      name: newTag,
+                      catalogEntryId: entryId,
+                      entryId,
+                    },
+                  ];
+            }
           });
-          
-          if (result.data) {
-            tagAdded = true;
-            
-            // Create a properly structured tag object
-            const newTagObj = { 
-              id: tagId,
-              name: newTag,
-              catalogEntryId: entryId, 
-              entryId: entryId // Include both for compatibility
-            };
-            
-            // Create a new tags array with the new tag
-            row.tags = Array.isArray(row.tags) 
-              ? [...row.tags, newTagObj] 
-              : [newTagObj];
-              
-            console.log(`Tag '${newTag}' added to entry ${entryId}`);
-          }
-        } catch (error) {
-          console.error(
-            `Fehler beim Hinzufügen des Tags zu Eintrag ${entryId}:`,
-            error
-          );
-        }
+        });
+      } catch {
+        failed++;
       }
     }
 
-    // Ensure we complete the operation and hide loading state
-    try {
-      if (tagAdded) {
-        await refetch();
-        setFilteredRows([...filteredRows]);
-        enqueueSnackbar(t('grid_view.tags_added_success'), { variant: "success" });
-      } else {
-        enqueueSnackbar(t('grid_view.no_tags_added'), { variant: "info" });
-      }
-    } catch (error) {
-      enqueueSnackbar(t('grid_view.error_updating_tags'), { variant: "error" });
-      console.error("Error updating tags:", error);
-    } finally {
-      setIsTagging(false);
+    // Feedback ausgeben
+    if (added > 0) {
+      enqueueSnackbar(
+        alreadyCount > 0
+          ? t("grid_view.tags_added_with_existing", {
+              added,
+              existing: alreadyCount,
+            })
+          : t("grid_view.tags_added_count", { count: added }),
+        { variant: "success" }
+      );
+    } else if (failed > 0) {
+      enqueueSnackbar(t("grid_view.tags_adding_failed"), { variant: "error" });
     }
+
+    setIsTagging(false);
   };
 
   const handleTagChange = (event: SelectChangeEvent<string>) => {
@@ -550,9 +591,7 @@ const GridViewView = () => {
   useEffect(() => {
     const modelIds = Array.from(
       new Set(
-        filteredRows
-          .map((row) => row.ids.model)
-          .filter((id: string) => id)
+        filteredRows.map((row) => row.ids.model).filter((id: string) => id)
       )
     );
     setModelIds(modelIds);
@@ -605,210 +644,247 @@ const GridViewView = () => {
 
   // Tag filtering
   const excludedTags = [
-    "Fachmodell", "Gruppe", "Klasse", "Merkmal", 
-    "Masseinheit", "Grösse", "Wert", "Maßeinheit", "Größe",
+    "Fachmodell",
+    "Gruppe",
+    "Klasse",
+    "Merkmal",
+    "Masseinheit",
+    "Grösse",
+    "Wert",
+    "Maßeinheit",
+    "Größe",
   ];
 
   const filterTags = (tags: string[]) =>
     tags.filter((tag) => !excludedTags.includes(tag));
 
   const allTags = filterTags(tags).sort();
-  
+
   const isAnyColumnHidden = Object.values(visibleColumns).some(
     (value) => !value
   );
 
   // DataGrid column definitions
   const columns: GridColDef[] = [
-    ...(visibleColumns.document ? [{
-      field: 'document',
-      headerName: t('grid_view.reference_documents'),
-      flex: 1,
-      minWidth: 200,
-      renderCell: (params: GridRenderCellParams) => {
-        const documentName = documentNames[params.row.ids.model]?.name || params.value;
-        const documentId = documentNames[params.row.ids.model]?.id;
-        
-        return (
-          <Box 
-            sx={{ 
-              cursor: documentId ? 'pointer' : 'default',
-              width: '100%', 
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              '&:hover': {
-                textDecoration: documentId ? 'underline' : 'none',
-              }
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              if (documentId) {
-                handleOnSelect(documentId, 'document');
-              }
-            }}
-          >
-            {documentName || '\u00A0'}
-          </Box>
-        );
-      }
-    }] : []),
-    
-    ...(visibleColumns.model ? [{
-      field: 'model',
-      headerName: t('grid_view.domain_models'),
-      flex: 1,
-      minWidth: 200,
-      renderCell: (params: GridRenderCellParams) => (
-        <Box 
-          sx={{ 
-            cursor: params.value ? 'pointer' : 'default',
-            width: '100%', 
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            '&:hover': {
-              textDecoration: params.value ? 'underline' : 'none',
-            }
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            if (params.value) {
-              handleOnSelect(params.row.ids.model, 'model');
-            }
-          }}
-        >
-          {params.value || '\u00A0'}
-        </Box>
-      )
-    }] : []),
-    
-    ...(visibleColumns.group ? [{
-      field: 'group',
-      headerName: t('grid_view.groups'),
-      flex: 1,
-      minWidth: 150,
-      renderCell: (params: GridRenderCellParams) => (
-        <Box 
-          sx={{ 
-            cursor: params.value ? 'pointer' : 'default',
-            width: '100%', 
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            '&:hover': {
-              textDecoration: params.value ? 'underline' : 'none',
-            }
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            if (params.value) {
-              handleOnSelect(params.row.ids.group, 'group');
-            }
-          }}
-        >
-          {params.value || '\u00A0'}
-        </Box>
-      )
-    }] : []),
-    
-    ...(visibleColumns.class ? [{
-      field: 'class',
-      headerName: t('grid_view.classes'),
-      flex: 1,
-      minWidth: 150,
-      renderCell: (params: GridRenderCellParams) => (
-        <Box 
-          sx={{ 
-            cursor: params.value ? 'pointer' : 'default',
-            width: '100%', 
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            '&:hover': {
-              textDecoration: params.value ? 'underline' : 'none',
-            }
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            if (params.value) {
-              handleOnSelect(params.row.ids.class, 'class');
-            }
-          }}
-        >
-          {params.value || '\u00A0'}
-        </Box>
-      )
-    }] : []),
-    
-    ...(visibleColumns.propertyGroup ? [{
-      field: 'propertyGroup',
-      headerName: t('grid_view.property_groups'),
-      flex: 1,
-      minWidth: 180,
-      renderCell: (params: GridRenderCellParams) => (
-        <Box 
-          sx={{ 
-            cursor: params.value ? 'pointer' : 'default',
-            width: '100%', 
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            '&:hover': {
-              textDecoration: params.value ? 'underline' : 'none',
-            }
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            if (params.value) {
-              handleOnSelect(params.row.ids.propertyGroup, 'propertyGroup');
-            }
-          }}
-        >
-          {params.value || '\u00A0'}
-        </Box>
-      )
-    }] : []),
-    
-    ...(visibleColumns.property ? [{
-      field: 'property',
-      headerName: t('grid_view.properties'),
-      flex: 1,
-      minWidth: 180,
-      renderCell: (params: GridRenderCellParams) => (
-        <Box 
-          sx={{ 
-            cursor: params.value ? 'pointer' : 'default',
-            width: '100%', 
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            '&:hover': {
-              textDecoration: params.value ? 'underline' : 'none',
-            }
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            if (params.value) {
-              handleOnSelect(params.row.ids.property, 'property');
-            }
-          }}
-        >
-          {params.value || '\u00A0'}
-        </Box>
-      )
-    }] : []),
+    ...(visibleColumns.document
+      ? [
+          {
+            field: "document",
+            headerName: t("grid_view.reference_documents"),
+            flex: 1,
+            minWidth: 200,
+            renderCell: (params: GridRenderCellParams) => {
+              const documentName =
+                documentNames[params.row.ids.model]?.name || params.value;
+              const documentId = documentNames[params.row.ids.model]?.id;
+
+              return (
+                <Box
+                  sx={{
+                    cursor: documentId ? "pointer" : "default",
+                    width: "100%",
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    "&:hover": {
+                      textDecoration: documentId ? "underline" : "none",
+                    },
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (documentId) {
+                      handleOnSelect(documentId, "document");
+                    }
+                  }}
+                >
+                  {documentName || "\u00A0"}
+                </Box>
+              );
+            },
+          },
+        ]
+      : []),
+
+    ...(visibleColumns.model
+      ? [
+          {
+            field: "model",
+            headerName: t("grid_view.domain_models"),
+            flex: 1,
+            minWidth: 200,
+            renderCell: (params: GridRenderCellParams) => (
+              <Box
+                sx={{
+                  cursor: params.value ? "pointer" : "default",
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  "&:hover": {
+                    textDecoration: params.value ? "underline" : "none",
+                  },
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (params.value) {
+                    handleOnSelect(params.row.ids.model, "model");
+                  }
+                }}
+              >
+                {params.value || "\u00A0"}
+              </Box>
+            ),
+          },
+        ]
+      : []),
+
+    ...(visibleColumns.group
+      ? [
+          {
+            field: "group",
+            headerName: t("grid_view.groups"),
+            flex: 1,
+            minWidth: 150,
+            renderCell: (params: GridRenderCellParams) => (
+              <Box
+                sx={{
+                  cursor: params.value ? "pointer" : "default",
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  "&:hover": {
+                    textDecoration: params.value ? "underline" : "none",
+                  },
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (params.value) {
+                    handleOnSelect(params.row.ids.group, "group");
+                  }
+                }}
+              >
+                {params.value || "\u00A0"}
+              </Box>
+            ),
+          },
+        ]
+      : []),
+
+    ...(visibleColumns.class
+      ? [
+          {
+            field: "class",
+            headerName: t("grid_view.classes"),
+            flex: 1,
+            minWidth: 150,
+            renderCell: (params: GridRenderCellParams) => (
+              <Box
+                sx={{
+                  cursor: params.value ? "pointer" : "default",
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  "&:hover": {
+                    textDecoration: params.value ? "underline" : "none",
+                  },
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (params.value) {
+                    handleOnSelect(params.row.ids.class, "class");
+                  }
+                }}
+              >
+                {params.value || "\u00A0"}
+              </Box>
+            ),
+          },
+        ]
+      : []),
+
+    ...(visibleColumns.propertyGroup
+      ? [
+          {
+            field: "propertyGroup",
+            headerName: t("grid_view.property_groups"),
+            flex: 1,
+            minWidth: 180,
+            renderCell: (params: GridRenderCellParams) => (
+              <Box
+                sx={{
+                  cursor: params.value ? "pointer" : "default",
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  "&:hover": {
+                    textDecoration: params.value ? "underline" : "none",
+                  },
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (params.value) {
+                    handleOnSelect(
+                      params.row.ids.propertyGroup,
+                      "propertyGroup"
+                    );
+                  }
+                }}
+              >
+                {params.value || "\u00A0"}
+              </Box>
+            ),
+          },
+        ]
+      : []),
+
+    ...(visibleColumns.property
+      ? [
+          {
+            field: "property",
+            headerName: t("grid_view.properties"),
+            flex: 1,
+            minWidth: 180,
+            renderCell: (params: GridRenderCellParams) => (
+              <Box
+                sx={{
+                  cursor: params.value ? "pointer" : "default",
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  "&:hover": {
+                    textDecoration: params.value ? "underline" : "none",
+                  },
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (params.value) {
+                    handleOnSelect(params.row.ids.property, "property");
+                  }
+                }}
+              >
+                {params.value || "\u00A0"}
+              </Box>
+            ),
+          },
+        ]
+      : []),
   ];
 
-  if (propertyTreeLoading) return <Typography>{t('grid_view.loading')}</Typography>;
-  if (propertyTreeError) return <Typography>Error: {propertyTreeError.message}</Typography>;
+  if (propertyTreeLoading)
+    return <Typography>{t("grid_view.loading")}</Typography>;
+  if (propertyTreeError)
+    return <Typography>Error: {propertyTreeError.message}</Typography>;
   if (bagError) return <Typography>Error: {bagError.message}</Typography>;
 
   return (
     <TableContainer>
       <FixedContainer>
         {/* Use extracted TagFilterSection component */}
-        <TagFilterSection 
+        <TagFilterSection
           allTags={allTags}
           selectedTag={selectedTag}
           handleTagFilter={handleTagFilter}
@@ -817,50 +893,57 @@ const GridViewView = () => {
           handleAddTag={handleAddTag}
           t={t}
         />
-        
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 2,
+          }}
+        >
           <ButtonContainer>
             <Button
               variant="contained"
               color="primary"
               onClick={() => handleShowOnlyColumn("document")}
             >
-              {t('grid_view.show_only_documents')}
+              {t("grid_view.show_only_documents")}
             </Button>
             <Button
               variant="contained"
               color="primary"
               onClick={() => handleShowOnlyColumn("model")}
             >
-              {t('grid_view.show_only_models')}
+              {t("grid_view.show_only_models")}
             </Button>
             <Button
               variant="contained"
               color="primary"
               onClick={() => handleShowOnlyColumn("group")}
             >
-              {t('grid_view.show_only_groups')}
+              {t("grid_view.show_only_groups")}
             </Button>
             <Button
               variant="contained"
               color="primary"
               onClick={() => handleShowOnlyColumn("class")}
             >
-              {t('grid_view.show_only_classes')}
+              {t("grid_view.show_only_classes")}
             </Button>
             <Button
               variant="contained"
               color="primary"
               onClick={() => handleShowOnlyColumn("propertyGroup")}
             >
-              {t('grid_view.show_only_property_groups')}
+              {t("grid_view.show_only_property_groups")}
             </Button>
             <Button
               variant="contained"
               color="primary"
               onClick={() => handleShowOnlyColumn("property")}
             >
-              {t('grid_view.show_only_properties')}
+              {t("grid_view.show_only_properties")}
             </Button>
             {isAnyColumnHidden && (
               <Button
@@ -868,123 +951,146 @@ const GridViewView = () => {
                 color="secondary"
                 onClick={handleShowAllColumns}
               >
-                {t('grid_view.show_all')}
+                {t("grid_view.show_all")}
               </Button>
             )}
           </ButtonContainer>
-          
+
           {/* Show loading indicator when tagging */}
           {isTagging && (
-            <Box sx={{ width: '100%', mt: 1, mb: 1 }}>
+            <Box sx={{ width: "100%", mt: 1, mb: 1 }}>
               <LinearProgress />
-              <Typography variant="caption" sx={{ mt: 0.5, display: 'block', textAlign: 'center' }}>
-                {t('grid_view.adding_tags_please_wait')}
+              <Typography
+                variant="caption"
+                sx={{ mt: 0.5, display: "block", textAlign: "center" }}
+              >
+                {t("grid_view.adding_tags_please_wait")}
               </Typography>
             </Box>
           )}
         </Box>
-        
       </FixedContainer>
-      
+
       {/* Adjust Box to take remaining space without causing overflow */}
-      <Box sx={{ 
-        flexGrow: 1, // Let the box grow to fill available space
-        width: '100%',
-        overflow: 'hidden', // Ensure no overflow from this container
-        display: 'flex', // Use flexbox
-        flexDirection: 'column' // Stack children vertically
-      }}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          width: "100%",
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <DataGrid
           rows={filteredRows}
           columns={columns}
           getRowId={(row) => row.uniqueId}
           checkboxSelection
-          onRowSelectionModelChange={(newSelectionModel) => {
-            setSelectedRows(newSelectionModel.map(id => String(id)));
+          onRowSelectionModelChange={(
+            newSelectionModel: GridRowSelectionModel
+          ) => {
+            // Extract IDs from the selection model based on its structure
+            let selectedIDs: string[] = [];
+
+            if (newSelectionModel && typeof newSelectionModel === "object") {
+              if (
+                "ids" in newSelectionModel &&
+                newSelectionModel.ids instanceof Set
+              ) {
+                // Extract IDs from Set and convert to strings
+                selectedIDs = Array.from(newSelectionModel.ids).map((id) =>
+                  String(id)
+                );
+              } else if (Array.isArray(newSelectionModel)) {
+                // Fallback for array format (older versions)
+                selectedIDs = newSelectionModel.map((id) => String(id));
+              }
+            }
+
+            setSelectedRows(selectedIDs);
           }}
           density="standard"
           disableRowSelectionOnClick
-          
-          // Simplified pagination configuration
-          paginationMode="client"
+          // Updated pagination configuration for v8
+          pageSizeOptions={[25, 50, 100]}
           initialState={{
             pagination: {
               paginationModel: { pageSize: 100, page: 0 },
             },
           }}
-          pageSizeOptions={[25, 50, 100]}
-          
-          // Remove problemmatic props
+          // Remove deprecated props
           autoHeight={false}
-          
           // Keep important styling
           scrollbarSize={10}
-          
           sx={{
-            height: '100%',
-            width: '100%',
+            height: "100%",
+            width: "100%",
             flexGrow: 1,
-            border: 'none',
-            
-            '& .MuiDataGrid-virtualScroller': {
-              overflow: 'auto',
-              '&::-webkit-scrollbar': {
-                width: '10px',
-                height: '10px'
+            border: "none",
+
+            "& .MuiDataGrid-virtualScroller": {
+              overflow: "auto",
+              "&::-webkit-scrollbar": {
+                width: "10px",
+                height: "10px",
               },
-              '&::-webkit-scrollbar-thumb': {
-                backgroundColor: 'rgba(0,0,0,0.2)',
-                borderRadius: '4px'
-              }
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "rgba(0,0,0,0.2)",
+                borderRadius: "4px",
+              },
             },
-            
-            '& .MuiDataGrid-cell': {
-              padding: '8px',
+
+            "& .MuiDataGrid-cell": {
+              padding: "8px",
             },
-            '& .MuiDataGrid-row:nth-of-type(odd)': {
-              backgroundColor: '#f9f9f9',
+            "& .MuiDataGrid-row:nth-of-type(odd)": {
+              backgroundColor: "#f9f9f9",
             },
-            
-            '& .MuiDataGrid-main': {
-              overflow: 'hidden',
-              flexGrow: 1
-            }
+
+            "& .MuiDataGrid-main": {
+              overflow: "hidden",
+              flexGrow: 1,
+            },
           }}
-          slots={{
-            toolbar: GridToolbar,
-          }}
+          showToolbar
           slotProps={{
             toolbar: {
               showQuickFilter: true,
               quickFilterProps: { debounceMs: 300 },
-              // Add CSV export options to ensure UTF-8 encoding
               csvOptions: {
-                delimiter: ',',
-                fileName: `datacat-export_${new Date().toISOString().slice(0, 10)}`,
-                utf8WithBom: true, // This ensures proper UTF-8 encoding with BOM for Excel
-              }
+                delimiter: ",",
+                fileName: `datacat-export_${new Date()
+                  .toISOString()
+                  .slice(0, 10)}`,
+                utf8WithBom: true,
+              },
             },
           }}
         />
       </Box>
-      
+
       {/* Selection Help Instructions - Simplified */}
-      <Box sx={{ 
-        p: 1, 
-        borderTop: '1px solid rgba(224, 224, 224, 1)',
-        backgroundColor: '#f5f5f5',
-        display: 'flex',
-        alignItems: 'center',
-        gap: 2,
-        fontSize: '0.75rem',
-        color: 'rgba(0, 0, 0, 0.6)'
-      }}>
+      <Box
+        sx={{
+          p: 1,
+          borderTop: "1px solid rgba(224, 224, 224, 1)",
+          backgroundColor: "#f5f5f5",
+          display: "flex",
+          alignItems: "center",
+          gap: 2,
+          fontSize: "0.75rem",
+          color: "rgba(0, 0, 0, 0.6)",
+        }}
+      >
         <Typography variant="caption" fontWeight="bold">
-          {t('grid_view.selection_help')}
+          {t("grid_view.selection_help")}
         </Typography>
-        <Box component="span" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Box
+          component="span"
+          sx={{ display: "flex", alignItems: "center", gap: 1 }}
+        >
           <b>Shift + Click</b>
-          <span>{t('grid_view.for_range')}</span>
+          <span>{t("grid_view.for_range")}</span>
         </Box>
       </Box>
     </TableContainer>

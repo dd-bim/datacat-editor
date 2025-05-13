@@ -46,6 +46,13 @@ export default defineConfig({
     port: 3000,
     strictPort: true,
     open: true,
+    proxy: {
+      '/api/graphql': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/graphql/, '/graphql')
+      }
+    }
   },
   build: {
     outDir: 'dist',
