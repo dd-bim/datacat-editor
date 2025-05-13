@@ -1,4 +1,4 @@
-import React, {FC} from "react";
+import React from "react";
 import FormSet, {FormSetDescription, FormSetTitle} from "./FormSet";
 import {
     TranslationInput,
@@ -10,24 +10,21 @@ import {
 } from "../../generated/types";
 import {useSnackbar} from "notistack";
 import TranslationFormSet from "./TranslationFormSet";
-import makeStyles from "@mui/styles/makeStyles";
-import { Theme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import {T} from "@tolgee/react";
+
+// Replace makeStyles with styled component
+const StyledFormSetDescription = styled(FormSetDescription)(({ theme }) => ({
+    marginBottom: theme.spacing(1)
+}));
 
 type CommentFormSetProps = {
     catalogEntryId: string,
     comments: TranslationPropsFragment[]
 }
-const useStyles = makeStyles((theme: Theme) => ({
-    description: {
-        marginBottom: theme.spacing(1)
-    }
-}));
 
-const CommentFormSet: FC<CommentFormSetProps> = (props) => {
+const CommentFormSet = (props: CommentFormSetProps) => {
     const {catalogEntryId, comments} = props;
-    const classes = useStyles();
-
     const {enqueueSnackbar} = useSnackbar();
     const [addComment] = useAddCommentMutation();
     const [updateComment] = useUpdateCommentMutation();
@@ -63,12 +60,11 @@ const CommentFormSet: FC<CommentFormSetProps> = (props) => {
     return (
         <FormSet>
             <FormSetTitle><b><T keyName={"comment.title"}/></b></FormSetTitle>
-            <FormSetDescription className={classes.description}>
-            <T keyName={"comment.description"}/>
-            </FormSetDescription>
+            <StyledFormSetDescription>
+                <T keyName={"comment.description"}/>
+            </StyledFormSetDescription>
 
             <div style={{ marginBottom: "12px" }}></div>
-
             
             <TranslationFormSet
                 label="Kommentar"

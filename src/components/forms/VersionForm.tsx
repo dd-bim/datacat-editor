@@ -1,22 +1,20 @@
-import React, { FC, useState } from "react";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import { defaultFormFieldOptions } from "../../hooks/useFormStyles";
-import { makeStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 import InlineButtonGroup from "./InlineButtonGroup";
 import { ClickAwayListener } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { Theme } from "@mui/material/styles";
 import { T } from "@tolgee/react";
 
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    "& > *": {
-      marginRight: theme.spacing(1),
-    },
+// Replace makeStyles with styled component
+const FormContainer = styled('form')(({ theme }) => ({
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  "& > *": {
+    marginRight: theme.spacing(1),
   },
 }));
 
@@ -30,9 +28,8 @@ type VersionFormProps = {
   onSubmit(values: VersionFormValues): void;
 };
 
-const VersionForm: FC<VersionFormProps> = (props) => {
+const VersionForm = (props: VersionFormProps) => {
   const { defaultValues, onSubmit } = props;
-  const classes = useStyles();
   const [isEditMode, setIsEditMode] = useState(false);
   const {
     control,
@@ -68,7 +65,7 @@ const VersionForm: FC<VersionFormProps> = (props) => {
 
   return (
     <ClickAwayListener onClickAway={onClickAway}>
-      <form className={classes.root} onSubmit={handleSubmit(onSave)}>
+      <FormContainer onSubmit={handleSubmit(onSave)}>
         <Controller
           control={control}
           name="versionId"
@@ -110,7 +107,7 @@ const VersionForm: FC<VersionFormProps> = (props) => {
         {isEditMode && (
           <InlineButtonGroup formState={formState} onReset={onReset} />
         )}
-      </form>
+      </FormContainer>
     </ClickAwayListener>
   );
 };

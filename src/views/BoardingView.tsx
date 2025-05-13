@@ -1,26 +1,24 @@
 import React, { useState } from "react";
-import { Grid, Paper, Typography, Tabs, Tab } from "@mui/material";
+import { Paper, Typography, Tabs, Tab, Stack, Box } from "@mui/material";
 import LoginForm from "../components/LoginForm";
 import SignupForm from "../components/SignupForm";
 import useAuthContext from "../hooks/useAuthContext";
 import { useSnackbar } from "notistack";
-import makeStyles from "@mui/styles/makeStyles";
-import Box from "@mui/material/Box";
+import { styled } from "@mui/material/styles";
 import PetsIcon from "@mui/icons-material/Pets";
 import IntroPanel from "../components/IntroPanel";
-import { Theme } from "@mui/material/styles";
 import { T } from "@tolgee/react";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 
-const useStyles = makeStyles((theme: Theme) => ({
-  paper: {
-    padding: theme.spacing(2),
-  },
-  languageSwitcher: {
-    display: "flex",
-    justifyContent: "flex-end",
-  },
+// Replace makeStyles with styled components
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(2),
 }));
+
+const LanguageSwitcherBox = styled(Box)({
+  display: "flex",
+  justifyContent: "flex-end",
+});
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -46,7 +44,6 @@ function TabPanel(props: TabPanelProps) {
 }
 
 export default function BoardingView() {
-  const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const { login } = useAuthContext();
   const [signupSent, setSignupSent] = useState(false);
@@ -61,73 +58,105 @@ export default function BoardingView() {
     setSignupSent(true);
     enqueueSnackbar(
       <T keyName="boarding.signup_success">
-        Sie erhalten in den nächsten Minuten einen Bestätigungscode per Email, mit dem Sie Ihren Account aktivieren können.
+        Sie erhalten in den nächsten Minuten einen Bestätigungscode per Email,
+        mit dem Sie Ihren Account aktivieren können.
       </T>
     );
   };
 
   return (
-    <div style={{ color: 'black' }}>
-      <Grid container direction="row" alignItems="stretch" spacing={3}>
-        <Grid item xs={12}>
-          <Paper className={classes.paper} variant="outlined">
-            <Grid container justifyContent="space-between" alignItems="center">
-              <Grid item>
-                <Typography variant="h4">
-                  <PetsIcon /> <T keyName="boarding.welcome">Willkommen beim datacat editor</T>
-                </Typography>
-              </Grid>
-              <Grid item className={classes.languageSwitcher}>
-                <LanguageSwitcher textColor="black" dropdownColor="black" borderColor="black" />
-              </Grid>
-            </Grid>
-          </Paper>
-        </Grid>
-        <Grid item xs={12} sm={6} lg={8}>
-          <IntroPanel />
-        </Grid>
-
-        <Grid item xs={12} sm={6} lg={4}>
-          <Paper>
-            <Tabs
-              value={tab}
-              onChange={(event, value) => setTab(value)}
-              indicatorColor="primary"
-              textColor="primary"
-              centered
+    <div style={{ color: "black" }}>
+      <Stack spacing={3}>
+        {/* Header mit Title und Sprachauswahl */}
+        <Box>
+          <StyledPaper variant="outlined">
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
             >
-              <Tab label={<T keyName="boarding.login_tab">Anmelden</T>} value="login" />
-              <Tab label={<T keyName="boarding.signup_tab">Registrieren</T>} value="signup" />
-            </Tabs>
-            <TabPanel value={tab} index="login">
-              <Typography>
-                <T keyName="boarding.login_message">
-                  Bitte nutzen Sie Ihren Benutzernamen und Ihr Password um sich beim Editor anzumelden.
-                </T>
+              <Typography variant="h4">
+                <PetsIcon />{" "}
+                <T keyName="boarding.welcome">Willkommen beim datacat editor</T>
               </Typography>
-              <LoginForm onLogin={handleLogin} />
-            </TabPanel>
-            <TabPanel value={tab} index="signup">
-              {signupSent ? (
-                <Typography>
-                  <T keyName="boarding.signup_success">
-                    Sie erhalten in den nächsten Minuten einen Bestätigungscode per Email, mit dem Sie Ihren Account aktivieren können.
+              <LanguageSwitcherBox>
+                <LanguageSwitcher
+                  textColor="black"
+                  dropdownColor="black"
+                  borderColor="black"
+                />
+              </LanguageSwitcherBox>
+            </Stack>
+          </StyledPaper>
+        </Box>
+
+        {/* 2-spaltige Ansicht für Intro und Anmeldung */}
+        <Stack
+          direction={{ xs: "column", md: "row" }}
+          spacing={3}
+          alignItems="stretch"
+        >
+          {/* Linke Spalte - IntroPanel */}
+          <Box sx={{ flex: 7 }}>
+            <IntroPanel />
+          </Box>
+
+          {/* Rechte Spalte - Login/Signup */}
+          <Box sx={{ flex: 4 }}>
+            <Paper sx={{ height: "100%" }}>
+              <Tabs
+                value={tab}
+                onChange={(event, value) => setTab(value)}
+                indicatorColor="primary"
+                textColor="primary"
+                centered
+              >
+                <Tab
+                  label={<T keyName="boarding.login_tab">Anmelden</T>}
+                  value="login"
+                />
+                <Tab
+                  label={<T keyName="boarding.signup_tab">Registrieren</T>}
+                  value="signup"
+                />
+              </Tabs>
+              <TabPanel value={tab} index="login">
+                <Typography sx={{ marginBottom: 2 }}>
+                  <T keyName="boarding.login_message">
+                    Bitte nutzen Sie Ihren Benutzernamen und Ihr Password um
+                    sich beim Editor anzumelden.
                   </T>
                 </Typography>
-              ) : (
-                <React.Fragment>
+                <LoginForm onLogin={handleLogin} />
+              </TabPanel>
+
+              <TabPanel value={tab} index="signup">
+                {signupSent ? (
                   <Typography>
-                    <T keyName="boarding.signup_message">
-                      Sie können sich registrieren um lesenden Zugriff auf den Katalog zu erhalten. Möchten Sie sich an der Bearbeitung des Katalogs beteiligen, so informieren Sie bitte den Administrator.
+                    <T keyName="boarding.signup_success">
+                      Sie erhalten in den nächsten Minuten einen
+                      Bestätigungscode per Email, mit dem Sie Ihren Account
+                      aktivieren können.
                     </T>
                   </Typography>
-                  <SignupForm onSignup={handleSignup} />
-                </React.Fragment>
-              )}
-            </TabPanel>
-          </Paper>
-        </Grid>
-      </Grid>
+                ) : (
+                  <React.Fragment>
+                    <Typography sx={{ marginBottom: 2 }}>
+                      <T keyName="boarding.signup_message">
+                        Sie können sich registrieren um lesenden Zugriff auf den
+                        Katalog zu erhalten. Möchten Sie sich an der Bearbeitung
+                        des Katalogs beteiligen, so informieren Sie bitte den
+                        Administrator.
+                      </T>
+                    </Typography>
+                    <SignupForm onSignup={handleSignup} />
+                  </React.Fragment>
+                )}
+              </TabPanel>
+            </Paper>
+          </Box>
+        </Stack>
+      </Stack>
     </div>
   );
 }

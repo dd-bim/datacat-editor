@@ -1,27 +1,30 @@
-import makeStyles from "@mui/styles/makeStyles";
+import { styled } from "@mui/material/styles";
 import {TextFieldProps} from "@mui/material/TextField";
 
+// Export the default field options
 export const defaultFormFieldOptions: TextFieldProps = {
     autoComplete: "off",
-    // fullWidth: true,
+    fullWidth: true,
     size: "small",
-    variant: "outlined",
+    variant: "outlined" as const,
 };
 
-const useFormStyles = makeStyles(theme => ({
-    root: {
-        padding: theme.spacing(1),
-    },
-    form: {
-        display: "flex",
-        flexDirection: "column",
-        "& > *": {
-            marginBottom: theme.spacing(3)
-        }
-    },
-    buttonGroup: {
-        alignSelf: "end"
-    }
+// Create a styled form component that can be exported
+export const StyledForm = styled('form')(({ theme }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing(2),
 }));
+
+// Keep the hook for backward compatibility
+const useFormStyles = () => {
+    return {
+        form: {
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 16, // Equivalent to theme.spacing(2)
+        }
+    };
+};
 
 export default useFormStyles;

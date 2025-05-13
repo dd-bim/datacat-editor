@@ -23,7 +23,7 @@ import {
 } from "../domain";
 
 // Dummy-Funktion für den onDelete-Handler. 
-// Bitte implementieren Sie hier eine adäquate Navigation bzw. entsprechende Logik.
+
 const dummyOnDelete = () => {
   console.warn("onDelete wurde aufgerufen – implementieren Sie die Navigation in der Komponente oder per Context.");
 };

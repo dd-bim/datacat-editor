@@ -9,58 +9,62 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles"; // Replace makeStyles with styled
 import { useSnackbar } from "notistack";
-import { Theme } from "@mui/material/styles";
 import { T } from "@tolgee/react";
 
-const useStyles = makeStyles((theme: Theme) => ({
-  container: {
-    padding: theme.spacing(2),
-    border: "2px solid #ccc",
-    borderRadius: theme.shape.borderRadius,
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    margin: theme.spacing(2),
-  },
-  chipContainer: {
-    display: "flex",
-    flexWrap: "wrap",
-    gap: theme.spacing(1),
-    marginTop: theme.spacing(2),
-  },
-  form: {
-    display: "flex",
-    alignItems: "center",
-    gap: theme.spacing(2),
-    marginBottom: theme.spacing(4),
-    marginTop: theme.spacing(4), // Add marginTop to increase the spacing
-  },
-  explanation: {
-    marginBottom: theme.spacing(2),
-  },
-  formControl: {
-    minWidth: 200,
-    marginRight: theme.spacing(2),
-  },
-  button: {
-    minWidth: 120,
-  },
-  tagChip: {
-    margin: theme.spacing(0.5),
-    fontSize: theme.typography.fontSize,
-    height: "36px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontWeight: "bold",
-  },
-  buttonContainer: {
-    marginBottom: theme.spacing(4),
-  },
+// Replace makeStyles with styled components
+const Container = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(2),
+  border: "2px solid #ccc",
+  borderRadius: theme.shape.borderRadius,
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+  margin: theme.spacing(2),
+}));
+
+const ChipContainer = styled('div')(({ theme }) => ({
+  display: "flex",
+  flexWrap: "wrap",
+  gap: theme.spacing(1),
+  marginTop: theme.spacing(2),
+}));
+
+const StyledForm = styled('form')(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  gap: theme.spacing(2),
+  marginBottom: theme.spacing(4),
+  marginTop: theme.spacing(4),
+}));
+
+const Explanation = styled(Typography)(({ theme }) => ({
+  marginBottom: theme.spacing(2),
+}));
+
+const StyledFormControl = styled(FormControl)(({ theme }) => ({
+  minWidth: 200,
+  marginRight: theme.spacing(2),
+}));
+
+const StyledButton = styled(Button)(({ theme }) => ({
+  minWidth: 120,
+}));
+
+const TagChip = styled(Chip)(({ theme }) => ({
+  margin: theme.spacing(0.5),
+  fontSize: theme.typography.fontSize,
+  height: "36px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  fontWeight: "bold",
+}));
+
+const ButtonContainer = styled('div')(({ theme }) => ({
+  marginBottom: theme.spacing(4),
 }));
 
 const TagView: React.FC = () => {
-  const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const { data, loading, error, refetch } = useFindTagsQuery({
     variables: { pageSize: 100 },
@@ -129,15 +133,15 @@ const TagView: React.FC = () => {
     .sort((a, b) => a.name.localeCompare(b.name));
 
   return (
-    <Paper className={classes.container}>
+    <Container>
       <Typography variant="h4" gutterBottom>
         <T keyName="tag_view.heading" />
       </Typography>
-      <Typography variant="body1" className={classes.explanation}>
+      <Explanation variant="body1">
         <T keyName="tag_view.explanation" />
-      </Typography>
-      <form className={classes.form} onSubmit={(e) => e.preventDefault()}>
-        <FormControl variant="outlined" className={classes.formControl}>
+      </Explanation>
+      <StyledForm onSubmit={(e) => e.preventDefault()}>
+        <StyledFormControl variant="outlined">
           <InputLabel htmlFor="new-tag" shrink={newTagName !== ""}>
             <T keyName="tag_view.new_tag_label" />
           </InputLabel>
@@ -148,23 +152,22 @@ const TagView: React.FC = () => {
             onChange={(e) => setNewTagName(e.target.value)}
             InputLabelProps={{ shrink: true }}
           />
-        </FormControl>
-        <Button
+        </StyledFormControl>
+        <StyledButton
           variant="contained"
           color="primary"
           onClick={handleAddTag}
-          className={classes.button}
         >
           <T keyName="tag_view.add_tag_button" />
-        </Button>
-      </form>
-      <div className={classes.buttonContainer} />
-      <div className={classes.chipContainer}>
+        </StyledButton>
+      </StyledForm>
+      <ButtonContainer />
+      <ChipContainer>
         {sortedTags?.map((tag) => (
-          <Chip key={tag.id} label={tag.name} className={classes.tagChip} />
+          <TagChip key={tag.id} label={tag.name} />
         ))}
-      </div>
-    </Paper>
+      </ChipContainer>
+    </Container>
   );
 };
 

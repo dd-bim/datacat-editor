@@ -1,31 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import makeStyles from "@mui/styles/makeStyles";
-import { Alert } from "@mui/lab";
-import { TextField } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { Alert, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import { SignupInput, useSignupFormMutation } from "../generated/types";
-import { Theme } from "@mui/material/styles";
 import { T } from "@tolgee/react";
 
-const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const emailRegex =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+// Replace makeStyles with styled component
+const FormContainer = styled('form')(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  "& > *": {
+    marginBottom: theme.spacing(2), // Reduced from 3 to 2
+  },
+  "& .MuiTextField-root": {
+    marginBottom: theme.spacing(2), // Reduced from 4 to 2
+  },
+  // Extra spacing before the button
+  "& button": {
+    marginTop: theme.spacing(1), // Reduced from 2 to 1
+  },
+}));
 
 interface SignupFormProps {
   onSignup: () => void;
 }
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    "& > *": {
-      marginBottom: theme.spacing(2),
-    },
-  },
-}));
 
 type SignupFormFields = SignupInput & { password2: string };
+
 export default function SignupForm(props: SignupFormProps) {
-  const classes = useStyles();
   const { onSignup } = props;
   const [cooldownReached, setCooldownReached] = useState(false);
   const [signup, { loading, error }] = useSignupFormMutation({
@@ -35,9 +41,12 @@ export default function SignupForm(props: SignupFormProps) {
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isValid },
     getValues,
-  } = useForm<SignupFormFields>();
+  } = useForm<SignupFormFields>({
+    mode: "onChange", // Validierung bei jeder Änderung
+    reValidateMode: "onChange",
+  });
   const onSubmit = async ({ password2, ...profile }: SignupFormFields) => {
     if (!cooldownReached || loading) return;
     await signup({ variables: { profile } });
@@ -49,7 +58,7 @@ export default function SignupForm(props: SignupFormProps) {
   });
 
   return (
-    <form className={classes.root} onSubmit={handleSubmit(onSubmit)} noValidate>
+    <FormContainer onSubmit={handleSubmit(onSubmit)} noValidate>
       {error && <Alert severity="error">{error.message}</Alert>}
       <TextField
         label={<T keyName="signup.username_label">Benutzername</T>}
@@ -58,11 +67,13 @@ export default function SignupForm(props: SignupFormProps) {
         helperText={
           errors.username ? (
             <T keyName="signup.username_helper">
-              Ein Benutzername ist erforderlich. Keine Leerzeichen. Muss mit einem Buchstaben beginnen und eine Mindestlänge von 3 haben.
+              Ein Benutzername ist erforderlich. Keine Leerzeichen. Muss mit
+              einem Buchstaben beginnen und eine Mindestlänge von 3 haben.
             </T>
           ) : (
             <T keyName="signup.username_error">
-              Der Benutzername kann nach der Registrierung nicht geändert werden.
+              Der Benutzername kann nach der Registrierung nicht geändert
+              werden.
             </T>
           )
         }
@@ -81,7 +92,8 @@ export default function SignupForm(props: SignupFormProps) {
         helperText={
           errors.password ? (
             <T keyName="signup.password_helper">
-              Ein Passwort ist erforderlich und muss eine Mindestlänge von 8 haben.
+              Ein Passwort ist erforderlich und muss eine Mindestlänge von 8
+              haben.
             </T>
           ) : (
             ""
@@ -95,7 +107,9 @@ export default function SignupForm(props: SignupFormProps) {
       />
       <TextField
         type="password"
-        label={<T keyName="signup.password_repeat_label">Passwort wiederholen</T>}
+        label={
+          <T keyName="signup.password_repeat_label">Passwort wiederholen</T>
+        }
         required
         error={!!errors.password2}
         helperText={
@@ -139,7 +153,9 @@ export default function SignupForm(props: SignupFormProps) {
         error={!!errors.email}
         helperText={
           errors.email ? (
-            <T keyName="signup.email_error">Bitte geben Sie eine gültige Email-Adresse an.</T>
+            <T keyName="signup.email_error">
+              Bitte geben Sie eine gültige Email-Adresse an.
+            </T>
           ) : (
             ""
           )
@@ -157,9 +173,15 @@ export default function SignupForm(props: SignupFormProps) {
         {...register("organization")}
         fullWidth
       />
-      <Button type="submit">
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        fullWidth
+        disabled={!cooldownReached || loading || !isValid}
+      >
         <T keyName="signup.signup_button">Registrieren</T>
       </Button>
-    </form>
+    </FormContainer>
   );
 }

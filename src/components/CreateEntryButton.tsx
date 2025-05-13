@@ -1,4 +1,4 @@
-import React, {FC, useState} from "react";
+import React, {useState} from "react";
 import {SimpleRecordType, useCreateEntryMutation} from "../generated/types";
 import {Dialog} from "@mui/material";
 import Button from "@mui/material/Button";
@@ -43,7 +43,7 @@ type CreateEntryProps = {
     EntryType: Entity
 }
 
-const CreateEntryButton: FC<CreateEntryProps> = props => {
+const CreateEntryButton = (props: CreateEntryProps) => {
 
     const {enqueueSnackbar} = useSnackbar();
 

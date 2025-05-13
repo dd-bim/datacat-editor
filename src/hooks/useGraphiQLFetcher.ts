@@ -6,7 +6,7 @@ export const useGraphiQLFetcher = () => {
     if (token) {
         headers = { 'Authorization': `Bearer ${token}`, ...headers };
     }
-    return (params: any) => fetch(process.env.REACT_APP_API as string, {
+    return (params: any) => fetch(import.meta.env.VITE_API_URL || '/api/graphql', {
         method: 'POST',
         headers,
         body: JSON.stringify(params),

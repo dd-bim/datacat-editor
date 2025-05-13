@@ -3,15 +3,12 @@ import { Controller, useForm } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import { defaultFormFieldOptions } from "../../hooks/useFormStyles";
 import { Button } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import { Theme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { T } from "@tolgee/react";
 
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    "& > *": {
-      marginBottom: theme.spacing(1.5),
-    },
+const FormContainer = styled('form')(({ theme }) => ({
+  "& > *": {
+    marginBottom: theme.spacing(1.5),
   },
 }));
 
@@ -31,7 +28,6 @@ export type CreateEntryFormProps = {
 
 const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
   const { defaultValues, onSubmit } = props;
-  const classes = useStyles();
   const {
     control,
     formState: { errors },
@@ -41,7 +37,7 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={classes.root}>
+    <FormContainer onSubmit={handleSubmit(onSubmit)}>
       <div style={{ marginBottom: "12px" }}></div>
 
       <Controller
@@ -168,7 +164,7 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
       <Button type="submit" variant="contained">
         <T keyName="create_entry_form.save_button">Speichern</T>
       </Button>
-    </form>
+    </FormContainer>
   );
 };
 

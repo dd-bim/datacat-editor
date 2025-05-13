@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { styled } from "@mui/material/styles";
 import {
   Box,
   Button,
@@ -9,8 +10,18 @@ import {
   Checkbox,
   FormControlLabel,
   LinearProgress,
+  Alert,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableContainerProps,
+  TableHead,
+  TableRow,
+  Paper,
+  Stack,
+  ButtonProps
 } from "@mui/material";
-import { Alert } from "@mui/lab";
 import { useSnackbar } from "notistack";
 import View from "./View";
 import {
@@ -67,11 +78,75 @@ type CheckedRowsTable = {
   entities: CheckedRows;
   relations: CheckedRows;
 };
+// Styled components for better organization and consistency
+const StyledTableContainer = styled(TableContainer)<TableContainerProps>(({ theme }) => ({
+  marginTop: theme.spacing(1),
+  marginBottom: theme.spacing(2),
+  overflowX: 'auto'
+}));
+
+const StyledTable = styled(Table)({
+  minWidth: 700,
+  tableLayout: "fixed"
+});
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  border: `1px solid ${theme.palette.divider}`,
+  padding: theme.spacing(1),
+}));
+
+const StyledHeaderCell = styled(TableCell)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[100],
+  fontWeight: 'bold',
+  border: `1px solid ${theme.palette.divider}`,
+  padding: theme.spacing(1),
+}));
+
+const FlexBox = styled(Box)({
+  display: 'flex',
+  alignItems: 'center'
+});
+
+const SelectContainer = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+  width: '100%'
+});
+
+const FullWidthSelect = styled(Select)({
+  width: '100%'
+});
+
+const ProgressContainer = styled(Box)(({ theme }) => ({
+  marginTop: theme.spacing(2),
+  padding: theme.spacing(1),
+  backgroundColor: theme.palette.background.paper,
+  borderRadius: theme.shape.borderRadius,
+}));
+
+const ButtonsContainer = styled(Box)(({ theme }) => ({
+  display: "flex",
+  alignItems: "flex-start",
+  marginBottom: theme.spacing(2),
+  flexWrap: "wrap",
+  gap: theme.spacing(2),
+}));
+
+const ButtonWrapper = styled(Box)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  textAlign: "center",
+}));
+
+const ActionButton = styled(Button)<ButtonProps>(({ theme }) => ({
+  marginBottom: theme.spacing(0.5),
+}));
 
 export function ImportViewExcel() {
   const [entitiesFile, setEntitiesFile] = useState<File | null>(null);
   const [init, setInit] = useState(false);
-  const [importTag, setImportTag] = useState(IMPORT_TAG_ID);
+  const [importTag, setImportTag] = useState(""); // Changed from IMPORT_TAG_ID to empty string
   const [control, setControl] = useState(1);
   const [textFieldValues, setTextFieldValues] = useState<{
     [key: string]: string;
@@ -987,370 +1062,322 @@ export function ImportViewExcel() {
     console.log("Import of all relationships completed");
   };
 
-  const tableContainerStyle: React.CSSProperties = {
-    display: "flex",
-    flexDirection: "column",
-    overflow: "hidden",
-    width: "100%",
-  };
-
-  const tableStyle: React.CSSProperties = {
-    width: "100%",
-    minWidth: "700px",
-    tableLayout: "fixed",
-    borderCollapse: "collapse",
-    marginTop: "8px",
-  };
-
-  const thTdStyle: React.CSSProperties = {
-    border: "1px solid #ddd",
-    padding: "8px",
-    textAlign: "left",
-    wordWrap: "break-word",
-  };
-
-  const thStyle: React.CSSProperties = {
-    ...thTdStyle,
-    backgroundColor: "#f2f2f2",
-  };
-
-  const tdSelectStyle: React.CSSProperties = {
-    width: "100%",
-  };
-
-  const buttonContainerStyle: React.CSSProperties = {
-    marginTop: "16px",
-    display: "flex",
-    gap: "8px",
-    flexWrap: "wrap",
-  };
-
-  return (
-    <View heading=<T keyName="import_excel.heading" />>
-      <Box style={tableContainerStyle}>
-        <Typography variant={"body1"} style={{ flexGrow: 1 }}>
-        <T keyName="import_excel.description" />
-          <br />
-          <br />
-        </Typography>
-        <Box style={tableStyle} component="table">
-          <thead>
-            <tr>
-              <th style={thStyle}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={Object.values(checkedRows.entities).every(
-                        Boolean
-                      )}
-                      onChange={() => handleSelectAll("entities")}
-                    />
-                  }
-                  label=<T keyName="import_excel.select_all" />
-                />
-              </th>
-              <th style={thStyle}><T keyName="import_excel.label" /></th>
-              <th style={thStyle}><T keyName="import_excel.sheet" /></th>
-              <th style={thStyle}><T keyName="import_excel.name" /></th>
-              <th style={thStyle}><T keyName="import_excel.id" /></th>
-            </tr>
-          </thead>
-          <tbody>
-            {[
-              { label: <T keyName="import_excel.document" />, toggle: true },
-              { label: <T keyName="import_excel.model" />, toggle: true },
-              { label: <T keyName="import_excel.group" />, toggle: true },
-              { label: <T keyName="import_excel.class" />, toggle: true },
-              { label: <T keyName="import_excel.property" />, toggle: false },
-              { label: <T keyName="import_excel.measure" />, toggle: false },
-              { label: <T keyName="import_excel.unit" />, toggle: false },
-              { label: <T keyName="import_excel.value" />, toggle: false },
-            ].map((entity, index) => (
-              <tr key={index}>
-                <td style={thTdStyle}>
+  const renderEntityTable = () => (
+    <StyledTableContainer component={Paper}>
+      <StyledTable>
+        <TableHead>
+          <TableRow>
+            <StyledHeaderCell>
+              <FormControlLabel
+                control={
                   <Checkbox
-                    checked={!!checkedRows.entities[index]}
-                    onChange={() => handleCheckboxChange(index, "entities")}
+                    checked={Object.values(checkedRows.entities).every(Boolean)}
+                    onChange={() => handleSelectAll("entities")}
                   />
-                </td>
-                <td style={thTdStyle}>{entity.label}</td>
-                <td style={thTdStyle}>
-                  <TextField
-                    value={textFieldValues[`sheetField${index}`] || ""}
-                    onChange={(e) =>
-                      handleTextFieldChange(e, `sheetField${index}`)
-                    }
-                    fullWidth
-                    placeholder={t('import_excel.sheetName')}
-                    disabled={!checkedRows.entities[index]}
-                  />
-                </td>
-                <td style={thTdStyle}>
-                  <Box style={{ display: "flex", alignItems: "center" }}>
-                    {useTextField[`name${index}`] ? (
-                      <TextField
-                        value={textFieldValues[`name${index}`] || ""}
-                        onChange={(e) =>
-                          handleTextFieldChange(e, `name${index}`)
-                        }
-                        fullWidth
-                        placeholder="Name"
-                        disabled={!checkedRows.entities[index]}
-                      />
-                    ) : (
-                      <Select
-                        value={selectedLetters[`selectName${index}`] || ""}
-                        onChange={(e) =>
-                          handleSelectChange(e, `selectName${index}`)
-                        }
-                        displayEmpty
-                        style={tdSelectStyle}
-                        disabled={!checkedRows.entities[index]}
-                      >
-                        {alphabet.map((letter) => (
-                          <MenuItem key={letter} value={letter}>
-                            {letter}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    )}
-                    {entity.toggle && index <= 2 && (
-                      <Button
-                        onClick={() =>
-                          handleUseTextFieldToggle(`name${index}`)
-                        }
-                      >
-                        {useTextField[`name${index}`] ? "Dropdown" : "Text"}
-                      </Button>
-                    )}
-                  </Box>
-                </td>
-                <td style={thTdStyle}>
-                  <Box style={{ display: "flex", alignItems: "center" }}>
-                    <Select
-                      value={selectedLetters[`selectID${index}`] || ""}
-                      onChange={(e) =>
-                        handleSelectChange(e, `selectID${index}`)
-                      }
+                }
+                label={<T keyName="import_excel.select_all" />}
+              />
+            </StyledHeaderCell>
+            <StyledHeaderCell><T keyName="import_excel.label" /></StyledHeaderCell>
+            <StyledHeaderCell><T keyName="import_excel.sheet" /></StyledHeaderCell>
+            <StyledHeaderCell><T keyName="import_excel.name" /></StyledHeaderCell>
+            <StyledHeaderCell><T keyName="import_excel.id" /></StyledHeaderCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {[
+            { label: <T keyName="import_excel.document" />, toggle: true },
+            { label: <T keyName="import_excel.model" />, toggle: true },
+            { label: <T keyName="import_excel.group" />, toggle: true },
+            { label: <T keyName="import_excel.class" />, toggle: true },
+            { label: <T keyName="import_excel.property" />, toggle: false },
+            { label: <T keyName="import_excel.measure" />, toggle: false },
+            { label: <T keyName="import_excel.unit" />, toggle: false },
+            { label: <T keyName="import_excel.value" />, toggle: false },
+          ].map((entity, index) => (
+            <TableRow key={index}>
+              <StyledTableCell>
+                <Checkbox
+                  checked={!!checkedRows.entities[index]}
+                  onChange={() => handleCheckboxChange(index, "entities")}
+                />
+              </StyledTableCell>
+              <StyledTableCell>{entity.label}</StyledTableCell>
+              <StyledTableCell>
+                <TextField
+                  value={textFieldValues[`sheetField${index}`] || ""}
+                  onChange={(e) => handleTextFieldChange(e, `sheetField${index}`)}
+                  fullWidth
+                  placeholder={t('import_excel.sheetName')}
+                  disabled={!checkedRows.entities[index]}
+                  size="small"
+                />
+              </StyledTableCell>
+              <StyledTableCell>
+                <FlexBox>
+                  {useTextField[`name${index}`] ? (
+                    <TextField
+                      value={textFieldValues[`name${index}`] || ""}
+                      onChange={(e) => handleTextFieldChange(e, `name${index}`)}
+                      fullWidth
+                      placeholder="Name"
+                      disabled={!checkedRows.entities[index]}
+                      size="small"
+                    />
+                  ) : (
+                    <FullWidthSelect
+                      value={selectedLetters[`selectName${index}`] || ""}
+                      onChange={(e) => handleSelectChange(e, `selectName${index}`)}
                       displayEmpty
-                      style={tdSelectStyle}
-                      disabled={
-                        entity.toggle
-                          ? useTextField[`id${index}`] ||
-                            !checkedRows.entities[index]
-                          : !checkedRows.entities[index]
-                      }
+                      disabled={!checkedRows.entities[index]}
+                      size="small"
                     >
                       {alphabet.map((letter) => (
                         <MenuItem key={letter} value={letter}>
                           {letter}
                         </MenuItem>
                       ))}
-                    </Select>
-                    {entity.toggle && (
-                      <TextField
-                        value={textFieldValues[`id${index}`] || ""}
-                        onChange={(e) => handleTextFieldChange(e, `id${index}`)}
-                        fullWidth
-                        placeholder="ID"
-                        disabled={
-                          !useTextField[`id${index}`] ||
-                          !checkedRows.entities[index]
-                        }
-                        style={{
-                          display: useTextField[`id${index}`] ? "block" : "none",
-                        }}
-                      />
-                    )}
-                  </Box>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Box>
-        <br />
-        <Box style={tableStyle} component="table">
-          <thead>
-            <tr>
-              <th style={thStyle}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={Object.values(checkedRows.relations).every(
-                        Boolean
-                      )}
-                      onChange={() => handleSelectAll("relations")}
+                    </FullWidthSelect>
+                  )}
+                  {entity.toggle && index <= 2 && (
+                    <Button
+                      size="small"
+                      onClick={() => handleUseTextFieldToggle(`name${index}`)}
+                    >
+                      {useTextField[`name${index}`] ? "Dropdown" : "Text"}
+                    </Button>
+                  )}
+                </FlexBox>
+              </StyledTableCell>
+              <StyledTableCell>
+                <SelectContainer>
+                  {!useTextField[`id${index}`] && (
+                    <FullWidthSelect
+                      value={selectedLetters[`selectID${index}`] || ""}
+                      onChange={(e) => handleSelectChange(e, `selectID${index}`)}
+                      displayEmpty
+                      disabled={entity.toggle ? useTextField[`id${index}`] || !checkedRows.entities[index] : !checkedRows.entities[index]}
+                      size="small"
+                    >
+                      {alphabet.map((letter) => (
+                        <MenuItem key={letter} value={letter}>
+                          {letter}
+                        </MenuItem>
+                      ))}
+                    </FullWidthSelect>
+                  )}
+                  {entity.toggle && useTextField[`id${index}`] && (
+                    <TextField
+                      value={textFieldValues[`id${index}`] || ""}
+                      onChange={(e) => handleTextFieldChange(e, `id${index}`)}
+                      fullWidth
+                      placeholder="ID"
+                      disabled={!useTextField[`id${index}`] || !checkedRows.entities[index]}
+                      size="small"
                     />
-                  }
-                  label={t('import_excel.select_all')}
-                />
-              </th>
-              <th style={thStyle}>{t('import_excel.relations')}</th>
-              <th style={thStyle}>{t('import_excel.sheetName')}</th>
-              <th style={thStyle}>ID 1</th>
-              <th style={thStyle}>ID 2</th>
-            </tr>
-          </thead>
-          <tbody>
-            {[
-              <T keyName="import_excel.rel_doc_model" />,
-              <T keyName="import_excel.rel_model_group" />,
-              <T keyName="import_excel.rel_group_class" />,
-              <T keyName="import_excel.rel_class_property" />,
-              <T keyName="import_excel.rel_property_measure" />,
-              <T keyName="import_excel.rel_measure_unit" />,
-              <T keyName="import_excel.rel_measure_value" />,
-            ].map((relation, index) => (
-              <tr key={index}>
-                <td style={thTdStyle}>
+                  )}
+                  {entity.toggle && (
+                    <Button
+                      size="small"
+                      onClick={() => handleUseTextFieldToggle(`id${index}`)}
+                    >
+                      {useTextField[`id${index}`] ? "Dropdown" : "Text"}
+                    </Button>
+                  )}
+                </SelectContainer>
+              </StyledTableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </StyledTable>
+    </StyledTableContainer>
+  );
+
+  const renderRelationTable = () => (
+    <StyledTableContainer component={Paper}>
+      <StyledTable>
+        <TableHead>
+          <TableRow>
+            <StyledHeaderCell>
+              <FormControlLabel
+                control={
                   <Checkbox
-                    checked={!!checkedRows.relations[index]}
-                    onChange={() => handleCheckboxChange(index, "relations")}
+                    checked={Object.values(checkedRows.relations).every(Boolean)}
+                    onChange={() => handleSelectAll("relations")}
                   />
-                </td>
-                <td style={thTdStyle}>{relation}</td>
-                <td style={thTdStyle}>
-                  <TextField
-                    value={textFieldValues[`sheetFieldRelation${index}`] || ""}
-                    onChange={(e) =>
-                      handleTextFieldChange(e, `sheetFieldRelation${index}`)
-                    }
-                    fullWidth
-                    placeholder={t('import_excel.sheetName')}
-                    disabled={!checkedRows.relations[index]}
-                  />
-                </td>
-                <td style={thTdStyle}>
-                  <Select
-                    value={selectedLetters[`relationID1${index}`] || ""}
-                    onChange={(e) =>
-                      handleSelectChange(e, `relationID1${index}`)
-                    }
-                    displayEmpty
-                    style={tdSelectStyle}
-                    disabled={!checkedRows.relations[index]}
-                  >
-                    {alphabet.map((letter) => (
-                      <MenuItem key={letter} value={letter}>
-                        {letter}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </td>
-                <td style={thTdStyle}>
-                  <Select
-                    value={selectedLetters[`relationID2${index}`] || ""}
-                    onChange={(e) =>
-                      handleSelectChange(e, `relationID2${index}`)
-                    }
-                    displayEmpty
-                    style={tdSelectStyle}
-                    disabled={!checkedRows.relations[index]}
-                  >
-                    {alphabet.map((letter) => (
-                      <MenuItem key={letter} value={letter}>
-                        {letter}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Box>
-        <Box
-          style={{
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <Box
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              marginRight: "8px",
-              marginTop: "32px",
-              minHeight: "72px", // Mindesthöhe für den Container
-            }}
-          >
-            <Button variant="contained" component="label" color="primary">
-            <T keyName="import_excel.select_file_button" />
-              <input
-                type="file"
-                accept=".xlsx,.xls"
-                onChange={handleFileChange}
-                name="entitiesFile"
-                style={{ display: "none" }}
-                ref={fileInputRef} // Referenz auf das Datei-Input-Element
+                }
+                label={t('import_excel.select_all')}
               />
-            </Button>
-            <Box
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "24px", // Höhe des Textes
-                marginTop: "8px",
-              }}
-            >
-              <Typography color="textSecondary">
-                {entitiesFile === null ? <T keyName="import_excel.no_file_selected" /> : ""}
-              </Typography>
-            </Box>
-          </Box>
-          <Box
-            style={{
-              display: "flex",
-              gap: "8px",
-              alignItems: "center",
-            }}
-          >
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={handleValidationClick}
-            >
-              <T keyName="import_excel.check_inputs_button" />
-            </Button>
-            <TextField
-              id="importTag"
-              label= <T keyName="import_excel.import_tag_label" />
-              name="importTag"
-              variant="outlined"
-              size="small"
-              onChange={handleImportTagChange}
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              disabled={!entitiesFile || !valid}
-              onClick={handleimportExcel}
-            >
-              <T keyName="import_excel.import_button" />
-            </Button>
-            <Button
-              variant="contained"
-              color="inherit"
-              onClick={handleClearTable}
-            >
-              <T keyName="import_excel.reset_button" />
-            </Button>
-          </Box>
-        </Box>
+            </StyledHeaderCell>
+            <StyledHeaderCell>{t('import_excel.relations')}</StyledHeaderCell>
+            <StyledHeaderCell>{t('import_excel.sheetName')}</StyledHeaderCell>
+            <StyledHeaderCell>ID 1</StyledHeaderCell>
+            <StyledHeaderCell>ID 2</StyledHeaderCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {[
+            <T keyName="import_excel.rel_doc_model" />,
+            <T keyName="import_excel.rel_model_group" />,
+            <T keyName="import_excel.rel_group_class" />,
+            <T keyName="import_excel.rel_class_property" />,
+            <T keyName="import_excel.rel_property_measure" />,
+            <T keyName="import_excel.rel_measure_unit" />,
+            <T keyName="import_excel.rel_measure_value" />,
+          ].map((relation, index) => (
+            <TableRow key={index}>
+              <StyledTableCell>
+                <Checkbox
+                  checked={!!checkedRows.relations[index]}
+                  onChange={() => handleCheckboxChange(index, "relations")}
+                />
+              </StyledTableCell>
+              <StyledTableCell>{relation}</StyledTableCell>
+              <StyledTableCell>
+                <TextField
+                  value={textFieldValues[`sheetFieldRelation${index}`] || ""}
+                  onChange={(e) => handleTextFieldChange(e, `sheetFieldRelation${index}`)}
+                  fullWidth
+                  placeholder={t('import_excel.sheetName')}
+                  disabled={!checkedRows.relations[index]}
+                  size="small"
+                />
+              </StyledTableCell>
+              <StyledTableCell>
+                <FullWidthSelect
+                  value={selectedLetters[`relationID1${index}`] || ""}
+                  onChange={(e) => handleSelectChange(e, `relationID1${index}`)}
+                  displayEmpty
+                  disabled={!checkedRows.relations[index]}
+                  size="small"
+                >
+                  {alphabet.map((letter) => (
+                    <MenuItem key={letter} value={letter}>
+                      {letter}
+                    </MenuItem>
+                  ))}
+                </FullWidthSelect>
+              </StyledTableCell>
+              <StyledTableCell>
+                <FullWidthSelect
+                  value={selectedLetters[`relationID2${index}`] || ""}
+                  onChange={(e) => handleSelectChange(e, `relationID2${index}`)}
+                  displayEmpty
+                  disabled={!checkedRows.relations[index]}
+                  size="small"
+                >
+                  {alphabet.map((letter) => (
+                    <MenuItem key={letter} value={letter}>
+                      {letter}
+                    </MenuItem>
+                  ))}
+                </FullWidthSelect>
+              </StyledTableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </StyledTable>
+    </StyledTableContainer>
+  );
+
+  const renderActionArea = () => (
+    <ButtonsContainer sx={{ mt: 2 }}>
+      <ButtonWrapper>
+        <ActionButton
+          variant="contained"
+          component="label"
+          color="primary"
+        >
+          <T keyName="import_excel.select_file_button" />
+          <input
+            type="file"
+            accept=".xlsx,.xls"
+            onChange={handleFileChange}
+            name="entitiesFile"
+            hidden
+            ref={fileInputRef}
+          />
+        </ActionButton>
+        <Typography color="textSecondary">
+          {entitiesFile === null ? <T keyName="import_excel.no_file_selected" /> : entitiesFile.name}
+        </Typography>
+      </ButtonWrapper>
+
+      <ButtonWrapper>
+        <ActionButton
+          variant="contained"
+          color="secondary"
+          onClick={handleValidationClick}
+        >
+          <T keyName="import_excel.check_inputs_button" />
+        </ActionButton>
+      </ButtonWrapper>
+      
+      <ButtonWrapper>
+        <TextField
+          id="importTag"
+          label={<T keyName="import_excel.import_tag_label" />}
+          name="importTag"
+          variant="outlined"
+          size="small"
+          onChange={handleImportTagChange}
+          value={importTag}
+          sx={{ mb: 0.5, width: "200px" }}
+        />
+      </ButtonWrapper>
+      
+      <ButtonWrapper>
+        <ActionButton
+          variant="contained"
+          color="primary"
+          disabled={!entitiesFile || !valid}
+          onClick={handleimportExcel}
+        >
+          <T keyName="import_excel.import_button" />
+        </ActionButton>
+      </ButtonWrapper>
+      
+      <ButtonWrapper>
+        <ActionButton
+          variant="contained"
+          color="inherit"
+          onClick={handleClearTable}
+        >
+          <T keyName="import_excel.reset_button" />
+        </ActionButton>
+      </ButtonWrapper>
+    </ButtonsContainer>
+  );
+
+  const renderProgressArea = () => (
+    <ProgressContainer>
+      <LinearProgress variant="determinate" value={progress} />
+      <Stack direction="row" justifyContent="space-between" sx={{ mt: 1 }}>
+        <Typography variant="body2">{status}</Typography>
+        <Typography variant="body2">{progress.toFixed(1)}%</Typography>
+      </Stack>
+    </ProgressContainer>
+  );
+
+  return (
+    <View heading={<T keyName="import_excel.heading" />}>
+      <Box>
+        <Typography variant="body1" paragraph>
+          <T keyName="import_excel.description" />
+        </Typography>
+
+        {renderEntityTable()}
+        {renderRelationTable()}
+        {renderActionArea()}
+
         {validationError === false && (
-          <Alert severity="error">
+          <Alert severity="error" sx={{ mt: 2 }}>
             <T keyName="import_excel.validation_failed" />
           </Alert>
         )}
-        {/* {!validationError && <Alert severity="success">Validierung erfolgreich. Sie können jetzt die Excel-Datei importieren.</Alert>} */}
+
+        {progress > 0 && renderProgressArea()}
       </Box>
-      <div>
-        <LinearProgress variant="determinate" value={progress} />
-        <Typography variant="body1">{status}</Typography>
-        <p>{progress.toFixed(2)}% completed</p>{" "}
-        {/* Fortschritt in Prozent anzeigen */}
-      </div>
     </View>
   );
 }

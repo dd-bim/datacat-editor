@@ -6,27 +6,25 @@ import {
   useDeleteNameMutation,
   useUpdateNameMutation,
 } from "../../generated/types";
-import React, { FC } from "react";
+import React from "react";
 import FormSet, { FormSetDescription, FormSetTitle } from "./FormSet";
 import { useSnackbar } from "notistack";
 import TranslationFormSet from "./TranslationFormSet";
-import makeStyles from "@mui/styles/makeStyles";
-import { Theme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { T } from "@tolgee/react";
+
+// Replace makeStyles with styled component
+const StyledFormSetDescription = styled(FormSetDescription)(({ theme }) => ({
+  marginBottom: theme.spacing(1),
+}));
 
 export type NameFormSetProps = {
   catalogEntryId: string;
   names: TranslationPropsFragment[];
 };
-const useStyles = makeStyles((theme: Theme) => ({
-  description: {
-    marginBottom: theme.spacing(1),
-  },
-}));
 
-const NameFormSet: FC<NameFormSetProps> = (props) => {
+const NameFormSet = (props: NameFormSetProps) => {
   const { catalogEntryId, names } = props;
-  const classes = useStyles();
 
   const { enqueueSnackbar } = useSnackbar();
   const [addName] = useAddNameMutation();
@@ -67,9 +65,9 @@ const NameFormSet: FC<NameFormSetProps> = (props) => {
           <T keyName="name.title" />
         </b>
       </FormSetTitle>
-      <FormSetDescription className={classes.description}>
+      <StyledFormSetDescription>
         <T keyName="name.description" />
-      </FormSetDescription>
+      </StyledFormSetDescription>
       
       <div style={{ marginBottom: "12px" }}></div>
 

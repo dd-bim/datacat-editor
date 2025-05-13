@@ -1,6 +1,6 @@
-import React, {FC} from "react";
-import {Paper, TypographyProps} from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
+import React from "react";
+import { Paper, TypographyProps } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 
 type ViewProps = {
@@ -9,28 +9,27 @@ type ViewProps = {
     children?: React.ReactNode
 }
 
-const useStyles = makeStyles((theme: { spacing: (factor: number) => number }) => ({
-    root: {
-        padding: theme.spacing(3)
-    },
-    heading: {
-        marginBottom: theme.spacing(1)
-    }
+// Replace makeStyles with styled components
+const StyledPaper = styled(Paper)(({ theme }) => ({
+    padding: theme.spacing(3)
 }));
 
-const View: FC<ViewProps> = (props) => {
+const HeadingTypography = styled(Typography)(({ theme }) => ({
+    marginBottom: theme.spacing(1)
+}));
+
+const View = (props: ViewProps) => {
     const {
         heading,
         HeadingProps,
         children
     } = props;
-    const classes = useStyles();
 
     return (
-        <Paper className={classes.root}>
-            <Typography className={classes.heading} variant="h4" {...HeadingProps}>{heading}</Typography>
+        <StyledPaper>
+            <HeadingTypography variant="h4" {...HeadingProps}>{heading}</HeadingTypography>
             {children}
-        </Paper>
+        </StyledPaper>
     )
 }
 

@@ -1,5 +1,5 @@
 import FormSet, { FormSetDescription, FormSetTitle } from "./FormSet";
-import React, { FC } from "react";
+import React from "react";
 import {
   Maybe,
   ToleranceInput,
@@ -18,7 +18,7 @@ type ToleranceFormSetProps = {
   upperTolerance?: Maybe<string>;
 };
 
-const ToleranceFormSet: FC<ToleranceFormSetProps> = (props) => {
+const ToleranceFormSet = (props: ToleranceFormSetProps) => {
   const { id, toleranceType, lowerTolerance, upperTolerance } = props;
   const defaultValues: ToleranceDefaultFormValues = {
     toleranceType: toleranceType ?? "",

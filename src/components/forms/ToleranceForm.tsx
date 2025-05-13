@@ -1,35 +1,37 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { TextField, ClickAwayListener, Box, Button, MenuItem } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 import { ToleranceType } from '../../generated/types';
 import { T } from '@tolgee/react';
 
-const useStyles = makeStyles((theme: { spacing: (value: number) => number }) => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    gap: theme.spacing(2),
+// Replace makeStyles with styled components
+const FormContainer = styled('form')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  flexWrap: 'wrap',
+  gap: theme.spacing(2),
+}));
+
+const SelectField = styled(TextField)(({ theme }) => ({
+  minWidth: 150, // Increased from 120px to ensure "Type" is always readable
+  '& .MuiInputBase-root': {
+    width: 'auto',
   },
-  selectField: {
-    minWidth: 150, // Increased from 120px to ensure "Type" is always readable
-    '& .MuiInputBase-root': {
-      width: 'auto',
-    },
-    '& .MuiSelect-select': {
-      minWidth: 80, // Ensures content area has minimum width
-    },
+  '& .MuiSelect-select': {
+    minWidth: 80, // Ensures content area has minimum width
   },
-  inputField: {
-    minWidth: 150,
-  },
-  buttonsContainer: {
-    display: 'flex',
-    gap: theme.spacing(2),
-    marginLeft: theme.spacing(1),
-  },
+}));
+
+const InputField = styled(TextField)({
+  minWidth: 150,
+});
+
+const ButtonsContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  gap: theme.spacing(2),
+  marginLeft: theme.spacing(1),
 }));
 
 export type ToleranceFormValues = {
@@ -50,8 +52,7 @@ type ToleranceFormProps = {
   onDelete(): Promise<void>;
 };
 
-const ToleranceForm: FC<ToleranceFormProps> = ({ defaultValues, onSubmit, onDelete }) => {
-  const classes = useStyles();
+const ToleranceForm = ({ defaultValues, onSubmit, onDelete }: ToleranceFormProps) => {
   const { control, handleSubmit, reset, formState: { isDirty } } = useForm<ToleranceDefaultFormValues>({ defaultValues });
   const [isEditMode, setIsEditMode] = React.useState(false);
 
@@ -83,14 +84,13 @@ const ToleranceForm: FC<ToleranceFormProps> = ({ defaultValues, onSubmit, onDele
 
   return (
     <ClickAwayListener onClickAway={handleOnClickAway}>
-      <form className={classes.root} onSubmit={handleSubmit(handleOnSave)}>
+      <FormContainer onSubmit={handleSubmit(handleOnSave)}>
         <Controller
           name="toleranceType"
           control={control}
           render={({ field }) => (
-            <TextField
+            <SelectField
               {...field}
-              className={classes.selectField}
               label={<T keyName="tolerance_form.type_label">Typ</T>}
               InputProps={{
                 onFocus: !isEditMode ? handleOnEdit : undefined,
@@ -109,7 +109,7 @@ const ToleranceForm: FC<ToleranceFormProps> = ({ defaultValues, onSubmit, onDele
                   {type}
                 </MenuItem>
               ))}
-            </TextField>
+            </SelectField>
           )}
         />
         
@@ -117,9 +117,8 @@ const ToleranceForm: FC<ToleranceFormProps> = ({ defaultValues, onSubmit, onDele
           name="lowerTolerance"
           control={control}
           render={({ field }) => (
-            <TextField
+            <InputField
               {...field}
-              className={classes.inputField}
               label={<T keyName="tolerance_form.lower_tolerance_label">Untere Toleranz</T>}
               InputProps={{
                 onFocus: !isEditMode ? handleOnEdit : undefined,
@@ -132,9 +131,8 @@ const ToleranceForm: FC<ToleranceFormProps> = ({ defaultValues, onSubmit, onDele
           name="upperTolerance"
           control={control}
           render={({ field }) => (
-            <TextField
+            <InputField
               {...field}
-              className={classes.inputField}
               label={<T keyName="tolerance_form.upper_tolerance_label">Obere Toleranz</T>}
               InputProps={{
                 onFocus: !isEditMode ? handleOnEdit : undefined,
@@ -143,7 +141,7 @@ const ToleranceForm: FC<ToleranceFormProps> = ({ defaultValues, onSubmit, onDele
           )}
         />
         
-        <Box className={classes.buttonsContainer}>
+        <ButtonsContainer>
           <Button type="submit" variant="contained" color="primary">
             <T keyName="tolerance_form.save_button">Save</T>
           </Button>
@@ -155,8 +153,8 @@ const ToleranceForm: FC<ToleranceFormProps> = ({ defaultValues, onSubmit, onDele
           <Button type="button" variant="outlined" onClick={handleOnReset}>
             <T keyName="tolerance_form.reset_button">Reset</T>
           </Button>
-        </Box>
-      </form>
+        </ButtonsContainer>
+      </FormContainer>
     </ClickAwayListener>
   );
 };
