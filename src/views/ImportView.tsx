@@ -1,5 +1,5 @@
 import View from "./View";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, TextField, Typography, ButtonProps } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import {
   FindTagsResultFragment,
@@ -16,6 +16,7 @@ import { useSnackbar } from "notistack";
 import JSZip from "jszip";
 import FileSaver from "file-saver";
 import { T } from "@tolgee/react";
+import { styled } from "@mui/material/styles";
 
 export const IMPORT_TAG_ID = "KATALOG-IMPORT";
 type entity = {
@@ -33,6 +34,43 @@ type relation = {
   entity2: string;
 };
 
+// Add styled components for better organization and consistency
+const StyledTable = styled('table')(({ theme }) => ({
+  borderCollapse: 'collapse',
+  width: '100%',
+  marginTop: theme.spacing(2), // Reduced from 4 to 2
+  marginBottom: theme.spacing(2), // Reduced from 4 to 2
+  '& th, & td': {
+    border: `1px solid ${theme.palette.divider}`,
+    padding: theme.spacing(0.75, 1),
+  },
+  '& th': {
+    backgroundColor: theme.palette.mode === 'dark' 
+      ? theme.palette.grey[800] 
+      : theme.palette.grey[100],
+    fontWeight: 'bold',
+  }
+}));
+
+const ButtonsContainer = styled(Box)(({ theme }) => ({
+  display: "flex",
+  alignItems: "flex-start",
+  marginBottom: theme.spacing(2),
+  flexWrap: "wrap",
+  gap: theme.spacing(2),
+}));
+
+const ButtonWrapper = styled(Box)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  textAlign: "center",
+}));
+
+const ActionButton = styled(Button)<ButtonProps>(({ theme }) => ({
+  marginBottom: theme.spacing(0.5),
+}));
+
 export function ImportView() {
   const [entitiesFile, setEntitiesFile] = useState(null);
   const [relationsFile, setRelationsFile] = useState(null);
@@ -43,7 +81,7 @@ export function ImportView() {
   const [loaded, setLoaded] = useState(false);
   const [output, setOutput] = useState<string | React.ReactNode>("");
   const [init, setInit] = useState(false);
-  const [importTag, setImportTag] = useState(IMPORT_TAG_ID);
+  const [importTag, setImportTag] = useState(""); // Empty string as default
   const fileRef = useRef<HTMLInputElement>(null);
   const [control, setControl] = useState(1);
 
@@ -447,9 +485,12 @@ export function ImportView() {
           Über diese Seite lassen sich Entitäten und deren Relationen importieren. Analog zum Export können hier zwei
           CSV-Dateien importiert werden. Die eine Datei enthält die Entitäten in folgendem Schema:
         </T>
-        <br />
+        
+        {/* Reduced spacing before first table */}
+        <Box sx={{ my: 1.5 }}></Box>
+        
         <Box component="div">
-          <table>
+          <StyledTable>
             <thead>
               <tr>
                 <th>
@@ -477,14 +518,11 @@ export function ImportView() {
                 <th>lastModifiedBy</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
+          </StyledTable>
         </Box>
-        <br />
+
+        <Box sx={{ my: 1 }}></Box> {/* Consistent small spacing */}
+        
         <T keyName="import.entity_columns_note">
           Mit r gekennzeichnete Spalten müssen für jede Entität ausgefüllt sein, mit o gekennzeichnete Spalten können
           optional Werte enthalten. Die restlichen Spalten werden beim Import nicht berücksichtigt und können daher leer
@@ -500,39 +538,52 @@ export function ImportView() {
         <T keyName="import.relation_columns_note">
           Die andere Datei enthält optional die Relationen zwischen Entitäten mit den folgenden Spalten:
         </T>
-        <br />
-        <b>
-          <T keyName="import.relation_columns">entity1</T><sup>r</sup> entity1Type <T keyName="import.relation_id">relationId</T><sup>r</sup> <T keyName="import.relationship_type">relationshipType</T><sup>r</sup> <T keyName="import.entity2">entity2</T><sup>r</sup>{" "}
-          entity2Type
-        </b>
-        <br />
+        
+        {/* Reduced spacing before second table */}
+        <Box sx={{ my: 1.5 }}></Box>
+        
+        <Box component="div">
+          <StyledTable>
+            <thead>
+              <tr>
+                <th>
+                  entity1<sup>r</sup>
+                </th>
+                <th>
+                  entity1Type
+                </th>
+                <th>
+                  relationId<sup>r</sup>
+                </th>
+                <th>
+                  relationshipType<sup>r</sup>
+                </th>
+                <th>
+                  entity2<sup>r</sup>
+                </th>
+                <th>
+                  entity2Type
+                </th>
+              </tr>
+            </thead>
+          </StyledTable>
+        </Box>
+
+        <Box sx={{ my: 1 }}></Box> {/* Consistent small spacing */}
+        
         <T keyName="import.relation_columns_note_2">Die Entitätstypen können hier leer gelassen werden.</T>
-        <br />
-        <br />
       </Typography>
-      <Box
-        component="div"
-        style={{
-          display: "flex",
-          alignItems: "flex-start", // Alle Buttons oben ausrichten
-          marginBottom: "16px", // Optional für zusätzlichen Abstand
-          flexWrap: "wrap", // Erlaubt das Umwickeln der Elemente, falls der Platz nicht ausreicht
-        }}
-      >
-        <Box
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            marginRight: "16px",
-            textAlign: "center",
-          }}
-        >
-          <Button
+      
+      {/* Add consistent spacing before buttons */}
+      <Box sx={{ my: 2 }}></Box>
+      
+      <ButtonsContainer>
+        {/* ...existing button wrappers... */}
+        <ButtonWrapper>
+          <ActionButton
             variant="contained"
             component="label"
             color="primary" // Farbe anpassen
-            style={{ marginBottom: "4px" }}
           >
             <T keyName="import.entities_file_button">Entitäten Datei auswählen</T>
             <input
@@ -543,26 +594,17 @@ export function ImportView() {
               ref={fileRef}
               onChange={handleFileChange}
             />
-          </Button>
+          </ActionButton>
           <Typography color="textSecondary">
             {entitiesFile === null ? <T keyName="import.no_file_selected">Keine Datei ausgewählt</T> : ""}
           </Typography>
-        </Box>
+        </ButtonWrapper>
 
-        <Box
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            marginRight: "16px",
-            textAlign: "center",
-          }}
-        >
-          <Button
+        <ButtonWrapper>
+          <ActionButton
             variant="contained"
             component="label"
             color="primary" // Farbe anpassen
-            style={{ marginBottom: "4px" }}
           >
             <T keyName="import.relations_file_button">Relationen Datei auswählen</T>
             <input
@@ -573,41 +615,24 @@ export function ImportView() {
               ref={fileRef}
               onChange={handleFileChange}
             />
-          </Button>
+          </ActionButton>
           <Typography color="textSecondary">
             {relationsFile === null ? <T keyName="import.no_file_selected">Keine Datei ausgewählt</T> : ""}
           </Typography>
-        </Box>
+        </ButtonWrapper>
 
-        <Box
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            marginRight: "16px",
-            textAlign: "center",
-          }}
-        >
-          <Button
+        <ButtonWrapper>
+          <ActionButton
             variant="contained"
             color="primary" // Farbe anpassen
             onClick={handleUpload}
             disabled={!loaded}
-            style={{ marginBottom: "4px" }}
           >
             <T keyName="import.import_button">Importieren</T>
-          </Button>
-        </Box>
+          </ActionButton>
+        </ButtonWrapper>
 
-        <Box
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            textAlign: "center",
-            marginRight: "16px",
-          }}
-        >
+        <ButtonWrapper>
           <TextField
             id="importTag"
             label={<T keyName="import.import_tag_label">Import Tag (optional)</T>}
@@ -615,31 +640,24 @@ export function ImportView() {
             variant="outlined"
             size="small"
             onChange={handleImportTagChange}
-            style={{ marginBottom: "4px", width: "200px" }} // Einheitlicher Abstand wie Buttons
+            value={importTag}
+            sx={{ mb: 0.5, width: "200px" }}
           />
-        </Box>
+        </ButtonWrapper>
 
-        <Box
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            marginRight: "16px",
-            textAlign: "center",
-          }}
-        >
-          <Button
+        <ButtonWrapper>
+          <ActionButton
             onClick={handleDownloadTemplate}
             variant="contained"
             color="inherit"
-            style={{ marginBottom: "4px", width: "200px" }}
+            sx={{ width: "200px" }}
           >
             <T keyName="import.csv_templates_button">CSV Templates</T>
-          </Button>
-        </Box>
-      </Box>
+          </ActionButton>
+        </ButtonWrapper>
+      </ButtonsContainer>
 
-      <Typography color="primary" style={{ marginTop: "8px" }}>
+      <Typography color="primary" sx={{ mt: 1 }}>
         {output}
       </Typography>
     </View>

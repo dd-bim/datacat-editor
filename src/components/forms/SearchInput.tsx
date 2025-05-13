@@ -1,4 +1,4 @@
-import React, {FC} from "react";
+import React from "react";
 import ClearIcon from '@mui/icons-material/Clear';
 import TextField from "@mui/material/TextField";
 import {InputAdornment} from "@mui/material";
@@ -10,7 +10,7 @@ type SearchInputProps = {
     onChange(value: string): void
 }
 
-const SearchField: FC<SearchInputProps> = (props) => {
+const SearchField = (props: SearchInputProps) => {
     const {
         value, onChange
     } = props;

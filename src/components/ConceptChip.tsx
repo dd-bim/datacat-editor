@@ -1,4 +1,4 @@
-import React, {FC} from "react";
+import React from "react";
 import {Chip, ChipProps} from "@mui/material";
 import {Entity} from "../domain";
 import {useNavigate} from "react-router-dom";
@@ -10,7 +10,7 @@ type ConceptChipProps = {
     title?: string
 } & Partial<ChipProps>;
 
-const ConceptChip: FC<ConceptChipProps> = (props) => {
+const ConceptChip = (props: ConceptChipProps) => {
     const { conceptType, id, label, title, ...otherProps } = props;
     const navigate = useNavigate();
 

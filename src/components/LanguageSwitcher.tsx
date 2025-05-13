@@ -4,7 +4,11 @@ import { useTolgee } from "@tolgee/react";
 import { styled } from "@mui/material/styles";
 import { AppContext } from "../context/AppContext";
 
-const WhiteSelect = styled(Select)<{ borderColor: string }>(({ borderColor }) => ({
+// Fix the WhiteSelect component to properly handle the custom prop
+const WhiteSelect = styled(Select, {
+  // Use shouldForwardProp to prevent borderColor from being forwarded to the DOM
+  shouldForwardProp: (prop) => prop !== 'borderColor'
+})<{ borderColor?: string }>(({ borderColor = 'white', theme }) => ({
   color: "#ffffff",
   "& .MuiOutlinedInput-notchedOutline": {
     borderColor: borderColor,

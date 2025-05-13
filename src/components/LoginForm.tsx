@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import React, { useState } from "react";
-import makeStyles from "@mui/styles/makeStyles";
+import { styled } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import { Button, IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -13,18 +13,22 @@ interface LoginFormProps {
   onLogin: (token: JwtToken) => void;
 }
 
-const useStyles = makeStyles((theme: any) => ({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    "& > *": {
-      marginBottom: theme.spacing(2),
-    },
+// Replace makeStyles with styled component
+const FormContainer = styled('form')(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  "& > *": {
+    marginBottom: theme.spacing(2),
   },
+  "& .MuiTextField-root": {
+    marginBottom: theme.spacing(2), // Reduced spacing
+  },
+  "& button": {
+    marginTop: theme.spacing(1), // Smaller spacing above the button
+  }
 }));
 
 export default function LoginForm(props: LoginFormProps) {
-  const classes = useStyles();
   const { onLogin } = props;
   const [showPassword, setShowPassword] = useState(false);
   const [login, { error }] = useLoginFormMutation({
@@ -47,7 +51,7 @@ export default function LoginForm(props: LoginFormProps) {
   };
 
   return (
-    <form className={classes.root} onSubmit={handleSubmit(onSubmit)} noValidate>
+    <FormContainer onSubmit={handleSubmit(onSubmit)} noValidate>
       {error && <Alert severity="error">{error.message}</Alert>}
 
       <TextField
@@ -90,6 +94,6 @@ export default function LoginForm(props: LoginFormProps) {
       >
         <T keyName="login.login_button">Anmelden</T>
       </Button>
-    </form>
+    </FormContainer>
   );
 }

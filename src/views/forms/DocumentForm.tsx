@@ -1,4 +1,4 @@
-import React, {FC} from "react";
+import React from "react";
 import {
     ExternalDocumentDetailPropsFragment,
     RelationshipRecordType,
@@ -17,7 +17,7 @@ import TransferListView from "../TransferListView";
 import {Domain} from "../../domain";
 import {T} from "@tolgee/react";
 
-const DocumentForm: FC<FormProps<ExternalDocumentDetailPropsFragment>> = (props) => {
+const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
 console.log("IDDocument :" + id)

@@ -1,175 +1,99 @@
-import { FC, useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { useState, useEffect, useCallback, useMemo, memo } from "react";
 import { useNavigate } from "react-router-dom";
-import { makeStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 import {
   usePropertyTreeQuery,
   useGetBagLazyQuery,
   useAddTagMutation,
   useFindTagsQuery,
 } from "../generated/types";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import {
+  Box,
   Chip,
   Button,
   Select,
   MenuItem,
   FormControl,
   InputLabel,
+  Paper,
+  Typography,
+  Checkbox,
+  SelectChangeEvent,
+  LinearProgress,
 } from "@mui/material";
 import { useSnackbar } from "notistack";
-import { SelectChangeEvent } from "@mui/material/Select";
-import { FixedSizeList as List } from "react-window";
+import {
+  DataGrid,
+  GridColDef,
+  GridRenderCellParams,
+  GridRowSelectionModel,
+} from "@mui/x-data-grid";
 import { T, useTranslate } from "@tolgee/react";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 
-const useStyles = makeStyles((theme: { spacing: (factor: number) => number; shape: { borderRadius: number }; palette: { background: { paper: string } }; typography: { fontSize: number } }) => ({
-  tableContainer: {
-    border: "2px solid #ccc",
-    borderRadius: theme.shape.borderRadius,
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    margin: theme.spacing(2),
-    overflowX: "auto",
-    backgroundColor: theme.palette.background.paper,
-  },
-  fixedContainer: {
-    position: "sticky",
-    top: 0,
-    backgroundColor: theme.palette.background.paper,
-    zIndex: 3,
-    padding: theme.spacing(2),
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-  },
-  scrollableContainer: {
-    maxHeight: "calc(100vh - 300px)", // Adjust this value based on the height of the fixed container
-    overflowY: "auto",
-    backgroundColor: theme.palette.background.paper,
-  },
-  table: {
-    width: "100%",
-    borderCollapse: "collapse", // Entfernt Abstände zwischen Zellen
-  },
-  thTd: {
-    border: "1px solid #ddd",
-    padding: "8px", // Einheitliches Padding
-    textAlign: "left",
-    backgroundColor: "#f9f9f9",
-  },
-  checkboxThTd: {
-    border: "1px solid #ddd",
-    padding: theme.spacing(1),
-    textAlign: "center" as const,
-    width: "50px",
-  },
-  checkboxTd: {
-    border: "1px solid #ddd",
-    padding: theme.spacing(1),
-    textAlign: "center" as const,
-    width: "50px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  th: {
-    backgroundColor: "#f2f2f2",
-    fontWeight: "bold",
-  },
-  trEven: {
-    backgroundColor: "#f9f9f9",
-  },
-  trOdd: {
-    backgroundColor: "#ffffff",
-  },
-  clickableRow: {
-    cursor: "pointer",
-  },
-  buttonContainer: {
-    display: "flex",
-    gap: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-  },
-  checkboxLabel: {
-    marginLeft: theme.spacing(1),
-  },
-  headerCell: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100%",
-  },
-  headerContent: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  tagButtonContainer: {
-    display: "flex",
-    flexWrap: "wrap",
-    marginBottom: theme.spacing(2),
-  },
-  tagChip: {
-    margin: theme.spacing(0.5),
-    fontSize: theme.typography.fontSize,
-    height: "36px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontWeight: "bold",
-  },
-  tagFilterTitle: {
-    marginBottom: theme.spacing(1),
-  },
-  headerContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "100%",
-    marginBottom: theme.spacing(2),
-  },
-  tagControls: {
-    display: "flex",
-    justifyContent: "flex-end",
-    gap: theme.spacing(1),
-  },
-  formControl: {
-    minWidth: 200,
-    marginRight: theme.spacing(2),
-  },
-  stickyHeader: {
-    position: "sticky",
-    top: 0,
-    backgroundColor: theme.palette.background.paper,
-    zIndex: 1,
-  },
-  filterContainer: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: theme.spacing(1),
-    backgroundColor: theme.palette.background.paper,
-    position: "sticky",
-    top: 0,
-    zIndex: 2,
-  },
-  chipContainer: {
-    display: "flex",
-    flexWrap: "wrap",
-    gap: theme.spacing(1),
-  },
-  tableHeader: {
-    position: "sticky",
-    top: 50, // Adjust this value based on the height of the filterContainer
-    backgroundColor: theme.palette.background.paper,
-    zIndex: 1,
-  },
-  scrollabletable: {
-    paddingLeft: "15px",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    backgroundColor: theme.palette.background.paper,
-  },
-  row: {
-    display: "flex",
-    alignItems: "center",
-  },
+// Replace makeStyles with styled components
+const TableContainer = styled(Paper)(({ theme }) => ({
+  border: "2px solid #ccc",
+  borderRadius: theme.shape.borderRadius,
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+  margin: theme.spacing(2),
+  overflow: "hidden",
+  backgroundColor: theme.palette.background.paper,
+  // Increase height to make sure we have enough space
+  height: "calc(100vh - 100px)",
+  display: "flex",
+  flexDirection: "column",
+}));
+
+const FixedContainer = styled(Box)(({ theme }) => ({
+  position: "sticky",
+  top: 0,
+  backgroundColor: theme.palette.background.paper,
+  zIndex: 3,
+  padding: theme.spacing(2),
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+}));
+
+const HeaderContainer = styled(Box)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  width: "100%",
+  marginBottom: theme.spacing(2),
+}));
+
+const TagButtonContainer = styled(Box)(({ theme }) => ({
+  display: "flex",
+  flexWrap: "wrap",
+  marginBottom: theme.spacing(2),
+}));
+
+const TagChip = styled(Chip)(({ theme }) => ({
+  margin: theme.spacing(0.5),
+  fontSize: theme.typography.fontSize,
+  height: "36px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  fontWeight: "bold",
+}));
+
+const ButtonContainer = styled(Box)(({ theme }) => ({
+  display: "flex",
+  gap: theme.spacing(2),
+  marginBottom: theme.spacing(2),
+  flexWrap: "wrap",
+}));
+
+const TagControls = styled(Box)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "flex-end",
+  gap: theme.spacing(1),
+}));
+
+const StyledFormControl = styled(FormControl)(({ theme }) => ({
+  minWidth: 200,
+  marginRight: theme.spacing(2),
 }));
 
 interface VisibleColumns {
@@ -181,8 +105,105 @@ interface VisibleColumns {
   propertyGroup: boolean;
 }
 
-const GridViewView: FC = () => {
-  const classes = useStyles();
+// Extracted and memoized tag component for better performance
+const MemoizedTagChip = memo(
+  ({
+    tag,
+    selectedTag,
+    onTagClick,
+  }: {
+    tag: string;
+    selectedTag: string | null;
+    onTagClick: (tag: string | null) => void;
+  }) => (
+    <TagChip
+      key={tag}
+      label={tag}
+      clickable
+      color={selectedTag === tag ? "secondary" : "default"}
+      onClick={() => onTagClick(tag)}
+    />
+  )
+);
+
+// Extracted TagFilterSection component for better organization
+const TagFilterSection = ({
+  allTags,
+  selectedTag,
+  handleTagFilter,
+  newTag,
+  handleTagChange,
+  handleAddTag,
+  t,
+}: {
+  allTags: string[];
+  selectedTag: string | null;
+  handleTagFilter: (tag: string | null) => void;
+  newTag: string;
+  handleTagChange: (event: SelectChangeEvent<string>) => void;
+  handleAddTag: () => void;
+  t: any;
+}) => (
+  <>
+    <HeaderContainer>
+      <Typography variant="h6">{t("grid_view.tag_filter_title")}</Typography>
+      <TagControls>
+        <StyledFormControl variant="outlined">
+          <InputLabel id="importTag-label">
+            {t("grid_view.tag_filter_placeholder")}
+          </InputLabel>
+          <Select
+            labelId="importTag-label"
+            id="importTag"
+            label={t("grid_view.tag_filter_placeholder")}
+            name="importTag"
+            value={newTag}
+            onChange={handleTagChange}
+            style={{ minWidth: "200px" }}
+          >
+            <MenuItem value="">
+              <em>{t("grid_view.select_tag")}</em>
+            </MenuItem>
+            {allTags.map((tag) => (
+              <MenuItem key={tag} value={tag}>
+                {tag}
+              </MenuItem>
+            ))}
+          </Select>
+        </StyledFormControl>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleAddTag}
+          startIcon={<LocalOfferIcon />}
+          disabled={!newTag}
+        >
+          {t("grid_view.add_tag")}
+        </Button>
+      </TagControls>
+    </HeaderContainer>
+
+    <TagButtonContainer>
+      {allTags.map((tag) => (
+        <MemoizedTagChip
+          key={tag}
+          tag={tag}
+          selectedTag={selectedTag}
+          onTagClick={handleTagFilter}
+        />
+      ))}
+      <TagChip
+        label={t("grid_view.show_all")}
+        clickable
+        color={selectedTag === null ? "secondary" : "default"}
+        onClick={() => handleTagFilter(null)}
+      />
+    </TagButtonContainer>
+  </>
+);
+
+// Main component
+const GridViewView = () => {
   const navigate = useNavigate();
   const {
     loading: propertyTreeLoading,
@@ -202,56 +223,29 @@ const GridViewView: FC = () => {
   });
 
   const [entityCount, setEntityCount] = useState<number | null>(null);
-  const [memoizedFilteredRows, setFilteredRows] = useState<any[]>([]);
+  const [filteredRows, setFilteredRows] = useState<any[]>([]);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [documentNames, setDocumentNames] = useState<{
     [key: string]: { name: string | null; id: string | null };
   }>({});
   const [modelIds, setModelIds] = useState<string[]>([]);
-  const [selectedRows, setSelectedRows] = useState<{ [key: number]: boolean }>(
-    {}
-  );
-  const [allSelected, setAllSelected] = useState<boolean>(false);
+  const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [newTag, setNewTag] = useState("");
   const { data, refetch } = useFindTagsQuery({ variables: { pageSize: 100 } });
   const [tags, setTags] = useState<string[]>([]);
   const { enqueueSnackbar } = useSnackbar();
+  const { t } = useTranslate();
 
+  const nodes = propertyTreeData?.hierarchy?.nodes || [];
+  const paths = propertyTreeData?.hierarchy?.paths || [];
+
+  // Column visibility handlers
   const handleCheckboxChange = useCallback((column: keyof VisibleColumns) => {
     setVisibleColumns((prev) => ({
       ...prev,
       [column]: !prev[column],
     }));
   }, []);
-
-  const headerRef = useRef<HTMLTableElement>(null);
-  const [columnWidths, setColumnWidths] = useState<number[]>([]);
-  const headerHeight = headerRef.current
-    ? headerRef.current.getBoundingClientRect().height
-    : 50; // Fallback-Höhe
-
-    const { t } = useTranslate();
-
-  useEffect(() => {
-    if (headerRef.current) {
-      const headerCols = Array.from(headerRef.current.querySelectorAll("th"));
-      const widths = headerCols.map((col) => col.getBoundingClientRect().width);
-      setColumnWidths(widths);
-    }
-  }, [visibleColumns, headerRef.current]);
-
-  useEffect(() => {
-    if (columnWidths.length > 0) {
-      const bodyCols = Array.from(document.querySelectorAll("tbody td"));
-      bodyCols.forEach((col, index) => {
-        (col as HTMLElement).style.width = `${
-          columnWidths[index % columnWidths.length]
-        }px`;
-      });
-    }
-  }, [columnWidths]);
-
-  const [rows, setRows] = useState<any[]>([]);
 
   const handleShowOnlyColumn = useCallback((column: keyof VisibleColumns) => {
     setVisibleColumns({
@@ -278,9 +272,7 @@ const GridViewView: FC = () => {
     setEntityCount(null);
   }, []);
 
-  const nodes = propertyTreeData?.hierarchy?.nodes || [];
-  const paths = propertyTreeData?.hierarchy?.paths || [];
-
+  // Row mapping functions
   const mapRecordTypeToColumn = (node: any, column: string) => {
     const tags = node.tags || [];
     switch (column) {
@@ -316,6 +308,7 @@ const GridViewView: FC = () => {
     }
   };
 
+  // Navigation handler
   const handleOnSelect = (id: string, column: string) => {
     let entityTypePath = "";
     switch (column) {
@@ -345,6 +338,7 @@ const GridViewView: FC = () => {
     window.location.reload();
   };
 
+  // Build data rows
   const buildRows = () => {
     const rows: any[] = [];
     const seenCombinations = new Set();
@@ -413,108 +407,152 @@ const GridViewView: FC = () => {
     return rows;
   };
 
+  // Tag filtering
   const handleTagFilter = (tag: string | null) => {
     setSelectedTag(tag);
   };
 
-  const handleRowSelection = (id: number) => {
-    setSelectedRows((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
+  // Add state for tagging operation status
+  const [isTagging, setIsTagging] = useState(false);
 
-  const handleSelectAll = () => {
-    const newSelectedRows = memoizedFilteredRows.reduce((acc, row) => {
-      acc[row.uniqueId] = !allSelected;
-      return acc;
-    }, {} as { [key: number]: boolean });
-    setSelectedRows(newSelectedRows);
-    setAllSelected(!allSelected);
-  };
-
+  // Enhanced tag adding functionality with improved tag checking
   const handleAddTag = async () => {
     if (!newTag) {
-      enqueueSnackbar("Bitte wählen Sie ein Tag aus.", { variant: "error" });
+      enqueueSnackbar(t("grid_view.please_select_tag"), { variant: "error" });
+      return;
+    }
+    if (selectedRows.length === 0) {
+      enqueueSnackbar(t("grid_view.please_select_rows"), {
+        variant: "warning",
+      });
       return;
     }
 
-    enqueueSnackbar("Start Add Tags", { variant: "info" });
+    setIsTagging(true);
+    enqueueSnackbar(t("grid_view.adding_tags"), { variant: "info" });
 
-    let tagAdded = false;
+    // Frische Daten ermitteln, damit lokale row.tags aktuell sind
+    try {
+      await refetch();
+    } catch {
+      enqueueSnackbar(t("grid_view.error_fetching_latest_tags"), {
+        variant: "warning",
+      });
+    }
 
-    // Finde die passende tagId für den ausgewählten newTag
-    const selectedTagObject = data?.findTags.nodes.find(
+    // Tag-ID ermitteln
+    const selectedTagObj = data?.findTags.nodes.find(
       (tag) => tag.name === newTag
     );
-    const tagId = selectedTagObject ? selectedTagObject.id : null;
-
+    const tagId = selectedTagObj?.id;
     if (!tagId) {
-      enqueueSnackbar("Tag ID nicht gefunden.", { variant: "error" });
+      enqueueSnackbar(t("grid_view.tag_id_not_found"), { variant: "error" });
+      setIsTagging(false);
       return;
     }
 
-    for (const [rowId, isSelected] of Object.entries(selectedRows)) {
-      if (isSelected) {
-        const row = memoizedFilteredRows.find(
-          (r) => r.uniqueId.toString() === rowId
-        );
-        if (!row) continue;
+    // Ausgewählte Zeilen filtern
+    const selectedRowSet = new Set(selectedRows);
+    const entries = filteredRows.filter((row) =>
+      selectedRowSet.has(String(row.uniqueId))
+    );
 
-        const entriesToUpdate = Object.entries(row.ids).filter(
-          ([, id]) => typeof id === "string" && id.trim() !== ""
-        );
+    // Map für eindeutige Katalog-Einträge
+    const catalogMap = new Map<string, { already: boolean }>();
 
-        for (const [column, entryId] of entriesToUpdate) {
-          const entryTags = row.tags.filter(
-            (tag: { entryId: string }) => tag.entryId === entryId
-          );
-
-          const tagAlreadyExists = entryTags.some(
-            (tag: { name: string }) => tag.name === newTag
-          );
-
-          if (tagAlreadyExists) {
-            continue;
-          }
-
-          try {
-            const { data } = await addTag({
-              variables: {
-                input: {
-                  catalogEntryId: entryId as string,
-                  tagId: tagId,
-                },
-              },
-            });
-
-            if (data) {
-              tagAdded = true;
-              row.tags.push({ entryId, name: newTag });
-            }
-          } catch (error) {
-            console.error(
-              `Fehler beim Hinzufügen des Tags zu Eintrag ${entryId}:`,
-              error
-            );
-          }
+    // Prüfen, ob jeder Eintrag das Tag schon besitzt
+    entries.forEach((row) => {
+      Object.values(row.ids).forEach((entryId: any) => {
+        if (!entryId) return;
+        if (!catalogMap.has(entryId)) {
+          const hasTag =
+            Array.isArray(row.tags) &&
+            row.tags.some((tg: any) => tg.id === tagId);
+          catalogMap.set(entryId, { already: hasTag });
         }
+      });
+    });
+
+    let toAdd = 0,
+      alreadyCount = 0;
+    catalogMap.forEach((v) => (v.already ? alreadyCount++ : toAdd++));
+
+    // Falls nichts hinzuzufügen ist
+    if (toAdd === 0) {
+      setIsTagging(false);
+      enqueueSnackbar(
+        alreadyCount > 0
+          ? t("grid_view.all_entries_already_tagged", { count: alreadyCount })
+          : t("grid_view.no_tags_to_add"),
+        { variant: alreadyCount > 0 ? "info" : "warning" }
+      );
+      return;
+    }
+
+    // Tags hinzufügen
+    let added = 0,
+      failed = 0;
+    for (const [entryId, status] of catalogMap.entries()) {
+      if (status.already) continue;
+      try {
+        await addTag({
+          variables: { input: { catalogEntryId: entryId, tagId } },
+        });
+        added++;
+
+        // Zeilen-Tags lokal aktualisieren
+        entries.forEach((row) => {
+          Object.values(row.ids).forEach((id: any) => {
+            if (id === entryId) {
+              row.tags = Array.isArray(row.tags)
+                ? [
+                    ...row.tags,
+                    {
+                      id: tagId,
+                      name: newTag,
+                      catalogEntryId: entryId,
+                      entryId,
+                    },
+                  ]
+                : [
+                    {
+                      id: tagId,
+                      name: newTag,
+                      catalogEntryId: entryId,
+                      entryId,
+                    },
+                  ];
+            }
+          });
+        });
+      } catch {
+        failed++;
       }
     }
 
-    try {
-      if (tagAdded) {
-        await refetch();
-        enqueueSnackbar("End Add Tags", { variant: "info" });
-      }
-    } catch (error) {
-      enqueueSnackbar("Fehler beim Aktualisieren der Tags.", {
-        variant: "error",
-      });
-      console.error("Fehler beim Aktualisieren der Tags:", error);
+    // Feedback ausgeben
+    if (added > 0) {
+      enqueueSnackbar(
+        alreadyCount > 0
+          ? t("grid_view.tags_added_with_existing", {
+              added,
+              existing: alreadyCount,
+            })
+          : t("grid_view.tags_added_count", { count: added }),
+        { variant: "success" }
+      );
+    } else if (failed > 0) {
+      enqueueSnackbar(t("grid_view.tags_adding_failed"), { variant: "error" });
     }
+
+    setIsTagging(false);
   };
 
+  const handleTagChange = (event: SelectChangeEvent<string>) => {
+    setNewTag(event.target.value as string);
+  };
+
+  // Data processing
   useMemo(() => {
     let rows = buildRows();
 
@@ -549,28 +587,15 @@ const GridViewView: FC = () => {
     setFilteredRows(rows); // Aktualisiere die gefilterten Zeilen
   }, [visibleColumns, propertyTreeData, selectedTag]);
 
+  // Effects for document loading and tag management
   useEffect(() => {
     const modelIds = Array.from(
       new Set(
-        memoizedFilteredRows
-          .map((row) => row.ids.model)
-          .filter((id: string) => id)
+        filteredRows.map((row) => row.ids.model).filter((id: string) => id)
       )
     );
     setModelIds(modelIds);
-  }, [memoizedFilteredRows]);
-
-  useEffect(() => {
-    let initialRows = buildRows();
-
-    if (selectedTag) {
-      initialRows = initialRows.filter((row) =>
-        row.tags.some((tag: any) => tag.name === selectedTag)
-      );
-    }
-
-    setRows(initialRows);
-  }, [propertyTreeData, selectedTag, visibleColumns]);
+  }, [filteredRows]);
 
   useEffect(() => {
     const fetchDocumentNames = async () => {
@@ -617,10 +642,7 @@ const GridViewView: FC = () => {
     refetch();
   }, [refetch]);
 
-  const isAnyColumnHidden = Object.values(visibleColumns).some(
-    (value) => !value
-  );
-
+  // Tag filtering
   const excludedTags = [
     "Fachmodell",
     "Gruppe",
@@ -638,450 +660,441 @@ const GridViewView: FC = () => {
 
   const allTags = filterTags(tags).sort();
 
-  const handleTagChange = (event: SelectChangeEvent<string>) => {
-    setNewTag(event.target.value as string);
-  };
+  const isAnyColumnHidden = Object.values(visibleColumns).some(
+    (value) => !value
+  );
 
-  if (propertyTreeLoading) return <p>{t('grid_view.loading')}</p>;
-  if (propertyTreeError) return <p>Error: {propertyTreeError.message}</p>;
-  if (bagError) return <p>Error: {bagError.message}</p>;
+  // DataGrid column definitions
+  const columns: GridColDef[] = [
+    ...(visibleColumns.document
+      ? [
+          {
+            field: "document",
+            headerName: t("grid_view.reference_documents"),
+            flex: 1,
+            minWidth: 200,
+            renderCell: (params: GridRenderCellParams) => {
+              const documentName =
+                documentNames[params.row.ids.model]?.name || params.value;
+              const documentId = documentNames[params.row.ids.model]?.id;
+
+              return (
+                <Box
+                  sx={{
+                    cursor: documentId ? "pointer" : "default",
+                    width: "100%",
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    "&:hover": {
+                      textDecoration: documentId ? "underline" : "none",
+                    },
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (documentId) {
+                      handleOnSelect(documentId, "document");
+                    }
+                  }}
+                >
+                  {documentName || "\u00A0"}
+                </Box>
+              );
+            },
+          },
+        ]
+      : []),
+
+    ...(visibleColumns.model
+      ? [
+          {
+            field: "model",
+            headerName: t("grid_view.domain_models"),
+            flex: 1,
+            minWidth: 200,
+            renderCell: (params: GridRenderCellParams) => (
+              <Box
+                sx={{
+                  cursor: params.value ? "pointer" : "default",
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  "&:hover": {
+                    textDecoration: params.value ? "underline" : "none",
+                  },
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (params.value) {
+                    handleOnSelect(params.row.ids.model, "model");
+                  }
+                }}
+              >
+                {params.value || "\u00A0"}
+              </Box>
+            ),
+          },
+        ]
+      : []),
+
+    ...(visibleColumns.group
+      ? [
+          {
+            field: "group",
+            headerName: t("grid_view.groups"),
+            flex: 1,
+            minWidth: 150,
+            renderCell: (params: GridRenderCellParams) => (
+              <Box
+                sx={{
+                  cursor: params.value ? "pointer" : "default",
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  "&:hover": {
+                    textDecoration: params.value ? "underline" : "none",
+                  },
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (params.value) {
+                    handleOnSelect(params.row.ids.group, "group");
+                  }
+                }}
+              >
+                {params.value || "\u00A0"}
+              </Box>
+            ),
+          },
+        ]
+      : []),
+
+    ...(visibleColumns.class
+      ? [
+          {
+            field: "class",
+            headerName: t("grid_view.classes"),
+            flex: 1,
+            minWidth: 150,
+            renderCell: (params: GridRenderCellParams) => (
+              <Box
+                sx={{
+                  cursor: params.value ? "pointer" : "default",
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  "&:hover": {
+                    textDecoration: params.value ? "underline" : "none",
+                  },
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (params.value) {
+                    handleOnSelect(params.row.ids.class, "class");
+                  }
+                }}
+              >
+                {params.value || "\u00A0"}
+              </Box>
+            ),
+          },
+        ]
+      : []),
+
+    ...(visibleColumns.propertyGroup
+      ? [
+          {
+            field: "propertyGroup",
+            headerName: t("grid_view.property_groups"),
+            flex: 1,
+            minWidth: 180,
+            renderCell: (params: GridRenderCellParams) => (
+              <Box
+                sx={{
+                  cursor: params.value ? "pointer" : "default",
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  "&:hover": {
+                    textDecoration: params.value ? "underline" : "none",
+                  },
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (params.value) {
+                    handleOnSelect(
+                      params.row.ids.propertyGroup,
+                      "propertyGroup"
+                    );
+                  }
+                }}
+              >
+                {params.value || "\u00A0"}
+              </Box>
+            ),
+          },
+        ]
+      : []),
+
+    ...(visibleColumns.property
+      ? [
+          {
+            field: "property",
+            headerName: t("grid_view.properties"),
+            flex: 1,
+            minWidth: 180,
+            renderCell: (params: GridRenderCellParams) => (
+              <Box
+                sx={{
+                  cursor: params.value ? "pointer" : "default",
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  "&:hover": {
+                    textDecoration: params.value ? "underline" : "none",
+                  },
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (params.value) {
+                    handleOnSelect(params.row.ids.property, "property");
+                  }
+                }}
+              >
+                {params.value || "\u00A0"}
+              </Box>
+            ),
+          },
+        ]
+      : []),
+  ];
+
+  if (propertyTreeLoading)
+    return <Typography>{t("grid_view.loading")}</Typography>;
+  if (propertyTreeError)
+    return <Typography>Error: {propertyTreeError.message}</Typography>;
+  if (bagError) return <Typography>Error: {bagError.message}</Typography>;
 
   return (
-    <div className={classes.tableContainer}>
-      <div className={classes.fixedContainer}>
-        <div className={classes.headerContainer}>
-          <h3 className={classes.tagFilterTitle}>
-          {t('grid_view.tag_filter_title')}
-          </h3>
-          <div className={classes.tagControls}>
-            <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel id="importTag-label">{t('grid_view.tag_filter_placeholder')}</InputLabel>
-              <Select
-                labelId="importTag-label"
-                id="importTag"
-                label= {t('grid_view.tag_filter_placeholder')}
-                name="importTag"
-                value={newTag}
-                onChange={handleTagChange}
-                style={{ minWidth: "200px" }} // Ensure the dropdown field is as long as the placeholder when no tag is selected
-              >
-                <MenuItem value="">
-                  <em>{t('grid_view.select_tag')}</em>
-                </MenuItem>
-                {allTags.map((tag) => (
-                  <MenuItem key={tag} value={tag}>
-                    {tag}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <Button variant="contained" color="primary" onClick={handleAddTag}>
-            {t('grid_view.add_tag')}
-            </Button>
-          </div>
-        </div>
-        <div className={classes.tagButtonContainer}>
-          {allTags.map((tag) => (
-            <Chip
-              key={tag}
-              label={tag}
-              clickable
-              color={selectedTag === tag ? "secondary" : "default"}
-              onClick={() => handleTagFilter(tag)}
-              className={classes.tagChip}
-            />
-          ))}
-          <Chip
-            label={t('grid_view.show_all')}
-            clickable
-            color={selectedTag === null ? "secondary" : "default"}
-            onClick={() => handleTagFilter(null)}
-            className={classes.tagChip}
-          />
-        </div>
-        <div className={classes.buttonContainer}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => handleShowOnlyColumn("document")}
-          >
-            {t('grid_view.show_only_documents')}
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => handleShowOnlyColumn("model")}
-          >
-            {t('grid_view.show_only_models')}
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => handleShowOnlyColumn("group")}
-          >
-            {t('grid_view.show_only_groups')}          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => handleShowOnlyColumn("class")}
-          >
-            {t('grid_view.show_only_classes')}
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => handleShowOnlyColumn("propertyGroup")}
-          >
-            {t('grid_view.show_only_property_groups')}
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => handleShowOnlyColumn("property")}
-          >
-            {t('grid_view.show_only_properties')}
-          </Button>
-          {isAnyColumnHidden && (
+    <TableContainer>
+      <FixedContainer>
+        {/* Use extracted TagFilterSection component */}
+        <TagFilterSection
+          allTags={allTags}
+          selectedTag={selectedTag}
+          handleTagFilter={handleTagFilter}
+          newTag={newTag}
+          handleTagChange={handleTagChange}
+          handleAddTag={handleAddTag}
+          t={t}
+        />
+
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 2,
+          }}
+        >
+          <ButtonContainer>
             <Button
               variant="contained"
-              color="secondary"
-              onClick={handleShowAllColumns}
+              color="primary"
+              onClick={() => handleShowOnlyColumn("document")}
             >
-              {t('grid_view.show_all')}
+              {t("grid_view.show_only_documents")}
             </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleShowOnlyColumn("model")}
+            >
+              {t("grid_view.show_only_models")}
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleShowOnlyColumn("group")}
+            >
+              {t("grid_view.show_only_groups")}
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleShowOnlyColumn("class")}
+            >
+              {t("grid_view.show_only_classes")}
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleShowOnlyColumn("propertyGroup")}
+            >
+              {t("grid_view.show_only_property_groups")}
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleShowOnlyColumn("property")}
+            >
+              {t("grid_view.show_only_properties")}
+            </Button>
+            {isAnyColumnHidden && (
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleShowAllColumns}
+              >
+                {t("grid_view.show_all")}
+              </Button>
+            )}
+          </ButtonContainer>
+
+          {/* Show loading indicator when tagging */}
+          {isTagging && (
+            <Box sx={{ width: "100%", mt: 1, mb: 1 }}>
+              <LinearProgress />
+              <Typography
+                variant="caption"
+                sx={{ mt: 0.5, display: "block", textAlign: "center" }}
+              >
+                {t("grid_view.adding_tags_please_wait")}
+              </Typography>
+            </Box>
           )}
-        </div>
-        <table ref={headerRef} className={classes.table}>
-          <thead className={classes.stickyHeader}>
-            <tr>
-              <th className={`${classes.th} ${classes.checkboxThTd}`}>
-                <div className={classes.headerCell}>
-                  <div className={classes.headerContent}>
-                    <Checkbox
-                      color="primary"
-                      checked={allSelected}
-                      onChange={handleSelectAll}
-                    />
-                  </div>
-                </div>
-              </th>
-              {visibleColumns.document && (
-                <th className={`${classes.th} ${classes.thTd}`}>
-                  <div className={classes.headerCell}>
-                    <div className={classes.headerContent}>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={visibleColumns.document}
-                            onChange={() => handleCheckboxChange("document")}
-                            color="primary"
-                          />
-                        }
-                        label={`${t('grid_view.reference_documents')}${
-                          entityCount !== null && visibleColumns.document
-                            ? ` (${entityCount})`
-                            : ""
-                        }`}
-                        className={classes.checkboxLabel}
-                      />
-                    </div>
-                  </div>
-                </th>
-              )}
-              {visibleColumns.model && (
-                <th className={`${classes.th} ${classes.thTd}`}>
-                  <div className={classes.headerCell}>
-                    <div className={classes.headerContent}>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={visibleColumns.model}
-                            onChange={() => handleCheckboxChange("model")}
-                            color="primary"
-                          />
-                        }
-                        label={`${t('grid_view.domain_models')}${
-                          entityCount !== null && visibleColumns.model
-                            ? ` (${entityCount})`
-                            : ""
-                        }`}
-                        className={classes.checkboxLabel}
-                      />
-                    </div>
-                  </div>
-                </th>
-              )}
-              {visibleColumns.group && (
-                <th className={`${classes.th} ${classes.thTd}`}>
-                  <div className={classes.headerCell}>
-                    <div className={classes.headerContent}>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={visibleColumns.group}
-                            onChange={() => handleCheckboxChange("group")}
-                            color="primary"
-                          />
-                        }
-                        label={`${t('grid_view.groups')}${
-                          entityCount !== null && visibleColumns.group
-                            ? ` (${entityCount})`
-                            : ""
-                        }`}
-                        className={classes.checkboxLabel}
-                      />
-                    </div>
-                  </div>
-                </th>
-              )}
-              {visibleColumns.class && (
-                <th className={`${classes.th} ${classes.thTd}`}>
-                  <div className={classes.headerCell}>
-                    <div className={classes.headerContent}>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={visibleColumns.class}
-                            onChange={() => handleCheckboxChange("class")}
-                            color="primary"
-                          />
-                        }
-                        label={`${t('grid_view.classes')}${
-                          entityCount !== null && visibleColumns.class
-                            ? ` (${entityCount})`
-                            : ""
-                        }`}
-                        className={classes.checkboxLabel}
-                      />
-                    </div>
-                  </div>
-                </th>
-              )}
-              {visibleColumns.propertyGroup && (
-                <th className={`${classes.th} ${classes.thTd}`}>
-                  <div className={classes.headerCell}>
-                    <div className={classes.headerContent}>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={visibleColumns.propertyGroup}
-                            onChange={() =>
-                              handleCheckboxChange("propertyGroup")
-                            }
-                            color="primary"
-                          />
-                        }
-                        label={`${t('grid_view.property_groups')}${
-                          entityCount !== null && visibleColumns.propertyGroup
-                            ? ` (${entityCount})`
-                            : ""
-                        }`}
-                        className={classes.checkboxLabel}
-                      />
-                    </div>
-                  </div>
-                </th>
-              )}
-              {visibleColumns.property && (
-                <th className={`${classes.th} ${classes.thTd}`}>
-                  <div className={classes.headerCell}>
-                    <div className={classes.headerContent}>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={visibleColumns.property}
-                            onChange={() => handleCheckboxChange("property")}
-                            color="primary"
-                          />
-                        }
-                        label={`${t('grid_view.properties')}${
-                          entityCount !== null && visibleColumns.property
-                            ? ` (${entityCount})`
-                            : ""
-                        }`}
-                        className={classes.checkboxLabel}
-                      />
-                    </div>
-                  </div>
-                </th>
-              )}
-            </tr>
-          </thead>
-        </table>
-      </div>
-      <div className={classes.scrollabletable}>
-        <div className={classes.scrollableContainer}>
-          <List
-            height={425} // Höhe des sichtbaren Bereichs
-            itemCount={memoizedFilteredRows.length} // Anzahl der Zeilen
-            itemSize={headerHeight} // Dynamische Höhe basierend auf dem Header
-            width="100%" // Breite der Liste
-          >
-            {({ index, style }) => {
-              const row = memoizedFilteredRows[index];
-              return (
-                <div style={style} key={row.uniqueId}>
-                  <div
-                    className={`${index % 2 === 0 ? classes.trEven : ""} ${
-                      classes.row
-                    }`}
-                  >
-                    <div
-                      className={classes.checkboxTd}
-                      style={{
-                        width: `${columnWidths[0] || "auto"}px`,
-                        wordWrap: "break-word",
-                        whiteSpace: "normal",
-                        overflowWrap: "break-word",
-                      }}
-                    >
-                      <Checkbox
-                        checked={!!selectedRows[row.uniqueId]}
-                        onChange={() => handleRowSelection(row.uniqueId)}
-                        color="primary"
-                      />
-                    </div>
-                    {visibleColumns.document && (
-                      <div
-                        className={`${classes.thTd} ${
-                          documentNames[row.ids.model]?.id
-                            ? classes.clickableRow
-                            : ""
-                        }`}
-                        style={{
-                          width: `${columnWidths[1] || "auto"}px`,
-                          wordWrap: "break-word",
-                          whiteSpace: "normal",
-                          overflowWrap: "break-word",
-                        }}
-                        onClick={
-                          documentNames[row.ids.model]?.id
-                            ? () =>
-                                handleOnSelect(
-                                  documentNames[row.ids.model]!.id as string,
-                                  "document"
-                                )
-                            : undefined
-                        }
-                      >
-                        {documentNames[row.ids.model]?.name ||
-                          row.document ||
-                          "\u00A0"}
-                      </div>
-                    )}
-                    {visibleColumns.model && (
-                      <div
-                        className={`${classes.thTd} ${
-                          row.model ? classes.clickableRow : ""
-                        }`}
-                        style={{
-                          width: `${columnWidths[2] || "auto"}px`,
-                          wordWrap: "break-word",
-                          whiteSpace: "normal",
-                          overflowWrap: "break-word",
-                        }}
-                        onClick={
-                          row.model
-                            ? () => handleOnSelect(row.ids.model, "model")
-                            : undefined
-                        }
-                      >
-                        {row.model || "\u00A0"}
-                      </div>
-                    )}
-                    {visibleColumns.group && (
-                      <div
-                        className={`${classes.thTd} ${
-                          row.group ? classes.clickableRow : ""
-                        }`}
-                        style={{
-                          width: `${columnWidths[3] || "auto"}px`,
-                          wordWrap: "break-word",
-                          whiteSpace: "normal",
-                          overflowWrap: "break-word",
-                        }}
-                        onClick={
-                          row.group
-                            ? () => handleOnSelect(row.ids.group, "group")
-                            : undefined
-                        }
-                      >
-                        {row.group || "\u00A0"}
-                      </div>
-                    )}
-                    {visibleColumns.class && (
-                      <div
-                        className={`${classes.thTd} ${
-                          row.class ? classes.clickableRow : ""
-                        }`}
-                        style={{
-                          width: `${columnWidths[4] || "auto"}px`,
-                          wordWrap: "break-word",
-                          whiteSpace: "normal",
-                          overflowWrap: "break-word",
-                        }}
-                        onClick={
-                          row.class
-                            ? () => handleOnSelect(row.ids.class, "class")
-                            : undefined
-                        }
-                      >
-                        {row.class || "\u00A0"}
-                      </div>
-                    )}
-                    {visibleColumns.propertyGroup && (
-                      <div
-                        className={`${classes.thTd} ${
-                          row.propertyGroup ? classes.clickableRow : ""
-                        }`}
-                        style={{
-                          width: `${columnWidths[5] || "auto"}px`,
-                          wordWrap: "break-word",
-                          whiteSpace: "normal",
-                          overflowWrap: "break-word",
-                        }}
-                        onClick={
-                          row.propertyGroup
-                            ? () =>
-                                handleOnSelect(
-                                  row.ids.propertyGroup,
-                                  "propertyGroup"
-                                )
-                            : undefined
-                        }
-                      >
-                        {row.propertyGroup || "\u00A0"}
-                      </div>
-                    )}
-                    {visibleColumns.property && (
-                      <div
-                        className={`${classes.thTd} ${
-                          row.property ? classes.clickableRow : ""
-                        }`}
-                        style={{
-                          width: `${columnWidths[6] || "auto"}px`,
-                          wordWrap: "break-word",
-                          whiteSpace: "normal",
-                          overflowWrap: "break-word",
-                        }}
-                        onClick={
-                          row.property
-                            ? () => handleOnSelect(row.ids.property, "property")
-                            : undefined
-                        }
-                      >
-                        {row.property || "\u00A0"}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            }}
-          </List>
-        </div>
-      </div>
-    </div>
+        </Box>
+      </FixedContainer>
+
+      {/* Adjust Box to take remaining space without causing overflow */}
+      <Box
+        sx={{
+          flexGrow: 1,
+          width: "100%",
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <DataGrid
+          rows={filteredRows}
+          columns={columns}
+          getRowId={(row) => row.uniqueId}
+          checkboxSelection
+          onRowSelectionModelChange={(
+            newSelectionModel: GridRowSelectionModel
+          ) => {
+            // Extract IDs from the selection model based on its structure
+            let selectedIDs: string[] = [];
+
+            if (newSelectionModel && typeof newSelectionModel === "object") {
+              if (
+                "ids" in newSelectionModel &&
+                newSelectionModel.ids instanceof Set
+              ) {
+                // Extract IDs from Set and convert to strings
+                selectedIDs = Array.from(newSelectionModel.ids).map((id) =>
+                  String(id)
+                );
+              } else if (Array.isArray(newSelectionModel)) {
+                // Fallback for array format (older versions)
+                selectedIDs = newSelectionModel.map((id) => String(id));
+              }
+            }
+
+            setSelectedRows(selectedIDs);
+          }}
+          density="standard"
+          disableRowSelectionOnClick
+          // Updated pagination configuration for v8
+          pageSizeOptions={[25, 50, 100]}
+          initialState={{
+            pagination: {
+              paginationModel: { pageSize: 100, page: 0 },
+            },
+          }}
+          // Remove deprecated props
+          autoHeight={false}
+          // Keep important styling
+          scrollbarSize={10}
+          sx={{
+            height: "100%",
+            width: "100%",
+            flexGrow: 1,
+            border: "none",
+
+            "& .MuiDataGrid-virtualScroller": {
+              overflow: "auto",
+              "&::-webkit-scrollbar": {
+                width: "10px",
+                height: "10px",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "rgba(0,0,0,0.2)",
+                borderRadius: "4px",
+              },
+            },
+
+            "& .MuiDataGrid-cell": {
+              padding: "8px",
+            },
+            "& .MuiDataGrid-row:nth-of-type(odd)": {
+              backgroundColor: "#f9f9f9",
+            },
+
+            "& .MuiDataGrid-main": {
+              overflow: "hidden",
+              flexGrow: 1,
+            },
+          }}
+          showToolbar
+          slotProps={{
+            toolbar: {
+              showQuickFilter: true,
+              quickFilterProps: { debounceMs: 300 },
+              csvOptions: {
+                delimiter: ",",
+                fileName: `datacat-export_${new Date()
+                  .toISOString()
+                  .slice(0, 10)}`,
+                utf8WithBom: true,
+              },
+            },
+          }}
+        />
+      </Box>
+
+      {/* Selection Help Instructions - Simplified */}
+      <Box
+        sx={{
+          p: 1,
+          borderTop: "1px solid rgba(224, 224, 224, 1)",
+          backgroundColor: "#f5f5f5",
+          display: "flex",
+          alignItems: "center",
+          gap: 2,
+          fontSize: "0.75rem",
+          color: "rgba(0, 0, 0, 0.6)",
+        }}
+      >
+        <Typography variant="caption" fontWeight="bold">
+          {t("grid_view.selection_help")}
+        </Typography>
+        <Box
+          component="span"
+          sx={{ display: "flex", alignItems: "center", gap: 1 }}
+        >
+          <b>Shift + Click</b>
+          <span>{t("grid_view.for_range")}</span>
+        </Box>
+      </Box>
+    </TableContainer>
   );
 };
 
-export default GridViewView;
+export default memo(GridViewView);

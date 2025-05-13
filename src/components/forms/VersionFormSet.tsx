@@ -7,8 +7,7 @@ import {
   VersionInput,
 } from "../../generated/types";
 import { useSnackbar } from "notistack";
-import makeStyles from "@mui/styles/makeStyles";
-import { Theme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { T } from "@tolgee/react";
 
 type VersionFormSetProps = {
@@ -17,16 +16,13 @@ type VersionFormSetProps = {
   versionDate?: Maybe<string>;
 };
 
-const useStyles = makeStyles((theme: Theme) => ({
-  description: {
-    marginBottom: theme.spacing(1),
-  },
+// Replace makeStyles with styled component
+const StyledFormSetDescription = styled(FormSetDescription)(({ theme }) => ({
+  marginBottom: theme.spacing(1),
 }));
 
 const VersionFormSet: FC<VersionFormSetProps> = (props) => {
   const { id, versionId, versionDate } = props;
-
-  const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
 
   const defaultValues = {
@@ -52,9 +48,9 @@ const VersionFormSet: FC<VersionFormSetProps> = (props) => {
           <T keyName="version.title" />
         </b>
       </FormSetTitle>
-      <FormSetDescription className={classes.description}>
+      <StyledFormSetDescription>
         <T keyName="version.description" />
-      </FormSetDescription>
+      </StyledFormSetDescription>
       <div style={{ marginBottom: "12px" }}></div>
       <VersionForm onSubmit={onSubmit} defaultValues={defaultValues} />
     </FormSet>

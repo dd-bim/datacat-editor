@@ -1,17 +1,16 @@
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { TextField, ClickAwayListener } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 import InlineButtonGroup from './InlineButtonGroup';
 import { ValueRole, ValueType } from '../../generated/types';
 import { T } from '@tolgee/react';
 
-const useStyles = makeStyles((theme: { spacing: (value: number) => number }) => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: theme.spacing(2),
-  },
+// Replace makeStyles with styled component
+const FormContainer = styled('form')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(2),
 }));
 
 export type NominalValueFormValues = {
@@ -32,9 +31,8 @@ type NominalValueFormProps = {
   onDelete(): void;
 };
 
-const NominalValueForm: FC<NominalValueFormProps> = (props) => {
+const NominalValueForm = (props: NominalValueFormProps) => {
   const { defaultValues, onSubmit, onDelete } = props;
-  const classes = useStyles();
   const [isEditMode, setIsEditMode] = useState(false);
 
   const {
@@ -90,7 +88,7 @@ const NominalValueForm: FC<NominalValueFormProps> = (props) => {
 
   return (
     <ClickAwayListener onClickAway={handleOnClickAway}>
-      <form className={classes.root} onSubmit={handleSubmit(handleOnSave)}>
+      <FormContainer onSubmit={handleSubmit(handleOnSave)}>
         <Controller
           name="valueRole"
           control={control}
@@ -160,7 +158,7 @@ const NominalValueForm: FC<NominalValueFormProps> = (props) => {
             onReset={handleOnReset}
           />
         )}
-      </form>
+      </FormContainer>
     </ClickAwayListener>
   );
 };

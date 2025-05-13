@@ -3,8 +3,12 @@ import React from "react";
 import CatalogEntryChip from "../CatalogEntryChip";
 import {Typography} from "@mui/material";
 import {CatalogRecord} from "../../types";
-import makeStyles from "@mui/styles/makeStyles";
-import {Theme} from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
+
+// Replace makeStyles with styled component
+const StyledFormSetTitle = styled(FormSetTitle)(({ theme }) => ({
+    marginBottom: theme.spacing(1)
+}));
 
 export type MemberFormSetProps = {
     title: React.ReactNode;
@@ -18,11 +22,6 @@ export const sortEntries = (left: CatalogRecord, right: CatalogRecord) => {
     const b = right.name ?? right.id;
     return a.localeCompare(b);
 };
-const useStyles = makeStyles((theme: Theme) => ({
-    gutterBottom: {
-        marginBottom: theme.spacing(1)
-    }
-}));
 
 export default function RelatingRecordsFormSet(props: MemberFormSetProps) {
     const {
@@ -32,7 +31,6 @@ export default function RelatingRecordsFormSet(props: MemberFormSetProps) {
         FormSetProps
     } = props;
 
-    const classes = useStyles();
     const chips = Array.from(relatingRecords)
         .sort(sortEntries)
         .map(record => (
@@ -44,7 +42,7 @@ export default function RelatingRecordsFormSet(props: MemberFormSetProps) {
 
     return (
         <FormSet {...FormSetProps}>
-            <FormSetTitle className={classes.gutterBottom}>{title}</FormSetTitle>
+            <StyledFormSetTitle>{title}</StyledFormSetTitle>
             {chips.length
                 ? chips
                 : <Typography variant="body2" color="textSecondary">{emptyMessage}</Typography>

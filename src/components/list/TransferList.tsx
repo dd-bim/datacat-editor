@@ -1,21 +1,34 @@
 import {SearchInput} from "../../generated/types";
-import makeStyles from "@mui/styles/makeStyles";
+import { styled } from "@mui/material/styles";
 import React, {useState} from "react";
-import Grid from "@mui/material/Grid";
+import { Box, Stack } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import FilterableList from "./FilterableList";
 import SearchList from "./SearchList";
 import {CatalogRecord} from "../../types";
 
-const useStyles = makeStyles(theme => ({
-    paper: {
-        padding: theme.spacing(1)
-    },
-    searchBox: {
-        padding: theme.spacing(1),
-        backgroundColor: theme.palette.grey[100]
-    }
+// Modified styled components to fit content exactly
+const ListPaper = styled(Paper)(({ theme }) => ({
+    padding: theme.spacing(1),
+    height: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
+    alignSelf: 'flex-start', // Prevent stretching beyond content
+    width: '100%'
 }));
+
+const SearchBox = styled(Paper)(({ theme }) => ({
+    padding: theme.spacing(1),
+    backgroundColor: theme.palette.grey[100],
+    height: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
+    alignSelf: 'flex-start', // Prevent stretching beyond content
+    width: '100%'
+}));
+
 type TransferListProps = {
     loading?: boolean
     items: CatalogRecord[];
@@ -38,14 +51,23 @@ export default function TransferList(props: TransferListProps) {
         onAdd,
         onRemove,
     } = props;
-    const classes = useStyles();
 
     const [searchTerm, setSearchTerm] = useState("");
 
     return (
-        <Grid container spacing={1}>
-            <Grid item xs={enabled ? 6 : 12}>
-                <Paper className={classes.paper} variant="outlined">
+        <Stack 
+            direction={{ xs: 'column', sm: 'row' }} 
+            spacing={1} 
+            alignItems="flex-start" // Align items to top
+            sx={{ width: '100%' }}
+        >
+            <Box sx={{ 
+                flex: enabled ? 1 : 1, 
+                display: 'flex', 
+                width: '100%', 
+                alignSelf: 'flex-start' // Prevent stretching
+            }}>
+                <ListPaper variant="outlined">
                     <FilterableList
                         height={height}
                         loading={loading}
@@ -53,11 +75,16 @@ export default function TransferList(props: TransferListProps) {
                         onSelect={onSelect}
                         onRemove={enabled && onRemove ? onRemove : undefined}
                     />
-                </Paper>
-            </Grid>
+                </ListPaper>
+            </Box>
             {enabled && (
-                <Grid item xs={6}>
-                    <Paper className={classes.searchBox} variant="outlined">
+                <Box sx={{ 
+                    flex: 1, 
+                    display: 'flex', 
+                    width: '100%',
+                    alignSelf: 'flex-start' // Prevent stretching
+                }}>
+                    <SearchBox variant="outlined">
                         <SearchList
                             height={height}
                             disabledItems={items.map(x => x.id)}
@@ -66,9 +93,9 @@ export default function TransferList(props: TransferListProps) {
                             onSearch={setSearchTerm}
                             onAdd={onAdd}
                         />
-                    </Paper>
-                </Grid>
+                    </SearchBox>
+                </Box>
             )}
-        </Grid>
+        </Stack>
     )
 }

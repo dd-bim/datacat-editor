@@ -10,23 +10,44 @@ import {
 } from "../../generated/types";
 import { useSnackbar } from "notistack";
 import TranslationFormSet from "./TranslationFormSet";
-import makeStyles from "@mui/styles/makeStyles";
-import { Theme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { T } from "@tolgee/react";
+import { Box } from "@mui/material";
+
+// Replace makeStyles with styled component
+const StyledFormSetDescription = styled(FormSetDescription)(({ theme }) => ({
+  marginBottom: theme.spacing(1),
+}));
+
+// Container for the description form to ensure proper width
+const DescriptionFormContainer = styled(Box)(({ theme }) => ({
+  width: '100%',
+  '& .MuiFormControl-root': {
+    width: '100%',
+  },
+  '& .MuiInputBase-root': {
+    width: '100%',
+  },
+  // Make the translation form fields wider to utilize available space
+  '& .MuiGrid-container': {
+    width: '100%',
+  },
+  // Ensure the text field has enough space for the button
+  '& .MuiGrid-item': {
+    '&:first-of-type': {
+      flex: 1, // Take all available space
+      minWidth: '60%', // Ensure minimum width
+    }
+  }
+}));
 
 type DescriptionFormSetProps = {
   catalogEntryId: string;
   descriptions: TranslationPropsFragment[];
 };
-const useStyles = makeStyles((theme: Theme) => ({
-  description: {
-    marginBottom: theme.spacing(1),
-  },
-}));
 
 const DescriptionFormSet: FC<DescriptionFormSetProps> = (props) => {
   const { catalogEntryId, descriptions } = props;
-  const classes = useStyles();
 
   const { enqueueSnackbar } = useSnackbar();
   const [addDescription] = useAddDescriptionMutation();
@@ -67,24 +88,29 @@ const DescriptionFormSet: FC<DescriptionFormSetProps> = (props) => {
           <T keyName={"description.title"} />
         </b>
       </FormSetTitle>
-      <FormSetDescription className={classes.description}>
+      <StyledFormSetDescription>
         <T keyName={"description.description"} />
-      </FormSetDescription>
+      </StyledFormSetDescription>
 
       <div style={{ marginBottom: "12px" }}></div>
 
-      <TranslationFormSet
-        label="Beschreibung"
-        translations={descriptions}
-        min={0}
-        onAdd={handleOnAdd}
-        onUpdate={handleOnUpdate}
-        onDelete={handleOnDelete}
-        TextFieldProps={{
-          multiline: true,
-          maxRows: 10,
-        }}
-      />
+      <DescriptionFormContainer>
+        <TranslationFormSet
+          label="Beschreibung"
+          translations={descriptions}
+          min={0}
+          onAdd={handleOnAdd}
+          onUpdate={handleOnUpdate}
+          onDelete={handleOnDelete}
+          TextFieldProps={{
+            multiline: true,
+            maxRows: 10,
+            fullWidth: true, // Ensure the text field takes full width
+            sx: { flexGrow: 1 } // Grow to fill available space
+          }}
+          // The width is already handled by DescriptionFormContainer
+        />
+      </DescriptionFormContainer>
     </FormSet>
   );
 };

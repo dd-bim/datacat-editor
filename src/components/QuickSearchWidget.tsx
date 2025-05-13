@@ -1,6 +1,5 @@
 import {useNavigate} from "react-router-dom";
-import {makeStyles} from "@mui/styles";
-import {Theme} from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import React, {useRef, useState} from "react";
 import {Popper} from "@mui/material";
 import Fade from "@mui/material/Fade";
@@ -16,26 +15,26 @@ import ItemRow, {ITEM_ROW_SIZE, ItemRowProps} from "./list/ItemRow";
 import {FixedSizeList, ListOnItemsRenderedProps} from "react-window";
 import LinearProgress from "@mui/material/LinearProgress";
 
-const useStyles = makeStyles((theme: Theme) => ({
-    searchResults: {
-        'z-index': theme.zIndex.modal
-    },
-    searchContent: {
-        'margin-top': theme.spacing(1),
-        'width': '100%',
-        'padding': theme.spacing(2)
-    },
-    entityIcon: {
-        'min-width': 32
-    }
+// Replace makeStyles with styled components
+const SearchResultsPopper = styled(Popper)(({ theme }) => ({
+  zIndex: theme.zIndex.modal
 }));
+
+const SearchContentPaper = styled(Paper)(({ theme }) => ({
+  marginTop: theme.spacing(1),
+  width: '100%',
+  padding: theme.spacing(2)
+}));
+
+const EntityIconDiv = styled('div')({
+  minWidth: 32
+});
 
 interface QuickSearchWidgetProps {
     className?: string
 }
 
 export function QuickSearchWidget(props: QuickSearchWidgetProps) {
-    const classes = useStyles();
     const navigate = useNavigate();
     const searchInput = useRef(null);
     const [searchTerm, setSearchTerm] = useState("");
@@ -92,17 +91,16 @@ export function QuickSearchWidget(props: QuickSearchWidgetProps) {
                 onChange={e => setSearchTerm(e.target.value)}
             />
             <ClickAwayListener onClickAway={() => setSearchTerm("")}>
-                <Popper
+                <SearchResultsPopper
                     id={id}
                     open={open}
                     anchorEl={searchInput.current}
                     placement="bottom-end"
                     transition
-                    className={classes.searchResults}
                 >
                     {({TransitionProps}) => (
                         <Fade {...TransitionProps} timeout={350}>
-                            <Paper className={classes.searchContent}>
+                            <SearchContentPaper>
                                 <Typography variant="body1">{data?.search.totalElements} Ergebnisse</Typography>
                                 {loading && <LinearProgress/>}
                                 <FixedSizeList
@@ -116,10 +114,10 @@ export function QuickSearchWidget(props: QuickSearchWidgetProps) {
                                 >
                                     {ItemRow}
                                 </FixedSizeList>
-                            </Paper>
+                            </SearchContentPaper>
                         </Fade>
                     )}
-                </Popper>
+                </SearchResultsPopper>
             </ClickAwayListener>
         </div>
     );

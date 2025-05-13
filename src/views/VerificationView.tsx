@@ -1,8 +1,8 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { styled } from "@mui/material/styles";
 import LinearProgress from "@mui/material/LinearProgress";
-import { Button, Paper, Typography, Grid } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
+import { Button, Paper, Typography, Box, Stack } from "@mui/material";
 import DomainModelForm from "./forms/DomainModelForm";
 import DomainGroupForm from "./forms/DomainGroupForm";
 import DomainClassForm from "./forms/DomainClassForm";
@@ -11,7 +11,7 @@ import PropertyForm from "./forms/PropertyForm";
 import MeasureForm from "./forms/MeasureForm";
 import UnitForm from "./forms/UnitForm";
 import ValueForm from "./forms/ValueForm";
-import ButtonGroup from "@mui/material/ButtonGroup";
+import ButtonComponent from "@mui/material/Button";
 import {
   FindVerification
 } from "../components/Verification";
@@ -51,53 +51,65 @@ import {
   ValueEntity,
   ValueIcon,
 } from "../domain";
-import ButtonComponent from "@mui/material/Button";
 import { T } from "@tolgee/react";
 
-const useStyles = makeStyles((theme: any) => ({
-  paper: {
-    padding: theme.spacing(2),
-  },
-  treeContainer: {
-    // links: TreeView
-    padding: theme.spacing(1),
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    padding: theme.spacing(1),
-    borderLeft: `${theme.spacing(0.5)}px solid ${theme.palette.primary.light}`,
-    borderRadius: theme.shape.borderRadius,
-  },
-  hint: {
-    flexGrow: 1,
-    textAlign: "center",
-    color: theme.palette.grey[600],
-    padding: theme.spacing(5),
-  },
-  headline: {
-    marginBottom: 5,
-    marginTop: 5,
-  },
-  buttonContainer: {
-    marginBottom: theme.spacing(2),
-  },
-  leftAlign: {
-    textAlign: "left",
-  },
+// Replace makeStyles with styled components
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(2),
+  height: 'auto',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'stretch',
+  overflow: 'auto',
 }));
 
-// Haupt-View: Drei Spalten: Links (Kriterien), Mitte (Ergebnisse), Rechts (Detailansicht)
+const TreeContainer = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(1),
+}));
+
+const FormContainer = styled(Box)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  padding: theme.spacing(1),
+  borderLeft: `${theme.spacing(0.5)}px solid ${theme.palette.primary.light}`,
+  borderRadius: theme.shape.borderRadius,
+}));
+
+const HintTypography = styled(Typography)(({ theme }) => ({
+  textAlign: "center",
+  color: theme.palette.grey[600],
+  padding: theme.spacing(3),
+  alignSelf: 'center',
+}));
+
+const HeadlineTypography = styled(Typography)(({ theme }) => ({
+  marginBottom: 5,
+  marginTop: 5,
+}));
+
+const ButtonContainer = styled(Box)(({ theme }) => ({
+  marginBottom: theme.spacing(2),
+}));
+
+const LeftAlignBox = styled(Box)({
+  textAlign: "left",
+});
+
+// Add a styled component for left-aligned buttons
+const LeftAlignedButton = styled(ButtonComponent)(({ theme }) => ({
+  justifyContent: 'flex-start',
+  width: '100%',
+  textAlign: 'left',
+}));
+
+// Main component without FC type
 export function VerificationView() {
   const location = useLocation();
-  const path = location.pathname; // z. B. "/search"
-  const classes = useStyles();
   const [selectButton, setSelectButton] = useState("");
   const [selectCategory, setSelectCategory] = useState("");
   const [selectedConcept, setSelectedConcept] = useState<ConceptPropsFragment | null>(null);
-  const [title, setTitle] = useState<React.ReactNode>(""); // <-- Hier die Variable `title` definieren
+  const [title, setTitle] = useState<React.ReactNode>("");
 
-  // Statt navigate() nutzen wir hier den State:
   const handleOnSelect = (concept: ConceptPropsFragment) => {
     setSelectedConcept(concept);
   };
@@ -106,96 +118,91 @@ export function VerificationView() {
     setSelectedConcept(null);
   };
 
-  // Linke Spalte: Auswahl der Prüfkriterien
+  // Left column: Criteria selection
   const renderCriteriaButtons = () => (
-    <Paper className={classes.paper}>
+    <StyledPaper>
       <Typography variant="h6">
         <T keyName="verification.title">Prüfkriterium</T>
       </Typography>
-      <Grid container direction="column" alignItems="stretch" className={classes.leftAlign}>
-        <Grid item>
-          <ButtonComponent onClick={() => setSelectButton("Integrität")}>
-            <T keyName="verification.criteria.integrity">Integrität</T>
-          </ButtonComponent>
-        </Grid>
-        <Grid item>
-          <ButtonComponent onClick={() => setSelectButton("Eindeutigkeit")}>
-            <T keyName="verification.criteria.uniqueness">Eindeutigkeit</T>
-          </ButtonComponent>
-        </Grid>
-        <Grid item>
-          <ButtonComponent onClick={() => setSelectButton("Sprache")}>
-            <T keyName="verification.criteria.language">Sprache</T>
-          </ButtonComponent>
-        </Grid>
-      </Grid>
-      <Typography variant="h6" style={{ marginTop: 16 }}>
+      <Stack direction="column" spacing={1} alignItems="stretch">
+        <LeftAlignedButton onClick={() => setSelectButton("Integrität")}>
+          <T keyName="verification.criteria.integrity">Integrität</T>
+        </LeftAlignedButton>
+        <LeftAlignedButton onClick={() => setSelectButton("Eindeutigkeit")}>
+          <T keyName="verification.criteria.uniqueness">Eindeutigkeit</T>
+        </LeftAlignedButton>
+        <LeftAlignedButton onClick={() => setSelectButton("Sprache")}>
+          <T keyName="verification.criteria.language">Sprache</T>
+        </LeftAlignedButton>
+      </Stack>
+      
+      <Typography variant="h6" sx={{ mt: 2 }}>
         <T keyName="verification.category_title">Kategorie</T>
       </Typography>
-      <Grid container direction="column" alignItems="stretch" className={classes.leftAlign}>
+      <Stack direction="column" spacing={1} alignItems="stretch">
         {renderCategoryButtons()}
-      </Grid>
-    </Paper>
+      </Stack>
+    </StyledPaper>
   );
 
-  // Kategorie-Buttons (abhängig vom ausgewählten Prüfkriterium)
+  // Category buttons
   const renderCategoryButtons = () => {
     switch (selectButton) {
       case "Integrität":
         return (
           <>
-            <ButtonComponent onClick={() => setSelectCategory("Fachmodelle ohne Gruppe")}>
+            <LeftAlignedButton onClick={() => setSelectCategory("Fachmodelle ohne Gruppe")}>
               <T keyName="verification.category.no_model_group">Fachmodelle ohne Gruppe</T>
-            </ButtonComponent>
-            <ButtonComponent onClick={() => setSelectCategory("Gruppen ohne Klasse")}>
+            </LeftAlignedButton>
+            <LeftAlignedButton onClick={() => setSelectCategory("Gruppen ohne Klasse")}>
               <T keyName="verification.category.no_group_class">Gruppen ohne Klasse</T>
-            </ButtonComponent>
-            <ButtonComponent onClick={() => setSelectCategory("Klassen ohne Merkmale/Merkmalsgruppen")}>
+            </LeftAlignedButton>
+            <LeftAlignedButton onClick={() => setSelectCategory("Klassen ohne Merkmale/Merkmalsgruppen")}>
               <T keyName="verification.category.no_class_properties">Klassen ohne Merkmale/Merkmalsgruppen</T>
-            </ButtonComponent>
-            <ButtonComponent onClick={() => setSelectCategory("Merkmalsgruppen ohne Merkmale")}>
+            </LeftAlignedButton>
+            <LeftAlignedButton onClick={() => setSelectCategory("Merkmalsgruppen ohne Merkmale")}>
               <T keyName="verification.category.no_property_group">Merkmalsgruppen ohne Merkmale</T>
-            </ButtonComponent>
-            <ButtonComponent onClick={() => setSelectCategory("Merkmale ohne Klasse oder Merkmalsgruppe")}>
+            </LeftAlignedButton>
+            <LeftAlignedButton onClick={() => setSelectCategory("Merkmale ohne Klasse oder Merkmalsgruppe")}>
               <T keyName="verification.category.no_property">Merkmale ohne Klasse oder Merkmalsgruppe</T>
-            </ButtonComponent>
-            <ButtonComponent onClick={() => setSelectCategory("Größen die keinem Merkmal zugeordnet sind")}>
+            </LeftAlignedButton>
+            <LeftAlignedButton onClick={() => setSelectCategory("Größen die keinem Merkmal zugeordnet sind")}>
               <T keyName="verification.category.no_measure">Größen ohne Merkmal</T>
-            </ButtonComponent>
-            <ButtonComponent onClick={() => setSelectCategory("Einheiten ohne Größe")}>
+            </LeftAlignedButton>
+            <LeftAlignedButton onClick={() => setSelectCategory("Einheiten ohne Größe")}>
               <T keyName="verification.category.no_unit">Einheiten ohne Größe</T>
-            </ButtonComponent>
-            <ButtonComponent onClick={() => setSelectCategory("Werte ohne Größe")}>
+            </LeftAlignedButton>
+            <LeftAlignedButton onClick={() => setSelectCategory("Werte ohne Größe")}>
               <T keyName="verification.category.no_value">Werte ohne Größe</T>
-            </ButtonComponent>
+            </LeftAlignedButton>
           </>
         );
       case "Eindeutigkeit":
         return (
           <>
-            <ButtonComponent onClick={() => setSelectCategory("ID-Duplikate")}>
+            <LeftAlignedButton onClick={() => setSelectCategory("ID-Duplikate")}>
               <T keyName="verification.category.duplicate_id">ID-Duplikate</T>
-            </ButtonComponent>
-            <ButtonComponent onClick={() => setSelectCategory("Namen-Duplikate (innerhalb eines Types)")}>
+            </LeftAlignedButton>
+            <LeftAlignedButton onClick={() => setSelectCategory("Namen-Duplikate (innerhalb eines Types)")}>
               <T keyName="verification.category.duplicate_name_type">Namen-Duplikate (innerhalb eines Types)</T>
-            </ButtonComponent>
-            <ButtonComponent onClick={() => setSelectCategory("Namen-Duplikate (gesamter Datenbestand)")}>
+            </LeftAlignedButton>
+            <LeftAlignedButton onClick={() => setSelectCategory("Namen-Duplikate (gesamter Datenbestand)")}>
               <T keyName="verification.category.duplicate_name_all">Namen-Duplikate (gesamter Datenbestand)</T>
-            </ButtonComponent>
+            </LeftAlignedButton>
           </>
         );
       case "Sprache":
         return (
           <>
-            <ButtonComponent onClick={() => setSelectCategory("Fehlende Beschreibung")}>
+            <LeftAlignedButton onClick={() => setSelectCategory("Fehlende Beschreibung")}>
               <T keyName="verification.category.missing_description">Fehlende Beschreibung</T>
-            </ButtonComponent>
-            <ButtonComponent onClick={() => setSelectCategory("Fehlende Beschreibung (englisch)")}>
+            </LeftAlignedButton>
+            <LeftAlignedButton onClick={() => setSelectCategory("Fehlende Beschreibung (englisch)")}>
               <T keyName="verification.category.missing_description_en">Fehlende Beschreibung (englisch)</T>
-            </ButtonComponent>
-            <ButtonComponent onClick={() => setSelectCategory("Fehlende Namens-Übersetzung (englisch)")}>
+            </LeftAlignedButton>
+            <LeftAlignedButton onClick={() => setSelectCategory("Fehlende Namens-Übersetzung (englisch)")}>
               <T keyName="verification.category.missing_translation_en">Fehlende Namens-Übersetzung (englisch)</T>
-            </ButtonComponent>
+            </LeftAlignedButton>
           </>
         );
       default:
@@ -253,9 +260,7 @@ export function VerificationView() {
     }
   }, [selectCategory]);
 
-  // Mittlere Spalte: Ergebnisliste der gewählten Kategorie
-  // Hier rendern wir unterschiedliche Komponenten, die jeweils einen TreeView anzeigen.
-  // Diese Komponenten erhalten als onSelect den Callback, der den ausgewählten Eintrag in den State schreibt.
+  // Middle column: Result list
   const renderResultList = () => {
     switch (selectCategory) {
       case "Fachmodelle ohne Gruppe":
@@ -288,22 +293,22 @@ export function VerificationView() {
         return <ThisFindMissingEnglishName />;
       default:
         return (
-          <Paper className={classes.paper}>
-            <Typography className={classes.hint} variant="body1">
+          <StyledPaper>
+            <HintTypography variant="body1">
               <T keyName="verification.result.select_criteria">Prüfkriterium und Kategorie auswählen.</T>
-            </Typography>
-          </Paper>
+            </HintTypography>
+          </StyledPaper>
         );
     }
   };
 
-  // Rechte Spalte: Detailansicht des ausgewählten Eintrags (statt Navigation)
+  // Right column: Detail view
   const renderDetailView = () => {
     if (!selectedConcept) {
       return (
-        <Typography className={classes.hint} variant="body1">
+        <HintTypography variant="body1">
           <T keyName="verification.result.select_entry">Prüfergebnis in der Listenansicht auswählen um Eigenschaften anzuzeigen.</T>
-        </Typography>
+        </HintTypography>
       );
     }
     const { id, recordType, tags } = selectedConcept;
@@ -375,8 +380,7 @@ export function VerificationView() {
     }
   };
 
-  // Die "ThisFind..."-Komponenten: Sie nutzen jeweils die entsprechenden TreeQuery-Hooks
-  // und rendern die jeweilige Prüfroutine, wobei onSelect={handleOnSelect} übergeben wird.
+  // Components for verification queries
   function ThisFindPropGroupWithoutProp() {
     const { loading, error, data } = useFindPropGroupWithoutPropTreeQuery({});
     if (loading) return <LinearProgress />;
@@ -563,22 +567,53 @@ export function VerificationView() {
   }
 
   return (
-    <Grid container spacing={1}>
-      <Grid item xs={2}>
+    <Stack 
+      direction="row" 
+      spacing={2} 
+      sx={{ 
+        minHeight: 'calc(100vh - 140px)', 
+        width: '100%',
+        alignItems: 'flex-start' // Align items to the top
+      }}
+    >
+      {/* Left column - Criteria */}
+      <Box sx={{ 
+        width: '20%', 
+        flexShrink: 0,
+        alignSelf: 'flex-start' // Don't stretch vertically
+      }}>
         {renderCriteriaButtons()}
-      </Grid>
-      <Grid item xs={3}>
-        <Paper className={classes.paper}>
+      </Box>
+      
+      {/* Middle column - Results */}
+      <Box sx={{ 
+        width: '30%', 
+        flexShrink: 0,
+        alignSelf: 'flex-start' // Don't stretch vertically
+      }}>
+        <StyledPaper>
           <Typography variant="h6">{title}</Typography>
-          {renderResultList()}
-        </Paper>
-      </Grid>
-      <Grid item xs={7}>
-        <Paper className={classes.paper}>
+          <Box sx={{ 
+            flexGrow: title ? 1 : 0, 
+            display: 'flex', 
+            flexDirection: 'column' 
+          }}>
+            {renderResultList()}
+          </Box>
+        </StyledPaper>
+      </Box>
+      
+      {/* Right column - Details */}
+      <Box sx={{ 
+        flexGrow: 1,
+        alignSelf: 'flex-start', // Don't stretch vertically
+        minHeight: !selectedConcept ? 'auto' : undefined
+      }}>
+        <StyledPaper>
           {renderDetailView()}
-        </Paper>
-      </Grid>
-    </Grid>
+        </StyledPaper>
+      </Box>
+    </Stack>
   );
 }
 

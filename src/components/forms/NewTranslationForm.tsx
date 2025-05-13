@@ -3,25 +3,22 @@ import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { defaultFormFieldOptions } from "../../hooks/useFormStyles";
 import LanguageSelectField from "./LanugageSelectField";
 import InlineButtonGroup from "./InlineButtonGroup";
-import React, { FC, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   LanguageFilterInput,
   LanguagePropsFragment,
 } from "../../generated/types";
-import makeStyles from "@mui/styles/makeStyles";
+import { styled } from "@mui/material/styles";
 import { T } from "@tolgee/react";
 
-const useStyles = makeStyles(
-  (theme: { spacing: (factor: number) => number }) => ({
-    root: {
-      display: "flex",
-      flexDirection: "column",
-      "& > *": {
-        marginBottom: theme.spacing(1),
-      },
-    },
-  })
-);
+// Replace makeStyles with styled component
+const FormContainer = styled('form')(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  "& > *": {
+    marginBottom: theme.spacing(1),
+  },
+}));
 
 type NewTranslationFormValues = {
   id: string;
@@ -38,9 +35,8 @@ type NewTranslationFormProps = {
   >;
 };
 
-const NewTranslationForm: FC<NewTranslationFormProps> = (props) => {
+const NewTranslationForm = (props: NewTranslationFormProps) => {
   const { languageFilter, onCancel, onSubmit, TextFieldProps } = props;
-  const classes = useStyles();
   const {
     watch,
     register,
@@ -76,8 +72,7 @@ const NewTranslationForm: FC<NewTranslationFormProps> = (props) => {
     }
   };
   return (
-    <form
-      className={classes.root}
+    <FormContainer
       onSubmit={handleSubmit(onSubmit)}
       lang={lang}
     >
@@ -111,7 +106,7 @@ const NewTranslationForm: FC<NewTranslationFormProps> = (props) => {
       <div>
         <InlineButtonGroup formState={formState} onReset={onCancel} />
       </div>
-    </form>
+    </FormContainer>
   );
 };
 

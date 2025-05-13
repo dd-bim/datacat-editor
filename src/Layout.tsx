@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { makeStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles"; 
 import CssBaseline from "@mui/material/CssBaseline";
 import AppDrawer from "./components/AppDrawer";
 import BoardingView from "./views/BoardingView";
 import { AppBar } from "./components/AppBar";
 import { useRoutes } from "react-router-dom";
 import useAuthContext from "./hooks/useAuthContext";
-import { Toolbar, Container, Paper } from "@mui/material";
+import { Toolbar, Container, Paper, Box } from "@mui/material";
 import Footer from "./components/Footer";
 import ConfirmationView from "./views/ConfirmationView";
 import ProfileFormView from "./views/forms/ProfileFormView";
@@ -21,41 +21,35 @@ import { ImportViewExcel } from "./views/ImportViewExcel";
 import GridViewView from "./views/GridViewView";
 import TagView from "./views/TagView";
 import GraphiQLEditor from "./GraphiQLEditor";
+import IDSExportView from "./views/IDSExportView"; // Import the new IDSExportView
 import { catalogEntryRoutes } from "./routes/CatalogEntryRoutes";
 
 const drawerWidth = 250;
 
-const useStyles = makeStyles((theme: any) => ({
-  root: {
-    display: "flex",
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  content: {
-    minHeight: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    flexGrow: 1,
-    padding: theme.spacing(3),
-  },
-  graphiql: {
-    minHeight: "100vh",
-    height: "100%",
-  },
+// Replace makeStyles with styled components
+const Root = styled('div')({
+  display: "flex",
+});
+
+const Content = styled('main')(({ theme }) => ({
+  minHeight: "100vh",
+  display: "flex",
+  flexDirection: "column",
+  flexGrow: 1,
+  padding: theme.spacing(3),
+}));
+
+const GraphiQLPaper = styled(Paper)(({ theme }) => ({
+  minHeight: "100vh",
+  height: "100%",
 }));
 
 export default function Layout() {
-  const classes = useStyles();
   const gridStyles = useGridStyles();
   const { token } = useAuthContext();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // Konfiguration der Routen für nicht authentifizierte Benutzer
+  // Configuration for unauthenticated users
   if (!token) {
     const publicRoutes = [
       { path: "/confirm", element: <ConfirmationView /> },
@@ -63,15 +57,15 @@ export default function Layout() {
     ];
     const routing = useRoutes(publicRoutes);
     return (
-      <div className={classes.content}>
+      <Content>
         <CssBaseline />
         {routing}
         <Footer />
-      </div>
+      </Content>
     );
   }
 
-  // Konfiguration der Routen für authentifizierte Benutzer
+  // Configuration for authenticated users
   const appRoutes = [
     {
       path: "/",
@@ -97,42 +91,45 @@ export default function Layout() {
       ),
     },
     { path: "/export", element: <ExportView /> },
+    { path: "/ids-export", element: <IDSExportView /> }, // Add route for IDS Export View
     {
       path: "/graphiql",
       element: (
-        <Paper className={classes.graphiql} variant="outlined">
+        <GraphiQLPaper variant="outlined">
           <GraphiQLEditor />
-        </Paper>
+        </GraphiQLPaper>
       ),
     },
     { path: "/tagview", element: <TagView /> },
     { path: "/gridview", element: <GridViewView /> },
-    // Integration der Katalogeintrag-Routen
+    // Integration of catalog entry routes
     ...catalogEntryRoutes,
-    // Optional: Fallback-Route
+    // Optional: Fallback route
     { path: "*", element: <div>Page not found</div> },
   ];
 
   const routing = useRoutes(appRoutes);
 
   return (
-    <div className={classes.root}>
+    <Root>
       <CssBaseline />
       <AppBar onClick={() => setDrawerOpen(true)} />
       <AppDrawer
         open={drawerOpen}
         variant="temporary"
         onClose={() => setDrawerOpen(false)}
-        className={classes.drawer}
-        classes={{
-          paper: classes.drawerPaper,
+        sx={{
+          width: drawerWidth,
+          '& .MuiDrawer-paper': {
+            width: drawerWidth,
+          },
         }}
       />
-      <main className={classes.content}>
+      <Content>
         <Toolbar />
         {routing}
         <Footer />
-      </main>
-    </div>
+      </Content>
+    </Root>
   );
 }

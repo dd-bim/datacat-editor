@@ -1,4 +1,4 @@
-import React, {FC} from "react";
+import React from "react";
 import {
     CollectionDetailPropsFragment,
     RelationshipRecordType,
@@ -20,7 +20,7 @@ import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import { T, useTranslate } from "@tolgee/react";
 
-const PropertyGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) => {
+const PropertyGroupForm = (props: FormProps<CollectionDetailPropsFragment>) => {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
     const { t } = useTranslate();
