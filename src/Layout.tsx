@@ -18,7 +18,7 @@ import { ExportView } from "./views/ExportView";
 import { ImportView } from "./views/ImportView";
 import { DeleteImportView } from "./views/DeleteImportView";
 import { ImportViewExcel } from "./views/ImportViewExcel";
-import GridViewView from "./views/GridViewView";
+// import GridViewView from "./views/GridViewView";
 import TagView from "./views/TagView";
 import GraphiQLEditor from "./GraphiQLEditor";
 import IDSExportView from "./views/IDSExportView"; // Import the new IDSExportView
@@ -101,7 +101,7 @@ export default function Layout() {
       ),
     },
     { path: "/tagview", element: <TagView /> },
-    { path: "/gridview", element: <GridViewView /> },
+    // { path: "/gridview", element: <GridViewView /> },
     // Integration of catalog entry routes
     ...catalogEntryRoutes,
     // Optional: Fallback route

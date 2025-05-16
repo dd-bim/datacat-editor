@@ -11,8 +11,8 @@ import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
-import NominalValueFormSet from "../../components/forms/NominalValueFormSet";
-import ToleranceFormSet from "../../components/forms/ToleranceFormSet";
+// import NominalValueFormSet from "../../components/forms/NominalValueFormSet";
+// import ToleranceFormSet from "../../components/forms/ToleranceFormSet";
 import {T, useTranslate} from "@tolgee/react";
 
 const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
@@ -65,7 +65,7 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
                 names={entry.names}
             />
 
-            <DescriptionFormSet
+            {/* <DescriptionFormSet
                 catalogEntryId={id}
                 descriptions={entry.descriptions}
             />
@@ -73,15 +73,15 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
             <CommentFormSet
                 catalogEntryId={id}
                 comments={entry.comments}
-            />
+            /> */}
 
             <VersionFormSet
                 id={id}
-                versionId={entry.versionId}
-                versionDate={entry.versionDate}
+                majorVersion={entry.majorVersion}
+                minorVersion={entry.minorVersion}
             />
 
-            <NominalValueFormSet
+            {/* <NominalValueFormSet
                 id={id}
                 valueRole={entry.valueRole}
                 valueType={entry.valueType}
@@ -105,7 +105,7 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
                 title={<span><b><T keyName="measure.titlePlural">Größen</T></b>, <T keyName="value_form.assigned_measures">denen dieser Wert zugewiesen wurde</T></span>}
                 emptyMessage={t("value_form.no_assigned_measures")}
                 relatingRecords={entry?.assignedTo?.nodes.map(node => node.relatingMeasure) ?? []}
-            />
+            /> */}
 
             <MetaFormSet entry={entry}/>
 

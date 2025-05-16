@@ -19,7 +19,7 @@ import {
     DocumentEntity,
     Entity,
     GroupEntity,
-    MeasureEntity,
+    ValueListEntity,
     ModelEntity,
     PropertyEntity,
     PropertyGroupEntity,
@@ -34,7 +34,7 @@ const options = [
     ClassEntity,
     PropertyGroupEntity,
     PropertyEntity,
-    MeasureEntity,
+    ValueListEntity,
     UnitEntity,
     ValueEntity
 ];

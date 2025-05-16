@@ -1,9 +1,8 @@
 import React from "react";
 import {
-    CollectionDetailPropsFragment,
+    SubjectDetailPropsFragment,
     RelationshipRecordType,
-    useDeleteEntryMutation,
-    useGetCollectionEntryQuery
+    useDeleteEntryMutation
 } from "../../generated/types";
 import {Typography} from "@mui/material";
 import {useSnackbar} from "notistack";
@@ -16,11 +15,11 @@ import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
 import {PropertyEntity} from "../../domain";
-import TransferListView from "../TransferListView";
+// import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import { T, useTranslate } from "@tolgee/react";
 
-const PropertyGroupForm = (props: FormProps<CollectionDetailPropsFragment>) => {
+const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
     const { t } = useTranslate();
@@ -30,7 +29,7 @@ const PropertyGroupForm = (props: FormProps<CollectionDetailPropsFragment>) => {
         fetchPolicy: "network-only",
         variables: {id}
     });
-    let entry = data?.node as CollectionDetailPropsFragment | undefined;
+    let entry = data?.node as SubjectDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation({
         update: cache => {
             cache.evict({id: `XtdNest:${id}`});
@@ -63,10 +62,10 @@ const PropertyGroupForm = (props: FormProps<CollectionDetailPropsFragment>) => {
         onDelete?.();
     };
 
-    const collectsRelationships = entry.collects.nodes.map(({id, relatedThings}) => ({
-        relationshipId: id,
-        relatedItems: relatedThings
-    }));
+    // const collectsRelationships = entry.collects.nodes.map(({id, relatedThings}) => ({
+    //     relationshipId: id,
+    //     relatedItems: relatedThings
+    // }));
 
     return (
         <FormView>
@@ -74,7 +73,7 @@ const PropertyGroupForm = (props: FormProps<CollectionDetailPropsFragment>) => {
                 catalogEntryId={id}
                 names={entry.names}
             />
-
+{/* 
             <DescriptionFormSet
                 catalogEntryId={id}
                 descriptions={entry.descriptions}
@@ -83,15 +82,15 @@ const PropertyGroupForm = (props: FormProps<CollectionDetailPropsFragment>) => {
             <CommentFormSet
                 catalogEntryId={id}
                 comments={entry.comments}
-            />
+            /> */}
 
             <VersionFormSet
                 id={id}
-                versionId={entry.versionId}
-                versionDate={entry.versionDate}
+                majorVersion={entry.majorVersion}
+                minorVersion={entry.minorVersion}
             />
 
-            <TransferListView
+            {/* <TransferListView
                 title={<span><T keyName="property_group_form.grouped_properties"></T></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.Collects}
@@ -112,7 +111,7 @@ const PropertyGroupForm = (props: FormProps<CollectionDetailPropsFragment>) => {
                 title={<span><b><T keyName="class.titlePlural">Klassen</T></b>, <T keyName="property_group_form.assigned_classes"></T></span>}
                 emptyMessage={t("property_group_form.no_assigned_classes", "Diese Merkmalsgruppe wurde keiner Klasse zugewiesen")}
                 relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingObject) ?? []}
-            />
+            /> */}
 
             <MetaFormSet entry={entry}/>
 

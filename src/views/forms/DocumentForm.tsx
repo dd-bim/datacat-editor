@@ -13,7 +13,7 @@ import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
-import TransferListView from "../TransferListView";
+// import TransferListView from "../TransferListView";
 import {Domain} from "../../domain";
 import {T} from "@tolgee/react";
 

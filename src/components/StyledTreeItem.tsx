@@ -3,7 +3,7 @@ import { TreeItem, TreeItemProps, treeItemClasses } from "@mui/x-tree-view";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
-import { ItemPropsFragment } from "../generated/types";
+import { ObjectPropsFragment } from "../generated/types";
 import { getEntityType } from "../domain";
 
 // Replace makeStyles with styled components
@@ -51,9 +51,9 @@ const LabelText = styled(Typography)({
 
 type StyleTreeItemProps = {
   itemId: string;
-  data: ItemPropsFragment;
+  data: ObjectPropsFragment;
   children?: React.ReactNode;
-  onSelect?: (item: ItemPropsFragment) => void;
+  onSelect?: (item: ObjectPropsFragment) => void;
 };
 
 const StyledTreeItemComponent = (props: StyleTreeItemProps & TreeItemProps) => {
@@ -84,7 +84,7 @@ const StyledTreeItemComponent = (props: StyleTreeItemProps & TreeItemProps) => {
           color="inherit"
         />
       </LabelIcon>
-      <Tooltip title={data.description ?? ""} arrow>
+      <Tooltip title={data.name ?? ""} arrow>
         <LabelText variant="body2">
           {data.name ?? `${data.id} (${data.__typename})`}
         </LabelText>
@@ -109,7 +109,7 @@ export const StyledTreeItem = React.memo(StyledTreeItemComponent, (prevProps, ne
   return (
     prevProps.itemId === nextProps.itemId &&
     prevProps.data.id === nextProps.data.id && 
-    prevProps.data.name === nextProps.data.name &&
-    prevProps.data.description === nextProps.data.description
+    prevProps.data.name === nextProps.data.name
+    // prevProps.data.description === nextProps.data.description
   );
 });

@@ -1,10 +1,10 @@
 import {
   TranslationInput,
-  TranslationPropsFragment,
-  TranslationUpdateInput,
+  MultiLanguageTextPropsFragment,
   useAddNameMutation,
   useDeleteNameMutation,
   useUpdateNameMutation,
+  UpdateTextInput,
 } from "../../generated/types";
 import React from "react";
 import FormSet, { FormSetDescription, FormSetTitle } from "./FormSet";
@@ -20,7 +20,7 @@ const StyledFormSetDescription = styled(FormSetDescription)(({ theme }) => ({
 
 export type NameFormSetProps = {
   catalogEntryId: string;
-  names: TranslationPropsFragment[];
+  names: MultiLanguageTextPropsFragment[];
 };
 
 const NameFormSet = (props: NameFormSetProps) => {
@@ -34,25 +34,25 @@ const NameFormSet = (props: NameFormSetProps) => {
   const handleOnAdd = async (name: TranslationInput) => {
     await addName({
       variables: {
-        input: { catalogEntryId, name },
+        input: {  catalogEntryId, name },
       },
     });
     enqueueSnackbar("Name hinzugefügt.");
   };
 
-  const handleOnUpdate = async (name: TranslationUpdateInput) => {
+  const handleOnUpdate = async (name: UpdateTextInput) => {
     await updateName({
       variables: {
-        input: { catalogEntryId, name },
+        input: name
       },
     });
     enqueueSnackbar("Name aktualisiert.");
   };
 
-  const handleOnDelete = async (nameId: string) => {
+  const handleOnDelete = async (textId: string) => {
     await deleteName({
       variables: {
-        input: { catalogEntryId, nameId },
+        input: { textId },
       },
     });
     enqueueSnackbar("Name gelöscht.");

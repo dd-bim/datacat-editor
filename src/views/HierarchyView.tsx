@@ -24,7 +24,7 @@ import {
   GroupEntity,
   ClassEntity,
   PropertyEntity,
-  MeasureEntity,
+  ValueListEntity,
   UnitEntity,
   ValueEntity,
   getEntityType,
@@ -167,7 +167,7 @@ const HierarchyView = () => {
             <PropertyForm id={id} onDelete={handleDelete} />
           </>
         );
-      case MeasureEntity.path:
+      case ValueListEntity.path:
         return (
           <>
             <Typography variant="h5">

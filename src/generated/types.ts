@@ -1,5 +1,6 @@
 import * as Apollo from '@apollo/client';
 import { gql } from '@apollo/client';
+import { E, M } from 'vite/dist/node/moduleRunnerTransport.d-DJ_mE5sf';
 
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -44,26 +45,35 @@ export type AccountUpdateInput = {
   organization: Scalars['String'];
 };
 
-export type AddDescriptionInput = {
-  catalogEntryId: Scalars['ID'];
-  description: TranslationInput;
-};
+// export type AddDescriptionInput = {
+//   catalogEntryId: Scalars['ID'];
+//   description: TranslationInput;
+// };
 
-export type AddCommentInput = {
-  catalogEntryId: Scalars['ID'];
-  comment: TranslationInput;
-};
+// export type AddCommentInput = {
+//   catalogEntryId: Scalars['ID'];
+//   comment: TranslationInput;
+// };
 
-export type AddNameInput = {
+// export type AddNameInput = {
+//   catalogEntryId: Scalars['ID'];
+//   name: TranslationInput;
+// };
+export type AddTextInput = {
   catalogEntryId: Scalars['ID'];
   name: TranslationInput;
 };
 
 
-export type AddTagInput = {
+// export type AddTagInput = {
+//   catalogEntryId: Scalars['ID'];
+//   tagId: Scalars['ID'];
+// };
+export type TagInput = {
   catalogEntryId: Scalars['ID'];
   tagId: Scalars['ID'];
 };
+
 
 
 export type CatalogEntryFilterInput = {
@@ -78,37 +88,60 @@ export type CatalogEntryTypeFilterInput = {
 
 
 export enum CatalogRecordType {
-  Activity = 'Activity',
-  Actor = 'Actor',
-  Bag = 'Bag',
-  Classification = 'Classification',
   ExternalDocument = 'ExternalDocument',
-  Measure = 'Measure',
-  Nest = 'Nest',
   Property = 'Property',
   Subject = 'Subject',
   Unit = 'Unit',
   Value = 'Value',
-  ActsUpon = 'ActsUpon',
-  AssignsCollections = 'AssignsCollections',
-  AssignsMeasures = 'AssignsMeasures',
-  AssignsProperties = 'AssignsProperties',
-  AssignsPropertyWithValues = 'AssignsPropertyWithValues',
-  AssignsUnits = 'AssignsUnits',
-  AssignsValues = 'AssignsValues',
-  Associates = 'Associates',
-  Collects = 'Collects',
-  Composes = 'Composes',
-  Documents = 'Documents',
-  Groups = 'Groups',
-  Sequences = 'Sequences',
-  Specializes = 'Specializes'
+  OrderedValue = 'OrderedValue',
+  ValueList = 'ValueList',
+  Language = 'Language',
+  Dimension = 'Dimension',
+  Rational = 'Rational',
+  MultiLanguageText = 'MultiLanguageText',
+  Text = 'Text',
+  Symbol = 'Symbol',
+  Interval = 'Interval',
+  Dictionary = 'Dictionary',
+  QuantityKind = 'QuantityKind',
+  Country = 'Country',
+  Subdivision = 'Subdivision',
 }
 
+export enum RelationshipRecordType {
+  BoundaryValues = 'BoundaryValues',
+  CountryOfOrigin = 'CountryOfOrigin',
+  Dictionary = 'Dictionary',
+  Dimension = 'Dimension',
+  Maximum = 'Maximum',
+  Minimum = 'Minimum',
+  PossibleValues = 'PossibleValues',
+  Properties = 'Properties',
+  QuantityKinds = 'QuantityKinds',
+  ReferenceDocuments = 'ReferenceDocuments',
+  RelationshipToProperty = 'RelationshipToProperty',
+  RelationshipToSubject = 'RelationshipToSubject',
+  ReplacedObjects = 'ReplacedObjects',
+  ScopeSubjects = 'ScopeSubjects',
+  SimilarTo = 'SimilarTo',
+  Subject = 'Subject',
+  Subdivisions = 'Subdivisions',
+  Symbols = 'Symbols',
+  TargetProperties = 'TargetProperties',
+  TargetSubjects = 'TargetSubjects',
+  Units = 'Units',
+  Unit = 'Unit',
+  Values = 'Values',
+  Value = 'Value'
+}
 
-
+// export type CreateCatalogEntryInput = {
+//   catalogEntryType: SimpleRecordType;
+//   properties: PropertiesInput;
+//   tags?: Maybe<Array<Scalars['ID']>>;
+// };
 export type CreateCatalogEntryInput = {
-  catalogEntryType: SimpleRecordType;
+  catalogEntryType: CatalogRecordType;
   properties: PropertiesInput;
   tags?: Maybe<Array<Scalars['ID']>>;
 };
@@ -132,20 +165,13 @@ export type DeleteCatalogEntryInput = {
   catalogEntryId: Scalars['ID'];
 };
 
+export type AddTagInput = {
+    catalogEntryId: Scalars['ID'];
+    tagId: Scalars['ID'];
+}
 
-export type DeleteDescriptionInput = {
-  catalogEntryId: Scalars['ID'];
-  descriptionId: Scalars['ID'];
-};
-
-export type DeleteCommentInput = {
-  catalogEntryId: Scalars['ID'];
-  commentId: Scalars['ID'];
-};
-
-export type DeleteNameInput = {
-  catalogEntryId: Scalars['ID'];
-  nameId: Scalars['ID'];
+export type DeleteTextInput = {
+  textId: Scalars['ID'];
 };
 
 
@@ -215,10 +241,10 @@ export type FindMultipleNamesAcrossClassesFilterInput = {
 
 
 /**  Query type */
-export type LanguageFilterInput = {
-  query?: Maybe<Scalars['String']>;
-  excludeLanguageTags?: Maybe<Array<Scalars['String']>>;
-};
+// export type LanguageFilterInput = {
+//   query?: Maybe<Scalars['String']>;
+//   excludeLanguageTags?: Maybe<Array<Scalars['String']>>;
+// };
 
 export type LocaleInput = {
   languageTag: Scalars['ID'];
@@ -235,11 +261,11 @@ export type LoginInput = {
 };
 
 
-export type NominalValueInput = {
-  valueRole: ValueRole;
-  valueType: ValueType;
-  nominalValue?: Maybe<Scalars['String']>;
-};
+// export type NominalValueInput = {
+//   valueRole: ValueRole;
+//   valueType: ValueType;
+//   nominalValue?: Maybe<Scalars['String']>;
+// };
 
 
 
@@ -251,37 +277,165 @@ export type ProfileUpdateInput = {
   organization: Scalars['String'];
 };
 
+// export type PropertiesInput = {
+//   id?: Maybe<Scalars['ID']>;
+//   version?: Maybe<VersionInput>;
+//   names: Array<TranslationInput>;
+//   descriptions?: Maybe<Array<TranslationInput>>;
+// };
 export type PropertiesInput = {
   id?: Maybe<Scalars['ID']>;
-  version?: Maybe<VersionInput>;
+  majorVersion?: Maybe<Scalars['Int']>;
+  minorVersion?: Maybe<Scalars['Int']>;
+  dateOfCreation?: Maybe<Scalars['String']>;
+  status?: Maybe<StatusOfActivationEnum>;
   names: Array<TranslationInput>;
   descriptions?: Maybe<Array<TranslationInput>>;
+  comments?: Maybe<Array<TranslationInput>>;
+  deprecationExplanation?: Maybe<Array<TranslationInput>>;
+  definition?: Maybe<Array<TranslationInput>>;
+  languageOfCreator?: Maybe<Scalars['ID']>;
+  CountryOfOrigin?: Maybe<Scalars['ID']>;
+  examples?: Maybe<Array<TranslationInput>>;
+  propertyProperties?:Maybe<PropertyInput>;
+  unitProperties?: Maybe<UnitInput>;
+  valueProperties?: Maybe<ValueInput>;
+  externalDocumentProperties?: Maybe<ExternalDocumentInput>;
+  countryProperties?: Maybe<CountryInput>;
+  subdivisionProperties?: Maybe<CountryInput>;
+  orderedValueProperties?: Maybe<OrderedValueInput>;
+  valueListProperties?: Maybe<ValueListInput>;
+  intervalProperties?: Maybe<IntervalInput>;
+  languageProperties?: Maybe<LanguageInput>;
+  textProperties?: Maybe<TextInput>;
+  rationalProperties?: Maybe<RationalInput>;
+  symbolProperties?: Maybe<SymbolInput>;
+  dimensionProperties?: Maybe<DimensionInput>;
 };
 
-
-
-export enum RelationshipRecordType {
-  ActsUpon = 'ActsUpon',
-  AssignsCollections = 'AssignsCollections',
-  AssignsMeasures = 'AssignsMeasures',
-  AssignsProperties = 'AssignsProperties',
-  AssignsPropertyWithValues = 'AssignsPropertyWithValues',
-  AssignsUnits = 'AssignsUnits',
-  AssignsValues = 'AssignsValues',
-  Associates = 'Associates',
-  Collects = 'Collects',
-  Composes = 'Composes',
-  Documents = 'Documents',
-  Groups = 'Groups',
-  Sequences = 'Sequences',
-  Specializes = 'Specializes'
+export enum StatusOfActivationEnum {
+  XTD_ACTIVE = 'XTD_ACTIVE',
+  XTD_INACTIVE = 'XTD_INACTIVE'
 }
 
-export type RemoveTagInput = {
-  catalogEntryId: Scalars['ID'];
-  tagId: Scalars['ID'];
-};
+export type PropertyInput = {
+  dataType?: Maybe<DataTypeEnum>;
+  dataFormat?: Maybe<Scalars['String']>;
+}
 
+export enum DataTypeEnum {
+  XTD_STRING = 'XTD_STRING',
+  XTD_INTEGER = 'XTD_INTEGER',
+  XTD_REAL = 'XTD_REAL',
+  XTD_BOOLEAN = 'XTD_BOOLEAN',
+  XTD_RATIONAL = 'XTD_RATIONAL',
+  XTD_DATETIME = 'XTD_DATETIME',
+  XTD_COMPLEX = 'XTD_COMPLEX'
+}
+
+export type UnitInput = {
+  scale?: Maybe<UnitScaleEnum>;
+  base?: Maybe<UnitBaseEnum>;
+  symbol?: Maybe<Array<TranslationInput>>;
+  offset?: Maybe<RationalInput>;
+  coefficient?: Maybe<RationalInput>;
+}
+
+export enum UnitScaleEnum {
+  XTD_LINEAR = 'XTD_LINEAR',
+  XTD_LOGARITHMIC = 'XTD_LOGARITHMIC'
+}
+
+export enum UnitBaseEnum {
+  XTD_ONE = 'XTD_ONE',
+  XTD_TWO = 'XTD_TWO',
+  XTD_E = 'XTD_E',
+  XTD_PI = 'XTD_PI',
+  XTD_TEN = 'XTD_TEN'
+}
+
+export type RationalInput = {
+  numerator?: Maybe<Scalars['Int']>;
+  denominator?: Maybe<Scalars['Int']>;
+}
+
+export type ValueInput = {
+  nominalValue?: Maybe<Scalars['String']>;
+}
+
+export type ExternalDocumentInput = {
+  documentUri?: Maybe<Scalars['String']>;
+  author?: Maybe<Scalars['String']>;
+  isbn?: Maybe<Scalars['String']>;
+  publisher?: Maybe<Scalars['String']>;
+  dateOfPublication?: Maybe<Scalars['String']>;
+  languageTag?: Maybe<Array<Scalars['ID']>>;
+}
+
+export type CountryInput = {
+  code?: Maybe<Scalars['String']>;
+}
+
+export type OrderedValueInput = {
+  order: Scalars['Int'];
+}
+
+export type ValueListInput = {
+  languageTag?: Scalars['ID'];
+}
+
+export type IntervalInput = {
+  minimumIncluded?: Maybe<Scalars['Boolean']>;
+  maximumIncluded?: Maybe<Scalars['Boolean']>;
+} 
+
+export type LanguageInput = {
+  englishName?: Maybe<Scalars['String']>;
+  nativeName?: Maybe<Scalars['String']>;
+  code?: Maybe<Scalars['String']>;
+  comments?: Maybe<Array<Scalars['String']>>;
+}
+
+export type TextInput = {
+  text: Scalars['String'];
+}
+
+export type SymbolInput = {
+  symbol: TranslationInput;
+}
+
+export type DimensionInput = {
+  lengthExponent: RationalInput;
+  massExponent: RationalInput;
+  timeExponent: RationalInput;
+  electricCurrentExponent: RationalInput;
+  thermodynamicTemperatureExponent: RationalInput;
+  amountOfSubstanceExponent: RationalInput;
+  luminousIntensityExponent: RationalInput;
+}
+
+
+// export enum RelationshipRecordType {
+//   ActsUpon = 'ActsUpon',
+//   AssignsCollections = 'AssignsCollections',
+//   AssignsMeasures = 'AssignsMeasures',
+//   AssignsProperties = 'AssignsProperties',
+//   AssignsPropertyWithValues = 'AssignsPropertyWithValues',
+//   AssignsUnits = 'AssignsUnits',
+//   AssignsValues = 'AssignsValues',
+//   Associates = 'Associates',
+//   Collects = 'Collects',
+//   Composes = 'Composes',
+//   Documents = 'Documents',
+//   Groups = 'Groups',
+//   Sequences = 'Sequences',
+//   Specializes = 'Specializes'
+// }
+
+// export type RemoveTagInput = {
+//   catalogEntryId: Scalars['ID'];
+//   tagId: Scalars['ID'];
+// };
 
 export type SearchInput = {
   query?: Maybe<Scalars['String']>;
@@ -297,29 +451,51 @@ export type SearchInput = {
 
 
 
-export type SetNominalValueInput = {
-  valueId: Scalars['ID'];
-  nominalValue: NominalValueInput;
-};
+// export type SetNominalValueInput = {
+//   valueId: Scalars['ID'];
+//   nominalValue: NominalValueInput;
+// };
 
 
-export type SetRelatedEntriesInput = {
-  relationshipId: Scalars['ID'];
-  toIds: Array<Scalars['ID']>;
-};
+// export type SetRelatedEntriesInput = {
+//   relationshipId: Scalars['ID'];
+//   toIds: Array<Scalars['ID']>;
+// };
 
 
-export type SetToleranceInput = {
-  valueId: Scalars['ID'];
-  tolerance: ToleranceInput;
-};
+// export type SetToleranceInput = {
+//   valueId: Scalars['ID'];
+//   tolerance: ToleranceInput;
+// };
 
 
-export type SetVersionInput = {
+// export type SetVersionInput = {
+//   catalogEntryId: Scalars['ID'];
+//   version: VersionInput;
+// };
+export type UpdateMajorVersionInput = {
   catalogEntryId: Scalars['ID'];
-  version: VersionInput;
+  majorVersion: Scalars['Int'];
 };
 
+export type UpdateMinorVersionInput = {
+  catalogEntryId: Scalars['ID'];
+  minorVersion: Scalars['Int'];
+};
+
+export type UpdateStatusInput = {
+  catalogEntryId: Scalars['ID'];
+  status: StatusOfActivationEnum;
+};
+
+export type AddCountryOfOriginInput = {
+  catalogEntryId: Scalars['ID'];
+  countryCode: Scalars['ID'];
+};
+
+export type DeleteCountryOfOriginInput = {
+  catalogEntryId: Scalars['ID'];
+};
 
 export type SignupInput = {
   username: Scalars['ID'];
@@ -331,20 +507,20 @@ export type SignupInput = {
 };
 
 
-export enum SimpleRecordType {
-  Activity = 'Activity' as any,
-  Actor = 'Actor' as any,
-  Bag = 'Bag' as any,
-  Classification = 'Classification' as any,
-  ExternalDocument = 'ExternalDocument' as any,
-  MeasureWithUnit = 'Measure' as any,
-  Measure = 'Measure' as any,
-  Nest = 'Nest' as any,
-  Property = 'Property' as any,
-  Subject = 'Subject' as any,
-  Unit = 'Unit' as any,
-  Value = 'Value' as any
-}
+// export enum SimpleRecordType {
+//   Activity = 'Activity' as any,
+//   Actor = 'Actor' as any,
+//   Bag = 'Bag' as any,
+//   Classification = 'Classification' as any,
+//   ExternalDocument = 'ExternalDocument' as any,
+//   MeasureWithUnit = 'Measure' as any,
+//   Measure = 'Measure' as any,
+//   Nest = 'Nest' as any,
+//   Property = 'Property' as any,
+//   Subject = 'Subject' as any,
+//   Unit = 'Unit' as any,
+//   Value = 'Value' as any
+// }
 
 export type Tag = {
   __typename?: 'Tag';
@@ -367,16 +543,16 @@ export type TagFilterInput = {
   in?: Maybe<Array<Scalars['ID']>>;
 };
 
-export type ToleranceInput = {
-  toleranceType: ToleranceType;
-  lowerTolerance?: Maybe<Scalars['String']>;
-  upperTolerance?: Maybe<Scalars['String']>;
-};
+// export type ToleranceInput = {
+//   toleranceType: ToleranceType;
+//   lowerTolerance?: Maybe<Scalars['String']>;
+//   upperTolerance?: Maybe<Scalars['String']>;
+// };
 
-export enum ToleranceType {
-  Realvalue = 'Realvalue',
-  Percentage = 'Percentage'
-}
+// export enum ToleranceType {
+//   Realvalue = 'Realvalue',
+//   Percentage = 'Percentage'
+// }
 
 
 export type TranslationInput = {
@@ -385,34 +561,33 @@ export type TranslationInput = {
   value: Scalars['String'];
 };
 
-export type TranslationUpdateInput = {
-  translationId: Scalars['ID'];
+// export type UnsetNominalValueInput = {
+//   valueId: Scalars['ID'];
+// };
+
+
+// export type UnsetToleranceInput = {
+//   valueId: Scalars['ID'];
+// };
+
+
+// export type UpdateDescriptionInput = {
+//   catalogEntryId: Scalars['ID'];
+//   description: TranslationUpdateInput;
+// };
+
+// export type UpdateCommentInput = {
+//   catalogEntryId: Scalars['ID'];
+//   comment: TranslationUpdateInput;
+// };
+
+// export type UpdateNameInput = {
+//   catalogEntryId: Scalars['ID'];
+//   name: TranslationUpdateInput;
+// };
+export type UpdateTextInput = {
+  textId: Scalars['ID'];
   value: Scalars['String'];
-};
-
-export type UnsetNominalValueInput = {
-  valueId: Scalars['ID'];
-};
-
-
-export type UnsetToleranceInput = {
-  valueId: Scalars['ID'];
-};
-
-
-export type UpdateDescriptionInput = {
-  catalogEntryId: Scalars['ID'];
-  description: TranslationUpdateInput;
-};
-
-export type UpdateCommentInput = {
-  catalogEntryId: Scalars['ID'];
-  comment: TranslationUpdateInput;
-};
-
-export type UpdateNameInput = {
-  catalogEntryId: Scalars['ID'];
-  name: TranslationUpdateInput;
 };
 
 
@@ -422,27 +597,35 @@ export type UpdateTagInput = {
 };
 
 
-export enum ValueRole {
-  Nominal = 'Nominal',
-  Maximum = 'Maximum',
-  Minimum = 'Minimum'
+// export enum ValueRole {
+//   Nominal = 'Nominal',
+//   Maximum = 'Maximum',
+//   Minimum = 'Minimum'
+// }
+
+// export enum ValueType {
+//   String = 'String',
+//   Number = 'Number',
+//   Integer = 'Integer',
+//   Real = 'Real',
+//   Boolean = 'Boolean',
+//   Logical = 'Logical'
+// }
+
+// export type VersionInput = {
+//   versionId?: Maybe<Scalars['String']>;
+//   versionDate?: Maybe<Scalars['String']>;
+// };
+
+export enum PropertyRelationshipTypeEnum {
+  XTD_DEPENDS = 'XTD_DEPENDS',
+  XTD_SPECIALIZES = 'XTD_SPECIALIZES'
 }
 
-export enum ValueType {
-  String = 'String',
-  Number = 'Number',
-  Integer = 'Integer',
-  Real = 'Real',
-  Boolean = 'Boolean',
-  Logical = 'Logical'
+export enum RelationshipKindEnum {  
+  XTD_INSTANCE_LEVEL = 'XTD_INSTANCE_LEVEL',
+  XTD_SCHEMA_LEVEL = 'XTD_SCHEMA_LEVEL'
 }
-
-export type VersionInput = {
-  versionId?: Maybe<Scalars['String']>;
-  versionDate?: Maybe<Scalars['String']>;
-};
-
-
 
 
 
@@ -504,267 +687,219 @@ export type UserProfileFragment = { username: string, firstName: string, lastNam
 
 export type PagePropsFragment = { totalPages: number, pageNumber: number, hasNext: boolean, hasPrevious: boolean };
 
-export type LanguagePropsFragment = { id: string, languageTag: string, displayCountry: string, displayLanguage: string };
+export type LanguagePropsFragment = { id: string, code: string, englishName: string, nativeName: string };
 
-export type TranslationPropsFragment = { id: string, value: string, language: LanguagePropsFragment };
+export type TextPropsFragment = { id: string, text: string, language: LanguagePropsFragment };
+
+export type MultiLanguageTextPropsFragment = { id: string, texts: Array<TextPropsFragment> };
 
 export type TagPropsFragment = { id: string, name: string };
 
-type ItemProps<T extends string> = {
+export type DictionaryPropsFragment = { id: string, name: string };
+
+export type IntervalPropsFragment = { id: string, minimumIncluded?: Maybe<boolean>, maximumIncluded?: Maybe<boolean>, minimum?: Maybe<ValueListDetailPropsFragment>, maximum?: Maybe<ValueListDetailPropsFragment> };
+
+export type SymbolPropsFragment = { id: string, symbol: string, language: LanguagePropsFragment };
+
+export type RationalPropsFragment = { id: string, numerator?: Maybe<number>, denominator?: Maybe<number> };
+
+// type ItemProps<T extends string> = {
+//   __typename: T;
+//   id: string;
+//   recordType: CatalogRecordType;
+//   name?: Maybe<string>;
+//   description?: Maybe<string>;
+//   comment?: Maybe<string>;
+//   tags: Array<TagPropsFragment>;
+// };
+
+type ObjectProps<T extends string> = {
   __typename: T;
   id: string;
   recordType: CatalogRecordType;
+  majorVersion?: Maybe<number>;
+  minorVersion?: Maybe<number>;
+  dateOfCreation?: Maybe<string>;
+  status?: Maybe<StatusOfActivationEnum>;
   name?: Maybe<string>;
-  description?: Maybe<string>;
+  names: Array<MultiLanguageTextPropsFragment>;
   comment?: Maybe<string>;
+  comments?: Maybe<Array<MultiLanguageTextPropsFragment>>;
   tags: Array<TagPropsFragment>;
+  deprecationExplanation?: Maybe<Array<MultiLanguageTextPropsFragment>>;
+  dictionary?: Maybe<Array<DictionaryPropsFragment>>;
+  replacedObjects?: Maybe<Array<ObjectProps<string>>>;
+  replacingObjects?: Maybe<Array<ObjectProps<string>>>;
 };
 
-type ItemProps_XtdActivity_Fragment = ItemProps<'XtdActivity'>;
-type ItemProps_XtdActor_Fragment = ItemProps<'XtdActor'>;
-type ItemProps_XtdBag_Fragment = ItemProps<'XtdBag'>;
-type ItemProps_XtdClassification_Fragment = ItemProps<'XtdClassification'>;
-type ItemProps_XtdExternalDocument_Fragment = ItemProps<'XtdExternalDocument'>;
-type ItemProps_XtdMeasureWithUnit_Fragment = ItemProps<'XtdMeasureWithUnit'>;
-type ItemProps_XtdNest_Fragment = ItemProps<'XtdNest'>;
-type ItemProps_XtdProperty_Fragment = ItemProps<'XtdProperty'>;
-type ItemProps_XtdRelActsUpon_Fragment = ItemProps<'XtdRelActsUpon'>;
-type ItemProps_XtdRelAssignsCollections_Fragment = ItemProps<'XtdRelAssignsCollections'>;
-type ItemProps_XtdRelAssignsMeasures_Fragment = ItemProps<'XtdRelAssignsMeasures'>;
-type ItemProps_XtdRelAssignsProperties_Fragment = ItemProps<'XtdRelAssignsProperties'>;
-type ItemProps_XtdRelAssignsPropertyWithValues_Fragment = ItemProps<'XtdRelAssignsPropertyWithValues'>;
-type ItemProps_XtdRelAssignsUnits_Fragment = ItemProps<'XtdRelAssignsUnits'>;
-type ItemProps_XtdRelAssignsValues_Fragment = ItemProps<'XtdRelAssignsValues'>;
-type ItemProps_XtdRelAssociates_Fragment = ItemProps<'XtdRelAssociates'>;
-type ItemProps_XtdRelCollects_Fragment = ItemProps<'XtdRelCollects'>;
-type ItemProps_XtdRelComposes_Fragment = ItemProps<'XtdRelComposes'>;
-type ItemProps_XtdRelDocuments_Fragment = ItemProps<'XtdRelDocuments'>;
-type ItemProps_XtdRelGroups_Fragment = ItemProps<'XtdRelGroups'>;
-type ItemProps_XtdRelSequences_Fragment = ItemProps<'XtdRelSequences'>;
-type ItemProps_XtdRelSpecializes_Fragment = ItemProps<'XtdRelSpecializes'>;
-type ItemProps_XtdSubject_Fragment = ItemProps<'XtdSubject'>;
-type ItemProps_XtdUnit_Fragment = ItemProps<'XtdUnit'>;
-type ItemProps_XtdValue_Fragment = ItemProps<'XtdValue'>;
+type ObjectProps_XtdExternalDocument_Fragment = ObjectProps<'XtdExternalDocument'>;
+type ObjectProps_XtdProperty_Fragment = ObjectProps<'XtdProperty'>;
+type ObjectProps_XtdSubject_Fragment = ObjectProps<'XtdSubject'>;
+type ObjectProps_XtdUnit_Fragment = ObjectProps<'XtdUnit'>;
+type ObjectProps_XtdValue_Fragment = ObjectProps<'XtdValue'>;
+type ObjectProps_XtdOrderedValue_Fragment = ObjectProps<'XtdOrderedValue'>;
+type ObjectProps_XtdValueList_Fragment = ObjectProps<'XtdValueList'>;
+type ObjectProps_XtdDimension_Fragment = ObjectProps<'XtdDimension'>;
+type ObjectProps_XtdCountry_Fragment = ObjectProps<'XtdCountry'>;
+type ObjectProps_XtdSubdivision_Fragment = ObjectProps<'XtdSubdivision'>;
+type ObjectProps_XtdRelationshipToSubject_Fragment = ObjectProps<'XtdRelationshipToSubject'>;
+type ObjectProps_XtdRelationshipToProperty_Fragment = ObjectProps<'XtdRelationshipToProperty'>; 
+type ObjectProps_XtdQuantityKind_Fragment = ObjectProps<'XtdQuantityKind'>;
+
+export type ObjectPropsFragment = ObjectProps_XtdExternalDocument_Fragment | ObjectProps_XtdProperty_Fragment | ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment | ObjectProps_XtdOrderedValue_Fragment | ObjectProps_XtdValueList_Fragment | ObjectProps_XtdDimension_Fragment | ObjectProps_XtdCountry_Fragment | ObjectProps_XtdSubdivision_Fragment | ObjectProps_XtdRelationshipToSubject_Fragment | ObjectProps_XtdRelationshipToProperty_Fragment | ObjectProps_XtdQuantityKind_Fragment;
 
 export type ExportCatalogRecord_Fragment = { __typename: 'ExportResult', id: string, typ?: Maybe<string>, schlagworte?: Maybe<string>, name?: Maybe<string>, name_en?: Maybe<string>, description?: Maybe<string>, versionId?: Maybe<string>, created?: Maybe<string>, createdBy?: Maybe<string>, lastModified?: Maybe<string>, lastModifiedBy?: Maybe<string> };
 
 export type ExportCatalogRecordRelationship_Fragment = { __typename: 'ExportRelationshipResult', Entity1: string, Entity1Type: string, RelationId: string, RelationshipType: string, Entity2: string, Entity2Type: string };
-
-export type ItemPropsFragment = ItemProps_XtdActivity_Fragment | ItemProps_XtdActor_Fragment | ItemProps_XtdBag_Fragment | ItemProps_XtdClassification_Fragment | ItemProps_XtdExternalDocument_Fragment | ItemProps_XtdMeasureWithUnit_Fragment | ItemProps_XtdNest_Fragment | ItemProps_XtdProperty_Fragment | ItemProps_XtdRelActsUpon_Fragment | ItemProps_XtdRelAssignsCollections_Fragment | ItemProps_XtdRelAssignsMeasures_Fragment | ItemProps_XtdRelAssignsProperties_Fragment | ItemProps_XtdRelAssignsPropertyWithValues_Fragment | ItemProps_XtdRelAssignsUnits_Fragment | ItemProps_XtdRelAssignsValues_Fragment | ItemProps_XtdRelAssociates_Fragment | ItemProps_XtdRelCollects_Fragment | ItemProps_XtdRelComposes_Fragment | ItemProps_XtdRelDocuments_Fragment | ItemProps_XtdRelGroups_Fragment | ItemProps_XtdRelSequences_Fragment | ItemProps_XtdRelSpecializes_Fragment | ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment;
 
 export type SearchResultPropsFragment = { __typename: 'SearchResult', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
 
 export type FindTagsResultFragment = { id: string, name: string };
 
 // Gemeinsame Basisstruktur für ConceptProps
+// type ConceptProps_Base_Fragment = {
+//   versionId?: Maybe<string>;
+//   versionDate?: Maybe<string>;
+//   names: Array<TranslationPropsFragment>;
+//   descriptions: Array<TranslationPropsFragment>;
+//   comments: Array<TranslationPropsFragment>;
+// };
 type ConceptProps_Base_Fragment = {
-  versionId?: Maybe<string>;
-  versionDate?: Maybe<string>;
-  names: Array<TranslationPropsFragment>;
-  descriptions: Array<TranslationPropsFragment>;
-  comments: Array<TranslationPropsFragment>;
+  description?: Maybe<string>;
+  descriptions?: Maybe<Array<MultiLanguageTextPropsFragment>>;
+  definition?: Maybe<Array<MultiLanguageTextPropsFragment>>;
+  examples?: Maybe<Array<MultiLanguageTextPropsFragment>>;
+  languageOfCreator?: Maybe<LanguagePropsFragment>;
+  countryOfOrigin?: Maybe<CountryDetailPropsFragment>;
+  referenceDocuments?: Maybe<Array<ExternalDocumentDetailPropsFragment>>;
+  similarTo?: Maybe<Array<ConceptPropsFragment>>;
 };
 
 // Spezifische Typen erweitern die Basisstruktur
-type ConceptProps_XtdActivity_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdActivity_Fragment;
-type ConceptProps_XtdActor_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdActor_Fragment;
-type ConceptProps_XtdBag_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdBag_Fragment;
-type ConceptProps_XtdClassification_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdClassification_Fragment;
-type ConceptProps_XtdExternalDocument_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdExternalDocument_Fragment;
-type ConceptProps_XtdMeasureWithUnit_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdMeasureWithUnit_Fragment;
-type ConceptProps_XtdNest_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdNest_Fragment;
-type ConceptProps_XtdProperty_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdProperty_Fragment;
-type ConceptProps_XtdRelActsUpon_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelActsUpon_Fragment;
-type ConceptProps_XtdRelAssignsCollections_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelAssignsCollections_Fragment;
-type ConceptProps_XtdRelAssignsMeasures_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelAssignsMeasures_Fragment;
-type ConceptProps_XtdRelAssignsProperties_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelAssignsProperties_Fragment;
-type ConceptProps_XtdRelAssignsPropertyWithValues_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelAssignsPropertyWithValues_Fragment;
-type ConceptProps_XtdRelAssignsUnits_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelAssignsUnits_Fragment;
-type ConceptProps_XtdRelAssignsValues_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelAssignsValues_Fragment;
-type ConceptProps_XtdRelAssociates_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelAssociates_Fragment;
-type ConceptProps_XtdRelCollects_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelCollects_Fragment;
-type ConceptProps_XtdRelComposes_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelComposes_Fragment;
-type ConceptProps_XtdRelDocuments_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelDocuments_Fragment;
-type ConceptProps_XtdRelGroups_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelGroups_Fragment;
-type ConceptProps_XtdRelSequences_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelSequences_Fragment;
-type ConceptProps_XtdRelSpecializes_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdRelSpecializes_Fragment;
-type ConceptProps_XtdSubject_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdSubject_Fragment;
-type ConceptProps_XtdUnit_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdUnit_Fragment;
-type ConceptProps_XtdValue_Fragment = ConceptProps_Base_Fragment & ItemProps_XtdValue_Fragment;
+type ConceptProps_XtdExternalDocument_Fragment = ConceptProps_Base_Fragment & ObjectProps_XtdExternalDocument_Fragment;
+type ConceptProps_XtdProperty_Fragment = ConceptProps_Base_Fragment & ObjectProps_XtdProperty_Fragment;
+type ConceptProps_XtdSubject_Fragment = ConceptProps_Base_Fragment & ObjectProps_XtdSubject_Fragment;
+type ConceptProps_XtdUnit_Fragment = ConceptProps_Base_Fragment & ObjectProps_XtdUnit_Fragment;
+type ConceptProps_XtdValueList_Fragment = ConceptProps_Base_Fragment & ObjectProps_XtdValueList_Fragment;
+type ConceptProps_XtdDimension_Fragment = ConceptProps_Base_Fragment & ObjectProps_XtdDimension_Fragment;
+type ConceptProps_XtdCountry_Fragment = ConceptProps_Base_Fragment & ObjectProps_XtdCountry_Fragment;
+type ConceptProps_XtdSubdivision_Fragment = ConceptProps_Base_Fragment & ObjectProps_XtdSubdivision_Fragment;
+type ConceptProps_XtdRelationshipToProperty_Fragment = ConceptProps_Base_Fragment & ObjectProps_XtdRelationshipToProperty_Fragment;
+type ConceptProps_XtdQuantityKind_Fragment = ConceptProps_Base_Fragment & ObjectProps_XtdQuantityKind_Fragment;
 
-export type ConceptPropsFragment = ConceptProps_XtdActivity_Fragment | ConceptProps_XtdActor_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdRelActsUpon_Fragment | ConceptProps_XtdRelAssignsCollections_Fragment | ConceptProps_XtdRelAssignsMeasures_Fragment | ConceptProps_XtdRelAssignsProperties_Fragment | ConceptProps_XtdRelAssignsPropertyWithValues_Fragment | ConceptProps_XtdRelAssignsUnits_Fragment | ConceptProps_XtdRelAssignsValues_Fragment | ConceptProps_XtdRelAssociates_Fragment | ConceptProps_XtdRelCollects_Fragment | ConceptProps_XtdRelComposes_Fragment | ConceptProps_XtdRelDocuments_Fragment | ConceptProps_XtdRelGroups_Fragment | ConceptProps_XtdRelSequences_Fragment | ConceptProps_XtdRelSpecializes_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment;
-
-export type ExternalDocumentPropsFragment = ConceptProps_XtdExternalDocument_Fragment;
-
-export type ValuePropsFragment = (
-  { valueType?: Maybe<ValueType>, valueRole?: Maybe<ValueRole>, nominalValue?: Maybe<string>, toleranceType?: Maybe<ToleranceType>, lowerTolerance?: Maybe<string>, upperTolerance?: Maybe<string> }
-  & ConceptProps_XtdValue_Fragment
-);
-
-export type CollectionPropsFragment = ConceptProps_XtdBag_Fragment | ConceptProps_XtdNest_Fragment;
-
-export type RelationshipPropsFragment = ConceptProps_XtdRelActsUpon_Fragment | ConceptProps_XtdRelAssignsCollections_Fragment | ConceptProps_XtdRelAssignsMeasures_Fragment | ConceptProps_XtdRelAssignsProperties_Fragment | ConceptProps_XtdRelAssignsPropertyWithValues_Fragment | ConceptProps_XtdRelAssignsUnits_Fragment | ConceptProps_XtdRelAssignsValues_Fragment | ConceptProps_XtdRelAssociates_Fragment | ConceptProps_XtdRelCollects_Fragment | ConceptProps_XtdRelComposes_Fragment | ConceptProps_XtdRelDocuments_Fragment | ConceptProps_XtdRelGroups_Fragment | ConceptProps_XtdRelSequences_Fragment | ConceptProps_XtdRelSpecializes_Fragment;
-
-export type DocumentsPropsFragment = (
-  { relatingDocument: ItemProps_XtdExternalDocument_Fragment, relatedThings: Array<ItemProps_XtdActivity_Fragment | ItemProps_XtdActor_Fragment | ItemProps_XtdBag_Fragment | ItemProps_XtdClassification_Fragment | ItemProps_XtdMeasureWithUnit_Fragment | ItemProps_XtdNest_Fragment | ItemProps_XtdProperty_Fragment | ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> }
-  & ConceptProps_XtdRelDocuments_Fragment
-);
-
-export type CollectsPropsFragment = (
-  {
-    relatingCollection: (
-      { tags: Array<TagPropsFragment> }
-      & ItemProps_XtdBag_Fragment
-    ) | (
-      { tags: Array<TagPropsFragment> }
-      & ItemProps_XtdNest_Fragment
-    ), relatedThings: Array<ItemProps_XtdActivity_Fragment | ItemProps_XtdActor_Fragment | ItemProps_XtdBag_Fragment | ItemProps_XtdClassification_Fragment | ItemProps_XtdMeasureWithUnit_Fragment | ItemProps_XtdNest_Fragment | ItemProps_XtdProperty_Fragment | ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment>
-  }
-  & ConceptProps_XtdRelCollects_Fragment
-);
-
-export type AssignsCollectionsPropsFragment = (
-  { relatingObject: ItemProps_XtdActivity_Fragment | ItemProps_XtdActor_Fragment | ItemProps_XtdClassification_Fragment | ItemProps_XtdMeasureWithUnit_Fragment | ItemProps_XtdProperty_Fragment | ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment, relatedCollections: Array<ItemProps_XtdBag_Fragment | ItemProps_XtdNest_Fragment> }
-  & ConceptProps_XtdRelAssignsCollections_Fragment
-);
-
-export type AssignsPropertiesPropsFragment = (
-  { relatingObject: ItemProps_XtdActivity_Fragment | ItemProps_XtdActor_Fragment | ItemProps_XtdClassification_Fragment | ItemProps_XtdMeasureWithUnit_Fragment | ItemProps_XtdProperty_Fragment | ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment, relatedProperties: Array<ItemProps_XtdProperty_Fragment> }
-  & ConceptProps_XtdRelAssignsProperties_Fragment
-);
-
-export type AssignsMeasuresPropsFragment = (
-  { relatingProperty: ItemProps_XtdProperty_Fragment, relatedMeasures: Array<ItemProps_XtdMeasureWithUnit_Fragment> }
-  & ConceptProps_XtdRelAssignsMeasures_Fragment
-);
-
-export type AssignsPropertyWithValuesPropsFragment = (
-  { relatedProperty: ItemProps_XtdProperty_Fragment, relatedValues: Array<ItemProps_XtdValue_Fragment> }
-  & ConceptProps_XtdRelAssignsPropertyWithValues_Fragment
-);
-
-export type AssignsUnitsPropsFragment = (
-  { relatingMeasure: ItemProps_XtdMeasureWithUnit_Fragment, relatedUnits: Array<ItemProps_XtdUnit_Fragment> }
-  & ConceptProps_XtdRelAssignsUnits_Fragment
-);
-
-export type AssignsValuesPropsFragment = (
-  { relatingMeasure: ItemProps_XtdMeasureWithUnit_Fragment, relatedValues: Array<ItemProps_XtdValue_Fragment> }
-  & ConceptProps_XtdRelAssignsValues_Fragment
-);
+export type ConceptPropsFragment =  ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValueList_Fragment | ConceptProps_XtdDimension_Fragment | ConceptProps_XtdCountry_Fragment | ConceptProps_XtdSubdivision_Fragment | ConceptProps_XtdRelationshipToProperty_Fragment | ConceptProps_XtdQuantityKind_Fragment;
 
 type MetaProps_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
 
-export type MetaPropsFragment = MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment | MetaProps_Fragment;
+type ObjectDetailProps_XtdExternalDocument_Fragment = MetaProps_Fragment & ConceptProps_XtdExternalDocument_Fragment;
+type ObjectDetailProps_XtdProperty_Fragment = MetaProps_Fragment & ConceptProps_XtdProperty_Fragment;
+type ObjectDetailProps_XtdSubject_Fragment = MetaProps_Fragment & ConceptProps_XtdSubject_Fragment;
+type ObjectDetailProps_XtdUnit_Fragment = MetaProps_Fragment & ConceptProps_XtdUnit_Fragment;
+type ObjectDetailProps_XtdValue_Fragment = MetaProps_Fragment & ObjectProps_XtdValue_Fragment;
+type ObjectDetailProps_XtdOrderedValue_Fragment = MetaProps_Fragment & ObjectProps_XtdOrderedValue_Fragment;
+type ObjectDetailProps_XtdValueList_Fragment = MetaProps_Fragment & ConceptProps_XtdValueList_Fragment;
+type ObjectDetailProps_XtdDimension_Fragment = MetaProps_Fragment & ConceptProps_XtdDimension_Fragment;
+type ObjectDetailProps_XtdCountry_Fragment = MetaProps_Fragment & ConceptProps_XtdCountry_Fragment;
+type ObjectDetailProps_XtdSubdivision_Fragment = MetaProps_Fragment & ConceptProps_XtdSubdivision_Fragment;
+type ObjectDetailProps_XtdRelationshipToProperty_Fragment = MetaProps_Fragment & ConceptProps_XtdRelationshipToProperty_Fragment;
+type ObjectDetailProps_XtdRelationshipToSubject_Fragment = MetaProps_Fragment & ObjectProps_XtdRelationshipToSubject_Fragment;
+type ObjectDetailProps_XtdQuantityKind_Fragment = MetaProps_Fragment & ConceptProps_XtdQuantityKind_Fragment;
 
-export type ExternalDocumentDetailPropsFragment = (
-  { documents: { nodes: Array<DocumentsPropsFragment> } }
-  & MetaProps_Fragment
-  & ExternalDocumentPropsFragment
-);
+export type ObjectDetailPropsFragment =  ObjectDetailProps_XtdExternalDocument_Fragment | ObjectDetailProps_XtdProperty_Fragment | ObjectDetailProps_XtdSubject_Fragment | ObjectDetailProps_XtdUnit_Fragment | ObjectDetailProps_XtdValue_Fragment | ObjectDetailProps_XtdOrderedValue_Fragment | ObjectDetailProps_XtdValueList_Fragment | ObjectDetailProps_XtdDimension_Fragment | ObjectDetailProps_XtdCountry_Fragment | ObjectDetailProps_XtdSubdivision_Fragment | ObjectDetailProps_XtdRelationshipToProperty_Fragment | ObjectDetailProps_XtdRelationshipToSubject_Fragment | ObjectDetailProps_XtdQuantityKind_Fragment;
 
-type ObjectDetailProps_XtdActivity_Fragment = (
-  { documentedBy: { nodes: Array<DocumentsPropsFragment> } }
-  & MetaProps_Fragment
-  & ConceptProps_XtdActivity_Fragment
-);
+export type ExternalDocumentDetailPropsFragment = ObjectDetailProps_XtdExternalDocument_Fragment & {
+  uri?: Maybe<string>, 
+  author?: Maybe<string>, 
+  isbn?: Maybe<string>, 
+  publisher?: Maybe<string>, 
+  dateOfPublication?: Maybe<string>, 
+  languages: Array<LanguagePropsFragment> 
+};
 
-type ObjectDetailProps_XtdActor_Fragment = (
-  { documentedBy: { nodes: Array<DocumentsPropsFragment> } }
-  & MetaProps_Fragment
-  & ConceptProps_XtdActor_Fragment
-);
+export type SubjectDetailPropsFragment = ObjectDetailProps_XtdSubject_Fragment & { 
+  properties: Array<PropertyDetailPropsFragment>, 
+  connectedSubjects: Array<RelationshipToSubjectDetailPropsFragment>};
 
-type ObjectDetailProps_XtdClassification_Fragment = (
-  { documentedBy: { nodes: Array<DocumentsPropsFragment> } }
-  & MetaProps_Fragment
-  & ConceptProps_XtdClassification_Fragment
-);
+export type PropertyDetailPropsFragment = ObjectDetailProps_XtdProperty_Fragment & { 
+  dataType: DataTypeEnum , 
+  dataFormat?: Maybe<string>, 
+  symbols?: Maybe<Array<SymbolPropsFragment>>, 
+  boundaryValues?: Maybe<Array<IntervalPropsFragment>>, 
+  possibleValues?: Maybe<Array<ValueListDetailPropsFragment>>,
+  dimension?: Maybe<DimensionDetailPropsFragment>,
+  quantityKinds?: Maybe<Array<QuantityKindDetailPropsFragment>>,
+  units?: Maybe<Array<UnitDetailPropsFragment>>,
+  subjects?: Maybe<Array<SubjectDetailPropsFragment>>,
+  connectedProperties?: Maybe<Array<RelationshipToPropertyDetailPropsFragment>>};
 
-type ObjectDetailProps_XtdMeasureWithUnit_Fragment = (
-  { documentedBy: { nodes: Array<DocumentsPropsFragment> } }
-  & MetaProps_Fragment
-  & ConceptProps_XtdMeasureWithUnit_Fragment
-);
+export type ValueListDetailPropsFragment = ObjectDetailProps_XtdValueList_Fragment & {
+  values: Array<OrderedValueDetailPropsFragment>,
+  properties: Array<PropertyDetailPropsFragment>,
+  unit?: Maybe<Array<UnitDetailPropsFragment>>
+};
 
-type ObjectDetailProps_XtdProperty_Fragment = (
-  { documentedBy: { nodes: Array<DocumentsPropsFragment> } }
-  & MetaProps_Fragment
-  & ConceptProps_XtdProperty_Fragment
-);
+export type OrderedValueDetailPropsFragment = ObjectDetailProps_XtdOrderedValue_Fragment & {
+  order: number,
+  orderedValue: ValueDetailPropsFragment
+};
 
-type ObjectDetailProps_XtdSubject_Fragment = (
-  { documentedBy: { nodes: Array<DocumentsPropsFragment> } }
-  & MetaProps_Fragment
-  & ConceptProps_XtdSubject_Fragment
-);
+export type UnitDetailPropsFragment = ObjectDetailProps_XtdUnit_Fragment & {
+  scale?: Maybe<UnitScaleEnum>,
+  base?: Maybe<UnitBaseEnum>,
+  offset?: Maybe<RationalPropsFragment>,
+  coefficient?: Maybe<RationalPropsFragment>,
+};
 
-type ObjectDetailProps_XtdUnit_Fragment = (
-  { documentedBy: { nodes: Array<DocumentsPropsFragment> } }
-  & MetaProps_Fragment
-  & ConceptProps_XtdUnit_Fragment
-);
+export type ValueDetailPropsFragment = ObjectDetailProps_XtdValue_Fragment & {
+  nominalValue: string
+};
 
-type ObjectDetailProps_XtdValue_Fragment = (
-  { documentedBy: { nodes: Array<DocumentsPropsFragment> } }
-  & MetaProps_Fragment
-  & ConceptProps_XtdValue_Fragment
-);
+export type DimensionDetailPropsFragment = ObjectDetailProps_XtdDimension_Fragment & {
+  lengthExponent: RationalPropsFragment,  
+  massExponent: RationalPropsFragment,
+  timeExponent: RationalPropsFragment,
+  electricCurrentExponent: RationalPropsFragment,
+  thermodynamicTemperatureExponent: RationalPropsFragment,
+  amountOfSubstanceExponent: RationalPropsFragment,
+  luminousIntensityExponent: RationalPropsFragment
+};
 
-export type ObjectDetailPropsFragment = ObjectDetailProps_XtdActivity_Fragment | ObjectDetailProps_XtdActor_Fragment | ObjectDetailProps_XtdClassification_Fragment | ObjectDetailProps_XtdMeasureWithUnit_Fragment | ObjectDetailProps_XtdProperty_Fragment | ObjectDetailProps_XtdSubject_Fragment | ObjectDetailProps_XtdUnit_Fragment | ObjectDetailProps_XtdValue_Fragment;
+export type CountryDetailPropsFragment = ObjectDetailProps_XtdCountry_Fragment & {
+  code: string,
+  subdivisions: Array<SubdivisionDetailPropsFragment>
+};
 
-export type SubjectDetailPropsFragment = (
-  { assignedCollections: { nodes: Array<AssignsCollectionsPropsFragment> }, assignedProperties: { nodes: Array<AssignsPropertiesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, properties: Array<{ id: string, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, assignedMeasures: { nodes: Array<{ id: string, relatedMeasures: Array<{ id: string, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, assignedValues: { nodes: Array<{ id: string, relatedValues: Array<{ id: string, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, nominalValue?: Maybe<string> }> }> } }> }> } }> }
-  & ObjectDetailProps_XtdSubject_Fragment
-);
-// assignedPropertiesWithValues: { nodes: Array<AssignsPropertyWithValuesPropsFragment> }, 
+export type SubdivisionDetailPropsFragment = ObjectDetailProps_XtdSubdivision_Fragment & {
+  code: string,
+  subdivisions: Array<SubdivisionDetailPropsFragment>
+};
 
-export type PropertyDetailPropsFragment = (
-  { assignedMeasures: { nodes: Array<AssignsMeasuresPropsFragment> }, assignedTo: { nodes: Array<AssignsPropertiesPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> } }
-  & ObjectDetailProps_XtdProperty_Fragment
-);
+export type RelationshipToPropertyDetailPropsFragment =  { 
+  relationshipType: PropertyRelationshipTypeEnum,
+  targetProperties: Array<PropertyDetailPropsFragment>
+};
 
-export type MeasureDetailPropsFragment = (
-  { assignedTo: { nodes: Array<AssignsMeasuresPropsFragment> }, assignedUnits: { nodes: Array<AssignsUnitsPropsFragment> }, assignedValues: { nodes: Array<AssignsValuesPropsFragment> } }
-  & ObjectDetailProps_XtdMeasureWithUnit_Fragment
-);
+export type RelationshipToSubjectDetailPropsFragment = { 
+  relationshipType: RelationshipRecordType,
+  targetSubjects: Array<SubjectDetailPropsFragment>
+};
 
-export type UnitDetailPropsFragment = (
-  { assignedTo: { nodes: Array<AssignsUnitsPropsFragment> } }
-  & ObjectDetailProps_XtdUnit_Fragment
-);
+export type QuantityKindDetailPropsFragment = ObjectDetailProps_XtdQuantityKind_Fragment & {
+  unit?: Maybe<UnitDetailPropsFragment>,
+  dimension: DimensionDetailPropsFragment
+};
 
-export type ValueDetailPropsFragment = (
-  { assignedTo: { nodes: Array<AssignsValuesPropsFragment> } }
-  & ObjectDetailProps_XtdValue_Fragment
-  & ValuePropsFragment
-);
-
-type CollectionDetailProps_XtdBag_Fragment = (
-  { collects: { nodes: Array<CollectsPropsFragment> }, assignedTo: { nodes: Array<AssignsCollectionsPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, documentedBy: { nodes: Array<DocumentsPropsFragment> } }
-  & MetaProps_Fragment
-  & ConceptProps_XtdBag_Fragment
-);
-
-type CollectionDetailProps_XtdNest_Fragment = (
-  { collects: { nodes: Array<CollectsPropsFragment> }, assignedTo: { nodes: Array<AssignsCollectionsPropsFragment> }, collectedBy: { nodes: Array<CollectsPropsFragment> }, documentedBy: { nodes: Array<DocumentsPropsFragment> } }
-  & MetaProps_Fragment
-  & ConceptProps_XtdNest_Fragment
-);
-
-export type CollectionDetailPropsFragment = CollectionDetailProps_XtdBag_Fragment | CollectionDetailProps_XtdNest_Fragment;
+// Muatation types
 
 export type SignupFormMutationVariables = Exact<{
   profile: SignupInput;
 }>;
-
 
 export type SignupFormMutation = { success?: Maybe<boolean> };
 
 export type ConfirmEmailMutationVariables = Exact<{
   token: Scalars['String'];
 }>;
-
 
 export type ConfirmEmailMutation = { success?: Maybe<boolean> };
 
@@ -787,121 +922,190 @@ export type CreateEntryMutationVariables = Exact<{
 }>;
 
 
-export type CreateEntryMutation = { createCatalogEntry?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
+export type CreateEntryMutation = { createCatalogEntry?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment | ObjectProps_XtdOrderedValue_Fragment | ConceptProps_XtdValueList_Fragment | LanguagePropsFragment | ConceptProps_XtdDimension_Fragment | RationalPropsFragment | MultiLanguageTextPropsFragment | TextPropsFragment | SymbolPropsFragment | IntervalPropsFragment | DictionaryPropsFragment | ConceptProps_XtdQuantityKind_Fragment | ConceptProps_XtdCountry_Fragment | ConceptProps_XtdSubdivision_Fragment> }> };
 
 export type DeleteEntryMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type DeleteEntryMutation = { deleteCatalogEntry?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
+export type DeleteEntryMutation = { deleteCatalogEntry?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment | ObjectProps_XtdOrderedValue_Fragment | ConceptProps_XtdValueList_Fragment | LanguagePropsFragment | ConceptProps_XtdDimension_Fragment | RationalPropsFragment | MultiLanguageTextPropsFragment | TextPropsFragment | SymbolPropsFragment | IntervalPropsFragment | DictionaryPropsFragment | ConceptProps_XtdQuantityKind_Fragment | ConceptProps_XtdCountry_Fragment | ConceptProps_XtdSubdivision_Fragment> }> };
 
-export type SetVersionMutationVariables = Exact<{
-  input: SetVersionInput;
+export type UpdateMajorVersionMutationVariables = Exact<{
+  input: UpdateMajorVersionInput;
 }>;
 
+export type UpdateMajorVersionMutation = { updateMajorVersion?: Maybe<{ catalogEntry?: Maybe<ObjectPropsFragment> }> };
 
-export type SetVersionMutation = { setVersion?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
+export type UpdateMinorVersionMutationVariables = Exact<{
+  input: UpdateMinorVersionInput;
+}>;
+
+export type UpdateMinorVersionMutation = { updateMinorVersion?: Maybe<{ catalogEntry?: Maybe<ObjectPropsFragment> }> };
+
+
+export type UpdateStatusMutationVariables = Exact<{
+  input: UpdateStatusInput;
+}>;
+
+export type UpdateStatusMutation = { updateStatus?: Maybe<{ catalogEntry?: Maybe<ObjectPropsFragment> }> };
+
 
 export type AddNameMutationVariables = Exact<{
-  input: AddNameInput;
+  input: AddTextInput;
 }>;
 
-
-export type AddNameMutation = { addName?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
+export type AddNameMutation = { addName?: Maybe<{ catalogEntry?: Maybe<ObjectPropsFragment> }> };
 
 export type UpdateNameMutationVariables = Exact<{
-  input: UpdateNameInput;
+  input: UpdateTextInput;
 }>;
 
-
-export type UpdateNameMutation = { updateName?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
+export type UpdateNameMutation = { updateName?: Maybe<{ catalogEntry?: Maybe<ObjectPropsFragment> }> };
 
 export type DeleteNameMutationVariables = Exact<{
-  input: DeleteNameInput;
+  input: DeleteTextInput;
 }>;
 
+export type DeleteNameMutation = { deleteName?: Maybe<{ catalogEntry?: Maybe<ObjectPropsFragment> }> };
 
-export type DeleteNameMutation = { deleteName?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
 
 export type AddCommentMutationVariables = Exact<{
-  input: AddCommentInput;
+  input: AddTextInput;
 }>;
 
-
-export type AddCommentMutation = { addComment?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
+export type AddCommentMutation = { addComment?: Maybe<{ catalogEntry?: Maybe<ObjectPropsFragment> }> };
 
 export type UpdateCommentMutationVariables = Exact<{
-  input: UpdateCommentInput;
+  input: UpdateTextInput;
 }>;
 
-
-export type UpdateCommentMutation = { updateComment?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
+export type UpdateCommentMutation = { updateComment?: Maybe<{ catalogEntry?: Maybe<ObjectPropsFragment> }> };
 
 export type DeleteCommentMutationVariables = Exact<{
-  input: DeleteCommentInput;
+  input: DeleteTextInput;
 }>;
 
+export type DeleteCommentMutation = { deleteComment?: Maybe<{ catalogEntry?: Maybe<ObjectPropsFragment> }> };
 
-export type DeleteCommentMutation = { deleteComment?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
 
 export type AddDescriptionMutationVariables = Exact<{
-  input: AddDescriptionInput;
+  input: AddTextInput;
 }>;
 
-
-export type AddDescriptionMutation = { addDescription?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
+export type AddDescriptionMutation = { addDescription?: Maybe<{ catalogEntry?: Maybe<ConceptPropsFragment> }> };
 
 export type UpdateDescriptionMutationVariables = Exact<{
-  input: UpdateDescriptionInput;
+  input: UpdateTextInput;
 }>;
 
-
-export type UpdateDescriptionMutation = { updateDescription?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
+export type UpdateDescriptionMutation = { updateDescription?: Maybe<{ catalogEntry?: Maybe<ConceptPropsFragment> }> };
 
 export type DeleteDescriptionMutationVariables = Exact<{
-  input: DeleteDescriptionInput;
+  input: DeleteTextInput;
 }>;
 
+export type DeleteDescriptionMutation = { deleteDescription?: Maybe<{ catalogEntry?: Maybe<ConceptPropsFragment> }> };
 
-export type DeleteDescriptionMutation = { deleteDescription?: Maybe<{ catalogEntry?: Maybe<ConceptProps_XtdActor_Fragment | ConceptProps_XtdActivity_Fragment | ConceptProps_XtdBag_Fragment | ConceptProps_XtdClassification_Fragment | ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdMeasureWithUnit_Fragment | ConceptProps_XtdNest_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValue_Fragment> }> };
 
-
-export type SetToleranceMutationVariables = Exact<{
-  input: SetToleranceInput;
+export type AddDeprecationExplanationMutationVariables = Exact<{
+  input: AddTextInput;
 }>;
 
+export type AddDeprecationExplanationMutation = { addDeprecationExplanation?: Maybe<{ catalogEntry?: Maybe<ObjectPropsFragment> }> };
 
-export type SetToleranceMutation = { setTolerance?: Maybe<{ catalogEntry?: Maybe<ValueDetailPropsFragment> }> };
-
-export type UnsetToleranceMutationVariables = Exact<{
-  input: UnsetToleranceInput;
+export type UpdateDeprecationExplanationMutationVariables = Exact<{
+  input: UpdateTextInput;
 }>;
 
+export type UpdateDeprecationExplanationMutation = { updateDeprecationExplanation?: Maybe<{ catalogEntry?: Maybe<ObjectPropsFragment> }> };
 
-export type UnsetToleranceMutation = { unsetTolerance?: Maybe<{ catalogEntry?: Maybe<ValueDetailPropsFragment> }> };
-
-export type SetNominalValueMutationVariables = Exact<{
-  input: SetNominalValueInput;
+export type DeleteDeprecationExplanationMutationVariables = Exact<{
+  input: DeleteTextInput;
 }>;
 
+export type DeleteDeprecationExplanationMutation = { deleteDeprecationExplanation?: Maybe<{ catalogEntry?: Maybe<ObjectPropsFragment> }> };
 
-export type SetNominalValueMutation = { setNominalValue?: Maybe<{ catalogEntry?: Maybe<ValueDetailPropsFragment> }> };
-
-export type UnsetNominalValueMutationVariables = Exact<{
-  input: UnsetNominalValueInput;
-}>;
-
-
-export type UnsetNominalValueMutation = { unsetNominalValue?: Maybe<{ catalogEntry?: Maybe<ValueDetailPropsFragment> }> };
-
-export type TagBagMutationVariables = Exact<{
+export type TagMutationVariables = Exact<{
   bagId: Scalars['ID'];
   tagId: Scalars['ID'];
 }>;
 
 
-export type TagBagMutation = { addTag?: Maybe<{ catalogEntry?: Maybe<CollectionDetailProps_XtdBag_Fragment | CollectionDetailProps_XtdNest_Fragment> }> };
+export type AddDefinitionMutationVariables = Exact<{
+  input: AddTextInput;
+}>;
+
+export type AddDefinitionMutation = { addDefinition?: Maybe<{ catalogEntry?: Maybe<ObjectPropsFragment> }> };
+
+export type UpdateDefinitionMutationVariables = Exact<{
+  input: UpdateTextInput;
+}>;
+
+export type UpdateDefinitionMutation = { updateDefinition?: Maybe<{ catalogEntry?: Maybe<ObjectPropsFragment> }> };
+
+export type DeleteDefinitionMutationVariables = Exact<{
+  input: DeleteTextInput;
+}>;
+
+export type DeleteDefinitionMutation = { deleteDefinition?: Maybe<{ catalogEntry?: Maybe<ObjectPropsFragment> }> };
+
+
+export type AddExampleMutationVariables = Exact<{
+  input: AddTextInput;
+}>;
+
+export type AddExampleMutation = { addExample?: Maybe<{ catalogEntry?: Maybe<ObjectPropsFragment> }> };
+
+export type UpdateExampleMutationVariables = Exact<{
+  input: UpdateTextInput;
+}>;
+
+export type UpdateExampleMutation = { updateExample?: Maybe<{ catalogEntry?: Maybe<ObjectPropsFragment> }> };
+
+export type DeleteExampleMutationVariables = Exact<{
+  input: DeleteTextInput;
+}>;
+
+export type DeleteExampleMutation = { deleteExample?: Maybe<{ catalogEntry?: Maybe<ObjectPropsFragment> }> };
+
+
+export type AddCountryOfOriginMutationVariables = Exact<{
+  input: AddCountryOfOriginInput;
+}>;
+
+export type AddCountryOfOriginMutation = { addCountryOfOrigin?: Maybe<{ catalogEntry?: Maybe<ObjectPropsFragment> }> };
+
+export type DeleteCountryOfOriginMutationVariables = Exact<{
+  input: DeleteCountryOfOriginInput;
+}>;
+
+export type DeleteCountryOfOriginMutation = { deleteCountryOfOrigin?: Maybe<{ catalogEntry?: Maybe<ObjectPropsFragment> }> };
+
+export type AddTagMutationVariables = Exact<{
+  input: AddTagInput;
+}>;
+
+export type AddTagMutation = { addTag?: Maybe<{ catalogEntry: {__typename: string}}>};
+// __typename ist erforderlich, da es explizit in der Mutation enthalten ist.
+
+export type UpdateTagMutationVariables = Exact<{
+  input: UpdateTagInput;
+}>;
+
+export type UpdateTagMutation = { updateTag?: Maybe<{ tag?: Maybe<Tag> }> };
+
+export type DeleteTagMutationVariables = Exact<{
+  input: DeleteTagInput;
+}>;
+
+export type DeleteTagMutation = { deleteTag?: Maybe<{ tag?: Maybe<Tag> }> };
+
+export type RemoveTagMutationVariables = Exact<{
+  input: DeleteTagInput;
+}>;
+
+export type RemoveTagMutation = { removeTag?: Maybe<{ catalogEntry?: Maybe<ObjectPropsFragment> }> };
 
 export type CreateTagMutation = (
   { __typename?: 'Mutation' }
@@ -922,58 +1126,35 @@ export type CreateTagMutationVariables = Exact<{
   input: CreateTagInput;
 }>;
 
+
+
 export type CreateRelationshipMutationVariables = Exact<{
   input: CreateRelationshipInput;
 }>;
 
 
-export type CreateRelationshipMutation = { createRelationship?: Maybe<{ relationship?: Maybe<{ __typename: 'XtdRelActsUpon', id: string } | { __typename: 'XtdRelAssignsCollections', id: string } | { __typename: 'XtdRelAssignsMeasures', id: string } | { __typename: 'XtdRelAssignsProperties', id: string } | { __typename: 'XtdRelAssignsPropertyWithValues', id: string } | { __typename: 'XtdRelAssignsUnits', id: string } | { __typename: 'XtdRelAssignsValues', id: string } | { __typename: 'XtdRelAssociates', id: string } | { __typename: 'XtdRelCollects', id: string } | { __typename: 'XtdRelComposes', id: string } | { __typename: 'XtdRelDocuments', id: string } | { __typename: 'XtdRelGroups', id: string } | { __typename: 'XtdRelSequences', id: string } | { __typename: 'XtdRelSpecializes', id: string }> }> };
-
-export type SetRelatedEntriesMutationVariables = Exact<{
-  input: SetRelatedEntriesInput;
-}>;
-
-
-export type SetRelatedEntriesMutation = { setRelatedEntries?: Maybe<{ relationship?: Maybe<{ __typename: 'XtdRelActsUpon', id: string } | { __typename: 'XtdRelAssignsCollections', id: string } | { __typename: 'XtdRelAssignsMeasures', id: string } | { __typename: 'XtdRelAssignsProperties', id: string } | { __typename: 'XtdRelAssignsPropertyWithValues', id: string } | { __typename: 'XtdRelAssignsUnits', id: string } | { __typename: 'XtdRelAssignsValues', id: string } | { __typename: 'XtdRelAssociates', id: string } | { __typename: 'XtdRelCollects', id: string } | { __typename: 'XtdRelComposes', id: string } | { __typename: 'XtdRelDocuments', id: string } | { __typename: 'XtdRelGroups', id: string } | { __typename: 'XtdRelSequences', id: string } | { __typename: 'XtdRelSpecializes', id: string }> }> };
+export type CreateRelationshipMutation = { createRelationship?: Maybe<ObjectPropsFragment> };
 
 export type DeleteRelationshipMutationVariables = Exact<{
   input: DeleteRelationshipInput;
 }>;
 
+export type DeleteRelationshipMutation = { deleteRelationship?: Maybe<ObjectPropsFragment> };
 
-export type DeleteRelationshipMutation = { deleteRelationship?: Maybe<{ relationship?: Maybe<{ id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string } | { id: string }> }> };
+
+// Query types 
 
 export type FindLanguagesQueryVariables = Exact<{
-  input: LanguageFilterInput;
+  input: FilterInput;
 }>;
 
-// Define the types for the query and variables (Referenzdokument Query)
-export type GetBagQuery = {
-  getBag: {
-    documentedBy: {
-      nodes: Array<{
-        relatingDocument: {
-          id: string;
-          name: string;
-        };
-      }>;
-    };
-  };
-};
-
-export type GetBagQueryVariables = {
-  id: string;
-};
-
-
-export type FindLanguagesQuery = { languages?: Maybe<{ totalElements: number, nodes: Array<LanguagePropsFragment> }> };
+export type FindLanguagesQuery = { findLanguages?: Maybe<{ totalElements: number, nodes: Array<LanguagePropsFragment> }> };
 
 export type FindItemQueryVariables = Exact<{
   input: SearchInput;
   pageSize?: Maybe<Scalars['Int']>;
   pageNumber?: Maybe<Scalars['Int']>;
 }>;
-
 
 export type FindItemQuery = { search: { totalElements: number, nodes: Array<SearchResultPropsFragment>, pageInfo: PagePropsFragment } };
 
@@ -983,99 +1164,325 @@ export type FindTagsQueryVariables = Exact<{
   pageSize?: Maybe<Scalars['Int']>;
 }>;
 
+export type FindExternalDocumentsQueryVariables = Exact<{
+  input: FilterInput;
+}>;
+
+export type FindExternalDocumentsQuery = { findExternalDocuments?: Maybe<{ totalElements: number, nodes: Array<ExternalDocumentDetailPropsFragment> }> };
+
+export type FindPropertiesQueryVariables = Exact<{
+  input: FilterInput;
+}>;
+
+export type FindPropertiesQuery = { findProperties?: Maybe<{ totalElements: number, nodes: Array<PropertyDetailPropsFragment> }> };
+
+export type FindSubjectsQueryVariables = Exact<{
+  input: FilterInput;
+}>;
+
+export type FindSubjectsQuery = { findSubjects?: Maybe<{ totalElements: number, nodes: Array<SubjectDetailPropsFragment> }> };
+
+export type FindUnitsQueryVariables = Exact<{
+  input: FilterInput;
+}>;
+
+export type FindUnitsQuery = { findUnits?: Maybe<{ totalElements: number, nodes: Array<UnitDetailPropsFragment> }> };
+
+export type FindValuesQueryVariables = Exact<{
+  input: FilterInput;
+}>;
+
+export type FindValuesQuery = { findValues?: Maybe<{ totalElements: number, nodes: Array<ValueDetailPropsFragment> }> };
+
+export type FindOrderedValuesQueryVariables = Exact<{
+  input: FilterInput;
+}>;
+
+export type FindOrderedValuesQuery = { findOrderedValues?: Maybe<{ totalElements: number, nodes: Array<OrderedValueDetailPropsFragment> }> };
+
+export type FindValueListsQueryVariables = Exact<{
+  input: FilterInput;
+}>;
+
+export type FindValueListsQuery = { findValueLists?: Maybe<{ totalElements: number, nodes: Array<ValueListDetailPropsFragment> }> };
+
+export type FindDimensionsQueryVariables = Exact<{
+  input: FilterInput;
+}>;
+
+export type FindDimensionsQuery = { findDimensions?: Maybe<{ totalElements: number, nodes: Array<DimensionDetailPropsFragment> }> };
+
+export type FindCountriesQueryVariables = Exact<{
+  input: FilterInput;
+}>;
+
+export type FindCountriesQuery = { findCountries?: Maybe<{ totalElements: number, nodes: Array<CountryDetailPropsFragment> }> };
+
+export type FindSubdivisionsQueryVariables = Exact<{
+  input: FilterInput;
+}>;
+
+export type FindSubdivisionsQuery = { findSubdivisions?: Maybe<{ totalElements: number, nodes: Array<SubdivisionDetailPropsFragment> }> };
+
+export type FindRelationshipToSubjectQueryVariables = Exact<{
+  input: FilterInput;
+}>;
+
+export type FindRelationshipToSubjectQuery = { findRelationshipsToSubject?: Maybe<{ totalElements: number, nodes: Array<RelationshipToSubjectDetailPropsFragment> }> };
+
+export type FindRelationshipToPropertyQueryVariables = Exact<{
+  input: FilterInput;
+}>;
+
+export type FindRelationshipToPropertyQuery = { findRelationshipsToProperty?: Maybe<{ totalElements: number, nodes: Array<RelationshipToPropertyDetailPropsFragment> }> };
+
+export type FindQuantityKindsQueryVariables = Exact<{
+  input: FilterInput;
+}>;
+
+export type FindQuantityKindsQuery = { findQuantityKinds?: Maybe<{ totalElements: number, nodes: Array<QuantityKindDetailPropsFragment> }> };
+
+export type FindRationalsQueryVariables = Exact<{
+  input: FilterInput; 
+}>;
+
+export type FindRationalsQuery = { findRationals?: Maybe<{ totalElements: number, nodes: Array<RationalPropsFragment> }> };
+
+export type FindSymbolsQueryVariables = Exact<{
+  input: FilterInput;
+}>;
+
+export type FindSymbolsQuery = { findSymbols?: Maybe<{ totalElements: number, nodes: Array<SymbolPropsFragment> }> };
+
+export type FindIntervalsQueryVariables = Exact<{
+  input: FilterInput;
+}>;
+
+export type FindIntervalsQuery = { findIntervals?: Maybe<{ totalElements: number, nodes: Array<IntervalPropsFragment> }> };
+
+export type FindDictionariesQueryVariables = Exact<{
+  input: FilterInput;
+}>;
+
+export type FindDictionariesQuery = { findDictionaries?: Maybe<{ totalElements: number, nodes: Array<DictionaryPropsFragment> }> };
+
+export type FindMultiLanguageTextsQueryVariables = Exact<{
+  input: FilterInput; 
+}>;
+
+export type FindMultiLanguageTextsQuery = { findMultiLanguageTexts?: Maybe<{ totalElements: number, nodes: Array<MultiLanguageTextPropsFragment> }> };
+
+export type FindTextsQueryVariables = Exact<{
+  input: FilterInput;
+}>;
+
+export type FindTextsQuery = { findTexts?: Maybe<{ totalElements: number, nodes: Array<TextPropsFragment> }> };
+
+export type FindConceptsQueryVariables = Exact<{
+  input: FilterInput; 
+}>;
+
+export type FindConceptsQuery = { findConcepts?: Maybe<{ totalElements: number, nodes: Array<ConceptPropsFragment> }> };
+
+export type FindObjectsQueryVariables = Exact<{
+  input: FilterInput;
+}>;
+
+export type FindObjectsQuery = { findObjects?: Maybe<{ totalElements: number, nodes: Array<ObjectPropsFragment> }> };
+
 export type PropertyTreeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type PropertyTreeQuery = { hierarchy: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdActivity_Fragment | ItemProps_XtdActor_Fragment | ItemProps_XtdBag_Fragment | ItemProps_XtdClassification_Fragment | ItemProps_XtdExternalDocument_Fragment | ItemProps_XtdMeasureWithUnit_Fragment | ItemProps_XtdNest_Fragment | ItemProps_XtdProperty_Fragment | ItemProps_XtdRelActsUpon_Fragment | ItemProps_XtdRelAssignsCollections_Fragment | ItemProps_XtdRelAssignsMeasures_Fragment | ItemProps_XtdRelAssignsProperties_Fragment | ItemProps_XtdRelAssignsPropertyWithValues_Fragment | ItemProps_XtdRelAssignsUnits_Fragment | ItemProps_XtdRelAssignsValues_Fragment | ItemProps_XtdRelAssociates_Fragment | ItemProps_XtdRelCollects_Fragment | ItemProps_XtdRelComposes_Fragment | ItemProps_XtdRelDocuments_Fragment | ItemProps_XtdRelGroups_Fragment | ItemProps_XtdRelSequences_Fragment | ItemProps_XtdRelSpecializes_Fragment | ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+export type PropertyTreeQuery = { hierarchy: { paths: Array<Array<string>>, nodes: Array<ObjectPropsFragment> } };
 
-export type GetDocumentEntryQueryVariables = Exact<{
-  id: Scalars['ID'];
-}>;
 
 export type FindVerificationTreeQueryVariables = Exact<{ [key: string]: never; }>;
 
-export type FindPropGroupWithoutPropTreeQuery = { findPropGroupWithoutProp: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+export type FindPropGroupWithoutPropTreeQuery = { findPropGroupWithoutProp: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
 
-export type FindPropWithoutSubjectOrPropGroupTreeQuery = { findPropWithoutSubjectOrPropGroup: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+export type FindPropWithoutSubjectOrPropGroupTreeQuery = { findPropWithoutSubjectOrPropGroup: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
 
-export type FindModelWithoutGroupTreeQuery = { findModelWithoutGroup: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+export type FindModelWithoutGroupTreeQuery = { findModelWithoutGroup: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
 
-export type FindGroupWithoutSubjectTreeQuery = { findGroupWithoutSubject: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+export type FindGroupWithoutSubjectTreeQuery = { findGroupWithoutSubject: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
 
-export type FindSubjectWithoutPropTreeQuery = { findSubjectWithoutProp: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+export type FindSubjectWithoutPropTreeQuery = { findSubjectWithoutProp: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
 
-export type FindMeasureWithoutPropTreeQuery = { findMeasureWithoutProp: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+export type FindValueListWithoutPropTreeQuery = { FindValueListWithoutProp: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
 
-export type FindUnitWithoutMeasureTreeQuery = { findUnitWithoutMeasure: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+export type FindUnitWithoutValueListTreeQuery = { FindUnitWithoutValueList: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
 
-export type FindValueWithoutMeasureTreeQuery = { findValueWithoutMeasure: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+export type FindValueWithoutValueListTreeQuery = { FindValueWithoutValueList: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
 
-export type FindMissingEnglishNameTreeQuery = { findMissingEnglishName: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+export type FindMissingTagsTreeQuery = { findMissingTags: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
 
-export type FindMultipleIDsTreeQuery = { findMultipleIDs: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+export type FindMissingEnglishNameTreeQuery = { findMissingEnglishName: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
 
-export type FindMissingDescriptionTreeQuery = { findMissingDescription: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+export type FindMultipleIDsTreeQuery = { findMultipleIDs: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
 
-export type FindMissingEnglishDescriptionTreeQuery = { findMissingEnglishDescription: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+export type FindMissingDescriptionTreeQuery = { findMissingDescription: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
 
-export type FindMultipleNamesTreeQuery = { findMultipleNames: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+export type FindMissingEnglishDescriptionTreeQuery = { findMissingEnglishDescription: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
 
-export type FindMultipleNamesAcrossClassesTreeQuery = { findMultipleNamesAcrossClasses: { paths: Array<Array<string>>, nodes: Array<ItemProps_XtdSubject_Fragment | ItemProps_XtdUnit_Fragment | ItemProps_XtdValue_Fragment> } };
+export type FindMultipleNamesTreeQuery = { findMultipleNames: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
+
+export type FindMultipleNamesAcrossClassesTreeQuery = { findMultipleNamesAcrossClasses: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
 
 export type FindExportCatalogItemsTreeQuery = { findExportCatalogItems: { paths: Array<Array<string>>, nodes: Array<ExportCatalogRecord_Fragment> } };
 
 export type FindExportCatalogItemsRelationshipsTreeQuery = { findExportCatalogItemsRelationships: { paths: Array<Array<string>>, nodes: Array<ExportCatalogRecordRelationship_Fragment> } };
 
+
+export type GetDocumentEntryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
 export type GetDocumentEntryQuery = { node?: Maybe<ExternalDocumentDetailPropsFragment> };
+
 
 export type GetObjectEntryQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
+export type GetObjectEntryQuery = { node?: Maybe<ObjectDetailPropsFragment> };
 
-export type GetObjectEntryQuery = { node?: Maybe<ObjectDetailProps_XtdActivity_Fragment | ObjectDetailProps_XtdActor_Fragment | ObjectDetailProps_XtdClassification_Fragment | ObjectDetailProps_XtdMeasureWithUnit_Fragment | ObjectDetailProps_XtdProperty_Fragment | ObjectDetailProps_XtdSubject_Fragment | ObjectDetailProps_XtdUnit_Fragment | ObjectDetailProps_XtdValue_Fragment> };
 
 export type GetSubjectEntryQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
-
 export type GetSubjectEntryQuery = { node?: Maybe<SubjectDetailPropsFragment> };
+
 
 export type GetPropertyEntryQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
-
 export type GetPropertyEntryQuery = { node?: Maybe<PropertyDetailPropsFragment> };
 
-export type GetMeasureEntryQueryVariables = Exact<{
+
+export type GetValueListEntryQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
+export type GetValueListEntryQuery = { node?: Maybe<ValueListDetailPropsFragment> };
 
-export type GetMeasureEntryQuery = { node?: Maybe<MeasureDetailPropsFragment> };
 
 export type GetUnitEntryQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
-
 export type GetUnitEntryQuery = { node?: Maybe<UnitDetailPropsFragment> };
+
 
 export type GetValueEntryQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
-
 export type GetValueEntryQuery = { node?: Maybe<ValueDetailPropsFragment> };
 
-export type GetCollectionEntryQueryVariables = Exact<{
+export type GetOrderedValueEntryQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
+export type GetOrderedValueEntryQuery = { node?: Maybe<OrderedValueDetailPropsFragment> };
 
-export type GetCollectionEntryQuery = { node?: Maybe<CollectionDetailProps_XtdBag_Fragment | CollectionDetailProps_XtdNest_Fragment> };
+export type GetRelationshipToSubjectEntryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type GetRelationshipToSubjectEntryQuery = { node?: Maybe<RelationshipToSubjectDetailPropsFragment> };
+
+export type GetRelationshipToPropertyEntryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type GetRelationshipToPropertyEntryQuery = { node?: Maybe<RelationshipToPropertyDetailPropsFragment> };
+
+export type GetLanguageEntryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type GetLanguageEntryQuery = { node?: Maybe<LanguagePropsFragment> };
+
+export type GetLanguageByCodeEntryQueryVariables = Exact<{
+  code: Scalars['String'];
+}>;
+
+export type GetLanguageByCodeEntryQuery = { node?: Maybe<LanguagePropsFragment> };
+
+export type GetDimensionEntryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type GetDimensionEntryQuery = { node?: Maybe<DimensionDetailPropsFragment> };
+
+export type GetRationalEntryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type GetRationalEntryQuery = { node?: Maybe<RationalPropsFragment> };
+
+export type GetMultiLanguageTextEntryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type GetMultiLanguageTextEntryQuery = { node?: Maybe<MultiLanguageTextPropsFragment> };
+
+export type GetTextEntryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type GetTextEntryQuery = { node?: Maybe<TextPropsFragment> };
+
+export type GetSymbolEntryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type GetSymbolEntryQuery = { node?: Maybe<SymbolPropsFragment> };
+
+export type GetIntervalEntryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type GetIntervalEntryQuery = { node?: Maybe<IntervalPropsFragment> };
+
+export type GetDictionaryEntryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type GetDictionaryEntryQuery = { node?: Maybe<DictionaryPropsFragment> };
+
+export type GetCountryEntryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+export type GetCountryEntryQuery = { node?: Maybe<CountryDetailPropsFragment> };
+
+export type GetSubdivisionEntryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type GetSubdivisionEntryQuery = { node?: Maybe<SubdivisionDetailPropsFragment> };
+
+export type GetQuantityKindEntryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type GetQuantityKindEntryQuery = { node?: Maybe<QuantityKindDetailPropsFragment> };
+
+export type GetTagEntryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type GetConceptEntryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type GetConceptEntryQuery = { node?: Maybe<ConceptPropsFragment> };
+
+
+
+export type GetTagEntryQuery = { node?: Maybe<TagPropsFragment> };
 
 export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1119,26 +1526,13 @@ export const SearchResultPropsFragmentDoc = gql`
 }
     ${TagPropsFragmentDoc}`;
 export const MetaPropsFragmentDoc = gql`
-    fragment MetaProps on Concept {
+    fragment MetaProps on XtdRoot {
   created
   createdBy
   lastModified
   lastModifiedBy
 }
     `;
-export const ItemPropsFragmentDoc = gql`
-    fragment ItemProps on Concept {
-  __typename
-  id
-  recordType
-  name(input: {languageTags: ["de-DE", "en-US"]})
-  description(input: {languageTags: ["de-DE", "en-US"]})
-  comment(input: {languageTags: ["de-DE", "en-US"]})
-  tags {
-    ...TagProps
-  }
-}
-    ${TagPropsFragmentDoc}`;
 export const LanguagePropsFragmentDoc = gql`
     fragment LanguageProps on Language {
   id
@@ -1149,341 +1543,370 @@ export const LanguagePropsFragmentDoc = gql`
     `;
 export const TranslationPropsFragmentDoc = gql`
     fragment TranslationProps on Translation {
-  id
-  language {
-    ...LanguageProps
-  }
-  value
+    id
+    texts {
+        text
+        language {
+            ...LanguageProps
+        }
+    }
 }
     ${LanguagePropsFragmentDoc}`;
+export const ObjectPropsFragmentDoc = gql`
+fragment ObjectProps on XtdObject {
+    __typename
+    id
+    recordType
+    majorVersion
+    minorVersion
+    dateOfCreation
+    status
+    name(input: { languageTags: ["de-DE", "en-US"] })
+    names {
+        ...TranslationProps
+    }
+    comment(input: { languageTags: ["de-DE", "en-US"] })
+    comments {
+        ...TranslationProps
+    }
+    tags {
+        ...TagProps
+    }
+    dictionary {
+        id
+        name(input: { languageTags: ["de-DE", "en-US"] })
+    }
+    replacedObjects {
+        ...ObjectProps
+    }
+    replacingObjects {
+        ...ObjectProps
+    }
+    deprecationExplanation {
+        ...TranslationProps
+    }
+}
+    ${TagPropsFragmentDoc}
+    ${TranslationPropsFragmentDoc}
+    `;
 export const ConceptPropsFragmentDoc = gql`
-    fragment ConceptProps on Concept {
-  ...ItemProps
-  versionId
-  versionDate
-  names {
-    ...TranslationProps
-  }
-  descriptions {
-    ...TranslationProps
-  }
-  comments {
-    ...TranslationProps
-  }
+fragment ConceptProps on XtdConcept {
+    ...ObjectProps
+    description(input: { languageTags: ["de-DE", "en-US"] })
+    descriptions {
+        ...TranslationProps
+    }
+    definition {
+        ...TranslationProps
+    }
+    examples {
+        ...TranslationProps
+    }
+    languageOfCreator {
+        ...LanguageProps
+    }
+    referenceDocuments {
+        ...ExternalDocumentProps
+    }
+    similarTo {
+        ...ConceptProps
+    }
+    countryOfOrigin {
+        code
+        ...ObjectProps
+    }
 }
-    ${ItemPropsFragmentDoc}
-${TranslationPropsFragmentDoc}`;
+    ${ObjectPropsFragmentDoc}
+${TranslationPropsFragmentDoc}
+${LanguagePropsFragmentDoc}`;
+export const ConceptDetailPropsFragmentDoc = gql`
+  fragment ConceptDetailProps on XtdConcept {
+      ...MetaProps
+      ...ConceptProps
+  }
+  ${MetaPropsFragmentDoc}
+${ConceptPropsFragmentDoc}`;
 export const ExternalDocumentPropsFragmentDoc = gql`
-    fragment ExternalDocumentProps on XtdExternalDocument {
-  ...ConceptProps
+fragment ExternalDocumentProps on XtdExternalDocument {
+    ...ConceptProps
+    uri
+    author
+    isbn
+    publisher
+    dateOfPublication
+    languages {
+        ...LanguageProps
+    }
 }
-    ${ConceptPropsFragmentDoc}`;
-export const RelationshipPropsFragmentDoc = gql`
-    fragment RelationshipProps on XtdRelationship {
-  ...ConceptProps
-}
-    ${ConceptPropsFragmentDoc}`;
-export const DocumentsPropsFragmentDoc = gql`
-    fragment DocumentsProps on XtdRelDocuments {
-  ...RelationshipProps
-  relatingDocument {
-    ...ItemProps
-  }
-  relatedThings {
-    ...ItemProps
-  }
-}
-    ${RelationshipPropsFragmentDoc}
-${ItemPropsFragmentDoc}`;
+    ${ConceptPropsFragmentDoc}
+    ${LanguagePropsFragmentDoc}`;
 export const ExternalDocumentDetailPropsFragmentDoc = gql`
     fragment ExternalDocumentDetailProps on XtdExternalDocument {
   ...MetaProps
   ...ExternalDocumentProps
   documents {
-    nodes {
-      ...DocumentsProps
-    }
+    ...ConceptProps
   }
 }
     ${MetaPropsFragmentDoc}
 ${ExternalDocumentPropsFragmentDoc}
-${DocumentsPropsFragmentDoc}`;
+${ConceptPropsFragmentDoc}`;
+export const RationalPropsFragmentDoc = gql`
+  fragment RationalProps on XtdRational {
+      id
+      numerator
+      denominator
+  }
+`;
+export const DimensionPropsFragmentDoc = gql`
+fragment DimensionProps on XtdDimension {
+    ...ConceptProps
+    amountOfSubstanceExponent {
+    ...RationalProps
+    }
+    luminousIntensityExponent{
+    ...RationalProps
+    }
+    lengthExponent {
+    ...RationalProps
+    }
+    massExponent {
+    ...RationalProps
+    }
+    timeExponent {
+    ...RationalProps
+    }
+    electricCurrentExponent {
+    ...RationalProps
+    }
+    thermodynamicTemperatureExponent {
+    ...RationalProps
+    }   
+}
+    ${ConceptPropsFragmentDoc}
+${RationalPropsFragmentDoc}`;
+export const RelationshipToSubjectPropsFragmentDoc = gql`
+  fragment RelationshipToSubjectProps on XtdRelationshipToSubject {
+    ...ObjectProps
+  }
+  ${ObjectPropsFragmentDoc}`;
 export const ObjectDetailPropsFragmentDoc = gql`
     fragment ObjectDetailProps on XtdObject {
   ...MetaProps
-  ...ConceptProps
-  documentedBy {
-    nodes {
-      ...DocumentsProps
-    }
-  }
+  ...ObjectProps
 }
     ${MetaPropsFragmentDoc}
-${ConceptPropsFragmentDoc}
-${DocumentsPropsFragmentDoc}`;
-export const AssignsCollectionsPropsFragmentDoc = gql`
-    fragment AssignsCollectionsProps on XtdRelAssignsCollections {
-  ...RelationshipProps
-  relatingObject {
-    ...ItemProps
+${ObjectPropsFragmentDoc}`;
+export const ValuePropsFragmentDoc = gql`
+  fragment ValueProps on XtdValue {
+      ...ObjectProps
+      nominalValue
   }
-  relatedCollections {
-    ...ItemProps
-  }
-}
-    ${RelationshipPropsFragmentDoc}
-${ItemPropsFragmentDoc}`;
-export const AssignsPropertiesPropsFragmentDoc = gql`
-    fragment AssignsPropertiesProps on XtdRelAssignsProperties {
-  ...RelationshipProps
-  relatingObject {
-    ...ItemProps
-  }
-  relatedProperties {
-    ...ItemProps
-  }
-}
-    ${RelationshipPropsFragmentDoc}
-${ItemPropsFragmentDoc}`;
-export const AssignsPropertyWithValuesPropsFragmentDoc = gql`
-    fragment AssignsPropertyWithValuesProps on XtdRelAssignsPropertyWithValues {
-  ...RelationshipProps
-  relatedProperty {
-    ...ItemProps
-  }
-  relatedValues {
-    ...ItemProps
-  }
-}
-    ${RelationshipPropsFragmentDoc}
-${ItemPropsFragmentDoc}`;
-export const CollectsPropsFragmentDoc = gql`
-    fragment CollectsProps on XtdRelCollects {
-  ...RelationshipProps
-  relatingCollection {
-    ...ItemProps
-    tags {
-      ...TagProps
-    }
-  }
-  relatedThings {
-    ...ItemProps
-  }
-}
-    ${RelationshipPropsFragmentDoc}
-${ItemPropsFragmentDoc}
-${TagPropsFragmentDoc}`;
+  ${ConceptPropsFragmentDoc}`;
 export const SubjectDetailPropsFragmentDoc = gql`
-    fragment SubjectDetailProps on XtdSubject {
-  ...ObjectDetailProps
-  assignedCollections {
-    nodes {
-      ...AssignsCollectionsProps
-    }
-  }
-  assignedProperties {
-    nodes {
-      ...AssignsPropertiesProps
-    }
-  }
-  # assignedPropertiesWithValues {
-  #   nodes {
-  #     ...AssignsPropertyWithValuesProps
-  #   }
-  # }
-  collectedBy {
-    nodes {
-      ...CollectsProps
-    }
-  }
-  properties {
-    id
-    name
-    description
-    comment
-    assignedMeasures {
-      nodes {
-        id
-        relatedMeasures {
-          id
-          name
-          description
-          comment
-          assignedValues {
-            nodes {
-              id
-              relatedValues {
+  fragment SubjectDetailProps on XtdSubject {
+    ...ConceptDetailProps
+    properties {
+        ...ConceptDetailProps
+        possibleValues {
+            ...ConceptDetailProps
+            values {
                 id
-                name
-                description
-                comment
-                nominalValue
-              }
+                order
+                orderedValue {
+                    ...ValueProps
+                }
             }
-          }
         }
+    }
+    connectedSubjects {
+        ...RelationshipToSubjectProps
+    }
+  }
+  ${ConceptDetailPropsFragmentDoc}
+${ValuePropsFragmentDoc}
+${RelationshipToSubjectPropsFragmentDoc}`;
+export const RelationshipToSubjectDetailPropsFragmentDoc = gql`
+  fragment RelationshipToSubjectProps on XtdRelationshipToSubject {
+    ...RelationshipToSubjectProps
+    scopeSubjects {
+        ...SubjectDetailProps
+    }
+    targetSubjects {
+        ...SubjectDetailProps
+    }
+    relationshipType {
+        kind
+    }
+}
+    ${ObjectPropsFragmentDoc}
+${RelationshipToSubjectPropsFragmentDoc}
+${SubjectDetailPropsFragmentDoc}`;
+export const SymbolPropsFragmentDoc = gql`
+  fragment SymbolProps on XtdSymbol {
+      subject {
+          ...SubjectDetailProps
+      }
+      symbol {
+          text
+          language {
+              ...LanguageProps
+          }
+      }
+  }
+${SubjectDetailPropsFragmentDoc}
+${LanguagePropsFragmentDoc}`;
+export const UnitPropsFragmentDoc = gql`
+  fragment UnitDetailProps on XtdUnit {
+      ...ConceptDetailProps
+      scale
+      base
+  }
+    ${ConceptDetailPropsFragmentDoc}`;
+export const IntervalPropsFragmentDoc = gql`
+  fragment IntervalProps on XtdInterval {
+    id
+    minimumIncluded
+    maximumIncluded
+    minimum {
+      id
+      order
+      orderedValue {
+          ...ValueProps
+      }
+    }
+    maximum {
+      id
+      order
+      orderedValue {
+          ...ValueProps
       }
     }
   }
-}
-    ${ObjectDetailPropsFragmentDoc}
-${AssignsCollectionsPropsFragmentDoc}
-${AssignsPropertiesPropsFragmentDoc}
-
-${CollectsPropsFragmentDoc}`;
-// ${AssignsPropertyWithValuesPropsFragmentDoc}
-export const AssignsMeasuresPropsFragmentDoc = gql`
-    fragment AssignsMeasuresProps on XtdRelAssignsMeasures {
-  ...RelationshipProps
-  relatingProperty {
-    ...ItemProps
+  ${ValuePropsFragmentDoc}`;
+export const RelationshipToPropertyPropsFragmentDoc = gql`
+  fragment RelationshipToPropertyProps on XtdRelationshipToProperty {
+      ...ObjectProps
   }
-  relatedMeasures {
-    ...ItemProps
-  }
+  ${ObjectPropsFragmentDoc}`;
+export const QuantityKindPropsFragmentDoc = gql`
+  fragment QuantityKindProps on XtdQuantityKind {
+    ...ConceptProps
+    units {
+        ...UnitProps
+    }
+    dimension {
+        ...DimensionProps
+    }
 }
-    ${RelationshipPropsFragmentDoc}
-${ItemPropsFragmentDoc}`;
+    ${ConceptPropsFragmentDoc}
+${UnitPropsFragmentDoc}
+${DimensionPropsFragmentDoc}`;
 export const PropertyDetailPropsFragmentDoc = gql`
-    fragment PropertyDetailProps on XtdProperty {
-  ...ObjectDetailProps
-  assignedMeasures {
-    nodes {
-      ...AssignsMeasuresProps
-    }
+  fragment PropertyDetailProps on XtdProperty {
+      ...ConceptDetailProps
+      dataType
+      dataFormat
+      connectedProperties {
+          ...RelationshipToPropertyProps
+      }
+      symbols {
+          ...SymbolProps
+      }
+      boundaryValues {
+          ...IntervalProps
+      }
+      dimension {
+          ...DimensionProps
+      }
+      quantityKinds {
+          ...QuantityKindsProps
+      }
+      units {
+          ...UnitProps  
+      }
+      possibleValues {
+          ...ConceptDetailProps
+          values {
+              id
+              order
+              orderedValue {
+                  ...ValueProps
+              }
+          }
+      }
+      subjects {
+          ...SubjectDetailProps
+      }
   }
-  assignedTo {
-    nodes {
-      ...AssignsPropertiesProps
-    }
-  }
-  collectedBy {
-    nodes {
-      ...CollectsProps
-    }
-  }
-}
-    ${ObjectDetailPropsFragmentDoc}
-${AssignsMeasuresPropsFragmentDoc}
-${AssignsPropertiesPropsFragmentDoc}
-${CollectsPropsFragmentDoc}`;
-export const AssignsUnitsPropsFragmentDoc = gql`
-    fragment AssignsUnitsProps on XtdRelAssignsUnits {
-  ...RelationshipProps
-  relatingMeasure {
-    ...ItemProps
-  }
-  relatedUnits {
-    ...ItemProps
-  }
-}
-    ${RelationshipPropsFragmentDoc}
-${ItemPropsFragmentDoc}`;
-export const AssignsValuesPropsFragmentDoc = gql`
-    fragment AssignsValuesProps on XtdRelAssignsValues {
-  ...RelationshipProps
-  relatingMeasure {
-    ...ItemProps
-  }
-  relatedValues {
-    ...ItemProps
-  }
-}
-    ${RelationshipPropsFragmentDoc}
-${ItemPropsFragmentDoc}`;
-export const MeasureDetailPropsFragmentDoc = gql`
-    fragment MeasureDetailProps on XtdMeasureWithUnit {
-  ...ObjectDetailProps
-  assignedTo {
-    nodes {
-      ...AssignsMeasuresProps
-    }
-  }
-  assignedUnits {
-    nodes {
-      ...AssignsUnitsProps
-    }
-  }
-  assignedValues {
-    nodes {
-      ...AssignsValuesProps
-    }
-  }
-}
-    ${ObjectDetailPropsFragmentDoc}
-${AssignsMeasuresPropsFragmentDoc}
-${AssignsUnitsPropsFragmentDoc}
-${AssignsValuesPropsFragmentDoc}`;
-export const UnitDetailPropsFragmentDoc = gql`
-    fragment UnitDetailProps on XtdUnit {
-  ...ObjectDetailProps
-  assignedTo {
-    nodes {
-      ...AssignsUnitsProps
-    }
-  }
-}
-    ${ObjectDetailPropsFragmentDoc}
-${AssignsUnitsPropsFragmentDoc}`;
-export const ValuePropsFragmentDoc = gql`
-    fragment ValueProps on XtdValue {
-  ...ConceptProps
-  valueType
-  valueRole
-  nominalValue
-  toleranceType
-  lowerTolerance
-  upperTolerance
-}
-    ${ConceptPropsFragmentDoc}`;
-export const ValueDetailPropsFragmentDoc = gql`
-    fragment ValueDetailProps on XtdValue {
-  ...ObjectDetailProps
-  ...ValueProps
-  assignedTo {
-    nodes {
-      ...AssignsValuesProps
-    }
-  }
-}
-    ${ObjectDetailPropsFragmentDoc}
+    ${ConceptDetailPropsFragmentDoc}
+${RelationshipToPropertyPropsFragmentDoc}
+${SymbolPropsFragmentDoc}
+${IntervalPropsFragmentDoc}
+${DimensionPropsFragmentDoc}
+${QuantityKindPropsFragmentDoc}
+${UnitPropsFragmentDoc}
 ${ValuePropsFragmentDoc}
-${AssignsValuesPropsFragmentDoc}`;
-export const CollectionPropsFragmentDoc = gql`
-    fragment CollectionProps on XtdCollection {
-  ...ConceptProps
-}
-    ${ConceptPropsFragmentDoc}`;
-export const CollectionDetailPropsFragmentDoc = gql`
-    fragment CollectionDetailProps on XtdCollection {
-  ...MetaProps
-  ...CollectionProps
-  collects {
-    nodes {
-      ...CollectsProps
-    }
+${SubjectDetailPropsFragmentDoc}`;
+export const RelationshipToPropertyDetailPropsFragmentDoc = gql`
+  fragment RelationshipToPropertyDetailProps on XtdRelationshipToProperty {
+      ...RelationshipToPropertyProps
+      relationshipType
+      targetProperties {
+          ...PropertyDetailProps
+      }
   }
-  assignedTo {
-    nodes {
-      ...AssignsCollectionsProps
-    }
+    ${RelationshipToPropertyPropsFragmentDoc}
+${PropertyDetailPropsFragmentDoc}`;
+export const UnitDetailPropsFragmentDoc = gql`
+  fragment UnitDetailProps on XtdUnit {
+      ...ConceptDetailProps
+      ...UnitProps
+      symbol {
+          ...SymbolProps
+      }
+      offset {
+          ...RationalProps
+      }
+      coefficient {
+          ...RationalProps
+      }
+      dimension {
+          ...DimensionProps
+      }
+      properties {
+          ...PropertyDetailProps
+      }
   }
-  collectedBy {
-    nodes {
-      ...CollectsProps
-    }
+    ${ConceptDetailPropsFragmentDoc}
+${UnitPropsFragmentDoc}
+${SymbolPropsFragmentDoc}
+${RationalPropsFragmentDoc}
+${DimensionPropsFragmentDoc}
+${PropertyDetailPropsFragmentDoc}`;
+export const ValueListDetailPropsFragmentDoc = gql`
+  fragment ValueListDetailProps on XtdValueList {
+      ...ObjectDetailProps
+      properties {
+          ...PropertyDetailProps
+      }
+      unit {
+          ...UnitDetailProps
+      }
+      values {
+          id
+          order
+          orderedValue {
+              ...ValueProps
+          }
+      }
   }
-  documentedBy {
-    nodes {
-      ...DocumentsProps
-    }
-  }
-}
-    ${MetaPropsFragmentDoc}
-${CollectionPropsFragmentDoc}
-${CollectsPropsFragmentDoc}
-${AssignsCollectionsPropsFragmentDoc}
-${DocumentsPropsFragmentDoc}`;
+    ${ObjectDetailPropsFragmentDoc}
+${PropertyDetailPropsFragmentDoc}
+${UnitDetailPropsFragmentDoc}
+${ValuePropsFragmentDoc}`;
+
+
 export const SignupFormDocument = gql`
     mutation SignupForm($profile: SignupInput!) {
   success: signup(input: $profile)
@@ -1610,11 +2033,11 @@ export const CreateEntryDocument = gql`
     mutation CreateEntry($input: CreateCatalogEntryInput!) {
   createCatalogEntry(input: $input) {
     catalogEntry {
-      ...ConceptProps
+      ...ObjectProps
     }
   }
 }
-    ${ConceptPropsFragmentDoc}`;
+    ${ObjectPropsFragmentDoc}`;
 export type CreateEntryMutationFn = Apollo.MutationFunction<CreateEntryMutation, CreateEntryMutationVariables>;
 
 /**
@@ -1644,11 +2067,11 @@ export const DeleteEntryDocument = gql`
     mutation DeleteEntry($id: ID!) {
   deleteCatalogEntry(input: {catalogEntryId: $id}) {
     catalogEntry {
-      ...ConceptProps
+      ...ObjectProps
     }
   }
 }
-    ${ConceptPropsFragmentDoc}`;
+    ${ObjectPropsFragmentDoc}`;
 export type DeleteEntryMutationFn = Apollo.MutationFunction<DeleteEntryMutation, DeleteEntryMutationVariables>;
 
 /**
@@ -1674,49 +2097,84 @@ export function useDeleteEntryMutation(baseOptions?: Apollo.MutationHookOptions<
 export type DeleteEntryMutationHookResult = ReturnType<typeof useDeleteEntryMutation>;
 export type DeleteEntryMutationResult = Apollo.MutationResult<DeleteEntryMutation>;
 export type DeleteEntryMutationOptions = Apollo.BaseMutationOptions<DeleteEntryMutation, DeleteEntryMutationVariables>;
-export const SetVersionDocument = gql`
-    mutation SetVersion($input: SetVersionInput!) {
-  setVersion(input: $input) {
+
+export const UpdateMajorVersionDocument = gql`
+    mutation UpdateMajorVersion($input: UpdateMajorVersionInput!) {
+  updateMajorVersion(input: $input) {
     catalogEntry {
-      ...ConceptProps
+      ...ObjectProps
     }
   }
 }
-    ${ConceptPropsFragmentDoc}`;
-export type SetVersionMutationFn = Apollo.MutationFunction<SetVersionMutation, SetVersionMutationVariables>;
+    ${ObjectPropsFragmentDoc}`;
+export type UpdateMajorVersionMutationFn = Apollo.MutationFunction<UpdateMajorVersionMutation, UpdateMajorVersionMutationVariables>;
 
 /**
- * __useSetVersionMutation__
+ * __useUpdateMajorVersionMutation__
  *
- * To run a mutation, you first call `useSetVersionMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useSetVersionMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdateMajorVersionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateMajorVersionMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [setVersionMutation, { data, loading, error }] = useSetVersionMutation({
+ * const [updateMajorVersionMutation, { data, loading, error }] = useUpdateMajorVersionMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useSetVersionMutation(baseOptions?: Apollo.MutationHookOptions<SetVersionMutation, SetVersionMutationVariables>) {
-  return Apollo.useMutation<SetVersionMutation, SetVersionMutationVariables>(SetVersionDocument, baseOptions);
+export function useUpdateMajorVersionMutation(baseOptions?: Apollo.MutationHookOptions<UpdateMajorVersionMutation, UpdateMajorVersionMutationVariables>) {
+  return Apollo.useMutation<UpdateMajorVersionMutation, UpdateMajorVersionMutationVariables>(UpdateMajorVersionDocument, baseOptions);
 }
-export type SetVersionMutationHookResult = ReturnType<typeof useSetVersionMutation>;
-export type SetVersionMutationResult = Apollo.MutationResult<SetVersionMutation>;
-export type SetVersionMutationOptions = Apollo.BaseMutationOptions<SetVersionMutation, SetVersionMutationVariables>;
-export const AddNameDocument = gql`
-    mutation AddName($input: AddNameInput!) {
-  addName(input: $input) {
+export type UpdateMajorVersionMutationHookResult = ReturnType<typeof useUpdateMajorVersionMutation>;
+export type UpdateMajorVersionMutationResult = Apollo.MutationResult<UpdateMajorVersionMutation>;
+export type UpdateMajorVersionMutationOptions = Apollo.BaseMutationOptions<UpdateMajorVersionMutation, UpdateMajorVersionMutationVariables>;
+export const UpdateMinorVersionDocument = gql`
+    mutation UpdateMinorVersion($input: UpdateMinorVersionInput!) {
+  updateMinorVersion(input: $input) {
     catalogEntry {
-      ...ConceptProps
+      ...ObjectProps
     }
   }
 }
-    ${ConceptPropsFragmentDoc}`;
+    ${ObjectPropsFragmentDoc}`;
+export type UpdateMinorVersionMutationFn = Apollo.MutationFunction<UpdateMinorVersionMutation, UpdateMinorVersionMutationVariables>;
+
+/**
+ * __useUpdateMinorVersionMutation__
+ *
+ * To run a mutation, you first call `useUpdateMinorVersionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateMinorVersionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateMinorVersionMutation, { data, loading, error }] = useUpdateMinorVersionMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateMinorVersionMutation(baseOptions?: Apollo.MutationHookOptions<UpdateMinorVersionMutation, UpdateMinorVersionMutationVariables>) {
+  return Apollo.useMutation<UpdateMinorVersionMutation, UpdateMinorVersionMutationVariables>(UpdateMinorVersionDocument, baseOptions);
+}
+export type UpdateMinorVersionMutationHookResult = ReturnType<typeof useUpdateMajorVersionMutation>;
+export type UpdateMinorVersionMutationResult = Apollo.MutationResult<UpdateMajorVersionMutation>;
+export type UpdateMinorVersionMutationOptions = Apollo.BaseMutationOptions<UpdateMajorVersionMutation, UpdateMajorVersionMutationVariables>;
+export const AddNameDocument = gql`
+    mutation AddName($input: AddTextInput!) {
+  addName(input: $input) {
+    catalogEntry {
+      ...ObjectProps
+    }
+  }
+}
+    ${ObjectPropsFragmentDoc}`;
 export type AddNameMutationFn = Apollo.MutationFunction<AddNameMutation, AddNameMutationVariables>;
 
 /**
@@ -1743,14 +2201,14 @@ export type AddNameMutationHookResult = ReturnType<typeof useAddNameMutation>;
 export type AddNameMutationResult = Apollo.MutationResult<AddNameMutation>;
 export type AddNameMutationOptions = Apollo.BaseMutationOptions<AddNameMutation, AddNameMutationVariables>;
 export const UpdateNameDocument = gql`
-    mutation UpdateName($input: UpdateNameInput!) {
+    mutation UpdateName($input: UpdateTextInput!) {
   updateName(input: $input) {
     catalogEntry {
-      ...ConceptProps
+      ...ObjectProps
     }
   }
 }
-    ${ConceptPropsFragmentDoc}`;
+    ${ObjectPropsFragmentDoc}`;
 export type UpdateNameMutationFn = Apollo.MutationFunction<UpdateNameMutation, UpdateNameMutationVariables>;
 
 /**
@@ -1777,14 +2235,14 @@ export type UpdateNameMutationHookResult = ReturnType<typeof useUpdateNameMutati
 export type UpdateNameMutationResult = Apollo.MutationResult<UpdateNameMutation>;
 export type UpdateNameMutationOptions = Apollo.BaseMutationOptions<UpdateNameMutation, UpdateNameMutationVariables>;
 export const DeleteNameDocument = gql`
-    mutation DeleteName($input: DeleteNameInput!) {
+    mutation DeleteName($input: DeleteTextInput!) {
   deleteName(input: $input) {
     catalogEntry {
-      ...ConceptProps
+      ...ObjectProps
     }
   }
 }
-    ${ConceptPropsFragmentDoc}`;
+    ${ObjectPropsFragmentDoc}`;
 export type DeleteNameMutationFn = Apollo.MutationFunction<DeleteNameMutation, DeleteNameMutationVariables>;
 
 /**
@@ -1811,14 +2269,14 @@ export type DeleteNameMutationHookResult = ReturnType<typeof useDeleteNameMutati
 export type DeleteNameMutationResult = Apollo.MutationResult<DeleteNameMutation>;
 export type DeleteNameMutationOptions = Apollo.BaseMutationOptions<DeleteNameMutation, DeleteNameMutationVariables>;
 export const AddDescriptionDocument = gql`
-    mutation AddDescription($input: AddDescriptionInput!) {
+    mutation AddDescription($input: AddTextInput!) {
   addDescription(input: $input) {
     catalogEntry {
-      ...ConceptProps
+      ...ObjectProps
     }
   }
 }
-    ${ConceptPropsFragmentDoc}`;
+    ${ObjectPropsFragmentDoc}`;
 export type AddDescriptionMutationFn = Apollo.MutationFunction<AddDescriptionMutation, AddDescriptionMutationVariables>;
 
 /**
@@ -1845,14 +2303,14 @@ export type AddDescriptionMutationHookResult = ReturnType<typeof useAddDescripti
 export type AddDescriptionMutationResult = Apollo.MutationResult<AddDescriptionMutation>;
 export type AddDescriptionMutationOptions = Apollo.BaseMutationOptions<AddDescriptionMutation, AddDescriptionMutationVariables>;
 export const UpdateDescriptionDocument = gql`
-    mutation UpdateDescription($input: UpdateDescriptionInput!) {
+    mutation UpdateDescription($input: UpdateTextInput!) {
   updateDescription(input: $input) {
     catalogEntry {
-      ...ConceptProps
+      ...ObjectProps
     }
   }
 }
-    ${ConceptPropsFragmentDoc}`;
+    ${ObjectPropsFragmentDoc}`;
 export type UpdateDescriptionMutationFn = Apollo.MutationFunction<UpdateDescriptionMutation, UpdateDescriptionMutationVariables>;
 
 /**
@@ -1879,14 +2337,14 @@ export type UpdateDescriptionMutationHookResult = ReturnType<typeof useUpdateDes
 export type UpdateDescriptionMutationResult = Apollo.MutationResult<UpdateDescriptionMutation>;
 export type UpdateDescriptionMutationOptions = Apollo.BaseMutationOptions<UpdateDescriptionMutation, UpdateDescriptionMutationVariables>;
 export const DeleteDescriptionDocument = gql`
-    mutation DeleteDescription($input: DeleteDescriptionInput!) {
+    mutation DeleteDescription($input: DeleteTextInput!) {
   deleteDescription(input: $input) {
     catalogEntry {
-      ...ConceptProps
+      ...ObjectProps
     }
   }
 }
-    ${ConceptPropsFragmentDoc}`;
+    ${ObjectPropsFragmentDoc}`;
 export type DeleteDescriptionMutationFn = Apollo.MutationFunction<DeleteDescriptionMutation, DeleteDescriptionMutationVariables>;
 
 /**
@@ -1914,14 +2372,14 @@ export type DeleteDescriptionMutationResult = Apollo.MutationResult<DeleteDescri
 export type DeleteDescriptionMutationOptions = Apollo.BaseMutationOptions<DeleteDescriptionMutation, DeleteDescriptionMutationVariables>;
 
 export const AddCommentDocument = gql`
-    mutation AddComment($input: AddCommentInput!) {
+    mutation AddComment($input: AddTextInput!) {
   addComment(input: $input) {
     catalogEntry {
-      ...ConceptProps
+      ...ObjectProps
     }
   }
 }
-    ${ConceptPropsFragmentDoc}`;
+    ${ObjectPropsFragmentDoc}`;
 export type AddCommentMutationFn = Apollo.MutationFunction<AddCommentMutation, AddCommentMutationVariables>;
 /**
  * __useAddCommentMutation__
@@ -1947,14 +2405,14 @@ export type AddCommentMutationHookResult = ReturnType<typeof useAddCommentMutati
 export type AddCommentMutationResult = Apollo.MutationResult<AddCommentMutation>;
 export type AddCommentMutationOptions = Apollo.BaseMutationOptions<AddCommentMutation, AddCommentMutationVariables>;
 export const UpdateCommentDocument = gql`
-mutation UpdateComment($input: UpdateCommentInput!) {
+mutation UpdateComment($input: UpdateTextInput!) {
 updateComment(input: $input) {
 catalogEntry {
-...ConceptProps
+...ObjectProps
 }
 }
 }
-${ConceptPropsFragmentDoc}`;
+${ObjectPropsFragmentDoc}`;
 export type UpdateCommentMutationFn = Apollo.MutationFunction<UpdateCommentMutation, UpdateCommentMutationVariables>;
 
 /**
@@ -1981,14 +2439,14 @@ export type UpdateCommentMutationHookResult = ReturnType<typeof useUpdateComment
 export type UpdateCommentMutationResult = Apollo.MutationResult<UpdateCommentMutation>;
 export type UpdateCommentMutationOptions = Apollo.BaseMutationOptions<UpdateCommentMutation, UpdateCommentMutationVariables>;
 export const DeleteCommentDocument = gql`
-mutation DeleteComment($input: DeleteCommentInput!) {
+mutation DeleteComment($input: DeleteTextInput!) {
 deleteComment(input: $input) {
 catalogEntry {
-...ConceptProps
+...ObjectProps
 }
 }
 }
-${ConceptPropsFragmentDoc}`;
+${ObjectPropsFragmentDoc}`;
 export type DeleteCommentMutationFn = Apollo.MutationFunction<DeleteCommentMutation, DeleteCommentMutationVariables>;
 
 /**
@@ -2015,203 +2473,461 @@ export type DeleteCommentMutationHookResult = ReturnType<typeof useDeleteComment
 export type DeleteCommentMutationResult = Apollo.MutationResult<DeleteCommentMutation>;
 export type DeleteCommentMutationOptions = Apollo.BaseMutationOptions<DeleteCommentMutation, DeleteCommentMutationVariables>;
 
-export const SetToleranceDocument = gql`
-    mutation SetTolerance($input: SetToleranceInput!) {
-  setTolerance(input: $input) {
+export const UpdateStatusDocument = gql`
+    mutation UpdateStatus($input: UpdateStatusInput!) {
+  updateStatus(input: $input) {
     catalogEntry {
-      ...ValueDetailProps
+      ...ObjectProps
     }
   }
 }
-    ${ValueDetailPropsFragmentDoc}`;
-export type SetToleranceMutationFn = Apollo.MutationFunction<SetToleranceMutation, SetToleranceMutationVariables>;
+    ${ObjectPropsFragmentDoc}`;
 
+export type UpdateStatusMutationFn = Apollo.MutationFunction<UpdateStatusMutation, UpdateStatusMutationVariables>;
 /**
- * __useSetToleranceMutation__
+ * __useUpdateStatusMutation__
  *
- * To run a mutation, you first call `useSetToleranceMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useSetToleranceMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdateStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+* - An object with fields that represent the current status of the mutation's execution
+* 
+* @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+* 
+* @example
+* const [updateStatusMutation, { data, loading, error }] = useUpdateStatusMutation({
+*  variables: {
+*     input: // value for 'input'
+*  },
+*   
+* });
+*/
+export function useUpdateStatusMutation(baseOptions?: Apollo.MutationHookOptions<UpdateStatusMutation, UpdateStatusMutationVariables>) {
+  return Apollo.useMutation<UpdateStatusMutation, UpdateStatusMutationVariables>(UpdateStatusDocument, baseOptions);
+}
+export type UpdateStatusMutationHookResult = ReturnType<typeof useUpdateStatusMutation>;
+export type UpdateStatusMutationResult = Apollo.MutationResult<UpdateStatusMutation>;
+export type UpdateStatusMutationOptions = Apollo.BaseMutationOptions<UpdateStatusMutation, UpdateStatusMutationVariables>;
+
+export const AddDeprecationExplanationDocument = gql`
+    mutation AddDeprecationExplanation($input: AddTextInput!) {
+  addDeprecationExplanation(input: $input) {
+    catalogEntry {
+      ...ObjectProps
+    }
+  }
+}
+    ${ObjectPropsFragmentDoc}`;
+export type AddDeprecationExplanationMutationFn = Apollo.MutationFunction<AddDeprecationExplanationMutation, AddDeprecationExplanationMutationVariables>;
+/**
+ * __useAddDeprecationExplanationMutation__
+ *
+ * To run a mutation, you first call `useAddDeprecationExplanationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddDeprecationExplanationMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [setToleranceMutation, { data, loading, error }] = useSetToleranceMutation({
+ * const [addDeprecationExplanationMutation, { data, loading, error }] = useAddDeprecationExplanationMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useSetToleranceMutation(baseOptions?: Apollo.MutationHookOptions<SetToleranceMutation, SetToleranceMutationVariables>) {
-  return Apollo.useMutation<SetToleranceMutation, SetToleranceMutationVariables>(SetToleranceDocument, baseOptions);
-}
-export type SetToleranceMutationHookResult = ReturnType<typeof useSetToleranceMutation>;
-export type SetToleranceMutationResult = Apollo.MutationResult<SetToleranceMutation>;
-export type SetToleranceMutationOptions = Apollo.BaseMutationOptions<SetToleranceMutation, SetToleranceMutationVariables>;
-export const UnsetToleranceDocument = gql`
-    mutation UnsetTolerance($input: UnsetToleranceInput!) {
-  unsetTolerance(input: $input) {
+export function useAddDeprecationExplanationMutation(baseOptions?: Apollo.MutationHookOptions<AddDeprecationExplanationMutation, AddDeprecationExplanationMutationVariables>) {
+  return Apollo.useMutation<AddDeprecationExplanationMutation, AddDeprecationExplanationMutationVariables>(AddDeprecationExplanationDocument, baseOptions);
+} 
+export type AddDeprecationExplanationMutationHookResult = ReturnType<typeof useAddDeprecationExplanationMutation>;
+export type AddDeprecationExplanationMutationResult = Apollo.MutationResult<AddDeprecationExplanationMutation>;
+export type AddDeprecationExplanationMutationOptions = Apollo.BaseMutationOptions<AddDeprecationExplanationMutation, AddDeprecationExplanationMutationVariables>;
+export const UpdateDeprecationExplanationDocument = gql`
+    mutation UpdateDeprecationExplanation($input: UpdateTextInput!) {
+  updateDeprecationExplanation(input: $input) {
     catalogEntry {
-      ...ValueDetailProps
+      ...ObjectProps
     }
   }
 }
-    ${ValueDetailPropsFragmentDoc}`;
-export type UnsetToleranceMutationFn = Apollo.MutationFunction<UnsetToleranceMutation, UnsetToleranceMutationVariables>;
+    ${ObjectPropsFragmentDoc}`;
+export type UpdateDeprecationExplanationMutationFn = Apollo.MutationFunction<UpdateDeprecationExplanationMutation, UpdateDeprecationExplanationMutationVariables>;
 
 /**
- * __useUnsetToleranceMutation__
+ * __useUpdateDeprecationExplanationMutation__
  *
- * To run a mutation, you first call `useUnsetToleranceMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUnsetToleranceMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdateDeprecationExplanationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateDeprecationExplanationMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [unsetToleranceMutation, { data, loading, error }] = useUnsetToleranceMutation({
+ * const [updateDeprecationExplanationMutation, { data, loading, error }] = useUpdateDeprecationExplanationMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useUnsetToleranceMutation(baseOptions?: Apollo.MutationHookOptions<UnsetToleranceMutation, UnsetToleranceMutationVariables>) {
-  return Apollo.useMutation<UnsetToleranceMutation, UnsetToleranceMutationVariables>(UnsetToleranceDocument, baseOptions);
+export function useUpdateDeprecationExplanationMutation(baseOptions?: Apollo.MutationHookOptions<UpdateDeprecationExplanationMutation, UpdateDeprecationExplanationMutationVariables>) {
+  return Apollo.useMutation<UpdateDeprecationExplanationMutation, UpdateDeprecationExplanationMutationVariables>(UpdateDeprecationExplanationDocument, baseOptions);
 }
-export type UnsetToleranceMutationHookResult = ReturnType<typeof useUnsetToleranceMutation>;
-export type UnsetToleranceMutationResult = Apollo.MutationResult<UnsetToleranceMutation>;
-export type UnsetToleranceMutationOptions = Apollo.BaseMutationOptions<UnsetToleranceMutation, UnsetToleranceMutationVariables>;
-export const SetNominalValueDocument = gql`
-    mutation SetNominalValue($input: SetNominalValueInput!) {
-  setNominalValue(input: $input) {
+export type UpdateDeprecationExplanationMutationHookResult = ReturnType<typeof useUpdateDeprecationExplanationMutation>;
+export type UpdateDeprecationExplanationMutationResult = Apollo.MutationResult<UpdateDeprecationExplanationMutation>;
+export type UpdateDeprecationExplanationMutationOptions = Apollo.BaseMutationOptions<UpdateDeprecationExplanationMutation, UpdateDeprecationExplanationMutationVariables>;
+export const DeleteDeprecationExplanationDocument = gql`
+    mutation DeleteDeprecationExplanation($input: DeleteTextInput!) {
+  deleteDeprecationExplanation(input: $input) {
     catalogEntry {
-      ...ValueDetailProps
+      ...ObjectProps
     }
   }
 }
-    ${ValueDetailPropsFragmentDoc}`;
-export type SetNominalValueMutationFn = Apollo.MutationFunction<SetNominalValueMutation, SetNominalValueMutationVariables>;
+    ${ObjectPropsFragmentDoc}`;
+export type DeleteDeprecationExplanationMutationFn = Apollo.MutationFunction<DeleteDeprecationExplanationMutation, DeleteDeprecationExplanationMutationVariables>;
 
 /**
- * __useSetNominalValueMutation__
+ * __useDeleteDeprecationExplanationMutation__
  *
- * To run a mutation, you first call `useSetNominalValueMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useSetNominalValueMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useDeleteDeprecationExplanationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteDeprecationExplanationMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [setNominalValueMutation, { data, loading, error }] = useSetNominalValueMutation({
+ * const [deleteDeprecationExplanationMutation, { data, loading, error }] = useDeleteDeprecationExplanationMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useSetNominalValueMutation(baseOptions?: Apollo.MutationHookOptions<SetNominalValueMutation, SetNominalValueMutationVariables>) {
-  return Apollo.useMutation<SetNominalValueMutation, SetNominalValueMutationVariables>(SetNominalValueDocument, baseOptions);
+export function useDeleteDeprecationExplanationMutation(baseOptions?: Apollo.MutationHookOptions<DeleteDeprecationExplanationMutation, DeleteDeprecationExplanationMutationVariables>) {
+  return Apollo.useMutation<DeleteDeprecationExplanationMutation, DeleteDeprecationExplanationMutationVariables>(DeleteDeprecationExplanationDocument, baseOptions);
 }
-export type SetNominalValueMutationHookResult = ReturnType<typeof useSetNominalValueMutation>;
-export type SetNominalValueMutationResult = Apollo.MutationResult<SetNominalValueMutation>;
-export type SetNominalValueMutationOptions = Apollo.BaseMutationOptions<SetNominalValueMutation, SetNominalValueMutationVariables>;
-export const UnsetNominalValueDocument = gql`
-    mutation UnsetNominalValue($input: UnsetNominalValueInput!) {
-  unsetNominalValue(input: $input) {
+export type DeleteDeprecationExplanationMutationHookResult = ReturnType<typeof useDeleteDeprecationExplanationMutation>;
+export type DeleteDeprecationExplanationMutationResult = Apollo.MutationResult<DeleteDeprecationExplanationMutation>;
+export type DeleteDeprecationExplanationMutationOptions = Apollo.BaseMutationOptions<DeleteDeprecationExplanationMutation, DeleteDeprecationExplanationMutationVariables>;
+export const AddDefinitionDocument = gql`
+    mutation AddDefinition($input: AddTextInput!) {
+  addDefinition(input: $input) {
     catalogEntry {
-      ...ValueDetailProps
+      ...ObjectProps
     }
   }
 }
-    ${ValueDetailPropsFragmentDoc}`;
-export type UnsetNominalValueMutationFn = Apollo.MutationFunction<UnsetNominalValueMutation, UnsetNominalValueMutationVariables>;
+    ${ObjectPropsFragmentDoc}`;
+export type AddDefinitionMutationFn = Apollo.MutationFunction<AddDefinitionMutation, AddDefinitionMutationVariables>;
 
 /**
- * __useUnsetNominalValueMutation__
+ * __useAddDefinitionMutation__
  *
- * To run a mutation, you first call `useUnsetNominalValueMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUnsetNominalValueMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useAddDefinitionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddDefinitionMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [unsetNominalValueMutation, { data, loading, error }] = useUnsetNominalValueMutation({
+ * const [addDefinitionMutation, { data, loading, error }] = useAddDefinitionMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useUnsetNominalValueMutation(baseOptions?: Apollo.MutationHookOptions<UnsetNominalValueMutation, UnsetNominalValueMutationVariables>) {
-  return Apollo.useMutation<UnsetNominalValueMutation, UnsetNominalValueMutationVariables>(UnsetNominalValueDocument, baseOptions);
+export function useAddDefinitionMutation(baseOptions?: Apollo.MutationHookOptions<AddDefinitionMutation, AddDefinitionMutationVariables>) {
+  return Apollo.useMutation<AddDefinitionMutation, AddDefinitionMutationVariables>(AddDefinitionDocument, baseOptions);
 }
-export type UnsetNominalValueMutationHookResult = ReturnType<typeof useUnsetNominalValueMutation>;
-export type UnsetNominalValueMutationResult = Apollo.MutationResult<UnsetNominalValueMutation>;
-export type UnsetNominalValueMutationOptions = Apollo.BaseMutationOptions<UnsetNominalValueMutation, UnsetNominalValueMutationVariables>;
-export const TagBagDocument = gql`
-    mutation TagBag($bagId: ID!, $tagId: ID!) {
-  addTag(input: {catalogEntryId: $bagId, tagId: $tagId}) {
+export type AddDefinitionMutationHookResult = ReturnType<typeof useAddDefinitionMutation>;
+export type AddDefinitionMutationResult = Apollo.MutationResult<AddDefinitionMutation>;
+export type AddDefinitionMutationOptions = Apollo.BaseMutationOptions<AddDefinitionMutation, AddDefinitionMutationVariables>;
+export const UpdateDefinitionDocument = gql`
+    mutation UpdateDefinition($input: UpdateTextInput!) {
+  updateDefinition(input: $input) {
     catalogEntry {
-      ...CollectionDetailProps
+      ...ObjectProps
     }
   }
 }
-    ${CollectionDetailPropsFragmentDoc}`;
-export type TagBagMutationFn = Apollo.MutationFunction<TagBagMutation, TagBagMutationVariables>;
+    ${ObjectPropsFragmentDoc}`;
+export type UpdateDefinitionMutationFn = Apollo.MutationFunction<UpdateDefinitionMutation, UpdateDefinitionMutationVariables>;
 
 /**
- * __useTagBagMutation__
+ * __useUpdateDefinitionMutation__
  *
- * To run a mutation, you first call `useTagBagMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useTagBagMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdateDefinitionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateDefinitionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ * 
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ * 
+ * @example
+ * const [updateDefinitionMutation, { data, loading, error }] = useUpdateDefinitionMutation({
+ *  variables: {
+ *     input: // value for 'input'
+ *  },
+ * });
+ */
+export function useUpdateDefinitionMutation(baseOptions?: Apollo.MutationHookOptions<UpdateDefinitionMutation, UpdateDefinitionMutationVariables>) {
+  return Apollo.useMutation<UpdateDefinitionMutation, UpdateDefinitionMutationVariables>(UpdateDefinitionDocument, baseOptions);
+}
+export type UpdateDefinitionMutationHookResult = ReturnType<typeof useUpdateDefinitionMutation>;
+export type UpdateDefinitionMutationResult = Apollo.MutationResult<UpdateDefinitionMutation>;
+export type UpdateDefinitionMutationOptions = Apollo.BaseMutationOptions<UpdateDefinitionMutation, UpdateDefinitionMutationVariables>;
+export const DeleteDefinitionDocument = gql`
+    mutation DeleteDefinition($input: DeleteTextInput!) {
+  deleteDefinition(input: $input) {
+    catalogEntry {
+      ...ObjectProps
+    }
+  }
+}
+    ${ObjectPropsFragmentDoc}`;
+export type DeleteDefinitionMutationFn = Apollo.MutationFunction<DeleteDefinitionMutation, DeleteDefinitionMutationVariables>;
+
+/**
+ * __useDeleteDefinitionMutation__
+ *
+ * To run a mutation, you first call `useDeleteDefinitionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteDefinitionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ * 
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ * 
+ * @example
+ * const [deleteDefinitionMutation, { data, loading, error }] = useDeleteDefinitionMutation({
+ *  variables: {
+ *     input: // value for 'input'
+ *  },
+ * });
+ */
+export function useDeleteDefinitionMutation(baseOptions?: Apollo.MutationHookOptions<DeleteDefinitionMutation, DeleteDefinitionMutationVariables>) {
+  return Apollo.useMutation<DeleteDefinitionMutation, DeleteDefinitionMutationVariables>(DeleteDefinitionDocument, baseOptions);
+}
+export type DeleteDefinitionMutationHookResult = ReturnType<typeof useDeleteDefinitionMutation>;
+export type DeleteDefinitionMutationResult = Apollo.MutationResult<DeleteDefinitionMutation>;
+export type DeleteDefinitionMutationOptions = Apollo.BaseMutationOptions<DeleteDefinitionMutation, DeleteDefinitionMutationVariables>;
+export const AddExampleDocument = gql`
+    mutation AddExample($input: AddTextInput!) {
+  addExample(input: $input) {
+    catalogEntry {
+      ...ObjectProps
+    }
+  }
+}
+    ${ObjectPropsFragmentDoc}`;
+export type AddExampleMutationFn = Apollo.MutationFunction<AddExampleMutation, AddExampleMutationVariables>;
+
+/**
+ * __useAddExampleMutation__
+ *
+ * To run a mutation, you first call `useAddExampleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddExampleMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [tagBagMutation, { data, loading, error }] = useTagBagMutation({
+ * const [addExampleMutation, { data, loading, error }] = useAddExampleMutation({
  *   variables: {
- *      bagId: // value for 'bagId'
- *      tagId: // value for 'tagId'
+ *      input: // value for 'input'
  *   },
  * });
  */
-export function useTagBagMutation(baseOptions?: Apollo.MutationHookOptions<TagBagMutation, TagBagMutationVariables>) {
-  return Apollo.useMutation<TagBagMutation, TagBagMutationVariables>(TagBagDocument, baseOptions);
+export function useAddExampleMutation(baseOptions?: Apollo.MutationHookOptions<AddExampleMutation, AddExampleMutationVariables>) {
+  return Apollo.useMutation<AddExampleMutation, AddExampleMutationVariables>(AddExampleDocument, baseOptions);
 }
-export type TagBagMutationHookResult = ReturnType<typeof useTagBagMutation>;
-export type TagBagMutationResult = Apollo.MutationResult<TagBagMutation>;
-export type TagBagMutationOptions = Apollo.BaseMutationOptions<TagBagMutation, TagBagMutationVariables>;
-//-------------------
+export type AddExampleMutationHookResult = ReturnType<typeof useAddExampleMutation>;
+export type AddExampleMutationResult = Apollo.MutationResult<AddExampleMutation>;
+export type AddExampleMutationOptions = Apollo.BaseMutationOptions<AddExampleMutation, AddExampleMutationVariables>;
+export const UpdateExampleDocument = gql`
+    mutation UpdateExample($input: UpdateTextInput!) {
+  updateExample(input: $input) {
+    catalogEntry {
+      ...ObjectProps
+    }
+  }
+}
+    ${ObjectPropsFragmentDoc}`;
+export type UpdateExampleMutationFn = Apollo.MutationFunction<UpdateExampleMutation, UpdateExampleMutationVariables>;
+
+/**
+ * __useUpdateExampleMutation__
+ *
+ * To run a mutation, you first call `useUpdateExampleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateExampleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ * 
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ * 
+ * @example
+ * const [updateExampleMutation, { data, loading, error }] = useUpdateExampleMutation({
+ *  variables: {
+ *    input: // value for 'input'
+ *  },
+ * });
+*/
+export function useUpdateExampleMutation(baseOptions?: Apollo.MutationHookOptions<UpdateExampleMutation, UpdateExampleMutationVariables>) {
+  return Apollo.useMutation<UpdateExampleMutation, UpdateExampleMutationVariables>(UpdateExampleDocument, baseOptions);
+}
+export type UpdateExampleMutationHookResult = ReturnType<typeof useUpdateExampleMutation>;
+export type UpdateExampleMutationResult = Apollo.MutationResult<UpdateExampleMutation>;
+export type UpdateExampleMutationOptions = Apollo.BaseMutationOptions<UpdateExampleMutation, UpdateExampleMutationVariables>;
+export const DeleteExampleDocument = gql`
+    mutation DeleteExample($input: DeleteTextInput!) {
+  deleteExample(input: $input) {
+    catalogEntry {
+      ...ObjectProps
+    }
+  }
+}
+    ${ObjectPropsFragmentDoc}`;
+export type DeleteExampleMutationFn = Apollo.MutationFunction<DeleteExampleMutation, DeleteExampleMutationVariables>;
+
+/**
+ * __useDeleteExampleMutation__
+ *
+ * To run a mutation, you first call `useDeleteExampleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteExampleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ * 
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ * 
+ * @example
+ * const [deleteExampleMutation, { data, loading, error }] = useDeleteExampleMutation({
+ *  variables: {
+ *     input: // value for 'input'
+ *  },
+ * });
+ */
+export function useDeleteExampleMutation(baseOptions?: Apollo.MutationHookOptions<DeleteExampleMutation, DeleteExampleMutationVariables>) {
+  return Apollo.useMutation<DeleteExampleMutation, DeleteExampleMutationVariables>(DeleteExampleDocument, baseOptions);
+}
+export type DeleteExampleMutationHookResult = ReturnType<typeof useDeleteExampleMutation>;
+export type DeleteExampleMutationResult = Apollo.MutationResult<DeleteExampleMutation>;
+export type DeleteExampleMutationOptions = Apollo.BaseMutationOptions<DeleteExampleMutation, DeleteExampleMutationVariables>;
+export const AddCountryOfOriginDocument = gql`
+    mutation AddCountryOfOrigin($input: AddTextInput!) {
+  addCountryOfOrigin(input: $input) {
+    catalogEntry {
+      ...ObjectProps
+    }
+  }
+}
+    ${ObjectPropsFragmentDoc}`;
+export type AddCountryOfOriginMutationFn = Apollo.MutationFunction<AddCountryOfOriginMutation, AddCountryOfOriginMutationVariables>;
+
+/**
+ * __useAddCountryOfOriginMutation__
+ *
+ * To run a mutation, you first call `useAddCountryOfOriginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddCountryOfOriginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ * 
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ * 
+ * @example
+ * const [addCountryOfOriginMutation, { data, loading, error }] = useAddCountryOfOriginMutation({
+ *  variables: {
+ *     input: // value for 'input'
+ *  },
+ * });
+*/
+export function useAddCountryOfOriginMutation(baseOptions?: Apollo.MutationHookOptions<AddCountryOfOriginMutation, AddCountryOfOriginMutationVariables>) {
+  return Apollo.useMutation<AddCountryOfOriginMutation, AddCountryOfOriginMutationVariables>(AddCountryOfOriginDocument, baseOptions);
+}
+export type AddCountryOfOriginMutationHookResult = ReturnType<typeof useAddCountryOfOriginMutation>;
+export type AddCountryOfOriginMutationResult = Apollo.MutationResult<AddCountryOfOriginMutation>;
+export type AddCountryOfOriginMutationOptions = Apollo.BaseMutationOptions<AddCountryOfOriginMutation, AddCountryOfOriginMutationVariables>;
+export const DeleteCountryOfOriginDocument = gql`
+    mutation DeleteCountryOfOrigin($input: DeleteTextInput!) {
+  deleteCountryOfOrigin(input: $input) {
+    catalogEntry {
+      ...ObjectProps
+    }
+  }
+}
+    ${ObjectPropsFragmentDoc}`;
+export type DeleteCountryOfOriginMutationFn = Apollo.MutationFunction<DeleteCountryOfOriginMutation, DeleteCountryOfOriginMutationVariables>;
+
+/**
+ * __useDeleteCountryOfOriginMutation__
+ *
+ * To run a mutation, you first call `useDeleteCountryOfOriginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCountryOfOriginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ * 
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ * 
+ * @example
+ * const [deleteCountryOfOriginMutation, { data, loading, error }] = useDeleteCountryOfOriginMutation({
+ *  variables: {
+ *     input: // value for 'input'
+ *  },
+ * });
+*/
+export function useDeleteCountryOfOriginMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCountryOfOriginMutation, DeleteCountryOfOriginMutationVariables>) {
+  return Apollo.useMutation<DeleteCountryOfOriginMutation, DeleteCountryOfOriginMutationVariables>(DeleteCountryOfOriginDocument, baseOptions);
+}
+export type DeleteCountryOfOriginMutationHookResult = ReturnType<typeof useDeleteCountryOfOriginMutation>;
+export type DeleteCountryOfOriginMutationResult = Apollo.MutationResult<DeleteCountryOfOriginMutation>;
+export type DeleteCountryOfOriginMutationOptions = Apollo.BaseMutationOptions<DeleteCountryOfOriginMutation, DeleteCountryOfOriginMutationVariables>;
 export const CreateTagDocument = gql`
-    mutation addTag($input: CreateTagInput!) {
+    mutation createTag($input: CreateTagInput!) {
       createTag(input: $input) {
         tag {
           id
+          name
         }
       }
     }
 `;
 export type CreateTagMutationFn = Apollo.MutationFunction<CreateTagMutation, CreateTagMutationVariables>;
 
-export type AddTagMutation = {
-  addTag: {
-    catalogEntry: {
-      __typename: string; // __typename ist erforderlich, da es explizit in der Mutation enthalten ist.
-    };
-  };
-};
+/**
+ * __useCreateTagMutation__
+ *
+ * To run a mutation, you first call `useCreateTagMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTagMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTagMutation, { data, loading, error }] = useCreateTagMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateTagMutation(baseOptions?: Apollo.MutationHookOptions<CreateTagMutation, CreateTagMutationVariables>) {
+  return Apollo.useMutation<CreateTagMutation, CreateTagMutationVariables>(CreateTagDocument, baseOptions);
+}
+export type CreateTagMutationHookResult = ReturnType<typeof useCreateTagMutation>;
+export type CreateTagMutationResult = Apollo.MutationResult<CreateTagMutation>;
+export type CreateTagOptions = Apollo.BaseMutationOptions<CreateTagMutation, CreateTagMutationVariables>;
+export const AddTagDocument = gql`
+  mutation addTag($input: AddTagInput!) {
+    addTag(input: $input) {
+      catalogEntry {
+        __typename
+      }
+    }
+  }
+`;
 
-export type AddTagMutationVariables = {
-  input: {
-    catalogEntryId: string;
-    tagId: string;
-  };
-};
+export type AddTagMutationFn = Apollo.MutationFunction<AddTagMutation, AddTagMutationVariables>;
 
 /**
  * __useAddTagMutation__
@@ -2237,52 +2953,117 @@ export function useAddTagMutation(baseOptions?: Apollo.MutationHookOptions<AddTa
 export type AddTagMutationHookResult = ReturnType<typeof useAddTagMutation>;
 export type AddTagMutationResult = Apollo.MutationResult<AddTagMutation>;
 export type AddTagMutationOptions = Apollo.BaseMutationOptions<AddTagMutation, AddTagMutationVariables>;
-//-------------------
-export const AddTagDocument = gql`
-  mutation addTag($input: AddTagInput!) {
-    addTag(input: $input) {
+export const RemoveTagDocument = gql`
+  mutation removeTag($input: RemoveTagInput!) {
+    removeTag(input: $input) {
       catalogEntry {
         __typename
       }
     }
   }
 `;
-
-export type AddTagMutationFn = Apollo.MutationFunction<AddTagMutation, AddTagMutationVariables>;
+export type RemoveTagMutationFn = Apollo.MutationFunction<RemoveTagMutation, RemoveTagMutationVariables>;
 
 /**
- * __useCreateTagMutation__
+ * __useRemoveTagMutation__
  *
- * To run a mutation, you first call `useCreateTagMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateTagMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useRemoveTagMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveTagMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ * 
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ * 
+ * @example
+ * const [removeTagMutation, { data, loading, error }] = useRemoveTagMutation({
+ *  variables: {
+ *     datasetId: // value for 'datasetId'
+ *    tag: // value for 'tag'
+ *  },
+ * });
+ */
+export function useRemoveTagMutation(baseOptions?: Apollo.MutationHookOptions<RemoveTagMutation, RemoveTagMutationVariables>) {
+  return Apollo.useMutation<RemoveTagMutation, RemoveTagMutationVariables>(RemoveTagDocument, baseOptions);
+}
+export type RemoveTagMutationHookResult = ReturnType<typeof useRemoveTagMutation>;
+export type RemoveTagMutationResult = Apollo.MutationResult<RemoveTagMutation>;
+export type RemoveTagMutationOptions = Apollo.BaseMutationOptions<RemoveTagMutation, RemoveTagMutationVariables>;
+export const UpdateTagDocument = gql`
+  mutation updateTag($input: UpdateTagInput!) {
+    updateTag(input: $input) {
+      tag {
+        id
+        name
+      }
+    }
+  }
+`;
+export type UpdateTagMutationFn = Apollo.MutationFunction<UpdateTagMutation, UpdateTagMutationVariables>;
+
+/**
+ * __useUpdateTagMutation__
+ *
+ * To run a mutation, you first call `useUpdateTagMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTagMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ * 
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ * 
+ * @example
+ * const [updateTagMutation, { data, loading, error }] = useUpdateTagMutation({
+ *  variables: {
+ *    input: // value for 'input'
+ *  },
+ * });
+ * 
+  */
+export function useUpdateTagMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTagMutation, UpdateTagMutationVariables>) {
+  return Apollo.useMutation<UpdateTagMutation, UpdateTagMutationVariables>(UpdateTagDocument, baseOptions);
+}
+export type UpdateTagMutationHookResult = ReturnType<typeof useUpdateTagMutation>;
+export type UpdateTagMutationResult = Apollo.MutationResult<UpdateTagMutation>;
+export type UpdateTagMutationOptions = Apollo.BaseMutationOptions<UpdateTagMutation, UpdateTagMutationVariables>;
+export const DeleteTagMutationDocument = gql`
+  mutation deleteTag($input: DeleteTagInput!) {
+    deleteTag(input: $input) {
+      catalogEntry {
+        __typename
+      }
+    }
+  }
+`;
+export type DeleteTagMutationMutationFn = Apollo.MutationFunction<DeleteTagMutation, DeleteTagMutationVariables>;
+
+/**
+ * __useDeleteTagMutationMutation__
+ *
+ * To run a mutation, you first call `useDeleteTagMutationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteTagMutationMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createTagMutation, { data, loading, error }] = useCreateTagMutation({
+ * const [deleteTagMutationMutation, { data, loading, error }] = useDeleteTagMutationMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useCreateTagMutation(baseOptions?: Apollo.MutationHookOptions<CreateTagMutation, CreateTagMutationVariables>) {
-  return Apollo.useMutation<CreateTagMutation, CreateTagMutationVariables>(CreateTagDocument, baseOptions);
+export function useDeleteTagMutationMutation(baseOptions?: Apollo.MutationHookOptions<DeleteTagMutation, DeleteTagMutationVariables>) {
+  return Apollo.useMutation<DeleteTagMutation, DeleteTagMutationVariables>(DeleteTagMutationDocument, baseOptions);
 }
-export type CreateTagMutationHookResult = ReturnType<typeof useCreateTagMutation>;
-export type CreateTagMutationResult = Apollo.MutationResult<CreateTagMutation>;
-export type CreateTagOptions = Apollo.BaseMutationOptions<CreateTagMutation, CreateTagMutationVariables>;
-//----------------------------------------------------------
+export type DeleteTagMutationMutationHookResult = ReturnType<typeof useDeleteTagMutationMutation>;
+export type DeleteTagMutationMutationResult = Apollo.MutationResult<DeleteTagMutation>;
+export type DeleteTagMutationMutationOptions = Apollo.BaseMutationOptions<DeleteTagMutation, DeleteTagMutationVariables>;
 export const CreateRelationshipDocument = gql`
     mutation CreateRelationship($input: CreateRelationshipInput!) {
   createRelationship(input: $input) {
-    relationship {
-      ... on XtdRelationship {
+      catalogEntry {
         __typename
-        id
       }
-    }
   }
 }
     `;
@@ -2311,51 +3092,13 @@ export function useCreateRelationshipMutation(baseOptions?: Apollo.MutationHookO
 export type CreateRelationshipMutationHookResult = ReturnType<typeof useCreateRelationshipMutation>;
 export type CreateRelationshipMutationResult = Apollo.MutationResult<CreateRelationshipMutation>;
 export type CreateRelationshipMutationOptions = Apollo.BaseMutationOptions<CreateRelationshipMutation, CreateRelationshipMutationVariables>;
-export const SetRelatedEntriesDocument = gql`
-    mutation SetRelatedEntries($input: SetRelatedEntriesInput!) {
-  setRelatedEntries(input: $input) {
-    relationship {
-      ... on XtdRelationship {
-        __typename
-        id
-      }
-    }
-  }
-}
-    `;
-export type SetRelatedEntriesMutationFn = Apollo.MutationFunction<SetRelatedEntriesMutation, SetRelatedEntriesMutationVariables>;
 
-/**
- * __useSetRelatedEntriesMutation__
- *
- * To run a mutation, you first call `useSetRelatedEntriesMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useSetRelatedEntriesMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [setRelatedEntriesMutation, { data, loading, error }] = useSetRelatedEntriesMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useSetRelatedEntriesMutation(baseOptions?: Apollo.MutationHookOptions<SetRelatedEntriesMutation, SetRelatedEntriesMutationVariables>) {
-  return Apollo.useMutation<SetRelatedEntriesMutation, SetRelatedEntriesMutationVariables>(SetRelatedEntriesDocument, baseOptions);
-}
-export type SetRelatedEntriesMutationHookResult = ReturnType<typeof useSetRelatedEntriesMutation>;
-export type SetRelatedEntriesMutationResult = Apollo.MutationResult<SetRelatedEntriesMutation>;
-export type SetRelatedEntriesMutationOptions = Apollo.BaseMutationOptions<SetRelatedEntriesMutation, SetRelatedEntriesMutationVariables>;
 export const DeleteRelationshipDocument = gql`
     mutation DeleteRelationship($input: DeleteRelationshipInput!) {
   deleteRelationship(input: $input) {
-    relationship {
-      ... on XtdRelationship {
-        id
+      catalogEntry {
+        __typename
       }
-    }
   }
 }
     `;
@@ -2385,7 +3128,7 @@ export type DeleteRelationshipMutationHookResult = ReturnType<typeof useDeleteRe
 export type DeleteRelationshipMutationResult = Apollo.MutationResult<DeleteRelationshipMutation>;
 export type DeleteRelationshipMutationOptions = Apollo.BaseMutationOptions<DeleteRelationshipMutation, DeleteRelationshipMutationVariables>;
 export const FindLanguagesDocument = gql`
-    query FindLanguages($input: LanguageFilterInput!) {
+    query FindLanguages($input: FilterInput!) {
   languages(input: $input) {
     nodes {
       ...LanguageProps
@@ -2394,47 +3137,6 @@ export const FindLanguagesDocument = gql`
   }
 }
     ${LanguagePropsFragmentDoc}`;
-
-/**
- * __useGetBagQuery__ Referenzdokument 
- *
- * To run a query within a React component, call `useGetBagQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetBagQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetBagQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useGetBagQuery(baseOptions: Apollo.QueryHookOptions<GetBagQuery, GetBagQueryVariables>) {
-  return Apollo.useQuery<GetBagQuery, GetBagQueryVariables>(GetBagDocument, baseOptions);
-}
-export function useGetBagLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBagQuery, GetBagQueryVariables>) {
-  return Apollo.useLazyQuery<GetBagQuery, GetBagQueryVariables>(GetBagDocument, baseOptions);
-}
-export type GetBagQueryHookResult = ReturnType<typeof useGetBagQuery>;
-export type GetBagLazyQueryHookResult = ReturnType<typeof useGetBagLazyQuery>;
-export type GetBagQueryResult = Apollo.QueryResult<GetBagQuery, GetBagQueryVariables>;
-
-export const GetBagDocument = gql`
-  query GetBag($id: ID!) {
-    getBag(id: $id) {
-      documentedBy {
-        nodes {
-          relatingDocument {
-            id
-            name
-          }
-        }
-      }
-    }
-  }
-`;
 
 /**
  * __useFindLanguagesQuery__
@@ -2546,349 +3248,15 @@ export type FindTagsQueryResult = Apollo.QueryResult<FindTagsQuery, FindTagsQuer
 export const PropertyTreeDocument = gql`
     query PropertyTree {
   hierarchy(
-    input: {rootNodeFilter: {catalogEntryTypeIn: [Bag], tagged: ["6f96aaa7-e08f-49bb-ac63-93061d4c5db2"]}}
+    input: {rootNodeFilter: {catalogEntryTypeIn: [Subject], tagged: ["6f96aaa7-e08f-49bb-ac63-93061d4c5db2"]}}
   ) {
     nodes {
-      ...ItemProps
+      ...ObjectProps
     }
     paths
   }
 }
-    ${ItemPropsFragmentDoc}`;
-
-// FindPropGroupWithoutProp
-
-export const FindPropGroupWithoutPropTreeDocument = gql`
-    query FindPropGroupWithoutPropTree {
-      findPropGroupWithoutProp{
-    nodes {
-      ...ItemProps
-    }
-    paths
-  }
-}
-    ${ItemPropsFragmentDoc}`;
-
-export function useFindPropGroupWithoutPropTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindPropGroupWithoutPropTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useQuery<FindPropGroupWithoutPropTreeQuery, FindVerificationTreeQueryVariables>(FindPropGroupWithoutPropTreeDocument, baseOptions);
-}
-export function useFindPropGroupWithoutPropTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindPropGroupWithoutPropTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindPropGroupWithoutPropTreeQuery, FindVerificationTreeQueryVariables>(FindPropGroupWithoutPropTreeDocument, baseOptions);
-}
-export type FindPropGroupWithoutPropTreeQueryHookResult = ReturnType<typeof useFindPropGroupWithoutPropTreeQuery>;
-export type FindPropGroupWithoutPropTreeLazyQueryHookResult = ReturnType<typeof useFindPropGroupWithoutPropTreeLazyQuery>;
-export type FindPropGroupWithoutPropTreeQueryResult = Apollo.QueryResult<FindPropGroupWithoutPropTreeQuery, FindVerificationTreeQueryVariables>;
-
-// FindPropWithoutSubjectOrPropGroup
-
-export const FindPropWithoutSubjectOrPropGroupTreeDocument = gql`
-    query FindPropWithoutSubjectOrPropGroupTree {
-      findPropWithoutSubjectOrPropGroup{
-    nodes {
-      ...ItemProps
-    }
-    paths
-  }
-}
-    ${ItemPropsFragmentDoc}`;
-
-export function useFindPropWithoutSubjectOrPropGroupTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindPropWithoutSubjectOrPropGroupTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useQuery<FindPropWithoutSubjectOrPropGroupTreeQuery, FindVerificationTreeQueryVariables>(FindPropWithoutSubjectOrPropGroupTreeDocument, baseOptions);
-}
-export function useFindPropWithoutSubjectOrPropGroupTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindPropWithoutSubjectOrPropGroupTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindPropWithoutSubjectOrPropGroupTreeQuery, FindVerificationTreeQueryVariables>(FindPropWithoutSubjectOrPropGroupTreeDocument, baseOptions);
-}
-export type FindPropWithoutSubjectOrPropGroupTreeQueryHookResult = ReturnType<typeof useFindPropWithoutSubjectOrPropGroupTreeQuery>;
-export type FindPropWithoutSubjectOrPropGroupTreeLazyQueryHookResult = ReturnType<typeof useFindPropWithoutSubjectOrPropGroupTreeLazyQuery>;
-export type FindPropWithoutSubjectOrPropGroupTreeQueryResult = Apollo.QueryResult<FindPropWithoutSubjectOrPropGroupTreeQuery, FindVerificationTreeQueryVariables>;
-
-// FindModelWithoutGroup
-
-export const FindModelWithoutGroupTreeDocument = gql`
-    query FindModelWithoutGroupTree {
-      findModelWithoutGroup{
-    nodes {
-      ...ItemProps
-    }
-    paths
-  }
-}
-    ${ItemPropsFragmentDoc}`;
-
-export function useFindModelWithoutGroupTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindModelWithoutGroupTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useQuery<FindModelWithoutGroupTreeQuery, FindVerificationTreeQueryVariables>(FindModelWithoutGroupTreeDocument, baseOptions);
-}
-export function useFindModelWithoutGroupTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindModelWithoutGroupTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindModelWithoutGroupTreeQuery, FindVerificationTreeQueryVariables>(FindModelWithoutGroupTreeDocument, baseOptions);
-}
-export type FindModelWithoutGroupTreeQueryHookResult = ReturnType<typeof useFindModelWithoutGroupTreeQuery>;
-export type FindModelWithoutGroupTreeLazyQueryHookResult = ReturnType<typeof useFindModelWithoutGroupTreeLazyQuery>;
-export type FindModelWithoutGroupTreeQueryResult = Apollo.QueryResult<FindModelWithoutGroupTreeQuery, FindVerificationTreeQueryVariables>;
-
-// FindGroupWithoutSubject
-
-export const FindGroupWithoutSubjectTreeDocument = gql`
-    query FindGroupWithoutSubjectTree {
-      findGroupWithoutSubject{
-    nodes {
-      ...ItemProps
-    }
-    paths
-  }
-}
-    ${ItemPropsFragmentDoc}`;
-
-export function useFindGroupWithoutSubjectTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindGroupWithoutSubjectTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useQuery<FindGroupWithoutSubjectTreeQuery, FindVerificationTreeQueryVariables>(FindGroupWithoutSubjectTreeDocument, baseOptions);
-}
-export function useFindGroupWithoutSubjectTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindGroupWithoutSubjectTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindGroupWithoutSubjectTreeQuery, FindVerificationTreeQueryVariables>(FindGroupWithoutSubjectTreeDocument, baseOptions);
-}
-export type FindGroupWithoutSubjectTreeQueryHookResult = ReturnType<typeof useFindGroupWithoutSubjectTreeQuery>;
-export type FindGroupWithoutSubjectTreeLazyQueryHookResult = ReturnType<typeof useFindGroupWithoutSubjectTreeLazyQuery>;
-export type FindGroupWithoutSubjectTreeQueryResult = Apollo.QueryResult<FindGroupWithoutSubjectTreeQuery, FindVerificationTreeQueryVariables>;
-
-// FindSubjectWithoutProp
-
-export const FindSubjectWithoutPropTreeDocument = gql`
-    query FindSubjectWithoutPropTree {
-      findSubjectWithoutProp{
-    nodes {
-      ...ItemProps
-    }
-    paths
-  }
-}
-    ${ItemPropsFragmentDoc}`;
-
-export function useFindSubjectWithoutPropTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindSubjectWithoutPropTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useQuery<FindSubjectWithoutPropTreeQuery, FindVerificationTreeQueryVariables>(FindSubjectWithoutPropTreeDocument, baseOptions);
-}
-export function useFindSubjectWithoutPropTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindSubjectWithoutPropTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindSubjectWithoutPropTreeQuery, FindVerificationTreeQueryVariables>(FindSubjectWithoutPropTreeDocument, baseOptions);
-}
-export type FindSubjectWithoutPropTreeQueryHookResult = ReturnType<typeof useFindSubjectWithoutPropTreeQuery>;
-export type FindSubjectWithoutPropTreeLazyQueryHookResult = ReturnType<typeof useFindSubjectWithoutPropTreeLazyQuery>;
-export type FindSubjectWithoutPropTreeQueryResult = Apollo.QueryResult<FindSubjectWithoutPropTreeQuery, FindVerificationTreeQueryVariables>;
-
-// FindMeasureWithoutProp
-
-export const FindMeasureWithoutPropTreeDocument = gql`
-    query FindMeasureWithoutPropTree {
-      findMeasureWithoutProp{
-    nodes {
-      ...ItemProps
-    }
-    paths
-  }
-}
-    ${ItemPropsFragmentDoc}`;
-
-export function useFindMeasureWithoutPropTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMeasureWithoutPropTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useQuery<FindMeasureWithoutPropTreeQuery, FindVerificationTreeQueryVariables>(FindMeasureWithoutPropTreeDocument, baseOptions);
-}
-export function useFindMeasureWithoutPropTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMeasureWithoutPropTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindMeasureWithoutPropTreeQuery, FindVerificationTreeQueryVariables>(FindMeasureWithoutPropTreeDocument, baseOptions);
-}
-export type FindMeasureWithoutPropTreeQueryHookResult = ReturnType<typeof useFindMeasureWithoutPropTreeQuery>;
-export type FindMeasureWithoutPropTreeLazyQueryHookResult = ReturnType<typeof useFindMeasureWithoutPropTreeLazyQuery>;
-export type FindMeasureWithoutPropTreeQueryResult = Apollo.QueryResult<FindMeasureWithoutPropTreeQuery, FindVerificationTreeQueryVariables>;
-
-// FindUnitWithoutMeasure
-
-export const FindUnitWithoutMeasureTreeDocument = gql`
-    query FindUnitWithoutMeasureTree {
-      findUnitWithoutMeasure{
-    nodes {
-      ...ItemProps
-    }
-    paths
-  }
-}
-    ${ItemPropsFragmentDoc}`;
-
-export function useFindUnitWithoutMeasureTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindUnitWithoutMeasureTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useQuery<FindUnitWithoutMeasureTreeQuery, FindVerificationTreeQueryVariables>(FindUnitWithoutMeasureTreeDocument, baseOptions);
-}
-export function useFindUnitWithoutMeasureTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindUnitWithoutMeasureTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindUnitWithoutMeasureTreeQuery, FindVerificationTreeQueryVariables>(FindUnitWithoutMeasureTreeDocument, baseOptions);
-}
-export type FindUnitWithoutMeasureTreeQueryHookResult = ReturnType<typeof useFindUnitWithoutMeasureTreeQuery>;
-export type FindUnitWithoutMeasureTreeLazyQueryHookResult = ReturnType<typeof useFindUnitWithoutMeasureTreeLazyQuery>;
-export type FindUnitWithoutMeasureTreeQueryResult = Apollo.QueryResult<FindUnitWithoutMeasureTreeQuery, FindVerificationTreeQueryVariables>;
-
-// FindValueWithoutMeasure
-
-export const FindValueWithoutMeasureTreeDocument = gql`
-    query FindValueWithoutMeasureTree {
-      findValueWithoutMeasure{
-    nodes {
-      ...ItemProps
-    }
-    paths
-  }
-}
-    ${ItemPropsFragmentDoc}`;
-
-export function useFindValueWithoutMeasureTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindValueWithoutMeasureTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useQuery<FindValueWithoutMeasureTreeQuery, FindVerificationTreeQueryVariables>(FindValueWithoutMeasureTreeDocument, baseOptions);
-}
-export function useFindValueWithoutMeasureTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindValueWithoutMeasureTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindValueWithoutMeasureTreeQuery, FindVerificationTreeQueryVariables>(FindValueWithoutMeasureTreeDocument, baseOptions);
-}
-export type FindValueWithoutMeasureTreeQueryHookResult = ReturnType<typeof useFindValueWithoutMeasureTreeQuery>;
-export type FindValueWithoutMeasureTreeLazyQueryHookResult = ReturnType<typeof useFindValueWithoutMeasureTreeLazyQuery>;
-export type FindValueWithoutMeasureTreeQueryResult = Apollo.QueryResult<FindValueWithoutMeasureTreeQuery, FindVerificationTreeQueryVariables>;
-
-// FindMissingEnglishNameTree
-
-export const FindMissingEnglishNameTreeDocument = gql`
-    query FindMissingEnglishNameTree {
-      findMissingEnglishName(
-    input: {nodeTypeFilter: {}}
-  ) {
-    nodes {
-      ...ItemProps
-    }
-    paths
-  }
-}
-    ${ItemPropsFragmentDoc}`;
-
-export function useFindMissingEnglishNameTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMissingEnglishNameTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useQuery<FindMissingEnglishNameTreeQuery, FindVerificationTreeQueryVariables>(FindMissingEnglishNameTreeDocument, baseOptions);
-}
-export function useFindMissingEnglishNameTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMissingEnglishNameTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindMissingEnglishNameTreeQuery, FindVerificationTreeQueryVariables>(FindMissingEnglishNameTreeDocument, baseOptions);
-}
-export type FindMissingEnglishNameTreeQueryHookResult = ReturnType<typeof useFindMissingEnglishNameTreeQuery>;
-export type FindMissingEnglishNameTreeLazyQueryHookResult = ReturnType<typeof useFindMissingEnglishNameTreeLazyQuery>;
-export type FindMissingEnglishNameTreeQueryResult = Apollo.QueryResult<FindMissingEnglishNameTreeQuery, FindVerificationTreeQueryVariables>;
-
-// FindMultipleIDsTree
-
-export const FindMultipleIDsTreeDocument = gql`
-    query FindMultipleIDsTree {
-      findMultipleIDs(
-    input: {nodeTypeFilter: {}}
-  ) {
-    nodes {
-      ...ItemProps
-    }
-    paths
-  }
-}
-    ${ItemPropsFragmentDoc}`;
-
-export function useFindMultipleIDsTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMultipleIDsTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useQuery<FindMultipleIDsTreeQuery, FindVerificationTreeQueryVariables>(FindMultipleIDsTreeDocument, baseOptions);
-}
-export function useFindMultipleIDsTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMultipleIDsTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindMultipleIDsTreeQuery, FindVerificationTreeQueryVariables>(FindMultipleIDsTreeDocument, baseOptions);
-}
-export type FindMultipleIDsTreeQueryHookResult = ReturnType<typeof useFindMultipleIDsTreeQuery>;
-export type FindMultipleIDsTreeLazyQueryHookResult = ReturnType<typeof useFindMultipleIDsTreeLazyQuery>;
-export type FindMultipleIDsTreeQueryResult = Apollo.QueryResult<FindMultipleIDsTreeQuery, FindVerificationTreeQueryVariables>;
-
-// FindMissingDescription
-
-export const FindMissingDescriptionTreeDocument = gql`
-    query FindMissingDescriptionTree {
-      findMissingDescription(
-    input: {nodeTypeFilter: {}}
-  ) {
-    nodes {
-      ...ItemProps
-    }
-    paths
-  }
-}
-    ${ItemPropsFragmentDoc}`;
-
-export function useFindMissingDescriptionTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMissingDescriptionTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useQuery<FindMissingDescriptionTreeQuery, FindVerificationTreeQueryVariables>(FindMissingDescriptionTreeDocument, baseOptions);
-}
-export function useFindMissingDescriptionTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMissingDescriptionTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindMissingDescriptionTreeQuery, FindVerificationTreeQueryVariables>(FindMissingDescriptionTreeDocument, baseOptions);
-}
-export type FindMissingDescriptionTreeQueryHookResult = ReturnType<typeof useFindMissingDescriptionTreeQuery>;
-export type FindMissingDescriptionTreeLazyQueryHookResult = ReturnType<typeof useFindMissingDescriptionTreeLazyQuery>;
-export type FindMissingDescriptionTreeQueryResult = Apollo.QueryResult<FindMissingDescriptionTreeQuery, FindVerificationTreeQueryVariables>;
-
-// FindMissingEnglishDescription
-
-export const FindMissingEnglishDescriptionTreeDocument = gql`
-    query FindMissingEnglishDescriptionTree {
-      findMissingEnglishDescription(
-    input: {nodeTypeFilter: {}}
-  ) {
-    nodes {
-      ...ItemProps
-    }
-    paths
-  }
-}
-    ${ItemPropsFragmentDoc}`;
-
-export function useFindMissingEnglishDescriptionTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMissingEnglishDescriptionTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useQuery<FindMissingEnglishDescriptionTreeQuery, FindVerificationTreeQueryVariables>(FindMissingEnglishDescriptionTreeDocument, baseOptions);
-}
-export function useFindMissingEnglishDescriptionTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMissingEnglishDescriptionTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindMissingEnglishDescriptionTreeQuery, FindVerificationTreeQueryVariables>(FindMissingEnglishDescriptionTreeDocument, baseOptions);
-}
-export type FindMissingEnglishDescriptionTreeQueryHookResult = ReturnType<typeof useFindMissingEnglishDescriptionTreeQuery>;
-export type FindMissingEnglishDescriptionTreeLazyQueryHookResult = ReturnType<typeof useFindMissingEnglishDescriptionTreeLazyQuery>;
-export type FindMissingEnglishDescriptionTreeQueryResult = Apollo.QueryResult<FindMissingEnglishDescriptionTreeQuery, FindVerificationTreeQueryVariables>;
-
-// FindMultipleNames
-
-export const FindMultipleNamesTreeDocument = gql`
-    query FindMultipleNamesTree {
-      findMultipleNames(
-    input: {nodeTypeFilter: {}}
-  ) {
-    nodes {
-      ...ItemProps
-    }
-    paths
-  }
-}
-    ${ItemPropsFragmentDoc}`;
-
-export function useFindMultipleNamesTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMultipleNamesTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useQuery<FindMultipleNamesTreeQuery, FindVerificationTreeQueryVariables>(FindMultipleNamesTreeDocument, baseOptions);
-}
-export function useFindMultipleNamesTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMultipleNamesTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindMultipleNamesTreeQuery, FindVerificationTreeQueryVariables>(FindMultipleNamesTreeDocument, baseOptions);
-}
-export type FindMultipleNamesTreeQueryHookResult = ReturnType<typeof useFindMultipleNamesTreeQuery>;
-export type FindMultipleNamesTreeLazyQueryHookResult = ReturnType<typeof useFindMultipleNamesTreeLazyQuery>;
-export type FindMultipleNamesTreeQueryResult = Apollo.QueryResult<FindMultipleNamesTreeQuery, FindVerificationTreeQueryVariables>;
-
-// FindMultipleNamesAcrossClasses
-
-export const FindMultipleNamesAcrossClassesTreeDocument = gql`
-    query FindMultipleNamesAcrossClassesTree {
-      findMultipleNamesAcrossClasses(
-    input: {nodeTypeFilter: {}}
-  ) {
-    nodes {
-      ...ItemProps
-    }
-    paths
-  }
-}
-    ${ItemPropsFragmentDoc}`;
-
-export function useFindMultipleNamesAcrossClassesTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMultipleNamesAcrossClassesTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useQuery<FindMultipleNamesAcrossClassesTreeQuery, FindVerificationTreeQueryVariables>(FindMultipleNamesAcrossClassesTreeDocument, baseOptions);
-}
-export function useFindMultipleNamesAcrossClassesTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMultipleNamesAcrossClassesTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindMultipleNamesAcrossClassesTreeQuery, FindVerificationTreeQueryVariables>(FindMultipleNamesAcrossClassesTreeDocument, baseOptions);
-}
-export type FindMultipleNamesAcrossClassesTreeQueryHookResult = ReturnType<typeof useFindMultipleNamesAcrossClassesTreeQuery>;
-export type FindMultipleNamesAcrossClassesTreeLazyQueryHookResult = ReturnType<typeof useFindMultipleNamesAcrossClassesTreeLazyQuery>;
-export type FindMultipleNamesAcrossClassesTreeQueryResult = Apollo.QueryResult<FindMultipleNamesAcrossClassesTreeQuery, FindVerificationTreeQueryVariables>;
+    ${ObjectPropsFragmentDoc}`;
 
 /**
  * __usePropertyTreeQuery__
@@ -2914,6 +3282,1121 @@ export function usePropertyTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type PropertyTreeQueryHookResult = ReturnType<typeof usePropertyTreeQuery>;
 export type PropertyTreeLazyQueryHookResult = ReturnType<typeof usePropertyTreeLazyQuery>;
 export type PropertyTreeQueryResult = Apollo.QueryResult<PropertyTreeQuery, PropertyTreeQueryVariables>;
+
+// FindPropGroupWithoutProp
+
+export const FindPropGroupWithoutPropTreeDocument = gql`
+    query FindPropGroupWithoutPropTree {
+      findPropGroupWithoutProp{
+    nodes {
+      ...ObjectProps
+    }
+    paths
+  }
+}
+    ${ObjectPropsFragmentDoc}`;
+
+export function useFindPropGroupWithoutPropTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindPropGroupWithoutPropTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindPropGroupWithoutPropTreeQuery, FindVerificationTreeQueryVariables>(FindPropGroupWithoutPropTreeDocument, baseOptions);
+}
+export function useFindPropGroupWithoutPropTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindPropGroupWithoutPropTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindPropGroupWithoutPropTreeQuery, FindVerificationTreeQueryVariables>(FindPropGroupWithoutPropTreeDocument, baseOptions);
+}
+export type FindPropGroupWithoutPropTreeQueryHookResult = ReturnType<typeof useFindPropGroupWithoutPropTreeQuery>;
+export type FindPropGroupWithoutPropTreeLazyQueryHookResult = ReturnType<typeof useFindPropGroupWithoutPropTreeLazyQuery>;
+export type FindPropGroupWithoutPropTreeQueryResult = Apollo.QueryResult<FindPropGroupWithoutPropTreeQuery, FindVerificationTreeQueryVariables>;
+
+// FindPropWithoutSubjectOrPropGroup
+
+export const FindPropWithoutSubjectOrPropGroupTreeDocument = gql`
+    query FindPropWithoutSubjectOrPropGroupTree {
+      findPropWithoutSubjectOrPropGroup{
+    nodes {
+      ...ObjectProps
+    }
+    paths
+  }
+}
+    ${ObjectPropsFragmentDoc}`;
+
+export function useFindPropWithoutSubjectOrPropGroupTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindPropWithoutSubjectOrPropGroupTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindPropWithoutSubjectOrPropGroupTreeQuery, FindVerificationTreeQueryVariables>(FindPropWithoutSubjectOrPropGroupTreeDocument, baseOptions);
+}
+export function useFindPropWithoutSubjectOrPropGroupTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindPropWithoutSubjectOrPropGroupTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindPropWithoutSubjectOrPropGroupTreeQuery, FindVerificationTreeQueryVariables>(FindPropWithoutSubjectOrPropGroupTreeDocument, baseOptions);
+}
+export type FindPropWithoutSubjectOrPropGroupTreeQueryHookResult = ReturnType<typeof useFindPropWithoutSubjectOrPropGroupTreeQuery>;
+export type FindPropWithoutSubjectOrPropGroupTreeLazyQueryHookResult = ReturnType<typeof useFindPropWithoutSubjectOrPropGroupTreeLazyQuery>;
+export type FindPropWithoutSubjectOrPropGroupTreeQueryResult = Apollo.QueryResult<FindPropWithoutSubjectOrPropGroupTreeQuery, FindVerificationTreeQueryVariables>;
+
+// FindModelWithoutGroup
+
+export const FindModelWithoutGroupTreeDocument = gql`
+    query FindModelWithoutGroupTree {
+      findModelWithoutGroup{
+    nodes {
+      ...ObjectProps
+    }
+    paths
+  }
+}
+    ${ObjectPropsFragmentDoc}`;
+
+export function useFindModelWithoutGroupTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindModelWithoutGroupTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindModelWithoutGroupTreeQuery, FindVerificationTreeQueryVariables>(FindModelWithoutGroupTreeDocument, baseOptions);
+}
+export function useFindModelWithoutGroupTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindModelWithoutGroupTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindModelWithoutGroupTreeQuery, FindVerificationTreeQueryVariables>(FindModelWithoutGroupTreeDocument, baseOptions);
+}
+export type FindModelWithoutGroupTreeQueryHookResult = ReturnType<typeof useFindModelWithoutGroupTreeQuery>;
+export type FindModelWithoutGroupTreeLazyQueryHookResult = ReturnType<typeof useFindModelWithoutGroupTreeLazyQuery>;
+export type FindModelWithoutGroupTreeQueryResult = Apollo.QueryResult<FindModelWithoutGroupTreeQuery, FindVerificationTreeQueryVariables>;
+
+// FindGroupWithoutSubject
+
+export const FindGroupWithoutSubjectTreeDocument = gql`
+    query FindGroupWithoutSubjectTree {
+      findGroupWithoutSubject{
+    nodes {
+      ...ObjectProps
+    }
+    paths
+  }
+}
+    ${ObjectPropsFragmentDoc}`;
+
+export function useFindGroupWithoutSubjectTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindGroupWithoutSubjectTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindGroupWithoutSubjectTreeQuery, FindVerificationTreeQueryVariables>(FindGroupWithoutSubjectTreeDocument, baseOptions);
+}
+export function useFindGroupWithoutSubjectTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindGroupWithoutSubjectTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindGroupWithoutSubjectTreeQuery, FindVerificationTreeQueryVariables>(FindGroupWithoutSubjectTreeDocument, baseOptions);
+}
+export type FindGroupWithoutSubjectTreeQueryHookResult = ReturnType<typeof useFindGroupWithoutSubjectTreeQuery>;
+export type FindGroupWithoutSubjectTreeLazyQueryHookResult = ReturnType<typeof useFindGroupWithoutSubjectTreeLazyQuery>;
+export type FindGroupWithoutSubjectTreeQueryResult = Apollo.QueryResult<FindGroupWithoutSubjectTreeQuery, FindVerificationTreeQueryVariables>;
+
+// FindSubjectWithoutProp
+
+export const FindSubjectWithoutPropTreeDocument = gql`
+    query FindSubjectWithoutPropTree {
+      findSubjectWithoutProp{
+    nodes {
+      ...ObjectProps
+    }
+    paths
+  }
+}
+    ${ObjectPropsFragmentDoc}`;
+
+export function useFindSubjectWithoutPropTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindSubjectWithoutPropTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindSubjectWithoutPropTreeQuery, FindVerificationTreeQueryVariables>(FindSubjectWithoutPropTreeDocument, baseOptions);
+}
+export function useFindSubjectWithoutPropTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindSubjectWithoutPropTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindSubjectWithoutPropTreeQuery, FindVerificationTreeQueryVariables>(FindSubjectWithoutPropTreeDocument, baseOptions);
+}
+export type FindSubjectWithoutPropTreeQueryHookResult = ReturnType<typeof useFindSubjectWithoutPropTreeQuery>;
+export type FindSubjectWithoutPropTreeLazyQueryHookResult = ReturnType<typeof useFindSubjectWithoutPropTreeLazyQuery>;
+export type FindSubjectWithoutPropTreeQueryResult = Apollo.QueryResult<FindSubjectWithoutPropTreeQuery, FindVerificationTreeQueryVariables>;
+
+// FindValueListWithoutProp
+
+export const FindValueListWithoutPropTreeDocument = gql`
+    query FindValueListWithoutPropTree {
+      findValueListWithoutProp{
+    nodes {
+      ...ObjectProps
+    }
+    paths
+  }
+}
+    ${ObjectPropsFragmentDoc}`;
+
+export function useFindValueListWithoutPropTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindValueListWithoutPropTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindValueListWithoutPropTreeQuery, FindVerificationTreeQueryVariables>(FindValueListWithoutPropTreeDocument, baseOptions);
+}
+export function useFindValueListWithoutPropTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindValueListWithoutPropTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindValueListWithoutPropTreeQuery, FindVerificationTreeQueryVariables>(FindValueListWithoutPropTreeDocument, baseOptions);
+}
+export type FindValueListWithoutPropTreeQueryHookResult = ReturnType<typeof useFindValueListWithoutPropTreeQuery>;
+export type FindValueListWithoutPropTreeLazyQueryHookResult = ReturnType<typeof useFindValueListWithoutPropTreeLazyQuery>;
+export type FindValueListWithoutPropTreeQueryResult = Apollo.QueryResult<FindValueListWithoutPropTreeQuery, FindVerificationTreeQueryVariables>;
+
+// FindUnitWithoutValueList
+
+export const FindUnitWithoutValueListTreeDocument = gql`
+    query FindUnitWithoutValueListTree {
+      findUnitWithoutValueList{
+    nodes {
+      ...ObjectProps
+    }
+    paths
+  }
+}
+    ${ObjectPropsFragmentDoc}`;
+
+export function useFindUnitWithoutValueListTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindUnitWithoutValueListTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindUnitWithoutValueListTreeQuery, FindVerificationTreeQueryVariables>(FindUnitWithoutValueListTreeDocument, baseOptions);
+}
+export function useFindUnitWithoutValueListTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindUnitWithoutValueListTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindUnitWithoutValueListTreeQuery, FindVerificationTreeQueryVariables>(FindUnitWithoutValueListTreeDocument, baseOptions);
+}
+export type FindUnitWithoutValueListTreeQueryHookResult = ReturnType<typeof useFindUnitWithoutValueListTreeQuery>;
+export type FindUnitWithoutValueListTreeLazyQueryHookResult = ReturnType<typeof useFindUnitWithoutValueListTreeLazyQuery>;
+export type FindUnitWithoutValueListTreeQueryResult = Apollo.QueryResult<FindUnitWithoutValueListTreeQuery, FindVerificationTreeQueryVariables>;
+
+// FindValueWithoutValueList
+
+export const FindValueWithoutValueListTreeDocument = gql`
+    query FindValueWithoutValueListTree {
+      findValueWithoutValueList{
+    nodes {
+      ...ObjectProps
+    }
+    paths
+  }
+}
+    ${ObjectPropsFragmentDoc}`;
+
+export function useFindValueWithoutValueListTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindValueWithoutValueListTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindValueWithoutValueListTreeQuery, FindVerificationTreeQueryVariables>(FindValueWithoutValueListTreeDocument, baseOptions);
+}
+export function useFindValueWithoutValueListTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindValueWithoutValueListTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindValueWithoutValueListTreeQuery, FindVerificationTreeQueryVariables>(FindValueWithoutValueListTreeDocument, baseOptions);
+}
+export type FindValueWithoutValueListTreeQueryHookResult = ReturnType<typeof useFindValueWithoutValueListTreeQuery>;
+export type FindValueWithoutValueListTreeLazyQueryHookResult = ReturnType<typeof useFindValueWithoutValueListTreeLazyQuery>;
+export type FindValueWithoutValueListTreeQueryResult = Apollo.QueryResult<FindValueWithoutValueListTreeQuery, FindVerificationTreeQueryVariables>;
+
+// FindMissingTags
+
+export const FindMissingTagsTreeDocument = gql`
+    query FindMissingTagsTree {
+      findMissingTags{
+    nodes {
+      ...ObjectProps
+    }
+    paths
+  }
+}
+    ${ObjectPropsFragmentDoc}`;
+export function useFindMissingTagsTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMissingTagsTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindMissingTagsTreeQuery, FindVerificationTreeQueryVariables>(FindMissingTagsTreeDocument, baseOptions);
+}
+export function useFindMissingTagsTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMissingTagsTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindMissingTagsTreeQuery, FindVerificationTreeQueryVariables>(FindMissingTagsTreeDocument, baseOptions);
+}
+export type FindMissingTagsTreeQueryHookResult = ReturnType<typeof useFindMissingTagsTreeQuery>;
+export type FindMissingTagsTreeLazyQueryHookResult = ReturnType<typeof useFindMissingTagsTreeLazyQuery>;
+export type FindMissingTagsTreeQueryResult = Apollo.QueryResult<FindMissingTagsTreeQuery, FindVerificationTreeQueryVariables>;
+
+// FindMissingEnglishNameTree
+
+export const FindMissingEnglishNameTreeDocument = gql`
+    query FindMissingEnglishNameTree {
+      findMissingEnglishName(
+    input: {nodeTypeFilter: {}}
+  ) {
+    nodes {
+      ...ObjectProps
+    }
+    paths
+  }
+}
+    ${ObjectPropsFragmentDoc}`;
+
+export function useFindMissingEnglishNameTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMissingEnglishNameTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindMissingEnglishNameTreeQuery, FindVerificationTreeQueryVariables>(FindMissingEnglishNameTreeDocument, baseOptions);
+}
+export function useFindMissingEnglishNameTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMissingEnglishNameTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindMissingEnglishNameTreeQuery, FindVerificationTreeQueryVariables>(FindMissingEnglishNameTreeDocument, baseOptions);
+}
+export type FindMissingEnglishNameTreeQueryHookResult = ReturnType<typeof useFindMissingEnglishNameTreeQuery>;
+export type FindMissingEnglishNameTreeLazyQueryHookResult = ReturnType<typeof useFindMissingEnglishNameTreeLazyQuery>;
+export type FindMissingEnglishNameTreeQueryResult = Apollo.QueryResult<FindMissingEnglishNameTreeQuery, FindVerificationTreeQueryVariables>;
+
+// FindMultipleIDsTree
+
+export const FindMultipleIDsTreeDocument = gql`
+    query FindMultipleIDsTree {
+      findMultipleIDs(
+    input: {nodeTypeFilter: {}}
+  ) {
+    nodes {
+      ...ObjectProps
+    }
+    paths
+  }
+}
+    ${ObjectPropsFragmentDoc}`;
+
+export function useFindMultipleIDsTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMultipleIDsTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindMultipleIDsTreeQuery, FindVerificationTreeQueryVariables>(FindMultipleIDsTreeDocument, baseOptions);
+}
+export function useFindMultipleIDsTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMultipleIDsTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindMultipleIDsTreeQuery, FindVerificationTreeQueryVariables>(FindMultipleIDsTreeDocument, baseOptions);
+}
+export type FindMultipleIDsTreeQueryHookResult = ReturnType<typeof useFindMultipleIDsTreeQuery>;
+export type FindMultipleIDsTreeLazyQueryHookResult = ReturnType<typeof useFindMultipleIDsTreeLazyQuery>;
+export type FindMultipleIDsTreeQueryResult = Apollo.QueryResult<FindMultipleIDsTreeQuery, FindVerificationTreeQueryVariables>;
+
+// FindMissingDescription
+
+export const FindMissingDescriptionTreeDocument = gql`
+    query FindMissingDescriptionTree {
+      findMissingDescription(
+    input: {nodeTypeFilter: {}}
+  ) {
+    nodes {
+      ...ObjectProps
+    }
+    paths
+  }
+}
+    ${ObjectPropsFragmentDoc}`;
+
+export function useFindMissingDescriptionTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMissingDescriptionTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindMissingDescriptionTreeQuery, FindVerificationTreeQueryVariables>(FindMissingDescriptionTreeDocument, baseOptions);
+}
+export function useFindMissingDescriptionTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMissingDescriptionTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindMissingDescriptionTreeQuery, FindVerificationTreeQueryVariables>(FindMissingDescriptionTreeDocument, baseOptions);
+}
+export type FindMissingDescriptionTreeQueryHookResult = ReturnType<typeof useFindMissingDescriptionTreeQuery>;
+export type FindMissingDescriptionTreeLazyQueryHookResult = ReturnType<typeof useFindMissingDescriptionTreeLazyQuery>;
+export type FindMissingDescriptionTreeQueryResult = Apollo.QueryResult<FindMissingDescriptionTreeQuery, FindVerificationTreeQueryVariables>;
+
+// FindMissingEnglishDescription
+
+export const FindMissingEnglishDescriptionTreeDocument = gql`
+    query FindMissingEnglishDescriptionTree {
+      findMissingEnglishDescription(
+    input: {nodeTypeFilter: {}}
+  ) {
+    nodes {
+      ...ObjectProps
+    }
+    paths
+  }
+}
+    ${ObjectPropsFragmentDoc}`;
+
+export function useFindMissingEnglishDescriptionTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMissingEnglishDescriptionTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindMissingEnglishDescriptionTreeQuery, FindVerificationTreeQueryVariables>(FindMissingEnglishDescriptionTreeDocument, baseOptions);
+}
+export function useFindMissingEnglishDescriptionTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMissingEnglishDescriptionTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindMissingEnglishDescriptionTreeQuery, FindVerificationTreeQueryVariables>(FindMissingEnglishDescriptionTreeDocument, baseOptions);
+}
+export type FindMissingEnglishDescriptionTreeQueryHookResult = ReturnType<typeof useFindMissingEnglishDescriptionTreeQuery>;
+export type FindMissingEnglishDescriptionTreeLazyQueryHookResult = ReturnType<typeof useFindMissingEnglishDescriptionTreeLazyQuery>;
+export type FindMissingEnglishDescriptionTreeQueryResult = Apollo.QueryResult<FindMissingEnglishDescriptionTreeQuery, FindVerificationTreeQueryVariables>;
+
+// FindMultipleNames
+
+export const FindMultipleNamesTreeDocument = gql`
+    query FindMultipleNamesTree {
+      findMultipleNames(
+    input: {nodeTypeFilter: {}}
+  ) {
+    nodes {
+      ...ObjectProps
+    }
+    paths
+  }
+}
+    ${ObjectPropsFragmentDoc}`;
+
+export function useFindMultipleNamesTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMultipleNamesTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindMultipleNamesTreeQuery, FindVerificationTreeQueryVariables>(FindMultipleNamesTreeDocument, baseOptions);
+}
+export function useFindMultipleNamesTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMultipleNamesTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindMultipleNamesTreeQuery, FindVerificationTreeQueryVariables>(FindMultipleNamesTreeDocument, baseOptions);
+}
+export type FindMultipleNamesTreeQueryHookResult = ReturnType<typeof useFindMultipleNamesTreeQuery>;
+export type FindMultipleNamesTreeLazyQueryHookResult = ReturnType<typeof useFindMultipleNamesTreeLazyQuery>;
+export type FindMultipleNamesTreeQueryResult = Apollo.QueryResult<FindMultipleNamesTreeQuery, FindVerificationTreeQueryVariables>;
+
+// FindMultipleNamesAcrossClasses
+
+export const FindMultipleNamesAcrossClassesTreeDocument = gql`
+    query FindMultipleNamesAcrossClassesTree {
+      findMultipleNamesAcrossClasses(
+    input: {nodeTypeFilter: {}}
+  ) {
+    nodes {
+      ...ObjectProps
+    }
+    paths
+  }
+}
+    ${ObjectPropsFragmentDoc}`;
+
+export function useFindMultipleNamesAcrossClassesTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMultipleNamesAcrossClassesTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindMultipleNamesAcrossClassesTreeQuery, FindVerificationTreeQueryVariables>(FindMultipleNamesAcrossClassesTreeDocument, baseOptions);
+}
+export function useFindMultipleNamesAcrossClassesTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMultipleNamesAcrossClassesTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindMultipleNamesAcrossClassesTreeQuery, FindVerificationTreeQueryVariables>(FindMultipleNamesAcrossClassesTreeDocument, baseOptions);
+}
+export type FindMultipleNamesAcrossClassesTreeQueryHookResult = ReturnType<typeof useFindMultipleNamesAcrossClassesTreeQuery>;
+export type FindMultipleNamesAcrossClassesTreeLazyQueryHookResult = ReturnType<typeof useFindMultipleNamesAcrossClassesTreeLazyQuery>;
+export type FindMultipleNamesAcrossClassesTreeQueryResult = Apollo.QueryResult<FindMultipleNamesAcrossClassesTreeQuery, FindVerificationTreeQueryVariables>;
+
+export const FindExternalDocumentsQueryDocument = gql`
+    query FindExternalDocumentsQuery($input: FilterInput!) {
+  findExternalDocuments(input: $input) {
+    nodes {
+      ...ExternalDocumentProps
+    }
+    totalElements
+  }
+}
+    ${ExternalDocumentPropsFragmentDoc}`;
+
+/**
+ * __useFindExternalDocumentsQuery__
+ * 
+ * To run a query within a React component, call `useFindExternalDocumentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindExternalDocumentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useFindExternalDocumentsQuery({
+ *  variables: {
+ *     input: // value for 'input'
+ *  },
+ * });
+  */
+export function useFindExternalDocumentsQuery(baseOptions: Apollo.QueryHookOptions<FindExternalDocumentsQuery, FindExternalDocumentsQueryVariables>) {
+  return Apollo.useQuery<FindExternalDocumentsQuery, FindExternalDocumentsQueryVariables>(FindExternalDocumentsQueryDocument, baseOptions);
+}
+export function useFindExternalDocumentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindExternalDocumentsQuery, FindExternalDocumentsQueryVariables>) {
+  return Apollo.useLazyQuery<FindExternalDocumentsQuery, FindExternalDocumentsQueryVariables>(FindExternalDocumentsQueryDocument, baseOptions);
+}
+export type FindExternalDocumentsQueryHookResult = ReturnType<typeof useFindExternalDocumentsQuery>;
+export type FindExternalDocumentsLazyQueryHookResult = ReturnType<typeof useFindExternalDocumentsLazyQuery>;
+export type FindExternalDocumentsQueryResult = Apollo.QueryResult<FindExternalDocumentsQuery, FindExternalDocumentsQueryVariables>;
+
+export const FindPropertiesQueryDocument = gql`
+    query FindPropertiesQuery($input: FilterInput!) {
+  findProperties(input: $input) {
+    nodes {
+      ...PropertyDetailProps
+    }
+    totalElements
+  }
+}
+    ${PropertyDetailPropsFragmentDoc}`; 
+/**
+ * __useFindPropertiesQuery__
+ * 
+ * To run a query within a React component, call `useFindPropertiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindPropertiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useFindPropertiesQuery({
+ *  variables: {
+ *    input: // value for 'input'
+ *  },
+ * });
+ */
+export function useFindPropertiesQuery(baseOptions: Apollo.QueryHookOptions<FindPropertiesQuery, FindPropertiesQueryVariables>) {
+  return Apollo.useQuery<FindPropertiesQuery, FindPropertiesQueryVariables>(FindPropertiesQueryDocument, baseOptions);
+}
+export function useFindPropertiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindPropertiesQuery, FindPropertiesQueryVariables>) {
+  return Apollo.useLazyQuery<FindPropertiesQuery, FindPropertiesQueryVariables>(FindPropertiesQueryDocument, baseOptions);
+}
+export type FindPropertiesQueryHookResult = ReturnType<typeof useFindPropertiesQuery>;
+export type FindPropertiesLazyQueryHookResult = ReturnType<typeof useFindPropertiesLazyQuery>;
+export type FindPropertiesQueryResult = Apollo.QueryResult<FindPropertiesQuery, FindPropertiesQueryVariables>;
+export const FindSubjectsQueryDocument = gql`
+    query FindSubjectsQuery($input: FilterInput!) {
+  findSubjects(input: $input) {
+    nodes {
+      ...SubjectDetailProps
+    }
+    totalElements
+  }
+}
+    ${SubjectDetailPropsFragmentDoc}`;
+/**
+ * __useFindSubjectsQuery__
+ * 
+ * To run a query within a React component, call `useFindSubjectsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindSubjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useFindSubjectsQuery({
+ *  variables: {
+ *    input: // value for 'input'
+ *  },
+ * });
+  */
+export function useFindSubjectsQuery(baseOptions: Apollo.QueryHookOptions<FindSubjectsQuery, FindSubjectsQueryVariables>) {
+  return Apollo.useQuery<FindSubjectsQuery, FindSubjectsQueryVariables>(FindSubjectsQueryDocument, baseOptions);
+}
+export function useFindSubjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindSubjectsQuery, FindSubjectsQueryVariables>) {
+  return Apollo.useLazyQuery<FindSubjectsQuery, FindSubjectsQueryVariables>(FindSubjectsQueryDocument, baseOptions);
+}
+export type FindSubjectsQueryHookResult = ReturnType<typeof useFindSubjectsQuery>;
+export type FindSubjectsLazyQueryHookResult = ReturnType<typeof useFindSubjectsLazyQuery>;
+export type FindSubjectsQueryResult = Apollo.QueryResult<FindSubjectsQuery, FindSubjectsQueryVariables>;
+export const FindUnitsQueryDocument = gql`
+    query FindUnitsQuery($input: FilterInput!) {
+  findUnits(input: $input) {
+    nodes {
+      ...UnitDetailProps
+    }
+    totalElements
+  }
+}
+    ${UnitDetailPropsFragmentDoc}`;
+/**
+ * __useFindUnitsQuery__
+ * 
+ * To run a query within a React component, call `useFindUnitsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindUnitsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useFindUnitsQuery({
+ *  variables: {
+ *    input: // value for 'input'
+ *  },
+ * });
+  */
+export function useFindUnitsQuery(baseOptions: Apollo.QueryHookOptions<FindUnitsQuery, FindUnitsQueryVariables>) {
+  return Apollo.useQuery<FindUnitsQuery, FindUnitsQueryVariables>(FindUnitsQueryDocument, baseOptions);
+}
+export function useFindUnitsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindUnitsQuery, FindUnitsQueryVariables>) {
+  return Apollo.useLazyQuery<FindUnitsQuery, FindUnitsQueryVariables>(FindUnitsQueryDocument, baseOptions);
+}
+export type FindUnitsQueryHookResult = ReturnType<typeof useFindUnitsQuery>;
+export type FindUnitsLazyQueryHookResult = ReturnType<typeof useFindUnitsLazyQuery>;
+export type FindUnitsQueryResult = Apollo.QueryResult<FindUnitsQuery, FindUnitsQueryVariables>;
+export const FindValuesQueryDocument = gql`
+    query FindValuesQuery($input: FilterInput!) {
+  findValues(input: $input) {
+    nodes {
+      ...ValueProps
+    }
+    totalElements
+  }
+}
+    ${ValuePropsFragmentDoc}`;
+/**
+ * __useFindValuesQuery__
+ * 
+ * To run a query within a React component, call `useFindValuesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindValuesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *  
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useFindValuesQuery({
+ *  variables: {
+ *    input: // value for 'input'
+ *  },
+ * });
+ */
+export function useFindValuesQuery(baseOptions: Apollo.QueryHookOptions<FindValuesQuery, FindValuesQueryVariables>) {
+  return Apollo.useQuery<FindValuesQuery, FindValuesQueryVariables>(FindValuesQueryDocument, baseOptions);
+}
+export function useFindValuesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindValuesQuery, FindValuesQueryVariables>) {
+  return Apollo.useLazyQuery<FindValuesQuery, FindValuesQueryVariables>(FindValuesQueryDocument, baseOptions);
+}
+export type FindValuesQueryHookResult = ReturnType<typeof useFindValuesQuery>;
+export type FindValuesLazyQueryHookResult = ReturnType<typeof useFindValuesLazyQuery>;
+export type FindValuesQueryResult = Apollo.QueryResult<FindValuesQuery, FindValuesQueryVariables>;
+export const FindValueListsQueryDocument = gql`
+    query FindValueListsQuery($input: FilterInput!) {
+  findValueLists(input: $input) {
+    nodes {
+      ...ValueListDetailProps
+    }
+    totalElements
+  }
+}
+    ${ValueListDetailPropsFragmentDoc}`;
+/**
+ * __useFindValueListsQuery__
+ * 
+ * To run a query within a React component, call `useFindValueListsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindValueListsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useFindValueListsQuery({
+ *  variables: {
+ *    input: // value for 'input'
+ *  },
+ * });
+  */
+export function useFindValueListsQuery(baseOptions: Apollo.QueryHookOptions<FindValueListsQuery, FindValueListsQueryVariables>) {
+  return Apollo.useQuery<FindValueListsQuery, FindValueListsQueryVariables>(FindValueListsQueryDocument, baseOptions);
+}
+export function useFindValueListsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindValueListsQuery, FindValueListsQueryVariables>) {
+  return Apollo.useLazyQuery<FindValueListsQuery, FindValueListsQueryVariables>(FindValueListsQueryDocument, baseOptions);
+}
+export type FindValueListsQueryHookResult = ReturnType<typeof useFindValueListsQuery>;
+export type FindValueListsLazyQueryHookResult = ReturnType<typeof useFindValueListsLazyQuery>;
+export type FindValueListsQueryResult = Apollo.QueryResult<FindValueListsQuery, FindValueListsQueryVariables>;
+export const FindOrderedValuesQueryDocument = gql`
+    query FindOrderedValuesQuery($input: FilterInput!) {
+  findOrderedValues(input: $input) {
+    nodes {
+      order
+      {
+        ...ValueProps
+      }
+    }
+    totalElements
+  }
+}
+    ${ValuePropsFragmentDoc}`;
+/**
+ * __useFindOrderedValuesQuery__
+ * 
+ * To run a query within a React component, call `useFindOrderedValuesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindOrderedValuesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useFindOrderedValuesQuery({
+ *  variables: {
+ *    input: // value for 'input'
+ *  },
+ * });
+  */
+export function useFindOrderedValuesQuery(baseOptions: Apollo.QueryHookOptions<FindOrderedValuesQuery, FindOrderedValuesQueryVariables>) {
+  return Apollo.useQuery<FindOrderedValuesQuery, FindOrderedValuesQueryVariables>(FindOrderedValuesQueryDocument, baseOptions);
+}
+export function useFindOrderedValuesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindOrderedValuesQuery, FindOrderedValuesQueryVariables>) {
+  return Apollo.useLazyQuery<FindOrderedValuesQuery, FindOrderedValuesQueryVariables>(FindOrderedValuesQueryDocument, baseOptions);
+}
+export type FindOrderedValuesQueryHookResult = ReturnType<typeof useFindOrderedValuesQuery>;
+export type FindOrderedValuesLazyQueryHookResult = ReturnType<typeof useFindOrderedValuesLazyQuery>;
+export type FindOrderedValuesQueryResult = Apollo.QueryResult<FindOrderedValuesQuery, FindOrderedValuesQueryVariables>;
+export const FindRelationshipToSubjectQueryDocument = gql`
+    query FindRelationshipToSubjectQuery($input: FilterInput!) {
+  findRelationshipToSubject(input: $input) {
+    nodes {
+      ...ObjectProps
+      connectingSubject {
+        ...SubjectDetailProps
+      }
+      scopeSubjects {
+        ...SubjectDetailProps
+      }
+      targetSubjects {
+        ...SubjectDetailProps
+      }
+    }
+    totalElements
+  }
+}
+    ${SubjectDetailPropsFragmentDoc}
+    ${ObjectPropsFragmentDoc}`;
+/**
+ * __useFindRelationshipToSubjectQuery__
+ *  
+ * To run a query within a React component, call `useFindRelationshipToSubjectQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindRelationshipToSubjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useFindRelationshipToSubjectQuery({
+ *  variables: {
+ *    input: // value for 'input'
+ *  },
+ * });
+  */
+export function useFindRelationshipToSubjectQuery(baseOptions: Apollo.QueryHookOptions<FindRelationshipToSubjectQuery, FindRelationshipToSubjectQueryVariables>) {
+  return Apollo.useQuery<FindRelationshipToSubjectQuery, FindRelationshipToSubjectQueryVariables>(FindRelationshipToSubjectQueryDocument, baseOptions);
+}
+export function useFindRelationshipToSubjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindRelationshipToSubjectQuery, FindRelationshipToSubjectQueryVariables>) {
+  return Apollo.useLazyQuery<FindRelationshipToSubjectQuery, FindRelationshipToSubjectQueryVariables>(FindRelationshipToSubjectQueryDocument, baseOptions);
+}
+export type FindRelationshipToSubjectQueryHookResult = ReturnType<typeof useFindRelationshipToSubjectQuery>;
+export type FindRelationshipToSubjectLazyQueryHookResult = ReturnType<typeof useFindRelationshipToSubjectLazyQuery>;
+export type FindRelationshipToSubjectQueryResult = Apollo.QueryResult<FindRelationshipToSubjectQuery, FindRelationshipToSubjectQueryVariables>;
+export const FindRelationshipToPropertyQueryDocument = gql`
+    query FindRelationshipToPropertyQuery($input: FilterInput!) {
+  findRelationshipToProperty(input: $input) {
+    nodes {
+      ...ObjectProps
+      connectingProperty {
+        ...PropertyDetailProps
+      }
+      targetProperties {
+        ...PropertyDetailProps
+      }
+    }
+    totalElements
+  }
+}
+    ${ObjectPropsFragmentDoc}`;
+/**
+ * __useFindRelationshipToPropertyQuery__
+ * 
+ * To run a query within a React component, call `useFindRelationshipToPropertyQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindRelationshipToPropertyQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useFindRelationshipToPropertyQuery({
+ *  variables: {
+ *    input: // value for 'input'
+ *  },
+ * });
+  */
+export function useFindRelationshipToPropertyQuery(baseOptions: Apollo.QueryHookOptions<FindRelationshipToPropertyQuery, FindRelationshipToPropertyQueryVariables>) {
+  return Apollo.useQuery<FindRelationshipToPropertyQuery, FindRelationshipToPropertyQueryVariables>(FindRelationshipToPropertyQueryDocument, baseOptions);
+}
+export function useFindRelationshipToPropertyLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindRelationshipToPropertyQuery, FindRelationshipToPropertyQueryVariables>) {
+  return Apollo.useLazyQuery<FindRelationshipToPropertyQuery, FindRelationshipToPropertyQueryVariables>(FindRelationshipToPropertyQueryDocument, baseOptions);
+}
+export type FindRelationshipToPropertyQueryHookResult = ReturnType<typeof useFindRelationshipToPropertyQuery>;
+export type FindRelationshipToPropertyLazyQueryHookResult = ReturnType<typeof useFindRelationshipToPropertyLazyQuery>;
+export type FindRelationshipToPropertyQueryResult = Apollo.QueryResult<FindRelationshipToPropertyQuery, FindRelationshipToPropertyQueryVariables>;
+export const FindDimensionsQueryDocument = gql`
+    query FindDimensionsQuery($input: FilterInput!) {
+  findDimensions(input: $input) {
+    nodes {
+      ...DimensionProps
+    }
+    totalElements
+  }
+}
+    ${DimensionPropsFragmentDoc}`;
+/**
+ * __useFindDimensionsQuery__
+ * 
+ * To run a query within a React component, call `useFindDimensionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindDimensionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useFindDimensionsQuery({
+ *  variables: {
+ *    input: // value for 'input'
+ *  },
+ * });
+  */
+export function useFindDimensionsQuery(baseOptions: Apollo.QueryHookOptions<FindDimensionsQuery, FindDimensionsQueryVariables>) {
+  return Apollo.useQuery<FindDimensionsQuery, FindDimensionsQueryVariables>(FindDimensionsQueryDocument, baseOptions);
+}
+export function useFindDimensionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindDimensionsQuery, FindDimensionsQueryVariables>) {
+  return Apollo.useLazyQuery<FindDimensionsQuery, FindDimensionsQueryVariables>(FindDimensionsQueryDocument, baseOptions);
+}
+export type FindDimensionsQueryHookResult = ReturnType<typeof useFindDimensionsQuery>;
+export type FindDimensionsLazyQueryHookResult = ReturnType<typeof useFindDimensionsLazyQuery>;
+export type FindDimensionsQueryResult = Apollo.QueryResult<FindDimensionsQuery, FindDimensionsQueryVariables>;
+export const FindRationalsQueryDocument = gql`
+    query FindRationalsQuery($input: FilterInput!) {
+  findRationals(input: $input) {
+    nodes {
+      ...RationalProps
+    }
+    totalElements 
+  }
+}
+    ${RationalPropsFragmentDoc}`;
+/**
+ * __useFindRationalsQuery__
+ * 
+ * To run a query within a React component, call `useFindRationalsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindRationalsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useFindRationalsQuery({
+ *  variables: {
+ *    input: // value for 'input'
+ *  },
+ * });
+  */
+export function useFindRationalsQuery(baseOptions: Apollo.QueryHookOptions<FindRationalsQuery, FindRationalsQueryVariables>) {
+  return Apollo.useQuery<FindRationalsQuery, FindRationalsQueryVariables>(FindRationalsQueryDocument, baseOptions);
+}
+export function useFindRationalsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindRationalsQuery, FindRationalsQueryVariables>) {
+  return Apollo.useLazyQuery<FindRationalsQuery, FindRationalsQueryVariables>(FindRationalsQueryDocument, baseOptions);
+}
+export type FindRationalsQueryHookResult = ReturnType<typeof useFindRationalsQuery>;
+export type FindRationalsLazyQueryHookResult = ReturnType<typeof useFindRationalsLazyQuery>;
+export type FindRationalsQueryResult = Apollo.QueryResult<FindRationalsQuery, FindRationalsQueryVariables>;
+export const FindMultiLanguageTextsQueryDocument = gql`
+    query FindMultiLanguageTextsQuery($input: FilterInput!) {
+  findMultiLanguageTexts(input: $input) {
+    nodes {
+      ...TranslationProps
+    }
+    totalElements
+  }
+}
+${TranslationPropsFragmentDoc}`;
+/**
+ * __useFindMultiLanguageTextsQuery__
+ *  
+ * To run a query within a React component, call `useFindMultiLanguageTextsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindMultiLanguageTextsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useFindMultiLanguageTextsQuery({
+ *  variables: {
+ *    input: // value for 'input'
+ *  },
+ * });
+  */
+export function useFindMultiLanguageTextsQuery(baseOptions: Apollo.QueryHookOptions<FindMultiLanguageTextsQuery, FindMultiLanguageTextsQueryVariables>) {
+  return Apollo.useQuery<FindMultiLanguageTextsQuery, FindMultiLanguageTextsQueryVariables>(FindMultiLanguageTextsQueryDocument, baseOptions);
+}
+export function useFindMultiLanguageTextsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMultiLanguageTextsQuery, FindMultiLanguageTextsQueryVariables>) {
+  return Apollo.useLazyQuery<FindMultiLanguageTextsQuery, FindMultiLanguageTextsQueryVariables>(FindMultiLanguageTextsQueryDocument, baseOptions);
+}
+export type FindMultiLanguageTextsQueryHookResult = ReturnType<typeof useFindMultiLanguageTextsQuery>;
+export type FindMultiLanguageTextsLazyQueryHookResult = ReturnType<typeof useFindMultiLanguageTextsLazyQuery>;
+export type FindMultiLanguageTextsQueryResult = Apollo.QueryResult<FindMultiLanguageTextsQuery, FindMultiLanguageTextsQueryVariables>;
+export const FindTextsQueryDocument = gql`
+    query FindTextsQuery($input: FilterInput!) {
+  findTexts(input: $input) {
+    nodes {
+      ...TranslationProps
+    }
+    totalElements
+  }
+}
+${TranslationPropsFragmentDoc}`;
+/**
+ * __useFindTextsQuery__
+ * 
+ * To run a query within a React component, call `useFindTextsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindTextsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useFindTextsQuery({
+ *  variables: {
+ *    input: // value for 'input'
+ *  },
+ * });
+  */
+export function useFindTextsQuery(baseOptions: Apollo.QueryHookOptions<FindTextsQuery, FindTextsQueryVariables>) {
+  return Apollo.useQuery<FindTextsQuery, FindTextsQueryVariables>(FindTextsQueryDocument, baseOptions);
+}
+export function useFindTextsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindTextsQuery, FindTextsQueryVariables>) {
+  return Apollo.useLazyQuery<FindTextsQuery, FindTextsQueryVariables>(FindTextsQueryDocument, baseOptions);
+}
+export type FindTextsQueryHookResult = ReturnType<typeof useFindTextsQuery>;
+export type FindTextsLazyQueryHookResult = ReturnType<typeof useFindTextsLazyQuery>;
+export type FindTextsQueryResult = Apollo.QueryResult<FindTextsQuery, FindTextsQueryVariables>;
+export const FindSymbolsQueryDocument = gql`
+    query FindSymbolsQuery($input: FilterInput!) {
+  findSymbols(input: $input) {
+    nodes {
+      ...SymbolProps
+    }
+    totalElements
+  }
+}
+    ${SymbolPropsFragmentDoc}`;
+/**
+ * __useFindSymbolsQuery__
+ * 
+ * To run a query within a React component, call `useFindSymbolsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindSymbolsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useFindSymbolsQuery({
+ *  variables: {
+ *    input: // value for 'input'
+ *  },
+ * });
+  */
+export function useFindSymbolsQuery(baseOptions: Apollo.QueryHookOptions<FindSymbolsQuery, FindSymbolsQueryVariables>) {
+  return Apollo.useQuery<FindSymbolsQuery, FindSymbolsQueryVariables>(FindSymbolsQueryDocument, baseOptions);
+}
+export function useFindSymbolsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindSymbolsQuery, FindSymbolsQueryVariables>) {
+  return Apollo.useLazyQuery<FindSymbolsQuery, FindSymbolsQueryVariables>(FindSymbolsQueryDocument, baseOptions);
+}
+export type FindSymbolsQueryHookResult = ReturnType<typeof useFindSymbolsQuery>;
+export type FindSymbolsLazyQueryHookResult = ReturnType<typeof useFindSymbolsLazyQuery>;
+export type FindSymbolsQueryResult = Apollo.QueryResult<FindSymbolsQuery, FindSymbolsQueryVariables>;
+export const FindIntervalsQueryDocument = gql`
+    query FindIntervalsQuery($input: FilterInput!) {
+  findIntervals(input: $input) {
+    nodes {
+      ...IntervalProps
+    }
+    totalElements
+  }
+}
+    ${IntervalPropsFragmentDoc}`;
+/**
+ * __useFindIntervalsQuery__
+ * 
+ * To run a query within a React component, call `useFindIntervalsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindIntervalsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useFindIntervalsQuery({
+ *  variables: {
+ *    input: // value for 'input'
+ *  },
+ * });
+  */
+export function useFindIntervalsQuery(baseOptions: Apollo.QueryHookOptions<FindIntervalsQuery, FindIntervalsQueryVariables>) {
+  return Apollo.useQuery<FindIntervalsQuery, FindIntervalsQueryVariables>(FindIntervalsQueryDocument, baseOptions);
+}
+export function useFindIntervalsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindIntervalsQuery, FindIntervalsQueryVariables>) {
+  return Apollo.useLazyQuery<FindIntervalsQuery, FindIntervalsQueryVariables>(FindIntervalsQueryDocument, baseOptions);
+}
+export type FindIntervalsQueryHookResult = ReturnType<typeof useFindIntervalsQuery>;
+export type FindIntervalsLazyQueryHookResult = ReturnType<typeof useFindIntervalsLazyQuery>;
+export type FindIntervalsQueryResult = Apollo.QueryResult<FindIntervalsQuery, FindIntervalsQueryVariables>;
+export const FindDictionariesQueryDocument = gql`
+    query FindDictionariesQuery($input: FilterInput!) {
+  findDictionaries(input: $input) {
+    nodes {
+      ...TranslationProps
+    }
+    totalElements
+  }
+}
+    ${TranslationPropsFragmentDoc}`;
+/**
+ * __useFindDictionariesQuery__
+ * 
+ * To run a query within a React component, call `useFindDictionariesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindDictionariesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useFindDictionariesQuery({
+ *  variables: {
+ *    input: // value for 'input'
+ *  },
+ * });
+  */
+export function useFindDictionariesQuery(baseOptions: Apollo.QueryHookOptions<FindDictionariesQuery, FindDictionariesQueryVariables>) {
+  return Apollo.useQuery<FindDictionariesQuery, FindDictionariesQueryVariables>(FindDictionariesQueryDocument, baseOptions);
+}
+export function useFindDictionariesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindDictionariesQuery, FindDictionariesQueryVariables>) {
+  return Apollo.useLazyQuery<FindDictionariesQuery, FindDictionariesQueryVariables>(FindDictionariesQueryDocument, baseOptions);
+}
+export type FindDictionariesQueryHookResult = ReturnType<typeof useFindDictionariesQuery>;
+export type FindDictionariesLazyQueryHookResult = ReturnType<typeof useFindDictionariesLazyQuery>;
+export type FindDictionariesQueryResult = Apollo.QueryResult<FindDictionariesQuery, FindDictionariesQueryVariables>;
+export const FindSubdivisionsQueryDocument = gql`
+    query FindSubdivisionsQuery($input: FilterInput!) {
+  findSubdivisions(input: $input) {
+    nodes {
+      code
+      ...ConceptProps
+    }
+    totalElements
+  }
+}
+    ${ConceptPropsFragmentDoc}`;
+/**
+ * __useFindSubdivisionsQuery__
+ * 
+ * To run a query within a React component, call `useFindSubdivisionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindSubdivisionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useFindSubdivisionsQuery({
+ *  variables: {
+ *    input: // value for 'input'
+ *  },
+ * });
+  */
+export function useFindSubdivisionsQuery(baseOptions: Apollo.QueryHookOptions<FindSubdivisionsQuery, FindSubdivisionsQueryVariables>) {
+  return Apollo.useQuery<FindSubdivisionsQuery, FindSubdivisionsQueryVariables>(FindSubdivisionsQueryDocument, baseOptions);
+}
+export function useFindSubdivisionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindSubdivisionsQuery, FindSubdivisionsQueryVariables>) {
+  return Apollo.useLazyQuery<FindSubdivisionsQuery, FindSubdivisionsQueryVariables>(FindSubdivisionsQueryDocument, baseOptions);
+}
+export type FindSubdivisionsQueryHookResult = ReturnType<typeof useFindSubdivisionsQuery>;
+export type FindSubdivisionsLazyQueryHookResult = ReturnType<typeof useFindSubdivisionsLazyQuery>;
+export type FindSubdivisionsQueryResult = Apollo.QueryResult<FindSubdivisionsQuery, FindSubdivisionsQueryVariables>;
+export const FindCountriesQueryDocument = gql`
+    query FindCountriesQuery($input: FilterInput!) {
+  findCountries(input: $input) {
+    nodes {
+      code
+      ...ConceptProps
+    }
+    totalElements
+  }
+}
+    ${ConceptPropsFragmentDoc}`;
+/**
+ * __useFindCountriesQuery__
+ * 
+ * To run a query within a React component, call `useFindCountriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindCountriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useFindCountriesQuery({
+ *  variables: {
+ *    input: // value for 'input'
+ *  },
+ * });
+  */
+export function useFindCountriesQuery(baseOptions: Apollo.QueryHookOptions<FindCountriesQuery, FindCountriesQueryVariables>) {
+  return Apollo.useQuery<FindCountriesQuery, FindCountriesQueryVariables>(FindCountriesQueryDocument, baseOptions);
+}
+export function useFindCountriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindCountriesQuery, FindCountriesQueryVariables>) {
+  return Apollo.useLazyQuery<FindCountriesQuery, FindCountriesQueryVariables>(FindCountriesQueryDocument, baseOptions);
+}
+export type FindCountriesQueryHookResult = ReturnType<typeof useFindCountriesQuery>;
+export type FindCountriesLazyQueryHookResult = ReturnType<typeof useFindCountriesLazyQuery>;
+export type FindCountriesQueryResult = Apollo.QueryResult<FindCountriesQuery, FindCountriesQueryVariables>;
+export const FindQuantityKindsQueryDocument = gql`
+    query FindQuantityKindsQuery($input: FilterInput!) {
+  findQuantityKinds(input: $input) {
+    nodes {
+      ...QuantityKindProps
+    }
+    totalElements
+  }
+}
+    ${QuantityKindPropsFragmentDoc}`;
+/**
+ * __useFindQuantityKindsQuery__
+ * 
+ * To run a query within a React component, call `useFindQuantityKindsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindQuantityKindsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useFindQuantityKindsQuery({
+ *  variables: {
+ *    input: // value for 'input'
+ *  },
+ * });
+  */
+export function useFindQuantityKindsQuery(baseOptions: Apollo.QueryHookOptions<FindQuantityKindsQuery, FindQuantityKindsQueryVariables>) {
+  return Apollo.useQuery<FindQuantityKindsQuery, FindQuantityKindsQueryVariables>(FindQuantityKindsQueryDocument, baseOptions);
+}
+export function useFindQuantityKindsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindQuantityKindsQuery, FindQuantityKindsQueryVariables>) {
+  return Apollo.useLazyQuery<FindQuantityKindsQuery, FindQuantityKindsQueryVariables>(FindQuantityKindsQueryDocument, baseOptions);
+}
+export type FindQuantityKindsQueryHookResult = ReturnType<typeof useFindQuantityKindsQuery>;
+export type FindQuantityKindsLazyQueryHookResult = ReturnType<typeof useFindQuantityKindsLazyQuery>;
+export type FindQuantityKindsQueryResult = Apollo.QueryResult<FindQuantityKindsQuery, FindQuantityKindsQueryVariables>;
+export const FindConceptsQueryDocument = gql`
+    query FindConceptsQuery($input: FilterInput!) {
+  findConcepts(input: $input) {
+    nodes {
+      ...ConceptDetailProps
+    }
+    totalElements
+  }
+}
+    ${ConceptDetailPropsFragmentDoc}`;
+/**
+ * __useFindConceptsQuery__
+ * 
+ * To run a query within a React component, call `useFindConceptsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindConceptsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useFindConceptsQuery({
+ *  variables: {
+ *   input: // value for 'input'
+ *  },
+ * });
+  */
+export function useFindConceptsQuery(baseOptions: Apollo.QueryHookOptions<FindConceptsQuery, FindConceptsQueryVariables>) {
+  return Apollo.useQuery<FindConceptsQuery, FindConceptsQueryVariables>(FindConceptsQueryDocument, baseOptions);
+}
+export function useFindConceptsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindConceptsQuery, FindConceptsQueryVariables>) {
+  return Apollo.useLazyQuery<FindConceptsQuery, FindConceptsQueryVariables>(FindConceptsQueryDocument, baseOptions);
+}
+export type FindConceptsQueryHookResult = ReturnType<typeof useFindConceptsQuery>;
+export type FindConceptsLazyQueryHookResult = ReturnType<typeof useFindConceptsLazyQuery>;
+export type FindConceptsQueryResult = Apollo.QueryResult<FindConceptsQuery, FindConceptsQueryVariables>;
+export const FindObjectsQueryDocument = gql`
+    query FindObjectsQuery($input: FilterInput!) {
+  findObjects(input: $input) {
+    nodes {
+      ...ObjectDetailProps
+    }
+    totalElements
+  }
+}
+    ${ObjectDetailPropsFragmentDoc}`;
+/**
+ * __useFindObjectsQuery__
+ * 
+ * To run a query within a React component, call `useFindObjectsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindObjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useFindObjectsQuery({
+ *  variables: {
+ *   input: // value for 'input'
+ *  },
+ * });
+  */
+export function useFindObjectsQuery(baseOptions: Apollo.QueryHookOptions<FindObjectsQuery, FindObjectsQueryVariables>) {
+  return Apollo.useQuery<FindObjectsQuery, FindObjectsQueryVariables>(FindObjectsQueryDocument, baseOptions);
+}
+export function useFindObjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindObjectsQuery, FindObjectsQueryVariables>) {
+  return Apollo.useLazyQuery<FindObjectsQuery, FindObjectsQueryVariables>(FindObjectsQueryDocument, baseOptions);
+}
+export type FindObjectsQueryHookResult = ReturnType<typeof useFindObjectsQuery>;
+export type FindObjectsLazyQueryHookResult = ReturnType<typeof useFindObjectsLazyQuery>;
+export type FindObjectsQueryResult = Apollo.QueryResult<FindObjectsQuery, FindObjectsQueryVariables>;
 export const GetDocumentEntryDocument = gql`
     query GetDocumentEntry($id: ID!) {
   node(id: $id) {
@@ -3046,39 +4529,39 @@ export function useGetPropertyEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetPropertyEntryQueryHookResult = ReturnType<typeof useGetPropertyEntryQuery>;
 export type GetPropertyEntryLazyQueryHookResult = ReturnType<typeof useGetPropertyEntryLazyQuery>;
 export type GetPropertyEntryQueryResult = Apollo.QueryResult<GetPropertyEntryQuery, GetPropertyEntryQueryVariables>;
-export const GetMeasureEntryDocument = gql`
-    query GetMeasureEntry($id: ID!) {
-  node: getMeasure(id: $id) {
-    ...MeasureDetailProps
+export const GetValueListEntryDocument = gql`
+    query GetValueListEntry($id: ID!) {
+  node: getValueList(id: $id) {
+    ...ValueListDetailProps
   }
 }
-    ${MeasureDetailPropsFragmentDoc}`;
+    ${ValueListDetailPropsFragmentDoc}`;
 
 /**
- * __useGetMeasureEntryQuery__
+ * __useGetValueListEntryQuery__
  *
- * To run a query within a React component, call `useGetMeasureEntryQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetMeasureEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetValueListEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetValueListEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetMeasureEntryQuery({
+ * const { data, loading, error } = useGetValueListEntryQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useGetMeasureEntryQuery(baseOptions: Apollo.QueryHookOptions<GetMeasureEntryQuery, GetMeasureEntryQueryVariables>) {
-  return Apollo.useQuery<GetMeasureEntryQuery, GetMeasureEntryQueryVariables>(GetMeasureEntryDocument, baseOptions);
+export function useGetValueListEntryQuery(baseOptions: Apollo.QueryHookOptions<GetValueListEntryQuery, GetValueListEntryQueryVariables>) {
+  return Apollo.useQuery<GetValueListEntryQuery, GetValueListEntryQueryVariables>(GetValueListEntryDocument, baseOptions);
 }
-export function useGetMeasureEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMeasureEntryQuery, GetMeasureEntryQueryVariables>) {
-  return Apollo.useLazyQuery<GetMeasureEntryQuery, GetMeasureEntryQueryVariables>(GetMeasureEntryDocument, baseOptions);
+export function useGetValueListEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetValueListEntryQuery, GetValueListEntryQueryVariables>) {
+  return Apollo.useLazyQuery<GetValueListEntryQuery, GetValueListEntryQueryVariables>(GetValueListEntryDocument, baseOptions);
 }
-export type GetMeasureEntryQueryHookResult = ReturnType<typeof useGetMeasureEntryQuery>;
-export type GetMeasureEntryLazyQueryHookResult = ReturnType<typeof useGetMeasureEntryLazyQuery>;
-export type GetMeasureEntryQueryResult = Apollo.QueryResult<GetMeasureEntryQuery, GetMeasureEntryQueryVariables>;
+export type GetValueListEntryQueryHookResult = ReturnType<typeof useGetValueListEntryQuery>;
+export type GetValueListEntryLazyQueryHookResult = ReturnType<typeof useGetValueListEntryLazyQuery>;
+export type GetValueListEntryQueryResult = Apollo.QueryResult<GetValueListEntryQuery, GetValueListEntryQueryVariables>;
 export const GetUnitEntryDocument = gql`
     query GetUnitEntry($id: ID!) {
   node: getUnit(id: $id) {
@@ -3115,10 +4598,10 @@ export type GetUnitEntryQueryResult = Apollo.QueryResult<GetUnitEntryQuery, GetU
 export const GetValueEntryDocument = gql`
     query GetValueEntry($id: ID!) {
   node: getValue(id: $id) {
-    ...ValueDetailProps
+    ...ValueProps
   }
 }
-    ${ValueDetailPropsFragmentDoc}`;
+    ${ValuePropsFragmentDoc}`;
 
 /**
  * __useGetValueEntryQuery__
@@ -3145,39 +4628,562 @@ export function useGetValueEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetValueEntryQueryHookResult = ReturnType<typeof useGetValueEntryQuery>;
 export type GetValueEntryLazyQueryHookResult = ReturnType<typeof useGetValueEntryLazyQuery>;
 export type GetValueEntryQueryResult = Apollo.QueryResult<GetValueEntryQuery, GetValueEntryQueryVariables>;
-export const GetCollectionEntryDocument = gql`
-    query GetCollectionEntry($id: ID!) {
-  node(id: $id) {
-    ...CollectionDetailProps
+export const GetTagEntryDocument = gql`
+    query GetTagEntry($id: ID!) {
+  node: getTag(id: $id) {
+    ...TagProps
   }
 }
-    ${CollectionDetailPropsFragmentDoc}`;
-
+    ${TagPropsFragmentDoc}`;
 /**
- * __useGetCollectionEntryQuery__
- *
- * To run a query within a React component, call `useGetCollectionEntryQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetCollectionEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * __useGetTagQueryQuery__
+ * 
+ * To run a query within a React component, call `useGetTagQueryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTagQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
- *
+ * 
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
+ * 
  * @example
- * const { data, loading, error } = useGetCollectionEntryQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
+ * const { data, loading, error } = useGetTagQueryQuery({
+ *  variables: {
+ *   id: // value for 'id'
+ *  },
  * });
- */
-export function useGetCollectionEntryQuery(baseOptions: Apollo.QueryHookOptions<GetCollectionEntryQuery, GetCollectionEntryQueryVariables>) {
-  return Apollo.useQuery<GetCollectionEntryQuery, GetCollectionEntryQueryVariables>(GetCollectionEntryDocument, baseOptions);
+  */
+export function useGetTagQuery(baseOptions: Apollo.QueryHookOptions<GetTagEntryQuery, GetTagEntryQueryVariables>) {
+  return Apollo.useQuery<GetTagEntryQuery, GetTagEntryQueryVariables>(GetTagEntryDocument, baseOptions);
 }
-export function useGetCollectionEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCollectionEntryQuery, GetCollectionEntryQueryVariables>) {
-  return Apollo.useLazyQuery<GetCollectionEntryQuery, GetCollectionEntryQueryVariables>(GetCollectionEntryDocument, baseOptions);
+export function useGetTagLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTagEntryQuery, GetTagEntryQueryVariables>) {
+  return Apollo.useLazyQuery<GetTagEntryQuery, GetTagEntryQueryVariables>(GetTagEntryDocument, baseOptions);
 }
-export type GetCollectionEntryQueryHookResult = ReturnType<typeof useGetCollectionEntryQuery>;
-export type GetCollectionEntryLazyQueryHookResult = ReturnType<typeof useGetCollectionEntryLazyQuery>;
-export type GetCollectionEntryQueryResult = Apollo.QueryResult<GetCollectionEntryQuery, GetCollectionEntryQueryVariables>;
+export type GetTagQueryHookResult = ReturnType<typeof useGetTagQuery>;
+export type GetTagLazyQueryHookResult = ReturnType<typeof useGetTagLazyQuery>;
+export type GetTagQueryResult = Apollo.QueryResult<GetTagEntryQuery, GetTagEntryQueryVariables>;
+export const GetOrderedValueEntryDocument = gql`
+    query GetOrderedValueEntry($id: ID!) {
+  node: getOrderedValue(id: $id) {
+    order 
+    orderedValue {
+      ...ValueProps
+    }
+  }
+}
+    ${ValuePropsFragmentDoc}`;
+/**
+ * __useGetOrderedValueEntryQuery__
+ * 
+ * To run a query within a React component, call `useGetOrderedValueEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOrderedValueEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useGetOrderedValueEntryQuery({
+ *  variables: {
+ *   id: // value for 'id'
+ *  },
+ * });
+  */
+export function useGetOrderedValueEntryQuery(baseOptions: Apollo.QueryHookOptions<GetOrderedValueEntryQuery, GetOrderedValueEntryQueryVariables>) {
+  return Apollo.useQuery<GetOrderedValueEntryQuery, GetOrderedValueEntryQueryVariables>(GetOrderedValueEntryDocument, baseOptions);
+}
+export function useGetOrderedValueEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOrderedValueEntryQuery, GetOrderedValueEntryQueryVariables>) {
+  return Apollo.useLazyQuery<GetOrderedValueEntryQuery, GetOrderedValueEntryQueryVariables>(GetOrderedValueEntryDocument, baseOptions);
+}
+export type GetOrderedValueEntryQueryHookResult = ReturnType<typeof useGetOrderedValueEntryQuery>;
+export type GetOrderedValueEntryLazyQueryHookResult = ReturnType<typeof useGetOrderedValueEntryLazyQuery>;
+export type GetOrderedValueEntryQueryResult = Apollo.QueryResult<GetOrderedValueEntryQuery, GetOrderedValueEntryQueryVariables>;
+export const GetRelationshipToSubjectEntryDocument = gql`
+    query GetRelationshipToSubjectEntry($id: ID!) {
+  node: getRelationshipToSubject(id: $id) {
+    ...RelationshipToSubjectDetailProps
+  }
+}
+    ${RelationshipToSubjectDetailPropsFragmentDoc}`;
+/**
+ * __useGetRelationshipToSubjectEntryQuery__
+ * 
+ * To run a query within a React component, call `useGetRelationshipToSubjectEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRelationshipToSubjectEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useGetRelationshipToSubjectEntryQuery({
+ *  variables: {
+ *   id: // value for 'id'
+ *  },
+ * });
+  */
+export function useGetRelationshipToSubjectEntryQuery(baseOptions: Apollo.QueryHookOptions<GetRelationshipToSubjectEntryQuery, GetRelationshipToSubjectEntryQueryVariables>) {
+  return Apollo.useQuery<GetRelationshipToSubjectEntryQuery, GetRelationshipToSubjectEntryQueryVariables>(GetRelationshipToSubjectEntryDocument, baseOptions);
+}
+export function useGetRelationshipToSubjectEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRelationshipToSubjectEntryQuery, GetRelationshipToSubjectEntryQueryVariables>) {
+  return Apollo.useLazyQuery<GetRelationshipToSubjectEntryQuery, GetRelationshipToSubjectEntryQueryVariables>(GetRelationshipToSubjectEntryDocument, baseOptions);
+}
+export type GetRelationshipToSubjectEntryQueryHookResult = ReturnType<typeof useGetRelationshipToSubjectEntryQuery>;
+export type GetRelationshipToSubjectEntryLazyQueryHookResult = ReturnType<typeof useGetRelationshipToSubjectEntryLazyQuery>;
+export type GetRelationshipToSubjectEntryQueryResult = Apollo.QueryResult<GetRelationshipToSubjectEntryQuery, GetRelationshipToSubjectEntryQueryVariables>;
+export const GetRelationshipToPropertyEntryDocument = gql`
+    query GetRelationshipToPropertyEntry($id: ID!) {
+  node: getRelationshipToProperty(id: $id) {
+    ...RelationshipToPropertyDetailProps
+  }
+}
+    ${RelationshipToPropertyDetailPropsFragmentDoc}`;
+/**
+ * __useGetRelationshipToPropertyEntryQuery__
+ * 
+ * To run a query within a React component, call `useGetRelationshipToPropertyEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRelationshipToPropertyEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useGetRelationshipToPropertyEntryQuery({
+ *  variables: {
+ *   id: // value for 'id'
+ *  },
+ * });
+  */
+export function useGetRelationshipToPropertyEntryQuery(baseOptions: Apollo.QueryHookOptions<GetRelationshipToPropertyEntryQuery, GetRelationshipToPropertyEntryQueryVariables>) {
+  return Apollo.useQuery<GetRelationshipToPropertyEntryQuery, GetRelationshipToPropertyEntryQueryVariables>(GetRelationshipToPropertyEntryDocument, baseOptions);
+}
+export function useGetRelationshipToPropertyEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRelationshipToPropertyEntryQuery, GetRelationshipToPropertyEntryQueryVariables>) {
+  return Apollo.useLazyQuery<GetRelationshipToPropertyEntryQuery, GetRelationshipToPropertyEntryQueryVariables>(GetRelationshipToPropertyEntryDocument, baseOptions);
+}
+export type GetRelationshipToPropertyEntryQueryHookResult = ReturnType<typeof useGetRelationshipToPropertyEntryQuery>;
+export type GetRelationshipToPropertyEntryLazyQueryHookResult = ReturnType<typeof useGetRelationshipToPropertyEntryLazyQuery>;
+export type GetRelationshipToPropertyEntryQueryResult = Apollo.QueryResult<GetRelationshipToPropertyEntryQuery, GetRelationshipToPropertyEntryQueryVariables>;
+export const GetLanguageEntryDocument = gql`
+    query GetLanguageEntry($id: ID!) {
+  node: getLanguage(id: $id) {
+    ...LanguageProps
+  }
+}
+    ${LanguagePropsFragmentDoc}`;
+/**
+ * __useGetLanguageEntryQuery__
+ * 
+ * To run a query within a React component, call `useGetLanguageEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLanguageEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useGetLanguageEntryQuery({
+ *  variables: {
+ *   id: // value for 'id'
+ *  },
+ * });
+  */
+export function useGetLanguageEntryQuery(baseOptions: Apollo.QueryHookOptions<GetLanguageEntryQuery, GetLanguageEntryQueryVariables>) {
+  return Apollo.useQuery<GetLanguageEntryQuery, GetLanguageEntryQueryVariables>(GetLanguageEntryDocument, baseOptions);
+}
+export function useGetLanguageEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLanguageEntryQuery, GetLanguageEntryQueryVariables>) {
+  return Apollo.useLazyQuery<GetLanguageEntryQuery, GetLanguageEntryQueryVariables>(GetLanguageEntryDocument, baseOptions);
+}
+export type GetLanguageEntryQueryHookResult = ReturnType<typeof useGetLanguageEntryQuery>;
+export type GetLanguageEntryLazyQueryHookResult = ReturnType<typeof useGetLanguageEntryLazyQuery>;
+export type GetLanguageEntryQueryResult = Apollo.QueryResult<GetLanguageEntryQuery, GetLanguageEntryQueryVariables>;
+export const GetLanguageByCodeEntryDocument = gql`
+    query GetLanguageByCodeEntry($code: String!) {
+  node: getLanguageByCode(code: $code) {
+    ...LanguageProps
+  }
+}
+    ${LanguagePropsFragmentDoc}`;
+/**
+ * __useGetLanguageByCodeEntryQuery__
+ * 
+ * To run a query within a React component, call `useGetLanguageByCodeEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLanguageByCodeEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useGetLanguageByCodeEntryQuery({
+ *  variables: {
+ *   code: // value for 'code'
+ *  },
+ * });
+  */
+export function useGetLanguageByCodeEntryQuery(baseOptions: Apollo.QueryHookOptions<GetLanguageByCodeEntryQuery, GetLanguageByCodeEntryQueryVariables>) {
+  return Apollo.useQuery<GetLanguageByCodeEntryQuery, GetLanguageByCodeEntryQueryVariables>(GetLanguageByCodeEntryDocument, baseOptions);
+}
+export function useGetLanguageByCodeEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLanguageByCodeEntryQuery, GetLanguageByCodeEntryQueryVariables>) {
+  return Apollo.useLazyQuery<GetLanguageByCodeEntryQuery, GetLanguageByCodeEntryQueryVariables>(GetLanguageByCodeEntryDocument, baseOptions);
+}
+export type GetLanguageByCodeEntryQueryHookResult = ReturnType<typeof useGetLanguageByCodeEntryQuery>;
+export type GetLanguageByCodeEntryLazyQueryHookResult = ReturnType<typeof useGetLanguageByCodeEntryLazyQuery>;
+export type GetLanguageByCodeEntryQueryResult = Apollo.QueryResult<GetLanguageByCodeEntryQuery, GetLanguageByCodeEntryQueryVariables>;
+export const GetDimensionEntryDocument = gql`
+    query GetDimensionEntry($id: ID!) {
+  node: getDimension(id: $id) {
+    ...DimensionProps
+  }
+}
+    ${DimensionPropsFragmentDoc}`;
+/**
+ * __useGetDimensionEntryQuery__
+ * 
+ * To run a query within a React component, call `useGetDimensionEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetDimensionEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useGetDimensionEntryQuery({
+ *  variables: {
+ *   id: // value for 'id'
+ *  },
+ * });
+  */
+export function useGetDimensionEntryQuery(baseOptions: Apollo.QueryHookOptions<GetDimensionEntryQuery, GetDimensionEntryQueryVariables>) {
+  return Apollo.useQuery<GetDimensionEntryQuery, GetDimensionEntryQueryVariables>(GetDimensionEntryDocument, baseOptions);
+}
+export function useGetDimensionEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetDimensionEntryQuery, GetDimensionEntryQueryVariables>) {
+  return Apollo.useLazyQuery<GetDimensionEntryQuery, GetDimensionEntryQueryVariables>(GetDimensionEntryDocument, baseOptions);
+}
+export type GetDimensionEntryQueryHookResult = ReturnType<typeof useGetDimensionEntryQuery>;
+export type GetDimensionEntryLazyQueryHookResult = ReturnType<typeof useGetDimensionEntryLazyQuery>;
+export type GetDimensionEntryQueryResult = Apollo.QueryResult<GetDimensionEntryQuery, GetDimensionEntryQueryVariables>;
+export const GetRationalEntryDocument = gql`
+    query GetRationalEntry($id: ID!) {
+  node: getRational(id: $id) {
+    ...RationalProps
+  }
+}
+    ${RationalPropsFragmentDoc}`;
+/**
+ * __useGetRationalEntryQuery__
+ * 
+ * To run a query within a React component, call `useGetRationalEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRationalEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useGetRationalEntryQuery({
+ *  variables: {
+ *   id: // value for 'id'
+ *  },
+ * });
+  */
+export function useGetRationalEntryQuery(baseOptions: Apollo.QueryHookOptions<GetRationalEntryQuery, GetRationalEntryQueryVariables>) {
+  return Apollo.useQuery<GetRationalEntryQuery, GetRationalEntryQueryVariables>(GetRationalEntryDocument, baseOptions);
+}
+export function useGetRationalEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRationalEntryQuery, GetRationalEntryQueryVariables>) {
+  return Apollo.useLazyQuery<GetRationalEntryQuery, GetRationalEntryQueryVariables>(GetRationalEntryDocument, baseOptions);
+}
+export type GetRationalEntryQueryHookResult = ReturnType<typeof useGetRationalEntryQuery>;
+export type GetRationalEntryLazyQueryHookResult = ReturnType<typeof useGetRationalEntryLazyQuery>;
+export type GetRationalEntryQueryResult = Apollo.QueryResult<GetRationalEntryQuery, GetRationalEntryQueryVariables>;
+export const GetMultiLanguageTextEntryDocument = gql`
+    query GetMultiLanguageTextEntry($id: ID!) {
+  node: getMultiLanguageText(id: $id) {
+    ...TranslationProps
+  }
+}
+    ${TranslationPropsFragmentDoc}`;
+/**
+ * __useGetMultiLanguageTextEntryQuery__
+ * 
+ * To run a query within a React component, call `useGetMultiLanguageTextEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMultiLanguageTextEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useGetMultiLanguageTextEntryQuery({
+ *  variables: {
+ *   id: // value for 'id'
+ *  },
+ * });
+  */
+export function useGetMultiLanguageTextEntryQuery(baseOptions: Apollo.QueryHookOptions<GetMultiLanguageTextEntryQuery, GetMultiLanguageTextEntryQueryVariables>) {
+  return Apollo.useQuery<GetMultiLanguageTextEntryQuery, GetMultiLanguageTextEntryQueryVariables>(GetMultiLanguageTextEntryDocument, baseOptions);
+}
+export function useGetMultiLanguageTextEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMultiLanguageTextEntryQuery, GetMultiLanguageTextEntryQueryVariables>) {
+  return Apollo.useLazyQuery<GetMultiLanguageTextEntryQuery, GetMultiLanguageTextEntryQueryVariables>(GetMultiLanguageTextEntryDocument, baseOptions);
+}
+export type GetMultiLanguageTextEntryQueryHookResult = ReturnType<typeof useGetMultiLanguageTextEntryQuery>;
+export type GetMultiLanguageTextEntryLazyQueryHookResult = ReturnType<typeof useGetMultiLanguageTextEntryLazyQuery>;
+export type GetMultiLanguageTextEntryQueryResult = Apollo.QueryResult<GetMultiLanguageTextEntryQuery, GetMultiLanguageTextEntryQueryVariables>;
+export const GetTextEntryDocument = gql`
+    query GetTextEntry($id: ID!) {
+  node: getText(id: $id) {
+    text
+    language {
+      ...LanguageProps
+    }
+  }
+}
+    ${LanguagePropsFragmentDoc}`;
+/**
+ * __useGetTextEntryQuery__
+ * 
+ * To run a query within a React component, call `useGetTextEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTextEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useGetTextEntryQuery({
+ *  variables: {
+ *   id: // value for 'id'
+ *  },
+ * });
+  */
+export function useGetTextEntryQuery(baseOptions: Apollo.QueryHookOptions<GetTextEntryQuery, GetTextEntryQueryVariables>) {
+  return Apollo.useQuery<GetTextEntryQuery, GetTextEntryQueryVariables>(GetTextEntryDocument, baseOptions);
+}
+export function useGetTextEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTextEntryQuery, GetTextEntryQueryVariables>) {
+  return Apollo.useLazyQuery<GetTextEntryQuery, GetTextEntryQueryVariables>(GetTextEntryDocument, baseOptions);
+}
+export type GetTextEntryQueryHookResult = ReturnType<typeof useGetTextEntryQuery>;
+export type GetTextEntryLazyQueryHookResult = ReturnType<typeof useGetTextEntryLazyQuery>;
+export type GetTextEntryQueryResult = Apollo.QueryResult<GetTextEntryQuery, GetTextEntryQueryVariables>;
+export const GetSymbolEntryDocument = gql`
+    query GetSymbolEntry($id: ID!) {
+  node: getSymbol(id: $id) {
+    ...SymbolProps
+  }
+}
+    ${SymbolPropsFragmentDoc}`;
+/**
+ * __useGetSymbolEntryQuery__
+ * 
+ * To run a query within a React component, call `useGetSymbolEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSymbolEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useGetSymbolEntryQuery({
+ *  variables: {
+ *   id: // value for 'id'
+ *  },
+ * });
+  */
+export function useGetSymbolEntryQuery(baseOptions: Apollo.QueryHookOptions<GetSymbolEntryQuery, GetSymbolEntryQueryVariables>) {
+  return Apollo.useQuery<GetSymbolEntryQuery, GetSymbolEntryQueryVariables>(GetSymbolEntryDocument, baseOptions);
+}
+export function useGetSymbolEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSymbolEntryQuery, GetSymbolEntryQueryVariables>) {
+  return Apollo.useLazyQuery<GetSymbolEntryQuery, GetSymbolEntryQueryVariables>(GetSymbolEntryDocument, baseOptions);
+}
+export type GetSymbolEntryQueryHookResult = ReturnType<typeof useGetSymbolEntryQuery>;
+export type GetSymbolEntryLazyQueryHookResult = ReturnType<typeof useGetSymbolEntryLazyQuery>;
+export type GetSymbolEntryQueryResult = Apollo.QueryResult<GetSymbolEntryQuery, GetSymbolEntryQueryVariables>;
+export const GetIntervalEntryDocument = gql`
+    query GetIntervalEntry($id: ID!) {
+  node: getInterval(id: $id) {
+    ...IntervalProps
+  }
+}
+    ${IntervalPropsFragmentDoc}`;
+/**
+ * __useGetIntervalEntryQuery__
+ * 
+ * To run a query within a React component, call `useGetIntervalEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetIntervalEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useGetIntervalEntryQuery({
+ *  variables: {
+ *   id: // value for 'id'
+ *  },
+ * });
+  */
+export function useGetIntervalEntryQuery(baseOptions: Apollo.QueryHookOptions<GetIntervalEntryQuery, GetIntervalEntryQueryVariables>) {
+  return Apollo.useQuery<GetIntervalEntryQuery, GetIntervalEntryQueryVariables>(GetIntervalEntryDocument, baseOptions);
+}
+export function useGetIntervalEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetIntervalEntryQuery, GetIntervalEntryQueryVariables>) {
+  return Apollo.useLazyQuery<GetIntervalEntryQuery, GetIntervalEntryQueryVariables>(GetIntervalEntryDocument, baseOptions);
+}
+export type GetIntervalEntryQueryHookResult = ReturnType<typeof useGetIntervalEntryQuery>;
+export type GetIntervalEntryLazyQueryHookResult = ReturnType<typeof useGetIntervalEntryLazyQuery>;
+export type GetIntervalEntryQueryResult = Apollo.QueryResult<GetIntervalEntryQuery, GetIntervalEntryQueryVariables>;
+export const GetDictionaryEntryDocument = gql`
+    query GetDictionaryEntry($id: ID!) {
+  node: getDictionary(id: $id) {
+    id
+    name {
+      TranslationProps
+    }
+  }
+}
+    ${TranslationPropsFragmentDoc}`;
+/**
+ * __useGetDictionaryEntryQuery__
+ * 
+ * To run a query within a React component, call `useGetDictionaryEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetDictionaryEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useGetDictionaryEntryQuery({
+ *  variables: {
+ *   id: // value for 'id'
+ *  },
+ * });
+  */
+export function useGetDictionaryEntryQuery(baseOptions: Apollo.QueryHookOptions<GetDictionaryEntryQuery, GetDictionaryEntryQueryVariables>) {
+  return Apollo.useQuery<GetDictionaryEntryQuery, GetDictionaryEntryQueryVariables>(GetDictionaryEntryDocument, baseOptions);
+}
+export function useGetDictionaryEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetDictionaryEntryQuery, GetDictionaryEntryQueryVariables>) {
+  return Apollo.useLazyQuery<GetDictionaryEntryQuery, GetDictionaryEntryQueryVariables>(GetDictionaryEntryDocument, baseOptions);
+}
+export type GetDictionaryEntryQueryHookResult = ReturnType<typeof useGetDictionaryEntryQuery>;
+export type GetDictionaryEntryLazyQueryHookResult = ReturnType<typeof useGetDictionaryEntryLazyQuery>;
+export type GetDictionaryEntryQueryResult = Apollo.QueryResult<GetDictionaryEntryQuery, GetDictionaryEntryQueryVariables>;
+export const GetSubdivisionEntryDocument = gql`
+    query GetSubdivisionEntry($id: ID!) {
+  node: getSubdivision(id: $id) {
+    code
+    ...ConceptDetailProps
+  }
+}
+    ${ConceptDetailPropsFragmentDoc}`;
+/**
+ * __useGetSubdivisionEntryQuery__
+ * 
+ * To run a query within a React component, call `useGetSubdivisionEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSubdivisionEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useGetSubdivisionEntryQuery({
+ *  variables: {
+ *   id: // value for 'id'
+ *  },
+ * });
+  */
+export function useGetSubdivisionEntryQuery(baseOptions: Apollo.QueryHookOptions<GetSubdivisionEntryQuery, GetSubdivisionEntryQueryVariables>) {
+  return Apollo.useQuery<GetSubdivisionEntryQuery, GetSubdivisionEntryQueryVariables>(GetSubdivisionEntryDocument, baseOptions);
+}
+export function useGetSubdivisionEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSubdivisionEntryQuery, GetSubdivisionEntryQueryVariables>) {
+  return Apollo.useLazyQuery<GetSubdivisionEntryQuery, GetSubdivisionEntryQueryVariables>(GetSubdivisionEntryDocument, baseOptions);
+}
+export type GetSubdivisionEntryQueryHookResult = ReturnType<typeof useGetSubdivisionEntryQuery>;
+export type GetSubdivisionEntryLazyQueryHookResult = ReturnType<typeof useGetSubdivisionEntryLazyQuery>;
+export type GetSubdivisionEntryQueryResult = Apollo.QueryResult<GetSubdivisionEntryQuery, GetSubdivisionEntryQueryVariables>;
+export const GetCountryEntryDocument = gql`
+    query GetCountryEntry($id: ID!) {
+  node: getCountry(id: $id) {
+    code
+    ...ConceptDetailProps
+  }
+}
+    ${ConceptDetailPropsFragmentDoc}`;
+/**
+ * __useGetCountryEntryQuery__
+ * 
+ * To run a query within a React component, call `useGetCountryEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCountryEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useGetCountryEntryQuery({
+ *  variables: {
+ *   id: // value for 'id'
+ *  },
+ * });
+  */
+export function useGetCountryEntryQuery(baseOptions: Apollo.QueryHookOptions<GetCountryEntryQuery, GetCountryEntryQueryVariables>) {
+  return Apollo.useQuery<GetCountryEntryQuery, GetCountryEntryQueryVariables>(GetCountryEntryDocument, baseOptions);
+}
+export function useGetCountryEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCountryEntryQuery, GetCountryEntryQueryVariables>) {
+  return Apollo.useLazyQuery<GetCountryEntryQuery, GetCountryEntryQueryVariables>(GetCountryEntryDocument, baseOptions);
+}
+export type GetCountryEntryQueryHookResult = ReturnType<typeof useGetCountryEntryQuery>;
+export type GetCountryEntryLazyQueryHookResult = ReturnType<typeof useGetCountryEntryLazyQuery>;
+export type GetCountryEntryQueryResult = Apollo.QueryResult<GetCountryEntryQuery, GetCountryEntryQueryVariables>;
+export const GetQuantityKindEntryDocument = gql`
+    query GetQuantityKindEntry($id: ID!) {
+  node: getQuantityKind(id: $id) {
+    ...QuantityKindProps
+  }
+}
+    ${QuantityKindPropsFragmentDoc}`;
+/**
+ * __useGetQuantityKindEntryQuery__
+ * 
+ * To run a query within a React component, call `useGetQuantityKindEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetQuantityKindEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useGetQuantityKindEntryQuery({
+ *  variables: {
+ *   id: // value for 'id'
+ *  },
+ * });
+  */
+export function useGetQuantityKindEntryQuery(baseOptions: Apollo.QueryHookOptions<GetQuantityKindEntryQuery, GetQuantityKindEntryQueryVariables>) {
+  return Apollo.useQuery<GetQuantityKindEntryQuery, GetQuantityKindEntryQueryVariables>(GetQuantityKindEntryDocument, baseOptions);
+}
+export function useGetQuantityKindEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetQuantityKindEntryQuery, GetQuantityKindEntryQueryVariables>) {
+  return Apollo.useLazyQuery<GetQuantityKindEntryQuery, GetQuantityKindEntryQueryVariables>(GetQuantityKindEntryDocument, baseOptions);
+}
+export type GetQuantityKindEntryQueryHookResult = ReturnType<typeof useGetQuantityKindEntryQuery>;
+export type GetQuantityKindEntryLazyQueryHookResult = ReturnType<typeof useGetQuantityKindEntryLazyQuery>;
+export type GetQuantityKindEntryQueryResult = Apollo.QueryResult<GetQuantityKindEntryQuery, GetQuantityKindEntryQueryVariables>;
+export const GetConceptEntryDocument = gql`
+    query GetConceptEntry($id: ID!) {
+  node: getConcept(id: $id) {
+    ...ConceptProps
+  }
+}
+    ${ConceptPropsFragmentDoc}`;
+/**
+ * __useGetConceptEntryQuery__
+ * 
+ * To run a query within a React component, call `useGetConceptEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetConceptEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useGetConceptEntryQuery({
+ *  variables: {
+ *   id: // value for 'id'
+ *  },
+ * });
+  */
+export function useGetConceptEntryQuery(baseOptions: Apollo.QueryHookOptions<GetConceptEntryQuery, GetConceptEntryQueryVariables>) {
+  return Apollo.useQuery<GetConceptEntryQuery, GetConceptEntryQueryVariables>(GetConceptEntryDocument, baseOptions);
+}
+export function useGetConceptEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetConceptEntryQuery, GetConceptEntryQueryVariables>) {
+  return Apollo.useLazyQuery<GetConceptEntryQuery, GetConceptEntryQueryVariables>(GetConceptEntryDocument, baseOptions);
+}
+export type GetConceptEntryQueryHookResult = ReturnType<typeof useGetConceptEntryQuery>;
+export type GetConceptEntryLazyQueryHookResult = ReturnType<typeof useGetConceptEntryLazyQuery>;
+export type GetConceptEntryQueryResult = Apollo.QueryResult<GetConceptEntryQuery, GetConceptEntryQueryVariables>;
+
 export const ProfileDocument = gql`
     query Profile {
   profile {
@@ -3212,16 +5218,6 @@ export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
 export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
 
 //__useExportCatalogItemsQuery__
-
-export function useExportCatalogItemsQuery(baseOptions?: Apollo.QueryHookOptions<FindExportCatalogItemsTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useQuery<FindExportCatalogItemsTreeQuery, FindVerificationTreeQueryVariables>(GetExportCatalogItems, baseOptions);
-}
-export function useExportCatalogItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindExportCatalogItemsTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindExportCatalogItemsTreeQuery, FindVerificationTreeQueryVariables>(GetExportCatalogItems, baseOptions);
-}
-export type ExportCatalogItemsQueryHookResult = ReturnType<typeof useExportCatalogItemsQuery>;
-export type ExportCatalogItemsLazyQueryHookResult = ReturnType<typeof useExportCatalogItemsLazyQuery>;
-export type ExportCatalogItemsQueryResult = Apollo.QueryResult<FindExportCatalogItemsTreeQuery, FindVerificationTreeQueryVariables>;
 export const GetExportCatalogItems = gql`
 query findExportCatalogItems {
   findExportCatalogItems {
@@ -3240,18 +5236,19 @@ query findExportCatalogItems {
     }
   }
 }`;
+export function useExportCatalogItemsQuery(baseOptions?: Apollo.QueryHookOptions<FindExportCatalogItemsTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindExportCatalogItemsTreeQuery, FindVerificationTreeQueryVariables>(GetExportCatalogItems, baseOptions);
+}
+export function useExportCatalogItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindExportCatalogItemsTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindExportCatalogItemsTreeQuery, FindVerificationTreeQueryVariables>(GetExportCatalogItems, baseOptions);
+}
+export type ExportCatalogItemsQueryHookResult = ReturnType<typeof useExportCatalogItemsQuery>;
+export type ExportCatalogItemsLazyQueryHookResult = ReturnType<typeof useExportCatalogItemsLazyQuery>;
+export type ExportCatalogItemsQueryResult = Apollo.QueryResult<FindExportCatalogItemsTreeQuery, FindVerificationTreeQueryVariables>;
+
 
 //__useExportCatalogItemsRelationshipsQuery__
 
-export function useExportCatalogItemsRelationshipsQuery(baseOptions?: Apollo.QueryHookOptions<FindExportCatalogItemsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useQuery<FindExportCatalogItemsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>(GetExportCatalogItemsRelationships, baseOptions);
-}
-export function useExportCatalogItemsRelationshipsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindExportCatalogItemsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindExportCatalogItemsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>(GetExportCatalogItemsRelationships, baseOptions);
-}
-export type ExportCatalogItemsRelationshipsQueryHookResult = ReturnType<typeof useExportCatalogItemsRelationshipsQuery>;
-export type ExportCatalogItemsRelationshipsLazyQueryHookResult = ReturnType<typeof useExportCatalogItemsRelationshipsLazyQuery>;
-export type ExportCatalogItemsRelationshipsQueryResult = Apollo.QueryResult<FindExportCatalogItemsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>;
 export const GetExportCatalogItemsRelationships = gql`
 query findExportCatalogItemsRelationships {
   findExportCatalogItemsRelationships {
@@ -3266,3 +5263,12 @@ query findExportCatalogItemsRelationships {
     }
   }
   }`;
+export function useExportCatalogItemsRelationshipsQuery(baseOptions?: Apollo.QueryHookOptions<FindExportCatalogItemsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindExportCatalogItemsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>(GetExportCatalogItemsRelationships, baseOptions);
+}
+export function useExportCatalogItemsRelationshipsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindExportCatalogItemsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindExportCatalogItemsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>(GetExportCatalogItemsRelationships, baseOptions);
+}
+export type ExportCatalogItemsRelationshipsQueryHookResult = ReturnType<typeof useExportCatalogItemsRelationshipsQuery>;
+export type ExportCatalogItemsRelationshipsLazyQueryHookResult = ReturnType<typeof useExportCatalogItemsRelationshipsLazyQuery>;
+export type ExportCatalogItemsRelationshipsQueryResult = Apollo.QueryResult<FindExportCatalogItemsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>;

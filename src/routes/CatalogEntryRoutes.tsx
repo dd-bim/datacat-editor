@@ -14,7 +14,7 @@ import {
   ClassEntity,
   DocumentEntity,
   GroupEntity,
-  MeasureEntity,
+  ValueListEntity,
   ModelEntity,
   PropertyEntity,
   PropertyGroupEntity,
@@ -96,10 +96,10 @@ export const catalogEntryRoutes = [
     ),
   },
   {
-    path: `/${MeasureEntity.path}/:id?`,
+    path: `/${ValueListEntity.path}/:id?`,
     element: (
       <CompositeCatalogEntryView
-        entryType={MeasureEntity}
+        entryType={ValueListEntity}
         renderForm={(id) => (
           <MeasureForm id={id} onDelete={dummyOnDelete} />
         )}

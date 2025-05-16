@@ -15,9 +15,9 @@ import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import { PropertyEntity, PropertyGroupEntity } from "../../domain";
 import FormView, { FormProps } from "./FormView";
-import TransferListView from "../TransferListView";
+// import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
-import AssignsPropertyWithValuesFormset from "./AssignsPropertyWithValuesFormset";
+// import AssignsPropertyWithValuesFormset from "./AssignsPropertyWithValuesFormset";
 import { T, useTranslate } from "@tolgee/react";
 
 export default function DomainClassForm(
@@ -79,38 +79,41 @@ export default function DomainClassForm(
     );
   };
 
-  const assignsCollectionsRelationships = entry.assignedCollections.nodes.map(
-    ({ id, relatedCollections }) => ({
-      relationshipId: id,
-      relatedItems: relatedCollections,
-    })
-  );
+  // const assignsCollectionsRelationships = entry.assignedCollections.nodes.map(
+  //   ({ id, relatedCollections }) => ({
+  //     relationshipId: id,
+  //     relatedItems: relatedCollections,
+  //   })
+  // );
 
-  const assignsPropertiesRelationships = entry.assignedProperties.nodes.map(
-    ({ id, relatedProperties }) => ({
-      relationshipId: id,
-      relatedItems: relatedProperties,
-    })
-  );
+  // const assignsPropertiesRelationships = entry.assignedProperties.nodes.map(
+  //   ({ id, relatedProperties }) => ({
+  //     relationshipId: id,
+  //     relatedItems: relatedProperties,
+  //   })
+  // );
 
   return (
     <FormView>
-      <NameFormSet catalogEntryId={id} names={entry.names} />
+      <NameFormSet 
+        catalogEntryId={id} 
+        names={entry.names} 
+      />
 
-      <DescriptionFormSet
+      {/* <DescriptionFormSet
         catalogEntryId={id}
         descriptions={entry.descriptions}
       />
 
-      <CommentFormSet catalogEntryId={id} comments={entry.comments} />
+      <CommentFormSet catalogEntryId={id} comments={entry.comments} /> */}
 
       <VersionFormSet
         id={id}
-        versionId={entry.versionId}
-        versionDate={entry.versionDate}
+        majorVersion={entry.majorVersion}
+        minorVersion={entry.minorVersion}
       />
 
-      <TransferListView
+      {/* <TransferListView
         title={
           <span>
             <T keyName={"class.TransferList"} />
@@ -194,7 +197,7 @@ export default function DomainClassForm(
         relatingRecords={
           entry?.collectedBy.nodes.map((node) => node.relatingCollection) ?? []
         }
-      />
+      /> */}
 
       <MetaFormSet entry={entry} />
 

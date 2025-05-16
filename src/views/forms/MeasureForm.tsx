@@ -1,9 +1,9 @@
 import React, {FC} from "react";
 import {
-    MeasureDetailPropsFragment,
+    ValuelistDetailPropsFragment,
     RelationshipRecordType,
     useDeleteEntryMutation,
-    useGetMeasureEntryQuery
+    useGetValueListEntryQuery
 } from "../../generated/types";
 import {Typography, Button} from "@mui/material";
 import {useSnackbar} from "notistack";
@@ -14,12 +14,12 @@ import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
-import TransferListView from "../TransferListView";
+// import TransferListView from "../TransferListView";
 import {UnitEntity, ValueEntity} from "../../domain";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import {T, useTranslate} from "@tolgee/react";
 
-const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
+const MeasureForm: FC<FormProps<ValuelistDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
     const {t} = useTranslate();
@@ -29,10 +29,10 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
         fetchPolicy: "network-only",
         variables: {id}
     });
-    let entry = data?.node as MeasureDetailPropsFragment | undefined;
+    let entry = data?.node as ValuelistDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation({
         update: cache => {
-            cache.evict({id: `XtdMeasureWithUnit:${id}`});
+            cache.evict({id: `XtdValueList:${id}`});
             cache.modify({
                 id: "ROOT_QUERY",
                 fields: {
@@ -48,7 +48,7 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
         }
     });
 
-    if (loading) return <Typography><T keyName="measure_form.loading">Lade Größe..</T></Typography>;
+    if (loading) return <Typography><T keyName="measure_form.loading">Lade Werteliste..</T></Typography>;
     if (error || !entry) return <Typography><T keyName="measure_form.error">Es ist ein Fehler aufgetreten..</T></Typography>;
 
     const handleOnUpdate = async () => {
@@ -58,19 +58,19 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
 
     const handleOnDelete = async () => {
         await deleteEntry({variables: {id}});
-        enqueueSnackbar(<T keyName="measure_form.delete_success">Größe gelöscht.</T>);
+        enqueueSnackbar(<T keyName="measure_form.delete_success">Werteliste gelöscht.</T>);
         onDelete?.();
     };
 
-    const assignsUnitsRelationships = entry.assignedUnits.nodes.map(({id, relatedUnits}) => ({
-        relationshipId: id,
-        relatedItems: relatedUnits
-    }));
+    // const assignsUnitsRelationships = entry.assignedUnits.nodes.map(({id, relatedUnits}) => ({
+    //     relationshipId: id,
+    //     relatedItems: relatedUnits
+    // }));
 
-    const assignsValuesRelationships = entry.assignedValues.nodes.map(({id, relatedValues}) => ({
-        relationshipId: id,
-        relatedItems: relatedValues
-    }));
+    // const assignsValuesRelationships = entry.assignedValues.nodes.map(({id, relatedValues}) => ({
+    //     relationshipId: id,
+    //     relatedItems: relatedValues
+    // }));
 
     return (
         <FormView>
@@ -78,7 +78,7 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
                 catalogEntryId={id}
                 names={entry.names}
             />
-
+{/* 
             <DescriptionFormSet
                 catalogEntryId={id}
                 descriptions={entry.descriptions}
@@ -87,15 +87,15 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
             <CommentFormSet
                 catalogEntryId={id}
                 comments={entry.comments}
-            />
+            /> */}
 
             <VersionFormSet
                 id={id}
-                versionId={entry.versionId}
-                versionDate={entry.versionDate}
+                majorVersion={entry.majorVersion}
+                minorVersion={entry.minorVersion}
             />
 
-            <TransferListView
+            {/* <TransferListView
                 title={<span><T keyName="measure_form.applicable_units"></T></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.AssignsUnits}
@@ -131,7 +131,7 @@ const MeasureForm: FC<FormProps<MeasureDetailPropsFragment>> = (props) => {
                 title={<span><b><T keyName="property.titlePlural">Merkmale</T></b>, <T keyName="measure_form.quantified_properties">die durch diese Größe quantifiziert werden</T></span>}
                 emptyMessage={t("measure_form.no_quantified_properties")}
                 relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingProperty) ?? []}
-            />
+            /> */}
 
             <MetaFormSet entry={entry}/>
 

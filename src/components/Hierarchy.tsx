@@ -6,7 +6,7 @@ import { SimpleTreeView } from "@mui/x-tree-view";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { StyledTreeItem } from "./StyledTreeItem";
-import { ItemPropsFragment } from "../generated/types";
+import { ObjectPropsFragment } from "../generated/types";
 
 // Replace makeStyles with styled component
 const StyledTreeView = styled(SimpleTreeView)({
@@ -18,9 +18,9 @@ const StyledTreeView = styled(SimpleTreeView)({
 });
 
 type HierarchyProps = {
-  leaves: ItemPropsFragment[];
+  leaves: ObjectPropsFragment[];
   paths: string[][];
-  onSelect(selection: ItemPropsFragment): void;
+  onSelect(selection: ObjectPropsFragment): void;
   defaultCollapsed?: boolean; // New prop to control default collapsed state
 };
 
@@ -95,12 +95,12 @@ export const Hierarchy: FC<HierarchyProps> = React.memo(({
   // Implement node virtualization for better performance with large trees
   // Create a wrapper function that can handle both item selections and react events
   const handleItemSelect = useCallback((
-    itemOrEvent: ItemPropsFragment | React.SyntheticEvent<HTMLLIElement, Event>
+    itemOrEvent: ObjectPropsFragment | React.SyntheticEvent<HTMLLIElement, Event>
   ) => {
     // If it's an event (React event), do nothing or add event handling if needed
     // If it's an item (has typical ItemPropsFragment properties), pass it to onSelect
     if ('id' in itemOrEvent && !('nativeEvent' in itemOrEvent)) {
-      onSelect(itemOrEvent as ItemPropsFragment);
+      onSelect(itemOrEvent as ObjectPropsFragment);
     }
   }, [onSelect]);
 

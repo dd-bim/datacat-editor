@@ -3,7 +3,7 @@ import { FC, useState } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { SimpleTreeView } from "@mui/x-tree-view";
 import { StyledTreeItem } from "./StyledTreeItem";
-import { ItemPropsFragment } from "../generated/types";
+import { ObjectPropsFragment } from "../generated/types";
 import * as React from "react";
 
 // Importiere alle benötigten Hooks:
@@ -18,15 +18,15 @@ const useVerificationTreeStyles = makeStyles({
 });
 
 export type VerificationProps = {
-  leaves: ItemPropsFragment[];
+  leaves: ObjectPropsFragment[];
   paths: string[][];
-  onSelect(selection: ItemPropsFragment): void;
+  onSelect(selection: ObjectPropsFragment): void;
 };
 
 /**
  * Die generische Komponente, die den TreeView anhand eines übergebenen Hooks (useFindHook) rendert.
  */
-const VerificationTree: FC<VerificationProps & { useFindHook: (options: VerificationProps) => { nodes: any[], lookupMap: { [key: string]: ItemPropsFragment } } }> = ({
+const VerificationTree: FC<VerificationProps & { useFindHook: (options: VerificationProps) => { nodes: any[], lookupMap: { [key: string]: ObjectPropsFragment } } }> = ({
   leaves,
   paths,
   onSelect,

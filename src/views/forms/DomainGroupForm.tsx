@@ -1,9 +1,7 @@
 import React, {FC} from "react";
 import {
-    CollectionDetailPropsFragment,
     RelationshipRecordType,
-    useDeleteEntryMutation,
-    useGetCollectionEntryQuery
+    useDeleteEntryMutation
 } from "../../generated/types";
 import {Button, Typography} from "@mui/material";
 import {useSnackbar} from "notistack";
@@ -15,7 +13,7 @@ import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
 import MetaFormSet from "../../components/forms/MetaFormSet";
 import {ClassEntity} from "../../domain";
-import TransferListView from "../TransferListView";
+// import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import {T, useTranslate} from "@tolgee/react";
 
@@ -62,10 +60,10 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
         enqueueSnackbar(<T keyName="domain_group_form.update_success">Update erfolgreich.</T>);
     }
 
-    const collectsRelationships = entry.collects.nodes.map(({id, relatedThings}) => ({
-        relationshipId: id,
-        relatedItems: relatedThings
-    }));
+    // const collectsRelationships = entry.collects.nodes.map(({id, relatedThings}) => ({
+    //     relationshipId: id,
+    //     relatedItems: relatedThings
+    // }));
 
     return (
         <FormView>
@@ -86,11 +84,11 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
 
             <VersionFormSet
                 id={id}
-                versionId={entry.versionId}
-                versionDate={entry.versionDate}
+                majorVersion={entry.majorVersion}
+                minorVersion={entry.minorVersion}
             />
 
-            <TransferListView
+            {/* <TransferListView
                 title={<span><T keyName={"group.TransferList"}/> <b><T keyName={"group.TransferList2"}/></b></span>}
                 description={t("domain_group_form.grouped_classes_description", "Klassen, die dieser Gruppe zugeordnet sind.")}
                 relatingItemId={id}
@@ -112,7 +110,7 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
                 title={<span><b><T keyName="model.titlePlural"/></b>, <T keyName="domain_group_form.domain_models_using_group">die diese Gruppe anwenden</T></span>}
                 emptyMessage={t("domain_group_form.no_domain_models_using_group", "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben")}
                 relatingRecords={entry?.collectedBy.nodes.map(node => node.relatingCollection) ?? []}
-            />
+            /> */}
 
             <MetaFormSet entry={entry}/>
 

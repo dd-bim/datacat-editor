@@ -1,9 +1,9 @@
 import React from "react";
 import {
-    CollectionDetailPropsFragment,
     RelationshipRecordType,
     useDeleteEntryMutation,
-    useGetCollectionEntryQuery
+    useGetSubjectEntryQuery,
+    SubjectDetailPropsFragment
 } from "../../generated/types";
 import {Typography, Button} from "@mui/material";
 import {useSnackbar} from "notistack";
@@ -15,22 +15,22 @@ import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import {GroupEntity} from "../../domain";
 import FormView, {FormProps} from "./FormView";
-import TransferListView from "../TransferListView";
+// import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import {T, useTranslate} from "@tolgee/react";
 
 
-function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
+function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
     const { t } = useTranslate(); // Moved to top level
 
     // fetch domain model
-    const {loading, error, data, refetch} = useGetCollectionEntryQuery({
+    const {loading, error, data, refetch} = useGetSubjectEntryQuery({
         fetchPolicy: "network-only",
         variables: {id}
     });
-    let entry = data?.node as CollectionDetailPropsFragment | undefined;
+    let entry = data?.node as SubjectDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation({
         update: cache => {
             cache.evict({id: `XtdBag:${id}`});
@@ -63,10 +63,10 @@ function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
         onDelete?.();
     };
 
-    const collectsRelationships = entry.collects.nodes.map(({id, relatedThings}) => ({
-        relationshipId: id,
-        relatedItems: relatedThings
-    }));
+    // const collectsRelationships = entry.collects.nodes.map(({id, relatedThings}) => ({
+    //     relationshipId: id,
+    //     relatedItems: relatedThings
+    // }));
 
     return (
         <FormView>
@@ -75,7 +75,7 @@ function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
                 names={entry.names}
             />
 
-            <DescriptionFormSet
+            {/* <DescriptionFormSet
                 catalogEntryId={id}
                 descriptions={entry.descriptions}
             />
@@ -83,15 +83,15 @@ function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
             <CommentFormSet
                 catalogEntryId={id}
                 comments={entry.comments}
-            />
+            /> */}
 
             <VersionFormSet
                 id={id}
-                versionId={entry.versionId}
-                versionDate={entry.versionDate}
+                majorVersion={entry.majorVersion}
+                minorVersion={entry.minorVersion}
             />
 
-            <TransferListView
+            {/* <TransferListView
                 title={<Typography><T keyName={"model.TransferList"}/><b><T keyName={"model.TransferList2"}/></b></Typography>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.Collects}
@@ -103,13 +103,13 @@ function DomainModelForm(props: FormProps<CollectionDetailPropsFragment>) {
                 onCreate={handleOnUpdate}
                 onUpdate={handleOnUpdate}
                 onDelete={handleOnUpdate}
-            />
+            /> */}
 
-            <RelatingRecordsFormSet
+            {/* <RelatingRecordsFormSet
                 title={<Typography><b><T keyName="document.titlePlural"/></b>, <T keyName="domain_model_form.reference_documents">die dieses Fachmodell beschreiben</T></Typography>}
                 emptyMessage={t('domain_model_form.no_reference_documents')}
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
-            />
+            /> */}
 
             <MetaFormSet entry={entry}/>
 

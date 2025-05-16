@@ -15,8 +15,8 @@ import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
-import {MeasureEntity} from "../../domain";
-import TransferListView from "../TransferListView";
+import {ValueListEntity} from "../../domain";
+// import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import { T, useTranslate } from "@tolgee/react";
 
@@ -63,10 +63,10 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
         onDelete?.();
     };
 
-    const assignsMeasuresRelationships = entry.assignedMeasures.nodes.map(({id, relatedMeasures}) => ({
-        relationshipId: id,
-        relatedItems: relatedMeasures
-    }));
+    // const assignsMeasuresRelationships = entry.assignedMeasures.nodes.map(({id, relatedMeasures}) => ({
+    //     relationshipId: id,
+    //     relatedItems: relatedMeasures
+    // }));
 
     return (
         <FormView>
@@ -75,7 +75,7 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
                 names={entry.names}
             />
 
-            <DescriptionFormSet
+            {/* <DescriptionFormSet
                 catalogEntryId={id}
                 descriptions={entry.descriptions}
             />
@@ -83,14 +83,14 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
             <CommentFormSet
                 catalogEntryId={id}
                 comments={entry.comments}
-            />
+            /> */}
 
             <VersionFormSet
                 id={id}
-                versionId={entry.versionId}
-                versionDate={entry.versionDate}
+                majorVersion={entry.majorVersion}
+                minorVersion={entry.minorVersion}
             />
-
+{/* 
             <TransferListView
                 title={<span><b><T keyName="measure.title">Größe</T></b> <T keyName="property_form.property_measure">des Merkmals</T></span>}
                 relatingItemId={id}
@@ -120,7 +120,7 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
                 title={<span><b><T keyName="class.titlePlural">Klassen</T></b>, <T keyName="property_form.assigned_classes">denen dieses Merkmal direkt zugewiesen wurde</T></span>}
                 emptyMessage={t("property_form.no_assigned_classes", "Das Merkmal wurde keiner Klasse direkt zugewiesen")}
                 relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingObject) ?? []}
-            />
+            /> */}
 
             <MetaFormSet entry={entry}/>
 

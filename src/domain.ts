@@ -53,7 +53,7 @@ export const ModelEntity: Entity = {
   tags: ["6f96aaa7-e08f-49bb-ac63-93061d4c5db2"],
   get title() { return tolgee.t("model.title"); },
   get titlePlural() { return tolgee.t("model.titlePlural"); },
-  recordType: CatalogRecordType.Bag,
+  recordType: CatalogRecordType.Subject,
   path: "model",
   Icon: DomainModelIcon,
   export: true
@@ -63,7 +63,7 @@ export const GroupEntity: Entity = {
   tags: ["5997da9b-a716-45ae-84a9-e2a7d186bcf9"],
   get title() { return tolgee.t("group.title"); },
   get titlePlural() { return tolgee.t("group.titlePlural"); },
-  recordType: CatalogRecordType.Bag,
+  recordType: CatalogRecordType.Subject,
   path: "group",
   Icon: DomainGroupIcon,
   export: true
@@ -83,7 +83,7 @@ export const DataTemplateEntity: Entity = {
   tags: ["576db5b0-9cbb-4da5-9132-3eda2b2c579b"],
   get title() { return tolgee.t("dataTemplate.title"); },
   get titlePlural() { return tolgee.t("dataTemplate.titlePlural"); },
-  recordType: CatalogRecordType.Bag,
+  recordType: CatalogRecordType.Subject,
   path: "data-template",
   Icon: DataTemplateIcon
 };
@@ -92,7 +92,7 @@ export const PropertyGroupEntity: Entity = {
   tags: ["a27c8e3c-5fd1-47c9-806a-6ded070efae8"],
   get title() { return tolgee.t("propertyGroup.title"); },
   get titlePlural() { return tolgee.t("propertyGroup.titlePlural"); },
-  recordType: CatalogRecordType.Nest,
+  recordType: CatalogRecordType.Subject,
   path: "property-group",
   Icon: PropertyGroupIcon,
   export: true
@@ -108,12 +108,12 @@ export const PropertyEntity: Entity = {
   export: true
 };
 
-export const MeasureEntity: Entity = {
+export const ValueListEntity: Entity = {
   tags: ["57172977-a42f-4e05-8109-cd906ec7f43c"],
-  get title() { return tolgee.t("measure.title"); },
-  get titlePlural() { return tolgee.t("measure.titlePlural"); },
-  recordType: CatalogRecordType.Measure,
-  path: "measure",
+  get title() { return tolgee.t("valuelist.title"); },
+  get titlePlural() { return tolgee.t("valuelist.titlePlural"); },
+  recordType: CatalogRecordType.ValueList,
+  path: "valuelist",
   Icon: MeasureIcon,
   export: true
 };
@@ -146,7 +146,7 @@ export const Domain = [
   DataTemplateEntity,
   PropertyGroupEntity,
   PropertyEntity,
-  MeasureEntity,
+  ValueListEntity,
   UnitEntity,
   ValueEntity
 ];

@@ -1,4 +1,3 @@
-# v
 fragment UserProfile on Profile {
     username
     firstName
@@ -7,7 +6,6 @@ fragment UserProfile on Profile {
     organization
 }
 
-# v?
 fragment PageProps on PageInfo {
     totalPages
     pageNumber
@@ -15,14 +13,14 @@ fragment PageProps on PageInfo {
     hasPrevious
 }
 
-# v
+
 # fragment LanguageProps on Language {
 #     id
 #     languageTag
 #     displayCountry(input: { languageTag: "de" })
 #     displayLanguage(input: { languageTag: "de" })
 # }
-fragment LanguageProps on Language {
+fragment LanguageProps on XtdLanguage {
     id
     code
     englishName
@@ -46,22 +44,9 @@ fragment TranslationProps on Translation {
     }
 }
 
-# v
 fragment TagProps on Tag {
     id
     name
-}
-
-fragment ItemProps on Concept {
-    __typename
-    id
-    recordType
-    name(input: { languageTags: ["de-DE", "en-US"] })
-    description(input: { languageTags: ["de-DE", "en-US"] })
-    comment(input: { languageTags: ["de-DE", "en-US"] })
-    tags {
-        ...TagProps
-    }
 }
 
 fragment SearchResultProps on SearchResult {
@@ -76,98 +61,226 @@ fragment SearchResultProps on SearchResult {
     }
 }
 
-fragment ConceptProps on Concept {
-    ...ItemProps
-    versionId
-    versionDate
+# fragment MetaProps on Concept {
+#     created
+#     createdBy
+#     lastModified
+#     lastModifiedBy
+# }
+fragment MetaProps on XtdRoot {
+    created
+    createdBy
+    lastModified
+    lastModifiedBy
+}
+
+# fragment ItemProps on Concept {
+#     __typename
+#     id
+#     recordType
+#     name(input: { languageTags: ["de-DE", "en-US"] })
+#     description(input: { languageTags: ["de-DE", "en-US"] })
+#     comment(input: { languageTags: ["de-DE", "en-US"] })
+#     tags {
+#         ...TagProps
+#     }
+# }
+fragment ObjectProps on XtdObject {
+    __typename
+    id
+    recordType
+    majorVersion
+    minorVersion
+    dateOfCreation
+    status
+    name(input: { languageTags: ["de-DE", "en-US"] })
     names {
         ...TranslationProps
     }
-    descriptions {
-        ...TranslationProps
-    }
+    comment(input: { languageTags: ["de-DE", "en-US"] })
     comments {
         ...TranslationProps
     }
+    tags {
+        ...TagProps
+    }
+    dictionary {
+        id
+        name(input: { languageTags: ["de-DE", "en-US"] })
+    }
+    replacedObjects {
+        ...ObjectProps
+    }
+    replacingObjects {
+        ...ObjectProps
+    }
+    deprecationExplanation {
+        ...TranslationProps
+    }
 }
 
+# fragment ObjectDetailProps on XtdObject {
+#     ...MetaProps
+#     ...ConceptProps
+#     documentedBy {
+#         nodes {
+#             ...DocumentsProps
+#         }
+#     }
+# }
+fragment ObjectDetailProps on XtdObject {
+    ...MetaProps
+    ...ObjectProps
+}
+
+# fragment ConceptProps on Concept {
+#     ...ItemProps
+#     versionId
+#     versionDate
+#     names {
+#         ...TranslationProps
+#     }
+#     descriptions {
+#         ...TranslationProps
+#     }
+#     comments {
+#         ...TranslationProps
+#     }
+# }
+fragment ConceptProps on XtdConcept {
+    ...ObjectProps
+    description(input: { languageTags: ["de-DE", "en-US"] })
+    descriptions {
+        ...TranslationProps
+    }
+    definition {
+        ...TranslationProps
+    }
+    examples {
+        ...TranslationProps
+    }
+    languageOfCreator {
+        ...LanguageProps
+    }
+    referenceDocuments {
+        ...ExternalDocumentProps
+    }
+    similarTo {
+        ...ConceptProps
+    }
+    countryOfOrigin {
+        code
+        ...ObjectProps
+    }
+}
+
+fragment ConceptDetailProps on XtdConcept {
+    ...MetaProps
+    ...ConceptProps
+}
+
+# fragment ExternalDocumentProps on XtdExternalDocument {
+#     ...ConceptProps
+# }
 fragment ExternalDocumentProps on XtdExternalDocument {
     ...ConceptProps
+    uri
+    author
+    isbn
+    publisher
+    dateOfPublication
+    languages {
+        ...LanguageProps
+    }
 }
 
+# fragment ValueProps on XtdValue {
+#     ...ConceptProps
+#     valueType
+#     valueRole
+#     nominalValue
+#     toleranceType
+#     lowerTolerance
+#     upperTolerance
+# }
 fragment ValueProps on XtdValue {
-    ...ConceptProps
-    valueType
-    valueRole
+    ...ObjectProps
     nominalValue
-    toleranceType
-    lowerTolerance
-    upperTolerance
 }
 
-fragment CollectionProps on XtdCollection {
-    ...ConceptProps
-}
+# fragment CollectionProps on XtdCollection {
+#     ...ConceptProps
+# }
 
-fragment RelationshipProps on XtdRelationship {
-    ...ConceptProps
-}
+# fragment RelationshipProps on XtdRelationship {
+#     ...ConceptProps
+# }
 
-fragment DocumentsProps on XtdRelDocuments {
-    ...RelationshipProps
-    relatingDocument {
-        ...ItemProps
-    }
-    relatedThings {
-        ...ItemProps
-    }
-}
-
-fragment CollectsProps on XtdRelCollects {
-    ...RelationshipProps
-    relatingCollection {
-        ...ItemProps
-        tags { ...TagProps }
-    }
-    relatedThings {
-        ...ItemProps
-    }
-}
-
-
-fragment AssignsCollectionsProps on XtdRelAssignsCollections {
-    ...RelationshipProps
-    relatingObject {
-        ...ItemProps
-    }
-    relatedCollections {
-        ...ItemProps
-    }
-}
-
-fragment AssignsPropertiesProps on XtdRelAssignsProperties {
-    ...RelationshipProps
-    relatingObject {
-        ...ItemProps
-    }
-    relatedProperties {
-        ...ItemProps
-    }
-}
-
-fragment AssignsMeasuresProps on XtdRelAssignsMeasures {
-    ...RelationshipProps
-    relatingProperty {
-        ...ItemProps
-    }
-    relatedMeasures {
-        ...ItemProps
-    }
-}
-
-# fragment AssignsPropertyWithValuesProps on XtdRelAssignsPropertyWithValues {
+# fragment DocumentsProps on XtdRelDocuments {
 #     ...RelationshipProps
-#     relatedProperty {
+#     relatingDocument {
+#         ...ItemProps
+#     }
+#     relatedThings {
+#         ...ItemProps
+#     }
+# }
+
+# fragment CollectsProps on XtdRelCollects {
+#     ...RelationshipProps
+#     relatingCollection {
+#         ...ItemProps
+#         tags { ...TagProps }
+#     }
+#     relatedThings {
+#         ...ItemProps
+#     }
+# }
+
+
+# fragment AssignsCollectionsProps on XtdRelAssignsCollections {
+#     ...RelationshipProps
+#     relatingObject {
+#         ...ItemProps
+#     }
+#     relatedCollections {
+#         ...ItemProps
+#     }
+# }
+
+# fragment AssignsPropertiesProps on XtdRelAssignsProperties {
+#     ...RelationshipProps
+#     relatingObject {
+#         ...ItemProps
+#     }
+#     relatedProperties {
+#         ...ItemProps
+#     }
+# }
+
+# fragment AssignsMeasuresProps on XtdRelAssignsMeasures {
+#     ...RelationshipProps
+#     relatingProperty {
+#         ...ItemProps
+#     }
+#     relatedMeasures {
+#         ...ItemProps
+#     }
+# }
+
+# fragment AssignsUnitsProps on XtdRelAssignsUnits {
+#     ...RelationshipProps
+#     relatingMeasure {
+#         ...ItemProps
+#     }
+#     relatedUnits {
+#         ...ItemProps
+#     }
+# }
+
+# fragment AssignsValuesProps on XtdRelAssignsValues {
+#     ...RelationshipProps
+#     relatingMeasure {
 #         ...ItemProps
 #     }
 #     relatedValues {
@@ -175,184 +288,343 @@ fragment AssignsMeasuresProps on XtdRelAssignsMeasures {
 #     }
 # }
 
-fragment AssignsUnitsProps on XtdRelAssignsUnits {
-    ...RelationshipProps
-    relatingMeasure {
-        ...ItemProps
-    }
-    relatedUnits {
-        ...ItemProps
-    }
-}
-
-fragment AssignsValuesProps on XtdRelAssignsValues {
-    ...RelationshipProps
-    relatingMeasure {
-        ...ItemProps
-    }
-    relatedValues {
-        ...ItemProps
-    }
-}
-
-fragment MetaProps on Concept {
-    created
-    createdBy
-    lastModified
-    lastModifiedBy
-}
-
+# fragment ExternalDocumentDetailProps on XtdExternalDocument {
+#     ...MetaProps
+#     ...ExternalDocumentProps
+#     documents {
+#         nodes {
+#             ...DocumentsProps
+#         }
+#     }
+# }
 fragment ExternalDocumentDetailProps on XtdExternalDocument {
     ...MetaProps
     ...ExternalDocumentProps
     documents {
-        nodes {
-            ...DocumentsProps
-        }
+            ...ConceptProps
     }
 }
 
-fragment ObjectDetailProps on XtdObject {
-    ...MetaProps
-    ...ConceptProps
-    documentedBy {
-        nodes {
-            ...DocumentsProps
-        }
-    }
-}
-
+# fragment SubjectDetailProps on XtdSubject {
+#     ...ObjectDetailProps
+#     assignedCollections {
+#         nodes {
+#             ...AssignsCollectionsProps
+#         }
+#     }
+#     assignedProperties {
+#         nodes {
+#             ...AssignsPropertiesProps
+#         }
+#     }
+#     # assignedPropertiesWithValues {
+#     #     nodes {
+#     #         ...AssignsPropertyWithValuesProps
+#     #     }
+#     # }
+#     collectedBy {
+#         nodes {
+#             ...CollectsProps
+#         }
+#     }
+#     properties {
+#         id
+#         name
+#         description
+#         comment
+#         assignedMeasures {
+#             nodes {
+#                 id
+#                 relatedMeasures {
+#                     id
+#                     name
+#                     description
+#                     comment
+#                     assignedValues {
+#                         nodes {
+#                             id
+#                             relatedValues {
+#                                 id
+#                                 name
+#                                 description
+#                                 comment
+#                                 nominalValue
+#                             }
+#                         }
+#                     }
+#                 }
+#             }
+#         }
+#     }
+# }
 fragment SubjectDetailProps on XtdSubject {
-    ...ObjectDetailProps
-    assignedCollections {
-        nodes {
-            ...AssignsCollectionsProps
-        }
-    }
-    assignedProperties {
-        nodes {
-            ...AssignsPropertiesProps
-        }
-    }
-    # assignedPropertiesWithValues {
-    #     nodes {
-    #         ...AssignsPropertyWithValuesProps
-    #     }
-    # }
-    collectedBy {
-        nodes {
-            ...CollectsProps
-        }
-    }
+    ...ConceptDetailProps
     properties {
-        id
-        name
-        description
-        comment
-        assignedMeasures {
-            nodes {
+        ...ConceptDetailProps
+        possibleValues {
+            ...ConceptDetailProps
+            values {
                 id
-                relatedMeasures {
-                    id
-                    name
-                    description
-                    comment
-                    assignedValues {
-                        nodes {
-                            id
-                            relatedValues {
-                                id
-                                name
-                                description
-                                comment
-                                nominalValue
-                            }
-                        }
-                    }
+                order
+                orderedValue {
+                    ...ValueProps
                 }
             }
         }
     }
+    connectedSubjects {
+        ...RelationshipToSubjectProps
+    }
 }
 
+# fragment PropertyDetailProps on XtdProperty {
+#     ...ObjectDetailProps
+#     assignedMeasures {
+#         nodes {
+#             ...AssignsMeasuresProps
+#         }
+#     }
+#     assignedTo {
+#         nodes {
+#             ...AssignsPropertiesProps
+#         }
+#     }
+#     collectedBy {
+#         nodes {
+#             ...CollectsProps
+#         }
+#     }
+# }
 fragment PropertyDetailProps on XtdProperty {
+    ...ConceptDetailProps
+    dataType
+    dataFormat
+    connectedProperties {
+        ...RelationshipToPropertyProps
+    }
+    symbols {
+        ...SymbolProps
+    }
+    boundaryValues {
+        ...IntervalProps
+    }
+    dimension {
+        ...DimensionProps
+    }
+    quatityKinds {
+        ...QuantityKindsProps
+    }
+    units {
+        ...UnitDetailProps  
+    }
+    possibleValues {
+        ...ConceptDetailProps
+        values {
+            id
+            order
+            orderedValue {
+                ...ValueProps
+            }
+        }
+    }
+    subjects {
+        ...SubjectDetailProps
+    }
+}
+
+# fragment MeasureDetailProps on XtdMeasureWithUnit {
+#     ...ObjectDetailProps
+#     assignedTo {
+#         nodes {
+#             ...AssignsMeasuresProps
+#         }
+#     }
+#     assignedUnits {
+#         nodes {
+#             ...AssignsUnitsProps
+#         }
+#     }
+#     assignedValues {
+#         nodes {
+#             ...AssignsValuesProps
+#         }
+#     }
+# }
+fragment ValueListDetailProps on XtdValueList {
     ...ObjectDetailProps
-    assignedMeasures {
-        nodes {
-            ...AssignsMeasuresProps
-        }
+    properties {
+        ...PropertyDetailProps
     }
-    assignedTo {
-        nodes {
-            ...AssignsPropertiesProps
-        }
+    unit {
+        ...UnitDetailProps
     }
-    collectedBy {
-        nodes {
-            ...CollectsProps
+    values {
+        id
+        order
+        orderedValue {
+            ...ValueProps
         }
     }
 }
 
-fragment MeasureDetailProps on XtdMeasureWithUnit {
-    ...ObjectDetailProps
-    assignedTo {
-        nodes {
-            ...AssignsMeasuresProps
-        }
-    }
-    assignedUnits {
-        nodes {
-            ...AssignsUnitsProps
-        }
-    }
-    assignedValues {
-        nodes {
-            ...AssignsValuesProps
-        }
-    }
-}
-
+# fragment UnitDetailProps on XtdUnit {
+#     ...ObjectDetailProps
+#     assignedTo {
+#         nodes {
+#             ...AssignsUnitsProps
+#         }
+#     }
+# }
 fragment UnitDetailProps on XtdUnit {
-    ...ObjectDetailProps
-    assignedTo {
-        nodes {
-            ...AssignsUnitsProps
-        }
+    ...ConceptDetailProps
+    scale
+    base
+    symbol {
+        ...SymbolProps
+    }
+    offset {
+        ...RationalProps
+    }
+    coefficient {
+        ...RationalProps
+    }
+    dimension {
+        ...DimensionProps
+    }
+    properties {
+        ...PropertyDetailProps
     }
 }
 
+# fragment ValueDetailProps on XtdValue {
+#     ...ValueProps
+#     assignedTo {
+#         nodes {
+#             ...AssignsValuesProps
+#         }
+#     }
+# }
 fragment ValueDetailProps on XtdValue {
-    ...ObjectDetailProps
+    ...MetaProps
     ...ValueProps
-    assignedTo {
-        nodes {
-            ...AssignsValuesProps
+}
+
+# fragment CollectionDetailProps on XtdCollection {
+#     ...MetaProps
+#     ...CollectionProps
+#     collects {
+#         nodes {
+#             ...CollectsProps
+#         }
+#     }
+#     assignedTo {
+#         nodes {
+#             ...AssignsCollectionsProps
+#         }
+#     }
+#     collectedBy {
+#         nodes {
+#             ...CollectsProps
+#         }
+#     }
+#     documentedBy {
+#         nodes {
+#             ...DocumentsProps
+#         }
+#     }
+# }
+
+fragment SymbolProps on XtdSymbol {
+    subject {
+        ...SubjectDetailProps
+    }
+    symbol {
+        text
+        language {
+            ...LanguageProps
         }
     }
 }
 
-fragment CollectionDetailProps on XtdCollection {
-    ...MetaProps
-    ...CollectionProps
-    collects {
-        nodes {
-            ...CollectsProps
-        }
+fragment DimensionProps on XtdDimension {
+    ...ConceptProps
+    amountOfSubstanceExponent {
+    ...RationalProps
     }
-    assignedTo {
-        nodes {
-            ...AssignsCollectionsProps
-        }
+    luminousIntensityExponent{
+    ...RationalProps
     }
-    collectedBy {
-        nodes {
-            ...CollectsProps
-        }
+    lengthExponent {
+    ...RationalProps
     }
-    documentedBy {
-        nodes {
-            ...DocumentsProps
-        }
+    massExponent {
+    ...RationalProps
+    }
+    timeExponent {
+    ...RationalProps
+    }
+    electricCurrentExponent {
+    ...RationalProps
+    }
+    thermodynamicTemperatureExponent {
+    ...RationalProps
+    }   
+}
+
+fragment RationalProps on XtdRational {
+    id
+    numerator
+    denominator
+}
+
+fragment IntervalProps on XtdInterval {
+    id
+    minimumIncluded
+    maximumIncluded
+    minimum {
+        ...ValueListDetailProps
+    }
+    maximum {
+        ...ValueListDetailProps
     }
 }
+
+fragment QuantityKindsProps on XtdQuantityKind {
+    ...ConceptProps
+    units {
+        ...UnitProps
+    }
+    dimension {
+        ...DimensionProps
+    }
+}
+
+fragment RelationshipToSubjectProps on XtdRelationshipToSubject {
+    ...ObjectProps
+}
+
+fragment RelationshipToSubjectDetailProps on XtdRelationshipToSubject {
+    ...RelationshipToSubjectProps
+    scopeSubjects {
+        ...SubjectDetailProps
+    }
+    targetSubjects {
+        ...SubjectDetailProps
+    }
+    relationshipType {
+        kind
+    }
+}
+
+fragment RelationshipToPropertyProps on XtdRelationshipToProperty {
+    ...ConceptProps
+}
+
+fragment RelationshipToPropertyDetailProps on XtdRelationshipToProperty {
+    ...RelationshipToPropertyProps
+    relationshipType
+    targetProperties {
+        ...PropertyDetailProps
+    }
+}
+

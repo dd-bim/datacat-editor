@@ -1,5 +1,5 @@
 import {useMemo} from "react";
-import {ItemPropsFragment} from "../../generated/types";
+import {ObjectPropsFragment} from "../../generated/types";
 
 export type VTreeRootNode = {
     children: VTreeNode[]
@@ -8,12 +8,12 @@ export type VTreeRootNode = {
 export type VTreeNode = {
     id: string,
     nodeId: string,
-    data: ItemPropsFragment,
+    data: ObjectPropsFragment,
     children: VTreeNode[]
 }
 
 type UseVTreeOptions = {
-    leaves: ItemPropsFragment[],
+    leaves: ObjectPropsFragment[],
     paths: string[][]
 }
 
@@ -27,7 +27,7 @@ const useVerification = (options: UseVTreeOptions) => {
         return leaves.reduce((agg, cur) => {
             agg[cur.id] = cur;
             return agg;
-        }, {} as { [key: string]: ItemPropsFragment });
+        }, {} as { [key: string]: ObjectPropsFragment });
     }, [leaves]);
 
     // Baumstruktur erzeugen

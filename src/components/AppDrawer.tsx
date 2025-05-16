@@ -26,7 +26,7 @@ import {
   DataTemplateEntity,
   DocumentEntity,
   GroupEntity,
-  MeasureEntity,
+  ValueListEntity,
   ModelEntity,
   PropertyEntity,
   PropertyGroupEntity,
@@ -288,9 +288,9 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
           />
 
           <AppDrawerItem
-            icon={<MeasureEntity.Icon />}
+            icon={<ValueListEntity.Icon />}
             primary={<T keyName="app_drawer.measures">Größen</T>}
-            to={`/${MeasureEntity.path}`}
+            to={`/${ValueListEntity.path}`}
             onClick={handleItemClick}
           />
 

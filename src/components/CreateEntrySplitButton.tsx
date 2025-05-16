@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from "react";
-import { SimpleRecordType, useCreateEntryMutation } from "../generated/types";
+import { CatalogRecordType, useCreateEntryMutation } from "../generated/types";
 import { ButtonGroup, ButtonGroupProps, Dialog } from "@mui/material";
 import Button from "@mui/material/Button";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -20,7 +20,7 @@ import {
   DocumentEntity,
   Entity,
   GroupEntity,
-  MeasureEntity,
+  ValueListEntity,
   ModelEntity,
   PropertyEntity,
   PropertyGroupEntity,
@@ -40,7 +40,7 @@ const options = [
   ClassEntity,
   PropertyGroupEntity,
   PropertyEntity,
-  MeasureEntity,
+  ValueListEntity,
   UnitEntity,
   ValueEntity,
 ];
@@ -117,7 +117,7 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
   };
 
   const onSubmit = async ({ id, versionId, versionDate, name, description, comment }: CreateEntryFormValues) => {
-    const catalogRecordType = input?.recordType! as unknown as SimpleRecordType;
+    const catalogRecordType = input?.recordType! as unknown as CatalogRecordType;
     const names = [{ languageTag: "de", value: name }];
     const descriptions = description ? [{ languageTag: "de", value: description }] : [];
     const comments = comment ? [{ languageTag: "de", value: comment }] : [];

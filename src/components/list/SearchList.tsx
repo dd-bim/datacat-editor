@@ -26,6 +26,7 @@ export default function SearchList(props: SearchListProps) {
         ...searchInput,
         query: debouncedSearchTerm
     };
+
     const {loading, data, fetchMore} = useFindItemQuery({
         variables: {
             input,
@@ -35,7 +36,7 @@ export default function SearchList(props: SearchListProps) {
     });
     const items = data?.search.nodes ?? [];
     const pageInfo = data?.search.pageInfo;
-
+console.log("Items", items);
     const handleOnScroll = async (props: ListOnItemsRenderedProps) => {
         const {visibleStopIndex} = props;
 

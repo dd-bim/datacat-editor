@@ -22,9 +22,9 @@ import {
   useFindModelWithoutGroupTreeQuery,
   useFindGroupWithoutSubjectTreeQuery,
   useFindSubjectWithoutPropTreeQuery,
-  useFindMeasureWithoutPropTreeQuery,
-  useFindUnitWithoutMeasureTreeQuery,
-  useFindValueWithoutMeasureTreeQuery,
+  useFindValueListWithoutPropTreeQuery,
+  useFindUnitWithoutValueListTreeQuery,
+  useFindValueWithoutValueListTreeQuery,
   useFindMissingEnglishNameTreeQuery,
   useFindMultipleIDsTreeQuery,
   useFindMissingDescriptionTreeQuery,
@@ -39,7 +39,7 @@ import {
   DomainModelIcon,
   getEntityType,
   GroupEntity,
-  MeasureEntity,
+  ValueListEntity,
   MeasureIcon,
   ModelEntity,
   PropertyEntity,
@@ -274,11 +274,11 @@ export function VerificationView() {
       case "Merkmale ohne Klasse oder Merkmalsgruppe":
         return <ThisFindPropWithoutSubjectOrPropGroup />;
       case "Größen die keinem Merkmal zugeordnet sind":
-        return <ThisFindMeasureWithoutProp />;
+        return <ThisFindValueListWithoutProp />;
       case "Einheiten ohne Größe":
-        return <ThisFindUnitWithoutMeasure />;
+        return <ThisFindUnitWithoutValueList />;
       case "Werte ohne Größe":
-        return <ThisFindValueWithoutMeasure />;
+        return <ThisFindValueWithoutValueList />;
       case "ID-Duplikate":
         return <ThisFindMultipleIDs />;
       case "Namen-Duplikate (innerhalb eines Types)":
@@ -341,7 +341,7 @@ export function VerificationView() {
             <PropertyForm id={id} onDelete={() => setSelectedConcept(null)} />
           </>
         );
-      case MeasureEntity.path:
+      case ValueListEntity.path:
         return (
           <>
             <Typography variant="h5">
@@ -446,40 +446,40 @@ export function VerificationView() {
     );
   }
 
-  function ThisFindMeasureWithoutProp() {
-    const { loading, error, data } = useFindMeasureWithoutPropTreeQuery({});
+  function ThisFindValueListWithoutProp() {
+    const { loading, error, data } = useFindValueListWithoutPropTreeQuery({});
     if (loading) return <LinearProgress />;
     if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
     return (
       <FindVerification
-        leaves={data!.findMeasureWithoutProp.nodes}
-        paths={data!.findMeasureWithoutProp.paths}
+        leaves={data!.FindValueListWithoutProp.nodes}
+        paths={data!.FindValueListWithoutProp.paths}
         onSelect={handleOnSelect}
       />
     );
   }
 
-  function ThisFindUnitWithoutMeasure() {
-    const { loading, error, data } = useFindUnitWithoutMeasureTreeQuery({});
+  function ThisFindUnitWithoutValueList() {
+    const { loading, error, data } = useFindUnitWithoutValueListTreeQuery({});
     if (loading) return <LinearProgress />;
     if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
     return (
       <FindVerification
-        leaves={data!.findUnitWithoutMeasure.nodes}
-        paths={data!.findUnitWithoutMeasure.paths}
+        leaves={data!.FindUnitWithoutValueList.nodes}
+        paths={data!.FindUnitWithoutValueList.paths}
         onSelect={handleOnSelect}
       />
     );
   }
 
-  function ThisFindValueWithoutMeasure() {
-    const { loading, error, data } = useFindValueWithoutMeasureTreeQuery({});
+  function ThisFindValueWithoutValueList() {
+    const { loading, error, data } = useFindValueWithoutValueListTreeQuery({});
     if (loading) return <LinearProgress />;
     if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
     return (
       <FindVerification
-        leaves={data!.findValueWithoutMeasure.nodes}
-        paths={data!.findValueWithoutMeasure.paths}
+        leaves={data!.FindValueWithoutValueList.nodes}
+        paths={data!.FindValueWithoutValueList.paths}
         onSelect={handleOnSelect}
       />
     );

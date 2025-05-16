@@ -1,5 +1,13 @@
+# query FindLanguages($input: LanguageFilterInput!) {
+#     languages(input: $input) {
+#         nodes {
+#             ...LanguageProps
+#         }
+#         totalElements
+#     }
+# }
 query FindLanguages($input: LanguageFilterInput!) {
-    languages(input: $input) {
+    findLanguages(input: $input) {
         nodes {
             ...LanguageProps
         }
@@ -19,10 +27,23 @@ query FindItem($input: SearchInput!, $pageSize: Int, $pageNumber: Int) {
     }
 }
 
+# query PropertyTree {
+#     hierarchy(input: {
+#         rootNodeFilter: {
+#             catalogEntryTypeIn: [Bag]
+#             tagged: ["6f96aaa7-e08f-49bb-ac63-93061d4c5db2"]
+#         }
+#     }) {
+#         nodes {
+#             ...ItemProps
+#         }
+#         paths
+#     }
+# }
 query PropertyTree {
     hierarchy(input: {
         rootNodeFilter: {
-            catalogEntryTypeIn: [Bag]
+            catalogEntryTypeIn: [Subject]
             tagged: ["6f96aaa7-e08f-49bb-ac63-93061d4c5db2"]
         }
     }) {
@@ -57,9 +78,14 @@ query GetPropertyEntry($id: ID!) {
     }
 }
 
-query GetMeasureEntry($id: ID!) {
-    node: getMeasure(id: $id) {
-        ...MeasureDetailProps
+# query GetMeasureEntry($id: ID!) {
+#     node: getMeasure(id: $id) {
+#         ...MeasureDetailProps
+#     }
+# }
+query GetValueListEntry($id: ID!) {
+    node: getValueList(id: $id) {
+        ...ValueListDetailProps
     }
 }
 
@@ -75,8 +101,10 @@ query GetValueEntry($id: ID!) {
     }
 }
 
-query GetCollectionEntry($id: ID!) {
-    node(id: $id) {
-        ...CollectionDetailProps
-    }
-}
+# query GetCollectionEntry($id: ID!) {
+#     node(id: $id) {
+#         ...CollectionDetailProps
+#     }
+# }
+
+# ...

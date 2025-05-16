@@ -19,8 +19,8 @@ const FormContainer = styled('form')(({ theme }) => ({
 }));
 
 type VersionFormValues = {
-  versionId: string;
-  versionDate: string;
+  majorVersion: number;
+  minorVersion: number;
 };
 
 type VersionFormProps = {
@@ -68,12 +68,12 @@ const VersionForm = (props: VersionFormProps) => {
       <FormContainer onSubmit={handleSubmit(onSave)}>
         <Controller
           control={control}
-          name="versionId"
+          name="majorVersion"
           rules={{ required: true }} // Falls eine Validierung nötig ist
           render={({ field, fieldState }) => (
             <TextField
               {...field}
-              id="versionId" // ✅ Hier setzen
+              id="majorVersion" // ✅ Hier setzen
               label="ID"
               error={!!fieldState.error}
               fullWidth
@@ -87,12 +87,12 @@ const VersionForm = (props: VersionFormProps) => {
         <Typography variant="body1">/</Typography>
         <Controller
           control={control}
-          name="versionDate"
+          name="minorVersion"
           rules={{ required: true }}
           render={({ field, fieldState }) => (
             <TextField
               {...field}
-              id="versionDate" // ✅ Hier setzen
+              id="minorVersion" // ✅ Hier setzen
               label=<T keyName="version.date" />
               error={!!fieldState.error}
               fullWidth
