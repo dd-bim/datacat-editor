@@ -1,7 +1,6 @@
 import {SearchInput, useFindItemQuery} from "../../generated/types";
 import useDebounce from "../../hooks/useDebounce";
 import {ListOnItemsRenderedProps} from "react-window";
-import React from "react";
 import ItemList, {ItemListProps} from "./ItemList";
 import { useTranslate } from "@tolgee/react";
 import { Box } from "@mui/material";
@@ -27,16 +26,17 @@ export default function SearchList(props: SearchListProps) {
         query: debouncedSearchTerm
     };
 
-    const {loading, data, fetchMore} = useFindItemQuery({
+    const {loading, data, error ,fetchMore} = useFindItemQuery({
         variables: {
             input,
             pageSize,
             pageNumber: 0
         }
     });
+
     const items = data?.search.nodes ?? [];
     const pageInfo = data?.search.pageInfo;
-console.log("Items", items);
+
     const handleOnScroll = async (props: ListOnItemsRenderedProps) => {
         const {visibleStopIndex} = props;
 

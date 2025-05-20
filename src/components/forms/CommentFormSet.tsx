@@ -2,8 +2,8 @@ import React from "react";
 import FormSet, {FormSetDescription, FormSetTitle} from "./FormSet";
 import {
     TranslationInput,
-    TranslationPropsFragment,
-    TranslationUpdateInput,
+    TextPropsFragment,
+    UpdateTextInput,
     useAddCommentMutation,
     useDeleteCommentMutation,
     useUpdateCommentMutation
@@ -20,7 +20,7 @@ const StyledFormSetDescription = styled(FormSetDescription)(({ theme }) => ({
 
 type CommentFormSetProps = {
     catalogEntryId: string,
-    comments: TranslationPropsFragment[]
+    comments: TextPropsFragment[]
 }
 
 const CommentFormSet = (props: CommentFormSetProps) => {
@@ -30,28 +30,28 @@ const CommentFormSet = (props: CommentFormSetProps) => {
     const [updateComment] = useUpdateCommentMutation();
     const [deleteComment] = useDeleteCommentMutation();
 
-    const handleOnAdd = async (comment: TranslationInput) => {
+    const handleOnAdd = async (name: TranslationInput) => {
         await addComment({
             variables: {
-                input: {catalogEntryId, comment}
+                input: {catalogEntryId, name}
             }
         });
         enqueueSnackbar("Kommentar hinzugefügt.");
     };
 
-    const handleOnUpdate = async (comment: TranslationUpdateInput) => {
+    const handleOnUpdate = async (comment: UpdateTextInput) => {
         await updateComment({
             variables: {
-                input: {catalogEntryId, comment}
+                input: comment
             }
         });
         enqueueSnackbar("Kommentar aktualisiert.");
     };
 
-    const handleOnDelete = async (commentId: string) => {
+    const handleOnDelete = async (textId: string) => {
         await deleteComment({
             variables: {
-                input: {catalogEntryId, commentId}
+                input: { textId }
             }
         });
         enqueueSnackbar("Kommentar gelöscht.")

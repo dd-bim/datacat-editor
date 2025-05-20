@@ -5,52 +5,52 @@ import {
     useGetSubjectEntryQuery,
     SubjectDetailPropsFragment
 } from "../../generated/types";
-import {Typography, Button} from "@mui/material";
-import {useSnackbar} from "notistack";
+import { Typography, Button } from "@mui/material";
+import { useSnackbar } from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
-import {GroupEntity} from "../../domain";
-import FormView, {FormProps} from "./FormView";
+import { GroupEntity } from "../../domain";
+import FormView, { FormProps } from "./FormView";
 // import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
-import {T, useTranslate} from "@tolgee/react";
+import { T, useTranslate } from "@tolgee/react";
 
 
 function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
-    const {id, onDelete} = props;
-    const {enqueueSnackbar} = useSnackbar();
+    const { id, onDelete } = props;
+    const { enqueueSnackbar } = useSnackbar();
     const { t } = useTranslate(); // Moved to top level
 
     // fetch domain model
-    const {loading, error, data, refetch} = useGetSubjectEntryQuery({
+    const { loading, error, data, refetch } = useGetSubjectEntryQuery({
         fetchPolicy: "network-only",
-        variables: {id}
+        variables: { id }
     });
     let entry = data?.node as SubjectDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation({
-        update: cache => {
-            cache.evict({id: `XtdBag:${id}`});
-            cache.modify({
-                id: "ROOT_QUERY",
-                fields: {
-                    hierarchy: (value, {DELETE}) => DELETE
-                }
-            });
-            cache.modify({
-                id: "ROOT_QUERY",
-                fields: {
-                    search: (value, {DELETE}) => DELETE
-                }
-            });
-        }
-    });
+    update: (cache: any) => {
+      cache.evict({ id: `XtdSubject:${id}` });
+      cache.modify({
+        id: "ROOT_QUERY",
+        fields: {
+          hierarchy: (_value: any, { DELETE }: any) => DELETE,
+        },
+      });
+      cache.modify({
+        id: "ROOT_QUERY",
+        fields: {
+          search: (_value: any, { DELETE }: any) => DELETE,
+        },
+      });
+    },
+  });
 
-    if (loading) return <Typography><T keyName={"model.loading"}/></Typography>;
-    if (error || !entry) return <Typography><T keyName={"error.error"}/></Typography>;
+    if (loading) return <Typography><T keyName={"model.loading"} /></Typography>;
+    if (error || !entry) return <Typography><T keyName={"error.error"} /></Typography>;
 
     const handleOnUpdate = async () => {
         await refetch();
@@ -58,7 +58,7 @@ function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
     }
 
     const handleOnDelete = async () => {
-        await deleteEntry({variables: {id}});
+        await deleteEntry({ variables: { id } });
         enqueueSnackbar(<T keyName="domain_model_form.delete_success">Fachmodell gelöscht.</T>);
         onDelete?.();
     };
@@ -68,22 +68,25 @@ function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
     //     relatedItems: relatedThings
     // }));
 
+    const descriptions = entry.descriptions?.[0]?.texts ?? [];
+    const comments = entry.comments?.[0]?.texts ?? [];
+
     return (
         <FormView>
             <NameFormSet
                 catalogEntryId={id}
-                names={entry.names}
+                names={entry.names[0].texts}
             />
 
-            {/* <DescriptionFormSet
+            <DescriptionFormSet
                 catalogEntryId={id}
-                descriptions={entry.descriptions}
+                descriptions={descriptions}
             />
 
             <CommentFormSet
                 catalogEntryId={id}
-                comments={entry.comments}
-            /> */}
+                comments={comments}
+            />
 
             <VersionFormSet
                 id={id}
@@ -111,12 +114,12 @@ function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
             /> */}
 
-            <MetaFormSet entry={entry}/>
+            <MetaFormSet entry={entry} />
 
             <Button
                 variant="contained"
                 color="primary"
-                startIcon={<DeleteForeverIcon/>}
+                startIcon={<DeleteForeverIcon />}
                 onClick={handleOnDelete}
             >
                 <T keyName="domain_model_form.delete_button">Löschen</T>

@@ -60,7 +60,7 @@ const NewTranslationForm = (props: NewTranslationFormProps) => {
 
   const onChange = (value: LanguagePropsFragment) => {
     if (value) {
-      setValue("languageTag", value.languageTag, {
+      setValue("languageTag", value.code, {
         shouldValidate: true,
         shouldDirty: true,
       });

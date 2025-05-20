@@ -241,10 +241,10 @@ export type FindMultipleNamesAcrossClassesFilterInput = {
 
 
 /**  Query type */
-// export type LanguageFilterInput = {
-//   query?: Maybe<Scalars['String']>;
-//   excludeLanguageTags?: Maybe<Array<Scalars['String']>>;
-// };
+export type LanguageFilterInput = {
+  query?: Maybe<Scalars['String']>;
+  excludeLanguageTags?: Maybe<Array<Scalars['String']>>;
+};
 
 export type LocaleInput = {
   languageTag: Scalars['ID'];
@@ -752,7 +752,7 @@ export type ExportCatalogRecord_Fragment = { __typename: 'ExportResult', id: str
 
 export type ExportCatalogRecordRelationship_Fragment = { __typename: 'ExportRelationshipResult', Entity1: string, Entity1Type: string, RelationId: string, RelationshipType: string, Entity2: string, Entity2Type: string };
 
-export type SearchResultPropsFragment = { __typename: 'SearchResult', id: string, recordType: CatalogRecordType, name?: Maybe<string>, description?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> };
+export type SearchResultPropsFragment = { __typename: 'XtdObject', id: string, recordType: CatalogRecordType, name?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> }; // description?: Maybe<string>, 
 
 export type FindTagsResultFragment = { id: string, name: string };
 
@@ -1513,12 +1513,12 @@ export const TagPropsFragmentDoc = gql`
 }
     `;
 export const SearchResultPropsFragmentDoc = gql`
-    fragment SearchResultProps on SearchResult {
+    fragment SearchResultProps on XtdObject {
   __typename
   id
   recordType
   name(input: {languageTags: ["de-DE", "en-US"]})
-  description(input: {languageTags: ["de-DE", "en-US"]})
+  # description(input: {languageTags: ["de-DE", "en-US"]})
   comment(input: {languageTags: ["de-DE", "en-US"]})
   tags {
     ...TagProps
@@ -1534,15 +1534,15 @@ export const MetaPropsFragmentDoc = gql`
 }
     `;
 export const LanguagePropsFragmentDoc = gql`
-    fragment LanguageProps on Language {
-  id
-  languageTag
-  displayCountry(input: {languageTag: "de"})
-  displayLanguage(input: {languageTag: "de"})
+    fragment LanguageProps on XtdLanguage {
+    id
+    code
+    englishName
+    nativeName
 }
     `;
 export const TranslationPropsFragmentDoc = gql`
-    fragment TranslationProps on Translation {
+    fragment TranslationProps on XtdMultiLanguageText {
     id
     texts {
         text
@@ -1574,13 +1574,15 @@ fragment ObjectProps on XtdObject {
     }
     dictionary {
         id
-        name(input: { languageTags: ["de-DE", "en-US"] })
+        name {
+            ...TranslationProps
+        }
     }
     replacedObjects {
-        ...ObjectProps
+        id
     }
     replacingObjects {
-        ...ObjectProps
+        id
     }
     deprecationExplanation {
         ...TranslationProps
@@ -1589,6 +1591,18 @@ fragment ObjectProps on XtdObject {
     ${TagPropsFragmentDoc}
     ${TranslationPropsFragmentDoc}
     `;
+export const ExternalDocumentPropsFragmentDoc = gql`
+fragment ExternalDocumentProps on XtdExternalDocument {
+    uri
+    author
+    isbn
+    publisher
+    dateOfPublication
+    languages {
+        ...LanguageProps
+    }
+}
+    ${LanguagePropsFragmentDoc}`;
 export const ConceptPropsFragmentDoc = gql`
 fragment ConceptProps on XtdConcept {
     ...ObjectProps
@@ -1609,15 +1623,16 @@ fragment ConceptProps on XtdConcept {
         ...ExternalDocumentProps
     }
     similarTo {
-        ...ConceptProps
+        id
     }
     countryOfOrigin {
         code
-        ...ObjectProps
+        id
     }
 }
     ${ObjectPropsFragmentDoc}
 ${TranslationPropsFragmentDoc}
+${ExternalDocumentPropsFragmentDoc}
 ${LanguagePropsFragmentDoc}`;
 export const ConceptDetailPropsFragmentDoc = gql`
   fragment ConceptDetailProps on XtdConcept {
@@ -1626,24 +1641,11 @@ export const ConceptDetailPropsFragmentDoc = gql`
   }
   ${MetaPropsFragmentDoc}
 ${ConceptPropsFragmentDoc}`;
-export const ExternalDocumentPropsFragmentDoc = gql`
-fragment ExternalDocumentProps on XtdExternalDocument {
-    ...ConceptProps
-    uri
-    author
-    isbn
-    publisher
-    dateOfPublication
-    languages {
-        ...LanguageProps
-    }
-}
-    ${ConceptPropsFragmentDoc}
-    ${LanguagePropsFragmentDoc}`;
 export const ExternalDocumentDetailPropsFragmentDoc = gql`
     fragment ExternalDocumentDetailProps on XtdExternalDocument {
   ...MetaProps
   ...ExternalDocumentProps
+  ...ConceptProps
   documents {
     ...ConceptProps
   }
@@ -1703,13 +1705,20 @@ export const ValuePropsFragmentDoc = gql`
       nominalValue
   }
   ${ConceptPropsFragmentDoc}`;
+export const PropertyPropsFragmentDoc = gql`
+  fragment PropertyProps on XtdProperty {
+      ...ConceptDetailProps
+      dataType
+      dataFormat
+  }
+  ${ConceptDetailPropsFragmentDoc}`;
 export const SubjectDetailPropsFragmentDoc = gql`
   fragment SubjectDetailProps on XtdSubject {
     ...ConceptDetailProps
     properties {
-        ...ConceptDetailProps
+        ...PropertyProps
         possibleValues {
-            ...ConceptDetailProps
+            id
             values {
                 id
                 order
@@ -1725,6 +1734,7 @@ export const SubjectDetailPropsFragmentDoc = gql`
   }
   ${ConceptDetailPropsFragmentDoc}
 ${ValuePropsFragmentDoc}
+${PropertyPropsFragmentDoc}
 ${RelationshipToSubjectPropsFragmentDoc}`;
 export const RelationshipToSubjectDetailPropsFragmentDoc = gql`
   fragment RelationshipToSubjectProps on XtdRelationshipToSubject {
@@ -1804,9 +1814,7 @@ ${UnitPropsFragmentDoc}
 ${DimensionPropsFragmentDoc}`;
 export const PropertyDetailPropsFragmentDoc = gql`
   fragment PropertyDetailProps on XtdProperty {
-      ...ConceptDetailProps
-      dataType
-      dataFormat
+      ...PropertyProps
       connectedProperties {
           ...RelationshipToPropertyProps
       }
@@ -1839,6 +1847,7 @@ export const PropertyDetailPropsFragmentDoc = gql`
           ...SubjectDetailProps
       }
   }
+  ${PropertyPropsFragmentDoc}
     ${ConceptDetailPropsFragmentDoc}
 ${RelationshipToPropertyPropsFragmentDoc}
 ${SymbolPropsFragmentDoc}

@@ -34,7 +34,7 @@ fragment LanguageProps on XtdLanguage {
 #     }
 #     value
 # }
-fragment TranslationProps on Translation {
+fragment TranslationProps on XtdMultiLanguageText {
     id
     texts {
         text
@@ -49,12 +49,12 @@ fragment TagProps on Tag {
     name
 }
 
-fragment SearchResultProps on SearchResult {
+fragment SearchResultProps on XtdObject {
     __typename
     id
     recordType
     name(input: { languageTags: ["de-DE", "en-US"] })
-    description(input: { languageTags: ["de-DE", "en-US"] })
+    # description(input: { languageTags: ["de-DE", "en-US"] })
     comment(input: { languageTags: ["de-DE", "en-US"] })
     tags {
         ...TagProps

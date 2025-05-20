@@ -1,56 +1,58 @@
-import React, {FC} from "react";
+import React, { FC } from "react";
 import {
     RelationshipRecordType,
-    useDeleteEntryMutation
+    SubjectDetailPropsFragment,
+    useDeleteEntryMutation,
+    useGetSubjectEntryQuery,
 } from "../../generated/types";
-import {Button, Typography} from "@mui/material";
-import {useSnackbar} from "notistack";
+import { Button, Typography } from "@mui/material";
+import { useSnackbar } from "notistack";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
-import FormView, {FormProps} from "./FormView";
+import FormView, { FormProps } from "./FormView";
 import MetaFormSet from "../../components/forms/MetaFormSet";
-import {ClassEntity} from "../../domain";
+import { ClassEntity } from "../../domain";
 // import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
-import {T, useTranslate} from "@tolgee/react";
+import { T, useTranslate } from "@tolgee/react";
 
-const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) => {
-    const {id, onDelete} = props;
-    const {enqueueSnackbar} = useSnackbar();
+const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
+    const { id, onDelete } = props;
+    const { enqueueSnackbar } = useSnackbar();
     const { t } = useTranslate(); // Moved to top level
 
     // fetch domain model
-    const {loading, error, data, refetch} = useGetCollectionEntryQuery({
+    const { loading, error, data, refetch } = useGetSubjectEntryQuery({
         fetchPolicy: "network-only",
-        variables: {id}
+        variables: { id }
     });
-    let entry = data?.node as CollectionDetailPropsFragment | undefined;
+    let entry = data?.node as SubjectDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation({
-        update: cache => {
-            cache.evict({id: `XtdBag:${id}`});
-            cache.modify({
-                id: "ROOT_QUERY",
-                fields: {
-                    hierarchy: (value, {DELETE}) => DELETE
-                }
-            });
-            cache.modify({
-                id: "ROOT_QUERY",
-                fields: {
-                    search: (value, {DELETE}) => DELETE
-                }
-            });
-        }
-    });
+    update: (cache: any) => {
+      cache.evict({ id: `XtdSubject:${id}` });
+      cache.modify({
+        id: "ROOT_QUERY",
+        fields: {
+          hierarchy: (_value: any, { DELETE }: any) => DELETE,
+        },
+      });
+      cache.modify({
+        id: "ROOT_QUERY",
+        fields: {
+          search: (_value: any, { DELETE }: any) => DELETE,
+        },
+      });
+    },
+  });
 
-    if (loading) return <Typography><T keyName={"group.loading"}/></Typography>;
-    if (error || !entry) return <Typography><T keyName={"error.error"}/></Typography>;
+    if (loading) return <Typography><T keyName={"group.loading"} /></Typography>;
+    if (error || !entry) return <Typography><T keyName={"error.error"} /></Typography>;
 
     const handleOnDelete = async () => {
-        await deleteEntry({variables: {id}});
+        await deleteEntry({ variables: { id } });
         enqueueSnackbar(<T keyName="domain_group_form.delete_success">Gruppe gelöscht.</T>)
         onDelete?.();
     };
@@ -65,21 +67,24 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
     //     relatedItems: relatedThings
     // }));
 
+    const descriptions = entry.descriptions?.[0]?.texts ?? [];
+    const comments = entry.comments?.[0]?.texts ?? [];
+
     return (
         <FormView>
             <NameFormSet
                 catalogEntryId={id}
-                names={entry.names}
+                names={entry.names[0].texts}
             />
 
             <DescriptionFormSet
                 catalogEntryId={id}
-                descriptions={entry.descriptions}
+                descriptions={descriptions}
             />
 
             <CommentFormSet
                 catalogEntryId={id}
-                comments={entry.comments}
+                comments={comments}
             />
 
             <VersionFormSet
@@ -112,12 +117,12 @@ const DomainGroupForm: FC<FormProps<CollectionDetailPropsFragment>> = (props) =>
                 relatingRecords={entry?.collectedBy.nodes.map(node => node.relatingCollection) ?? []}
             /> */}
 
-            <MetaFormSet entry={entry}/>
+            <MetaFormSet entry={entry} />
 
             <Button
                 variant="contained"
                 color="primary"
-                startIcon={<DeleteForeverIcon/>}
+                startIcon={<DeleteForeverIcon />}
                 onClick={handleOnDelete}
             >
                 <T keyName="domain_group_form.delete_button">Löschen</T>

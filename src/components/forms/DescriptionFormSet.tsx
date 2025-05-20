@@ -1,9 +1,9 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import FormSet, { FormSetDescription, FormSetTitle } from "./FormSet";
 import {
   TranslationInput,
-  TranslationPropsFragment,
-  TranslationUpdateInput,
+  TextPropsFragment,
+  UpdateTextInput,
   useAddDescriptionMutation,
   useDeleteDescriptionMutation,
   useUpdateDescriptionMutation,
@@ -43,7 +43,7 @@ const DescriptionFormContainer = styled(Box)(({ theme }) => ({
 
 type DescriptionFormSetProps = {
   catalogEntryId: string;
-  descriptions: TranslationPropsFragment[];
+  descriptions: TextPropsFragment[];
 };
 
 const DescriptionFormSet: FC<DescriptionFormSetProps> = (props) => {
@@ -54,28 +54,28 @@ const DescriptionFormSet: FC<DescriptionFormSetProps> = (props) => {
   const [updateDescription] = useUpdateDescriptionMutation();
   const [deleteDescription] = useDeleteDescriptionMutation();
 
-  const handleOnAdd = async (description: TranslationInput) => {
+  const handleOnAdd = async (name: TranslationInput) => {
     await addDescription({
       variables: {
-        input: { catalogEntryId, description },
+        input: { catalogEntryId, name },
       },
     });
     enqueueSnackbar("Beschreibung hinzugefügt.");
   };
 
-  const handleOnUpdate = async (description: TranslationUpdateInput) => {
+  const handleOnUpdate = async (description: UpdateTextInput) => {
     await updateDescription({
       variables: {
-        input: { catalogEntryId, description },
+        input: description,
       },
     });
     enqueueSnackbar("Beschreibung aktualisiert.");
   };
 
-  const handleOnDelete = async (descriptionId: string) => {
+  const handleOnDelete = async (textId: string) => {
     await deleteDescription({
       variables: {
-        input: { catalogEntryId, descriptionId },
+        input: { textId },
       },
     });
     enqueueSnackbar("Beschreibung gelöscht.");

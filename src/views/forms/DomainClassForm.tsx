@@ -1,4 +1,3 @@
-import React from "react";
 import {
   RelationshipRecordType,
   SubjectDetailPropsFragment,
@@ -32,20 +31,21 @@ export default function DomainClassForm(
     fetchPolicy: "network-only",
     variables: { id },
   });
+
   let entry = data?.node as SubjectDetailPropsFragment | undefined;
   const [deleteEntry] = useDeleteEntryMutation({
-    update: (cache) => {
+    update: (cache: any) => {
       cache.evict({ id: `XtdSubject:${id}` });
       cache.modify({
         id: "ROOT_QUERY",
         fields: {
-          hierarchy: (value, { DELETE }) => DELETE,
+          hierarchy: (_value: any, { DELETE }: any) => DELETE,
         },
       });
       cache.modify({
         id: "ROOT_QUERY",
         fields: {
-          search: (value, { DELETE }) => DELETE,
+          search: (_value: any, { DELETE }: any) => DELETE,
         },
       });
     },
@@ -93,19 +93,25 @@ export default function DomainClassForm(
   //   })
   // );
 
+  const descriptions = entry.descriptions?.[0]?.texts ?? [];
+  const comments = entry.comments?.[0]?.texts ?? [];
+
   return (
     <FormView>
-      <NameFormSet 
-        catalogEntryId={id} 
-        names={entry.names} 
-      />
-
-      {/* <DescriptionFormSet
+      <NameFormSet
         catalogEntryId={id}
-        descriptions={entry.descriptions}
+        names={entry.names[0].texts}
       />
 
-      <CommentFormSet catalogEntryId={id} comments={entry.comments} /> */}
+      <DescriptionFormSet
+        catalogEntryId={id}
+        descriptions={descriptions}
+      />
+
+      <CommentFormSet
+        catalogEntryId={id}
+        comments={comments}
+      />
 
       <VersionFormSet
         id={id}

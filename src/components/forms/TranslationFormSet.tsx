@@ -1,4 +1,4 @@
-import {TranslationInput, TranslationPropsFragment, TranslationUpdateInput} from "../../generated/types";
+import {TranslationInput, UpdateTextInput, TextPropsFragment} from "../../generated/types";
 import TranslationForm, {TranslationFormValues} from "./TranslationForm";
 import React, {useState} from "react";
 import {Dialog, TextFieldProps, Stack, Box} from "@mui/material";
@@ -39,16 +39,16 @@ const TranslationContainer = styled('div')({
 
 export type TranslationFormSetProps = {
     label: string;
-    translations: TranslationPropsFragment[];
+    translations: TextPropsFragment[];
     min?: number;
     onAdd(input: TranslationInput): void;
-    onUpdate(input: TranslationUpdateInput): void;
+    onUpdate(input: UpdateTextInput): void;
     onDelete(translationId: string): void;
     TextFieldProps?: TextFieldProps;
 };
 
-export const sortByLanguage = ({language: a}: TranslationPropsFragment, {language: b}: TranslationPropsFragment) => {
-    return a.languageTag.localeCompare(b.languageTag);
+export const sortByLanguage = ({language: a}: TextPropsFragment, {language: b}: TextPropsFragment) => {
+    return a.code.localeCompare(b.code);
 };
 
 export default function TranslationFormSet(props: TranslationFormSetProps) {
@@ -72,9 +72,9 @@ export default function TranslationFormSet(props: TranslationFormSetProps) {
     const translationForms = [...translations]
         .sort(sortByLanguage)
         .map(translation => {
-            const handleOnUpdate = ({value}: TranslationFormValues) => onUpdate({
-                translationId: translation.id,
-                value
+            const handleOnUpdate = ({text}: TranslationFormValues) => onUpdate({
+                textId: translation.id,
+                value: text
             });
 
             const handleOnDelete = (translations.length > min)
@@ -128,7 +128,7 @@ export default function TranslationFormSet(props: TranslationFormSetProps) {
                 <DialogContent>
                     <NewTranslationForm
                         languageFilter={{
-                            excludeLanguageTags: translations.map(x => x.language.languageTag)
+                            excludeLanguageTags: translations.map(x => x.language.code)
                         }}
                         onCancel={() => setOpen(false)}
                         onSubmit={handleOnAdd}

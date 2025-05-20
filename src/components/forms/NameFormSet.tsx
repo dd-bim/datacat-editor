@@ -1,12 +1,11 @@
 import {
   TranslationInput,
-  MultiLanguageTextPropsFragment,
+  TextPropsFragment,
   useAddNameMutation,
   useDeleteNameMutation,
   useUpdateNameMutation,
   UpdateTextInput,
 } from "../../generated/types";
-import React from "react";
 import FormSet, { FormSetDescription, FormSetTitle } from "./FormSet";
 import { useSnackbar } from "notistack";
 import TranslationFormSet from "./TranslationFormSet";
@@ -20,7 +19,7 @@ const StyledFormSetDescription = styled(FormSetDescription)(({ theme }) => ({
 
 export type NameFormSetProps = {
   catalogEntryId: string;
-  names: MultiLanguageTextPropsFragment[];
+  names: TextPropsFragment[];
 };
 
 const NameFormSet = (props: NameFormSetProps) => {
