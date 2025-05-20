@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {SimpleRecordType, useCreateEntryMutation} from "../generated/types";
+import {CatalogRecordType, useCreateEntryMutation} from "../generated/types";
 import {Dialog} from "@mui/material";
 import Button from "@mui/material/Button";
 import Popper from "@mui/material/Popper";
@@ -95,7 +95,7 @@ const CreateEntryButton = (props: CreateEntryProps) => {
     };
 
     const onSubmit = async ({id, versionId, versionDate, name, description, comment}: CreateEntryFormValues) => {
-        const catalogRecordType = (input?.recordType! as unknown as SimpleRecordType);
+        const catalogRecordType = (input?.recordType! as unknown as CatalogRecordType);
         const names = [
             {languageTag: "de", value: name}
         ];

@@ -15,7 +15,7 @@ import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, { FormProps } from "./FormView";
 import MetaFormSet from "../../components/forms/MetaFormSet";
 import { ClassEntity } from "../../domain";
-// import TransferListView from "../TransferListView";
+import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import { T, useTranslate } from "@tolgee/react";
 
@@ -62,10 +62,7 @@ const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
         enqueueSnackbar(<T keyName="domain_group_form.update_success">Update erfolgreich.</T>);
     }
 
-    // const collectsRelationships = entry.collects.nodes.map(({id, relatedThings}) => ({
-    //     relationshipId: id,
-    //     relatedItems: relatedThings
-    // }));
+    // const relatedThings = entry.connectedSubjects ?? [];
 
     const descriptions = entry.descriptions?.[0]?.texts ?? [];
     const comments = entry.comments?.[0]?.texts ?? [];
@@ -103,9 +100,9 @@ const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
                 onCreate={handleOnUpdate}
                 onUpdate={handleOnUpdate}
                 onDelete={handleOnUpdate}
-            />
+            /> */}
 
-            <RelatingRecordsFormSet
+            {/* <RelatingRecordsFormSet
                 title={<span><b><T keyName="document.titlePlural"/></b>, <T keyName="domain_group_form.reference_documents">die diese Gruppe beschreiben</T></span>}
                 emptyMessage={t("domain_group_form.no_reference_documents", "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben")}
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}

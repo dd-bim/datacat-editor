@@ -6,7 +6,7 @@ import DomainGroupForm from "../views/forms/DomainGroupForm";
 import DomainClassForm from "../views/forms/DomainClassForm";
 import PropertyGroupForm from "../views/forms/PropertyGroupForm";
 import PropertyForm from "../views/forms/PropertyForm";
-import MeasureForm from "../views/forms/MeasureForm";
+import ValueListForm from "../views/forms/ValueListForm";
 import UnitForm from "../views/forms/UnitForm";
 import ValueForm from "../views/forms/ValueForm";
 
@@ -101,7 +101,7 @@ export const catalogEntryRoutes = [
       <CompositeCatalogEntryView
         entryType={ValueListEntity}
         renderForm={(id) => (
-          <MeasureForm id={id} onDelete={dummyOnDelete} />
+          <ValueListForm id={id} onDelete={dummyOnDelete} />
         )}
       />
     ),

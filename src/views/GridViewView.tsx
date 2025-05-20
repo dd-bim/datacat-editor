@@ -652,7 +652,7 @@
 //     "Grösse",
 //     "Wert",
 //     "Maßeinheit",
-//     "Größe",
+//     "Werteliste",
 //   ];
 
 //   const filterTags = (tags: string[]) =>

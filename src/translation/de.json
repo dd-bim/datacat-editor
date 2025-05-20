@@ -31,7 +31,7 @@
       "group": "Gruppe bearbeiten",
       "class": "Klasse bearbeiten",
       "property": "Merkmal bearbeiten",
-      "measure": "Größe bearbeiten",
+      "valuelist": "Werteliste bearbeiten",
       "unit": "Einheit bearbeiten",
       "value": "Wert bearbeiten",
       "model": "Fachmodell bearbeiten"
@@ -179,7 +179,7 @@
     "data_templates": "Datenvorlagen",
     "property_groups": "Merkmalsgruppen",
     "properties": "Merkmale",
-    "measures": "Größen",
+    "valuelists": "Wertelisten",
     "units": "Maßeinheiten",
     "values": "Werte"
   },
@@ -221,7 +221,7 @@
     "delete_success": "Klasse gelöscht.",
     "assigned_property_groups": "Der Klasse {name} zugewiesene Merkmalsgruppen",
     "assigned_properties": "Direkt zugewiesene Merkmale der Klasse {name}",
-    "reference_documents": "die diese Klasse beschreiben",
+    "reference_documents": "Wird in folgenden Referenzdokumenten beschrieben",
     "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
     "groups_using_class": "die diese Klasse anwenden",
     "no_groups_using_class": "Die Klasse wird durch keine Gruppe genutzt",
@@ -381,9 +381,9 @@
     "title": "Merkmal",
     "titlePlural": "Merkmale"
   },
-  "measure": {
-    "title": "Größe",
-    "titlePlural": "Größen"
+  "valuelist": {
+    "title": "Werteliste",
+    "titlePlural": "Wertelisten"
   },
   "unit": {
     "title": "Maßeinheit",
@@ -465,7 +465,7 @@
     "no_assigned_classes": "Das Merkmal wurde keiner Klasse direkt zugewiesen",
     "delete_button": "Löschen"
   },
-  "measure_form": {
+  "valuelist_form": {
     "loading": "Lade Größe...",
     "error": "Es ist ein Fehler aufgetreten...",
     "update_success": "Update erfolgreich.",

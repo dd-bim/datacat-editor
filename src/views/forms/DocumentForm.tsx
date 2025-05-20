@@ -1,52 +1,52 @@
-import React from "react";
 import {
     ExternalDocumentDetailPropsFragment,
     RelationshipRecordType,
     useDeleteEntryMutation,
     useGetDocumentEntryQuery
 } from "../../generated/types";
-import {Typography, Button} from "@mui/material";
-import {useSnackbar} from "notistack";
+import { Typography, Button } from "@mui/material";
+import { useSnackbar } from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
+import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
-import FormView, {FormProps} from "./FormView";
-// import TransferListView from "../TransferListView";
-import {Domain} from "../../domain";
-import {T} from "@tolgee/react";
+import FormView, { FormProps } from "./FormView";
+import TransferListView from "../TransferListView";
+import { Domain } from "../../domain";
+import { T } from "@tolgee/react";
 
 const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => {
-    const {id, onDelete} = props;
-    const {enqueueSnackbar} = useSnackbar();
-console.log("IDDocument :" + id)
+    const { id, onDelete } = props;
+    const { enqueueSnackbar } = useSnackbar();
+
     // fetch domain model
-    const {loading, error, data, refetch} = useGetDocumentEntryQuery({
+    const { loading, error, data, refetch } = useGetDocumentEntryQuery({
         fetchPolicy: "network-only",
-        variables: {id}
+        variables: { id }
     });
     let entry = data?.node as ExternalDocumentDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation({
         update: cache => {
-            cache.evict({id: `XtdExternalDocument:${id}`});
+            cache.evict({ id: `XtdExternalDocument:${id}` });
             cache.modify({
                 id: "ROOT_QUERY",
                 fields: {
-                    hierarchy: (value, {DELETE}) => DELETE
+                    hierarchy: (value, { DELETE }) => DELETE
                 }
             });
             cache.modify({
                 id: "ROOT_QUERY",
                 fields: {
-                    search: (value, {DELETE}) => DELETE
+                    search: (value, { DELETE }) => DELETE
                 }
             });
         }
     });
 
-    if (loading) return <Typography><T keyName={"document.loading"}/></Typography>;
-    if (error || !entry) return <Typography><T keyName={"error.error"}/></Typography>;
+    if (loading) return <Typography><T keyName={"document.loading"} /></Typography>;
+    if (error || !entry) return <Typography><T keyName={"error.error"} /></Typography>;
 
     const handleOnUpdate = async () => {
         await refetch();
@@ -54,39 +54,44 @@ console.log("IDDocument :" + id)
     }
 
     const handleOnDelete = async () => {
-        await deleteEntry({variables: {id}});
+        await deleteEntry({ variables: { id } });
         enqueueSnackbar("Referenzdokument gelöscht.")
         onDelete?.();
     };
 
-    const documentsRelationships = entry.documents.nodes.map(({id, relatedThings}) => ({
-        relationshipId: id,
-        relatedItems: relatedThings
-    }));
+    const relatedDocuments = entry.documents ?? [];
+
+    const descriptions = entry.descriptions?.[0]?.texts ?? [];
+    const comments = entry.comments?.[0]?.texts ?? [];
 
     return (
         <FormView>
             <NameFormSet
                 catalogEntryId={id}
-                names={entry.names}
+                names={entry.names[0].texts}
             />
 
             <DescriptionFormSet
                 catalogEntryId={id}
-                descriptions={entry.descriptions}
+                descriptions={descriptions}
+            />
+
+            <CommentFormSet
+                catalogEntryId={id}
+                comments={comments}
             />
 
             <VersionFormSet
                 id={id}
-                versionId={entry.versionId}
-                versionDate={entry.versionDate}
+                majorVersion={entry.majorVersion}
+                minorVersion={entry.minorVersion}
             />
 
             <TransferListView
-                title={<span><T keyName={"document.TransferList"}/><b><T keyName={"document.TransferList2"}/></b></span>}
+                title={<span><T keyName={"document.TransferList"} /><b><T keyName={"document.TransferList2"} /></b></span>}
                 relatingItemId={id}
-                relationshipType={RelationshipRecordType.Documents}
-                relationships={documentsRelationships}
+                relationshipType={RelationshipRecordType.ReferenceDocuments}
+                relationships={relatedDocuments}
                 searchInput={{
                     entityTypeIn: Domain.map(x => x.recordType),
                     idNotIn: [id]
@@ -96,12 +101,12 @@ console.log("IDDocument :" + id)
                 onDelete={handleOnUpdate}
             />
 
-            <MetaFormSet entry={entry}/>
+            <MetaFormSet entry={entry} />
 
             <Button
                 variant="contained"
                 color="primary"
-                startIcon={<DeleteForeverIcon/>}
+                startIcon={<DeleteForeverIcon />}
                 onClick={handleOnDelete}
             >
                 Löschen

@@ -480,7 +480,7 @@ fragment UnitDetailProps on XtdUnit {
     scale
     base
     symbol {
-        ...SymbolProps
+        ...TranslationProps
     }
     offset {
         ...RationalProps

@@ -63,7 +63,7 @@ const AppBreadcrumbs = () => {
       'property-group': 'Merkmalsgruppen',
       'group': 'Gruppen',
       'value': 'Werte',
-      'measure': 'Größen',
+      'valueList': 'Wertelisten',
       'unit': 'Maßeinheiten',
       'import': 'Import',
       'export': 'Export',

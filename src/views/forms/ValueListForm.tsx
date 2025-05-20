@@ -1,6 +1,5 @@
-import React, {FC} from "react";
 import {
-    ValuelistDetailPropsFragment,
+    ValueListDetailPropsFragment,
     RelationshipRecordType,
     useDeleteEntryMutation,
     useGetValueListEntryQuery
@@ -14,22 +13,24 @@ import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
-// import TransferListView from "../TransferListView";
+import TransferListView from "../TransferListView";
 import {UnitEntity, ValueEntity} from "../../domain";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import {T, useTranslate} from "@tolgee/react";
 
-const MeasureForm: FC<FormProps<ValuelistDetailPropsFragment>> = (props) => {
+const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
     const {enqueueSnackbar} = useSnackbar();
     const {t} = useTranslate();
 
     // fetch domain model
-    const {loading, error, data, refetch} = useGetMeasureEntryQuery({
+    const {loading, error, data, refetch} = useGetValueListEntryQuery({
         fetchPolicy: "network-only",
         variables: {id}
     });
-    let entry = data?.node as ValuelistDetailPropsFragment | undefined;
+    console.log("ValueListForm error", error);
+
+    let entry = data?.node as ValueListDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation({
         update: cache => {
             cache.evict({id: `XtdValueList:${id}`});
@@ -48,17 +49,17 @@ const MeasureForm: FC<FormProps<ValuelistDetailPropsFragment>> = (props) => {
         }
     });
 
-    if (loading) return <Typography><T keyName="measure_form.loading">Lade Werteliste..</T></Typography>;
-    if (error || !entry) return <Typography><T keyName="measure_form.error">Es ist ein Fehler aufgetreten..</T></Typography>;
+    if (loading) return <Typography><T keyName="valuelist_form.loading">Lade Werteliste..</T></Typography>;
+    if (error || !entry) return <Typography><T keyName="valuelist_form.error">Es ist ein Fehler aufgetreten..</T></Typography>;
 
     const handleOnUpdate = async () => {
         await refetch();
-        enqueueSnackbar(<T keyName="measure_form.update_success">Update erfolgreich.</T>);
+        enqueueSnackbar(<T keyName="valuelist_form.update_success">Update erfolgreich.</T>);
     };
 
     const handleOnDelete = async () => {
         await deleteEntry({variables: {id}});
-        enqueueSnackbar(<T keyName="measure_form.delete_success">Werteliste gelöscht.</T>);
+        enqueueSnackbar(<T keyName="valuelist_form.delete_success">Werteliste gelöscht.</T>);
         onDelete?.();
     };
 
@@ -67,27 +68,27 @@ const MeasureForm: FC<FormProps<ValuelistDetailPropsFragment>> = (props) => {
     //     relatedItems: relatedUnits
     // }));
 
-    // const assignsValuesRelationships = entry.assignedValues.nodes.map(({id, relatedValues}) => ({
-    //     relationshipId: id,
-    //     relatedItems: relatedValues
-    // }));
+    const relatedValues = entry.values ?? [];
+
+  const descriptions = entry.descriptions?.[0]?.texts ?? [];
+  const comments = entry.comments?.[0]?.texts ?? [];
 
     return (
         <FormView>
             <NameFormSet
                 catalogEntryId={id}
-                names={entry.names}
+                names={entry.names[0].texts}
             />
-{/* 
+
             <DescriptionFormSet
                 catalogEntryId={id}
-                descriptions={entry.descriptions}
+                descriptions={descriptions}
             />
 
             <CommentFormSet
                 catalogEntryId={id}
-                comments={entry.comments}
-            /> */}
+                comments={comments}
+            />
 
             <VersionFormSet
                 id={id}
@@ -96,7 +97,7 @@ const MeasureForm: FC<FormProps<ValuelistDetailPropsFragment>> = (props) => {
             />
 
             {/* <TransferListView
-                title={<span><T keyName="measure_form.applicable_units"></T></span>}
+                title={<span><T keyName="valuelist_form.applicable_units"></T></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.AssignsUnits}
                 relationships={assignsUnitsRelationships}
@@ -106,30 +107,31 @@ const MeasureForm: FC<FormProps<ValuelistDetailPropsFragment>> = (props) => {
                 onCreate={handleOnUpdate}
                 onUpdate={handleOnUpdate}
                 onDelete={handleOnUpdate}
-            />
+            /> */}
 
             <TransferListView
-                title={<span><T keyName="measure_form.value_range">Wertebereich</T> <b><T keyName="measure.title">der Größe</T></b></span>}
+                title={<span><T keyName="valuelist_form.value_range">Wertebereich</T> <b><T keyName="valuelist.title">der Größe</T></b></span>}
                 relatingItemId={id}
-                relationshipType={RelationshipRecordType.AssignsValues}
-                relationships={assignsValuesRelationships}
+                relationshipType={RelationshipRecordType.Values}
+                relationships={relatedValues}
                 searchInput={{
-                    entityTypeIn: [ValueEntity.recordType]
+                    entityTypeIn: [ValueEntity.recordType],
+                    tagged: ValueEntity.tags
                 }}
                 onCreate={handleOnUpdate}
                 onUpdate={handleOnUpdate}
                 onDelete={handleOnUpdate}
             />
 
-            <RelatingRecordsFormSet
-                title={<span><b><T keyName="document.titlePlural">Referenzdokumente</T></b>, <T keyName="measure_form.reference_documents">die diese Größe beschreiben</T></span>}
-                emptyMessage={t("measure_form.no_reference_documents")}
+            {/* <RelatingRecordsFormSet
+                title={<span><b><T keyName="document.titlePlural">Referenzdokumente</T></b>, <T keyName="valuelist_form.reference_documents">die diese Größe beschreiben</T></span>}
+                emptyMessage={t("valuelist_form.no_reference_documents")}
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
             />
 
             <RelatingRecordsFormSet
-                title={<span><b><T keyName="property.titlePlural">Merkmale</T></b>, <T keyName="measure_form.quantified_properties">die durch diese Größe quantifiziert werden</T></span>}
-                emptyMessage={t("measure_form.no_quantified_properties")}
+                title={<span><b><T keyName="property.titlePlural">Merkmale</T></b>, <T keyName="valuelist_form.quantified_properties">die durch diese Größe quantifiziert werden</T></span>}
+                emptyMessage={t("valuelist_form.no_quantified_properties")}
                 relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingProperty) ?? []}
             /> */}
 
@@ -141,10 +143,10 @@ const MeasureForm: FC<FormProps<ValuelistDetailPropsFragment>> = (props) => {
                 startIcon={<DeleteForeverIcon/>}
                 onClick={handleOnDelete}
             >
-                <T keyName="measure_form.delete_button">Löschen</T>
+                <T keyName="valuelist_form.delete_button">Löschen</T>
             </Button>
         </FormView>
     );
 }
 
-export default MeasureForm;
+export default ValueListForm;

@@ -8,7 +8,7 @@ import DomainGroupForm from "./forms/DomainGroupForm";
 import DomainClassForm from "./forms/DomainClassForm";
 import PropertyGroupForm from "./forms/PropertyGroupForm";
 import PropertyForm from "./forms/PropertyForm";
-import MeasureForm from "./forms/MeasureForm";
+import ValueListForm from "./forms/ValueListForm";
 import UnitForm from "./forms/UnitForm";
 import ValueForm from "./forms/ValueForm";
 import ButtonComponent from "@mui/material/Button";
@@ -347,7 +347,7 @@ export function VerificationView() {
             <Typography variant="h5">
               <MeasureIcon /> Größe bearbeiten
             </Typography>
-            <MeasureForm id={id} onDelete={() => setSelectedConcept(null)} />
+            <ValueListForm id={id} onDelete={() => setSelectedConcept(null)} />
           </>
         );
       case UnitEntity.path:

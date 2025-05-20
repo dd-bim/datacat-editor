@@ -106,6 +106,8 @@ export enum CatalogRecordType {
   QuantityKind = 'QuantityKind',
   Country = 'Country',
   Subdivision = 'Subdivision',
+  RelationshipToProperty = 'RelationshipToProperty',
+  RelationshipToSubject = 'RelationshipToSubject'
 }
 
 export enum RelationshipRecordType {
@@ -176,7 +178,9 @@ export type DeleteTextInput = {
 
 
 export type DeleteRelationshipInput = {
-  relationshipId: Scalars['ID'];
+  relationshipType: RelationshipRecordType;
+  fromId: Scalars['ID'];
+  toId: Scalars['ID'];
 };
 
 
@@ -813,7 +817,8 @@ export type ExternalDocumentDetailPropsFragment = ObjectDetailProps_XtdExternalD
   isbn?: Maybe<string>, 
   publisher?: Maybe<string>, 
   dateOfPublication?: Maybe<string>, 
-  languages: Array<LanguagePropsFragment> 
+  languages: Array<LanguagePropsFragment>, 
+  documents?: Maybe<Array<ConceptPropsFragment>>
 };
 
 export type SubjectDetailPropsFragment = ObjectDetailProps_XtdSubject_Fragment & { 
@@ -1593,6 +1598,7 @@ fragment ObjectProps on XtdObject {
     `;
 export const ExternalDocumentPropsFragmentDoc = gql`
 fragment ExternalDocumentProps on XtdExternalDocument {
+    ...ObjectProps
     uri
     author
     isbn
@@ -1602,6 +1608,7 @@ fragment ExternalDocumentProps on XtdExternalDocument {
         ...LanguageProps
     }
 }
+    ${ObjectPropsFragmentDoc}
     ${LanguagePropsFragmentDoc}`;
 export const ConceptPropsFragmentDoc = gql`
 fragment ConceptProps on XtdConcept {
@@ -1633,6 +1640,7 @@ fragment ConceptProps on XtdConcept {
     ${ObjectPropsFragmentDoc}
 ${TranslationPropsFragmentDoc}
 ${ExternalDocumentPropsFragmentDoc}
+${TagPropsFragmentDoc}
 ${LanguagePropsFragmentDoc}`;
 export const ConceptDetailPropsFragmentDoc = gql`
   fragment ConceptDetailProps on XtdConcept {
@@ -1704,7 +1712,7 @@ export const ValuePropsFragmentDoc = gql`
       ...ObjectProps
       nominalValue
   }
-  ${ConceptPropsFragmentDoc}`;
+  ${ObjectPropsFragmentDoc}`;
 export const PropertyPropsFragmentDoc = gql`
   fragment PropertyProps on XtdProperty {
       ...ConceptDetailProps
@@ -1729,13 +1737,15 @@ export const SubjectDetailPropsFragmentDoc = gql`
         }
     }
     connectedSubjects {
-        ...RelationshipToSubjectProps
+        # ...RelationshipToSubjectProps
+        id
     }
   }
   ${ConceptDetailPropsFragmentDoc}
 ${ValuePropsFragmentDoc}
 ${PropertyPropsFragmentDoc}
-${RelationshipToSubjectPropsFragmentDoc}`;
+`;
+// ${RelationshipToSubjectPropsFragmentDoc}
 export const RelationshipToSubjectDetailPropsFragmentDoc = gql`
   fragment RelationshipToSubjectProps on XtdRelationshipToSubject {
     ...RelationshipToSubjectProps
@@ -1767,33 +1777,30 @@ export const SymbolPropsFragmentDoc = gql`
 ${SubjectDetailPropsFragmentDoc}
 ${LanguagePropsFragmentDoc}`;
 export const UnitPropsFragmentDoc = gql`
-  fragment UnitDetailProps on XtdUnit {
+  fragment UnitProps on XtdUnit {
       ...ConceptDetailProps
       scale
       base
   }
     ${ConceptDetailPropsFragmentDoc}`;
+export const ValueListPropsFragmentDoc = gql`
+  fragment ValueListProps on XtdValueList {
+    ...ConceptProps
+  }
+  ${ConceptPropsFragmentDoc}`;
 export const IntervalPropsFragmentDoc = gql`
   fragment IntervalProps on XtdInterval {
     id
     minimumIncluded
     maximumIncluded
     minimum {
-      id
-      order
-      orderedValue {
-          ...ValueProps
-      }
+      ...ValueListProps
     }
     maximum {
-      id
-      order
-      orderedValue {
-          ...ValueProps
-      }
+      ...ValueListProps
     }
   }
-  ${ValuePropsFragmentDoc}`;
+  ${ValueListPropsFragmentDoc}`;
 export const RelationshipToPropertyPropsFragmentDoc = gql`
   fragment RelationshipToPropertyProps on XtdRelationshipToProperty {
       ...ObjectProps
@@ -1828,7 +1835,7 @@ export const PropertyDetailPropsFragmentDoc = gql`
           ...DimensionProps
       }
       quantityKinds {
-          ...QuantityKindsProps
+          ...QuantityKindProps
       }
       units {
           ...UnitProps  
@@ -1869,10 +1876,9 @@ export const RelationshipToPropertyDetailPropsFragmentDoc = gql`
 ${PropertyDetailPropsFragmentDoc}`;
 export const UnitDetailPropsFragmentDoc = gql`
   fragment UnitDetailProps on XtdUnit {
-      ...ConceptDetailProps
       ...UnitProps
       symbol {
-          ...SymbolProps
+          ...TranslationProps
       }
       offset {
           ...RationalProps
@@ -1884,18 +1890,16 @@ export const UnitDetailPropsFragmentDoc = gql`
           ...DimensionProps
       }
       properties {
-          ...PropertyDetailProps
+          id
       }
   }
-    ${ConceptDetailPropsFragmentDoc}
+    ${TranslationPropsFragmentDoc}
 ${UnitPropsFragmentDoc}
-${SymbolPropsFragmentDoc}
 ${RationalPropsFragmentDoc}
-${DimensionPropsFragmentDoc}
-${PropertyDetailPropsFragmentDoc}`;
+${DimensionPropsFragmentDoc}`;
 export const ValueListDetailPropsFragmentDoc = gql`
   fragment ValueListDetailProps on XtdValueList {
-      ...ObjectDetailProps
+      ...ValueListProps
       properties {
           ...PropertyDetailProps
       }
@@ -1903,14 +1907,15 @@ export const ValueListDetailPropsFragmentDoc = gql`
           ...UnitDetailProps
       }
       values {
-          id
+          ...ObjectProps
           order
           orderedValue {
               ...ValueProps
           }
       }
   }
-    ${ObjectDetailPropsFragmentDoc}
+    ${ValueListPropsFragmentDoc}
+${ObjectPropsFragmentDoc}
 ${PropertyDetailPropsFragmentDoc}
 ${UnitDetailPropsFragmentDoc}
 ${ValuePropsFragmentDoc}`;

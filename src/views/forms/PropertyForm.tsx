@@ -1,4 +1,3 @@
-import React from "react";
 import {
     PropertyDetailPropsFragment,
     RelationshipRecordType,
@@ -16,7 +15,7 @@ import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, {FormProps} from "./FormView";
 import {ValueListEntity} from "../../domain";
-// import TransferListView from "../TransferListView";
+import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import { T, useTranslate } from "@tolgee/react";
 
@@ -30,6 +29,8 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
         fetchPolicy: "network-only",
         variables: {id}
     });
+console.log("Property Error", error);
+
     let entry = data?.node as PropertyDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation({
         update: cache => {
@@ -63,47 +64,47 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
         onDelete?.();
     };
 
-    // const assignsMeasuresRelationships = entry.assignedMeasures.nodes.map(({id, relatedMeasures}) => ({
-    //     relationshipId: id,
-    //     relatedItems: relatedMeasures
-    // }));
+ const relatedValueLists = entry.possibleValues ?? [];
+
+  const descriptions = entry.descriptions?.[0]?.texts ?? [];
+  const comments = entry.comments?.[0]?.texts ?? [];
 
     return (
         <FormView>
             <NameFormSet
                 catalogEntryId={id}
-                names={entry.names}
+                names={entry.names[0].texts}
             />
 
-            {/* <DescriptionFormSet
+            <DescriptionFormSet
                 catalogEntryId={id}
-                descriptions={entry.descriptions}
+                descriptions={descriptions}
             />
 
             <CommentFormSet
                 catalogEntryId={id}
-                comments={entry.comments}
-            /> */}
+                comments={comments}
+            />
 
             <VersionFormSet
                 id={id}
                 majorVersion={entry.majorVersion}
                 minorVersion={entry.minorVersion}
             />
-{/* 
+
             <TransferListView
-                title={<span><b><T keyName="measure.title">Größe</T></b> <T keyName="property_form.property_measure">des Merkmals</T></span>}
+                title={<span><b><T keyName="valuelist.title">Werteliste</T></b> <T keyName="property_form.property_measure">des Merkmals</T></span>}
                 relatingItemId={id}
-                relationshipType={RelationshipRecordType.AssignsMeasures}
-                relationships={assignsMeasuresRelationships}
+                relationshipType={RelationshipRecordType.PossibleValues}
+                relationships={relatedValueLists}
                 searchInput={{
-                    entityTypeIn: [MeasureEntity.recordType]
+                    entityTypeIn: [ValueListEntity.recordType]
                 }}
                 onCreate={handleOnUpdate}
                 onUpdate={handleOnUpdate}
                 onDelete={handleOnUpdate}
             />
-
+{/* 
             <RelatingRecordsFormSet
                 title={<span><b><T keyName="document.titlePlural">Referenzdokumente</T></b>, <T keyName="property_form.reference_documents">die dieses Merkmal beschreiben</T></span>}
                 emptyMessage={t("property_form.no_reference_documents", "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben")}

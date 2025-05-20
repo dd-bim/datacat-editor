@@ -289,7 +289,7 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
 
           <AppDrawerItem
             icon={<ValueListEntity.Icon />}
-            primary={<T keyName="app_drawer.measures">Größen</T>}
+            primary={<T keyName="app_drawer.valuelists">Wertelisten</T>}
             to={`/${ValueListEntity.path}`}
             onClick={handleItemClick}
           />

@@ -9,7 +9,7 @@ import DomainGroupForm from "./forms/DomainGroupForm";
 import DomainClassForm from "./forms/DomainClassForm";
 import PropertyGroupForm from "./forms/PropertyGroupForm";
 import PropertyForm from "./forms/PropertyForm";
-import MeasureForm from "./forms/MeasureForm";
+import ValueListForm from "./forms/ValueListForm";
 import UnitForm from "./forms/UnitForm";
 import ValueForm from "./forms/ValueForm";
 import {
@@ -173,7 +173,7 @@ const HierarchyView = () => {
             <Typography variant="h5">
               <MeasureIcon /> <T keyName="hierarchy.edit_measure">Größe bearbeiten</T>
             </Typography>
-            <MeasureForm id={id} onDelete={handleDelete} />
+            <ValueListForm id={id} onDelete={handleDelete} />
           </>
         );
       case UnitEntity.path:

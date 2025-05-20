@@ -12,9 +12,9 @@ import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
-import { PropertyEntity, PropertyGroupEntity } from "../../domain";
+import { PropertyEntity, DocumentEntity ,PropertyGroupEntity } from "../../domain";
 import FormView, { FormProps } from "./FormView";
-// import TransferListView from "../TransferListView";
+import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 // import AssignsPropertyWithValuesFormset from "./AssignsPropertyWithValuesFormset";
 import { T, useTranslate } from "@tolgee/react";
@@ -31,6 +31,7 @@ export default function DomainClassForm(
     fetchPolicy: "network-only",
     variables: { id },
   });
+  console.log("DomainClassForm error", error);
 
   let entry = data?.node as SubjectDetailPropsFragment | undefined;
   const [deleteEntry] = useDeleteEntryMutation({
@@ -86,12 +87,9 @@ export default function DomainClassForm(
   //   })
   // );
 
-  // const assignsPropertiesRelationships = entry.assignedProperties.nodes.map(
-  //   ({ id, relatedProperties }) => ({
-  //     relationshipId: id,
-  //     relatedItems: relatedProperties,
-  //   })
-  // );
+  console.log("entry", entry);
+  const relatedProperties = entry.properties ?? [];
+  const relatedDocuments = entry.referenceDocuments ?? [];
 
   const descriptions = entry.descriptions?.[0]?.texts ?? [];
   const comments = entry.comments?.[0]?.texts ?? [];
@@ -119,6 +117,8 @@ export default function DomainClassForm(
         minorVersion={entry.minorVersion}
       />
 
+      {/* Merkmalsgruppen */}
+
       {/* <TransferListView
         title={
           <span>
@@ -140,7 +140,7 @@ export default function DomainClassForm(
         onCreate={handleOnUpdate}
         onUpdate={handleOnUpdate}
         onDelete={handleOnUpdate}
-      />
+      /> */}
 
       <TransferListView
         title={
@@ -149,8 +149,8 @@ export default function DomainClassForm(
           </span>
         }
         relatingItemId={id}
-        relationshipType={RelationshipRecordType.AssignsProperties}
-        relationships={assignsPropertiesRelationships}
+        relationshipType={RelationshipRecordType.Properties}
+        relationships={relatedProperties}
         searchInput={{
           entityTypeIn: [PropertyEntity.recordType],
           tagged: PropertyEntity.tags,
@@ -160,31 +160,21 @@ export default function DomainClassForm(
         onDelete={handleOnUpdate}
       />
 
-      <AssignsPropertyWithValuesFormset
-        subject={entry}
-        onChange={handleOnUpdate}
+      <TransferListView
+        title={<span><T keyName={"domain_class_form.reference_documents"} /></span>}
+        relatingItemId={id}
+        relationshipType={RelationshipRecordType.ReferenceDocuments}
+        relationships={relatedDocuments}
+        searchInput={{
+          entityTypeIn: [DocumentEntity.recordType],
+          tagged: DocumentEntity.tags
+        }}
+        onCreate={handleOnUpdate}
+        onUpdate={handleOnUpdate}
+        onDelete={handleOnUpdate}
       />
 
-      <RelatingRecordsFormSet
-        title={
-          <span>
-            <b>
-              <T keyName="document.titlePlural" />
-            </b>
-            ,{" "}
-            <T keyName="domain_class_form.reference_documents">
-              die diese Klasse beschreiben
-            </T>
-          </span>
-        }
-        emptyMessage={
-            t('domain_class_form.no_reference_documents')
-        }
-        relatingRecords={
-          entry?.documentedBy.nodes.map((node) => node.relatingDocument) ?? []
-        }
-      />
-
+      {/* 
       <RelatingRecordsFormSet
         title={
           <span>
