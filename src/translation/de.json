@@ -344,6 +344,7 @@
     "titlePlural": "Referenzdokumente",
     "description": "Ein Eintrag vom Typ Referenzdokument wird genutzt, um externe Dokumente, Bücher oder andere schriftliche Informationen abzubilden.",
     "loading": "Lade Referenzdokument...",
+    "more_infos": "Mehr Informationen",
     "TransferList": "Durch das Referenzdokument beschriebene ",
     "TransferList2": "Konzepte"
   },
@@ -466,16 +467,16 @@
     "delete_button": "Löschen"
   },
   "valuelist_form": {
-    "loading": "Lade Größe...",
+    "loading": "Lade Werteliste...",
     "error": "Es ist ein Fehler aufgetreten...",
     "update_success": "Update erfolgreich.",
-    "delete_success": "Größe gelöscht.",
-    "applicable_units": "Auf die Größe anwendbare Maßeinheiten",
-    "value_range": "Wertebereich der Größe",
+    "delete_success": "Werteliste gelöscht.",
+    "applicable_units": "Auf die Werteliste anwendbare Maßeinheiten",
+    "value_range": "Wertebereich der Werteliste",
     "reference_documents": "die diese Größe beschreiben",
-    "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
-    "quantified_properties": "die durch diese Größe quantifiziert werden",
-    "no_quantified_properties": "Die Größe wird durch kein Merkmal genutzt",
+    "no_reference_documents": "Durch Werteliste im Datenkatalog hinterlegtes Referenzdokument beschrieben",
+    "quantified_properties": "die durch diese Werteliste quantifiziert werden",
+    "no_quantified_properties": "Die Werteliste wird durch kein Merkmal genutzt",
     "delete_button": "Löschen"
   },
   "unit_form": {

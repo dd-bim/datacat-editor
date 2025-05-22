@@ -16,7 +16,6 @@ import { PropertyEntity, DocumentEntity ,PropertyGroupEntity } from "../../domai
 import FormView, { FormProps } from "./FormView";
 import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
-// import AssignsPropertyWithValuesFormset from "./AssignsPropertyWithValuesFormset";
 import { T, useTranslate } from "@tolgee/react";
 
 export default function DomainClassForm(

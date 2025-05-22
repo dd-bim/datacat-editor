@@ -16,6 +16,7 @@ import FormView, { FormProps } from "./FormView";
 import TransferListView from "../TransferListView";
 import { Domain } from "../../domain";
 import { T } from "@tolgee/react";
+import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
 
 const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => {
     const { id, onDelete } = props;
@@ -86,6 +87,38 @@ const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => 
                 majorVersion={entry.majorVersion}
                 minorVersion={entry.minorVersion}
             />
+
+            <FormSet>
+                <FormSetTitle>
+                    <b>
+                        <T keyName="document.more_infos" />
+                    </b>
+                </FormSetTitle>
+                <Typography sx={{ mt: 2 }}>
+                    Uri: {entry.documentUri ? (
+                        <a href={entry.documentUri} target="_blank" rel="noopener noreferrer">
+                            {entry.documentUri}
+                        </a>
+                    ) : "-"}
+                </Typography>
+                <Typography sx={{ mt: 1 }}>
+                    Autor: {entry.author ? entry.author : "-"}
+                </Typography>
+                <Typography sx={{ mt: 1 }}>
+                    Herausgeber: {entry.publisher ? entry.publisher : "-"}
+                </Typography>
+                <Typography sx={{ mt: 1 }}>
+                    ISBN: {entry.isbn ? entry.isbn : "-"}
+                </Typography>
+                <Typography sx={{ mt: 1 }}>
+                    Erscheinungsdatum: {entry.dateOfPublication ? entry.dateOfPublication : "-"}
+                </Typography>
+                <Typography sx={{ mt: 1 }}>
+                    Sprache: {entry.languages && entry.languages.length > 0
+                        ? entry.languages.map(lang => lang.nativeName).join(", ")
+                        : "-"}
+                </Typography>
+            </FormSet>
 
             <TransferListView
                 title={<span><T keyName={"document.TransferList"} /><b><T keyName={"document.TransferList2"} /></b></span>}

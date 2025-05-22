@@ -43,7 +43,7 @@ query FindItem($input: SearchInput!, $pageSize: Int, $pageNumber: Int) {
 query PropertyTree {
     hierarchy(input: {
         rootNodeFilter: {
-            catalogEntryTypeIn: [Subject]
+            entityTypeIn: [Subject]
             tagged: ["6f96aaa7-e08f-49bb-ac63-93061d4c5db2"]
         }
     }) {

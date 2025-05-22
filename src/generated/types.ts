@@ -812,7 +812,7 @@ type ObjectDetailProps_XtdQuantityKind_Fragment = MetaProps_Fragment & ConceptPr
 export type ObjectDetailPropsFragment =  ObjectDetailProps_XtdExternalDocument_Fragment | ObjectDetailProps_XtdProperty_Fragment | ObjectDetailProps_XtdSubject_Fragment | ObjectDetailProps_XtdUnit_Fragment | ObjectDetailProps_XtdValue_Fragment | ObjectDetailProps_XtdOrderedValue_Fragment | ObjectDetailProps_XtdValueList_Fragment | ObjectDetailProps_XtdDimension_Fragment | ObjectDetailProps_XtdCountry_Fragment | ObjectDetailProps_XtdSubdivision_Fragment | ObjectDetailProps_XtdRelationshipToProperty_Fragment | ObjectDetailProps_XtdRelationshipToSubject_Fragment | ObjectDetailProps_XtdQuantityKind_Fragment;
 
 export type ExternalDocumentDetailPropsFragment = ObjectDetailProps_XtdExternalDocument_Fragment & {
-  uri?: Maybe<string>, 
+  documentUri?: Maybe<string>, 
   author?: Maybe<string>, 
   isbn?: Maybe<string>, 
   publisher?: Maybe<string>, 
@@ -840,7 +840,7 @@ export type PropertyDetailPropsFragment = ObjectDetailProps_XtdProperty_Fragment
 export type ValueListDetailPropsFragment = ObjectDetailProps_XtdValueList_Fragment & {
   values: Array<OrderedValueDetailPropsFragment>,
   properties: Array<PropertyDetailPropsFragment>,
-  unit?: Maybe<Array<UnitDetailPropsFragment>>
+  unit?: Maybe<UnitDetailPropsFragment>
 };
 
 export type OrderedValueDetailPropsFragment = ObjectDetailProps_XtdOrderedValue_Fragment & {
@@ -1599,7 +1599,7 @@ fragment ObjectProps on XtdObject {
 export const ExternalDocumentPropsFragmentDoc = gql`
 fragment ExternalDocumentProps on XtdExternalDocument {
     ...ObjectProps
-    uri
+    documentUri
     author
     isbn
     publisher
@@ -1778,11 +1778,11 @@ ${SubjectDetailPropsFragmentDoc}
 ${LanguagePropsFragmentDoc}`;
 export const UnitPropsFragmentDoc = gql`
   fragment UnitProps on XtdUnit {
-      ...ConceptDetailProps
+      ...ConceptProps
       scale
       base
   }
-    ${ConceptDetailPropsFragmentDoc}`;
+    ${ConceptPropsFragmentDoc}`;
 export const ValueListPropsFragmentDoc = gql`
   fragment ValueListProps on XtdValueList {
     ...ConceptProps
@@ -1901,10 +1901,10 @@ export const ValueListDetailPropsFragmentDoc = gql`
   fragment ValueListDetailProps on XtdValueList {
       ...ValueListProps
       properties {
-          ...PropertyDetailProps
+          ...PropertyProps
       }
       unit {
-          ...UnitDetailProps
+          ...UnitProps
       }
       values {
           ...ObjectProps
@@ -1916,8 +1916,8 @@ export const ValueListDetailPropsFragmentDoc = gql`
   }
     ${ValueListPropsFragmentDoc}
 ${ObjectPropsFragmentDoc}
-${PropertyDetailPropsFragmentDoc}
-${UnitDetailPropsFragmentDoc}
+${PropertyPropsFragmentDoc}
+${UnitPropsFragmentDoc}
 ${ValuePropsFragmentDoc}`;
 
 
@@ -3262,16 +3262,23 @@ export type FindTagsQueryResult = Apollo.QueryResult<FindTagsQuery, FindTagsQuer
 export const PropertyTreeDocument = gql`
     query PropertyTree {
   hierarchy(
-    input: {rootNodeFilter: {catalogEntryTypeIn: [Subject], tagged: ["6f96aaa7-e08f-49bb-ac63-93061d4c5db2"]}}
+    input: {rootNodeFilter: {entityTypeIn: [Subject], tagged: ["6f96aaa7-e08f-49bb-ac63-93061d4c5db2"]}}
   ) {
     nodes {
-      ...ObjectProps
+      # ...ObjectProps
+      id 
+      name
+      tags {
+        id
+        name
+      }
     }
     paths
   }
 }
-    ${ObjectPropsFragmentDoc}`;
-
+    
+    `;
+// ${ObjectPropsFragmentDoc}
 /**
  * __usePropertyTreeQuery__
  *

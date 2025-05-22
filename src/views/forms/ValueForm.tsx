@@ -11,8 +11,6 @@ import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, { FormProps } from "./FormView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
-// import NominalValueFormSet from "../../components/forms/NominalValueFormSet";
-// import ToleranceFormSet from "../../components/forms/ToleranceFormSet";
 import { T, useTranslate } from "@tolgee/react";
 
 const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
@@ -85,20 +83,7 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
                 minorVersion={entry.minorVersion}
             />
 
-            {/* <NominalValueFormSet
-                id={id}
-                valueRole={entry.valueRole}
-                valueType={entry.valueType}
-                nominalValue={entry.nominalValue}
-            />
-
-            <ToleranceFormSet
-                id={id}
-                toleranceType={entry.toleranceType}
-                lowerTolerance={entry.lowerTolerance}
-                upperTolerance={entry.upperTolerance}
-            />
-
+            {/* 
             <RelatingRecordsFormSet
                 title={<span><b><T keyName="document.titlePlural">Referenzdokumente</T></b>, <T keyName="value_form.reference_documents">die diesen Wert beschreiben</T></span>}
                 emptyMessage={t("value_form.no_reference_documents")}

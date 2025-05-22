@@ -12,6 +12,8 @@ import DataTemplateIcon from '@mui/icons-material/DynamicFeed';
 import { CatalogRecordType } from "./generated/types";
 import MeasureIcon from '@mui/icons-material/Speed';
 import UnitIcon from '@mui/icons-material/AcUnit';
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+
 
 export {
   DataTemplateIcon,
@@ -25,6 +27,7 @@ export {
   RelationshipIcon,
   UnitIcon,
   ValueIcon,
+  HelpOutlineIcon
 };
 
 export type Entity = {
@@ -138,6 +141,16 @@ export const ValueEntity: Entity = {
   export: true
 };
 
+export const UndefinedEntity: Entity = {
+  tags: [],
+  get title() { return "undefined" },
+  get titlePlural() { return "undefined"; },
+  recordType: CatalogRecordType.RelationshipToSubject,
+  path: "value",
+  Icon: HelpOutlineIcon,
+  export: true
+};
+
 export const Domain = [
   DocumentEntity,
   ModelEntity,
@@ -152,7 +165,10 @@ export const Domain = [
 ];
 
 export function getEntityType(recordType: string, tags?: string[]): Entity {
-  for (const id of tags ?? []) {
+  if (tags?.length === 0) {
+    return UndefinedEntity;
+  }
+  for (const id of tags || []) {
     for (const entityType of Domain) {
       if (entityType.tags?.includes(id)) {
         return entityType;

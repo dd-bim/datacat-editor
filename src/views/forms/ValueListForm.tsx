@@ -17,6 +17,8 @@ import TransferListView from "../TransferListView";
 import {UnitEntity, ValueEntity} from "../../domain";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import {T, useTranslate} from "@tolgee/react";
+import { FC } from "react";
+import TransferListViewOrderedValues from "../TransferListViewOrderedValues";
 
 const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
     const {id, onDelete} = props;
@@ -63,12 +65,13 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
         onDelete?.();
     };
 
-    // const assignsUnitsRelationships = entry.assignedUnits.nodes.map(({id, relatedUnits}) => ({
-    //     relationshipId: id,
-    //     relatedItems: relatedUnits
-    // }));
+    const relatedUnits = entry.unit ? [entry.unit] : [];
 
     const relatedValues = entry.values ?? [];
+    const values = relatedValues.map(rel => ({
+        order: rel.order,
+        orderedValue: rel.orderedValue
+    }));
 
   const descriptions = entry.descriptions?.[0]?.texts ?? [];
   const comments = entry.comments?.[0]?.texts ?? [];
@@ -96,24 +99,25 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
                 minorVersion={entry.minorVersion}
             />
 
-            {/* <TransferListView
+            <TransferListView
                 title={<span><T keyName="valuelist_form.applicable_units"></T></span>}
                 relatingItemId={id}
-                relationshipType={RelationshipRecordType.AssignsUnits}
-                relationships={assignsUnitsRelationships}
+                relationshipType={RelationshipRecordType.Unit}
+                relationships={relatedUnits}
                 searchInput={{
                     entityTypeIn: [UnitEntity.recordType]
+                    // tagged: UnitEntity.tags
                 }}
                 onCreate={handleOnUpdate}
                 onUpdate={handleOnUpdate}
                 onDelete={handleOnUpdate}
-            /> */}
+            />
 
-            <TransferListView
-                title={<span><T keyName="valuelist_form.value_range">Wertebereich</T> <b><T keyName="valuelist.title">der Größe</T></b></span>}
+            <TransferListViewOrderedValues
+                title={<span><T keyName="valuelist_form.value_range"></T></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.Values}
-                relationships={relatedValues}
+                relationships={values}
                 searchInput={{
                     entityTypeIn: [ValueEntity.recordType],
                     tagged: ValueEntity.tags

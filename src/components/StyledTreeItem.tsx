@@ -65,10 +65,10 @@ const StyledTreeItemComponent = (props: StyleTreeItemProps & TreeItemProps) => {
   const handleOnLabelClick = useCallback((event: React.MouseEvent) => {
     // More precise check for expansion click using className
     const target = event.target as HTMLElement;
-    const isExpandIconClick = 
-      target.classList.contains('MuiTreeItem-iconContainer') || 
+    const isExpandIconClick =
+      target.classList.contains('MuiTreeItem-iconContainer') ||
       target.closest('.MuiTreeItem-iconContainer');
-  
+
     if (!isExpandIconClick && onSelect) {
       event.preventDefault();
       event.stopPropagation();
@@ -108,7 +108,7 @@ export const StyledTreeItem = React.memo(StyledTreeItemComponent, (prevProps, ne
   // Custom comparison function for memoization
   return (
     prevProps.itemId === nextProps.itemId &&
-    prevProps.data.id === nextProps.data.id && 
+    prevProps.data.id === nextProps.data.id &&
     prevProps.data.name === nextProps.data.name
     // prevProps.data.description === nextProps.data.description
   );

@@ -3,7 +3,7 @@ import { Paper, Typography, Stack, Box, Skeleton, Alert } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 import { styled } from "@mui/material/styles";
 import { Hierarchy } from "../components/Hierarchy";
-import { ConceptPropsFragment, usePropertyTreeQuery } from "../generated/types";
+import { ObjectPropsFragment, usePropertyTreeQuery } from "../generated/types";
 import DomainModelForm from "./forms/DomainModelForm";
 import DomainGroupForm from "./forms/DomainGroupForm";
 import DomainClassForm from "./forms/DomainClassForm";
@@ -76,12 +76,13 @@ const HierarchyView = () => {
   const { loading, error, data } = usePropertyTreeQuery({
     fetchPolicy: "cache-and-network" // Improve performance with caching
   });
+  console.log("hierarchy", error);
   
   // State for the currently selected concept:
-  const [selectedConcept, setSelectedConcept] = useState<ConceptPropsFragment | null>(null);
+  const [selectedConcept, setSelectedConcept] = useState<ObjectPropsFragment | null>(null);
 
   // Memoize the callback to prevent unnecessary re-renders
-  const handleOnSelect = useCallback((concept: ConceptPropsFragment) => {
+  const handleOnSelect = useCallback((concept: ObjectPropsFragment) => {
     setSelectedConcept(concept);
   }, []);
 
