@@ -409,6 +409,10 @@
     "description": "Die Version kann für die Anwendungsdomäne frei bestimmt und formatiert werden.",
     "date": "Datum"
   },
+    "status": {
+    "title": "Status",
+    "description": "Das Konzept kann aktiv oder inaktiv gesetzt werden."
+  },
   "meta": {
     "title": "Metainformationen",
     "description": "Technische Informationen zum Konzept",
@@ -421,6 +425,14 @@
   "name": {
     "title": "Name",
     "description": "Identifiziert das Konzept in der jeweiligen Sprache."
+  },
+  "example": {
+    "title": "Beispiel",
+    "description": "Beispielhafte Verwendung des Konzepts."
+  },
+  "definition": {
+    "title": "Definition",
+    "description": "Definiert das Konzept in der jeweiligen Sprache."
   },
   "comment": {
     "title": "Kommentar",

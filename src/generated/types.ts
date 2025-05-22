@@ -724,7 +724,7 @@ type ObjectProps<T extends string> = {
   majorVersion?: Maybe<number>;
   minorVersion?: Maybe<number>;
   dateOfCreation?: Maybe<string>;
-  status?: Maybe<StatusOfActivationEnum>;
+  status: StatusOfActivationEnum;
   name?: Maybe<string>;
   names: Array<MultiLanguageTextPropsFragment>;
   comment?: Maybe<string>;
@@ -771,7 +771,7 @@ export type FindTagsResultFragment = { id: string, name: string };
 type ConceptProps_Base_Fragment = {
   description?: Maybe<string>;
   descriptions?: Maybe<Array<MultiLanguageTextPropsFragment>>;
-  definition?: Maybe<Array<MultiLanguageTextPropsFragment>>;
+  definition?: Maybe<MultiLanguageTextPropsFragment>;
   examples?: Maybe<Array<MultiLanguageTextPropsFragment>>;
   languageOfCreator?: Maybe<LanguagePropsFragment>;
   countryOfOrigin?: Maybe<CountryDetailPropsFragment>;
@@ -2488,7 +2488,7 @@ export type DeleteCommentMutationResult = Apollo.MutationResult<DeleteCommentMut
 export type DeleteCommentMutationOptions = Apollo.BaseMutationOptions<DeleteCommentMutation, DeleteCommentMutationVariables>;
 
 export const UpdateStatusDocument = gql`
-    mutation UpdateStatus($input: UpdateStatusInput!) {
+    mutation UpdateStatus($input: updateStatusInput!) {
   updateStatus(input: $input) {
     catalogEntry {
       ...ObjectProps

@@ -13,11 +13,14 @@ import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
-import { GroupEntity } from "../../domain";
+import { GroupEntity, DocumentEntity } from "../../domain";
 import FormView, { FormProps } from "./FormView";
-// import TransferListView from "../TransferListView";
+import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import { T, useTranslate } from "@tolgee/react";
+import StatusFormSet from "../../components/forms/StatusFormSet";
+import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
+import ExampleFormSet from "../../components/forms/ExampleFormSet";
 
 
 function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
@@ -32,22 +35,22 @@ function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
     });
     let entry = data?.node as SubjectDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation({
-    update: (cache: any) => {
-      cache.evict({ id: `XtdSubject:${id}` });
-      cache.modify({
-        id: "ROOT_QUERY",
-        fields: {
-          hierarchy: (_value: any, { DELETE }: any) => DELETE,
+        update: (cache: any) => {
+            cache.evict({ id: `XtdSubject:${id}` });
+            cache.modify({
+                id: "ROOT_QUERY",
+                fields: {
+                    hierarchy: (_value: any, { DELETE }: any) => DELETE,
+                },
+            });
+            cache.modify({
+                id: "ROOT_QUERY",
+                fields: {
+                    search: (_value: any, { DELETE }: any) => DELETE,
+                },
+            });
         },
-      });
-      cache.modify({
-        id: "ROOT_QUERY",
-        fields: {
-          search: (_value: any, { DELETE }: any) => DELETE,
-        },
-      });
-    },
-  });
+    });
 
     if (loading) return <Typography><T keyName={"model.loading"} /></Typography>;
     if (error || !entry) return <Typography><T keyName={"error.error"} /></Typography>;
@@ -68,11 +71,17 @@ function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
     //     relatedItems: relatedThings
     // }));
 
+    const relatedDocuments = entry.referenceDocuments ?? [];
     const descriptions = entry.descriptions?.[0]?.texts ?? [];
     const comments = entry.comments?.[0]?.texts ?? [];
 
     return (
         <FormView>
+            <StatusFormSet
+                catalogEntryId={id}
+                status={entry.status}
+            />
+
             <NameFormSet
                 catalogEntryId={id}
                 names={entry.names[0].texts}
@@ -94,6 +103,28 @@ function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
                 minorVersion={entry.minorVersion}
             />
 
+            <DefinitionFormSet
+                catalogEntryId={id}
+                definitions={entry.definition?.texts ?? []}
+            />
+
+            <ExampleFormSet
+                catalogEntryId={id}
+                examples={entry.examples?.[0]?.texts ?? []}
+            />
+            <TransferListView
+                title={<span><T keyName={"domain_class_form.reference_documents"} /></span>}
+                relatingItemId={id}
+                relationshipType={RelationshipRecordType.ReferenceDocuments}
+                relationships={relatedDocuments}
+                searchInput={{
+                    entityTypeIn: [DocumentEntity.recordType],
+                    tagged: DocumentEntity.tags
+                }}
+                onCreate={handleOnUpdate}
+                onUpdate={handleOnUpdate}
+                onDelete={handleOnUpdate}
+            />
             {/* <TransferListView
                 title={<Typography><T keyName={"model.TransferList"}/><b><T keyName={"model.TransferList2"}/></b></Typography>}
                 relatingItemId={id}

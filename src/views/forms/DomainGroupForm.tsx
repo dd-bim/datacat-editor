@@ -14,10 +14,13 @@ import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, { FormProps } from "./FormView";
 import MetaFormSet from "../../components/forms/MetaFormSet";
-import { ClassEntity } from "../../domain";
+import { ClassEntity, DocumentEntity } from "../../domain";
 import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import { T, useTranslate } from "@tolgee/react";
+import StatusFormSet from "../../components/forms/StatusFormSet";
+import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
+import ExampleFormSet from "../../components/forms/ExampleFormSet";
 
 const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
     const { id, onDelete } = props;
@@ -31,22 +34,22 @@ const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
     });
     let entry = data?.node as SubjectDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation({
-    update: (cache: any) => {
-      cache.evict({ id: `XtdSubject:${id}` });
-      cache.modify({
-        id: "ROOT_QUERY",
-        fields: {
-          hierarchy: (_value: any, { DELETE }: any) => DELETE,
+        update: (cache: any) => {
+            cache.evict({ id: `XtdSubject:${id}` });
+            cache.modify({
+                id: "ROOT_QUERY",
+                fields: {
+                    hierarchy: (_value: any, { DELETE }: any) => DELETE,
+                },
+            });
+            cache.modify({
+                id: "ROOT_QUERY",
+                fields: {
+                    search: (_value: any, { DELETE }: any) => DELETE,
+                },
+            });
         },
-      });
-      cache.modify({
-        id: "ROOT_QUERY",
-        fields: {
-          search: (_value: any, { DELETE }: any) => DELETE,
-        },
-      });
-    },
-  });
+    });
 
     if (loading) return <Typography><T keyName={"group.loading"} /></Typography>;
     if (error || !entry) return <Typography><T keyName={"error.error"} /></Typography>;
@@ -64,11 +67,17 @@ const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
 
     // const relatedThings = entry.connectedSubjects ?? [];
 
+    const relatedDocuments = entry.referenceDocuments ?? [];
     const descriptions = entry.descriptions?.[0]?.texts ?? [];
     const comments = entry.comments?.[0]?.texts ?? [];
 
     return (
         <FormView>
+            <StatusFormSet
+                catalogEntryId={id}
+                status={entry.status}
+            />
+
             <NameFormSet
                 catalogEntryId={id}
                 names={entry.names[0].texts}
@@ -90,6 +99,29 @@ const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
                 minorVersion={entry.minorVersion}
             />
 
+            <DefinitionFormSet
+                catalogEntryId={id}
+                definitions={entry.definition?.texts ?? []}
+            />
+
+            <ExampleFormSet
+                catalogEntryId={id}
+                examples={entry.examples?.[0]?.texts ?? []}
+            />
+
+            <TransferListView
+                title={<span><T keyName={"domain_class_form.reference_documents"} /></span>}
+                relatingItemId={id}
+                relationshipType={RelationshipRecordType.ReferenceDocuments}
+                relationships={relatedDocuments}
+                searchInput={{
+                    entityTypeIn: [DocumentEntity.recordType],
+                    tagged: DocumentEntity.tags
+                }}
+                onCreate={handleOnUpdate}
+                onUpdate={handleOnUpdate}
+                onDelete={handleOnUpdate}
+            />
             {/* <TransferListView
                 title={<span><T keyName={"group.TransferList"}/> <b><T keyName={"group.TransferList2"}/></b></span>}
                 description={t("domain_group_form.grouped_classes_description", "Klassen, die dieser Gruppe zugeordnet sind.")}

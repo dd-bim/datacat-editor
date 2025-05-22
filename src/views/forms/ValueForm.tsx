@@ -12,6 +12,8 @@ import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, { FormProps } from "./FormView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import { T, useTranslate } from "@tolgee/react";
+import StatusFormSet from "../../components/forms/StatusFormSet";
+import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
 
 const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
     const { id, onDelete } = props;
@@ -62,6 +64,11 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
 
     return (
         <FormView>
+            <StatusFormSet
+                catalogEntryId={id}
+                status={entry.status}
+            />
+
             <NameFormSet
                 catalogEntryId={id}
                 names={entry.names[0].texts}
@@ -82,6 +89,17 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
                 majorVersion={entry.majorVersion}
                 minorVersion={entry.minorVersion}
             />
+
+            <FormSet>
+                <FormSetTitle>
+                    <b>
+                        <T keyName="document.more_infos" />
+                    </b>
+                </FormSetTitle>
+                <Typography sx={{ mt: 2 }}>
+                    Nominaler Wert: {entry.nominalValue ? entry.nominalValue : "-"}
+                </Typography>
+            </FormSet>
 
             {/* 
             <RelatingRecordsFormSet

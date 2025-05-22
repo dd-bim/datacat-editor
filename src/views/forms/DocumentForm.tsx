@@ -17,6 +17,9 @@ import TransferListView from "../TransferListView";
 import { Domain } from "../../domain";
 import { T } from "@tolgee/react";
 import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
+import StatusFormSet from "../../components/forms/StatusFormSet";
+import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
+import ExampleFormSet from "../../components/forms/ExampleFormSet";
 
 const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => {
     const { id, onDelete } = props;
@@ -64,9 +67,13 @@ const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => 
 
     const descriptions = entry.descriptions?.[0]?.texts ?? [];
     const comments = entry.comments?.[0]?.texts ?? [];
-
+    
     return (
         <FormView>
+            <StatusFormSet
+                catalogEntryId={id}
+                status={entry.status}
+            />
             <NameFormSet
                 catalogEntryId={id}
                 names={entry.names[0].texts}
@@ -86,6 +93,16 @@ const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => 
                 id={id}
                 majorVersion={entry.majorVersion}
                 minorVersion={entry.minorVersion}
+            />
+
+            <DefinitionFormSet
+                catalogEntryId={id}
+                definitions={entry.definition?.texts ?? []}
+            />
+
+            <ExampleFormSet
+                catalogEntryId={id}
+                examples={entry.examples?.[0]?.texts ?? []}
             />
 
             <FormSet>

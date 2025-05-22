@@ -4,48 +4,51 @@ import {
     useDeleteEntryMutation,
     useGetValueListEntryQuery
 } from "../../generated/types";
-import {Typography, Button} from "@mui/material";
-import {useSnackbar} from "notistack";
+import { Typography, Button } from "@mui/material";
+import { useSnackbar } from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
-import FormView, {FormProps} from "./FormView";
+import FormView, { FormProps } from "./FormView";
 import TransferListView from "../TransferListView";
-import {UnitEntity, ValueEntity} from "../../domain";
+import { UnitEntity, ValueEntity, DocumentEntity } from "../../domain";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
-import {T, useTranslate} from "@tolgee/react";
+import { T, useTranslate } from "@tolgee/react";
 import { FC } from "react";
 import TransferListViewOrderedValues from "../TransferListViewOrderedValues";
+import StatusFormSet from "../../components/forms/StatusFormSet";
+import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
+import ExampleFormSet from "../../components/forms/ExampleFormSet";
 
 const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
-    const {id, onDelete} = props;
-    const {enqueueSnackbar} = useSnackbar();
-    const {t} = useTranslate();
+    const { id, onDelete } = props;
+    const { enqueueSnackbar } = useSnackbar();
+    const { t } = useTranslate();
 
     // fetch domain model
-    const {loading, error, data, refetch} = useGetValueListEntryQuery({
+    const { loading, error, data, refetch } = useGetValueListEntryQuery({
         fetchPolicy: "network-only",
-        variables: {id}
+        variables: { id }
     });
     console.log("ValueListForm error", error);
 
     let entry = data?.node as ValueListDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation({
         update: cache => {
-            cache.evict({id: `XtdValueList:${id}`});
+            cache.evict({ id: `XtdValueList:${id}` });
             cache.modify({
                 id: "ROOT_QUERY",
                 fields: {
-                    hierarchy: (value, {DELETE}) => DELETE
+                    hierarchy: (value, { DELETE }) => DELETE
                 }
             });
             cache.modify({
                 id: "ROOT_QUERY",
                 fields: {
-                    search: (value, {DELETE}) => DELETE
+                    search: (value, { DELETE }) => DELETE
                 }
             });
         }
@@ -60,7 +63,7 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
     };
 
     const handleOnDelete = async () => {
-        await deleteEntry({variables: {id}});
+        await deleteEntry({ variables: { id } });
         enqueueSnackbar(<T keyName="valuelist_form.delete_success">Werteliste gelöscht.</T>);
         onDelete?.();
     };
@@ -73,11 +76,17 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
         orderedValue: rel.orderedValue
     }));
 
-  const descriptions = entry.descriptions?.[0]?.texts ?? [];
-  const comments = entry.comments?.[0]?.texts ?? [];
+    const relatedDocuments = entry.referenceDocuments ?? [];
+    const descriptions = entry.descriptions?.[0]?.texts ?? [];
+    const comments = entry.comments?.[0]?.texts ?? [];
 
     return (
         <FormView>
+            <StatusFormSet
+                catalogEntryId={id}
+                status={entry.status}
+            />
+
             <NameFormSet
                 catalogEntryId={id}
                 names={entry.names[0].texts}
@@ -97,6 +106,16 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
                 id={id}
                 majorVersion={entry.majorVersion}
                 minorVersion={entry.minorVersion}
+            />
+
+            <DefinitionFormSet
+                catalogEntryId={id}
+                definitions={entry.definition?.texts ?? []}
+            />
+
+            <ExampleFormSet
+                catalogEntryId={id}
+                examples={entry.examples?.[0]?.texts ?? []}
             />
 
             <TransferListView
@@ -126,7 +145,19 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
                 onUpdate={handleOnUpdate}
                 onDelete={handleOnUpdate}
             />
-
+            <TransferListView
+                title={<span><T keyName={"domain_class_form.reference_documents"} /></span>}
+                relatingItemId={id}
+                relationshipType={RelationshipRecordType.ReferenceDocuments}
+                relationships={relatedDocuments}
+                searchInput={{
+                    entityTypeIn: [DocumentEntity.recordType],
+                    tagged: DocumentEntity.tags
+                }}
+                onCreate={handleOnUpdate}
+                onUpdate={handleOnUpdate}
+                onDelete={handleOnUpdate}
+            />
             {/* <RelatingRecordsFormSet
                 title={<span><b><T keyName="document.titlePlural">Referenzdokumente</T></b>, <T keyName="valuelist_form.reference_documents">die diese Größe beschreiben</T></span>}
                 emptyMessage={t("valuelist_form.no_reference_documents")}
@@ -139,12 +170,12 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
                 relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingProperty) ?? []}
             /> */}
 
-            <MetaFormSet entry={entry}/>
+            <MetaFormSet entry={entry} />
 
             <Button
                 variant="contained"
                 color="primary"
-                startIcon={<DeleteForeverIcon/>}
+                startIcon={<DeleteForeverIcon />}
                 onClick={handleOnDelete}
             >
                 <T keyName="valuelist_form.delete_button">Löschen</T>

@@ -12,11 +12,14 @@ import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
-import { PropertyEntity, DocumentEntity ,PropertyGroupEntity } from "../../domain";
+import { PropertyEntity, DocumentEntity, PropertyGroupEntity } from "../../domain";
 import FormView, { FormProps } from "./FormView";
 import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import { T, useTranslate } from "@tolgee/react";
+import StatusFormSet from "../../components/forms/StatusFormSet";
+import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
+import ExampleFormSet from "../../components/forms/ExampleFormSet";
 
 export default function DomainClassForm(
   props: FormProps<SubjectDetailPropsFragment>
@@ -95,6 +98,11 @@ export default function DomainClassForm(
 
   return (
     <FormView>
+      <StatusFormSet
+        catalogEntryId={id}
+        status={entry.status}
+      />
+
       <NameFormSet
         catalogEntryId={id}
         names={entry.names[0].texts}
@@ -114,6 +122,16 @@ export default function DomainClassForm(
         id={id}
         majorVersion={entry.majorVersion}
         minorVersion={entry.minorVersion}
+      />
+
+      <DefinitionFormSet
+        catalogEntryId={id}
+        definitions={entry.definition?.texts ?? []}
+      />
+
+      <ExampleFormSet
+        catalogEntryId={id}
+        examples={entry.examples?.[0]?.texts ?? []}
       />
 
       {/* Merkmalsgruppen */}

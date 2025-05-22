@@ -15,10 +15,13 @@ import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, { FormProps } from "./FormView";
-import { PropertyEntity } from "../../domain";
-// import TransferListView from "../TransferListView";
+import { PropertyEntity, DocumentEntity } from "../../domain";
+import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import { T, useTranslate } from "@tolgee/react";
+import StatusFormSet from "../../components/forms/StatusFormSet";
+import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
+import ExampleFormSet from "../../components/forms/ExampleFormSet";
 
 const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
     const { id, onDelete } = props;
@@ -67,18 +70,23 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
     //     relationshipId: id,
     //     relatedItems: relatedThings
     // }));
-
+    const relatedDocuments = entry.referenceDocuments ?? [];
     const descriptions = entry.descriptions?.[0]?.texts ?? [];
     const comments = entry.comments?.[0]?.texts ?? [];
 
 
     return (
         <FormView>
+            <StatusFormSet
+                catalogEntryId={id}
+                status={entry.status}
+            />
+
             <NameFormSet
                 catalogEntryId={id}
                 names={entry.names[0].texts}
             />
-            
+
             <DescriptionFormSet
                 catalogEntryId={id}
                 descriptions={descriptions}
@@ -95,6 +103,29 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
                 minorVersion={entry.minorVersion}
             />
 
+            <DefinitionFormSet
+                catalogEntryId={id}
+                definitions={entry.definition?.texts ?? []}
+            />
+
+            <ExampleFormSet
+                catalogEntryId={id}
+                examples={entry.examples?.[0]?.texts ?? []}
+            />
+
+            <TransferListView
+                title={<span><T keyName={"domain_class_form.reference_documents"} /></span>}
+                relatingItemId={id}
+                relationshipType={RelationshipRecordType.ReferenceDocuments}
+                relationships={relatedDocuments}
+                searchInput={{
+                    entityTypeIn: [DocumentEntity.recordType],
+                    tagged: DocumentEntity.tags
+                }}
+                onCreate={handleOnUpdate}
+                onUpdate={handleOnUpdate}
+                onDelete={handleOnUpdate}
+            />
             {/* <TransferListView
                 title={<span><T keyName="property_group_form.grouped_properties"></T></span>}
                 relatingItemId={id}
