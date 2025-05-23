@@ -127,9 +127,7 @@ export default function TranslationFormSet(props: TranslationFormSetProps) {
                 <DialogTitle><T keyName="translation_form.add_translation_title" /></DialogTitle>
                 <DialogContent>
                     <NewTranslationForm
-                        languageFilter={{
-                            excludeLanguageTags: translations.map(x => x.language.code)
-                        }}
+                        languageFilter={translations.map(x => x.language.code)}
                         onCancel={() => setOpen(false)}
                         onSubmit={handleOnAdd}
                         TextFieldProps={{label, ...TextFieldProps}}

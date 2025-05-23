@@ -21,22 +21,24 @@ const StyledFormSetDescription = styled(FormSetDescription)(({ theme }) => ({
 type CommentFormSetProps = {
     catalogEntryId: string,
     comments: TextPropsFragment[]
+    refetch: () => Promise<any>;
 }
 
 const CommentFormSet = (props: CommentFormSetProps) => {
-    const {catalogEntryId, comments} = props;
+    const {catalogEntryId, comments, refetch } = props;
     const {enqueueSnackbar} = useSnackbar();
     const [addComment] = useAddCommentMutation();
     const [updateComment] = useUpdateCommentMutation();
     const [deleteComment] = useDeleteCommentMutation();
 
-    const handleOnAdd = async (name: TranslationInput) => {
+    const handleOnAdd = async (text: TranslationInput) => {
         await addComment({
             variables: {
-                input: {catalogEntryId, name}
+                input: {catalogEntryId, text}
             }
         });
         enqueueSnackbar("Kommentar hinzugefügt.");
+        await refetch();
     };
 
     const handleOnUpdate = async (comment: UpdateTextInput) => {
@@ -55,6 +57,7 @@ const CommentFormSet = (props: CommentFormSetProps) => {
             }
         });
         enqueueSnackbar("Kommentar gelöscht.")
+        await refetch();
     };
 
     return (

@@ -61,7 +61,7 @@ export type AccountUpdateInput = {
 // };
 export type AddTextInput = {
   catalogEntryId: Scalars['ID'];
-  name: TranslationInput;
+  text: TranslationInput;
 };
 
 
@@ -1550,6 +1550,7 @@ export const TranslationPropsFragmentDoc = gql`
     fragment TranslationProps on XtdMultiLanguageText {
     id
     texts {
+        id
         text
         language {
             ...LanguageProps
@@ -3143,7 +3144,7 @@ export type DeleteRelationshipMutationResult = Apollo.MutationResult<DeleteRelat
 export type DeleteRelationshipMutationOptions = Apollo.BaseMutationOptions<DeleteRelationshipMutation, DeleteRelationshipMutationVariables>;
 export const FindLanguagesDocument = gql`
     query FindLanguages($input: FilterInput!) {
-  languages(input: $input) {
+  findLanguages(input: $input) {
     nodes {
       ...LanguageProps
     }

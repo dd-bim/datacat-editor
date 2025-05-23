@@ -80,8 +80,6 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
 
     const relatedValueLists = entry.possibleValues ?? [];
     const relatedDocuments = entry.referenceDocuments ?? [];
-    const descriptions = entry.descriptions?.[0]?.texts ?? [];
-    const comments = entry.comments?.[0]?.texts ?? [];
 
     return (
         <FormView>
@@ -93,16 +91,19 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
             <NameFormSet
                 catalogEntryId={id}
                 names={entry.names[0].texts}
+                refetch={refetch}
             />
 
             <DescriptionFormSet
                 catalogEntryId={id}
-                descriptions={descriptions}
+                descriptions={entry.descriptions?.[0]?.texts ?? []}
+                refetch={refetch}
             />
 
             <CommentFormSet
                 catalogEntryId={id}
-                comments={comments}
+                comments={entry.comments?.[0]?.texts ?? []}
+                refetch={refetch}
             />
 
             <VersionFormSet
@@ -114,11 +115,13 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
             <DefinitionFormSet
                 catalogEntryId={id}
                 definitions={entry.definition?.texts ?? []}
+                refetch={refetch}
             />
 
             <ExampleFormSet
                 catalogEntryId={id}
                 examples={entry.examples?.[0]?.texts ?? []}
+                refetch={refetch}
             />
 
             <FormSet>

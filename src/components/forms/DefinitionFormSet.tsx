@@ -20,23 +20,25 @@ const StyledFormSetDescription = styled(FormSetDescription)(({ theme }) => ({
 export type DefinitionFormSetProps = {
   catalogEntryId: string;
   definitions: TextPropsFragment[];
+  refetch: () => Promise<any>;
 };
 
 const DefinitionFormSet = (props: DefinitionFormSetProps) => {
-  const { catalogEntryId, definitions } = props;
+  const { catalogEntryId, definitions, refetch } = props;
 
   const { enqueueSnackbar } = useSnackbar();
   const [addDefinition] = useAddDefinitionMutation();
   const [updateDefinition] = useUpdateDefinitionMutation();
   const [deleteDefinition] = useDeleteDefinitionMutation();
 
-  const handleOnAdd = async (name: TranslationInput) => {
+  const handleOnAdd = async (text: TranslationInput) => {
     await addDefinition({
       variables: {
-        input: {  catalogEntryId, name },
+        input: {  catalogEntryId, text },
       },
     });
     enqueueSnackbar("Definition hinzugefügt.");
+    await refetch();
   };
 
   const handleOnUpdate = async (definition: UpdateTextInput) => {
@@ -55,6 +57,7 @@ const DefinitionFormSet = (props: DefinitionFormSetProps) => {
       },
     });
     enqueueSnackbar("Definition gelöscht.");
+    await refetch();
   };
 
   return (
@@ -73,6 +76,7 @@ const DefinitionFormSet = (props: DefinitionFormSetProps) => {
       <TranslationFormSet
         label="Definition"
         translations={definitions}
+        min={0}
         onAdd={handleOnAdd}
         onUpdate={handleOnUpdate}
         onDelete={handleOnDelete}

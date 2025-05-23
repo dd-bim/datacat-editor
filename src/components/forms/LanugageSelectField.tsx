@@ -1,15 +1,19 @@
-import React, {FC, useState} from "react";
-import {Autocomplete} from "@mui/material";
-import {LanguageFilterInput, LanguagePropsFragment, Maybe, useFindLanguagesQuery} from "../../generated/types";
-import {TextField, TextFieldProps} from "@mui/material";
-import {defaultFormFieldOptions} from "../../hooks/useFormStyles";
+import React, { FC, useState } from "react";
+import { Autocomplete } from "@mui/material";
+import { LanguagePropsFragment, Maybe, useFindLanguagesQuery } from "../../generated/types";
+import { TextField, TextFieldProps } from "@mui/material";
+import { defaultFormFieldOptions } from "../../hooks/useFormStyles";
 import CircularProgress from "@mui/material/CircularProgress";
 
 type LanguageSelectFieldProps = {
-    filter?: LanguageFilterInput,
+    filter?: string[],
     onChange(value: Maybe<LanguagePropsFragment>): void,
     TextFieldProps: TextFieldProps
 }
+
+export const sortByName = ({englishName: a}: LanguagePropsFragment, {englishName: b}: LanguagePropsFragment) => {
+    return a.localeCompare(b);
+};
 
 const LanguageSelectField: FC<LanguageSelectFieldProps> = (props) => {
     const {
@@ -19,12 +23,16 @@ const LanguageSelectField: FC<LanguageSelectFieldProps> = (props) => {
     } = props;
     const [open, setOpen] = React.useState(false);
     const [query, setQuery] = useState('');
-    const {loading, data} = useFindLanguagesQuery({
+    const { loading, data, error } = useFindLanguagesQuery({
         variables: {
-            input: {query, ...filter}
+            input: { query, pageSize: 500 }
         }
     });
-    const options = data?.languages?.nodes ?? [];
+
+    const options = (data?.findLanguages?.nodes ?? []).filter(
+        node => !filter?.includes(node.code)
+    );
+    options.sort(sortByName);
 
     return (
         <Autocomplete
@@ -33,7 +41,7 @@ const LanguageSelectField: FC<LanguageSelectFieldProps> = (props) => {
             onClose={() => setOpen(false)}
             onChange={(event, value) => onChange(value)}
             isOptionEqualToValue={(option, value) => option.id === value.id}
-            getOptionLabel={(option) => `${option.displayLanguage} / ${option.displayCountry} (${option.languageTag})`}
+            getOptionLabel={(option) => `${option.nativeName} / ${option.englishName} (${option.code})`}
             onInputChange={(event, value) => setQuery(value)}
             filterSelectedOptions={false}
             filterOptions={(options) => options}
@@ -48,7 +56,7 @@ const LanguageSelectField: FC<LanguageSelectFieldProps> = (props) => {
                         ...params.InputProps,
                         endAdornment: (
                             <React.Fragment>
-                                {loading ? <CircularProgress color="inherit" size={20}/> : null}
+                                {loading ? <CircularProgress color="inherit" size={20} /> : null}
                                 {params.InputProps.endAdornment}
                             </React.Fragment>
                         ),

@@ -60,8 +60,6 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
         onDelete?.();
     };
 
-    const comments = entry.comments?.[0]?.texts ?? [];
-
     return (
         <FormView>
             <StatusFormSet
@@ -72,6 +70,7 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
             <NameFormSet
                 catalogEntryId={id}
                 names={entry.names[0].texts}
+                refetch={refetch}
             />
 
             {/* <DescriptionFormSet
@@ -81,7 +80,8 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
 
             <CommentFormSet
                 catalogEntryId={id}
-                comments={comments}
+                comments={entry.comments?.[0]?.texts ?? []}
+                refetch={refetch}
             />
 
             <VersionFormSet

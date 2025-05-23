@@ -20,23 +20,25 @@ const StyledFormSetDescription = styled(FormSetDescription)(({ theme }) => ({
 export type ExampleFormSetProps = {
   catalogEntryId: string;
   examples: TextPropsFragment[];
+  refetch: () => Promise<any>;
 };
 
 const ExampleFormSet = (props: ExampleFormSetProps) => {
-  const { catalogEntryId, examples } = props;
+  const { catalogEntryId, examples, refetch } = props;
 
   const { enqueueSnackbar } = useSnackbar();
   const [addExample] = useAddExampleMutation();
   const [updateExample] = useUpdateExampleMutation();
   const [deleteExample] = useDeleteExampleMutation();
 
-  const handleOnAdd = async (name: TranslationInput) => {
+  const handleOnAdd = async (text: TranslationInput) => {
     await addExample({
       variables: {
-        input: {  catalogEntryId, name },
+        input: {  catalogEntryId, text },
       },
     });
     enqueueSnackbar("Beispiel hinzugefügt.");
+    await refetch();
   };
 
   const handleOnUpdate = async (example: UpdateTextInput) => {
@@ -55,6 +57,7 @@ const ExampleFormSet = (props: ExampleFormSetProps) => {
       },
     });
     enqueueSnackbar("Beispiel gelöscht.");
+    await refetch();
   };
 
   return (
@@ -73,6 +76,7 @@ const ExampleFormSet = (props: ExampleFormSetProps) => {
       <TranslationFormSet
         label="Beipsiel"
         translations={examples}
+        min={0}
         onAdd={handleOnAdd}
         onUpdate={handleOnUpdate}
         onDelete={handleOnDelete}

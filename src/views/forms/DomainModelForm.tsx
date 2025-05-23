@@ -72,9 +72,7 @@ function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
     // }));
 
     const relatedDocuments = entry.referenceDocuments ?? [];
-    const descriptions = entry.descriptions?.[0]?.texts ?? [];
-    const comments = entry.comments?.[0]?.texts ?? [];
-
+    
     return (
         <FormView>
             <StatusFormSet
@@ -85,16 +83,19 @@ function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
             <NameFormSet
                 catalogEntryId={id}
                 names={entry.names[0].texts}
+                refetch={refetch}
             />
 
             <DescriptionFormSet
                 catalogEntryId={id}
-                descriptions={descriptions}
+                descriptions={entry.descriptions?.[0]?.texts ?? []}
+                refetch={refetch}
             />
 
             <CommentFormSet
                 catalogEntryId={id}
-                comments={comments}
+                comments={entry.comments?.[0]?.texts ?? []}
+                refetch={refetch}
             />
 
             <VersionFormSet
@@ -106,11 +107,13 @@ function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
             <DefinitionFormSet
                 catalogEntryId={id}
                 definitions={entry.definition?.texts ?? []}
+                refetch={refetch}
             />
 
             <ExampleFormSet
                 catalogEntryId={id}
                 examples={entry.examples?.[0]?.texts ?? []}
+                refetch={refetch}
             />
             <TransferListView
                 title={<span><T keyName={"domain_class_form.reference_documents"} /></span>}

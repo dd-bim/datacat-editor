@@ -20,23 +20,25 @@ const StyledFormSetDescription = styled(FormSetDescription)(({ theme }) => ({
 export type NameFormSetProps = {
   catalogEntryId: string;
   names: TextPropsFragment[];
+  refetch: () => Promise<any>;
 };
 
 const NameFormSet = (props: NameFormSetProps) => {
-  const { catalogEntryId, names } = props;
+  const { catalogEntryId, names, refetch } = props;
 
   const { enqueueSnackbar } = useSnackbar();
   const [addName] = useAddNameMutation();
   const [updateName] = useUpdateNameMutation();
   const [deleteName] = useDeleteNameMutation();
 
-  const handleOnAdd = async (name: TranslationInput) => {
+  const handleOnAdd = async (text: TranslationInput) => {
     await addName({
       variables: {
-        input: {  catalogEntryId, name },
+        input: {  catalogEntryId, text },
       },
     });
     enqueueSnackbar("Name hinzugefügt.");
+    await refetch();
   };
 
   const handleOnUpdate = async (name: UpdateTextInput) => {
@@ -55,6 +57,7 @@ const NameFormSet = (props: NameFormSetProps) => {
       },
     });
     enqueueSnackbar("Name gelöscht.");
+    await refetch();
   };
 
   return (

@@ -44,23 +44,25 @@ const DescriptionFormContainer = styled(Box)(({ theme }) => ({
 type DescriptionFormSetProps = {
   catalogEntryId: string;
   descriptions: TextPropsFragment[];
+  refetch: () => Promise<any>;
 };
 
 const DescriptionFormSet: FC<DescriptionFormSetProps> = (props) => {
-  const { catalogEntryId, descriptions } = props;
+  const { catalogEntryId, descriptions, refetch } = props;
 
   const { enqueueSnackbar } = useSnackbar();
   const [addDescription] = useAddDescriptionMutation();
   const [updateDescription] = useUpdateDescriptionMutation();
   const [deleteDescription] = useDeleteDescriptionMutation();
 
-  const handleOnAdd = async (name: TranslationInput) => {
+  const handleOnAdd = async (text: TranslationInput) => {
     await addDescription({
       variables: {
-        input: { catalogEntryId, name },
+        input: { catalogEntryId, text },
       },
     });
     enqueueSnackbar("Beschreibung hinzugefügt.");
+    await refetch();
   };
 
   const handleOnUpdate = async (description: UpdateTextInput) => {
@@ -79,6 +81,7 @@ const DescriptionFormSet: FC<DescriptionFormSetProps> = (props) => {
       },
     });
     enqueueSnackbar("Beschreibung gelöscht.");
+    await refetch();
   };
 
   return (

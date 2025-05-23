@@ -33,7 +33,6 @@ export default function DomainClassForm(
     fetchPolicy: "network-only",
     variables: { id },
   });
-  console.log("DomainClassForm error", error);
 
   let entry = data?.node as SubjectDetailPropsFragment | undefined;
   const [deleteEntry] = useDeleteEntryMutation({
@@ -89,12 +88,8 @@ export default function DomainClassForm(
   //   })
   // );
 
-  console.log("entry", entry);
   const relatedProperties = entry.properties ?? [];
   const relatedDocuments = entry.referenceDocuments ?? [];
-
-  const descriptions = entry.descriptions?.[0]?.texts ?? [];
-  const comments = entry.comments?.[0]?.texts ?? [];
 
   return (
     <FormView>
@@ -106,16 +101,19 @@ export default function DomainClassForm(
       <NameFormSet
         catalogEntryId={id}
         names={entry.names[0].texts}
+        refetch={refetch}
       />
 
       <DescriptionFormSet
         catalogEntryId={id}
-        descriptions={descriptions}
+        descriptions={entry.descriptions?.[0]?.texts ?? []}
+        refetch={refetch}
       />
 
       <CommentFormSet
         catalogEntryId={id}
-        comments={comments}
+        comments={entry.comments?.[0]?.texts ?? []}
+        refetch={refetch}
       />
 
       <VersionFormSet
@@ -127,11 +125,13 @@ export default function DomainClassForm(
       <DefinitionFormSet
         catalogEntryId={id}
         definitions={entry.definition?.texts ?? []}
+        refetch={refetch}
       />
 
       <ExampleFormSet
         catalogEntryId={id}
         examples={entry.examples?.[0]?.texts ?? []}
+        refetch={refetch}
       />
 
       {/* Merkmalsgruppen */}
