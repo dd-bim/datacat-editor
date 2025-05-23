@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import { defaultFormFieldOptions } from "../../hooks/useFormStyles";
@@ -14,8 +14,8 @@ const FormContainer = styled('form')(({ theme }) => ({
 
 export type CreateEntryFormValues = {
   id: string;
-  versionId: string;
-  versionDate: string;
+  majorVersion: number;
+  minorVersion: number;
   name: string;
   description: string;
   comment: string;
@@ -133,7 +133,7 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
       <div style={{ marginBottom: "12px" }}></div>
 
       <Controller
-        name="versionId"
+        name="majorVersion"
         control={control}
         render={({ field }) => (
           <TextField
@@ -141,13 +141,13 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
             label={
               <T keyName="create_entry_form.version_id_label">Version ID</T>
             }
-            error={!!errors.versionId}
+            error={!!errors.majorVersion}
             {...defaultFormFieldOptions}
           />
         )}
       />
       <Controller
-        name="versionDate"
+        name="minorVersion"
         control={control}
         render={({ field }) => (
           <TextField
@@ -155,7 +155,7 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
             label={
               <T keyName="create_entry_form.version_date_label">Version date</T>
             }
-            error={!!errors.versionDate}
+            error={!!errors.minorVersion}
             {...defaultFormFieldOptions}
           />
         )}

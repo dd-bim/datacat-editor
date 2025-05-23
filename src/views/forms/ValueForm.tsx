@@ -101,17 +101,10 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
                 </Typography>
             </FormSet>
 
-            {/* 
-            <RelatingRecordsFormSet
-                title={<span><b><T keyName="document.titlePlural">Referenzdokumente</T></b>, <T keyName="value_form.reference_documents">die diesen Wert beschreiben</T></span>}
-                emptyMessage={t("value_form.no_reference_documents")}
-                relatingRecords={entry?.documentedBy?.nodes.map(node => node.relatingDocument) ?? []}
-            />
-
-            <RelatingRecordsFormSet
-                title={<span><b><T keyName="measure.titlePlural">Größen</T></b>, <T keyName="value_form.assigned_measures">denen dieser Wert zugewiesen wurde</T></span>}
-                emptyMessage={t("value_form.no_assigned_measures")}
-                relatingRecords={entry?.assignedTo?.nodes.map(node => node.relatingMeasure) ?? []}
+            {/* <RelatingRecordsFormSet
+                title={<span><b><T keyName="valuelist.titlePlural"/></b>, <T keyName="value_form.assigned_valuelists"/></span>}
+                emptyMessage={t("value_form.no_assigned_valuelists")}
+                relatingRecords={entry.orderedValues ?? []}
             /> */}
 
             <MetaFormSet entry={entry} />

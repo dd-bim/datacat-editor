@@ -11,7 +11,7 @@ type LanguageSelectFieldProps = {
     TextFieldProps: TextFieldProps
 }
 
-export const sortByName = ({englishName: a}: LanguagePropsFragment, {englishName: b}: LanguagePropsFragment) => {
+const sortByName = ({englishName: a}: LanguagePropsFragment, {englishName: b}: LanguagePropsFragment) => {
     return a.localeCompare(b);
 };
 

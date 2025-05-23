@@ -1,7 +1,7 @@
 import FormSet, {FormSetProps, FormSetTitle} from "./FormSet";
 import React from "react";
 import CatalogEntryChip from "../CatalogEntryChip";
-import {Typography} from "@mui/material";
+import {Typography, Box} from "@mui/material";
 import {CatalogRecord} from "../../types";
 import { styled } from "@mui/material/styles";
 
@@ -41,12 +41,15 @@ export default function RelatingRecordsFormSet(props: MemberFormSetProps) {
         ));
 
     return (
-        <FormSet {...FormSetProps}>
-            <StyledFormSetTitle>{title}</StyledFormSetTitle>
-            {chips.length
-                ? chips
-                : <Typography variant="body2" color="textSecondary">{emptyMessage}</Typography>
-            }
-        </FormSet>
+    <FormSet {...FormSetProps}>
+        <StyledFormSetTitle>{title}</StyledFormSetTitle>
+        {chips.length ? (
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 0 }}>
+                {chips}
+            </Box>
+        ) : (
+            <Typography variant="body2" color="textSecondary">{emptyMessage}</Typography>
+        )}
+    </FormSet>
     );
 }

@@ -85,7 +85,10 @@ export default function ItemRow(props: ListChildComponentProps) {
                   size="small"
                   edge="end"
                   aria-label="Entfernen"
-                  onClick={() => onRemove(item)}
+                  onClick={e => {
+                    e.stopPropagation();
+                    onRemove(item);
+                  }}
                 >
                   <ClearIcon fontSize="small" />
                 </IconButton>

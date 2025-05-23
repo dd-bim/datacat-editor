@@ -139,12 +139,6 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
             /> */}
 
             {/* <RelatingRecordsFormSet
-                title={<span><b><T keyName="document.titlePlural"></T></b>, <T keyName="property_group_form.reference_documents"></T></span>}
-                emptyMessage={t("property_group_form.no_reference_documents", "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben")}
-                relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
-            />
-
-            <RelatingRecordsFormSet
                 title={<span><b><T keyName="class.titlePlural">Klassen</T></b>, <T keyName="property_group_form.assigned_classes"></T></span>}
                 emptyMessage={t("property_group_form.no_assigned_classes", "Diese Merkmalsgruppe wurde keiner Klasse zugewiesen")}
                 relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingObject) ?? []}

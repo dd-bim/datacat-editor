@@ -9,7 +9,7 @@ import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, { FormProps } from "./FormView";
-// import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
+import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import { T, useTranslate } from "@tolgee/react";
 import StatusFormSet from "../../components/forms/StatusFormSet";
 import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
@@ -38,10 +38,12 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>)=> {
     };
 
     // fetch domain model
-    const { loading, error, data } = useGetUnitEntryQuery({
+    const { loading, error, data, refetch } = useGetUnitEntryQuery({
         fetchPolicy: "network-only",
         variables: { id }
     });
+console.log("Unit Error", error);
+
     let entry = data?.node as UnitDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation({
         update: cache => {
@@ -76,7 +78,7 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>)=> {
     };
 
     const relatedDocuments = entry.referenceDocuments ?? [];
-    
+
     return (
         <FormView>
             <StatusFormSet
@@ -148,16 +150,15 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>)=> {
                 onDelete={handleOnUpdate}
             />
 
-            {/* <RelatingRecordsFormSet
-                title={<span><b><T keyName="document.titlePlural">Referenzdokumente</T></b>, <T keyName="unit_form.reference_documents">die diese Einheit beschreiben</T></span>}
-                emptyMessage={t("unit_form.no_reference_documents")}
-                relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
-            />
-
             <RelatingRecordsFormSet
-                title={<span><b><T keyName="measure.titlePlural">Größen</T></b>, <T keyName="unit_form.assigned_measures">denen diese Einheit zugewiesen wurde</T></span>}
-                emptyMessage={t("unit_form.no_assigned_measures")}
-                relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingMeasure) ?? []}
+                title={<span><b><T keyName="property.titlePlural"></T></b>, <T keyName="unit_form.assigned_to_properties"></T></span>}
+                emptyMessage={t("unit_form.no_assigned_to_properties")}
+                relatingRecords={entry.properties ?? []}
+            />
+            {/* <RelatingRecordsFormSet
+                title={<span><b><T keyName="valuelist.titlePlural"></T></b>, <T keyName="unit_form.assigned_to_properties"></T></span>}
+                emptyMessage={t("unit_form.no_assigned_to_properties")}
+                relatingRecords={entry.valueLists ?? []}
             /> */}
 
             <MetaFormSet entry={entry} />

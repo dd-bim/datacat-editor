@@ -14,7 +14,7 @@ import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, { FormProps } from "./FormView";
-import { ValueListEntity, DocumentEntity } from "../../domain";
+import { ValueListEntity, DocumentEntity, UnitEntity } from "../../domain";
 import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import { T, useTranslate } from "@tolgee/react";
@@ -78,9 +78,6 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
         onDelete?.();
     };
 
-    const relatedValueLists = entry.possibleValues ?? [];
-    const relatedDocuments = entry.referenceDocuments ?? [];
-
     return (
         <FormView>
             <StatusFormSet
@@ -139,10 +136,10 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
             </FormSet>
 
             <TransferListView
-                title={<span><b><T keyName="valuelist.title">Werteliste</T></b> <T keyName="property_form.property_measure">des Merkmals</T></span>}
+                title={<span><b><T keyName="valuelist.title"/></b> <T keyName="property_form.property_measure"/></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.PossibleValues}
-                relationships={relatedValueLists}
+                relationships={entry.possibleValues ?? []}
                 searchInput={{
                     entityTypeIn: [ValueListEntity.recordType]
                 }}
@@ -154,7 +151,7 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
                 title={<span><T keyName={"domain_class_form.reference_documents"} /></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.ReferenceDocuments}
-                relationships={relatedDocuments}
+                relationships={entry.referenceDocuments ?? []}
                 searchInput={{
                     entityTypeIn: [DocumentEntity.recordType],
                     tagged: DocumentEntity.tags
@@ -163,24 +160,32 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
                 onUpdate={handleOnUpdate}
                 onDelete={handleOnUpdate}
             />
-            {/* 
-            <RelatingRecordsFormSet
-                title={<span><b><T keyName="document.titlePlural">Referenzdokumente</T></b>, <T keyName="property_form.reference_documents">die dieses Merkmal beschreiben</T></span>}
-                emptyMessage={t("property_form.no_reference_documents", "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben")}
-                relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
+
+            <TransferListView
+                title={<span><b><T keyName="unit.titlePlural"/></b> <T keyName="property_form.property_measure"/></span>}
+                relatingItemId={id}
+                relationshipType={RelationshipRecordType.Units}
+                relationships={entry.units ?? []}
+                searchInput={{
+                    entityTypeIn: [DocumentEntity.recordType],
+                    tagged: UnitEntity.tags
+                }}
+                onCreate={handleOnUpdate}
+                onUpdate={handleOnUpdate}
+                onDelete={handleOnUpdate}
             />
 
-            <RelatingRecordsFormSet
+            {/* <RelatingRecordsFormSet
                 title={<span><b><T keyName="propertyGroup.titlePlural">Merkmalsgruppen</T></b>, <T keyName="property_form.aggregating_property_groups">die dieses Merkmal aggregieren</T></span>}
                 emptyMessage={t("property_form.no_aggregating_property_groups", "Das Merkmal wird in keiner Merkmalsgruppe genutzt")}
                 relatingRecords={entry?.collectedBy.nodes.map(node => node.relatingCollection) ?? []}
-            />
+            /> */}
 
             <RelatingRecordsFormSet
                 title={<span><b><T keyName="class.titlePlural">Klassen</T></b>, <T keyName="property_form.assigned_classes">denen dieses Merkmal direkt zugewiesen wurde</T></span>}
                 emptyMessage={t("property_form.no_assigned_classes", "Das Merkmal wurde keiner Klasse direkt zugewiesen")}
-                relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingObject) ?? []}
-            /> */}
+                relatingRecords={entry.subjects ?? []}
+            />
 
             <MetaFormSet entry={entry} />
 

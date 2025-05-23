@@ -34,23 +34,11 @@ export type TransferListViewProps = {
     onDelete?(): void;
 };
 
-// Replace makeStyles with styled components
-const TitleContainer = styled('div')({
-    display: "flex",
-    alignContent: "space-between"
-});
-
 const ButtonRow = styled('div')(({ theme }) => ({
     display: "flex",
     justifyContent: "end",
     marginTop: theme.spacing(1)
 }));
-
-export const sortItems = (a: ValueProps, b: ValueProps) => {
-    const x = a.orderedValue.name ?? a.orderedValue.id;
-    const y = b.orderedValue.name ?? b.orderedValue.id;
-    return x.localeCompare(y);
-};
 
 export default function TransferListView(props: TransferListViewProps) {
     const {

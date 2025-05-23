@@ -221,6 +221,7 @@
     "delete_success": "Klasse gelöscht.",
     "assigned_property_groups": "Der Klasse {name} zugewiesene Merkmalsgruppen",
     "assigned_properties": "Direkt zugewiesene Merkmale der Klasse {name}",
+    "assigned_units": "Direkt zugewiesene Maßeinheiten der Klasse {name}",
     "reference_documents": "Wird in folgenden Referenzdokumenten beschrieben",
     "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
     "groups_using_class": "die diese Klasse anwenden",
@@ -346,7 +347,9 @@
     "loading": "Lade Referenzdokument...",
     "more_infos": "Mehr Informationen",
     "TransferList": "Durch das Referenzdokument beschriebene ",
-    "TransferList2": "Konzepte"
+    "TransferList2": "Konzepte",
+    "references": "die dieses Referenzdokument beschreibt",
+    "no_references": "Beschreibt keine Konzepte im Datenkatalog"
   },
   "model": {
     "title": "Fachmodell",
@@ -469,7 +472,7 @@
     "error": "Es ist ein Fehler aufgetreten...",
     "update_success": "Update erfolgreich.",
     "delete_success": "Merkmal gelöscht.",
-    "property_measure": "Größe des Merkmals",
+    "property_measure": "des Merkmals",
     "reference_documents": "die dieses Merkmal beschreiben",
     "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
     "aggregating_property_groups": "die dieses Merkmal aggregieren",
@@ -487,8 +490,8 @@
     "value_range": "Wertebereich der Werteliste",
     "reference_documents": "die diese Größe beschreiben",
     "no_reference_documents": "Durch Werteliste im Datenkatalog hinterlegtes Referenzdokument beschrieben",
-    "quantified_properties": "die durch diese Werteliste quantifiziert werden",
-    "no_quantified_properties": "Die Werteliste wird durch kein Merkmal genutzt",
+    "assigned_properties": "denen diese Werteliste zugewiesen wurde",
+    "no_assigned_properties": "Die Werteliste wurde keinem Merkmal zugewiesen",
     "delete_button": "Löschen"
   },
   "unit_form": {
@@ -497,8 +500,8 @@
     "delete_success": "Maßeinheit gelöscht.",
     "reference_documents": " die diese Einheit beschreiben",
     "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
-    "assigned_measures": "denen diese Einheit zugewiesen wurde",
-    "no_assigned_measures": "Die Einheit wird durch keine Größe genutzt",
+    "assigned_to_properties": "denen diese Einheit zugewiesen wurde",
+    "no_assigned_to_properties": "Die Einheit wird von keinem Merkmal genutzt",
     "delete_button": "Löschen"
   },
   "value_form": {
@@ -508,8 +511,8 @@
     "delete_success": "Wert gelöscht.",
     "reference_documents": "die diesen Wert beschreiben",
     "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
-    "assigned_measures": "denen dieser Wert zugewiesen wurde",
-    "no_assigned_measures": "Der Wert wird durch keine Größe genutzt",
+    "assigned_valuelists": "denen dieser Wert zugewiesen wurde",
+    "no_assigned_valuelists": "Der Wert wird durch keine Werteliste genutzt",
     "delete_button": "Löschen"
   },
   "nominal_value_form": {

@@ -161,17 +161,12 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
                 onUpdate={handleOnUpdate}
                 onDelete={handleOnUpdate}
             />
-            {/* <RelatingRecordsFormSet
-                title={<span><b><T keyName="document.titlePlural">Referenzdokumente</T></b>, <T keyName="valuelist_form.reference_documents">die diese Größe beschreiben</T></span>}
-                emptyMessage={t("valuelist_form.no_reference_documents")}
-                relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
-            />
 
             <RelatingRecordsFormSet
-                title={<span><b><T keyName="property.titlePlural">Merkmale</T></b>, <T keyName="valuelist_form.quantified_properties">die durch diese Größe quantifiziert werden</T></span>}
-                emptyMessage={t("valuelist_form.no_quantified_properties")}
-                relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingProperty) ?? []}
-            /> */}
+                title={<span><b><T keyName="property.titlePlural"/></b>, <T keyName="valuelist_form.assigned_properties"/></span>}
+                emptyMessage={t("valuelist_form.no_assigned_properties")}
+                relatingRecords={entry.properties ?? []}
+            />
 
             <MetaFormSet entry={entry} />
 

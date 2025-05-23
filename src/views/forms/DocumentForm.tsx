@@ -15,15 +15,17 @@ import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, { FormProps } from "./FormView";
 import TransferListView from "../TransferListView";
 import { Domain } from "../../domain";
-import { T } from "@tolgee/react";
+import { T, useTranslate } from "@tolgee/react";
 import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
 import StatusFormSet from "../../components/forms/StatusFormSet";
 import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
 import ExampleFormSet from "../../components/forms/ExampleFormSet";
+import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 
 const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => {
     const { id, onDelete } = props;
     const { enqueueSnackbar } = useSnackbar();
+    const { t } = useTranslate(); // Moved to top level
 
     // fetch domain model
     const { loading, error, data, refetch } = useGetDocumentEntryQuery({
@@ -32,21 +34,21 @@ const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => 
     });
     let entry = data?.node as ExternalDocumentDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation({
-        update: cache => {
-            cache.evict({ id: `XtdExternalDocument:${id}` });
-            cache.modify({
-                id: "ROOT_QUERY",
-                fields: {
-                    hierarchy: (value, { DELETE }) => DELETE
-                }
-            });
-            cache.modify({
-                id: "ROOT_QUERY",
-                fields: {
-                    search: (value, { DELETE }) => DELETE
-                }
-            });
-        }
+    update: (cache: any) => {
+      cache.evict({ id: `XtdExternalDocument:${id}` });
+      cache.modify({
+        id: "ROOT_QUERY",
+        fields: {
+          hierarchy: (_value: any, { DELETE }: any) => DELETE,
+        },
+      });
+      cache.modify({
+        id: "ROOT_QUERY",
+        fields: {
+          search: (_value: any, { DELETE }: any) => DELETE,
+        },
+      });
+    },
     });
 
     if (loading) return <Typography><T keyName={"document.loading"} /></Typography>;
@@ -63,7 +65,7 @@ const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => 
         onDelete?.();
     };
 
-    const relatedDocuments = entry.documents ?? [];
+    // const relatedDocuments = entry.documents ?? [];
 
     return (
         <FormView>
@@ -139,7 +141,7 @@ const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => 
                 </Typography>
             </FormSet>
 
-            <TransferListView
+            {/* <TransferListView
                 title={<span><T keyName={"document.TransferList"} /><b><T keyName={"document.TransferList2"} /></b></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.ReferenceDocuments}
@@ -151,6 +153,12 @@ const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => 
                 onCreate={handleOnUpdate}
                 onUpdate={handleOnUpdate}
                 onDelete={handleOnUpdate}
+            /> */}
+
+            <RelatingRecordsFormSet
+                title={<Typography><b><T keyName="document.TransferList2"/></b>, <T keyName="document.references"></T></Typography>}
+                emptyMessage={t('domain_model_form.document.no_references')}
+                relatingRecords={entry.documents ?? []}
             />
 
             <MetaFormSet entry={entry} />
