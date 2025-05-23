@@ -1,6 +1,6 @@
-import React, {useState} from "react";
-import {CatalogRecordType, useCreateEntryMutation} from "../generated/types";
-import {Dialog} from "@mui/material";
+import React, { useState } from "react";
+import { CatalogRecordType, useCreateEntryMutation } from "../generated/types";
+import { Dialog } from "@mui/material";
 import Button from "@mui/material/Button";
 import Popper from "@mui/material/Popper";
 import Grow from "@mui/material/Grow";
@@ -11,9 +11,9 @@ import MenuItem from "@mui/material/MenuItem";
 import AddIcon from '@mui/icons-material/Add';
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
-import CreateEntryForm, {CreateEntryFormValues} from "./forms/CreateEntryForm";
-import {Maybe} from "graphql/jsutils/Maybe";
-import {useSnackbar} from "notistack";
+import CreateEntryForm, { CreateEntryFormValues } from "./forms/CreateEntryForm";
+import { Maybe } from "graphql/jsutils/Maybe";
+import { useSnackbar } from "notistack";
 import {
     ClassEntity,
     DocumentEntity,
@@ -45,20 +45,20 @@ type CreateEntryProps = {
 
 const CreateEntryButton = (props: CreateEntryProps) => {
 
-    const {enqueueSnackbar} = useSnackbar();
+    const { enqueueSnackbar } = useSnackbar();
 
     const [create] = useCreateEntryMutation({
         update: cache => {
             cache.modify({
                 id: "ROOT_QUERY",
                 fields: {
-                    hierarchy: (value, {DELETE}) => DELETE
+                    hierarchy: (value, { DELETE }) => DELETE
                 }
             });
             cache.modify({
                 id: "ROOT_QUERY",
                 fields: {
-                    search: (value, {DELETE}) => DELETE
+                    search: (value, { DELETE }) => DELETE
                 }
             });
         }
@@ -75,9 +75,10 @@ const CreateEntryButton = (props: CreateEntryProps) => {
         id: "",
         name: "",
         description: "",
-        versionId: "",
-        versionDate: "",
-        comment: ""
+        majorVersion: 1,
+        minorVersion: 0,
+        comment: "",
+        languageTag: "de"
     };
 
     const onClick = (tag: Entity) => {
@@ -94,25 +95,33 @@ const CreateEntryButton = (props: CreateEntryProps) => {
         setMenuOpen(false);
     };
 
-    const onSubmit = async ({id, versionId, versionDate, name, description, comment}: CreateEntryFormValues) => {
+    const onSubmit = async (formValues: CreateEntryFormValues) => {
+
         const catalogRecordType = (input?.recordType! as unknown as CatalogRecordType);
         const names = [
-            {languageTag: "de", value: name}
+            { languageTag: "de", value: formValues.name }
         ];
-        const descriptions = description
-            ? [{languageTag: "de", value: description}]
+        const descriptions = formValues.description
+            ? [{ languageTag: "de", value: formValues.description }]
             : [];
-        const comments = comment
-            ? [{languageTag: "de", value: comment}]
+        const comments = formValues.comment
+            ? [{ languageTag: "de", value: formValues.comment }]
             : [];
-        const version = {versionId, versionDate};
-        const properties = {
-            id,
-            version: version,
+        const properties: any = {
+            id: formValues.id,
+            majorVersion: Number(formValues.majorVersion),
+            minorVersion: Number(formValues.minorVersion),
             names: names,
             descriptions,
             comments
         };
+
+        if (input === DocumentEntity && formValues.languageTag) {
+            properties.externalDocumentProperties = {
+                languageTag: [formValues.languageTag],
+            };
+        }
+
         await create({
             variables: {
                 input: {
@@ -129,15 +138,15 @@ const CreateEntryButton = (props: CreateEntryProps) => {
 
     return (
         <React.Fragment>
-                <Button
-                    onClick={() => onClick(lastUsedOption)}
-                    startIcon={<AddIcon/>}
-                >
-                    {lastUsedOption.title}
-                </Button>
+            <Button
+                onClick={() => onClick(lastUsedOption)}
+                startIcon={<AddIcon />}
+            >
+                {lastUsedOption.title}
+            </Button>
 
             <Popper open={menuOpen} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
-                {({TransitionProps, placement}) => (
+                {({ TransitionProps, placement }) => (
                     <Grow
                         {...TransitionProps}
                         style={{
@@ -165,6 +174,7 @@ const CreateEntryButton = (props: CreateEntryProps) => {
                     <CreateEntryForm
                         defaultValues={defaultValues}
                         onSubmit={onSubmit}
+                        entityType={input!}
                     />
                 </DialogContent>
             </Dialog>

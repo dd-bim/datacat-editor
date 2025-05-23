@@ -5,6 +5,7 @@ import { defaultFormFieldOptions } from "../../hooks/useFormStyles";
 import { Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { T } from "@tolgee/react";
+import { Entity, DocumentEntity } from "../../domain";
 
 const FormContainer = styled('form')(({ theme }) => ({
   "& > *": {
@@ -19,15 +20,17 @@ export type CreateEntryFormValues = {
   name: string;
   description: string;
   comment: string;
+  languageTag?: string;
 };
 
 export type CreateEntryFormProps = {
   defaultValues: CreateEntryFormValues;
   onSubmit(values: CreateEntryFormValues): void;
+  entityType: Entity;
 };
 
 const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
-  const { defaultValues, onSubmit } = props;
+  const { defaultValues, onSubmit, entityType } = props;
   const {
     control,
     formState: { errors },
@@ -146,6 +149,8 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
           />
         )}
       />
+      <div style={{ marginBottom: "12px" }}></div>
+
       <Controller
         name="minorVersion"
         control={control}
@@ -160,6 +165,27 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
           />
         )}
       />
+      <div style={{ marginBottom: "12px" }}></div>
+
+      {entityType === DocumentEntity && (
+        <Controller
+          name="languageTag"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label={
+                <T keyName="create_entry_form.languageTag_label" />
+              }
+              helperText={
+                <T keyName="create_entry_form.languageTag_helper" />
+              }
+              error={!!errors.minorVersion}
+              {...defaultFormFieldOptions}
+            />
+          )}
+        />
+      )}
 
       <Button type="submit" variant="contained">
         <T keyName="create_entry_form.save_button">Speichern</T>

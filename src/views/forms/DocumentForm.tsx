@@ -157,7 +157,7 @@ const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => 
 
             <RelatingRecordsFormSet
                 title={<Typography><b><T keyName="document.TransferList2"/></b>, <T keyName="document.references"></T></Typography>}
-                emptyMessage={t('domain_model_form.document.no_references')}
+                emptyMessage={t('document.no_references')}
                 relatingRecords={entry.documents ?? []}
             />
 
