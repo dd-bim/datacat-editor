@@ -14,7 +14,7 @@ import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, { FormProps } from "./FormView";
-import { ValueListEntity, DocumentEntity, UnitEntity } from "../../domain";
+import { PropertyEntity, DocumentEntity, PropertyGroupEntity, ClassEntity, ValueListEntity, UnitEntity } from "../../domain";
 import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import { T, useTranslate } from "@tolgee/react";
@@ -133,10 +133,13 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
                 <Typography sx={{ mt: 1 }}>
                     Datenformat: {entry.dataFormat ? entry.dataFormat : "-"}
                 </Typography>
+                <Typography sx={{ mt: 1 }}>
+                    Sprache des Erstellers: {entry.languageOfCreator ? entry.languageOfCreator.code : "-"}
+                </Typography>
             </FormSet>
 
             <TransferListView
-                title={<span><b><T keyName="valuelist.title"/></b> <T keyName="property_form.property_measure"/></span>}
+                title={<span><b><T keyName="valuelist.title" /></b> <T keyName="property_form.property_measure" /></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.PossibleValues}
                 relationships={entry.possibleValues ?? []}
@@ -162,13 +165,33 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
             />
 
             <TransferListView
-                title={<span><b><T keyName="unit.titlePlural"/></b> <T keyName="property_form.property_measure"/></span>}
+                title={<span><b><T keyName="unit.titlePlural" /></b> <T keyName="property_form.property_measure" /></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.Units}
                 relationships={entry.units ?? []}
                 searchInput={{
                     entityTypeIn: [DocumentEntity.recordType],
                     tagged: UnitEntity.tags
+                }}
+                onCreate={handleOnUpdate}
+                onUpdate={handleOnUpdate}
+                onDelete={handleOnUpdate}
+            />
+
+            <TransferListView
+                title={<span><T keyName={"domain_class_form.similar_concepts"} /></span>}
+                relatingItemId={id}
+                relationshipType={RelationshipRecordType.SimilarTo}
+                relationships={entry.similarTo ?? []}
+                searchInput={{
+                    entityTypeIn: [DocumentEntity.recordType, PropertyEntity.recordType, ValueListEntity.recordType, UnitEntity.recordType, ClassEntity.recordType],
+                    tagged: [
+                        ...(DocumentEntity.tags ?? []),
+                        ...(PropertyEntity.tags ?? []),
+                        ...(ValueListEntity.tags ?? []),
+                        ...(UnitEntity.tags ?? []),
+                        ...(ClassEntity.tags ?? [])
+                    ]
                 }}
                 onCreate={handleOnUpdate}
                 onUpdate={handleOnUpdate}

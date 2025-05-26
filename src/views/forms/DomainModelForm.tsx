@@ -13,7 +13,7 @@ import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
-import { GroupEntity, DocumentEntity } from "../../domain";
+import { GroupEntity, PropertyEntity, DocumentEntity, PropertyGroupEntity, ClassEntity, ValueListEntity, UnitEntity } from "../../domain";
 import FormView, { FormProps } from "./FormView";
 import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
@@ -21,6 +21,7 @@ import { T, useTranslate } from "@tolgee/react";
 import StatusFormSet from "../../components/forms/StatusFormSet";
 import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
 import ExampleFormSet from "../../components/forms/ExampleFormSet";
+import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
 
 
 function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
@@ -72,7 +73,7 @@ function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
     // }));
 
     const relatedDocuments = entry.referenceDocuments ?? [];
-    
+
     return (
         <FormView>
             <StatusFormSet
@@ -115,6 +116,18 @@ function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
                 examples={entry.examples?.[0]?.texts ?? []}
                 refetch={refetch}
             />
+
+            <FormSet>
+                <FormSetTitle>
+                    <b>
+                        <T keyName="document.more_infos" />
+                    </b>
+                </FormSetTitle>
+                <Typography sx={{ mt: 2 }}>
+                    Sprache des Erstellers: {entry.languageOfCreator ? entry.languageOfCreator.code : "-"}
+                </Typography>
+            </FormSet>
+
             <TransferListView
                 title={<span><T keyName={"domain_class_form.reference_documents"} /></span>}
                 relatingItemId={id}
@@ -123,6 +136,26 @@ function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
                 searchInput={{
                     entityTypeIn: [DocumentEntity.recordType],
                     tagged: DocumentEntity.tags
+                }}
+                onCreate={handleOnUpdate}
+                onUpdate={handleOnUpdate}
+                onDelete={handleOnUpdate}
+            />
+
+            <TransferListView
+                title={<span><T keyName={"domain_class_form.similar_concepts"} /></span>}
+                relatingItemId={id}
+                relationshipType={RelationshipRecordType.SimilarTo}
+                relationships={entry.similarTo ?? []}
+                searchInput={{
+                    entityTypeIn: [DocumentEntity.recordType, PropertyEntity.recordType, ValueListEntity.recordType, UnitEntity.recordType, ClassEntity.recordType],
+                    tagged: [
+                        ...(DocumentEntity.tags ?? []),
+                        ...(PropertyEntity.tags ?? []),
+                        ...(ValueListEntity.tags ?? []),
+                        ...(UnitEntity.tags ?? []),
+                        ...(ClassEntity.tags ?? [])
+                    ]
                 }}
                 onCreate={handleOnUpdate}
                 onUpdate={handleOnUpdate}

@@ -14,12 +14,12 @@ import { T, useTranslate } from "@tolgee/react";
 import StatusFormSet from "../../components/forms/StatusFormSet";
 import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
 import TransferListView from "../TransferListView";
-import { DocumentEntity } from "../../domain";
+import { PropertyEntity, DocumentEntity, PropertyGroupEntity, ClassEntity, ValueListEntity, UnitEntity } from "../../domain";
 import { RelationshipRecordType } from "../../generated/types";
 import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
 import ExampleFormSet from "../../components/forms/ExampleFormSet";
 
-const UnitForm = (props: FormProps<UnitDetailPropsFragment>)=> {
+const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
     const { id, onDelete } = props;
     const { enqueueSnackbar } = useSnackbar();
     const { t } = useTranslate();
@@ -42,7 +42,7 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>)=> {
         fetchPolicy: "network-only",
         variables: { id }
     });
-console.log("Unit Error", error);
+    console.log("Unit Error", error);
 
     let entry = data?.node as UnitDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation({
@@ -134,6 +134,9 @@ console.log("Unit Error", error);
                 <Typography sx={{ mt: 1 }}>
                     Basis: {entry.base ? UnitBase[entry.base] : "-"}
                 </Typography>
+                <Typography sx={{ mt: 1 }}>
+                    Sprache des Erstellers: {entry.languageOfCreator ? entry.languageOfCreator.code : "-"}
+                </Typography>
             </FormSet>
 
             <TransferListView
@@ -144,6 +147,26 @@ console.log("Unit Error", error);
                 searchInput={{
                     entityTypeIn: [DocumentEntity.recordType],
                     tagged: DocumentEntity.tags
+                }}
+                onCreate={handleOnUpdate}
+                onUpdate={handleOnUpdate}
+                onDelete={handleOnUpdate}
+            />
+
+            <TransferListView
+                title={<span><T keyName={"domain_class_form.similar_concepts"} /></span>}
+                relatingItemId={id}
+                relationshipType={RelationshipRecordType.SimilarTo}
+                relationships={entry.similarTo ?? []}
+                searchInput={{
+                    entityTypeIn: [DocumentEntity.recordType, PropertyEntity.recordType, ValueListEntity.recordType, UnitEntity.recordType, ClassEntity.recordType],
+                    tagged: [
+                        ...(DocumentEntity.tags ?? []),
+                        ...(PropertyEntity.tags ?? []),
+                        ...(ValueListEntity.tags ?? []),
+                        ...(UnitEntity.tags ?? []),
+                        ...(ClassEntity.tags ?? [])
+                    ]
                 }}
                 onCreate={handleOnUpdate}
                 onUpdate={handleOnUpdate}

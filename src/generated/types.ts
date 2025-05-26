@@ -1641,7 +1641,7 @@ fragment ConceptProps on XtdConcept {
         ...ExternalDocumentProps
     }
     similarTo {
-        id
+        ...RelationsProps
     }
     countryOfOrigin {
         code
@@ -1652,6 +1652,7 @@ fragment ConceptProps on XtdConcept {
 ${TranslationPropsFragmentDoc}
 ${ExternalDocumentPropsFragmentDoc}
 ${TagPropsFragmentDoc}
+${RelationsPropsFragmentDoc}
 ${LanguagePropsFragmentDoc}`;
 export const ConceptDetailPropsFragmentDoc = gql`
   fragment ConceptDetailProps on XtdConcept {

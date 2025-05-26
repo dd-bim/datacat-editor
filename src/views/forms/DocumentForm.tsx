@@ -14,7 +14,7 @@ import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, { FormProps } from "./FormView";
 import TransferListView from "../TransferListView";
-import { Domain } from "../../domain";
+import { PropertyEntity, DocumentEntity, PropertyGroupEntity, ClassEntity, ValueListEntity, UnitEntity } from "../../domain";
 import { T, useTranslate } from "@tolgee/react";
 import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
 import StatusFormSet from "../../components/forms/StatusFormSet";
@@ -34,21 +34,21 @@ const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => 
     });
     let entry = data?.node as ExternalDocumentDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation({
-    update: (cache: any) => {
-      cache.evict({ id: `XtdExternalDocument:${id}` });
-      cache.modify({
-        id: "ROOT_QUERY",
-        fields: {
-          hierarchy: (_value: any, { DELETE }: any) => DELETE,
+        update: (cache: any) => {
+            cache.evict({ id: `XtdExternalDocument:${id}` });
+            cache.modify({
+                id: "ROOT_QUERY",
+                fields: {
+                    hierarchy: (_value: any, { DELETE }: any) => DELETE,
+                },
+            });
+            cache.modify({
+                id: "ROOT_QUERY",
+                fields: {
+                    search: (_value: any, { DELETE }: any) => DELETE,
+                },
+            });
         },
-      });
-      cache.modify({
-        id: "ROOT_QUERY",
-        fields: {
-          search: (_value: any, { DELETE }: any) => DELETE,
-        },
-      });
-    },
     });
 
     if (loading) return <Typography><T keyName={"document.loading"} /></Typography>;
@@ -139,8 +139,30 @@ const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => 
                         ? entry.languages.map(lang => lang.nativeName).join(", ")
                         : "-"}
                 </Typography>
+                <Typography sx={{ mt: 1 }}>
+                    Sprache des Erstellers: {entry.languageOfCreator ? entry.languageOfCreator.code : "-"}
+                </Typography>
             </FormSet>
 
+            <TransferListView
+                title={<span><T keyName={"domain_class_form.similar_concepts"} /></span>}
+                relatingItemId={id}
+                relationshipType={RelationshipRecordType.SimilarTo}
+                relationships={entry.similarTo ?? []}
+                searchInput={{
+                    entityTypeIn: [DocumentEntity.recordType, PropertyEntity.recordType, ValueListEntity.recordType, UnitEntity.recordType, ClassEntity.recordType],
+                    tagged: [
+                        ...(DocumentEntity.tags ?? []),
+                        ...(PropertyEntity.tags ?? []),
+                        ...(ValueListEntity.tags ?? []),
+                        ...(UnitEntity.tags ?? []),
+                        ...(ClassEntity.tags ?? [])
+                    ]
+                }}
+                onCreate={handleOnUpdate}
+                onUpdate={handleOnUpdate}
+                onDelete={handleOnUpdate}
+            />
             {/* <TransferListView
                 title={<span><T keyName={"document.TransferList"} /><b><T keyName={"document.TransferList2"} /></b></span>}
                 relatingItemId={id}
@@ -156,7 +178,7 @@ const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => 
             /> */}
 
             <RelatingRecordsFormSet
-                title={<Typography><b><T keyName="document.TransferList2"/></b>, <T keyName="document.references"></T></Typography>}
+                title={<Typography><b><T keyName="document.TransferList2" /></b>, <T keyName="document.references"></T></Typography>}
                 emptyMessage={t('document.no_references')}
                 relatingRecords={entry.documents ?? []}
             />

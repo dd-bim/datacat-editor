@@ -14,13 +14,14 @@ import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, { FormProps } from "./FormView";
-import { PropertyEntity, DocumentEntity } from "../../domain";
+import { PropertyEntity, DocumentEntity, PropertyGroupEntity, ClassEntity, ValueListEntity, UnitEntity } from "../../domain";
 import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import { T, useTranslate } from "@tolgee/react";
 import StatusFormSet from "../../components/forms/StatusFormSet";
 import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
 import ExampleFormSet from "../../components/forms/ExampleFormSet";
+import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
 
 const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
     const { id, onDelete } = props;
@@ -80,7 +81,7 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
 
             <NameFormSet
                 catalogEntryId={id}
-                names={entry.names[0].texts} 
+                names={entry.names[0].texts}
                 refetch={refetch}
             />
 
@@ -114,6 +115,17 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
                 refetch={refetch}
             />
 
+            <FormSet>
+                <FormSetTitle>
+                    <b>
+                        <T keyName="document.more_infos" />
+                    </b>
+                </FormSetTitle>
+                <Typography sx={{ mt: 2 }}>
+                    Sprache des Erstellers: {entry.languageOfCreator ? entry.languageOfCreator.code : "-"}
+                </Typography>
+            </FormSet>
+
             <TransferListView
                 title={<span><T keyName={"domain_class_form.reference_documents"} /></span>}
                 relatingItemId={id}
@@ -122,6 +134,26 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
                 searchInput={{
                     entityTypeIn: [DocumentEntity.recordType],
                     tagged: DocumentEntity.tags
+                }}
+                onCreate={handleOnUpdate}
+                onUpdate={handleOnUpdate}
+                onDelete={handleOnUpdate}
+            />
+
+            <TransferListView
+                title={<span><T keyName={"domain_class_form.similar_concepts"} /></span>}
+                relatingItemId={id}
+                relationshipType={RelationshipRecordType.SimilarTo}
+                relationships={entry.similarTo ?? []}
+                searchInput={{
+                    entityTypeIn: [DocumentEntity.recordType, PropertyEntity.recordType, ValueListEntity.recordType, UnitEntity.recordType, ClassEntity.recordType],
+                    tagged: [
+                        ...(DocumentEntity.tags ?? []),
+                        ...(PropertyEntity.tags ?? []),
+                        ...(ValueListEntity.tags ?? []),
+                        ...(UnitEntity.tags ?? []),
+                        ...(ClassEntity.tags ?? [])
+                    ]
                 }}
                 onCreate={handleOnUpdate}
                 onUpdate={handleOnUpdate}

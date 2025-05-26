@@ -225,6 +225,7 @@
     "assigned_properties": "Direkt zugewiesene Merkmale der Klasse {name}",
     "assigned_units": "Direkt zugewiesene Maßeinheiten der Klasse {name}",
     "reference_documents": "Wird in folgenden Referenzdokumenten beschrieben",
+    "similar_concepts": "Ähnliche Konzepte",
     "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
     "groups_using_class": "die diese Klasse anwenden",
     "no_groups_using_class": "Die Klasse wird durch keine Gruppe genutzt",

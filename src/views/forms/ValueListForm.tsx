@@ -14,7 +14,7 @@ import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, { FormProps } from "./FormView";
 import TransferListView from "../TransferListView";
-import { UnitEntity, ValueEntity, DocumentEntity } from "../../domain";
+import { ValueEntity, PropertyEntity, DocumentEntity, PropertyGroupEntity, ClassEntity, ValueListEntity, UnitEntity } from "../../domain";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import { T, useTranslate } from "@tolgee/react";
 import { FC } from "react";
@@ -22,6 +22,7 @@ import TransferListViewOrderedValues from "../TransferListViewOrderedValues";
 import StatusFormSet from "../../components/forms/StatusFormSet";
 import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
 import ExampleFormSet from "../../components/forms/ExampleFormSet";
+import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
 
 const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
     const { id, onDelete } = props;
@@ -121,6 +122,17 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
                 refetch={refetch}
             />
 
+            <FormSet>
+                <FormSetTitle>
+                    <b>
+                        <T keyName="document.more_infos" />
+                    </b>
+                </FormSetTitle>
+                <Typography sx={{ mt: 2 }}>
+                    Sprache des Erstellers: {entry.languageOfCreator ? entry.languageOfCreator.code : "-"}
+                </Typography>
+            </FormSet>
+
             <TransferListView
                 title={<span><T keyName="valuelist_form.applicable_units"></T></span>}
                 relatingItemId={id}
@@ -162,8 +174,28 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
                 onDelete={handleOnUpdate}
             />
 
+            <TransferListView
+                title={<span><T keyName={"domain_class_form.similar_concepts"} /></span>}
+                relatingItemId={id}
+                relationshipType={RelationshipRecordType.SimilarTo}
+                relationships={entry.similarTo ?? []}
+                searchInput={{
+                    entityTypeIn: [DocumentEntity.recordType, PropertyEntity.recordType, ValueListEntity.recordType, UnitEntity.recordType, ClassEntity.recordType],
+                    tagged: [
+                        ...(DocumentEntity.tags ?? []),
+                        ...(PropertyEntity.tags ?? []),
+                        ...(ValueListEntity.tags ?? []),
+                        ...(UnitEntity.tags ?? []),
+                        ...(ClassEntity.tags ?? [])
+                    ]
+                }}
+                onCreate={handleOnUpdate}
+                onUpdate={handleOnUpdate}
+                onDelete={handleOnUpdate}
+            />
+
             <RelatingRecordsFormSet
-                title={<span><b><T keyName="property.titlePlural"/></b>, <T keyName="valuelist_form.assigned_properties"/></span>}
+                title={<span><b><T keyName="property.titlePlural" /></b>, <T keyName="valuelist_form.assigned_properties" /></span>}
                 emptyMessage={t("valuelist_form.no_assigned_properties")}
                 relatingRecords={entry.properties ?? []}
             />
