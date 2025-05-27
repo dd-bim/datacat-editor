@@ -192,10 +192,6 @@
     "comment_helper": "Hinterlassen Sie einen Kommentar zu diesem Konzept. Hier können zusätzliche Informationen zwischen Bearbeitern ausgetauscht werden.",
     "id_label": "ID",
     "id_helper": "Die ID wird in der Regel automatisch generiert. Eine ID kann angegeben werden, wenn diese bereits in einem übergeordnetem Kontext für das Konzept vergeben wurde.",
-    "majorVersion_label": "Major Version",
-    "minorVersion_label": "Minor Version",
-    "languageTag_label": "Sprache",
-    "languageTag_helper": "Die Sprache, in der das Dokument verfasst ist.",
     "save_button": "Speichern"
   },
   "create_entry_split_button": {
@@ -352,7 +348,19 @@
     "TransferList": "Durch das Referenzdokument beschriebene ",
     "TransferList2": "Konzepte",
     "references": "die dieses Referenzdokument beschreibt",
-    "no_references": "Beschreibt keine Konzepte im Datenkatalog"
+    "no_references": "Beschreibt keine Konzepte im Datenkatalog",
+    "uri" : "URI",
+    "uri_helper": "Die URI des Referenzdokuments. Sie wird genutzt, um das Dokument zu referenzieren.",
+    "author": "Autor",
+    "author_helper": "Der Autor des Referenzdokuments. Kann eine Person oder eine Organisation sein.",
+    "isbn": "ISBN",
+    "isbn_helper": "Die ISBN des Referenzdokuments. Wird genutzt, um Bücher eindeutig zu identifizieren.",
+    "publisher": "Herausgeber",
+    "publisher_helper": "Der Herausgeber des Referenzdokuments. Kann eine Person oder eine Organisation sein.",
+    "dateOfPublication": "Erscheinungsdatum",
+    "dateOfPublication_helper": "Das Datum, an dem das Referenzdokument veröffentlicht wurde.",
+    "languageTag": "Sprache",
+    "languageTag_helper": "Die Sprache, in der das Dokument verfasst ist."
   },
   "model": {
     "title": "Fachmodell",
@@ -386,7 +394,11 @@
   },
   "property": {
     "title": "Merkmal",
-    "titlePlural": "Merkmale"
+    "titlePlural": "Merkmale",
+    "dataType": "Datentyp",
+    "dataType_helper": "Der Datentyp des Merkmals. Dies kann ein einfacher Datentyp wie String, Integer oder Boolean sein, oder ein komplexerer Typ.",
+    "dataFormat": "Datenformat",
+    "dataFormat_helper": "Das Datenformat des Merkmals."
   },
   "valuelist": {
     "title": "Werteliste",
@@ -394,11 +406,17 @@
   },
   "unit": {
     "title": "Maßeinheit",
-    "titlePlural": "Maßeinheiten"
+    "titlePlural": "Maßeinheiten",
+    "scale": "Skala",
+    "scale_helper": "Die Skala der Maßeinheit. Dies kann eine lineare Skala oder eine logarithmische Skala sein.",
+    "base": "Basis",
+    "base_helper": "Die Basis der Maßeinheit. Dies ist die Größe, auf die sich die Maßeinheit bezieht."
   },
   "value": {
     "title": "Wert",
-    "titlePlural": "Werte"
+    "titlePlural": "Werte",
+    "nominalValue": "Nennwert",
+    "nominalValue_helper": "Der Nennwert des Wertes. Dies ist der Wert, der in der Regel gemessen oder angegeben wird."
   },
   "tolerance": {
     "description": "Die Toleranz eines Wertes kann absolut und prozentual angegeben werden."
@@ -413,7 +431,8 @@
   "version": {
     "title": "Version",
     "description": "Die Version kann für die Anwendungsdomäne frei bestimmt und formatiert werden.",
-    "date": "Datum"
+    "majorVersion_label": "Major Version",
+    "minorVersion_label": "Minor Version"
   },
     "status": {
     "title": "Status",
@@ -517,14 +536,6 @@
     "assigned_valuelists": "denen dieser Wert zugewiesen wurde",
     "no_assigned_valuelists": "Der Wert wird durch keine Werteliste genutzt",
     "delete_button": "Löschen"
-  },
-  "nominal_value_form": {
-    "title": "Nennwert",
-    "role_label": "Rolle",
-    "type_label": "Datentyp",
-    "value_label": "Wert",
-    "updated": "Nennwert aktualisiert.",
-    "removed": "Nennwert entfernt."
   },
   "tolerance_form": {
     "title": "Toleranz",

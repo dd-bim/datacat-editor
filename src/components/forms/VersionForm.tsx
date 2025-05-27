@@ -74,7 +74,7 @@ const VersionForm = (props: VersionFormProps) => {
             <TextField
               {...field}
               id="majorVersion" // ✅ Hier setzen
-              label="ID"
+              label={<T keyName="version.majorVersion_label"/>}
               error={!!fieldState.error}
               fullWidth
               InputProps={{
@@ -93,7 +93,7 @@ const VersionForm = (props: VersionFormProps) => {
             <TextField
               {...field}
               id="minorVersion" // ✅ Hier setzen
-              label=<T keyName="version.date" />
+              label={<T keyName="version.minorVersion_label" />}
               error={!!fieldState.error}
               fullWidth
               InputProps={{

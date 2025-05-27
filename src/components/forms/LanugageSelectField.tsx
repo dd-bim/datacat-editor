@@ -7,17 +7,19 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 type LanguageSelectFieldProps = {
     filter?: string[],
-    onChange(value: Maybe<LanguagePropsFragment>): void,
+    multiple?: boolean,
+    onChange(value: Maybe<LanguagePropsFragment> | Maybe<LanguagePropsFragment[]>): void,
     TextFieldProps: TextFieldProps
 }
 
-const sortByName = ({englishName: a}: LanguagePropsFragment, {englishName: b}: LanguagePropsFragment) => {
+const sortByName = ({ englishName: a }: LanguagePropsFragment, { englishName: b }: LanguagePropsFragment) => {
     return a.localeCompare(b);
 };
 
 const LanguageSelectField: FC<LanguageSelectFieldProps> = (props) => {
     const {
         filter,
+        multiple,
         onChange,
         TextFieldProps
     } = props;
@@ -36,6 +38,7 @@ const LanguageSelectField: FC<LanguageSelectFieldProps> = (props) => {
 
     return (
         <Autocomplete
+            multiple={!!multiple}
             open={open}
             onOpen={() => setOpen(true)}
             onClose={() => setOpen(false)}

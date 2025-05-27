@@ -101,7 +101,7 @@ export default function TransferListView(props: TransferListViewProps) {
     const handleOnAdd = async (item: ObjectPropsFragment) => {
         const relatedIds = items.map(x => x.id);
         relatedIds.push(item.id);
-        await handleOnCreateRelationship(relatedIds);
+        await handleOnCreateRelationship([item.id]);
     };
 
     const handleOnRemove = async (item: ObjectPropsFragment) => {

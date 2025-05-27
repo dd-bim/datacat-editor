@@ -5,7 +5,9 @@ import { defaultFormFieldOptions } from "../../hooks/useFormStyles";
 import { Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { T } from "@tolgee/react";
-import { Entity, DocumentEntity } from "../../domain";
+import { Entity, DocumentEntity, ValueEntity, PropertyEntity, UnitEntity } from "../../domain";
+import LanguageSelectField from "./LanugageSelectField";
+import Autocomplete from "@mui/material/Autocomplete";
 
 const FormContainer = styled('form')(({ theme }) => ({
   "& > *": {
@@ -20,8 +22,41 @@ export type CreateEntryFormValues = {
   name: string;
   description: string;
   comment: string;
-  languageTag?: string;
+  languageTag?: string[];
+  uri?: string;
+  author?: string;
+  isbn?: string;
+  publisher?: string;
+  dateOfPublication?: string;
+  nominalValue?: string;
+  dataType?: string;
+  dataFormat?: string;
+  scale?: string;
+  base?: string;
 };
+
+const dataTypeOptions = [
+  { value: "XTD_STRING", label: "String" },
+  { value: "XTD_INTEGER", label: "Integer" },
+  { value: "XTD_REAL", label: "Real" },
+  { value: "XTD_BOOLEAN", label: "Boolean" },
+  { value: "XTD_RATIONAL", label: "Rational" },
+  { value: "XTD_DATETIME", label: "DateTime" },
+  { value: "XTD_COMPLEX", label: "Complex" }
+];
+
+const scaleOptions = [
+  { value: "XTD_LINEAR", label: "Linear" },
+  { value: "XTD_LOGARITHMIC", label: "Logarithmic" }
+];
+
+const baseOptions = [
+  { value: "XTD_ONE", label: "1" },
+  { value: "XTD_TWO", label: "2" },
+  { value: "XTD_E", label: "e" },
+  { value: "XTD_PI", label: "Pi" },
+  { value: "XTD_TEN", label: "10" }
+];
 
 export type CreateEntryFormProps = {
   defaultValues: CreateEntryFormValues;
@@ -142,7 +177,7 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
           <TextField
             {...field}
             label={
-              <T keyName="create_entry_form.version_id_label">Version ID</T>
+              <T keyName="version.majorVersion_label" />
             }
             error={!!errors.majorVersion}
             {...defaultFormFieldOptions}
@@ -158,7 +193,7 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
           <TextField
             {...field}
             label={
-              <T keyName="create_entry_form.version_date_label">Version date</T>
+              <T keyName="version.minorVersion_label" />
             }
             error={!!errors.minorVersion}
             {...defaultFormFieldOptions}
@@ -168,6 +203,246 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
       <div style={{ marginBottom: "12px" }}></div>
 
       {entityType === DocumentEntity && (
+        <form>
+          <Controller
+            name="uri"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label={
+                  <T keyName="document.uri" />
+                }
+                helperText={
+                  <T keyName="document.uri_helper" />
+                }
+                error={!!errors.uri}
+                {...defaultFormFieldOptions}
+              />
+            )}
+          />
+          <div style={{ marginBottom: "12px" }}></div>
+
+          <Controller
+            name="author"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label={
+                  <T keyName="document.author" />
+                }
+                helperText={
+                  <T keyName="document.author_helper" />
+                }
+                error={!!errors.author}
+                {...defaultFormFieldOptions}
+              />
+            )}
+          />
+          <div style={{ marginBottom: "12px" }}></div>
+
+          <Controller
+            name="isbn"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label={
+                  <T keyName="document.isbn" />
+                }
+                helperText={
+                  <T keyName="document.isbn_helper" />
+                }
+                error={!!errors.isbn}
+                {...defaultFormFieldOptions}
+              />
+            )}
+          />
+          <div style={{ marginBottom: "12px" }}></div>
+
+          <Controller
+            name="publisher"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label={
+                  <T keyName="document.publisher" />
+                }
+                helperText={
+                  <T keyName="document.publisher_helper" />
+                }
+                error={!!errors.publisher}
+                {...defaultFormFieldOptions}
+              />
+            )}
+          />
+          <div style={{ marginBottom: "12px" }}></div>
+
+          <Controller
+            name="dateOfPublication"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                type="date"
+                label={
+                  <T keyName="document.dateOfPublication" />
+                }
+                helperText={
+                  <T keyName="document.dateOfPublication_helper" />
+                }
+                error={!!errors.dateOfPublication}
+                slotProps={{
+                  inputLabel: { shrink: true }
+                }}
+                {...defaultFormFieldOptions}
+              />
+            )}
+          />
+          <div style={{ marginBottom: "12px" }}></div>
+
+          <Controller
+            name="languageTag"
+            control={control}
+            render={({ field }) => (
+              <LanguageSelectField
+                multiple
+                onChange={value => {
+                  const codes = Array.isArray(value)
+                    ? value.map(lang => lang.code)
+                    : value?.code ? [value.code] : [];
+                  field.onChange(codes);
+                }}
+                TextFieldProps={{
+                  focused: true,
+                  id: "languageTag",
+                  required: true,
+                  label: <T keyName={"translation_form.language"} />,
+                  helperText: <T keyName={"translation_form.language_helper"} />,
+                }}
+              />
+            )}
+          />
+        </form>
+      )}
+
+      {entityType === ValueEntity && (
+        <Controller
+          name="nominalValue"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label={
+                <T keyName="value.nominalValue" />
+              }
+              helperText={
+                <T keyName="value.nominalValue_helper" />
+              }
+              error={!!errors.nominalValue}
+              {...defaultFormFieldOptions}
+            />
+          )}
+        />
+      )}
+
+      {entityType === PropertyEntity && (
+        <form>
+          <Controller
+            name="dataType"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <Autocomplete
+                options={dataTypeOptions}
+                value={dataTypeOptions.find(option => option.value === field.value) || null}
+                onChange={(_, value) => field.onChange(value ? value.value : undefined)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label={<T keyName="property.dataType" />}
+                    helperText={<T keyName="property.dataType_helper" />}
+                    error={!!errors.dataType}
+                    {...defaultFormFieldOptions}
+                  />
+                )}
+              />
+            )}
+          />
+          <div style={{ marginBottom: "12px" }}></div>
+
+          <Controller
+            name="dataFormat"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label={
+                  <T keyName="property.dataFormat" />
+                }
+                helperText={
+                  <T keyName="property.dataFormat_helper" />
+                }
+                error={!!errors.dataFormat}
+                {...defaultFormFieldOptions}
+              />
+            )}
+          />
+        </form>
+      )}
+
+      {entityType === UnitEntity && (
+        <form>
+          <Controller
+            name="scale"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <Autocomplete
+                options={scaleOptions}
+                value={scaleOptions.find(option => option.value === field.value) || null}
+                onChange={(_, value) => field.onChange(value ? value.value : undefined)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label={<T keyName="property.scale" />}
+                    helperText={<T keyName="property.scale_helper" />}
+                    error={!!errors.scale}
+                    {...defaultFormFieldOptions}
+                  />
+                )}
+              />
+            )}
+          />
+          <div style={{ marginBottom: "12px" }}></div>
+
+          <Controller
+            name="base"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <Autocomplete
+                options={baseOptions}
+                value={baseOptions.find(option => option.value === field.value) || null}
+                onChange={(_, value) => field.onChange(value ? value.value : undefined)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label={<T keyName="property.base" />}
+                    helperText={<T keyName="property.base_helper" />}
+                    error={!!errors.base}
+                    {...defaultFormFieldOptions}
+                  />
+                )}
+              />
+            )}
+          />
+        </form>
+      )}
+
+      {/* {entityType === DocumentEntity && (
         <Controller
           name="languageTag"
           control={control}
@@ -185,7 +460,7 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
             />
           )}
         />
-      )}
+      )} */}
 
       <Button type="submit" variant="contained">
         <T keyName="create_entry_form.save_button">Speichern</T>

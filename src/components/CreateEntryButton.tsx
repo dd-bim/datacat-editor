@@ -78,7 +78,17 @@ const CreateEntryButton = (props: CreateEntryProps) => {
         majorVersion: 1,
         minorVersion: 0,
         comment: "",
-        languageTag: "de"
+        languageTag: ["de"],
+        uri: "",
+        author: "",
+        isbn: "",
+        publisher: "",
+        dateOfPublication: "",
+        nominalValue: "",
+        dataType: "XTD_STRING",
+        dataFormat: "",
+        scale: "XTD_LINEAR",
+        base: "XTD_ONE"
     };
 
     const onClick = (tag: Entity) => {
@@ -116,9 +126,31 @@ const CreateEntryButton = (props: CreateEntryProps) => {
             comments
         };
 
-        if (input === DocumentEntity && formValues.languageTag) {
+        if (input === DocumentEntity) {
             properties.externalDocumentProperties = {
-                languageTag: [formValues.languageTag],
+                languageTag: formValues.languageTag,
+                documentUri: formValues.uri,
+                author: formValues.author,
+                isbn: formValues.isbn,
+                publisher: formValues.publisher,
+                dateOfPublication: formValues.dateOfPublication
+            };
+        }
+        else if (input === ValueEntity) {
+            properties.valueProperties = {
+                nominalValue: formValues.nominalValue
+            }
+        }
+        else if (input === PropertyEntity) {
+            properties.propertyProperties = {
+                dataType: formValues.dataType,
+                dataFormat: formValues.dataFormat
+            };
+        }
+        else if (input === UnitEntity) {
+            properties.unitProperties = {
+                scale: formValues.scale,
+                base: formValues.base
             };
         }
 

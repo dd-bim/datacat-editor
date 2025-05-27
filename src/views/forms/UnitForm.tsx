@@ -48,18 +48,14 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
     const [deleteEntry] = useDeleteEntryMutation({
         update: cache => {
             cache.evict({ id: `XtdUnit:${id}` });
-            cache.modify({
-                id: "ROOT_QUERY",
-                fields: {
-                    hierarchy: (value, { DELETE }) => DELETE
-                }
-            });
-            cache.modify({
-                id: "ROOT_QUERY",
-                fields: {
-                    search: (value, { DELETE }) => DELETE
-                }
-            });
+            ["hierarchy", "search"].forEach(field =>
+                cache.modify({
+                    id: "ROOT_QUERY",
+                    fields: {
+                        [field]: (value, { DELETE }) => DELETE
+                    }
+                })
+            );
         }
     });
 
