@@ -190,6 +190,8 @@
     "description_helper": "Beschreiben Sie das Konzept in seiner Bedeutung. Nutzen Sie die Beschreibung insbesondere, um es von womöglich gleich benannten, aber fachlich verschiedenen Konzepten abzugrenzen.",
     "comment_label": "Kommentar (de)",
     "comment_helper": "Hinterlassen Sie einen Kommentar zu diesem Konzept. Hier können zusätzliche Informationen zwischen Bearbeitern ausgetauscht werden.",
+    "languageOfCreator": "Sprache des Erstellers",
+    "languageOfCreator_helper": "Die Sprache, in der das Konzept erstellt wurde.",
     "id_label": "ID",
     "id_helper": "Die ID wird in der Regel automatisch generiert. Eine ID kann angegeben werden, wenn diese bereits in einem übergeordnetem Kontext für das Konzept vergeben wurde.",
     "save_button": "Speichern"
@@ -402,7 +404,9 @@
   },
   "valuelist": {
     "title": "Werteliste",
-    "titlePlural": "Wertelisten"
+    "titlePlural": "Wertelisten",
+    "language": "Sprache",
+    "language_helper": "Sprache der Werteliste."
   },
   "unit": {
     "title": "Maßeinheit",

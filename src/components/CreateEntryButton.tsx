@@ -26,6 +26,7 @@ import {
     UnitEntity,
     ValueEntity,
 } from "../domain";
+import { Language } from "@mui/icons-material";
 
 const options = [
     DocumentEntity,
@@ -78,6 +79,7 @@ const CreateEntryButton = (props: CreateEntryProps) => {
         majorVersion: 1,
         minorVersion: 0,
         comment: "",
+        languageOfCreator: "de",
         languageTag: ["de"],
         uri: "",
         author: "",
@@ -88,7 +90,8 @@ const CreateEntryButton = (props: CreateEntryProps) => {
         dataType: "XTD_STRING",
         dataFormat: "",
         scale: "XTD_LINEAR",
-        base: "XTD_ONE"
+        base: "XTD_ONE",
+        valueListLanguage: "de"
     };
 
     const onClick = (tag: Entity) => {
@@ -123,7 +126,8 @@ const CreateEntryButton = (props: CreateEntryProps) => {
             minorVersion: Number(formValues.minorVersion),
             names: names,
             descriptions,
-            comments
+            comments,
+            LanguageOfCreator: formValues.languageOfCreator
         };
 
         if (input === DocumentEntity) {
@@ -151,6 +155,11 @@ const CreateEntryButton = (props: CreateEntryProps) => {
             properties.unitProperties = {
                 scale: formValues.scale,
                 base: formValues.base
+            };
+        }
+        else if (input === ValueListEntity) {
+            properties.valueListProperties = {
+                languageTag: formValues.valueListLanguage
             };
         }
 

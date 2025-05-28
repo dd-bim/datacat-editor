@@ -5,7 +5,7 @@ import { defaultFormFieldOptions } from "../../hooks/useFormStyles";
 import { Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { T } from "@tolgee/react";
-import { Entity, DocumentEntity, ValueEntity, PropertyEntity, UnitEntity } from "../../domain";
+import { Entity, DocumentEntity, ValueEntity, PropertyEntity, UnitEntity, ValueListEntity } from "../../domain";
 import LanguageSelectField from "./LanugageSelectField";
 import Autocomplete from "@mui/material/Autocomplete";
 
@@ -22,6 +22,7 @@ export type CreateEntryFormValues = {
   name: string;
   description: string;
   comment: string;
+  languageOfCreator: string;
   languageTag?: string[];
   uri?: string;
   author?: string;
@@ -33,6 +34,7 @@ export type CreateEntryFormValues = {
   dataFormat?: string;
   scale?: string;
   base?: string;
+  valueListLanguage?: string;
 };
 
 const dataTypeOptions = [
@@ -197,6 +199,29 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
             }
             error={!!errors.minorVersion}
             {...defaultFormFieldOptions}
+          />
+        )}
+      />
+      <div style={{ marginBottom: "12px" }}></div>
+
+      <Controller
+        name="languageOfCreator"
+        control={control}
+        render={({ field }) => (
+          <LanguageSelectField
+            onChange={value => {
+              const codes = Array.isArray(value)
+                ? value.map(lang => lang.code)
+                : value?.code ? value.code : [];
+              field.onChange(codes);
+            }}
+            TextFieldProps={{
+              focused: true,
+              id: "languageOfCreator",
+              required: true,
+              label: <T keyName={"create_entry_form.languageOfCreator"} />,
+              helperText: <T keyName={"create_entry_form.languageOfCreator_helper"} />,
+            }}
           />
         )}
       />
@@ -440,6 +465,30 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
             )}
           />
         </form>
+      )}
+
+      {entityType === ValueListEntity && (
+        <Controller
+          name="valueListLanguage"
+          control={control}
+          render={({ field }) => (
+            <LanguageSelectField
+              onChange={value => {
+                const codes = Array.isArray(value)
+                  ? value.map(lang => lang.code)
+                  : value?.code ? value.code : [];
+                field.onChange(codes);
+              }}
+              TextFieldProps={{
+                focused: true,
+                id: "valueListLanguage",
+                required: true,
+                label: <T keyName={"valuelist.language"} />,
+                helperText: <T keyName={"valuelist.language_helper"} />,
+              }}
+            />
+          )}
+        />
       )}
 
       {/* {entityType === DocumentEntity && (

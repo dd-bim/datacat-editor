@@ -840,7 +840,8 @@ export type PropertyDetailPropsFragment = ObjectDetailProps_XtdProperty_Fragment
 export type ValueListDetailPropsFragment = ObjectDetailProps_XtdValueList_Fragment & {
   values: Array<OrderedValueDetailPropsFragment>,
   properties: Array<PropertyDetailPropsFragment>,
-  unit?: Maybe<UnitDetailPropsFragment>
+  unit?: Maybe<UnitDetailPropsFragment>,
+  language?: Maybe<LanguagePropsFragment>
 };
 
 export type OrderedValueDetailPropsFragment = ObjectDetailProps_XtdOrderedValue_Fragment & {
@@ -1926,11 +1927,15 @@ export const ValueListDetailPropsFragmentDoc = gql`
               ...ValueProps
           }
       }
+      language {
+          ...LanguageProps
+      }
   }
     ${ValueListPropsFragmentDoc}
 ${ObjectPropsFragmentDoc}
 ${PropertyPropsFragmentDoc}
 ${UnitPropsFragmentDoc}
+${LanguagePropsFragmentDoc}
 ${ValuePropsFragmentDoc}`;
 
 
