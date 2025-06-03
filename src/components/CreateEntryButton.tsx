@@ -80,6 +80,7 @@ const CreateEntryButton = (props: CreateEntryProps) => {
         minorVersion: 0,
         comment: "",
         languageOfCreator: "de",
+        countryOfOrigin: "DE",
         languageTag: ["de"],
         uri: "",
         author: "",
@@ -126,9 +127,13 @@ const CreateEntryButton = (props: CreateEntryProps) => {
             minorVersion: Number(formValues.minorVersion),
             names: names,
             descriptions,
-            comments,
-            LanguageOfCreator: formValues.languageOfCreator
+            comments
         };
+
+        if (input !== ValueEntity) {
+            properties.languageOfCreator = formValues.languageOfCreator;
+            properties.countryOfOrigin = formValues.countryOfOrigin;
+        }
 
         if (input === DocumentEntity) {
             properties.externalDocumentProperties = {
@@ -162,6 +167,7 @@ const CreateEntryButton = (props: CreateEntryProps) => {
                 languageTag: formValues.valueListLanguage
             };
         }
+
 
         await create({
             variables: {

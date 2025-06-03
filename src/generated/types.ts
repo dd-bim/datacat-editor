@@ -846,7 +846,8 @@ export type ValueListDetailPropsFragment = ObjectDetailProps_XtdValueList_Fragme
 
 export type OrderedValueDetailPropsFragment = ObjectDetailProps_XtdOrderedValue_Fragment & {
   order: number,
-  orderedValue: ValueDetailPropsFragment
+  orderedValue: ValueDetailPropsFragment,
+  valueLists?: Maybe<Array<ValueListDetailPropsFragment>>
 };
 
 export type UnitDetailPropsFragment = ObjectDetailProps_XtdUnit_Fragment & {
@@ -855,10 +856,12 @@ export type UnitDetailPropsFragment = ObjectDetailProps_XtdUnit_Fragment & {
   offset?: Maybe<RationalPropsFragment>,
   coefficient?: Maybe<RationalPropsFragment>,
   properties?: Array<PropertyDetailPropsFragment>,
+  valueLists?: Maybe<Array<ValueListDetailPropsFragment>>
 };
 
 export type ValueDetailPropsFragment = ObjectDetailProps_XtdValue_Fragment & {
-  nominalValue: string
+  nominalValue: string,
+  orderedValues?: Maybe<Array<OrderedValueDetailPropsFragment>>
 };
 
 export type DimensionDetailPropsFragment = ObjectDetailProps_XtdDimension_Fragment & {
@@ -1522,7 +1525,7 @@ export const TagPropsFragmentDoc = gql`
 export const RelationsPropsFragmentDoc = gql`
     fragment RelationsProps on XtdObject {
       id
-      name(input: {languageTags: ["de-DE", "en-US"]})
+      name(input: {languageTags: ["de", "en"]})
       tags {
         ...TagProps
       }
@@ -1646,7 +1649,7 @@ fragment ConceptProps on XtdConcept {
     }
     countryOfOrigin {
         code
-        id
+        ...RelationsProps
     }
 }
     ${ObjectPropsFragmentDoc}
@@ -1727,6 +1730,18 @@ export const ValuePropsFragmentDoc = gql`
       nominalValue
   }
   ${ObjectPropsFragmentDoc}`;
+export const ValueDetailPropsFragmentDoc = gql`
+  fragment ValueDetailProps on XtdValue {
+      ...ValueProps
+      orderedValues {
+        ...RelationsProps
+        valueLists {
+          ...RelationsProps
+        }
+      }
+  }
+  ${ValuePropsFragmentDoc}
+  ${RelationsPropsFragmentDoc}`;
 export const PropertyPropsFragmentDoc = gql`
   fragment PropertyProps on XtdProperty {
       ...ConceptDetailProps
@@ -1903,6 +1918,9 @@ export const UnitDetailPropsFragmentDoc = gql`
           ...DimensionProps
       }
       properties {
+          ...RelationsProps
+      }
+      valueLists {
           ...RelationsProps
       }
   }
@@ -2506,7 +2524,7 @@ export type DeleteCommentMutationResult = Apollo.MutationResult<DeleteCommentMut
 export type DeleteCommentMutationOptions = Apollo.BaseMutationOptions<DeleteCommentMutation, DeleteCommentMutationVariables>;
 
 export const UpdateStatusDocument = gql`
-    mutation UpdateStatus($input: updateStatusInput!) {
+    mutation UpdateStatus($input: UpdateStatusInput!) {
   updateStatus(input: $input) {
     catalogEntry {
       ...ObjectProps
@@ -4637,10 +4655,10 @@ export type GetUnitEntryQueryResult = Apollo.QueryResult<GetUnitEntryQuery, GetU
 export const GetValueEntryDocument = gql`
     query GetValueEntry($id: ID!) {
   node: getValue(id: $id) {
-    ...ValueProps
+    ...ValueDetailProps
   }
 }
-    ${ValuePropsFragmentDoc}`;
+    ${ValueDetailPropsFragmentDoc}`;
 
 /**
  * __useGetValueEntryQuery__
@@ -4706,9 +4724,13 @@ export const GetOrderedValueEntryDocument = gql`
     orderedValue {
       ...ValueProps
     }
+    valueLists {
+      ...RelationsProps
+    }
   }
 }
-    ${ValuePropsFragmentDoc}`;
+    ${ValuePropsFragmentDoc}
+    ${RelationsPropsFragmentDoc}`;
 /**
  * __useGetOrderedValueEntryQuery__
  * 

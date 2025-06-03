@@ -134,6 +134,9 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
                 <Typography sx={{ mt: 1 }}>
                     Sprache der Werteliste: {entry.language ? entry.language.code : "-"}
                 </Typography>
+                <Typography sx={{ mt: 1 }}>
+                    Herkunftsland: {entry.countryOfOrigin ? entry.countryOfOrigin.name + " (" + entry.countryOfOrigin.code + ")" : "-"}
+                </Typography>
             </FormSet>
 
             <TransferListView

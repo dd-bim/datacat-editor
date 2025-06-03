@@ -1,6 +1,5 @@
 import {getEntityType} from "../domain";
 import ConceptChip from "./ConceptChip";
-import React from "react";
 import { styled } from "@mui/material/styles";
 import {CatalogRecord} from "../types";
 
@@ -19,7 +18,6 @@ export default function CatalogEntryChip(props: CatalogEntryChipProps) {
             id,
             recordType,
             name,
-            description,
             tags
         }
     } = props;
@@ -33,7 +31,7 @@ export default function CatalogEntryChip(props: CatalogEntryChipProps) {
             conceptType={domainEntityType!}
             id={id}
             label={name ?? id}
-            title={description ?? undefined}
+            title={name ?? undefined}
         />
     );
 }

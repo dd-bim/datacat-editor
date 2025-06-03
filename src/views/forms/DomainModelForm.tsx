@@ -126,6 +126,9 @@ function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
                 <Typography sx={{ mt: 2 }}>
                     Sprache des Erstellers: {entry.languageOfCreator ? entry.languageOfCreator.code : "-"}
                 </Typography>
+                <Typography sx={{ mt: 1 }}>
+                    Herkunftsland: {entry.countryOfOrigin ? entry.countryOfOrigin.name + " (" + entry.countryOfOrigin.code + ")" : "-"}
+                </Typography>S
             </FormSet>
 
             <TransferListView

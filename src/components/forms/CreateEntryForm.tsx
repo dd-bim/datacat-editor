@@ -7,6 +7,7 @@ import { styled } from "@mui/material/styles";
 import { T } from "@tolgee/react";
 import { Entity, DocumentEntity, ValueEntity, PropertyEntity, UnitEntity, ValueListEntity } from "../../domain";
 import LanguageSelectField from "./LanugageSelectField";
+import CountrySelectField from "./CountrySelectField";
 import Autocomplete from "@mui/material/Autocomplete";
 
 const FormContainer = styled('form')(({ theme }) => ({
@@ -23,6 +24,7 @@ export type CreateEntryFormValues = {
   description: string;
   comment: string;
   languageOfCreator: string;
+  countryOfOrigin: string;
   languageTag?: string[];
   uri?: string;
   author?: string;
@@ -204,31 +206,58 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
       />
       <div style={{ marginBottom: "12px" }}></div>
 
-      <Controller
-        name="languageOfCreator"
-        control={control}
-        render={({ field }) => (
-          <LanguageSelectField
-            onChange={value => {
-              const codes = Array.isArray(value)
-                ? value.map(lang => lang.code)
-                : value?.code ? value.code : [];
-              field.onChange(codes);
-            }}
-            TextFieldProps={{
-              focused: true,
-              id: "languageOfCreator",
-              required: true,
-              label: <T keyName={"create_entry_form.languageOfCreator"} />,
-              helperText: <T keyName={"create_entry_form.languageOfCreator_helper"} />,
-            }}
+      {entityType !== ValueEntity && (
+        <div>
+          <Controller
+            name="languageOfCreator"
+            control={control}
+            render={({ field }) => (
+              <LanguageSelectField
+                onChange={value => {
+                  const codes = Array.isArray(value)
+                    ? value.map(lang => lang.code)
+                    : value?.code ? value.code : [];
+                  field.onChange(codes);
+                }}
+                TextFieldProps={{
+                  focused: true,
+                  id: "languageOfCreator",
+                  required: true,
+                  label: <T keyName={"create_entry_form.languageOfCreator"} />,
+                  helperText: <T keyName={"create_entry_form.languageOfCreator_helper"} />,
+                }}
+              />
+            )}
           />
-        )}
-      />
+          <div style={{ marginBottom: "12px" }}></div>
+          <Controller
+            name="countryOfOrigin"
+            control={control}
+            render={({ field }) => (
+              <CountrySelectField
+                onChange={value => {
+                  const codes = Array.isArray(value)
+                    ? value.map(country => country.code)
+                    : value?.code ? value.code : [];
+                  field.onChange(codes);
+                }}
+                TextFieldProps={{
+                  focused: true,
+                  id: "countryOfOrigin",
+                  required: true,
+                  label: <T keyName={"create_entry_form.countryOfOrigin"} />,
+                  helperText: <T keyName={"create_entry_form.countryOfOrigin_helper"} />,
+                }}
+              />
+            )}
+          />
+        </div>
+      )}
+
       <div style={{ marginBottom: "12px" }}></div>
 
       {entityType === DocumentEntity && (
-        <form>
+        <div>
           <Controller
             name="uri"
             control={control}
@@ -350,7 +379,7 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
               />
             )}
           />
-        </form>
+        </div>
       )}
 
       {entityType === ValueEntity && (
@@ -374,7 +403,7 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
       )}
 
       {entityType === PropertyEntity && (
-        <form>
+        <div>
           <Controller
             name="dataType"
             control={control}
@@ -415,11 +444,11 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
               />
             )}
           />
-        </form>
+        </div>
       )}
 
       {entityType === UnitEntity && (
-        <form>
+        <div>
           <Controller
             name="scale"
             control={control}
@@ -464,7 +493,7 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
               />
             )}
           />
-        </form>
+        </div>
       )}
 
       {entityType === ValueListEntity && (

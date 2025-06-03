@@ -60,6 +60,11 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
         onDelete?.();
     };
 
+    const orderedValues = entry.orderedValues ?? [];
+    const lists = Array.from(
+        new Set(orderedValues.flatMap(v => v.valueLists ?? []))
+    );
+
     return (
         <FormView>
             <StatusFormSet
@@ -101,11 +106,11 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
                 </Typography>
             </FormSet>
 
-            {/* <RelatingRecordsFormSet
-                title={<span><b><T keyName="valuelist.titlePlural"/></b>, <T keyName="value_form.assigned_valuelists"/></span>}
+            <RelatingRecordsFormSet
+                title={<span><b><T keyName="valuelist.titlePlural" /></b>, <T keyName="value_form.assigned_valuelists" /></span>}
                 emptyMessage={t("value_form.no_assigned_valuelists")}
-                relatingRecords={entry.orderedValues ?? []}
-            /> */}
+                relatingRecords={lists ?? []}
+            />
 
             <MetaFormSet entry={entry} />
 

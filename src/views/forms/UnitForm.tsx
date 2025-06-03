@@ -133,6 +133,9 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
                 <Typography sx={{ mt: 1 }}>
                     Sprache des Erstellers: {entry.languageOfCreator ? entry.languageOfCreator.code : "-"}
                 </Typography>
+                <Typography sx={{ mt: 1 }}>
+                    Herkunftsland: {entry.countryOfOrigin ? entry.countryOfOrigin.name + " (" + entry.countryOfOrigin.code + ")" : "-"}
+                </Typography>
             </FormSet>
 
             <TransferListView
@@ -174,11 +177,11 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
                 emptyMessage={t("unit_form.no_assigned_to_properties")}
                 relatingRecords={entry.properties ?? []}
             />
-            {/* <RelatingRecordsFormSet
+            <RelatingRecordsFormSet
                 title={<span><b><T keyName="valuelist.titlePlural"></T></b>, <T keyName="unit_form.assigned_to_properties"></T></span>}
                 emptyMessage={t("unit_form.no_assigned_to_properties")}
                 relatingRecords={entry.valueLists ?? []}
-            /> */}
+            />
 
             <MetaFormSet entry={entry} />
 

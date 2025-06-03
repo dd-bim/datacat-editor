@@ -69,7 +69,7 @@ const StatusFormSet: FC<StatusFormSetProps> = (props) => {
   return (
     <FormSet>
       <FormContainer>
-        <FormSetTitle>
+        <FormSetTitle sx={{ mr: 1 }}>
           <b>
             <T keyName="status.title" />
           </b>
