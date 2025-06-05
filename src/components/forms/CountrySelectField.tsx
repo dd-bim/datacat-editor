@@ -15,7 +15,7 @@ const sortByName = ({ code: a }: CountryDetailPropsFragment, { code: b }: Countr
     return a.localeCompare(b);
 };
 
-const LanguageSelectField: FC<CountrySelectFieldProps> = (props) => {
+const CountrySelectField: FC<CountrySelectFieldProps> = (props) => {
     const {
         filter,
         onChange,
@@ -25,20 +25,28 @@ const LanguageSelectField: FC<CountrySelectFieldProps> = (props) => {
     const [query, setQuery] = useState('');
     const { loading, data, error } = useFindCountriesQuery({
         variables: {
-            input: { query, pageSize: 500 }
+            input: { query, pageSize: 200 }
         }
     });
 
-    const options = (data?.findCountries?.nodes ?? []).filter(
-        node => !filter?.includes(node.code)
-    );
-    options.sort(sortByName);
+    const options = [...(data?.findCountries?.nodes || [])].sort(sortByName);
+    const defaultCountry = options.find(opt => opt.code === "DE");
+
+    const [selectedCountry, setSelectedCountry] = useState<Maybe<CountryDetailPropsFragment> | null>(null);
+
+    React.useEffect(() => {
+        if (!selectedCountry && defaultCountry) {
+            setSelectedCountry(defaultCountry);
+            onChange(defaultCountry);
+        }
+    }, [defaultCountry]);
 
     return (
         <Autocomplete
             open={open}
             onOpen={() => setOpen(true)}
             onClose={() => setOpen(false)}
+            value={selectedCountry}
             onChange={(event, value) => onChange(value)}
             isOptionEqualToValue={(option, value) => option.id === value.id}
             getOptionLabel={(option) => `${option.name} (${option.code})`}
@@ -67,4 +75,4 @@ const LanguageSelectField: FC<CountrySelectFieldProps> = (props) => {
     );
 }
 
-export default LanguageSelectField;
+export default CountrySelectField;

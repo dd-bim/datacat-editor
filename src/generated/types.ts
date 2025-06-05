@@ -1,6 +1,5 @@
 import * as Apollo from '@apollo/client';
 import { gql } from '@apollo/client';
-import { E, M } from 'vite/dist/node/moduleRunnerTransport.d-DJ_mE5sf';
 
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -45,36 +44,15 @@ export type AccountUpdateInput = {
   organization: Scalars['String'];
 };
 
-// export type AddDescriptionInput = {
-//   catalogEntryId: Scalars['ID'];
-//   description: TranslationInput;
-// };
-
-// export type AddCommentInput = {
-//   catalogEntryId: Scalars['ID'];
-//   comment: TranslationInput;
-// };
-
-// export type AddNameInput = {
-//   catalogEntryId: Scalars['ID'];
-//   name: TranslationInput;
-// };
 export type AddTextInput = {
   catalogEntryId: Scalars['ID'];
   text: TranslationInput;
 };
 
-
-// export type AddTagInput = {
-//   catalogEntryId: Scalars['ID'];
-//   tagId: Scalars['ID'];
-// };
 export type TagInput = {
   catalogEntryId: Scalars['ID'];
   tagId: Scalars['ID'];
 };
-
-
 
 export type CatalogEntryFilterInput = {
   catalogEntryType?: Maybe<CatalogEntryTypeFilterInput>;
@@ -137,11 +115,6 @@ export enum RelationshipRecordType {
   Value = 'Value'
 }
 
-// export type CreateCatalogEntryInput = {
-//   catalogEntryType: SimpleRecordType;
-//   properties: PropertiesInput;
-//   tags?: Maybe<Array<Scalars['ID']>>;
-// };
 export type CreateCatalogEntryInput = {
   catalogEntryType: CatalogRecordType;
   properties: PropertiesInput;
@@ -283,15 +256,6 @@ export type LoginInput = {
   password: Scalars['String'];
 };
 
-
-// export type NominalValueInput = {
-//   valueRole: ValueRole;
-//   valueType: ValueType;
-//   nominalValue?: Maybe<Scalars['String']>;
-// };
-
-
-
 export type ProfileUpdateInput = {
   username: Scalars['ID'];
   firstName: Scalars['String'];
@@ -300,12 +264,6 @@ export type ProfileUpdateInput = {
   organization: Scalars['String'];
 };
 
-// export type PropertiesInput = {
-//   id?: Maybe<Scalars['ID']>;
-//   version?: Maybe<VersionInput>;
-//   names: Array<TranslationInput>;
-//   descriptions?: Maybe<Array<TranslationInput>>;
-// };
 export type PropertiesInput = {
   id?: Maybe<Scalars['ID']>;
   majorVersion?: Maybe<Scalars['Int']>;
@@ -437,29 +395,6 @@ export type DimensionInput = {
   luminousIntensityExponent: RationalInput;
 }
 
-
-// export enum RelationshipRecordType {
-//   ActsUpon = 'ActsUpon',
-//   AssignsCollections = 'AssignsCollections',
-//   AssignsMeasures = 'AssignsMeasures',
-//   AssignsProperties = 'AssignsProperties',
-//   AssignsPropertyWithValues = 'AssignsPropertyWithValues',
-//   AssignsUnits = 'AssignsUnits',
-//   AssignsValues = 'AssignsValues',
-//   Associates = 'Associates',
-//   Collects = 'Collects',
-//   Composes = 'Composes',
-//   Documents = 'Documents',
-//   Groups = 'Groups',
-//   Sequences = 'Sequences',
-//   Specializes = 'Specializes'
-// }
-
-// export type RemoveTagInput = {
-//   catalogEntryId: Scalars['ID'];
-//   tagId: Scalars['ID'];
-// };
-
 export type SearchInput = {
   query?: Maybe<Scalars['String']>;
   filters?: Maybe<Array<CatalogEntryFilterInput>>;
@@ -472,30 +407,6 @@ export type SearchInput = {
   pageSize?: Maybe<Scalars['Int']>;
 };
 
-
-
-// export type SetNominalValueInput = {
-//   valueId: Scalars['ID'];
-//   nominalValue: NominalValueInput;
-// };
-
-
-// export type SetRelatedEntriesInput = {
-//   relationshipId: Scalars['ID'];
-//   toIds: Array<Scalars['ID']>;
-// };
-
-
-// export type SetToleranceInput = {
-//   valueId: Scalars['ID'];
-//   tolerance: ToleranceInput;
-// };
-
-
-// export type SetVersionInput = {
-//   catalogEntryId: Scalars['ID'];
-//   version: VersionInput;
-// };
 export type UpdateMajorVersionInput = {
   catalogEntryId: Scalars['ID'];
   majorVersion: Scalars['Int'];
@@ -529,22 +440,6 @@ export type SignupInput = {
   organization: Scalars['String'];
 };
 
-
-// export enum SimpleRecordType {
-//   Activity = 'Activity' as any,
-//   Actor = 'Actor' as any,
-//   Bag = 'Bag' as any,
-//   Classification = 'Classification' as any,
-//   ExternalDocument = 'ExternalDocument' as any,
-//   MeasureWithUnit = 'Measure' as any,
-//   Measure = 'Measure' as any,
-//   Nest = 'Nest' as any,
-//   Property = 'Property' as any,
-//   Subject = 'Subject' as any,
-//   Unit = 'Unit' as any,
-//   Value = 'Value' as any
-// }
-
 export type Tag = {
   __typename?: 'Tag';
   id: Scalars['ID'];
@@ -566,48 +461,11 @@ export type TagFilterInput = {
   in?: Maybe<Array<Scalars['ID']>>;
 };
 
-// export type ToleranceInput = {
-//   toleranceType: ToleranceType;
-//   lowerTolerance?: Maybe<Scalars['String']>;
-//   upperTolerance?: Maybe<Scalars['String']>;
-// };
-
-// export enum ToleranceType {
-//   Realvalue = 'Realvalue',
-//   Percentage = 'Percentage'
-// }
-
-
 export type TranslationInput = {
   id?: Maybe<Scalars['ID']>;
   languageTag: Scalars['ID'];
   value: Scalars['String'];
 };
-
-// export type UnsetNominalValueInput = {
-//   valueId: Scalars['ID'];
-// };
-
-
-// export type UnsetToleranceInput = {
-//   valueId: Scalars['ID'];
-// };
-
-
-// export type UpdateDescriptionInput = {
-//   catalogEntryId: Scalars['ID'];
-//   description: TranslationUpdateInput;
-// };
-
-// export type UpdateCommentInput = {
-//   catalogEntryId: Scalars['ID'];
-//   comment: TranslationUpdateInput;
-// };
-
-// export type UpdateNameInput = {
-//   catalogEntryId: Scalars['ID'];
-//   name: TranslationUpdateInput;
-// };
 export type UpdateTextInput = {
   textId: Scalars['ID'];
   value: Scalars['String'];
@@ -618,27 +476,6 @@ export type UpdateTagInput = {
   tagId: Scalars['ID'];
   name: Scalars['String'];
 };
-
-
-// export enum ValueRole {
-//   Nominal = 'Nominal',
-//   Maximum = 'Maximum',
-//   Minimum = 'Minimum'
-// }
-
-// export enum ValueType {
-//   String = 'String',
-//   Number = 'Number',
-//   Integer = 'Integer',
-//   Real = 'Real',
-//   Boolean = 'Boolean',
-//   Logical = 'Logical'
-// }
-
-// export type VersionInput = {
-//   versionId?: Maybe<Scalars['String']>;
-//   versionDate?: Maybe<Scalars['String']>;
-// };
 
 export enum PropertyRelationshipTypeEnum {
   XTD_DEPENDS = 'XTD_DEPENDS',
@@ -726,16 +563,6 @@ export type SymbolPropsFragment = { id: string, symbol: string, language: Langua
 
 export type RationalPropsFragment = { id: string, numerator?: Maybe<number>, denominator?: Maybe<number> };
 
-// type ItemProps<T extends string> = {
-//   __typename: T;
-//   id: string;
-//   recordType: CatalogRecordType;
-//   name?: Maybe<string>;
-//   description?: Maybe<string>;
-//   comment?: Maybe<string>;
-//   tags: Array<TagPropsFragment>;
-// };
-
 type ObjectProps<T extends string> = {
   __typename: T;
   id: string;
@@ -779,14 +606,6 @@ export type SearchResultPropsFragment = { __typename: 'XtdObject', id: string, r
 
 export type FindTagsResultFragment = { id: string, name: string };
 
-// Gemeinsame Basisstruktur für ConceptProps
-// type ConceptProps_Base_Fragment = {
-//   versionId?: Maybe<string>;
-//   versionDate?: Maybe<string>;
-//   names: Array<TranslationPropsFragment>;
-//   descriptions: Array<TranslationPropsFragment>;
-//   comments: Array<TranslationPropsFragment>;
-// };
 type ConceptProps_Base_Fragment = {
   description?: Maybe<string>;
   descriptions?: Maybe<Array<MultiLanguageTextPropsFragment>>;
@@ -4349,12 +4168,12 @@ export const FindCountriesQueryDocument = gql`
   findCountries(input: $input) {
     nodes {
       code
-      ...ConceptProps
+      ...RelationsProps
     }
     totalElements
   }
 }
-    ${ConceptPropsFragmentDoc}`;
+    ${RelationsPropsFragmentDoc}`;
 /**
  * __useFindCountriesQuery__
  * 
@@ -5182,10 +5001,10 @@ export const GetCountryEntryDocument = gql`
     query GetCountryEntry($id: ID!) {
   node: getCountry(id: $id) {
     code
-    ...ConceptDetailProps
+    ...RelationsProps
   }
 }
-    ${ConceptDetailPropsFragmentDoc}`;
+    ${RelationsPropsFragmentDoc}`;
 /**
  * __useGetCountryEntryQuery__
  * 

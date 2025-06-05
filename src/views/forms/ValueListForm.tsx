@@ -16,18 +16,19 @@ import FormView, { FormProps } from "./FormView";
 import TransferListView from "../TransferListView";
 import { ValueEntity, PropertyEntity, DocumentEntity, PropertyGroupEntity, ClassEntity, ValueListEntity, UnitEntity } from "../../domain";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
-import { T, useTranslate } from "@tolgee/react";
+import { T } from "@tolgee/react";
 import { FC } from "react";
 import TransferListViewOrderedValues from "../TransferListViewOrderedValues";
 import StatusFormSet from "../../components/forms/StatusFormSet";
 import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
 import ExampleFormSet from "../../components/forms/ExampleFormSet";
 import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
+import { useNavigate } from "react-router-dom";
 
 const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
-    const { id, onDelete } = props;
+    const { id } = props;
     const { enqueueSnackbar } = useSnackbar();
-    const { t } = useTranslate();
+    const navigate = useNavigate();
 
     // fetch domain model
     const { loading, error, data, refetch } = useGetValueListEntryQuery({
@@ -56,17 +57,17 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
     });
 
     if (loading) return <Typography><T keyName="valuelist_form.loading">Lade Werteliste..</T></Typography>;
-    if (error || !entry) return <Typography><T keyName="valuelist_form.error">Es ist ein Fehler aufgetreten..</T></Typography>;
+    if (error || !entry) return <Typography><T keyName="error.error">Es ist ein Fehler aufgetreten..</T></Typography>;
 
     const handleOnUpdate = async () => {
         await refetch();
-        enqueueSnackbar(<T keyName="valuelist_form.update_success">Update erfolgreich.</T>);
+        enqueueSnackbar(<T keyName="update.update_success">Update erfolgreich.</T>);
     };
 
     const handleOnDelete = async () => {
         await deleteEntry({ variables: { id } });
         enqueueSnackbar(<T keyName="valuelist_form.delete_success">Werteliste gelöscht.</T>);
-        onDelete?.();
+        navigate(`/${ValueListEntity.path}`, { replace: true });
     };
 
     const relatedUnits = entry.unit ? [entry.unit] : [];
@@ -202,7 +203,7 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
 
             <RelatingRecordsFormSet
                 title={<span><b><T keyName="property.titlePlural" /></b>, <T keyName="valuelist_form.assigned_properties" /></span>}
-                emptyMessage={t("valuelist_form.no_assigned_properties")}
+                emptyMessage={<T keyName="valuelist_form.no_assigned_properties" />}
                 relatingRecords={entry.properties ?? []}
             />
 

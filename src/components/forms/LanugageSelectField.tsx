@@ -36,12 +36,24 @@ const LanguageSelectField: FC<LanguageSelectFieldProps> = (props) => {
     );
     options.sort(sortByName);
 
+    const defaultLanguage = options.find(opt => opt.code === "de");
+
+    const [selectedLanguage, setSelectedLanguage] = useState<Maybe<LanguagePropsFragment> | null>(null);
+
+    React.useEffect(() => {
+        if (!selectedLanguage && defaultLanguage) {
+            setSelectedLanguage(defaultLanguage);
+            onChange(defaultLanguage);
+        }
+    }, [defaultLanguage]);
+
     return (
         <Autocomplete
             multiple={!!multiple}
             open={open}
             onOpen={() => setOpen(true)}
             onClose={() => setOpen(false)}
+            value={selectedLanguage}
             onChange={(event, value) => onChange(value)}
             isOptionEqualToValue={(option, value) => option.id === value.id}
             getOptionLabel={(option) => `${option.nativeName} / ${option.englishName} (${option.code})`}

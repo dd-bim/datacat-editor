@@ -11,14 +11,15 @@ import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, { FormProps } from "./FormView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
-import { T, useTranslate } from "@tolgee/react";
+import { T } from "@tolgee/react";
 import StatusFormSet from "../../components/forms/StatusFormSet";
 import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
+import { useNavigate } from "react-router-dom";
 
 const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
-    const { id, onDelete } = props;
+    const { id } = props;
     const { enqueueSnackbar } = useSnackbar();
-    const { t } = useTranslate();
+    const navigate = useNavigate();
 
     // fetch value
     const { loading, error, data, refetch } = useGetValueEntryQuery({
@@ -47,17 +48,17 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
     });
 
     if (loading) return <Typography><T keyName="value_form.loading">Lade Wert..</T></Typography>;
-    if (error || !entry) return <Typography><T keyName="value_form.error">Es ist ein Fehler aufgetreten..</T></Typography>;
+    if (error || !entry) return <Typography><T keyName="error.error">Es ist ein Fehler aufgetreten..</T></Typography>;
 
     const handleOnUpdate = async () => {
         await refetch();
-        enqueueSnackbar(<T keyName="value_form.update_success">Update erfolgreich.</T>);
+        enqueueSnackbar(<T keyName="update.update_success">Update erfolgreich.</T>);
     };
 
     const handleOnDelete = async () => {
         await deleteEntry({ variables: { id } });
         enqueueSnackbar(<T keyName="value_form.delete_success">Wert gelöscht.</T>);
-        onDelete?.();
+        navigate(`/${ValueEntity.path}`, { replace: true });
     };
 
     const orderedValues = entry.orderedValues ?? [];
@@ -108,7 +109,7 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
 
             <RelatingRecordsFormSet
                 title={<span><b><T keyName="valuelist.titlePlural" /></b>, <T keyName="value_form.assigned_valuelists" /></span>}
-                emptyMessage={t("value_form.no_assigned_valuelists")}
+                emptyMessage={<T keyName="value_form.no_assigned_valuelists" />}
                 relatingRecords={lists ?? []}
             />
 

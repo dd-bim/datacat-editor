@@ -26,7 +26,6 @@ import {
     UnitEntity,
     ValueEntity,
 } from "../domain";
-import { Language } from "@mui/icons-material";
 
 const options = [
     DocumentEntity,
@@ -53,12 +52,7 @@ const CreateEntryButton = (props: CreateEntryProps) => {
             cache.modify({
                 id: "ROOT_QUERY",
                 fields: {
-                    hierarchy: (value, { DELETE }) => DELETE
-                }
-            });
-            cache.modify({
-                id: "ROOT_QUERY",
-                fields: {
+                    hierarchy: (value, { DELETE }) => DELETE,
                     search: (value, { DELETE }) => DELETE
                 }
             });

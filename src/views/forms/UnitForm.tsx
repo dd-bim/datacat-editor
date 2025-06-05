@@ -10,7 +10,7 @@ import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, { FormProps } from "./FormView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
-import { T, useTranslate } from "@tolgee/react";
+import { T } from "@tolgee/react";
 import StatusFormSet from "../../components/forms/StatusFormSet";
 import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
 import TransferListView from "../TransferListView";
@@ -18,11 +18,12 @@ import { PropertyEntity, DocumentEntity, PropertyGroupEntity, ClassEntity, Value
 import { RelationshipRecordType } from "../../generated/types";
 import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
 import ExampleFormSet from "../../components/forms/ExampleFormSet";
+import { useNavigate } from "react-router-dom";
 
 const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
-    const { id, onDelete } = props;
+    const { id } = props;
     const { enqueueSnackbar } = useSnackbar();
-    const { t } = useTranslate();
+    const navigate = useNavigate();
 
     const UnitScale: Record<string, string> = {
         XTD_LINEAR: "Linear",
@@ -60,17 +61,17 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
     });
 
     if (loading) return <Typography><T keyName="unit_form.loading">Lade Maßeinheit..</T></Typography>;
-    if (error || !entry) return <Typography><T keyName="unit_form.error">Es ist ein Fehler aufgetreten..</T></Typography>;
+    if (error || !entry) return <Typography><T keyName="error.error">Es ist ein Fehler aufgetreten..</T></Typography>;
 
     const handleOnUpdate = async () => {
         await refetch();
-        enqueueSnackbar(<T keyName="property_form.update_success">Update erfolgreich.</T>);
+        enqueueSnackbar(<T keyName="update.update_success">Update erfolgreich.</T>);
     };
 
     const handleOnDelete = async () => {
         await deleteEntry({ variables: { id } });
         enqueueSnackbar(<T keyName="unit_form.delete_success">Maßeinheit gelöscht.</T>);
-        onDelete?.();
+        navigate(`/${UnitEntity.path}`, { replace: true });
     };
 
     const relatedDocuments = entry.referenceDocuments ?? [];
@@ -174,12 +175,12 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
 
             <RelatingRecordsFormSet
                 title={<span><b><T keyName="property.titlePlural"></T></b>, <T keyName="unit_form.assigned_to_properties"></T></span>}
-                emptyMessage={t("unit_form.no_assigned_to_properties")}
+                emptyMessage={<T keyName="unit_form.no_assigned_to_properties" />}
                 relatingRecords={entry.properties ?? []}
             />
             <RelatingRecordsFormSet
                 title={<span><b><T keyName="valuelist.titlePlural"></T></b>, <T keyName="unit_form.assigned_to_properties"></T></span>}
-                emptyMessage={t("unit_form.no_assigned_to_properties")}
+                emptyMessage={<T keyName="unit_form.no_assigned_to_valuelists" />}
                 relatingRecords={entry.valueLists ?? []}
             />
 

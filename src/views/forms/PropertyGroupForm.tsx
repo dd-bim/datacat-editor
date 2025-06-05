@@ -17,16 +17,17 @@ import FormView, { FormProps } from "./FormView";
 import { PropertyEntity, DocumentEntity, PropertyGroupEntity, ClassEntity, ValueListEntity, UnitEntity } from "../../domain";
 import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
-import { T, useTranslate } from "@tolgee/react";
+import { T } from "@tolgee/react";
 import StatusFormSet from "../../components/forms/StatusFormSet";
 import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
 import ExampleFormSet from "../../components/forms/ExampleFormSet";
 import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
+import { useNavigate } from "react-router-dom";
 
 const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
-    const { id, onDelete } = props;
+    const { id } = props;
     const { enqueueSnackbar } = useSnackbar();
-    const { t } = useTranslate();
+    const navigate = useNavigate();
 
     // fetch domain model
     const { loading, error, data, refetch } = useGetSubjectEntryQuery({
@@ -36,7 +37,7 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
     let entry = data?.node as SubjectDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation({
         update: cache => {
-            cache.evict({ id: `XtdNest:${id}` });
+            cache.evict({ id: `XtdSubject:${id}` });
             cache.modify({
                 id: "ROOT_QUERY",
                 fields: {
@@ -53,7 +54,7 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
     });
 
     if (loading) return <Typography><T keyName="property_group_form.loading"></T></Typography>;
-    if (error || !entry) return <Typography><T keyName="property_group_form.error"></T></Typography>;
+    if (error || !entry) return <Typography><T keyName="error.error"></T></Typography>;
 
     const handleOnUpdate = async () => {
         await refetch();
@@ -63,7 +64,7 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
     const handleOnDelete = async () => {
         await deleteEntry({ variables: { id } });
         enqueueSnackbar(<T keyName="property_group_form.delete_success"></T>);
-        onDelete?.();
+        navigate(`/${PropertyGroupEntity.path}`, { replace: true });
     };
 
 
@@ -179,7 +180,7 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
 
             <RelatingRecordsFormSet
                 title={<span><b><T keyName="class.titlePlural">Klassen</T></b>, <T keyName="property_group_form.assigned_classes"></T></span>}
-                emptyMessage={t("property_group_form.no_assigned_classes", "Diese Merkmalsgruppe wurde keiner Klasse zugewiesen")}
+                emptyMessage={<T keyName="property_group_form.no_assigned_classes" />}
                 relatingRecords={classes ?? []}
             />
 

@@ -12,7 +12,7 @@ const StyledFormSetTitle = styled(FormSetTitle)(({ theme }) => ({
 
 export type MemberFormSetProps = {
     title: React.ReactNode;
-    emptyMessage: string;
+    emptyMessage: React.ReactNode;
     relatingRecords: CatalogRecord[];
     FormSetProps?: FormSetProps;
     tagged?: string;

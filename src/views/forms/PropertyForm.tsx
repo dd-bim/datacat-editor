@@ -17,16 +17,17 @@ import FormView, { FormProps } from "./FormView";
 import { PropertyEntity, DocumentEntity, PropertyGroupEntity, ClassEntity, ValueListEntity, UnitEntity } from "../../domain";
 import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
-import { T, useTranslate } from "@tolgee/react";
+import { T } from "@tolgee/react";
 import StatusFormSet from "../../components/forms/StatusFormSet";
 import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
 import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
 import ExampleFormSet from "../../components/forms/ExampleFormSet";
+import { useNavigate } from "react-router-dom";
 
 const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
-    const { id, onDelete } = props;
+    const { id } = props;
     const { enqueueSnackbar } = useSnackbar();
-    const { t } = useTranslate();
+    const navigate = useNavigate();
 
     const PropertyDataType: Record<string, string> = {
         XTD_BOOLEAN: "Boolean",
@@ -65,17 +66,17 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
     });
 
     if (loading) return <Typography><T keyName="property_form.loading">Lade Merkmal..</T></Typography>;
-    if (error || !entry) return <Typography><T keyName="property_form.error">Es ist ein Fehler aufgetreten..</T></Typography>;
+    if (error || !entry) return <Typography><T keyName="error.error">Es ist ein Fehler aufgetreten..</T></Typography>;
 
     const handleOnUpdate = async () => {
         await refetch();
-        enqueueSnackbar(<T keyName="property_form.update_success">Update erfolgreich.</T>);
+        enqueueSnackbar(<T keyName="update.update_success">Update erfolgreich.</T>);
     };
 
     const handleOnDelete = async () => {
         await deleteEntry({ variables: { id } });
         enqueueSnackbar(<T keyName="property_form.delete_success">Merkmal gelöscht.</T>);
-        onDelete?.();
+        navigate(`/${PropertyEntity.path}`, { replace: true });
     };
 
     return (
@@ -203,14 +204,14 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
 
             <RelatingRecordsFormSet
                 title={<span><b><T keyName="propertyGroup.titlePlural">Merkmalsgruppen</T></b>, <T keyName="property_form.aggregating_property_groups">die dieses Merkmal aggregieren</T></span>}
-                emptyMessage={t("property_form.no_aggregating_property_groups", "Das Merkmal wird in keiner Merkmalsgruppe genutzt")}
+                emptyMessage={<T keyName="property_form.no_aggregating_property_groups" />}
                 relatingRecords={entry.subjects ?? []}
                 tagged="a27c8e3c-5fd1-47c9-806a-6ded070efae8"
             />
 
             <RelatingRecordsFormSet
                 title={<span><b><T keyName="class.titlePlural">Klassen</T></b>, <T keyName="property_form.assigned_classes">denen dieses Merkmal direkt zugewiesen wurde</T></span>}
-                emptyMessage={t("property_form.no_assigned_classes", "Das Merkmal wurde keiner Klasse direkt zugewiesen")}
+                emptyMessage={<T keyName="property_form.no_assigned_classes" />}
                 relatingRecords={entry.subjects ?? []}
                 tagged="e9b2cd6d-76f7-4c55-96ab-12d084d21e96"
             />

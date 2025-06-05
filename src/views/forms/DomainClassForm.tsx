@@ -23,13 +23,15 @@ import StatusFormSet from "../../components/forms/StatusFormSet";
 import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
 import ExampleFormSet from "../../components/forms/ExampleFormSet";
 import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
+import { useNavigate } from "react-router-dom";
 
 export default function DomainClassForm(
   props: FormProps<SubjectDetailPropsFragment>
 ) {
-  const { id, onDelete } = props;
+  const { id } = props;
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslate(); // Moved to top level
+  const navigate = useNavigate();
 
   // fetch domain model
   const { loading, error, data, refetch } = useGetSubjectEntryQuery({
@@ -74,13 +76,13 @@ export default function DomainClassForm(
     enqueueSnackbar(
       <T keyName="domain_class_form.delete_success">Klasse gelöscht.</T>
     );
-    onDelete?.();
+    navigate(`/${ClassEntity.path}`, { replace: true });
   };
 
   const handleOnUpdate = async () => {
     await refetch();
     enqueueSnackbar(
-      <T keyName="domain_class_form.update_success">Update erfolgreich.</T>
+      <T keyName="update.update_success">Update erfolgreich.</T>
     );
   };
 

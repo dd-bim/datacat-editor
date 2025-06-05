@@ -14,18 +14,19 @@ import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, { FormProps } from "./FormView";
 import TransferListView from "../TransferListView";
-import { PropertyEntity, DocumentEntity, PropertyGroupEntity, ClassEntity, ValueListEntity, UnitEntity } from "../../domain";
-import { T, useTranslate } from "@tolgee/react";
+import { PropertyEntity, DocumentEntity, ClassEntity, ValueListEntity, UnitEntity } from "../../domain";
+import { T } from "@tolgee/react";
 import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
 import StatusFormSet from "../../components/forms/StatusFormSet";
 import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
 import ExampleFormSet from "../../components/forms/ExampleFormSet";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
+import { useNavigate } from "react-router-dom";
 
 const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => {
-    const { id, onDelete } = props;
+    const { id } = props;
     const { enqueueSnackbar } = useSnackbar();
-    const { t } = useTranslate(); // Moved to top level
+    const navigate = useNavigate();
 
     // fetch domain model
     const { loading, error, data, refetch } = useGetDocumentEntryQuery({
@@ -62,10 +63,8 @@ const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => 
     const handleOnDelete = async () => {
         await deleteEntry({ variables: { id } });
         enqueueSnackbar("Referenzdokument gelöscht.")
-        onDelete?.();
+        navigate(`/${DocumentEntity.path}`, { replace: true });
     };
-
-    // const relatedDocuments = entry.documents ?? [];
 
     return (
         <FormView>
@@ -166,23 +165,10 @@ const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => 
                 onUpdate={handleOnUpdate}
                 onDelete={handleOnUpdate}
             />
-            {/* <TransferListView
-                title={<span><T keyName={"document.TransferList"} /><b><T keyName={"document.TransferList2"} /></b></span>}
-                relatingItemId={id}
-                relationshipType={RelationshipRecordType.ReferenceDocuments}
-                relationships={relatedDocuments}
-                searchInput={{
-                    entityTypeIn: Domain.map(x => x.recordType),
-                    idNotIn: [id]
-                }}
-                onCreate={handleOnUpdate}
-                onUpdate={handleOnUpdate}
-                onDelete={handleOnUpdate}
-            /> */}
 
             <RelatingRecordsFormSet
                 title={<Typography><b><T keyName="document.TransferList2" /></b>, <T keyName="document.references"></T></Typography>}
-                emptyMessage={t('document.no_references')}
+                emptyMessage={<T keyName='document.no_references' />}
                 relatingRecords={entry.documents ?? []}
             />
 

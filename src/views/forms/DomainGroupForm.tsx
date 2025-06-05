@@ -14,18 +14,20 @@ import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, { FormProps } from "./FormView";
 import MetaFormSet from "../../components/forms/MetaFormSet";
-import { PropertyEntity, DocumentEntity, PropertyGroupEntity, ClassEntity, ValueListEntity, UnitEntity } from "../../domain";
+import { PropertyEntity, DocumentEntity, PropertyGroupEntity, ClassEntity, ValueListEntity, UnitEntity, GroupEntity } from "../../domain";
 import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import { T, useTranslate } from "@tolgee/react";
 import StatusFormSet from "../../components/forms/StatusFormSet";
 import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
 import ExampleFormSet from "../../components/forms/ExampleFormSet";
+import { useNavigate } from "react-router-dom";
 
 const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
-    const { id, onDelete } = props;
+    const { id } = props;
     const { enqueueSnackbar } = useSnackbar();
     const { t } = useTranslate(); // Moved to top level
+    const navigate = useNavigate();
 
     // fetch domain model
     const { loading, error, data, refetch } = useGetSubjectEntryQuery({
@@ -57,12 +59,12 @@ const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
     const handleOnDelete = async () => {
         await deleteEntry({ variables: { id } });
         enqueueSnackbar(<T keyName="domain_group_form.delete_success">Gruppe gelöscht.</T>)
-        onDelete?.();
+        navigate(`/${GroupEntity.path}`, { replace: true });
     };
 
     const handleOnUpdate = async () => {
         await refetch();
-        enqueueSnackbar(<T keyName="domain_group_form.update_success">Update erfolgreich.</T>);
+        enqueueSnackbar(<T keyName="update.update_success">Update erfolgreich.</T>);
     }
 
     // const relatedThings = entry.connectedSubjects ?? [];

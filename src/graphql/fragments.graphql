@@ -13,13 +13,6 @@ fragment PageProps on PageInfo {
     hasPrevious
 }
 
-
-# fragment LanguageProps on Language {
-#     id
-#     languageTag
-#     displayCountry(input: { languageTag: "de" })
-#     displayLanguage(input: { languageTag: "de" })
-# }
 fragment LanguageProps on XtdLanguage {
     id
     code
@@ -27,13 +20,6 @@ fragment LanguageProps on XtdLanguage {
     nativeName
 }
 
-# fragment TranslationProps on Translation {
-#     id
-#     language {
-#         ...LanguageProps
-#     }
-#     value
-# }
 fragment TranslationProps on XtdMultiLanguageText {
     id
     texts {
@@ -61,12 +47,6 @@ fragment SearchResultProps on XtdObject {
     }
 }
 
-# fragment MetaProps on Concept {
-#     created
-#     createdBy
-#     lastModified
-#     lastModifiedBy
-# }
 fragment MetaProps on XtdRoot {
     created
     createdBy
@@ -74,17 +54,6 @@ fragment MetaProps on XtdRoot {
     lastModifiedBy
 }
 
-# fragment ItemProps on Concept {
-#     __typename
-#     id
-#     recordType
-#     name(input: { languageTags: ["de-DE", "en-US"] })
-#     description(input: { languageTags: ["de-DE", "en-US"] })
-#     comment(input: { languageTags: ["de-DE", "en-US"] })
-#     tags {
-#         ...TagProps
-#     }
-# }
 fragment ObjectProps on XtdObject {
     __typename
     id
@@ -119,34 +88,11 @@ fragment ObjectProps on XtdObject {
     }
 }
 
-# fragment ObjectDetailProps on XtdObject {
-#     ...MetaProps
-#     ...ConceptProps
-#     documentedBy {
-#         nodes {
-#             ...DocumentsProps
-#         }
-#     }
-# }
 fragment ObjectDetailProps on XtdObject {
     ...MetaProps
     ...ObjectProps
 }
 
-# fragment ConceptProps on Concept {
-#     ...ItemProps
-#     versionId
-#     versionDate
-#     names {
-#         ...TranslationProps
-#     }
-#     descriptions {
-#         ...TranslationProps
-#     }
-#     comments {
-#         ...TranslationProps
-#     }
-# }
 fragment ConceptProps on XtdConcept {
     ...ObjectProps
     description(input: { languageTags: ["de-DE", "en-US"] })
@@ -179,9 +125,6 @@ fragment ConceptDetailProps on XtdConcept {
     ...ConceptProps
 }
 
-# fragment ExternalDocumentProps on XtdExternalDocument {
-#     ...ConceptProps
-# }
 fragment ExternalDocumentProps on XtdExternalDocument {
     ...ConceptProps
     uri
@@ -194,109 +137,11 @@ fragment ExternalDocumentProps on XtdExternalDocument {
     }
 }
 
-# fragment ValueProps on XtdValue {
-#     ...ConceptProps
-#     valueType
-#     valueRole
-#     nominalValue
-#     toleranceType
-#     lowerTolerance
-#     upperTolerance
-# }
 fragment ValueProps on XtdValue {
     ...ObjectProps
     nominalValue
 }
 
-# fragment CollectionProps on XtdCollection {
-#     ...ConceptProps
-# }
-
-# fragment RelationshipProps on XtdRelationship {
-#     ...ConceptProps
-# }
-
-# fragment DocumentsProps on XtdRelDocuments {
-#     ...RelationshipProps
-#     relatingDocument {
-#         ...ItemProps
-#     }
-#     relatedThings {
-#         ...ItemProps
-#     }
-# }
-
-# fragment CollectsProps on XtdRelCollects {
-#     ...RelationshipProps
-#     relatingCollection {
-#         ...ItemProps
-#         tags { ...TagProps }
-#     }
-#     relatedThings {
-#         ...ItemProps
-#     }
-# }
-
-
-# fragment AssignsCollectionsProps on XtdRelAssignsCollections {
-#     ...RelationshipProps
-#     relatingObject {
-#         ...ItemProps
-#     }
-#     relatedCollections {
-#         ...ItemProps
-#     }
-# }
-
-# fragment AssignsPropertiesProps on XtdRelAssignsProperties {
-#     ...RelationshipProps
-#     relatingObject {
-#         ...ItemProps
-#     }
-#     relatedProperties {
-#         ...ItemProps
-#     }
-# }
-
-# fragment AssignsMeasuresProps on XtdRelAssignsMeasures {
-#     ...RelationshipProps
-#     relatingProperty {
-#         ...ItemProps
-#     }
-#     relatedMeasures {
-#         ...ItemProps
-#     }
-# }
-
-# fragment AssignsUnitsProps on XtdRelAssignsUnits {
-#     ...RelationshipProps
-#     relatingMeasure {
-#         ...ItemProps
-#     }
-#     relatedUnits {
-#         ...ItemProps
-#     }
-# }
-
-# fragment AssignsValuesProps on XtdRelAssignsValues {
-#     ...RelationshipProps
-#     relatingMeasure {
-#         ...ItemProps
-#     }
-#     relatedValues {
-#         ...ItemProps
-#     }
-# }
-
-# fragment ExternalDocumentDetailProps on XtdExternalDocument {
-#     ...MetaProps
-#     ...ExternalDocumentProps
-#     documents {
-#         nodes {
-#             ...DocumentsProps
-#         }
-#     }
-# }
 fragment ExternalDocumentDetailProps on XtdExternalDocument {
     ...MetaProps
     ...ExternalDocumentProps
@@ -305,58 +150,6 @@ fragment ExternalDocumentDetailProps on XtdExternalDocument {
     }
 }
 
-# fragment SubjectDetailProps on XtdSubject {
-#     ...ObjectDetailProps
-#     assignedCollections {
-#         nodes {
-#             ...AssignsCollectionsProps
-#         }
-#     }
-#     assignedProperties {
-#         nodes {
-#             ...AssignsPropertiesProps
-#         }
-#     }
-#     # assignedPropertiesWithValues {
-#     #     nodes {
-#     #         ...AssignsPropertyWithValuesProps
-#     #     }
-#     # }
-#     collectedBy {
-#         nodes {
-#             ...CollectsProps
-#         }
-#     }
-#     properties {
-#         id
-#         name
-#         description
-#         comment
-#         assignedMeasures {
-#             nodes {
-#                 id
-#                 relatedMeasures {
-#                     id
-#                     name
-#                     description
-#                     comment
-#                     assignedValues {
-#                         nodes {
-#                             id
-#                             relatedValues {
-#                                 id
-#                                 name
-#                                 description
-#                                 comment
-#                                 nominalValue
-#                             }
-#                         }
-#                     }
-#                 }
-#             }
-#         }
-#     }
-# }
 fragment SubjectDetailProps on XtdSubject {
     ...ConceptDetailProps
     properties {
@@ -377,24 +170,6 @@ fragment SubjectDetailProps on XtdSubject {
     }
 }
 
-# fragment PropertyDetailProps on XtdProperty {
-#     ...ObjectDetailProps
-#     assignedMeasures {
-#         nodes {
-#             ...AssignsMeasuresProps
-#         }
-#     }
-#     assignedTo {
-#         nodes {
-#             ...AssignsPropertiesProps
-#         }
-#     }
-#     collectedBy {
-#         nodes {
-#             ...CollectsProps
-#         }
-#     }
-# }
 fragment PropertyDetailProps on XtdProperty {
     ...ConceptDetailProps
     dataType
@@ -432,24 +207,6 @@ fragment PropertyDetailProps on XtdProperty {
     }
 }
 
-# fragment MeasureDetailProps on XtdMeasureWithUnit {
-#     ...ObjectDetailProps
-#     assignedTo {
-#         nodes {
-#             ...AssignsMeasuresProps
-#         }
-#     }
-#     assignedUnits {
-#         nodes {
-#             ...AssignsUnitsProps
-#         }
-#     }
-#     assignedValues {
-#         nodes {
-#             ...AssignsValuesProps
-#         }
-#     }
-# }
 fragment ValueListDetailProps on XtdValueList {
     ...ObjectDetailProps
     properties {
@@ -467,14 +224,6 @@ fragment ValueListDetailProps on XtdValueList {
     }
 }
 
-# fragment UnitDetailProps on XtdUnit {
-#     ...ObjectDetailProps
-#     assignedTo {
-#         nodes {
-#             ...AssignsUnitsProps
-#         }
-#     }
-# }
 fragment UnitDetailProps on XtdUnit {
     ...ConceptDetailProps
     scale
@@ -496,43 +245,10 @@ fragment UnitDetailProps on XtdUnit {
     }
 }
 
-# fragment ValueDetailProps on XtdValue {
-#     ...ValueProps
-#     assignedTo {
-#         nodes {
-#             ...AssignsValuesProps
-#         }
-#     }
-# }
 fragment ValueDetailProps on XtdValue {
     ...MetaProps
     ...ValueProps
 }
-
-# fragment CollectionDetailProps on XtdCollection {
-#     ...MetaProps
-#     ...CollectionProps
-#     collects {
-#         nodes {
-#             ...CollectsProps
-#         }
-#     }
-#     assignedTo {
-#         nodes {
-#             ...AssignsCollectionsProps
-#         }
-#     }
-#     collectedBy {
-#         nodes {
-#             ...CollectsProps
-#         }
-#     }
-#     documentedBy {
-#         nodes {
-#             ...DocumentsProps
-#         }
-#     }
-# }
 
 fragment SymbolProps on XtdSymbol {
     subject {

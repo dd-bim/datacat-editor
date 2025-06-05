@@ -210,16 +210,12 @@
   },
   "document_form": {
     "loading": "Lade Referenzdokument...",
-    "error": "Es ist ein Fehler aufgetreten...",
-    "update_success": "Update erfolgreich.",
     "delete_success": "Referenzdokument gelöscht.",
     "described_concepts": "Durch das Referenzdokument beschriebene Konzepte",
     "delete_button": "Löschen"
   },
   "domain_class_form": {
     "loading": "Lade Klasse...",
-    "error": "Es ist ein Fehler aufgetreten...",
-    "update_success": "Update erfolgreich.",
     "delete_success": "Klasse gelöscht.",
     "assigned_property_groups": "Der Klasse zugewiesene Merkmalsgruppen",
     "assigned_properties": "Direkt zugewiesene Merkmale der Klasse {name}",
@@ -233,8 +229,6 @@
   },
   "domain_group_form": {
     "loading": "Lade Gruppe...",
-    "error": "Es ist ein Fehler aufgetreten...",
-    "update_success": "Update erfolgreich.",
     "delete_success": "Gruppe gelöscht.",
     "grouped_classes": "Gruppierte Klassen",
     "grouped_classes_description": "Klassen, die dieser Gruppe zugeordnet sind.",
@@ -246,8 +240,6 @@
   },
   "domain_model_form": {
     "loading": "Lade Fachmodell...",
-    "error": "Es ist ein Fehler aufgetreten...",
-    "update_success": "Update erfolgreich.",
     "delete_success": "Fachmodell gelöscht.",
     "reference_documents": "die dieses Fachmodell beschreiben",
     "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
@@ -341,7 +333,7 @@
     "tags_adding_failed": "Hinzufügen von Tags fehlgeschlagen."
   },
   "error":{
-    "error": "An error occurred..."
+    "error": "Es ist ein Fehler aufgetreten..."
   },
   "document": {
     "title": "Referenzdokument",
@@ -485,8 +477,6 @@
   },
   "property_group_form": {
     "loading": "Lade Merkmalsgruppe...",
-    "error": "Es ist ein Fehler aufgetreten...",
-    "update_success": "Update erfolgreich.",
     "delete_success": "Merkmalsgruppe gelöscht.",
     "grouped_properties": "In der Merkmalsgruppe gruppierte Merkmale",
     "reference_documents": "die diese Merkmalsgruppe beschreiben",
@@ -497,8 +487,6 @@
   },
   "property_form": {
     "loading": "Lade Merkmal...",
-    "error": "Es ist ein Fehler aufgetreten...",
-    "update_success": "Update erfolgreich.",
     "delete_success": "Merkmal gelöscht.",
     "property_measure": "des Merkmals",
     "reference_documents": "die dieses Merkmal beschreiben",
@@ -511,8 +499,6 @@
   },
   "valuelist_form": {
     "loading": "Lade Werteliste...",
-    "error": "Es ist ein Fehler aufgetreten...",
-    "update_success": "Update erfolgreich.",
     "delete_success": "Werteliste gelöscht.",
     "applicable_units": "Auf die Werteliste anwendbare Maßeinheiten",
     "value_range": "Wertebereich der Werteliste",
@@ -524,7 +510,6 @@
   },
   "unit_form": {
     "loading": "Lade Maßeinheit...",
-    "error": "Es ist ein Fehler aufgetreten...",
     "delete_success": "Maßeinheit gelöscht.",
     "reference_documents": " die diese Einheit beschreiben",
     "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
@@ -534,8 +519,6 @@
   },
   "value_form": {
     "loading": "Lade Wert...",
-    "error": "Es ist ein Fehler aufgetreten...",
-    "update_success": "Update erfolgreich.",
     "delete_success": "Wert gelöscht.",
     "reference_documents": "die diesen Wert beschreiben",
     "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
@@ -543,14 +526,7 @@
     "no_assigned_valuelists": "Der Wert wird durch keine Werteliste genutzt",
     "delete_button": "Löschen"
   },
-  "tolerance_form": {
-    "title": "Toleranz",
-    "type_label": "Typ",
-    "lower_tolerance_label": "Untere Toleranz",
-    "upper_tolerance_label": "Obere Toleranz",
-    "save_button": "Speichern",
-    "delete_button": "Löschen",
-    "reset_button": "Zurücksetzen",
-    "description": "Die Toleranz eines Wertes kann absolut und prozentual angegeben werden."
+  "update": {
+        "update_success": "Update erfolgreich."
   }
 }

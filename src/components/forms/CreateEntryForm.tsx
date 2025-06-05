@@ -520,26 +520,6 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
         />
       )}
 
-      {/* {entityType === DocumentEntity && (
-        <Controller
-          name="languageTag"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label={
-                <T keyName="create_entry_form.languageTag_label" />
-              }
-              helperText={
-                <T keyName="create_entry_form.languageTag_helper" />
-              }
-              error={!!errors.minorVersion}
-              {...defaultFormFieldOptions}
-            />
-          )}
-        />
-      )} */}
-
       <Button type="submit" variant="contained">
         <T keyName="create_entry_form.save_button">Speichern</T>
       </Button>

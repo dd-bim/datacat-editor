@@ -22,12 +22,6 @@ import {
   ValueEntity
 } from "../domain";
 
-// Dummy-Funktion für den onDelete-Handler. 
-
-const dummyOnDelete = () => {
-  console.warn("onDelete wurde aufgerufen – implementieren Sie die Navigation in der Komponente oder per Context.");
-};
-
 export const catalogEntryRoutes = [
   {
     path: `/${DocumentEntity.path}/:id?`,
@@ -35,7 +29,7 @@ export const catalogEntryRoutes = [
       <CompositeCatalogEntryView
         entryType={DocumentEntity}
         renderForm={(id) => (
-          <DocumentForm id={id} onDelete={dummyOnDelete} />
+          <DocumentForm id={id}/>
         )}
       />
     ),
@@ -46,7 +40,7 @@ export const catalogEntryRoutes = [
       <CompositeCatalogEntryView
         entryType={ModelEntity}
         renderForm={(id) => (
-          <DomainModelForm id={id} onDelete={dummyOnDelete} />
+          <DomainModelForm id={id}/>
         )}
       />
     ),
@@ -57,7 +51,7 @@ export const catalogEntryRoutes = [
       <CompositeCatalogEntryView
         entryType={GroupEntity}
         renderForm={(id) => (
-          <DomainGroupForm id={id} onDelete={dummyOnDelete} />
+          <DomainGroupForm id={id}/>
         )}
       />
     ),
@@ -68,7 +62,7 @@ export const catalogEntryRoutes = [
       <CompositeCatalogEntryView
         entryType={ClassEntity}
         renderForm={(id) => (
-          <DomainClassForm id={id} onDelete={dummyOnDelete} />
+          <DomainClassForm id={id}/>
         )}
       />
     ),
@@ -79,7 +73,7 @@ export const catalogEntryRoutes = [
       <CompositeCatalogEntryView
         entryType={PropertyGroupEntity}
         renderForm={(id) => (
-          <PropertyGroupForm id={id} onDelete={dummyOnDelete} />
+          <PropertyGroupForm id={id}/>
         )}
       />
     ),
@@ -90,7 +84,7 @@ export const catalogEntryRoutes = [
       <CompositeCatalogEntryView
         entryType={PropertyEntity}
         renderForm={(id) => (
-          <PropertyForm id={id} onDelete={dummyOnDelete} />
+          <PropertyForm id={id}/>
         )}
       />
     ),
@@ -101,7 +95,7 @@ export const catalogEntryRoutes = [
       <CompositeCatalogEntryView
         entryType={ValueListEntity}
         renderForm={(id) => (
-          <ValueListForm id={id} onDelete={dummyOnDelete} />
+          <ValueListForm id={id}/>
         )}
       />
     ),
@@ -112,7 +106,7 @@ export const catalogEntryRoutes = [
       <CompositeCatalogEntryView
         entryType={UnitEntity}
         renderForm={(id) => (
-          <UnitForm id={id} onDelete={dummyOnDelete} />
+          <UnitForm id={id}/>
         )}
       />
     ),
@@ -123,7 +117,7 @@ export const catalogEntryRoutes = [
       <CompositeCatalogEntryView
         entryType={ValueEntity}
         renderForm={(id) => (
-          <ValueForm id={id} onDelete={dummyOnDelete} />
+          <ValueForm id={id}/>
         )}
       />
     ),

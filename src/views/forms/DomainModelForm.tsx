@@ -13,7 +13,7 @@ import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
-import { GroupEntity, PropertyEntity, DocumentEntity, PropertyGroupEntity, ClassEntity, ValueListEntity, UnitEntity } from "../../domain";
+import { GroupEntity, PropertyEntity, DocumentEntity, PropertyGroupEntity, ClassEntity, ValueListEntity, UnitEntity, ModelEntity } from "../../domain";
 import FormView, { FormProps } from "./FormView";
 import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
@@ -22,12 +22,14 @@ import StatusFormSet from "../../components/forms/StatusFormSet";
 import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
 import ExampleFormSet from "../../components/forms/ExampleFormSet";
 import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
+import { useNavigate } from "react-router-dom";
 
 
 function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
     const { id, onDelete } = props;
     const { enqueueSnackbar } = useSnackbar();
     const { t } = useTranslate(); // Moved to top level
+    const navigate = useNavigate();
 
     // fetch domain model
     const { loading, error, data, refetch } = useGetSubjectEntryQuery({
@@ -58,13 +60,13 @@ function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
 
     const handleOnUpdate = async () => {
         await refetch();
-        enqueueSnackbar(<T keyName="domain_model_form.update_success">Update erfolgreich.</T>);
+        enqueueSnackbar(<T keyName="update.update_success">Update erfolgreich.</T>);
     }
 
     const handleOnDelete = async () => {
         await deleteEntry({ variables: { id } });
         enqueueSnackbar(<T keyName="domain_model_form.delete_success">Fachmodell gelöscht.</T>);
-        onDelete?.();
+            navigate(`/${ModelEntity.path}`, { replace: true });
     };
 
     // const collectsRelationships = entry.collects.nodes.map(({id, relatedThings}) => ({
@@ -128,7 +130,7 @@ function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
                 </Typography>
                 <Typography sx={{ mt: 1 }}>
                     Herkunftsland: {entry.countryOfOrigin ? entry.countryOfOrigin.name + " (" + entry.countryOfOrigin.code + ")" : "-"}
-                </Typography>S
+                </Typography>
             </FormSet>
 
             <TransferListView
