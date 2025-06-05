@@ -1,4 +1,5 @@
 import {
+  RelationshipKindEnum,
   RelationshipRecordType,
   SubjectDetailPropsFragment,
   useDeleteEntryMutation,
@@ -15,6 +16,7 @@ import VersionFormSet from "../../components/forms/VersionFormSet";
 import { PropertyEntity, DocumentEntity, PropertyGroupEntity, ClassEntity, ValueListEntity, UnitEntity } from "../../domain";
 import FormView, { FormProps } from "./FormView";
 import TransferListView from "../TransferListView";
+import TransferListViewRelationshipToSubject from "../TransferListViewRelationshipToSubject";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import { T, useTranslate } from "@tolgee/react";
 import StatusFormSet from "../../components/forms/StatusFormSet";
@@ -82,16 +84,20 @@ export default function DomainClassForm(
     );
   };
 
-  // const assignsCollectionsRelationships = entry.assignedCollections.nodes.map(
-  //   ({ id, relatedCollections }) => ({
-  //     relationshipId: id,
-  //     relatedItems: relatedCollections,
-  //   })
-  // );
+  const relatedRelations = entry.connectedSubjects ?? [];
+  const allTargetSubjects = relatedRelations.flatMap(rel => rel.targetSubjects ?? []);
+  console.log("Related Relations", relatedRelations);
+  console.log("All Target Subjects", allTargetSubjects);
+  console.log("id", entry.connectedSubjects)
+  const relatedPropertyGroups = {
+    relId: relatedRelations[0]?.id ?? null,
+    targetSubjects: allTargetSubjects,
+    relationshipType: RelationshipKindEnum.XTD_SCHEMA_LEVEL
+  };
 
   const relatedProperties = entry.properties ?? [];
   const relatedDocuments = entry.referenceDocuments ?? [];
-console.log("Entry: ", entry)
+
   return (
     <FormView>
       <StatusFormSet
@@ -151,28 +157,19 @@ console.log("Entry: ", entry)
 
       {/* Merkmalsgruppen */}
 
-      {/* <TransferListView
-        title={
-          <span>
-            <T keyName={"class.TransferList"} />
-            <b>{entry?.name}</b>
-            <T keyName={"class.TransferList2"} />
-            <b>
-              <T keyName={"class.TransferList3"} />
-            </b>
-          </span>
-        }
+      <TransferListViewRelationshipToSubject
+        title={<span><T keyName={"domain_class_form.assigned_property_groups"} /></span>}
         relatingItemId={id}
-        relationshipType={RelationshipRecordType.AssignsCollections}
-        relationships={assignsCollectionsRelationships}
+        relationshipType={RelationshipRecordType.RelationshipToSubject}
+        relationships={relatedPropertyGroups}
         searchInput={{
           entityTypeIn: [PropertyGroupEntity.recordType],
-          tagged: PropertyGroupEntity.tags,
+          tagged: PropertyGroupEntity.tags
         }}
         onCreate={handleOnUpdate}
         onUpdate={handleOnUpdate}
         onDelete={handleOnUpdate}
-      /> */}
+      />
 
       <TransferListView
         title={

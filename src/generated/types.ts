@@ -151,11 +151,30 @@ export type CreateCatalogEntryInput = {
 
 export type CreateRelationshipInput = {
   relationshipType: RelationshipRecordType;
-  properties?: Maybe<PropertiesInput>;
+  properties?: Maybe<RelationshipPropertiesInput>;
   fromId: Scalars['ID'];
   toIds: Array<Scalars['ID']>;
 };
+export type RelationshipPropertiesInput = {
+  id?: Maybe<Scalars['ID']>;
+  majorVersion?: Maybe<Scalars['Int']>;
+  minorVersion?: Maybe<Scalars['Int']>;
+  status?: Maybe<StatusOfActivationEnum>;
+  names?: Maybe<Array<TranslationInput>>;
+  descriptions?: Maybe<Array<TranslationInput>>;
+  comments?: Maybe<Array<TranslationInput>>;
+  relationshipToSubjectProperties?: Maybe<RelationshipToSubjectPropertiesInput>;
+  relationshipToPropertyProperties?: Maybe<RelationshipToPropertyPropertiesInput>;
+  valueListProperties?: Maybe<ValueListInput>;
+};
 
+export type RelationshipToSubjectPropertiesInput = {
+  relationshipType?: Maybe<RelationshipKindEnum>;
+};
+
+export type RelationshipToPropertyPropertiesInput = {
+  relationshipType?: Maybe<PropertyRelationshipTypeEnum>;
+};
 
 export type CreateTagInput = {
   tagId?: Maybe<Scalars['ID']>;
@@ -822,8 +841,10 @@ export type ExternalDocumentDetailPropsFragment = ObjectDetailProps_XtdExternalD
 };
 
 export type SubjectDetailPropsFragment = ObjectDetailProps_XtdSubject_Fragment & { 
-  properties: Array<PropertyDetailPropsFragment>, 
-  connectedSubjects: Array<RelationshipToSubjectDetailPropsFragment>};
+  properties?: Maybe<Array<PropertyDetailPropsFragment>>, 
+  connectedSubjects?: Maybe<Array<RelationshipToSubjectDetailPropsFragment>>,
+  connectingSubjects?: Maybe<Array<RelationshipToSubjectDetailPropsFragment>>
+};
 
 export type PropertyDetailPropsFragment = ObjectDetailProps_XtdProperty_Fragment & { 
   dataType: DataTypeEnum , 
@@ -889,9 +910,10 @@ export type RelationshipToPropertyDetailPropsFragment =  {
   targetProperties: Array<PropertyDetailPropsFragment>
 };
 
-export type RelationshipToSubjectDetailPropsFragment = { 
+export type RelationshipToSubjectDetailPropsFragment = ObjectDetailProps_XtdRelationshipToSubject_Fragment & { 
   relationshipType: RelationshipRecordType,
-  targetSubjects: Array<SubjectDetailPropsFragment>
+  targetSubjects: Array<SubjectDetailPropsFragment>,
+  connectingSubject: SubjectDetailPropsFragment
 };
 
 export type QuantityKindDetailPropsFragment = ObjectDetailProps_XtdQuantityKind_Fragment & {
@@ -1766,12 +1788,21 @@ export const SubjectDetailPropsFragmentDoc = gql`
         }
     }
     connectedSubjects {
-        # ...RelationshipToSubjectProps
-        id
+        ...RelationsProps
+        targetSubjects {
+          ...RelationsProps
+        }
+    }
+    connectingSubjects {
+        ...RelationsProps
+        connectingSubject {
+            ...RelationsProps 
+        }
     }
   }
   ${ConceptDetailPropsFragmentDoc}
 ${ValuePropsFragmentDoc}
+${RelationsPropsFragmentDoc}
 ${PropertyPropsFragmentDoc}
 `;
 // ${RelationshipToSubjectPropsFragmentDoc}

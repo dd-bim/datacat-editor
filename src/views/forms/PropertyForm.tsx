@@ -201,16 +201,18 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
                 onDelete={handleOnUpdate}
             />
 
-            {/* <RelatingRecordsFormSet
+            <RelatingRecordsFormSet
                 title={<span><b><T keyName="propertyGroup.titlePlural">Merkmalsgruppen</T></b>, <T keyName="property_form.aggregating_property_groups">die dieses Merkmal aggregieren</T></span>}
                 emptyMessage={t("property_form.no_aggregating_property_groups", "Das Merkmal wird in keiner Merkmalsgruppe genutzt")}
-                relatingRecords={entry?.collectedBy.nodes.map(node => node.relatingCollection) ?? []}
-            /> */}
+                relatingRecords={entry.subjects ?? []}
+                tagged="a27c8e3c-5fd1-47c9-806a-6ded070efae8"
+            />
 
             <RelatingRecordsFormSet
                 title={<span><b><T keyName="class.titlePlural">Klassen</T></b>, <T keyName="property_form.assigned_classes">denen dieses Merkmal direkt zugewiesen wurde</T></span>}
                 emptyMessage={t("property_form.no_assigned_classes", "Das Merkmal wurde keiner Klasse direkt zugewiesen")}
                 relatingRecords={entry.subjects ?? []}
+                tagged="e9b2cd6d-76f7-4c55-96ab-12d084d21e96"
             />
 
             <MetaFormSet entry={entry} />

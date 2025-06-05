@@ -66,11 +66,13 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
         onDelete?.();
     };
 
-    // const collectsRelationships = entry.collects.nodes.map(({id, relatedThings}) => ({
-    //     relationshipId: id,
-    //     relatedItems: relatedThings
-    // }));
+
     const relatedDocuments = entry.referenceDocuments ?? [];
+
+    const relationships = entry.connectingSubjects ?? [];
+    const classes = Array.from(
+        new Set(relationships.flatMap(r => r.connectingSubject ?? []))
+    );
 
     return (
         <FormView>
@@ -130,6 +132,17 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
             </FormSet>
 
             <TransferListView
+                title={<span><T keyName="property_group_form.grouped_properties"></T></span>}
+                relatingItemId={id}
+                relationshipType={RelationshipRecordType.Properties}
+                relationships={entry.properties ?? []}
+                searchInput={{entityTypeIn: [PropertyEntity.recordType]}}
+                onCreate={handleOnUpdate}
+                onUpdate={handleOnUpdate}
+                onDelete={handleOnUpdate}
+            />
+
+            <TransferListView
                 title={<span><T keyName={"domain_class_form.reference_documents"} /></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.ReferenceDocuments}
@@ -162,22 +175,13 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
                 onUpdate={handleOnUpdate}
                 onDelete={handleOnUpdate}
             />
-            {/* <TransferListView
-                title={<span><T keyName="property_group_form.grouped_properties"></T></span>}
-                relatingItemId={id}
-                relationshipType={RelationshipRecordType.}
-                relationships={collectsRelationships}
-                searchInput={{entityTypeIn: [PropertyEntity.recordType]}}
-                onCreate={handleOnUpdate}
-                onUpdate={handleOnUpdate}
-                onDelete={handleOnUpdate}
-            /> */}
 
-            {/* <RelatingRecordsFormSet
+
+            <RelatingRecordsFormSet
                 title={<span><b><T keyName="class.titlePlural">Klassen</T></b>, <T keyName="property_group_form.assigned_classes"></T></span>}
                 emptyMessage={t("property_group_form.no_assigned_classes", "Diese Merkmalsgruppe wurde keiner Klasse zugewiesen")}
-                relatingRecords={entry?.assignedTo.nodes.map(node => node.relatingObject) ?? []}
-            /> */}
+                relatingRecords={classes ?? []}
+            />
 
             <MetaFormSet entry={entry} />
 

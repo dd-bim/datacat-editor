@@ -221,7 +221,7 @@
     "error": "Es ist ein Fehler aufgetreten...",
     "update_success": "Update erfolgreich.",
     "delete_success": "Klasse gelöscht.",
-    "assigned_property_groups": "Der Klasse {name} zugewiesene Merkmalsgruppen",
+    "assigned_property_groups": "Der Klasse zugewiesene Merkmalsgruppen",
     "assigned_properties": "Direkt zugewiesene Merkmale der Klasse {name}",
     "assigned_units": "Direkt zugewiesene Maßeinheiten der Klasse {name}",
     "reference_documents": "Wird in folgenden Referenzdokumenten beschrieben",
