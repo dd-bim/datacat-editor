@@ -422,6 +422,16 @@ export type UpdateStatusInput = {
   status: StatusOfActivationEnum;
 };
 
+export type UpdateDataTypeInput = {
+  catalogEntryId: Scalars['ID'];
+  dataType: DataTypeEnum;
+};
+
+export type UpdateNominalValueInput = {
+  catalogEntryId: Scalars['ID'];
+  nominalValue: Scalars['String'];
+};
+
 export type AddCountryOfOriginInput = {
   catalogEntryId: Scalars['ID'];
   countryCode: Scalars['ID'];
@@ -802,9 +812,21 @@ export type UpdateStatusMutationVariables = Exact<{
 export type UpdateStatusMutation = { updateStatus?: Maybe<{ catalogEntry?: Maybe<ObjectPropsFragment> }> };
 
 
+export type UpdateDataTypeMutationVariables = Exact<{
+  input: UpdateDataTypeInput;
+}>;
+
+export type UpdateDataTypeMutation = { updateDataType?: Maybe<{ catalogEntry?: Maybe<PropertyDetailPropsFragment> }> };
+
 export type AddNameMutationVariables = Exact<{
   input: AddTextInput;
 }>;
+
+export type UpdateNominalValueMutationVariables = Exact<{
+  input: UpdateNominalValueInput;
+}>;
+
+export type UpdateNominalValueMutation = { updateNominalValue?: Maybe<{ catalogEntry?: Maybe<ValueDetailPropsFragment> }> };
 
 export type AddNameMutation = { addName?: Maybe<{ catalogEntry?: Maybe<ObjectPropsFragment> }> };
 
@@ -2408,6 +2430,78 @@ export function useUpdateStatusMutation(baseOptions?: Apollo.MutationHookOptions
 export type UpdateStatusMutationHookResult = ReturnType<typeof useUpdateStatusMutation>;
 export type UpdateStatusMutationResult = Apollo.MutationResult<UpdateStatusMutation>;
 export type UpdateStatusMutationOptions = Apollo.BaseMutationOptions<UpdateStatusMutation, UpdateStatusMutationVariables>;
+
+export const UpdateDataTypeDocument = gql`
+    mutation UpdateDataType($input: UpdateDataTypeInput!) {
+  updateDataType(input: $input) {
+    catalogEntry {
+      ...PropertyProps
+    }
+  }
+}
+    ${PropertyPropsFragmentDoc}`;
+
+export type UpdateDataTypeMutationFn = Apollo.MutationFunction<UpdateDataTypeMutation, UpdateDataTypeMutationVariables>;
+/**
+ * __useUpdateDataTypeMutation__
+ *
+ * To run a mutation, you first call `useUpdateDataTypeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateDataTypeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateDataTypeMutation, { data, loading, error }] = useUpdateDataTypeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateDataTypeMutation(baseOptions?: Apollo.MutationHookOptions<UpdateDataTypeMutation, UpdateDataTypeMutationVariables>) {
+  return Apollo.useMutation<UpdateDataTypeMutation, UpdateDataTypeMutationVariables>(UpdateDataTypeDocument, baseOptions);
+}
+export type UpdateDataTypeMutationHookResult = ReturnType<typeof useUpdateDataTypeMutation>;
+export type UpdateDataTypeMutationResult = Apollo.MutationResult<UpdateDataTypeMutation>;
+export type UpdateDataTypeMutationOptions = Apollo.BaseMutationOptions<UpdateDataTypeMutation, UpdateDataTypeMutationVariables>;
+
+export const updateNominalValueDocument = gql`
+    mutation UpdateNominalValue($input: UpdateNominalValueInput!) {
+  updateNominalValue(input: $input) {
+    catalogEntry {
+      ...ValueProps
+    }
+  }
+}
+    ${ValuePropsFragmentDoc}`;
+
+export type UpdateNominalValueMutationFn = Apollo.MutationFunction<UpdateNominalValueMutation, UpdateNominalValueMutationVariables>;
+
+/**
+ * __useUpdateNominalValueMutation__
+ *
+ * To run a mutation, you first call `useUpdateNominalValueMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateNominalValueMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateNominalValueMutation, { data, loading, error }] = useUpdateNominalValueMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+
+export function useUpdateNominalValueMutation(baseOptions?: Apollo.MutationHookOptions<UpdateNominalValueMutation, UpdateNominalValueMutationVariables>) {
+  return Apollo.useMutation<UpdateNominalValueMutation, UpdateNominalValueMutationVariables>(updateNominalValueDocument, baseOptions);
+}
+export type UpdateNominalValueMutationHookResult = ReturnType<typeof useUpdateNominalValueMutation>;
+export type UpdateNominalValueMutationResult = Apollo.MutationResult<UpdateNominalValueMutation>;
+export type UpdateNominalValueMutationOptions = Apollo.BaseMutationOptions<UpdateNominalValueMutation, UpdateNominalValueMutationVariables>;
 
 export const AddDeprecationExplanationDocument = gql`
     mutation AddDeprecationExplanation($input: AddTextInput!) {

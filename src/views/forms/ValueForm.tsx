@@ -15,6 +15,8 @@ import { T } from "@tolgee/react";
 import StatusFormSet from "../../components/forms/StatusFormSet";
 import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
 import { useNavigate } from "react-router-dom";
+import { ValueEntity } from "../../domain";
+import NominalValueFormSet from "../../components/forms/NominalValueFormSet";
 
 const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
     const { id } = props;
@@ -96,16 +98,11 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
                 minorVersion={entry.minorVersion}
             />
 
-            <FormSet>
-                <FormSetTitle>
-                    <b>
-                        <T keyName="document.more_infos" />
-                    </b>
-                </FormSetTitle>
-                <Typography sx={{ mt: 2 }}>
-                    Nominaler Wert: {entry.nominalValue ? entry.nominalValue : "-"}
-                </Typography>
-            </FormSet>
+            <NominalValueFormSet
+                catalogEntryId={id}
+                nominalValue={entry.nominalValue}
+                refetch={refetch}
+            />
 
             <RelatingRecordsFormSet
                 title={<span><b><T keyName="valuelist.titlePlural" /></b>, <T keyName="value_form.assigned_valuelists" /></span>}

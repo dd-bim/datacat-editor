@@ -1,4 +1,3 @@
-import React from "react";
 import FormSet, {FormSetDescription, FormSetTitle} from "./FormSet";
 import {
     TranslationInput,

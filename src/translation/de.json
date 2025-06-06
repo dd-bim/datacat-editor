@@ -392,7 +392,7 @@
     "title": "Merkmal",
     "titlePlural": "Merkmale",
     "dataType": "Datentyp",
-    "dataType_helper": "Der Datentyp des Merkmals. Dies kann ein einfacher Datentyp wie String, Integer oder Boolean sein, oder ein komplexerer Typ.",
+    "dataType_helper": "Der Datentyp des Merkmals. Dies kann ein einfacher Datentyp wie String, Integer oder Boolean sein.",
     "dataFormat": "Datenformat",
     "dataFormat_helper": "Das Datenformat des Merkmals."
   },
@@ -515,6 +515,7 @@
     "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
     "assigned_to_properties": "denen diese Einheit zugewiesen wurde",
     "no_assigned_to_properties": "Die Einheit wird von keinem Merkmal genutzt",
+    "no_assigned_to_valueLists": "Die Einheit wird von keiner Werteliste genutzt",
     "delete_button": "Löschen"
   },
   "value_form": {

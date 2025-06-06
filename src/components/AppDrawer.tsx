@@ -72,7 +72,7 @@ export const AppDrawerItem: FunctionComponent<
   
   const location = useLocation();
   const isActive = location.pathname === to || 
-                  (to !== '/' && location.pathname.startsWith(to));
+                  (to !== '/' && location.pathname.startsWith(to + '/'));
   
   return (
     <Tooltip title={tooltip} aria-label={tooltip} arrow enterDelay={500}>

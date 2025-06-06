@@ -23,6 +23,8 @@ import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
 import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
 import ExampleFormSet from "../../components/forms/ExampleFormSet";
 import { useNavigate } from "react-router-dom";
+import DataTypeFormSet from "../../components/forms/DataTypeFormSet";
+import Box from "@mui/material/Box";
 
 const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
     const { id } = props;
@@ -81,10 +83,16 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
 
     return (
         <FormView>
-            <StatusFormSet
-                catalogEntryId={id}
-                status={entry.status}
-            />
+            <Box display="flex" gap={2}>
+                <StatusFormSet
+                    catalogEntryId={id}
+                    status={entry.status}
+                />
+                <DataTypeFormSet
+                    catalogEntryId={id}
+                    dataType={entry.dataType}
+                />
+            </Box>
 
             <NameFormSet
                 catalogEntryId={id}
@@ -128,9 +136,6 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
                         <T keyName="document.more_infos" />
                     </b>
                 </FormSetTitle>
-                <Typography sx={{ mt: 1 }}>
-                    Datentyp: {entry.dataType ? PropertyDataType[entry.dataType] : "-"}
-                </Typography>
                 <Typography sx={{ mt: 1 }}>
                     Datenformat: {entry.dataFormat ? entry.dataFormat : "-"}
                 </Typography>

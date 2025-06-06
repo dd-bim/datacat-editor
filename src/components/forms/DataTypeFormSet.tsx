@@ -2,8 +2,8 @@ import FormSet, { FormSetDescription, FormSetTitle } from "./FormSet";
 import React, { FC, useState } from "react";
 import { useEffect } from "react";
 import {
-  useUpdateStatusMutation,
-  StatusOfActivationEnum
+  useUpdateDataTypeMutation,
+  DataTypeEnum
 } from "../../generated/types";
 import { useSnackbar } from "notistack";
 import { styled } from "@mui/material/styles";
@@ -12,19 +12,24 @@ import { ClickAwayListener, MenuItem, Select, SelectChangeEvent, Box, Typography
 import InlineButtonGroup from "./InlineButtonGroup";
 import { Controller, useForm } from "react-hook-form";
 
-type StatusFormSetProps = {
+type DataTypeFormSetProps = {
   catalogEntryId: string;
-  status: StatusOfActivationEnum;
+  dataType: DataTypeEnum;
 };
 
-type StatusFormValues = {
-  selectedStatus: StatusOfActivationEnum;
+type DataTypeFormValues = {
+  selectedDataType: DataTypeEnum;
 };
 
 
-const statusOptions = [
-  { value: "XTD_ACTIVE", label: "Aktiv" },
-  { value: "XTD_INACTIVE", label: "Inaktiv" }
+const dataTypeOptions = [
+  { value: "XTD_STRING", label: "String" },
+  { value: "XTD_INTEGER", label: "Integer" },
+  { value: "XTD_REAL", label: "Real" },
+  { value: "XTD_BOOLEAN", label: "Boolean" },
+  { value: "XTD_RATIONAL", label: "Rational" },
+  { value: "XTD_DATETIME", label: "DateTime" },
+  { value: "XTD_COMPLEX", label: "Complex" }
 ];
 
 // Replace makeStyles with styled component
@@ -36,34 +41,34 @@ const FormContainer = styled('form')(({ theme }) => ({
     marginRight: theme.spacing(1),
   },
 }));
-const StatusFormSet: FC<StatusFormSetProps> = (props) => {
-  const { catalogEntryId, status } = props;
+const DataTypeFormSet: FC<DataTypeFormSetProps> = (props) => {
+  const { catalogEntryId, dataType } = props;
   const { enqueueSnackbar } = useSnackbar();
 
-  const [setStatus] = useUpdateStatusMutation();
+  const [setDataType] = useUpdateDataTypeMutation();
   const {
     control,
     reset
-  } = useForm<StatusFormValues>({
+  } = useForm<DataTypeFormValues>({
     mode: "onChange",
-    defaultValues: { selectedStatus: status },
+    defaultValues: { selectedDataType: dataType },
   });
 
   useEffect(() => {
-    reset({ selectedStatus: status });
+    reset({ selectedDataType: dataType });
   }, [status, reset]);
 
   const handleChange = async (
-    e: SelectChangeEvent<StatusOfActivationEnum>,
+    e: SelectChangeEvent<DataTypeEnum>,
     field: { onChange: (value: any) => void }
   ) => {
     field.onChange(e);
-    await setStatus({
+    await setDataType({
       variables: {
-        input: { catalogEntryId, status: e.target.value },
+        input: { catalogEntryId, dataType: e.target.value },
       },
     });
-    enqueueSnackbar("Status aktualisiert.");
+    enqueueSnackbar("Datentyp aktualisiert.");
   };
 
   return (
@@ -71,11 +76,11 @@ const StatusFormSet: FC<StatusFormSetProps> = (props) => {
       <FormContainer>
         <FormSetTitle sx={{ mr: 1 }}>
           <b>
-            <T keyName="status.title" />
+            <T keyName="property.dataType" />
           </b>
         </FormSetTitle>
         <Controller
-          name="selectedStatus"
+          name="selectedDataType"
           control={control}
           render={({ field }) => (
             <Select
@@ -85,7 +90,7 @@ const StatusFormSet: FC<StatusFormSetProps> = (props) => {
               size="small"
               sx={{ minWidth: 120 }}
             >
-              {statusOptions.map(opt => (
+              {dataTypeOptions.map(opt => (
                 <MenuItem key={opt.value} value={opt.value}>
                   {opt.label}
                 </MenuItem>
@@ -98,4 +103,4 @@ const StatusFormSet: FC<StatusFormSetProps> = (props) => {
   );
 };
 
-export default StatusFormSet;
+export default DataTypeFormSet;

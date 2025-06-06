@@ -180,7 +180,7 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
             />
             <RelatingRecordsFormSet
                 title={<span><b><T keyName="valuelist.titlePlural"></T></b>, <T keyName="unit_form.assigned_to_properties"></T></span>}
-                emptyMessage={<T keyName="unit_form.no_assigned_to_valuelists" />}
+                emptyMessage={<T keyName="unit_form.no_assigned_to_valueLists" />}
                 relatingRecords={entry.valueLists ?? []}
             />
 
