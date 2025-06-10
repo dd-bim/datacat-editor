@@ -531,7 +531,7 @@ export function ImportView() {
         <br />
         <T keyName="import.tags_note">
           Damit die entitäten in der datacatEditor Oberfläche sichtbar sind, müssen ihnen Tags der dort gewählten
-          Taxonomie gegeben werden. (Referenzdokument, Fachmodell, Gruppe, Klasse, Merkmalsgruppe, Merkmal, Größe, Wert,
+          Taxonomie gegeben werden. (Referenzdokument, Dictionary, Thema, Klasse, Merkmalsgruppe, Merkmal, Größe, Wert,
           Maßeinheit)
         </T>
         <br />

@@ -32,6 +32,7 @@ import {
   PropertyGroupEntity,
   UnitEntity,
   ValueEntity,
+  DictionaryEntity
 } from "../domain";
 import AppTitle from "./AppTitle";
 import { useAdminAccess } from "../hooks/useAuthContext";
@@ -246,6 +247,13 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
 
           <AppDrawerItem
             icon={<ModelEntity.Icon />}
+            primary={<T keyName="app_drawer.dictionaries">Dictionary</T>}
+            to={`/${DictionaryEntity.path}`}
+            onClick={handleItemClick}
+          />
+
+          <AppDrawerItem
+            icon={<ModelEntity.Icon />}
             primary={<T keyName="app_drawer.models">Fachmodelle</T>}
             to={`/${ModelEntity.path}`}
             onClick={handleItemClick}
@@ -253,7 +261,7 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
 
           <AppDrawerItem
             icon={<GroupEntity.Icon />}
-            primary={<T keyName="app_drawer.groups">Gruppen</T>}
+            primary={<T keyName="app_drawer.themes">Themen</T>}
             to={`/${GroupEntity.path}`}
             onClick={handleItemClick}
           />

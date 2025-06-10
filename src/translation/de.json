@@ -8,7 +8,7 @@
       "language": "Sprache"
     },
     "category": {
-      "no_model_group": "Fachmodelle ohne Gruppe",
+      "no_model_group": "Dictionaries ohne Gruppe",
       "no_group_class": "Gruppen ohne Klasse",
       "no_class_properties": "Klassen ohne Merkmale/Merkmalsgruppen",
       "no_property_group": "Merkmalsgruppen ohne Merkmale",
@@ -28,13 +28,13 @@
       "select_entry": "Prüfergebnis in der Listenansicht auswählen, um Eigenschaften anzuzeigen."
     },
     "edit": {
-      "group": "Gruppe bearbeiten",
+      "theme": "Thema bearbeiten",
       "class": "Klasse bearbeiten",
       "property": "Merkmal bearbeiten",
       "valuelist": "Werteliste bearbeiten",
       "unit": "Einheit bearbeiten",
       "value": "Wert bearbeiten",
-      "model": "Fachmodell bearbeiten"
+      "model": "Dictionary bearbeiten"
     }
   },
   "home": {
@@ -104,7 +104,7 @@
     "description": "Über diese Seite lassen sich Entitäten und deren Relationen importieren. Analog zum Export können hier zwei CSV-Dateien importiert werden. Die eine Datei enthält die Entitäten in folgendem Schema:",
     "entity_columns": "id;typ;tags;name;name_en;description;version;createdBy;created;lastModified;lastModifiedBy",
     "entity_columns_note": "Mit r gekennzeichnete Spalten müssen für jede Entität ausgefüllt sein, mit o gekennzeichnete Spalten können optional Werte enthalten. Die restlichen Spalten werden beim Import nicht berücksichtigt und können daher leer bleiben.",
-    "tags_note": "Damit die entitäten in der datacatEditor Oberfläche sichtbar sind, müssen ihnen Tags der dort gewählten Taxonomie gegeben werden. (Referenzdokument, Fachmodell, Gruppe, Klasse, Merkmalsgruppe, Merkmal, Größe, Wert, Maßeinheit)",
+    "tags_note": "Damit die entitäten in der datacatEditor Oberfläche sichtbar sind, müssen ihnen Tags der dort gewählten Taxonomie gegeben werden. (Referenzdokument, Dictionary, Thema, Klasse, Merkmalsgruppe, Merkmal, Größe, Wert, Maßeinheit)",
     "relation_columns_note": "Die andere Datei enthält optional die Relationen zwischen Entitäten mit den folgenden Spalten:",
     "relation_columns": "entity1;entity1Type;relationId;relationshipType;entity2;entity2Type",
     "relation_columns_note_2": "Die Entitätstypen können hier leer gelassen werden.",
@@ -126,15 +126,15 @@
   },
   "import_excel": {
     "heading": "Katalog Importieren (Excel Tabelle)",
-    "description": "Über diese Seite lassen sich ebenfalls Entitäten und deren Relationen importieren. Anders als beim CSV-Import kann eine externe Excel-Tabelle verwendet werden. Damit der Import funktioniert müssen die Spalten korrekt angegeben werden in denen die jeweiligen Entitäten aufgeführt sind: Referenzdokument, Fachmodell, Gruppe, Klasse, Merkmal, Größe (Enum), Maßeinheit und Wert.",
+    "description": "Über diese Seite lassen sich ebenfalls Entitäten und deren Relationen importieren. Anders als beim CSV-Import kann eine externe Excel-Tabelle verwendet werden. Damit der Import funktioniert müssen die Spalten korrekt angegeben werden in denen die jeweiligen Entitäten aufgeführt sind: Referenzdokument, Dictionary, Thema, Klasse, Merkmal, Größe (Enum), Maßeinheit und Wert.",
     "select_all": "Alle aus-/ abwählen",
     "label": "Bezeichnung:",
     "sheet": "Tabellenblatt",
     "name": "Name",
     "id": "ID",
     "document": "Referenzdokumente",
-    "model": "Fachmodelle",
-    "group": "Gruppen",
+    "model": "Dictionaries",
+    "theme": "Themen",
     "class": "Klassen",
     "property": "Merkmale",
     "measure": "Größen",
@@ -142,9 +142,9 @@
     "value": "Werte",
     "sheetName": "Tabellenblatt",
     "relations": "Relationen:",
-    "rel_doc_model": "Referenzdokument - Fachmodell",
-    "rel_model_group": "Fachmodell - Gruppe",
-    "rel_group_class": "Gruppe - Klasse",
+    "rel_doc_model": "Referenzdokument - Dictionary",
+    "rel_model_theme": "Dictionary - Thema",
+    "rel_theme_class": "Thema - Klasse",
     "rel_class_property": "Klasse - Merkmal",
     "rel_property_measure": "Merkmal - Größe",
     "rel_measure_unit": "Größe - Maßeinheit",
@@ -174,7 +174,8 @@
     "catalog": "Katalog",
     "documents": "Referenzdokumente",
     "models": "Fachmodelle",
-    "groups": "Gruppen",
+    "dictionaries": "Dictionaries",
+    "themes": "Themen",
     "classes": "Klassen",
     "data_templates": "Datenvorlagen",
     "property_groups": "Merkmalsgruppen",
@@ -223,25 +224,25 @@
     "reference_documents": "Wird in folgenden Referenzdokumenten beschrieben",
     "similar_concepts": "Ähnliche Konzepte",
     "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
-    "groups_using_class": "die diese Klasse anwenden",
-    "no_groups_using_class": "Die Klasse wird durch keine Gruppe genutzt",
+    "themess_using_class": "die diese Klasse anwenden",
+    "no_themes_using_class": "Die Klasse wird durch kein Thema genutzt",
     "delete_button": "Löschen"
   },
-  "domain_group_form": {
-    "loading": "Lade Gruppe...",
-    "delete_success": "Gruppe gelöscht.",
+  "domain_theme_form": {
+    "loading": "Lade Thema...",
+    "delete_success": "Thema gelöscht.",
     "grouped_classes": "Gruppierte Klassen",
-    "grouped_classes_description": "Klassen, die dieser Gruppe zugeordnet sind.",
-    "reference_documents": "die diese Gruppe beschreiben",
+    "grouped_classes_description": "Klassen, die diesem Thema zugeordnet sind.",
+    "reference_documents": "die dieses Thema beschreiben",
     "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
-    "domain_models_using_group": "die diese Gruppe anwenden",
-    "no_domain_models_using_group": "Die Gruppe wird durch kein Fachmodell genutzt",
+    "domain_models_using_theme": "die dieses Thema anwenden",
+    "no_domain_models_using_theme": "Das Thema wird durch kein Dictionary genutzt",
     "delete_button": "Löschen"
   },
   "domain_model_form": {
-    "loading": "Lade Fachmodell...",
-    "delete_success": "Fachmodell gelöscht.",
-    "reference_documents": "die dieses Fachmodell beschreiben",
+    "loading": "Lade Dictionary...",
+    "delete_success": "Dictionary gelöscht.",
+    "reference_documents": "die dieses Dictionary beschreiben",
     "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
     "delete_button": "Löschen"
   },
@@ -285,13 +286,13 @@
   "hierarchy": {
     "error": "Beim Aufrufen des Merkmalsbaums ist ein Fehler aufgetreten.",
     "select_concept": "Konzept in der Baumansicht auswählen, um Eigenschaften anzuzeigen.",
-    "edit_group": "Gruppe bearbeiten",
+    "edit_theme": "Thema bearbeiten",
     "edit_class": "Klasse bearbeiten",
     "edit_property": "Merkmal bearbeiten",
     "edit_measure": "Größe bearbeiten",
     "edit_unit": "Einheit bearbeiten",
     "edit_value": "Wert bearbeiten",
-    "edit_model": "Fachmodell bearbeiten",
+    "edit_model": "Dictionary bearbeiten",
     "search_catalog": "Katalog durchsuchen"
   },
   "grid_view": {
@@ -308,14 +309,14 @@
     "error_updating_tags": "Fehler beim Aktualisieren der Tags.",
     "adding_tags_please_wait": "Tags werden hinzugefügt, bitte warten...",
     "reference_documents": "Referenzdokumente",
-    "domain_models": "Fachmodelle",
-    "groups": "Gruppen",
+    "domain_models": "Dictionaries",
+    "themes": "Themen",
     "classes": "Klassen",
     "property_groups": "Merkmalsgruppen",
     "properties": "Merkmale",
     "show_only_documents": "Nur Referenzdokumente anzeigen",
-    "show_only_models": "Nur Fachmodelle anzeigen",
-    "show_only_groups": "Nur Gruppen anzeigen",
+    "show_only_models": "Nur Dictionaries anzeigen",
+    "show_only_themes": "Nur Themen anzeigen",
     "show_only_classes": "Nur Klassen anzeigen",
     "show_only_property_groups": "Nur Merkmalsgruppen anzeigen",
     "show_only_properties": "Nur Merkmale anzeigen",
@@ -359,16 +360,24 @@
     "languageTag_helper": "Die Sprache, in der das Dokument verfasst ist."
   },
   "model": {
-    "title": "Fachmodell",
-    "titlePlural": "Fachmodelle",
-    "loading": "Lade Fachmodell...", 
-    "TransferList": "Durch das Fachmodell beschriebene ",
-    "TransferList2": "Gruppen"
+    "title": "Dictionary",
+    "titlePlural": "Dictionaries",
+    "loading": "Lade Dictionary...", 
+    "TransferList": "Durch das Dictionary beschriebene ",
+    "TransferList2": "Themen"
   },
-  "group": {
-    "title": "Gruppe",
-    "titlePlural": "Gruppen",
-    "loading": "Lade Gruppe...",
+  "dictionary": {
+    "title": "Dictionary",
+    "titlePlural": "Dictionaries",
+    "loading": "Lade Dictionary...", 
+    "delete_success": "Dictionary gelöscht.",
+    "TransferList": "Durch das Dictionary beschriebene ",
+    "TransferList2": "Themen"
+  },
+  "theme": {
+    "title": "Thema",
+    "titlePlural": "Themen",
+    "loading": "Lade Thema...",
     "TransferList": "Gruppierte ",
     "TransferList2": "Klassen"
   },

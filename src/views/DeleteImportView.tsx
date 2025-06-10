@@ -253,8 +253,8 @@ export function DeleteImportView() {
       case "Bag":
         entityTypePath = "model";
         break;
-      case "Group":
-        entityTypePath = "group";
+      case "Theme":
+        entityTypePath = "theme";
         break;
       case "Subject":
         entityTypePath = "class";

@@ -65,7 +65,7 @@ function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
 
     const handleOnDelete = async () => {
         await deleteEntry({ variables: { id } });
-        enqueueSnackbar(<T keyName="domain_model_form.delete_success">Fachmodell gelöscht.</T>);
+        enqueueSnackbar(<T keyName="domain_model_form.delete_success">Dictionary gelöscht.</T>);
             navigate(`/${ModelEntity.path}`, { replace: true });
     };
 
@@ -181,7 +181,7 @@ function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
             /> */}
 
             {/* <RelatingRecordsFormSet
-                title={<Typography><b><T keyName="document.titlePlural"/></b>, <T keyName="domain_model_form.reference_documents">die dieses Fachmodell beschreiben</T></Typography>}
+                title={<Typography><b><T keyName="document.titlePlural"/></b>, <T keyName="domain_model_form.reference_documents">die dieses Dictionary beschreiben</T></Typography>}
                 emptyMessage={t('domain_model_form.no_reference_documents')}
                 relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
             /> */}

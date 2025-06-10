@@ -6,7 +6,7 @@ import { Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { T } from "@tolgee/react";
 import { Entity, DocumentEntity, ValueEntity, PropertyEntity, UnitEntity, ValueListEntity } from "../../domain";
-import LanguageSelectField from "./LanugageSelectField";
+import LanguageSelectField from "./LanguageSelectField";
 import CountrySelectField from "./CountrySelectField";
 import Autocomplete from "@mui/material/Autocomplete";
 
@@ -372,7 +372,7 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
                 TextFieldProps={{
                   focused: true,
                   id: "languageTag",
-                  required: true,
+                  required: false,
                   label: <T keyName={"translation_form.language"} />,
                   helperText: <T keyName={"translation_form.language_helper"} />,
                 }}

@@ -52,6 +52,16 @@ export const DocumentEntity: Entity = {
   export: true
 };
 
+export const DictionaryEntity: Entity = {
+  tags: ["c1c7016b-f85c-43c7-a696-71e75555062b"],
+  get title() { return tolgee.t("dictionary.title"); },
+  get titlePlural() { return tolgee.t("dictionary.titlePlural"); },
+  recordType: CatalogRecordType.Dictionary,
+  path: "dictionary",
+  Icon: DomainModelIcon,
+  export: true
+};
+
 export const ModelEntity: Entity = {
   tags: ["6f96aaa7-e08f-49bb-ac63-93061d4c5db2"],
   get title() { return tolgee.t("model.title"); },
@@ -64,10 +74,10 @@ export const ModelEntity: Entity = {
 
 export const GroupEntity: Entity = {
   tags: ["5997da9b-a716-45ae-84a9-e2a7d186bcf9"],
-  get title() { return tolgee.t("group.title"); },
-  get titlePlural() { return tolgee.t("group.titlePlural"); },
+  get title() { return tolgee.t("theme.title"); },
+  get titlePlural() { return tolgee.t("theme.titlePlural"); },
   recordType: CatalogRecordType.Subject,
-  path: "group",
+  path: "theme",
   Icon: DomainGroupIcon,
   export: true
 };
@@ -154,6 +164,7 @@ export const UndefinedEntity: Entity = {
 export const Domain = [
   DocumentEntity,
   ModelEntity,
+  DictionaryEntity,
   GroupEntity,
   ClassEntity,
   DataTemplateEntity,

@@ -9,13 +9,14 @@ import PropertyForm from "../views/forms/PropertyForm";
 import ValueListForm from "../views/forms/ValueListForm";
 import UnitForm from "../views/forms/UnitForm";
 import ValueForm from "../views/forms/ValueForm";
-
+import DictionaryForm from "../views/forms/DictionaryForm";
 import {
   ClassEntity,
   DocumentEntity,
   GroupEntity,
   ValueListEntity,
   ModelEntity,
+  DictionaryEntity,
   PropertyEntity,
   PropertyGroupEntity,
   UnitEntity,
@@ -35,6 +36,17 @@ export const catalogEntryRoutes = [
     ),
   },
   {
+    path: `/${DictionaryEntity.path}/:id?`,
+    element: (
+      <CompositeCatalogEntryView
+        entryType={DictionaryEntity}
+        renderForm={(id) => (
+          <DictionaryForm id={id}/>
+        )}
+      />
+    ),
+  },
+    {
     path: `/${ModelEntity.path}/:id?`,
     element: (
       <CompositeCatalogEntryView

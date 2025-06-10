@@ -57,11 +57,12 @@ const AppBreadcrumbs = () => {
   const getPathName = (path: string) => {
     const entityMapping: Record<string, string> = {
       'document': 'Dokumente',
-      'model': 'Fachmodelle',
+      'model': 'Fachmodell',
+      'dictionary': 'Dictionary',
       'class': 'Klassen',
       'property': 'Merkmale',
       'property-group': 'Merkmalsgruppen',
-      'group': 'Gruppen',
+      'theme': 'Themen',
       'value': 'Werte',
       'valuelist': 'Wertelisten',
       'unit': 'Maßeinheiten',

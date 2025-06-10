@@ -145,7 +145,7 @@ const HierarchyView = () => {
         return (
           <>
             <Typography variant="h5">
-              <DomainGroupIcon /> <T keyName="hierarchy.edit_group">Gruppe bearbeiten</T>
+              <DomainGroupIcon /> <T keyName="hierarchy.edit_theme">Thema bearbeiten</T>
             </Typography>
             <DomainGroupForm id={id} onDelete={handleDelete} />
           </>
@@ -199,7 +199,7 @@ const HierarchyView = () => {
         return (
           <>
             <Typography variant="h5">
-              <DomainModelIcon /> <T keyName="hierarchy.edit_model">Fachmodell bearbeiten</T>
+              <DomainModelIcon /> <T keyName="hierarchy.edit_model">Dictionary bearbeiten</T>
             </Typography>
             <DomainModelForm id={id} onDelete={handleDelete} />
           </>

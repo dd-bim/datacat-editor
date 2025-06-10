@@ -565,7 +565,7 @@ export type MultiLanguageTextPropsFragment = { id: string, texts: Array<TextProp
 
 export type TagPropsFragment = { id: string, name: string };
 
-export type DictionaryPropsFragment = { id: string, name: string };
+export type DictionaryPropsFragment = { id: string, name: MultiLanguageTextPropsFragment, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
 
 export type IntervalPropsFragment = { id: string, minimumIncluded?: Maybe<boolean>, maximumIncluded?: Maybe<boolean>, minimum?: Maybe<ValueListDetailPropsFragment>, maximum?: Maybe<ValueListDetailPropsFragment> };
 
@@ -1137,7 +1137,7 @@ export type FindDictionariesQueryVariables = Exact<{
   input: FilterInput;
 }>;
 
-export type FindDictionariesQuery = { findDictionaries?: Maybe<{ totalElements: number, nodes: Array<DictionaryPropsFragment> }> };
+export type FindDictionariesQuery = { findDictionaries?: Maybe<{ totalElements: number, nodes: Array<DictionaryPropsFragment>, pageInfo: PagePropsFragment }> };
 
 export type FindMultiLanguageTextsQueryVariables = Exact<{
   input: FilterInput; 
@@ -4190,12 +4190,23 @@ export const FindDictionariesQueryDocument = gql`
     query FindDictionariesQuery($input: FilterInput!) {
   findDictionaries(input: $input) {
     nodes {
-      ...TranslationProps
+      id
+      name {
+        ...TranslationProps
+      }
+      tags {
+        id
+        name
+      }
+    }
+    pageInfo {
+      ...PageProps
     }
     totalElements
   }
 }
-    ${TranslationPropsFragmentDoc}`;
+    ${TranslationPropsFragmentDoc}
+    ${PagePropsFragmentDoc}`;
 /**
  * __useFindDictionariesQuery__
  * 
@@ -5028,7 +5039,11 @@ export const GetDictionaryEntryDocument = gql`
   node: getDictionary(id: $id) {
     id
     name {
-      TranslationProps
+      ...TranslationProps
+    }
+    tags {
+      id
+      name
     }
   }
 }

@@ -53,12 +53,12 @@ const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
         },
     });
 
-    if (loading) return <Typography><T keyName={"group.loading"} /></Typography>;
+    if (loading) return <Typography><T keyName={"theme.loading"} /></Typography>;
     if (error || !entry) return <Typography><T keyName={"error.error"} /></Typography>;
 
     const handleOnDelete = async () => {
         await deleteEntry({ variables: { id } });
-        enqueueSnackbar(<T keyName="domain_group_form.delete_success">Gruppe gelöscht.</T>)
+        enqueueSnackbar(<T keyName="domain_theme_form.delete_success">Thema gelöscht.</T>)
         navigate(`/${GroupEntity.path}`, { replace: true });
     };
 
@@ -179,7 +179,7 @@ const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
                 startIcon={<DeleteForeverIcon />}
                 onClick={handleOnDelete}
             >
-                <T keyName="domain_group_form.delete_button">Löschen</T>
+                <T keyName="domain_theme_form.delete_button">Löschen</T>
             </Button>
         </FormView>
     );

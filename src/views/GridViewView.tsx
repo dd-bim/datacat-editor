@@ -644,8 +644,8 @@
 
 //   // Tag filtering
 //   const excludedTags = [
-//     "Fachmodell",
-//     "Gruppe",
+//     "Dictionary",
+//     "Thema",
 //     "Klasse",
 //     "Merkmal",
 //     "Masseinheit",

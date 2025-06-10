@@ -483,8 +483,8 @@ export function ImportViewExcel() {
 
     [
       "Referenzdokumente",
-      "Fachmodell",
-      "Gruppe",
+      "Dictionary",
+      "Thema",
       "Klasse",
       "Merkmal",
       "Größen (Enums)",
@@ -498,8 +498,8 @@ export function ImportViewExcel() {
         // Determine whether to use the dropdown value or text field value for name
         const name =
           entityLabel === "Referenzdokumente" ||
-          entityLabel === "Fachmodell" ||
-          entityLabel === "Gruppe"
+          entityLabel === "Dictionary" ||
+          entityLabel === "Thema"
             ? useTextField[`name${index}`]
               ? textFieldValues[`name${index}`] || ""
               : `${selectedLetters[`selectName${index}`]}`
@@ -533,9 +533,9 @@ export function ImportViewExcel() {
 
     // Relationen durchgehen und Daten speichern
     [
-      "Rel_Referenzdokument_Fachmodell",
-      "Rel_Fachmodell_Gruppe",
-      "Rel_Gruppe_Klasse",
+      "Rel_Referenzdokument_Dictionary",
+      "Rel_Dictionary_Thema",
+      "Rel_Thema_Klasse",
       "Rel_Klasse_Merkmal",
       "Rel_Merkmal_Enum",
       "Rel_Enum_Maßeinheit",
@@ -610,8 +610,8 @@ export function ImportViewExcel() {
 
     [
       "Referenzdokumente",
-      "Fachmodell",
-      "Gruppe",
+      "Dictionary",
+      "Thema",
       "Klasse",
       "Merkmal",
       "Größen (Enums)",
@@ -713,9 +713,9 @@ export function ImportViewExcel() {
 
     // Relationen durchgehen und Daten speichern
     [
-      "Rel_Referenzdokument_Fachmodell",
-      "Rel_Fachmodell_Gruppe",
-      "Rel_Gruppe_Klasse",
+      "Rel_Referenzdokument_Dictionary",
+      "Rel_Dictionary_Thema",
+      "Rel_Thema_Klasse",
       "Rel_Klasse_Merkmal",
       "Rel_Merkmal_Enum",
       "Rel_Enum_Maßeinheit",
@@ -835,13 +835,13 @@ export function ImportViewExcel() {
         recordType: "ExternalDocument" as unknown as SimpleRecordType,
         tag: "Referenzdokument",
       },
-      Fachmodell_Excel: {
+      Dictionary_Excel: {
         recordType: "Bag" as unknown as SimpleRecordType,
-        tag: "Fachmodell",
+        tag: "Dictionary",
       },
-      Gruppe_Excel: {
+      Thema_Excel: {
         recordType: "Bag" as unknown as SimpleRecordType,
-        tag: "Gruppe",
+        tag: "Thema",
       },
       Klasse_Excel: {
         recordType: "Subject" as unknown as SimpleRecordType,
@@ -962,9 +962,9 @@ export function ImportViewExcel() {
   }) => {
     // Define relationship types mapping directly to RelationshipRecordType
     const relTypes: { [key: string]: RelationshipRecordType } = {
-      Rel_Referenzdokument_Fachmodell: "Documents" as RelationshipRecordType,
-      Rel_Fachmodell_Gruppe: "Collects" as RelationshipRecordType,
-      Rel_Gruppe_Klasse: "Collects" as RelationshipRecordType,
+      Rel_Referenzdokument_Dictionary: "Documents" as RelationshipRecordType,
+      Rel_Dictionary_Thema: "Collects" as RelationshipRecordType,
+      Rel_Thema_Klasse: "Collects" as RelationshipRecordType,
       Rel_Klasse_Merkmal: "AssignsProperties" as RelationshipRecordType,
       Rel_Merkmal_Enum: "AssignsMeasures" as RelationshipRecordType,
       Rel_Enum_Maßeinheit: "AssignsValues" as RelationshipRecordType,
@@ -1088,7 +1088,7 @@ export function ImportViewExcel() {
           {[
             { label: <T keyName="import_excel.document" />, toggle: true },
             { label: <T keyName="import_excel.model" />, toggle: true },
-            { label: <T keyName="import_excel.group" />, toggle: true },
+            { label: <T keyName="import_excel.theme" />, toggle: true },
             { label: <T keyName="import_excel.class" />, toggle: true },
             { label: <T keyName="import_excel.property" />, toggle: false },
             { label: <T keyName="import_excel.measure" />, toggle: false },
@@ -1218,8 +1218,8 @@ export function ImportViewExcel() {
         <TableBody>
           {[
             <T keyName="import_excel.rel_doc_model" />,
-            <T keyName="import_excel.rel_model_group" />,
-            <T keyName="import_excel.rel_group_class" />,
+            <T keyName="import_excel.rel_model_theme" />,
+            <T keyName="import_excel.rel_theme_class" />,
             <T keyName="import_excel.rel_class_property" />,
             <T keyName="import_excel.rel_property_measure" />,
             <T keyName="import_excel.rel_measure_unit" />,
