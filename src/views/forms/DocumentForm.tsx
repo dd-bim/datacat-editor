@@ -4,7 +4,7 @@ import {
     useDeleteEntryMutation,
     useGetDocumentEntryQuery
 } from "../../generated/types";
-import { Typography, Button } from "@mui/material";
+import { Typography, Button, Box } from "@mui/material";
 import { useSnackbar } from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -22,6 +22,7 @@ import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
 import ExampleFormSet from "../../components/forms/ExampleFormSet";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import { useNavigate } from "react-router-dom";
+import DictionaryFormSet from "../../components/forms/DictionaryFormSet";
 
 const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => {
     const { id } = props;
@@ -68,10 +69,17 @@ const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => 
 
     return (
         <FormView>
-            <StatusFormSet
-                catalogEntryId={id}
-                status={entry.status}
-            />
+            <Box display="flex" gap={2}>
+                <StatusFormSet
+                    catalogEntryId={id}
+                    status={entry.status}
+                />
+                <DictionaryFormSet
+                    catalogEntryId={id}
+                    dictionaryId={entry.dictionary?.id ?? ""}
+                />
+            </Box>
+            
             <NameFormSet
                 catalogEntryId={id}
                 names={entry.names[0].texts}

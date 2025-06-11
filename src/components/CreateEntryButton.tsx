@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CatalogRecordType, useCreateEntryMutation } from "../generated/types";
+import { CatalogRecordType, useCreateEntryMutation, useCreateRelationshipMutation, RelationshipRecordType } from "../generated/types";
 import { Dialog } from "@mui/material";
 import Button from "@mui/material/Button";
 import Popper from "@mui/material/Popper";
@@ -25,6 +25,7 @@ import {
     PropertyGroupEntity,
     UnitEntity,
     ValueEntity,
+    DictionaryEntity
 } from "../domain";
 
 const options = [
@@ -58,6 +59,7 @@ const CreateEntryButton = (props: CreateEntryProps) => {
             });
         }
     });
+    const [createRelationship] = useCreateRelationshipMutation();
 
     const [lastUsedOption, setLastUsedOption] = React.useState(props.EntryType);
     const [menuOpen, setMenuOpen] = React.useState(false);
@@ -86,7 +88,8 @@ const CreateEntryButton = (props: CreateEntryProps) => {
         dataFormat: "",
         scale: "XTD_LINEAR",
         base: "XTD_ONE",
-        valueListLanguage: "de"
+        valueListLanguage: "de",
+        dictionary: ""
     };
 
     const onClick = (tag: Entity) => {
@@ -109,22 +112,25 @@ const CreateEntryButton = (props: CreateEntryProps) => {
         const names = [
             { languageTag: "de", value: formValues.name }
         ];
-        const descriptions = formValues.description
-            ? [{ languageTag: "de", value: formValues.description }]
-            : [];
-        const comments = formValues.comment
-            ? [{ languageTag: "de", value: formValues.comment }]
-            : [];
         const properties: any = {
             id: formValues.id,
-            majorVersion: Number(formValues.majorVersion),
-            minorVersion: Number(formValues.minorVersion),
-            names: names,
-            descriptions,
-            comments
+            names: names
         };
+        if (input !== DictionaryEntity) {
+            const descriptions = formValues.description
+                ? [{ languageTag: "de", value: formValues.description }]
+                : [];
+            const comments = formValues.comment
+                ? [{ languageTag: "de", value: formValues.comment }]
+                : [];
 
-        if (input !== ValueEntity) {
+            properties.descriptions = descriptions;
+            properties.comments = comments;
+            properties.majorVersion = Number(formValues.majorVersion);
+            properties.minorVersion = Number(formValues.minorVersion);
+        }
+
+        if (input !== ValueEntity && input !== DictionaryEntity) {
             properties.languageOfCreator = formValues.languageOfCreator;
             properties.countryOfOrigin = formValues.countryOfOrigin;
         }
@@ -163,18 +169,33 @@ const CreateEntryButton = (props: CreateEntryProps) => {
         }
 
 
-        await create({
+        const result = await create({
             variables: {
                 input: {
                     catalogEntryType: catalogRecordType,
                     properties: properties,
                     tags: input?.tags
                 }
-            }
+            },
+            refetchQueries: ["FindDictionariesQuery", "FindItemsQuery"]
         });
+
+        const newConceptId = result.data?.createCatalogEntry?.catalogEntry?.id;
+        if (formValues.dictionary && newConceptId) {
+            await createRelationship({
+                variables: {
+                    input: {
+                        fromId: newConceptId,
+                        toIds: [formValues.dictionary], 
+                        relationshipType: RelationshipRecordType.Dictionary
+                    }
+                }
+            });
+        }
 
         setDialogOpen(false);
         enqueueSnackbar(`${input!.title} erstellt.`);
+
     };
 
     return (

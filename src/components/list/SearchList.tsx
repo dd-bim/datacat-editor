@@ -86,7 +86,7 @@ const mappedItems = items.map(item => ({
         ? (item.name.texts?.[0]?.text ?? "")
         : (typeof item.name === "string" ? item.name : "")
 }));
-console.log("SearchList items", mappedItems);
+
     return (
         <Box sx={{
             display: 'flex',

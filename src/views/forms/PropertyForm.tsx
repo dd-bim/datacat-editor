@@ -4,10 +4,9 @@ import {
     useDeleteEntryMutation,
     useGetPropertyEntryQuery
 } from "../../generated/types";
-import { Typography } from "@mui/material";
+import { Typography, Box, Button } from "@mui/material";
 import { useSnackbar } from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
-import Button from "@mui/material/Button";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
@@ -24,7 +23,7 @@ import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
 import ExampleFormSet from "../../components/forms/ExampleFormSet";
 import { useNavigate } from "react-router-dom";
 import DataTypeFormSet from "../../components/forms/DataTypeFormSet";
-import Box from "@mui/material/Box";
+import DictionaryFormSet from "../../components/forms/DictionaryFormSet";
 
 const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
     const { id } = props;
@@ -91,6 +90,10 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
                 <DataTypeFormSet
                     catalogEntryId={id}
                     dataType={entry.dataType}
+                />
+                <DictionaryFormSet
+                    catalogEntryId={id}
+                    dictionaryId={entry.dictionary?.id ?? ""}
                 />
             </Box>
 

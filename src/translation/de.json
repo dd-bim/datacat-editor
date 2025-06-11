@@ -197,7 +197,9 @@
     "countryOfOrigin_helper": "Das Land, in dem das Konzept erstellt wurde.",
     "id_label": "ID",
     "id_helper": "Die ID wird in der Regel automatisch generiert. Eine ID kann angegeben werden, wenn diese bereits in einem übergeordnetem Kontext für das Konzept vergeben wurde.",
-    "save_button": "Speichern"
+    "save_button": "Speichern",
+    "dictionary": "Dictionary",
+    "dictionary_helper": "Das Dictionary, in dem das Konzept angelegt wird. Ein Konzept kann nur in einem Dictionary angelegt werden."
   },
   "create_entry_split_button": {
     "add_entry": "Eintrag hinzufügen",
@@ -371,8 +373,8 @@
     "titlePlural": "Dictionaries",
     "loading": "Lade Dictionary...", 
     "delete_success": "Dictionary gelöscht.",
-    "TransferList": "Durch das Dictionary beschriebene ",
-    "TransferList2": "Themen"
+    "related_concepts": "Im Dictionary enthaltene Konzepte.",
+    "no_related_concepts": "Das Dictionary enthält keine Konzepte."
   },
   "theme": {
     "title": "Thema",

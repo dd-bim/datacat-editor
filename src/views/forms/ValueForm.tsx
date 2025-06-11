@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { ValueDetailPropsFragment, useDeleteEntryMutation, useGetValueEntryQuery } from "../../generated/types";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
 import Button from "@mui/material/Button";
@@ -17,6 +17,7 @@ import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
 import { useNavigate } from "react-router-dom";
 import { ValueEntity } from "../../domain";
 import NominalValueFormSet from "../../components/forms/NominalValueFormSet";
+import DictionaryFormSet from "../../components/forms/DictionaryFormSet";
 
 const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
     const { id } = props;
@@ -70,10 +71,16 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
 
     return (
         <FormView>
-            <StatusFormSet
-                catalogEntryId={id}
-                status={entry.status}
-            />
+            <Box display="flex" gap={2}>
+                <StatusFormSet
+                    catalogEntryId={id}
+                    status={entry.status}
+                />
+                <DictionaryFormSet
+                    catalogEntryId={id}
+                    dictionaryId={entry.dictionary?.id ?? ""}
+                />
+            </Box>
 
             <NameFormSet
                 catalogEntryId={id}

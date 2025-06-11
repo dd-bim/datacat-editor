@@ -5,10 +5,11 @@ import { defaultFormFieldOptions } from "../../hooks/useFormStyles";
 import { Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { T } from "@tolgee/react";
-import { Entity, DocumentEntity, ValueEntity, PropertyEntity, UnitEntity, ValueListEntity } from "../../domain";
+import { Entity, DocumentEntity, ValueEntity, PropertyEntity, UnitEntity, ValueListEntity, DictionaryEntity } from "../../domain";
 import LanguageSelectField from "./LanguageSelectField";
 import CountrySelectField from "./CountrySelectField";
 import Autocomplete from "@mui/material/Autocomplete";
+import DictionarySelectField from "./DictionarySelectField";
 
 const FormContainer = styled('form')(({ theme }) => ({
   "& > *": {
@@ -37,6 +38,7 @@ export type CreateEntryFormValues = {
   scale?: string;
   base?: string;
   valueListLanguage?: string;
+  dictionary?: string;
 };
 
 const dataTypeOptions = [
@@ -105,108 +107,112 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
       />
       <div style={{ marginBottom: "12px" }}></div>
 
-      <Controller
-        name="description"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label={
-              <T keyName="create_entry_form.description_label">
-                Beschreibung (de)
-              </T>
-            }
-            helperText={
-              <T keyName="create_entry_form.description_helper">
-                Beschreiben Sie das Konzept in seiner Bedeutung. Nutzen Sie die
-                Beschreibung insbesondere, um es von womöglich gleich benannten,
-                aber fachlich verschiedenen Konzepten abzugrenzen.
-              </T>
-            }
-            error={!!errors.description}
-            {...defaultFormFieldOptions}
+      {entityType !== DictionaryEntity && (
+        <div>
+          <Controller
+            name="description"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label={
+                  <T keyName="create_entry_form.description_label">
+                    Beschreibung (de)
+                  </T>
+                }
+                helperText={
+                  <T keyName="create_entry_form.description_helper">
+                    Beschreiben Sie das Konzept in seiner Bedeutung. Nutzen Sie die
+                    Beschreibung insbesondere, um es von womöglich gleich benannten,
+                    aber fachlich verschiedenen Konzepten abzugrenzen.
+                  </T>
+                }
+                error={!!errors.description}
+                {...defaultFormFieldOptions}
+              />
+            )}
           />
-        )}
-      />
-      <div style={{ marginBottom: "12px" }}></div>
+          <div style={{ marginBottom: "12px" }}></div>
 
-      <Controller
-        name="comment"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label={
-              <T keyName="create_entry_form.comment_label">Kommentar (de)</T>
-            }
-            helperText={
-              <T keyName="create_entry_form.comment_helper">
-                Hinterlassen Sie einen Kommentar zu diesem Konzept. Hier können
-                zusätzliche Informationen zwischen Bearbeitern ausgetauscht
-                werden.
-              </T>
-            }
-            error={!!errors.comment}
-            {...defaultFormFieldOptions}
+          <Controller
+            name="comment"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label={
+                  <T keyName="create_entry_form.comment_label">Kommentar (de)</T>
+                }
+                helperText={
+                  <T keyName="create_entry_form.comment_helper">
+                    Hinterlassen Sie einen Kommentar zu diesem Konzept. Hier können
+                    zusätzliche Informationen zwischen Bearbeitern ausgetauscht
+                    werden.
+                  </T>
+                }
+                error={!!errors.comment}
+                {...defaultFormFieldOptions}
+              />
+            )}
           />
-        )}
-      />
-      <div style={{ marginBottom: "12px" }}></div>
+          <div style={{ marginBottom: "12px" }}></div>
 
-      <Controller
-        name="id"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label={<T keyName="create_entry_form.id_label">ID</T>}
-            helperText={
-              <T keyName="create_entry_form.id_helper">
-                Die ID wird in der Regel automatisch generiert. Eine ID kann
-                angegeben werden, wenn diese bereits in einem übergeordnetem
-                Kontext für das Konzept vergeben wurde.
-              </T>
-            }
-            error={!!errors.id}
-            {...defaultFormFieldOptions}
+          <Controller
+            name="id"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label={<T keyName="create_entry_form.id_label">ID</T>}
+                helperText={
+                  <T keyName="create_entry_form.id_helper">
+                    Die ID wird in der Regel automatisch generiert. Eine ID kann
+                    angegeben werden, wenn diese bereits in einem übergeordnetem
+                    Kontext für das Konzept vergeben wurde.
+                  </T>
+                }
+                error={!!errors.id}
+                {...defaultFormFieldOptions}
+              />
+            )}
           />
-        )}
-      />
-      <div style={{ marginBottom: "12px" }}></div>
+          <div style={{ marginBottom: "12px" }}></div>
 
-      <Controller
-        name="majorVersion"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label={
-              <T keyName="version.majorVersion_label" />
-            }
-            error={!!errors.majorVersion}
-            {...defaultFormFieldOptions}
+          <Controller
+            name="majorVersion"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label={
+                  <T keyName="version.majorVersion_label" />
+                }
+                error={!!errors.majorVersion}
+                {...defaultFormFieldOptions}
+              />
+            )}
           />
-        )}
-      />
-      <div style={{ marginBottom: "12px" }}></div>
+          <div style={{ marginBottom: "12px" }}></div>
 
-      <Controller
-        name="minorVersion"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label={
-              <T keyName="version.minorVersion_label" />
-            }
-            error={!!errors.minorVersion}
-            {...defaultFormFieldOptions}
+          <Controller
+            name="minorVersion"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label={
+                  <T keyName="version.minorVersion_label" />
+                }
+                error={!!errors.minorVersion}
+                {...defaultFormFieldOptions}
+              />
+            )}
           />
-        )}
-      />
-      <div style={{ marginBottom: "12px" }}></div>
+          <div style={{ marginBottom: "12px" }}></div>
+        </div>
+      )}
 
-      {entityType !== ValueEntity && (
+      {entityType !== ValueEntity && entityType !== DictionaryEntity && (
         <div>
           <Controller
             name="languageOfCreator"
@@ -514,6 +520,25 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
                 required: true,
                 label: <T keyName={"valuelist.language"} />,
                 helperText: <T keyName={"valuelist.language_helper"} />,
+              }}
+            />
+          )}
+        />
+      )}
+
+      {entityType !== UnitEntity && entityType !== DictionaryEntity && (
+        <Controller
+          name="dictionary"
+          control={control}
+          render={({ field }) => (
+            <DictionarySelectField
+              onChange={dict => field.onChange(dict ? dict.id : null)}
+              TextFieldProps={{
+                focused: true,
+                id: "dictionary",
+                required: true,
+                label: <T keyName={"create_entry_form.dictionary"} />,
+                helperText: <T keyName={"create_entry_form.dictionary_helper"} />,
               }}
             />
           )}

@@ -565,7 +565,7 @@ export type MultiLanguageTextPropsFragment = { id: string, texts: Array<TextProp
 
 export type TagPropsFragment = { id: string, name: string };
 
-export type DictionaryPropsFragment = { id: string, name: MultiLanguageTextPropsFragment, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
+export type DictionaryPropsFragment = { id: string, name: MultiLanguageTextPropsFragment, recordType: CatalogRecordType, tags: Array<TagPropsFragment>, concepts: Array<ObjectPropsFragment> };
 
 export type IntervalPropsFragment = { id: string, minimumIncluded?: Maybe<boolean>, maximumIncluded?: Maybe<boolean>, minimum?: Maybe<ValueListDetailPropsFragment>, maximum?: Maybe<ValueListDetailPropsFragment> };
 
@@ -587,7 +587,7 @@ type ObjectProps<T extends string> = {
   comments?: Maybe<Array<MultiLanguageTextPropsFragment>>;
   tags: Array<TagPropsFragment>;
   deprecationExplanation?: Maybe<Array<MultiLanguageTextPropsFragment>>;
-  dictionary?: Maybe<Array<DictionaryPropsFragment>>;
+  dictionary?: Maybe<DictionaryPropsFragment>;
   replacedObjects?: Maybe<Array<ObjectProps<string>>>;
   replacingObjects?: Maybe<Array<ObjectProps<string>>>;
 };
@@ -656,6 +656,7 @@ type ObjectDetailProps_XtdSubdivision_Fragment = MetaProps_Fragment & ConceptPro
 type ObjectDetailProps_XtdRelationshipToProperty_Fragment = MetaProps_Fragment & ConceptProps_XtdRelationshipToProperty_Fragment;
 type ObjectDetailProps_XtdRelationshipToSubject_Fragment = MetaProps_Fragment & ObjectProps_XtdRelationshipToSubject_Fragment;
 type ObjectDetailProps_XtdQuantityKind_Fragment = MetaProps_Fragment & ConceptProps_XtdQuantityKind_Fragment;
+type DictionaryDetailPropsFragment = MetaProps_Fragment & DictionaryPropsFragment;
 
 export type ObjectDetailPropsFragment =  ObjectDetailProps_XtdExternalDocument_Fragment | ObjectDetailProps_XtdProperty_Fragment | ObjectDetailProps_XtdSubject_Fragment | ObjectDetailProps_XtdUnit_Fragment | ObjectDetailProps_XtdValue_Fragment | ObjectDetailProps_XtdOrderedValue_Fragment | ObjectDetailProps_XtdValueList_Fragment | ObjectDetailProps_XtdDimension_Fragment | ObjectDetailProps_XtdCountry_Fragment | ObjectDetailProps_XtdSubdivision_Fragment | ObjectDetailProps_XtdRelationshipToProperty_Fragment | ObjectDetailProps_XtdRelationshipToSubject_Fragment | ObjectDetailProps_XtdQuantityKind_Fragment;
 
@@ -1137,7 +1138,7 @@ export type FindDictionariesQueryVariables = Exact<{
   input: FilterInput;
 }>;
 
-export type FindDictionariesQuery = { findDictionaries?: Maybe<{ totalElements: number, nodes: Array<DictionaryPropsFragment>, pageInfo: PagePropsFragment }> };
+export type FindDictionariesQuery = { findDictionaries?: Maybe<{ totalElements: number, nodes: Array<DictionaryDetailPropsFragment>, pageInfo: PagePropsFragment }> };
 
 export type FindMultiLanguageTextsQueryVariables = Exact<{
   input: FilterInput; 
@@ -1324,7 +1325,7 @@ export type GetDictionaryEntryQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
-export type GetDictionaryEntryQuery = { node?: Maybe<DictionaryPropsFragment> };
+export type GetDictionaryEntryQuery = { node?: Maybe<DictionaryDetailPropsFragment> };
 
 export type GetCountryEntryQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -4190,6 +4191,7 @@ export const FindDictionariesQueryDocument = gql`
     query FindDictionariesQuery($input: FilterInput!) {
   findDictionaries(input: $input) {
     nodes {
+      ...MetaProps
       id
       name {
         ...TranslationProps
@@ -4205,6 +4207,7 @@ export const FindDictionariesQueryDocument = gql`
     totalElements
   }
 }
+    ${MetaPropsFragmentDoc}
     ${TranslationPropsFragmentDoc}
     ${PagePropsFragmentDoc}`;
 /**
@@ -5037,6 +5040,7 @@ export type GetIntervalEntryQueryResult = Apollo.QueryResult<GetIntervalEntryQue
 export const GetDictionaryEntryDocument = gql`
     query GetDictionaryEntry($id: ID!) {
   node: getDictionary(id: $id) {
+    ...MetaProps
     id
     name {
       ...TranslationProps
@@ -5045,9 +5049,14 @@ export const GetDictionaryEntryDocument = gql`
       id
       name
     }
+    concepts {
+      ...RelationsProps
+    }
   }
 }
-    ${TranslationPropsFragmentDoc}`;
+    ${MetaPropsFragmentDoc}
+    ${TranslationPropsFragmentDoc}
+    ${RelationsPropsFragmentDoc}`;
 /**
  * __useGetDictionaryEntryQuery__
  * 

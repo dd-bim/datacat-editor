@@ -15,6 +15,8 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 
 const ParagraphTypography = styled(Typography)(({ theme }) => ({
     marginBottom: theme.spacing(3),
+    width: '100%',
+    textAlign: 'justify',
 }));
 
 const StyledForm = styled('form')(({ theme }) => ({
@@ -47,49 +49,43 @@ export default function ConfirmationView() {
 
     return (
         <Grid container spacing={3}>
-            <Grid>
-                <StyledPaper variant="outlined">
                     <Typography variant="h4">
                         Bestätigen Sie Ihre Email-Adresse
                     </Typography>
-                </StyledPaper>
-            </Grid>
-            <Grid>
                 <StyledPaper>
                     <ParagraphTypography>
                         Danke für Ihr Interesse am datacat editor. Bitte geben Sie im folgenden Formular den Bestätigungscode an, den Sie per Email erhalten haben.
                         Anschließend können Sie auf Ihren Account zugreifen und erhalten Leserechte für den Datenkatalog.
-                    </ParagraphTypography>
-                    <ParagraphTypography>
+                        <br />
                         Möchten Sie auch schreibenden Zugriff auf den Datenkatalog erhalten, informieren Sie bitte den Administrator der Anwendung über die unten genannten Kontaktdaten.
                     </ParagraphTypography>
-                </StyledPaper>
-            </Grid>
-            <Grid>
-                <StyledPaper>
+
                     <StyledForm onSubmit={handleSubmit(onSubmit)}>
                         {error && <Alert severity="error">{error.message}</Alert>}
 
-                        <TextField
-                            name="token"
-                            label="Bestätigungstoken"
-                            defaultValue={token}
-                            required
-                            error={!!errors.token}
-                            helperText={errors.token ? 'Der Bestätigungstoken ist notwendig um Ihre Email-Adresse zu bestätigen und wird Ihrem Postfach zugestellt.' : ''}
-                            inputRef={register("token", { required: true }).ref}
-                            fullWidth
-                        />
-                        <Button
-                            color="primary"
-                            type="submit"
-                            variant="contained"
-                        >
-                            Absenden
-                        </Button>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                            <TextField
+                                name="token"
+                                label="Bestätigungstoken"
+                                defaultValue={token}
+                                required
+                                error={!!errors.token}
+                                helperText={errors.token ? 'Der Bestätigungstoken ist notwendig um Ihre Email-Adresse zu bestätigen und wird Ihrem Postfach zugestellt.' : ''}
+                                inputRef={register("token", { required: true }).ref}
+                                size="small"
+                                sx={{ width: 'fit-content', minWidth: 180 }}
+                            />
+                            <Button
+                                color="primary"
+                                type="submit"
+                                variant="contained"
+                                sx={{ ml: 2, height: 40 }}
+                            >
+                                Absenden
+                            </Button>
+                        </div>
                     </StyledForm>
                 </StyledPaper>
-            </Grid>
         </Grid>
     )
 }

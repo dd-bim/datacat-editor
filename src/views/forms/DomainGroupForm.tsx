@@ -1,11 +1,11 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import {
     RelationshipRecordType,
     SubjectDetailPropsFragment,
     useDeleteEntryMutation,
     useGetSubjectEntryQuery,
 } from "../../generated/types";
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, Box } from "@mui/material";
 import { useSnackbar } from "notistack";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import NameFormSet from "../../components/forms/NameFormSet";
@@ -14,14 +14,14 @@ import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, { FormProps } from "./FormView";
 import MetaFormSet from "../../components/forms/MetaFormSet";
-import { PropertyEntity, DocumentEntity, PropertyGroupEntity, ClassEntity, ValueListEntity, UnitEntity, GroupEntity } from "../../domain";
+import { PropertyEntity, DocumentEntity, ClassEntity, ValueListEntity, UnitEntity, GroupEntity } from "../../domain";
 import TransferListView from "../TransferListView";
-import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import { T, useTranslate } from "@tolgee/react";
 import StatusFormSet from "../../components/forms/StatusFormSet";
 import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
 import ExampleFormSet from "../../components/forms/ExampleFormSet";
 import { useNavigate } from "react-router-dom";
+import DictionaryFormSet from "../../components/forms/DictionaryFormSet";
 
 const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
     const { id } = props;
@@ -66,17 +66,20 @@ const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
         await refetch();
         enqueueSnackbar(<T keyName="update.update_success">Update erfolgreich.</T>);
     }
-
-    // const relatedThings = entry.connectedSubjects ?? [];
-
     const relatedDocuments = entry.referenceDocuments ?? [];
 
     return (
         <FormView>
-            <StatusFormSet
-                catalogEntryId={id}
-                status={entry.status}
-            />
+            <Box display="flex" gap={2}>
+                <StatusFormSet
+                    catalogEntryId={id}
+                    status={entry.status}
+                />
+                <DictionaryFormSet
+                    catalogEntryId={id}
+                    dictionaryId={entry.dictionary?.id ?? ""}
+                />
+            </Box>
 
             <NameFormSet
                 catalogEntryId={id}

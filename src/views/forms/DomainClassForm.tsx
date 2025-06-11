@@ -5,7 +5,7 @@ import {
   useDeleteEntryMutation,
   useGetSubjectEntryQuery,
 } from "../../generated/types";
-import { Typography, Button } from "@mui/material";
+import { Typography, Button, Box } from "@mui/material";
 import { useSnackbar } from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
@@ -24,6 +24,7 @@ import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
 import ExampleFormSet from "../../components/forms/ExampleFormSet";
 import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
 import { useNavigate } from "react-router-dom";
+import DictionaryFormSet from "../../components/forms/DictionaryFormSet";
 
 export default function DomainClassForm(
   props: FormProps<SubjectDetailPropsFragment>
@@ -88,9 +89,6 @@ export default function DomainClassForm(
 
   const relatedRelations = entry.connectedSubjects ?? [];
   const allTargetSubjects = relatedRelations.flatMap(rel => rel.targetSubjects ?? []);
-  console.log("Related Relations", relatedRelations);
-  console.log("All Target Subjects", allTargetSubjects);
-  console.log("id", entry.connectedSubjects)
   const relatedPropertyGroups = {
     relId: relatedRelations[0]?.id ?? null,
     targetSubjects: allTargetSubjects,
@@ -102,10 +100,16 @@ export default function DomainClassForm(
 
   return (
     <FormView>
-      <StatusFormSet
-        catalogEntryId={id}
-        status={entry.status}
-      />
+      <Box display="flex" gap={2}>
+        <StatusFormSet
+          catalogEntryId={id}
+          status={entry.status}
+        />
+        <DictionaryFormSet
+          catalogEntryId={id}
+          dictionaryId={entry.dictionary?.id ?? ""}
+        />
+      </Box>
 
       <NameFormSet
         catalogEntryId={id}

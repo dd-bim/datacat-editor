@@ -4,7 +4,7 @@ import {
     RelationshipRecordType,
     useDeleteEntryMutation
 } from "../../generated/types";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
 import Button from "@mui/material/Button";
@@ -23,6 +23,7 @@ import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
 import ExampleFormSet from "../../components/forms/ExampleFormSet";
 import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
 import { useNavigate } from "react-router-dom";
+import DictionaryFormSet from "../../components/forms/DictionaryFormSet";
 
 const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
     const { id } = props;
@@ -77,10 +78,16 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
 
     return (
         <FormView>
-            <StatusFormSet
-                catalogEntryId={id}
-                status={entry.status}
-            />
+            <Box display="flex" gap={2}>
+                <StatusFormSet
+                    catalogEntryId={id}
+                    status={entry.status}
+                />
+                <DictionaryFormSet
+                    catalogEntryId={id}
+                    dictionaryId={entry.dictionary?.id ?? ""}
+                />
+            </Box>
 
             <NameFormSet
                 catalogEntryId={id}
@@ -137,7 +144,7 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.Properties}
                 relationships={entry.properties ?? []}
-                searchInput={{entityTypeIn: [PropertyEntity.recordType]}}
+                searchInput={{ entityTypeIn: [PropertyEntity.recordType] }}
                 onCreate={handleOnUpdate}
                 onUpdate={handleOnUpdate}
                 onDelete={handleOnUpdate}
