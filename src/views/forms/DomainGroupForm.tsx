@@ -1,5 +1,6 @@
 import { FC } from "react";
 import {
+    RelationshipKindEnum,
     RelationshipRecordType,
     SubjectDetailPropsFragment,
     useDeleteEntryMutation,
@@ -16,17 +17,17 @@ import FormView, { FormProps } from "./FormView";
 import MetaFormSet from "../../components/forms/MetaFormSet";
 import { PropertyEntity, DocumentEntity, ClassEntity, ValueListEntity, UnitEntity, GroupEntity } from "../../domain";
 import TransferListView from "../TransferListView";
-import { T, useTranslate } from "@tolgee/react";
+import { T } from "@tolgee/react";
 import StatusFormSet from "../../components/forms/StatusFormSet";
 import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
 import ExampleFormSet from "../../components/forms/ExampleFormSet";
 import { useNavigate } from "react-router-dom";
 import DictionaryFormSet from "../../components/forms/DictionaryFormSet";
+import TransferListViewRelationshipToSubject from "../TransferListViewRelationshipToSubject";
 
 const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
     const { id } = props;
     const { enqueueSnackbar } = useSnackbar();
-    const { t } = useTranslate(); // Moved to top level
     const navigate = useNavigate();
 
     // fetch domain model
@@ -58,7 +59,7 @@ const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
 
     const handleOnDelete = async () => {
         await deleteEntry({ variables: { id } });
-        enqueueSnackbar(<T keyName="domain_theme_form.delete_success">Thema gelöscht.</T>)
+        enqueueSnackbar(<T keyName="theme.delete_success">Thema gelöscht.</T>)
         navigate(`/${GroupEntity.path}`, { replace: true });
     };
 
@@ -67,6 +68,14 @@ const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
         enqueueSnackbar(<T keyName="update.update_success">Update erfolgreich.</T>);
     }
     const relatedDocuments = entry.referenceDocuments ?? [];
+
+    const relatedRelations = entry.connectedSubjects ?? [];
+    const allTargetSubjects = relatedRelations.flatMap(rel => rel.targetSubjects ?? []);
+    const relatedPropertyGroups = {
+        relId: relatedRelations[0]?.id ?? null,
+        targetSubjects: allTargetSubjects,
+        relationshipType: RelationshipKindEnum.XTD_SCHEMA_LEVEL
+    };
 
     return (
         <FormView>
@@ -118,7 +127,7 @@ const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
             />
 
             <TransferListView
-                title={<span><T keyName={"domain_class_form.reference_documents"} /></span>}
+                title={<span><T keyName={"class.reference_documents"} /></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.ReferenceDocuments}
                 relationships={relatedDocuments}
@@ -132,7 +141,7 @@ const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
             />
 
             <TransferListView
-                title={<span><T keyName={"domain_class_form.similar_concepts"} /></span>}
+                title={<span><T keyName={"class.similar_concepts"} /></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.SimilarTo}
                 relationships={entry.similarTo ?? []}
@@ -145,6 +154,34 @@ const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
                         ...(UnitEntity.tags ?? []),
                         ...(ClassEntity.tags ?? [])
                     ]
+                }}
+                onCreate={handleOnUpdate}
+                onUpdate={handleOnUpdate}
+                onDelete={handleOnUpdate}
+            />
+
+            <TransferListViewRelationshipToSubject
+                title={<span><b><T keyName="class.titlePlural" /></b><T keyName="theme.assigned_classes" /></span>}
+                relatingItemId={id}
+                relationshipType={RelationshipRecordType.RelationshipToSubject}
+                relationships={relatedPropertyGroups}
+                searchInput={{
+                    entityTypeIn: [ClassEntity.recordType],
+                    tagged: ClassEntity.tags
+                }}
+                onCreate={handleOnUpdate}
+                onUpdate={handleOnUpdate}
+                onDelete={handleOnUpdate}
+            />
+
+            <TransferListViewRelationshipToSubject
+                title={<span><T keyName="theme.child_themes" /></span>}
+                relatingItemId={id}
+                relationshipType={RelationshipRecordType.RelationshipToSubject}
+                relationships={relatedPropertyGroups}
+                searchInput={{
+                    entityTypeIn: [GroupEntity.recordType],
+                    tagged: GroupEntity.tags
                 }}
                 onCreate={handleOnUpdate}
                 onUpdate={handleOnUpdate}
@@ -182,7 +219,7 @@ const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
                 startIcon={<DeleteForeverIcon />}
                 onClick={handleOnDelete}
             >
-                <T keyName="domain_theme_form.delete_button">Löschen</T>
+                <T keyName="delete.delete_button">Löschen</T>
             </Button>
         </FormView>
     );

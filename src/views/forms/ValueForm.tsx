@@ -50,7 +50,7 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
         }
     });
 
-    if (loading) return <Typography><T keyName="value_form.loading">Lade Wert..</T></Typography>;
+    if (loading) return <Typography><T keyName="value.loading">Lade Wert..</T></Typography>;
     if (error || !entry) return <Typography><T keyName="error.error">Es ist ein Fehler aufgetreten..</T></Typography>;
 
     const handleOnUpdate = async () => {
@@ -60,7 +60,7 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
 
     const handleOnDelete = async () => {
         await deleteEntry({ variables: { id } });
-        enqueueSnackbar(<T keyName="value_form.delete_success">Wert gelöscht.</T>);
+        enqueueSnackbar(<T keyName="value.delete_success">Wert gelöscht.</T>);
         navigate(`/${ValueEntity.path}`, { replace: true });
     };
 
@@ -112,8 +112,8 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
             />
 
             <RelatingRecordsFormSet
-                title={<span><b><T keyName="valuelist.titlePlural" /></b>, <T keyName="value_form.assigned_valuelists" /></span>}
-                emptyMessage={<T keyName="value_form.no_assigned_valuelists" />}
+                title={<span><b><T keyName="valuelist.titlePlural" /></b>, <T keyName="value.assigned_valuelists" /></span>}
+                emptyMessage={<T keyName="value.no_assigned_valuelists" />}
                 relatingRecords={lists ?? []}
             />
 
@@ -125,7 +125,7 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
                 startIcon={<DeleteForeverIcon />}
                 onClick={handleOnDelete}
             >
-                <T keyName="value_form.delete_button">Löschen</T>
+                <T keyName="delete.delete_button">Löschen</T>
             </Button>
         </FormView>
     );

@@ -17,17 +17,11 @@ import {CatalogRecord} from "../types";
 import {useNavigate} from "react-router-dom";
 import {getEntityType} from "../domain";
 
-// export type RelationshipProperties = {
-//     relationshipId: string;
-//     relatedItems: CatalogRecord[];
-// }
-
 export type TransferListViewProps = {
     title: React.ReactNode;
     description?: string;
     relatingItemId: string;
     relationshipType: RelationshipRecordType
-    // relationships: RelationshipProperties[];
     relationships: CatalogRecord[];
     searchInput: SearchInput;
     onCreate?(): void;

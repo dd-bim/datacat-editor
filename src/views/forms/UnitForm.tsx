@@ -60,7 +60,7 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
         }
     });
 
-    if (loading) return <Typography><T keyName="unit_form.loading">Lade Maßeinheit..</T></Typography>;
+    if (loading) return <Typography><T keyName="unit.loading">Lade Maßeinheit..</T></Typography>;
     if (error || !entry) return <Typography><T keyName="error.error">Es ist ein Fehler aufgetreten..</T></Typography>;
 
     const handleOnUpdate = async () => {
@@ -70,7 +70,7 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
 
     const handleOnDelete = async () => {
         await deleteEntry({ variables: { id } });
-        enqueueSnackbar(<T keyName="unit_form.delete_success">Maßeinheit gelöscht.</T>);
+        enqueueSnackbar(<T keyName="unit.delete_success">Maßeinheit gelöscht.</T>);
         navigate(`/${UnitEntity.path}`, { replace: true });
     };
 
@@ -140,7 +140,7 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
             </FormSet>
 
             <TransferListView
-                title={<span><T keyName={"domain_class_form.reference_documents"} /></span>}
+                title={<span><T keyName={"class.reference_documents"} /></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.ReferenceDocuments}
                 relationships={relatedDocuments}
@@ -154,7 +154,7 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
             />
 
             <TransferListView
-                title={<span><T keyName={"domain_class_form.similar_concepts"} /></span>}
+                title={<span><T keyName={"class.similar_concepts"} /></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.SimilarTo}
                 relationships={entry.similarTo ?? []}
@@ -174,13 +174,13 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
             />
 
             <RelatingRecordsFormSet
-                title={<span><b><T keyName="property.titlePlural"></T></b>, <T keyName="unit_form.assigned_to_properties"></T></span>}
-                emptyMessage={<T keyName="unit_form.no_assigned_to_properties" />}
+                title={<span><b><T keyName="property.titlePlural"></T></b>, <T keyName="unit.assigned_to_properties"></T></span>}
+                emptyMessage={<T keyName="unit.no_assigned_to_properties" />}
                 relatingRecords={entry.properties ?? []}
             />
             <RelatingRecordsFormSet
-                title={<span><b><T keyName="valuelist.titlePlural"></T></b>, <T keyName="unit_form.assigned_to_properties"></T></span>}
-                emptyMessage={<T keyName="unit_form.no_assigned_to_valueLists" />}
+                title={<span><b><T keyName="valuelist.titlePlural"></T></b>, <T keyName="unit.assigned_to_properties"></T></span>}
+                emptyMessage={<T keyName="unit.no_assigned_to_valueLists" />}
                 relatingRecords={entry.valueLists ?? []}
             />
 
@@ -192,7 +192,7 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
                 startIcon={<DeleteForeverIcon />}
                 onClick={handleOnDelete}
             >
-                <T keyName="unit_form.delete_button">Löschen</T>
+                <T keyName="delete.delete_button">Löschen</T>
             </Button>
         </FormView>
     );

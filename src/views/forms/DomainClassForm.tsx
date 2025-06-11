@@ -18,7 +18,7 @@ import FormView, { FormProps } from "./FormView";
 import TransferListView from "../TransferListView";
 import TransferListViewRelationshipToSubject from "../TransferListViewRelationshipToSubject";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
-import { T, useTranslate } from "@tolgee/react";
+import { T } from "@tolgee/react";
 import StatusFormSet from "../../components/forms/StatusFormSet";
 import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
 import ExampleFormSet from "../../components/forms/ExampleFormSet";
@@ -31,7 +31,6 @@ export default function DomainClassForm(
 ) {
   const { id } = props;
   const { enqueueSnackbar } = useSnackbar();
-  const { t } = useTranslate(); // Moved to top level
   const navigate = useNavigate();
 
   // fetch domain model
@@ -75,7 +74,7 @@ export default function DomainClassForm(
   const handleOnDelete = async () => {
     await deleteEntry({ variables: { id } });
     enqueueSnackbar(
-      <T keyName="domain_class_form.delete_success">Klasse gelöscht.</T>
+      <T keyName="class.delete_success">Klasse gelöscht.</T>
     );
     navigate(`/${ClassEntity.path}`, { replace: true });
   };
@@ -164,7 +163,7 @@ export default function DomainClassForm(
       {/* Merkmalsgruppen */}
 
       <TransferListViewRelationshipToSubject
-        title={<span><T keyName={"domain_class_form.assigned_property_groups"} /></span>}
+        title={<span><T keyName={"class.assigned_property_groups"} /></span>}
         relatingItemId={id}
         relationshipType={RelationshipRecordType.RelationshipToSubject}
         relationships={relatedPropertyGroups}
@@ -180,7 +179,7 @@ export default function DomainClassForm(
       <TransferListView
         title={
           <span>
-            {t('domain_class_form.assigned_properties', { name: entry.name })}
+            {<T keyName='class.assigned_properties'/>}
           </span>
         }
         relatingItemId={id}
@@ -196,7 +195,7 @@ export default function DomainClassForm(
       />
 
       <TransferListView
-        title={<span><T keyName={"domain_class_form.reference_documents"} /></span>}
+        title={<span><T keyName={"class.reference_documents"} /></span>}
         relatingItemId={id}
         relationshipType={RelationshipRecordType.ReferenceDocuments}
         relationships={relatedDocuments}
@@ -210,7 +209,7 @@ export default function DomainClassForm(
       />
 
       <TransferListView
-        title={<span><T keyName={"domain_class_form.similar_concepts"} /></span>}
+        title={<span><T keyName={"class.similar_concepts"} /></span>}
         relatingItemId={id}
         relationshipType={RelationshipRecordType.SimilarTo}
         relationships={entry.similarTo ?? []}
@@ -237,13 +236,13 @@ export default function DomainClassForm(
               <T keyName="group.titlePlural" />
             </b>
             ,{" "}
-            <T keyName="domain_class_form.groups_using_class">
+            <T keyName="class.groups_using_class">
               die diese Klasse anwenden
             </T>
           </span>
         }
         emptyMessage={
-            t('domain_class_form.no_groups_using_class')
+            t('class.no_groups_using_class')
         }
         relatingRecords={
           entry?.collectedBy.nodes.map((node) => node.relatingCollection) ?? []
@@ -258,7 +257,7 @@ export default function DomainClassForm(
         startIcon={<DeleteForeverIcon />}
         onClick={handleOnDelete}
       >
-        <T keyName="domain_class_form.delete_button">Löschen</T>
+        <T keyName="delete.delete_button">Löschen</T>
       </Button>
     </FormView>
   );

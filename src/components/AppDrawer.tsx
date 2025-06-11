@@ -240,78 +240,70 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
 
           <AppDrawerItem
             icon={<DocumentEntity.Icon />}
-            primary={<T keyName="app_drawer.documents">Referenzdokumente</T>}
+            primary={<T keyName="documents.titlePlural">Referenzdokumente</T>}
             to={`/${DocumentEntity.path}`}
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
             icon={<ModelEntity.Icon />}
-            primary={<T keyName="app_drawer.dictionaries">Dictionary</T>}
+            primary={<T keyName="dictionary.titlePlural">Dictionary</T>}
             to={`/${DictionaryEntity.path}`}
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
             icon={<ModelEntity.Icon />}
-            primary={<T keyName="app_drawer.models">Fachmodelle</T>}
+            primary={<T keyName="model.titlePlural">Fachmodelle</T>}
             to={`/${ModelEntity.path}`}
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
             icon={<GroupEntity.Icon />}
-            primary={<T keyName="app_drawer.themes">Themen</T>}
+            primary={<T keyName="theme.titlePlural">Themen</T>}
             to={`/${GroupEntity.path}`}
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
             icon={<ClassEntity.Icon />}
-            primary={<T keyName="app_drawer.classes">Klassen</T>}
+            primary={<T keyName="class.titlePlural">Klassen</T>}
             to={`/${ClassEntity.path}`}
             onClick={handleItemClick}
           />
 
-          {/* <AppDrawerItem
-            icon={<DataTemplateEntity.Icon />}
-            primary={<T keyName="app_drawer.data_templates">Datenvorlagen</T>}
-            to={`/${DataTemplateEntity.path}`}
-            disabled
-            onClick={handleItemClick}
-          /> */}
-
           <AppDrawerItem
             icon={<PropertyGroupEntity.Icon />}
-            primary={<T keyName="app_drawer.property_groups">Merkmalsgruppen</T>}
+            primary={<T keyName="propertyGroup.titlePlural">Merkmalsgruppen</T>}
             to={`/${PropertyGroupEntity.path}`}
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
             icon={<PropertyEntity.Icon />}
-            primary={<T keyName="app_drawer.properties">Merkmale</T>}
+            primary={<T keyName="property.titlePlural">Merkmale</T>}
             to={`/${PropertyEntity.path}`}
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
             icon={<ValueListEntity.Icon />}
-            primary={<T keyName="app_drawer.valuelists">Wertelisten</T>}
+            primary={<T keyName="valuelist.titlePlural">Wertelisten</T>}
             to={`/${ValueListEntity.path}`}
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
             icon={<UnitEntity.Icon />}
-            primary={<T keyName="app_drawer.units">Maßeinheiten</T>}
+            primary={<T keyName="unit.titlePlural">Maßeinheiten</T>}
             to={`/${UnitEntity.path}`}
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
             icon={<BookmarksIcon />}
-            primary={<T keyName="app_drawer.values">Werte</T>}
+            primary={<T keyName="value.titlePlural">Werte</T>}
             to={`/${ValueEntity.path}`}
             onClick={handleItemClick}
           />

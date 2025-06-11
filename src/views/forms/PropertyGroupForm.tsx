@@ -54,17 +54,17 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
         }
     });
 
-    if (loading) return <Typography><T keyName="property_group_form.loading"></T></Typography>;
+    if (loading) return <Typography><T keyName="propertyGroup.loading"></T></Typography>;
     if (error || !entry) return <Typography><T keyName="error.error"></T></Typography>;
 
     const handleOnUpdate = async () => {
         await refetch();
-        enqueueSnackbar(<T keyName="property_group_form.update_success"></T>);
+        enqueueSnackbar(<T keyName="update.update_success"></T>);
     };
 
     const handleOnDelete = async () => {
         await deleteEntry({ variables: { id } });
-        enqueueSnackbar(<T keyName="property_group_form.delete_success"></T>);
+        enqueueSnackbar(<T keyName="propertyGroup.delete_success"></T>);
         navigate(`/${PropertyGroupEntity.path}`, { replace: true });
     };
 
@@ -140,7 +140,7 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
             </FormSet>
 
             <TransferListView
-                title={<span><T keyName="property_group_form.grouped_properties"></T></span>}
+                title={<span><T keyName="propertyGroup.grouped_properties"></T></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.Properties}
                 relationships={entry.properties ?? []}
@@ -151,7 +151,7 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
             />
 
             <TransferListView
-                title={<span><T keyName={"domain_class_form.reference_documents"} /></span>}
+                title={<span><T keyName={"class.reference_documents"} /></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.ReferenceDocuments}
                 relationships={relatedDocuments}
@@ -165,7 +165,7 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
             />
 
             <TransferListView
-                title={<span><T keyName={"domain_class_form.similar_concepts"} /></span>}
+                title={<span><T keyName={"class.similar_concepts"} /></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.SimilarTo}
                 relationships={entry.similarTo ?? []}
@@ -186,8 +186,8 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
 
 
             <RelatingRecordsFormSet
-                title={<span><b><T keyName="class.titlePlural">Klassen</T></b>, <T keyName="property_group_form.assigned_classes"></T></span>}
-                emptyMessage={<T keyName="property_group_form.no_assigned_classes" />}
+                title={<span><b><T keyName="class.titlePlural">Klassen</T></b>, <T keyName="propertyGroup.assigned_classes"></T></span>}
+                emptyMessage={<T keyName="propertyGroup.no_assigned_classes" />}
                 relatingRecords={classes ?? []}
             />
 
@@ -199,7 +199,7 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
                 startIcon={<DeleteForeverIcon />}
                 onClick={handleOnDelete}
             >
-                <T keyName="property_group_form.delete_button">Löschen</T>
+                <T keyName="delete.delete_button">Löschen</T>
             </Button>
         </FormView>
     );

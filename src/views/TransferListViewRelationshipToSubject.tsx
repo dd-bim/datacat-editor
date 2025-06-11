@@ -87,7 +87,7 @@ export default function TransferListView(props: TransferListViewProps) {
                     properties: {
                         id: relationships.relId,
                         relationshipToSubjectProperties: {
-                             relationshipType: relationships.relationshipType
+                            relationshipType: relationships.relationshipType
                         }
                     }
                 }
@@ -111,8 +111,12 @@ export default function TransferListView(props: TransferListViewProps) {
 
     let content: JSX.Element;
 
-    const items = relationships.targetSubjects;
-console.log("Items in TransferListView", items);
+    const items = relationships.targetSubjects.filter(
+        item =>
+            item.tags &&
+            item.tags.some(tag => searchInput.tagged?.includes(tag.id))
+    );
+
     const handleOnAdd = async (item: ObjectPropsFragment) => {
         await handleOnCreateRelationship([item.id]);
     };

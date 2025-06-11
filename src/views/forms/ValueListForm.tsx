@@ -57,7 +57,7 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
         }
     });
 
-    if (loading) return <Typography><T keyName="valuelist_form.loading">Lade Werteliste..</T></Typography>;
+    if (loading) return <Typography><T keyName="valuelist.loading">Lade Werteliste..</T></Typography>;
     if (error || !entry) return <Typography><T keyName="error.error">Es ist ein Fehler aufgetreten..</T></Typography>;
 
     const handleOnUpdate = async () => {
@@ -67,7 +67,7 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
 
     const handleOnDelete = async () => {
         await deleteEntry({ variables: { id } });
-        enqueueSnackbar(<T keyName="valuelist_form.delete_success">Werteliste gelöscht.</T>);
+        enqueueSnackbar(<T keyName="valuelist.delete_success">Werteliste gelöscht.</T>);
         navigate(`/${ValueListEntity.path}`, { replace: true });
     };
 
@@ -148,7 +148,7 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
             </FormSet>
 
             <TransferListView
-                title={<span><T keyName="valuelist_form.applicable_units"></T></span>}
+                title={<span><T keyName="valuelist.applicable_units"></T></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.Unit}
                 relationships={relatedUnits}
@@ -162,7 +162,7 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
             />
 
             <TransferListViewOrderedValues
-                title={<span><T keyName="valuelist_form.value_range"></T></span>}
+                title={<span><T keyName="valuelist.value_range"></T></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.Values}
                 relationships={values}
@@ -175,7 +175,7 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
                 onDelete={handleOnUpdate}
             />
             <TransferListView
-                title={<span><T keyName={"domain_class_form.reference_documents"} /></span>}
+                title={<span><T keyName={"class.reference_documents"} /></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.ReferenceDocuments}
                 relationships={relatedDocuments}
@@ -189,7 +189,7 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
             />
 
             <TransferListView
-                title={<span><T keyName={"domain_class_form.similar_concepts"} /></span>}
+                title={<span><T keyName={"class.similar_concepts"} /></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.SimilarTo}
                 relationships={entry.similarTo ?? []}
@@ -209,8 +209,8 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
             />
 
             <RelatingRecordsFormSet
-                title={<span><b><T keyName="property.titlePlural" /></b>, <T keyName="valuelist_form.assigned_properties" /></span>}
-                emptyMessage={<T keyName="valuelist_form.no_assigned_properties" />}
+                title={<span><b><T keyName="property.titlePlural" /></b>, <T keyName="valuelist.assigned_properties" /></span>}
+                emptyMessage={<T keyName="valuelist.no_assigned_properties" />}
                 relatingRecords={entry.properties ?? []}
             />
 
@@ -222,7 +222,7 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
                 startIcon={<DeleteForeverIcon />}
                 onClick={handleOnDelete}
             >
-                <T keyName="valuelist_form.delete_button">Löschen</T>
+                <T keyName="delete.delete_button">Löschen</T>
             </Button>
         </FormView>
     );

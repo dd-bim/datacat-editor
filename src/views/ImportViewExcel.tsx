@@ -25,7 +25,7 @@ import {
 import { useSnackbar } from "notistack";
 import View from "./View";
 import {
-  SimpleRecordType,
+  CatalogRecordType,
   RelationshipRecordType,
   FindTagsResultFragment,
   useFindTagsQuery,
@@ -165,7 +165,7 @@ export function ImportViewExcel() {
   const [createTag] = useCreateTagMutation();
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState("");
-  const { t } = useTranslate();
+  const [t] = useTranslate();
 
   const handleValidationClick = () => {
     const hasErrors = handleValidation();
@@ -829,38 +829,38 @@ export function ImportViewExcel() {
   }) => {
     // Definiere Entitätstypen und deren zugehörige Tags
     const entityTypes: {
-      [key: string]: { recordType: SimpleRecordType; tag: string };
+      [key: string]: { recordType: CatalogRecordType; tag: string };
     } = {
       Referenzdokumente_Excel: {
-        recordType: "ExternalDocument" as unknown as SimpleRecordType,
+        recordType: "ExternalDocument" as unknown as CatalogRecordType,
         tag: "Referenzdokument",
       },
       Dictionary_Excel: {
-        recordType: "Bag" as unknown as SimpleRecordType,
+        recordType: "Bag" as unknown as CatalogRecordType,
         tag: "Dictionary",
       },
       Thema_Excel: {
-        recordType: "Bag" as unknown as SimpleRecordType,
+        recordType: "Bag" as unknown as CatalogRecordType,
         tag: "Thema",
       },
       Klasse_Excel: {
-        recordType: "Subject" as unknown as SimpleRecordType,
+        recordType: "Subject" as unknown as CatalogRecordType,
         tag: "Klasse",
       },
       Merkmal_Excel: {
-        recordType: "Property" as unknown as SimpleRecordType,
+        recordType: "Property" as unknown as CatalogRecordType,
         tag: "Merkmal",
       },
       "Größen (Enums)_Excel": {
-        recordType: "Measure" as unknown as SimpleRecordType,
+        recordType: "Measure" as unknown as CatalogRecordType,
         tag: "Größe",
       },
       Maßeinheiten_Excel: {
-        recordType: "Measure" as unknown as SimpleRecordType,
+        recordType: "Measure" as unknown as CatalogRecordType,
         tag: "Maßeinheit",
       },
       Werte_Excel: {
-        recordType: "Value" as unknown as SimpleRecordType,
+        recordType: "Value" as unknown as CatalogRecordType,
         tag: "Wert",
       },
     };
@@ -1206,11 +1206,11 @@ export function ImportViewExcel() {
                     onChange={() => handleSelectAll("relations")}
                   />
                 }
-                label={t('import_excel.select_all')}
+                label={<T keyName='import_excel.select_all'/>}
               />
             </StyledHeaderCell>
-            <StyledHeaderCell>{t('import_excel.relations')}</StyledHeaderCell>
-            <StyledHeaderCell>{t('import_excel.sheetName')}</StyledHeaderCell>
+            <StyledHeaderCell>{<T keyName='import_excel.relations'/>}</StyledHeaderCell>
+            <StyledHeaderCell>{<T keyName='import_excel.sheetName'/>}</StyledHeaderCell>
             <StyledHeaderCell>ID 1</StyledHeaderCell>
             <StyledHeaderCell>ID 2</StyledHeaderCell>
           </TableRow>

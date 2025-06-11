@@ -2,7 +2,7 @@ import { CatalogRecordType, SearchInput, useFindItemQuery, useFindDictionariesQu
 import useDebounce from "../../hooks/useDebounce";
 import { ListOnItemsRenderedProps } from "react-window";
 import ItemList, { ItemListProps } from "./ItemList";
-import { useTranslate } from "@tolgee/react";
+import { T } from "@tolgee/react";
 import { Box } from "@mui/material";
 
 type SearchListProps = Omit<ItemListProps, "items"> & {
@@ -19,7 +19,6 @@ export default function SearchList(props: SearchListProps) {
         searchInput,
         ...otherProps
     } = props;
-    const { t } = useTranslate();
     const debouncedSearchTerm = useDebounce(searchTerm, 500);
     const input = {
         ...searchInput,
@@ -98,7 +97,7 @@ const mappedItems = items.map(item => ({
             <ItemList
                 loading={loading}
                 items={mappedItems}
-                searchLabel={searchLabel || t("search.search_placeholder")}
+                searchLabel={searchLabel || <T keyName="search.search_placeholder"/>}
                 searchTerm={searchTerm}
                 onItemsRendered={handleOnScroll}
                 {...otherProps}

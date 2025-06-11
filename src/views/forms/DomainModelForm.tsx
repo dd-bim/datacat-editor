@@ -17,7 +17,7 @@ import { GroupEntity, PropertyEntity, DocumentEntity, PropertyGroupEntity, Class
 import FormView, { FormProps } from "./FormView";
 import TransferListView from "../TransferListView";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
-import { T, useTranslate } from "@tolgee/react";
+import { T } from "@tolgee/react";
 import StatusFormSet from "../../components/forms/StatusFormSet";
 import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
 import ExampleFormSet from "../../components/forms/ExampleFormSet";
@@ -28,7 +28,6 @@ import { useNavigate } from "react-router-dom";
 function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
     const { id, onDelete } = props;
     const { enqueueSnackbar } = useSnackbar();
-    const { t } = useTranslate(); // Moved to top level
     const navigate = useNavigate();
 
     // fetch domain model
@@ -65,7 +64,7 @@ function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
 
     const handleOnDelete = async () => {
         await deleteEntry({ variables: { id } });
-        enqueueSnackbar(<T keyName="domain_model_form.delete_success">Dictionary gelöscht.</T>);
+        enqueueSnackbar(<T keyName="model.delete_success">Dictionary gelöscht.</T>);
             navigate(`/${ModelEntity.path}`, { replace: true });
     };
 
@@ -134,7 +133,7 @@ function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
             </FormSet>
 
             <TransferListView
-                title={<span><T keyName={"domain_class_form.reference_documents"} /></span>}
+                title={<span><T keyName={"class.reference_documents"} /></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.ReferenceDocuments}
                 relationships={relatedDocuments}
@@ -148,7 +147,7 @@ function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
             />
 
             <TransferListView
-                title={<span><T keyName={"domain_class_form.similar_concepts"} /></span>}
+                title={<span><T keyName={"class.similar_concepts"} /></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.SimilarTo}
                 relationships={entry.similarTo ?? []}
@@ -194,7 +193,7 @@ function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
                 startIcon={<DeleteForeverIcon />}
                 onClick={handleOnDelete}
             >
-                <T keyName="domain_model_form.delete_button">Löschen</T>
+                <T keyName="delete.delete_button">Löschen</T>
             </Button>
         </FormView>
     );
