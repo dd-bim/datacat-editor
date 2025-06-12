@@ -79,8 +79,6 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
         orderedValue: rel.orderedValue
     }));
 
-    const relatedDocuments = entry.referenceDocuments ?? [];
-
     return (
         <FormView>
             <Box display="flex" gap={2}>
@@ -148,7 +146,7 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
             </FormSet>
 
             <TransferListView
-                title={<span><T keyName="valuelist.applicable_units"></T></span>}
+                title={<span><b><T keyName="unit.titlePlural" /></b><T keyName="valuelist.applicable_units"></T></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.Unit}
                 relationships={relatedUnits}
@@ -162,7 +160,7 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
             />
 
             <TransferListViewOrderedValues
-                title={<span><T keyName="valuelist.value_range"></T></span>}
+                title={<span><b><T keyName="value.titlePlural" /></b><T keyName="valuelist.value_range"></T></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.Values}
                 relationships={values}
@@ -175,10 +173,10 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
                 onDelete={handleOnUpdate}
             />
             <TransferListView
-                title={<span><T keyName={"class.reference_documents"} /></span>}
+                title={<span><b><T keyName="document.titlePlural" /></b><T keyName={"concept.reference_documents"} /></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.ReferenceDocuments}
-                relationships={relatedDocuments}
+                relationships={entry.referenceDocuments ?? []}
                 searchInput={{
                     entityTypeIn: [DocumentEntity.recordType],
                     tagged: DocumentEntity.tags
@@ -189,7 +187,7 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
             />
 
             <TransferListView
-                title={<span><T keyName={"class.similar_concepts"} /></span>}
+                title={<span><b><T keyName={"concept.similar_concepts"} /></b></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.SimilarTo}
                 relationships={entry.similarTo ?? []}

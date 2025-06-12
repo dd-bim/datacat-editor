@@ -140,7 +140,7 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
             </FormSet>
 
             <TransferListView
-                title={<span><T keyName={"class.reference_documents"} /></span>}
+                title={<span><b><T keyName="document.titlePlural" /></b><T keyName={"concept.reference_documents"} /></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.ReferenceDocuments}
                 relationships={relatedDocuments}
@@ -154,7 +154,7 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
             />
 
             <TransferListView
-                title={<span><T keyName={"class.similar_concepts"} /></span>}
+                title={<span><b><T keyName={"concept.similar_concepts"} /></b></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.SimilarTo}
                 relationships={entry.similarTo ?? []}

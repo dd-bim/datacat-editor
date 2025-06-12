@@ -67,7 +67,7 @@ console.log("DictionaryForm entry", entry);
             />
 
             <RelatingRecordsFormSet
-                title={<Typography><T keyName="dictionary.related_concepts"/></Typography>}
+                title={<Typography><b><T keyName="concept.titlePlural" /></b><T keyName="dictionary.related_concepts"/></Typography>}
                 emptyMessage={<T keyName="dictionary.no_related_concepts"/>}
                 relatingRecords={entry?.concepts ?? []}
             />

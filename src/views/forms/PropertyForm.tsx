@@ -151,7 +151,7 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
             </FormSet>
 
             <TransferListView
-                title={<span><b><T keyName="valuelist.title" /></b> <T keyName="property.property_measure" /></span>}
+                title={<span><b><T keyName="valuelist.titlePlural" /></b><T keyName="property.assigned_concepts" /></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.PossibleValues}
                 relationships={entry.possibleValues ?? []}
@@ -162,22 +162,9 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
                 onUpdate={handleOnUpdate}
                 onDelete={handleOnUpdate}
             />
-            <TransferListView
-                title={<span><T keyName={"class.reference_documents"} /></span>}
-                relatingItemId={id}
-                relationshipType={RelationshipRecordType.ReferenceDocuments}
-                relationships={entry.referenceDocuments ?? []}
-                searchInput={{
-                    entityTypeIn: [DocumentEntity.recordType],
-                    tagged: DocumentEntity.tags
-                }}
-                onCreate={handleOnUpdate}
-                onUpdate={handleOnUpdate}
-                onDelete={handleOnUpdate}
-            />
 
             <TransferListView
-                title={<span><b><T keyName="unit.titlePlural" /></b> <T keyName="property.property_measure" /></span>}
+                title={<span><b><T keyName="unit.titlePlural" /></b><T keyName="property.assigned_concepts" /></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.Units}
                 relationships={entry.units ?? []}
@@ -191,7 +178,21 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
             />
 
             <TransferListView
-                title={<span><T keyName={"class.similar_concepts"} /></span>}
+                title={<span><b><T keyName="document.titlePlural" /></b><T keyName={"concept.reference_documents"} /></span>}
+                relatingItemId={id}
+                relationshipType={RelationshipRecordType.ReferenceDocuments}
+                relationships={entry.referenceDocuments ?? []}
+                searchInput={{
+                    entityTypeIn: [DocumentEntity.recordType],
+                    tagged: DocumentEntity.tags
+                }}
+                onCreate={handleOnUpdate}
+                onUpdate={handleOnUpdate}
+                onDelete={handleOnUpdate}
+            />
+
+            <TransferListView
+                title={<span><b><T keyName={"concept.similar_concepts"} /></b></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.SimilarTo}
                 relationships={entry.similarTo ?? []}
@@ -211,14 +212,14 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
             />
 
             <RelatingRecordsFormSet
-                title={<span><b><T keyName="propertyGroup.titlePlural">Merkmalsgruppen</T></b>, <T keyName="property.aggregating_property_groups">die dieses Merkmal aggregieren</T></span>}
-                emptyMessage={<T keyName="property.no_aggregating_property_groups" />}
+                title={<span><b><T keyName="propertyGroup.titlePlural"/></b><T keyName="property.assigning_property_groups"/></span>}
+                emptyMessage={<T keyName="property.no_assigning_property_groups" />}
                 relatingRecords={entry.subjects ?? []}
                 tagged="a27c8e3c-5fd1-47c9-806a-6ded070efae8"
             />
 
             <RelatingRecordsFormSet
-                title={<span><b><T keyName="class.titlePlural">Klassen</T></b>, <T keyName="property.assigned_classes">denen dieses Merkmal direkt zugewiesen wurde</T></span>}
+                title={<span><b><T keyName="class.titlePlural" /></b><T keyName="property.assigned_classes"/></span>}
                 emptyMessage={<T keyName="property.no_assigned_classes" />}
                 relatingRecords={entry.subjects ?? []}
                 tagged="e9b2cd6d-76f7-4c55-96ab-12d084d21e96"

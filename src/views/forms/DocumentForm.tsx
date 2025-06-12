@@ -155,7 +155,7 @@ const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => 
             </FormSet>
 
             <TransferListView
-                title={<span><T keyName={"class.similar_concepts"} /></span>}
+                title={<span><b><T keyName={"concept.similar_concepts"} /></b></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.SimilarTo}
                 relationships={entry.similarTo ?? []}
@@ -175,7 +175,7 @@ const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => 
             />
 
             <RelatingRecordsFormSet
-                title={<Typography><b><T keyName="document.TransferList2" /></b>, <T keyName="document.references"></T></Typography>}
+                title={<Typography><b><T keyName="concept.titlePlural" /></b><T keyName="document.references"></T></Typography>}
                 emptyMessage={<T keyName='document.no_references' />}
                 relatingRecords={entry.documents ?? []}
             />

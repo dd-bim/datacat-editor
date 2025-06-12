@@ -68,13 +68,6 @@ function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
             navigate(`/${ModelEntity.path}`, { replace: true });
     };
 
-    // const collectsRelationships = entry.collects.nodes.map(({id, relatedThings}) => ({
-    //     relationshipId: id,
-    //     relatedItems: relatedThings
-    // }));
-
-    const relatedDocuments = entry.referenceDocuments ?? [];
-
     return (
         <FormView>
             <StatusFormSet
@@ -133,10 +126,10 @@ function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
             </FormSet>
 
             <TransferListView
-                title={<span><T keyName={"class.reference_documents"} /></span>}
+                title={<span><b><T keyName="document.titlePlural" /></b><T keyName={"concept.reference_documents"} /></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.ReferenceDocuments}
-                relationships={relatedDocuments}
+                relationships={entry.referenceDocuments ?? []}
                 searchInput={{
                     entityTypeIn: [DocumentEntity.recordType],
                     tagged: DocumentEntity.tags
@@ -147,7 +140,7 @@ function DomainModelForm(props: FormProps<SubjectDetailPropsFragment>) {
             />
 
             <TransferListView
-                title={<span><T keyName={"class.similar_concepts"} /></span>}
+                title={<span><b><T keyName={"concept.similar_concepts"} /></b></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.SimilarTo}
                 relationships={entry.similarTo ?? []}

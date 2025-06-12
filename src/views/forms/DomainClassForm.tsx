@@ -94,6 +94,10 @@ export default function DomainClassForm(
     relationshipType: RelationshipKindEnum.XTD_SCHEMA_LEVEL
   };
 
+  const relatingRelations = entry.connectingSubjects ?? [];
+  const allRelatingSubjects = relatingRelations.flatMap(rel => rel.connectingSubject ?? []);
+
+
   const relatedProperties = entry.properties ?? [];
   const relatedDocuments = entry.referenceDocuments ?? [];
 
@@ -163,7 +167,7 @@ export default function DomainClassForm(
       {/* Merkmalsgruppen */}
 
       <TransferListViewRelationshipToSubject
-        title={<span><T keyName={"class.assigned_property_groups"} /></span>}
+        title={<span><b><T keyName="propertyGroup.titlePlural" /></b><T keyName={"class.assigned_concepts"} /></span>}
         relatingItemId={id}
         relationshipType={RelationshipRecordType.RelationshipToSubject}
         relationships={relatedPropertyGroups}
@@ -177,11 +181,7 @@ export default function DomainClassForm(
       />
 
       <TransferListView
-        title={
-          <span>
-            {<T keyName='class.assigned_properties'/>}
-          </span>
-        }
+        title={<span><b><T keyName="property.titlePlural" /></b><T keyName={"class.assigned_concepts"} /></span>}
         relatingItemId={id}
         relationshipType={RelationshipRecordType.Properties}
         relationships={relatedProperties}
@@ -195,7 +195,7 @@ export default function DomainClassForm(
       />
 
       <TransferListView
-        title={<span><T keyName={"class.reference_documents"} /></span>}
+        title={<span><b><T keyName="document.titlePlural" /></b><T keyName={"concept.reference_documents"} /></span>}
         relatingItemId={id}
         relationshipType={RelationshipRecordType.ReferenceDocuments}
         relationships={relatedDocuments}
@@ -209,7 +209,7 @@ export default function DomainClassForm(
       />
 
       <TransferListView
-        title={<span><T keyName={"class.similar_concepts"} /></span>}
+        title={<span><b><T keyName={"concept.similar_concepts"} /></b></span>}
         relatingItemId={id}
         relationshipType={RelationshipRecordType.SimilarTo}
         relationships={entry.similarTo ?? []}
@@ -228,26 +228,11 @@ export default function DomainClassForm(
         onDelete={handleOnUpdate}
       />
 
-      {/* 
       <RelatingRecordsFormSet
-        title={
-          <span>
-            <b>
-              <T keyName="group.titlePlural" />
-            </b>
-            ,{" "}
-            <T keyName="class.groups_using_class">
-              die diese Klasse anwenden
-            </T>
-          </span>
-        }
-        emptyMessage={
-            t('class.no_groups_using_class')
-        }
-        relatingRecords={
-          entry?.collectedBy.nodes.map((node) => node.relatingCollection) ?? []
-        }
-      /> */}
+        title={<span><b><T keyName="theme.titlePlural" /></b><T keyName="class.themes_using_class"></T></span>}
+        emptyMessage={<T keyName="class.no_themes_using_class" />}
+        relatingRecords={allRelatingSubjects}
+      />
 
       <MetaFormSet entry={entry} />
 

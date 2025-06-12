@@ -1647,23 +1647,24 @@ ${ValuePropsFragmentDoc}
 ${RelationsPropsFragmentDoc}
 ${PropertyPropsFragmentDoc}
 `;
-// ${RelationshipToSubjectPropsFragmentDoc}
 export const RelationshipToSubjectDetailPropsFragmentDoc = gql`
   fragment RelationshipToSubjectProps on XtdRelationshipToSubject {
     ...RelationshipToSubjectProps
     scopeSubjects {
-        ...SubjectDetailProps
+        ...RelationsProps
     }
     targetSubjects {
-        ...SubjectDetailProps
+        ...RelationsProps
     }
     relationshipType {
         kind
     }
+    relatingSubject {
+        ...RelationsProps
+    }
 }
-    ${ObjectPropsFragmentDoc}
 ${RelationshipToSubjectPropsFragmentDoc}
-${SubjectDetailPropsFragmentDoc}`;
+${RelationsPropsFragmentDoc}`;
 export const SymbolPropsFragmentDoc = gql`
   fragment SymbolProps on XtdSymbol {
       subject {

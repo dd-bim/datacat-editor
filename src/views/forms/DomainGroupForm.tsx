@@ -24,6 +24,7 @@ import ExampleFormSet from "../../components/forms/ExampleFormSet";
 import { useNavigate } from "react-router-dom";
 import DictionaryFormSet from "../../components/forms/DictionaryFormSet";
 import TransferListViewRelationshipToSubject from "../TransferListViewRelationshipToSubject";
+import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 
 const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
     const { id } = props;
@@ -77,6 +78,9 @@ const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
         relationshipType: RelationshipKindEnum.XTD_SCHEMA_LEVEL
     };
 
+    const relatingRelations = entry.connectingSubjects ?? [];
+    const allRelatingSubjects = relatingRelations.flatMap(rel => rel.connectingSubject ?? []);
+
     return (
         <FormView>
             <Box display="flex" gap={2}>
@@ -127,7 +131,7 @@ const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
             />
 
             <TransferListView
-                title={<span><T keyName={"class.reference_documents"} /></span>}
+                title={<span><b><T keyName="document.titlePlural" /></b><T keyName={"concept.reference_documents"} /></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.ReferenceDocuments}
                 relationships={relatedDocuments}
@@ -141,7 +145,7 @@ const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
             />
 
             <TransferListView
-                title={<span><T keyName={"class.similar_concepts"} /></span>}
+                title={<span><b><T keyName={"concept.similar_concepts"} /></b></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.SimilarTo}
                 relationships={entry.similarTo ?? []}
@@ -175,7 +179,7 @@ const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
             />
 
             <TransferListViewRelationshipToSubject
-                title={<span><T keyName="theme.child_themes" /></span>}
+                title={<span><b><T keyName="theme.child_themes"/></b><T keyName="theme.assigned_classes" /></span>}
                 relatingItemId={id}
                 relationshipType={RelationshipRecordType.RelationshipToSubject}
                 relationships={relatedPropertyGroups}
@@ -187,29 +191,12 @@ const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
                 onUpdate={handleOnUpdate}
                 onDelete={handleOnUpdate}
             />
-            {/* <TransferListView
-                title={<span><T keyName={"group.TransferList"}/> <b><T keyName={"group.TransferList2"}/></b></span>}
-                description={t("domain_group_form.grouped_classes_description", "Klassen, die dieser Gruppe zugeordnet sind.")}
-                relatingItemId={id}
-                relationshipType={RelationshipRecordType.Collects}
-                relationships={collectsRelationships}
-                searchInput={{tagged: ClassEntity.tags}}
-                onCreate={handleOnUpdate}
-                onUpdate={handleOnUpdate}
-                onDelete={handleOnUpdate}
-            /> */}
-
-            {/* <RelatingRecordsFormSet
-                title={<span><b><T keyName="document.titlePlural"/></b>, <T keyName="domain_group_form.reference_documents">die diese Gruppe beschreiben</T></span>}
-                emptyMessage={t("domain_group_form.no_reference_documents", "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben")}
-                relatingRecords={entry?.documentedBy.nodes.map(node => node.relatingDocument) ?? []}
-            />
 
             <RelatingRecordsFormSet
-                title={<span><b><T keyName="model.titlePlural"/></b>, <T keyName="domain_group_form.domain_models_using_group">die diese Gruppe anwenden</T></span>}
-                emptyMessage={t("domain_group_form.no_domain_models_using_group", "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben")}
-                relatingRecords={entry?.collectedBy.nodes.map(node => node.relatingCollection) ?? []}
-            /> */}
+                title={<span><b><T keyName="theme.parent_theme"/></b><T keyName="theme.assigning_theme"></T></span>}
+                emptyMessage={<T keyName="theme.no_assigning_theme" />}
+                relatingRecords={allRelatingSubjects}
+            />
 
             <MetaFormSet entry={entry} />
 

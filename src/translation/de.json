@@ -296,8 +296,8 @@
     "description": "Ein Eintrag vom Typ Referenzdokument wird genutzt, um externe Dokumente, Bücher oder andere schriftliche Informationen abzubilden.",
     "loading": "Lade Referenzdokument...",
     "more_infos": "Mehr Informationen",
-    "references": "die dieses Referenzdokument beschreibt",
-    "no_references": "Beschreibt keine Konzepte im Datenkatalog",
+    "references": ", die dieses Referenzdokument beschreibt",
+    "no_references": "Beschreibt keine Konzepte im Datenkatalog.",
     "uri" : "URI",
     "uri_helper": "Die URI des Referenzdokuments. Sie wird genutzt, um das Dokument zu referenzieren.",
     "author": "Autor",
@@ -322,7 +322,7 @@
     "titlePlural": "Dictionaries",
     "loading": "Lade Dictionary...", 
     "delete_success": "Dictionary gelöscht.",
-    "related_concepts": "Im Dictionary enthaltene Konzepte.",
+    "related_concepts": ", die im Dictionary enthalten sind",
     "no_related_concepts": "Das Dictionary enthält keine Konzepte."
   },
   "theme": {
@@ -331,29 +331,27 @@
     "loading": "Lade Thema...",
     "delete_success": "Thema gelöscht.",
     "assigned_classes": ", die diesem Thema zugewiesen sind",
-    "child_themes": "Unterthemen, die diesem Thema zugewiesen sind"
+    "child_themes": "Unterthemen",
+    "parent_theme": "Oberthema",
+    "assigning_theme": ", dem dieses Thema zugewiesen ist",
+    "no_assigning_theme": "Das Thema ist keinem anderen Thema untergeordnet."
   },
   "class": {
     "title": "Klasse",
     "titlePlural": "Klassen",
     "loading": "Lade Klasse...",
-    "similar_concepts": "Ähnliche Konzepte",
     "delete_success": "Klasse gelöscht.",
-    "assigned_property_groups": "Der Klasse zugewiesene Merkmalsgruppen",
-    "assigned_properties": "Direkt zugewiesene Merkmale der Klasse",
-    "reference_documents": "Wird in folgenden Referenzdokumenten beschrieben",
-    "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
-    "themes_using_class": "die diese Klasse anwenden",
-    "no_themes_using_class": "Die Klasse wird durch kein Thema genutzt"
+    "assigned_concepts": ", die der Klasse zugewiesen sind",
+    "themes_using_class": ", die diese Klasse enthalten",
+    "no_themes_using_class": "Die Klasse wird durch kein Thema genutzt."
   },
   "propertyGroup": {
     "title": "Merkmalsgruppe",
     "titlePlural": "Merkmalsgruppen",
     "loading": "Lade Merkmalsgruppe...",
     "delete_success": "Merkmalsgruppe gelöscht.",
-    "grouped_properties": "In der Merkmalsgruppe gruppierte Merkmale",
-    "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
-    "assigned_classes": "denen diese Merkmalsgruppe zugewiesen wurde",
+    "grouped_properties": ", die in der Merkmalsgruppe enthalten sind",
+    "assigned_classes": ", denen diese Merkmalsgruppe zugewiesen wurde",
     "no_assigned_classes": "Diese Merkmalsgruppe wurde keiner Klasse zugewiesen"
   },
   "property": {
@@ -365,11 +363,10 @@
     "dataFormat_helper": "Das Datenformat des Merkmals.",
     "loading": "Lade Merkmal...",
     "delete_success": "Merkmal gelöscht.",
-    "property_measure": "des Merkmals",
-    "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
-    "aggregating_property_groups": "die dieses Merkmal aggregieren",
-    "no_aggregating_property_groups": "Das Merkmal wird in keiner Merkmalsgruppe genutzt",
-    "assigned_classes": "denen dieses Merkmal direkt zugewiesen wurde",
+    "assigned_concepts": ", die diesem Merkmal zugewiesen wurden",
+    "assigning_property_groups": ", in denen dieses Merkmal enthalten ist",
+    "no_assigning_property_groups": "Das Merkmal wird in keiner Merkmalsgruppe genutzt.",
+    "assigned_classes": ", denen dieses Merkmal zugewiesen wurde",
     "no_assigned_classes": "Das Merkmal wurde keiner Klasse direkt zugewiesen"
   },
   "valuelist": {
@@ -379,9 +376,8 @@
     "language_helper": "Sprache der Werteliste.",
     "loading": "Lade Werteliste...",
     "delete_success": "Werteliste gelöscht.",
-    "applicable_units": "Auf die Werteliste anwendbare Maßeinheiten",
-    "value_range": "Wertebereich der Werteliste",
-    "no_reference_documents": "Durch Werteliste im Datenkatalog hinterlegtes Referenzdokument beschrieben",
+    "applicable_units": ", welche die Werteliste anwendet",
+    "value_range": ", die dieser Werteliste zugeordnet wurden",
     "assigned_properties": "denen diese Werteliste zugewiesen wurde",
     "no_assigned_properties": "Die Werteliste wurde keinem Merkmal zugewiesen"
   },
@@ -394,10 +390,9 @@
     "base_helper": "Die Basis der Maßeinheit. Dies ist die Größe, auf die sich die Maßeinheit bezieht.",
     "loading": "Lade Maßeinheit...",
     "delete_success": "Maßeinheit gelöscht.",
-    "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
-    "assigned_to_properties": "denen diese Einheit zugewiesen wurde",
-    "no_assigned_to_properties": "Die Einheit wird von keinem Merkmal genutzt",
-    "no_assigned_to_valueLists": "Die Einheit wird von keiner Werteliste genutzt"
+    "assigned_to_properties": "denen diese Maßeinheit zugewiesen wurde",
+    "no_assigned_to_properties": "Die Maßeinheit wird von keinem Merkmal genutzt",
+    "no_assigned_to_valueLists": "Die Maßeinheit wird von keiner Werteliste genutzt"
   },
   "value": {
     "title": "Wert",
@@ -406,9 +401,14 @@
     "nominalValue_helper": "Der Nennwert des Wertes. Dies ist der Wert, der in der Regel gemessen oder angegeben wird.",
     "loading": "Lade Wert...",
     "delete_success": "Wert gelöscht.",
-    "no_reference_documents": "Durch kein im Datenkatalog hinterlegtes Referenzdokument beschrieben",
     "assigned_valuelists": "denen dieser Wert zugewiesen wurde",
     "no_assigned_valuelists": "Der Wert wird durch keine Werteliste genutzt"
+  },
+  "concept": {
+    "title": "Konzept",
+    "titlePlural": "Konzepte",
+    "reference_documents": ", die dieses Konzept beschreiben",
+    "similar_concepts": "Ähnliche Konzepte"
   },
   "translation_form": {
     "no_translations": "Noch keine Übersetzung vorhanden.",
