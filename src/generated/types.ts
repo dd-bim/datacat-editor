@@ -1,5 +1,6 @@
 import * as Apollo from '@apollo/client';
 import { gql } from '@apollo/client';
+import { Tag } from '@mui/icons-material';
 
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -202,39 +203,6 @@ export type HierarchyRootNodeFilterInput = {
   idNotIn?: Maybe<Array<Scalars['ID']>>;
   tagged?: Maybe<Array<Scalars['ID']>>;
 };
-
-export type VerificationRootNodeFilterInput = {
-  catalogEntryType?: Maybe<Array<CatalogRecordType>>;
-};
-
-export type FindMissingTagsFilterInput = {
-  nodeTypeFilter: VerificationRootNodeFilterInput;
-};
-
-export type FindMissingEnglishNameFilterInput = {
-  nodeTypeFilter: VerificationRootNodeFilterInput;
-};
-
-export type FindMultipleIDsFilterInput = {
-  nodeTypeFilter: VerificationRootNodeFilterInput;
-};
-
-export type findMissingDescriptionFilterInput = {
-  nodeTypeFilter: VerificationRootNodeFilterInput;
-};
-
-export type FindMissingEnglishDescriptionFilterInput = {
-  nodeTypeFilter: VerificationRootNodeFilterInput;
-};
-
-export type FindMultipleNamesFilterInput = {
-  nodeTypeFilter: VerificationRootNodeFilterInput;
-};
-
-export type FindMultipleNamesAcrossClassesFilterInput = {
-  nodeTypeFilter: VerificationRootNodeFilterInput;
-};
-
 
 /**  Query type */
 export type LanguageFilterInput = {
@@ -707,7 +675,8 @@ export type UnitDetailPropsFragment = ObjectDetailProps_XtdUnit_Fragment & {
   offset?: Maybe<RationalPropsFragment>,
   coefficient?: Maybe<RationalPropsFragment>,
   properties?: Array<PropertyDetailPropsFragment>,
-  valueLists?: Maybe<Array<ValueListDetailPropsFragment>>
+  valueLists?: Maybe<Array<ValueListDetailPropsFragment>>,
+  dimension?: Maybe<DimensionDetailPropsFragment>,
 };
 
 export type ValueDetailPropsFragment = ObjectDetailProps_XtdValue_Fragment & {
@@ -747,7 +716,7 @@ export type RelationshipToSubjectDetailPropsFragment = ObjectDetailProps_XtdRela
 };
 
 export type QuantityKindDetailPropsFragment = ObjectDetailProps_XtdQuantityKind_Fragment & {
-  unit?: Maybe<UnitDetailPropsFragment>,
+  units?: Maybe<Array<UnitDetailPropsFragment>>,
   dimension: DimensionDetailPropsFragment
 };
 
@@ -1172,35 +1141,35 @@ export type PropertyTreeQuery = { hierarchy: { paths: Array<Array<string>>, node
 
 export type FindVerificationTreeQueryVariables = Exact<{ [key: string]: never; }>;
 
-export type FindPropGroupWithoutPropTreeQuery = { findPropGroupWithoutProp: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
+export type FindPropGroupWithoutPropTreeQuery = { findPropGroupWithoutProp: { paths: Array<Array<string>>, nodes: Array<ObjectPropsFragment> } };
 
-export type FindPropWithoutSubjectOrPropGroupTreeQuery = { findPropWithoutSubjectOrPropGroup: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
+export type FindPropWithoutSubjectOrPropGroupTreeQuery = { findPropWithoutSubjectOrPropGroup: { paths: Array<Array<string>>, nodes: Array<ObjectPropsFragment> } };
 
-export type FindModelWithoutGroupTreeQuery = { findModelWithoutGroup: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
+export type FindModelWithoutGroupTreeQuery = { findModelWithoutGroup: { paths: Array<Array<string>>, nodes: Array<ObjectPropsFragment> } };
 
-export type FindGroupWithoutSubjectTreeQuery = { findGroupWithoutSubject: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
+export type FindGroupWithoutSubjectTreeQuery = { findGroupWithoutSubject: { paths: Array<Array<string>>, nodes: Array<ObjectPropsFragment> } };
 
-export type FindSubjectWithoutPropTreeQuery = { findSubjectWithoutProp: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
+export type FindSubjectWithoutPropTreeQuery = { findSubjectWithoutProp: { paths: Array<Array<string>>, nodes: Array<ObjectPropsFragment> } };
 
-export type FindValueListWithoutPropTreeQuery = { FindValueListWithoutProp: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
+export type FindValueListWithoutPropTreeQuery = { FindValueListWithoutProp: { paths: Array<Array<string>>, nodes: Array<ObjectPropsFragment> } };
 
-export type FindUnitWithoutValueListTreeQuery = { FindUnitWithoutValueList: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
+export type FindUnitWithoutValueListTreeQuery = { FindUnitWithoutValueList: { paths: Array<Array<string>>, nodes: Array<ObjectPropsFragment> } };
 
-export type FindValueWithoutValueListTreeQuery = { FindValueWithoutValueList: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
+export type FindValueWithoutValueListTreeQuery = { FindValueWithoutValueList: { paths: Array<Array<string>>, nodes: Array<ObjectPropsFragment> } };
 
-export type FindMissingTagsTreeQuery = { findMissingTags: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
+export type FindMissingTagsTreeQuery = { findMissingTags: { paths: Array<Array<string>>, nodes: Array<ObjectPropsFragment> } };
 
-export type FindMissingEnglishNameTreeQuery = { findMissingEnglishName: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
+export type FindMissingEnglishNameTreeQuery = { findMissingEnglishName: { paths: Array<Array<string>>, nodes: Array<ObjectPropsFragment> } };
 
-export type FindMultipleIDsTreeQuery = { findMultipleIDs: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
+export type FindMultipleIDsTreeQuery = { findMultipleIDs: { paths: Array<Array<string>>, nodes: Array<ObjectPropsFragment> } };
 
-export type FindMissingDescriptionTreeQuery = { findMissingDescription: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
+export type FindMissingDescriptionTreeQuery = { findMissingDescription: { paths: Array<Array<string>>, nodes: Array<ObjectPropsFragment> } };
 
-export type FindMissingEnglishDescriptionTreeQuery = { findMissingEnglishDescription: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
+export type FindMissingEnglishDescriptionTreeQuery = { findMissingEnglishDescription: { paths: Array<Array<string>>, nodes: Array<ObjectPropsFragment> } };
 
-export type FindMultipleNamesTreeQuery = { findMultipleNames: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
+export type FindMultipleNamesTreeQuery = { findMultipleNames: { paths: Array<Array<string>>, nodes: Array<ObjectPropsFragment> } };
 
-export type FindMultipleNamesAcrossClassesTreeQuery = { findMultipleNamesAcrossClasses: { paths: Array<Array<string>>, nodes: Array<ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment> } };
+export type FindMultipleNamesAcrossClassesTreeQuery = { findMultipleNamesAcrossClasses: { paths: Array<Array<string>>, nodes: Array<ObjectPropsFragment> } };
 
 export type FindExportCatalogItemsTreeQuery = { findExportCatalogItems: { paths: Array<Array<string>>, nodes: Array<ExportCatalogRecord_Fragment> } };
 
@@ -1438,6 +1407,7 @@ export const TranslationPropsFragmentDoc = gql`
     ${LanguagePropsFragmentDoc}`;
 export const ObjectPropsFragmentDoc = gql`
 fragment ObjectProps on XtdObject {
+    ...MetaProps
     __typename
     id
     recordType
@@ -1472,6 +1442,7 @@ fragment ObjectProps on XtdObject {
         ...TranslationProps
     }
 }
+    ${MetaPropsFragmentDoc}
     ${TagPropsFragmentDoc}
     ${TranslationPropsFragmentDoc}
     `;
@@ -1524,21 +1495,17 @@ ${RelationsPropsFragmentDoc}
 ${LanguagePropsFragmentDoc}`;
 export const ConceptDetailPropsFragmentDoc = gql`
   fragment ConceptDetailProps on XtdConcept {
-      ...MetaProps
       ...ConceptProps
   }
-  ${MetaPropsFragmentDoc}
 ${ConceptPropsFragmentDoc}`;
 export const ExternalDocumentDetailPropsFragmentDoc = gql`
     fragment ExternalDocumentDetailProps on XtdExternalDocument {
-  ...MetaProps
   ...ExternalDocumentProps
   ...ConceptProps
   documents {
     ...RelationsProps
   }
 }
-    ${MetaPropsFragmentDoc}
 ${ExternalDocumentPropsFragmentDoc}
 ${RelationsPropsFragmentDoc}
 ${ConceptPropsFragmentDoc}`;
@@ -1583,10 +1550,8 @@ export const RelationshipToSubjectPropsFragmentDoc = gql`
   ${ObjectPropsFragmentDoc}`;
 export const ObjectDetailPropsFragmentDoc = gql`
     fragment ObjectDetailProps on XtdObject {
-  ...MetaProps
   ...ObjectProps
 }
-    ${MetaPropsFragmentDoc}
 ${ObjectPropsFragmentDoc}`;
 export const ValuePropsFragmentDoc = gql`
   fragment ValueProps on XtdValue {
@@ -1830,6 +1795,17 @@ ${UnitPropsFragmentDoc}
 ${LanguagePropsFragmentDoc}
 ${ValuePropsFragmentDoc}`;
 
+export const VerificationPropsFragmentDoc = gql`
+  fragment VerificationProps on XtdObject {
+          __typename
+      id
+      name
+      tags {
+        ...TagProps
+      }
+      recordType
+  }
+  ${TagPropsFragmentDoc}`;
 
 export const SignupFormDocument = gql`
     mutation SignupForm($profile: SignupInput!) {
@@ -3292,12 +3268,12 @@ export const FindPropGroupWithoutPropTreeDocument = gql`
     query FindPropGroupWithoutPropTree {
       findPropGroupWithoutProp{
     nodes {
-      ...ObjectProps
+      ...VerificationProps
     }
     paths
   }
 }
-    ${ObjectPropsFragmentDoc}`;
+    ${VerificationPropsFragmentDoc}`;
 
 export function useFindPropGroupWithoutPropTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindPropGroupWithoutPropTreeQuery, FindVerificationTreeQueryVariables>) {
   return Apollo.useQuery<FindPropGroupWithoutPropTreeQuery, FindVerificationTreeQueryVariables>(FindPropGroupWithoutPropTreeDocument, baseOptions);
@@ -3315,12 +3291,12 @@ export const FindPropWithoutSubjectOrPropGroupTreeDocument = gql`
     query FindPropWithoutSubjectOrPropGroupTree {
       findPropWithoutSubjectOrPropGroup{
     nodes {
-      ...ObjectProps
+      ...VerificationProps
     }
     paths
   }
 }
-    ${ObjectPropsFragmentDoc}`;
+    ${VerificationPropsFragmentDoc}`;
 
 export function useFindPropWithoutSubjectOrPropGroupTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindPropWithoutSubjectOrPropGroupTreeQuery, FindVerificationTreeQueryVariables>) {
   return Apollo.useQuery<FindPropWithoutSubjectOrPropGroupTreeQuery, FindVerificationTreeQueryVariables>(FindPropWithoutSubjectOrPropGroupTreeDocument, baseOptions);
@@ -3338,12 +3314,12 @@ export const FindModelWithoutGroupTreeDocument = gql`
     query FindModelWithoutGroupTree {
       findModelWithoutGroup{
     nodes {
-      ...ObjectProps
+      ...VerificationProps
     }
     paths
   }
 }
-    ${ObjectPropsFragmentDoc}`;
+    ${VerificationPropsFragmentDoc}`;
 
 export function useFindModelWithoutGroupTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindModelWithoutGroupTreeQuery, FindVerificationTreeQueryVariables>) {
   return Apollo.useQuery<FindModelWithoutGroupTreeQuery, FindVerificationTreeQueryVariables>(FindModelWithoutGroupTreeDocument, baseOptions);
@@ -3361,13 +3337,13 @@ export const FindGroupWithoutSubjectTreeDocument = gql`
     query FindGroupWithoutSubjectTree {
       findGroupWithoutSubject{
     nodes {
-      ...ObjectProps
+      ...VerificationProps
     }
     paths
   }
 }
-    ${ObjectPropsFragmentDoc}`;
-
+    ${VerificationPropsFragmentDoc}
+    `;
 export function useFindGroupWithoutSubjectTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindGroupWithoutSubjectTreeQuery, FindVerificationTreeQueryVariables>) {
   return Apollo.useQuery<FindGroupWithoutSubjectTreeQuery, FindVerificationTreeQueryVariables>(FindGroupWithoutSubjectTreeDocument, baseOptions);
 }
@@ -3384,12 +3360,12 @@ export const FindSubjectWithoutPropTreeDocument = gql`
     query FindSubjectWithoutPropTree {
       findSubjectWithoutProp{
     nodes {
-      ...ObjectProps
+      ...VerificationProps
     }
     paths
   }
 }
-    ${ObjectPropsFragmentDoc}`;
+    ${VerificationPropsFragmentDoc}`;
 
 export function useFindSubjectWithoutPropTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindSubjectWithoutPropTreeQuery, FindVerificationTreeQueryVariables>) {
   return Apollo.useQuery<FindSubjectWithoutPropTreeQuery, FindVerificationTreeQueryVariables>(FindSubjectWithoutPropTreeDocument, baseOptions);
@@ -3407,12 +3383,12 @@ export const FindValueListWithoutPropTreeDocument = gql`
     query FindValueListWithoutPropTree {
       findValueListWithoutProp{
     nodes {
-      ...ObjectProps
+      ...VerificationProps
     }
     paths
   }
 }
-    ${ObjectPropsFragmentDoc}`;
+    ${VerificationPropsFragmentDoc}`;
 
 export function useFindValueListWithoutPropTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindValueListWithoutPropTreeQuery, FindVerificationTreeQueryVariables>) {
   return Apollo.useQuery<FindValueListWithoutPropTreeQuery, FindVerificationTreeQueryVariables>(FindValueListWithoutPropTreeDocument, baseOptions);
@@ -3430,12 +3406,12 @@ export const FindUnitWithoutValueListTreeDocument = gql`
     query FindUnitWithoutValueListTree {
       findUnitWithoutValueList{
     nodes {
-      ...ObjectProps
+      ...VerificationProps
     }
     paths
   }
 }
-    ${ObjectPropsFragmentDoc}`;
+    ${VerificationPropsFragmentDoc}`;
 
 export function useFindUnitWithoutValueListTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindUnitWithoutValueListTreeQuery, FindVerificationTreeQueryVariables>) {
   return Apollo.useQuery<FindUnitWithoutValueListTreeQuery, FindVerificationTreeQueryVariables>(FindUnitWithoutValueListTreeDocument, baseOptions);
@@ -3453,12 +3429,12 @@ export const FindValueWithoutValueListTreeDocument = gql`
     query FindValueWithoutValueListTree {
       findValueWithoutValueList{
     nodes {
-      ...ObjectProps
+      ...VerificationProps
     }
     paths
   }
 }
-    ${ObjectPropsFragmentDoc}`;
+    ${VerificationPropsFragmentDoc}`;
 
 export function useFindValueWithoutValueListTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindValueWithoutValueListTreeQuery, FindVerificationTreeQueryVariables>) {
   return Apollo.useQuery<FindValueWithoutValueListTreeQuery, FindVerificationTreeQueryVariables>(FindValueWithoutValueListTreeDocument, baseOptions);
@@ -3476,12 +3452,12 @@ export const FindMissingTagsTreeDocument = gql`
     query FindMissingTagsTree {
       findMissingTags{
     nodes {
-      ...ObjectProps
+      ...VerificationProps
     }
     paths
   }
 }
-    ${ObjectPropsFragmentDoc}`;
+    ${VerificationPropsFragmentDoc}`;
 export function useFindMissingTagsTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMissingTagsTreeQuery, FindVerificationTreeQueryVariables>) {
   return Apollo.useQuery<FindMissingTagsTreeQuery, FindVerificationTreeQueryVariables>(FindMissingTagsTreeDocument, baseOptions);
 }
@@ -3496,16 +3472,14 @@ export type FindMissingTagsTreeQueryResult = Apollo.QueryResult<FindMissingTagsT
 
 export const FindMissingEnglishNameTreeDocument = gql`
     query FindMissingEnglishNameTree {
-      findMissingEnglishName(
-    input: {nodeTypeFilter: {}}
-  ) {
+      findMissingEnglishName {
     nodes {
-      ...ObjectProps
+      ...VerificationProps
     }
     paths
   }
 }
-    ${ObjectPropsFragmentDoc}`;
+    ${VerificationPropsFragmentDoc}`;
 
 export function useFindMissingEnglishNameTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMissingEnglishNameTreeQuery, FindVerificationTreeQueryVariables>) {
   return Apollo.useQuery<FindMissingEnglishNameTreeQuery, FindVerificationTreeQueryVariables>(FindMissingEnglishNameTreeDocument, baseOptions);
@@ -3521,16 +3495,14 @@ export type FindMissingEnglishNameTreeQueryResult = Apollo.QueryResult<FindMissi
 
 export const FindMultipleIDsTreeDocument = gql`
     query FindMultipleIDsTree {
-      findMultipleIDs(
-    input: {nodeTypeFilter: {}}
-  ) {
+      findMultipleIDs{
     nodes {
-      ...ObjectProps
+      ...VerificationProps
     }
     paths
   }
 }
-    ${ObjectPropsFragmentDoc}`;
+    ${VerificationPropsFragmentDoc}`;
 
 export function useFindMultipleIDsTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMultipleIDsTreeQuery, FindVerificationTreeQueryVariables>) {
   return Apollo.useQuery<FindMultipleIDsTreeQuery, FindVerificationTreeQueryVariables>(FindMultipleIDsTreeDocument, baseOptions);
@@ -3546,16 +3518,14 @@ export type FindMultipleIDsTreeQueryResult = Apollo.QueryResult<FindMultipleIDsT
 
 export const FindMissingDescriptionTreeDocument = gql`
     query FindMissingDescriptionTree {
-      findMissingDescription(
-    input: {nodeTypeFilter: {}}
-  ) {
+      findMissingDescription {
     nodes {
-      ...ObjectProps
+      ...VerificationProps
     }
     paths
   }
 }
-    ${ObjectPropsFragmentDoc}`;
+    ${VerificationPropsFragmentDoc}`;
 
 export function useFindMissingDescriptionTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMissingDescriptionTreeQuery, FindVerificationTreeQueryVariables>) {
   return Apollo.useQuery<FindMissingDescriptionTreeQuery, FindVerificationTreeQueryVariables>(FindMissingDescriptionTreeDocument, baseOptions);
@@ -3571,16 +3541,14 @@ export type FindMissingDescriptionTreeQueryResult = Apollo.QueryResult<FindMissi
 
 export const FindMissingEnglishDescriptionTreeDocument = gql`
     query FindMissingEnglishDescriptionTree {
-      findMissingEnglishDescription(
-    input: {nodeTypeFilter: {}}
-  ) {
+      findMissingEnglishDescription {
     nodes {
-      ...ObjectProps
+      ...VerificationProps
     }
     paths
   }
 }
-    ${ObjectPropsFragmentDoc}`;
+    ${VerificationPropsFragmentDoc}`;
 
 export function useFindMissingEnglishDescriptionTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMissingEnglishDescriptionTreeQuery, FindVerificationTreeQueryVariables>) {
   return Apollo.useQuery<FindMissingEnglishDescriptionTreeQuery, FindVerificationTreeQueryVariables>(FindMissingEnglishDescriptionTreeDocument, baseOptions);
@@ -3596,16 +3564,14 @@ export type FindMissingEnglishDescriptionTreeQueryResult = Apollo.QueryResult<Fi
 
 export const FindMultipleNamesTreeDocument = gql`
     query FindMultipleNamesTree {
-      findMultipleNames(
-    input: {nodeTypeFilter: {}}
-  ) {
+      findMultipleNames {
     nodes {
-      ...ObjectProps
+      ...VerificationProps
     }
     paths
   }
 }
-    ${ObjectPropsFragmentDoc}`;
+    ${VerificationPropsFragmentDoc}`;
 
 export function useFindMultipleNamesTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMultipleNamesTreeQuery, FindVerificationTreeQueryVariables>) {
   return Apollo.useQuery<FindMultipleNamesTreeQuery, FindVerificationTreeQueryVariables>(FindMultipleNamesTreeDocument, baseOptions);
@@ -3621,16 +3587,14 @@ export type FindMultipleNamesTreeQueryResult = Apollo.QueryResult<FindMultipleNa
 
 export const FindMultipleNamesAcrossClassesTreeDocument = gql`
     query FindMultipleNamesAcrossClassesTree {
-      findMultipleNamesAcrossClasses(
-    input: {nodeTypeFilter: {}}
-  ) {
+      findMultipleNamesAcrossClasses {
     nodes {
-      ...ObjectProps
+      ...VerificationProps
     }
     paths
   }
 }
-    ${ObjectPropsFragmentDoc}`;
+    ${VerificationPropsFragmentDoc}`;
 
 export function useFindMultipleNamesAcrossClassesTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindMultipleNamesAcrossClassesTreeQuery, FindVerificationTreeQueryVariables>) {
   return Apollo.useQuery<FindMultipleNamesAcrossClassesTreeQuery, FindVerificationTreeQueryVariables>(FindMultipleNamesAcrossClassesTreeDocument, baseOptions);

@@ -145,7 +145,7 @@ const HierarchyView = () => {
         return (
           <>
             <Typography variant="h5">
-              <DomainGroupIcon /> <T keyName="hierarchy.edit_theme">Thema bearbeiten</T>
+              <DomainGroupIcon /> <T keyName="theme.edit"/>
             </Typography>
             <DomainGroupForm id={id} onDelete={handleDelete} />
           </>
@@ -154,7 +154,7 @@ const HierarchyView = () => {
         return (
           <>
             <Typography variant="h5">
-              <DomainClassIcon /> <T keyName="hierarchy.edit_class">Klasse bearbeiten</T>
+              <DomainClassIcon /> <T keyName="class.edit"/>
             </Typography>
             <DomainClassForm id={id} onDelete={handleDelete} />
           </>
@@ -163,7 +163,7 @@ const HierarchyView = () => {
         return (
           <>
             <Typography variant="h5">
-              <PropertyIcon /> <T keyName="hierarchy.edit_property">Merkmal bearbeiten</T>
+              <PropertyIcon /> <T keyName="property.edit"/>
             </Typography>
             <PropertyForm id={id} onDelete={handleDelete} />
           </>
@@ -172,7 +172,7 @@ const HierarchyView = () => {
         return (
           <>
             <Typography variant="h5">
-              <MeasureIcon /> <T keyName="hierarchy.edit_measure">Größe bearbeiten</T>
+              <MeasureIcon /> <T keyName="valuelist.edit"/>
             </Typography>
             <ValueListForm id={id} onDelete={handleDelete} />
           </>
@@ -181,7 +181,7 @@ const HierarchyView = () => {
         return (
           <>
             <Typography variant="h5">
-              <UnitIcon /> <T keyName="hierarchy.edit_unit">Einheit bearbeiten</T>
+              <UnitIcon /> <T keyName="unit.edit"/>
             </Typography>
             <UnitForm id={id} onDelete={handleDelete} />
           </>
@@ -190,7 +190,7 @@ const HierarchyView = () => {
         return (
           <>
             <Typography variant="h5">
-              <ValueIcon /> <T keyName="hierarchy.edit_value">Wert bearbeiten</T>
+              <ValueIcon /> <T keyName="value.edit"/>
             </Typography>
             <ValueForm id={id} onDelete={handleDelete} />
           </>
@@ -199,7 +199,7 @@ const HierarchyView = () => {
         return (
           <>
             <Typography variant="h5">
-              <DomainModelIcon /> <T keyName="hierarchy.edit_model">Dictionary bearbeiten</T>
+              <DomainModelIcon /> <T keyName="model.edit"/>
             </Typography>
             <DomainModelForm id={id} onDelete={handleDelete} />
           </>

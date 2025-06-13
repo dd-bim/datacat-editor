@@ -92,15 +92,6 @@ export const ClassEntity: Entity = {
   export: true
 };
 
-export const DataTemplateEntity: Entity = {
-  tags: ["576db5b0-9cbb-4da5-9132-3eda2b2c579b"],
-  get title() { return tolgee.t("dataTemplate.title"); },
-  get titlePlural() { return tolgee.t("dataTemplate.titlePlural"); },
-  recordType: CatalogRecordType.Subject,
-  path: "data-template",
-  Icon: DataTemplateIcon
-};
-
 export const PropertyGroupEntity: Entity = {
   tags: ["a27c8e3c-5fd1-47c9-806a-6ded070efae8"],
   get title() { return tolgee.t("propertyGroup.title"); },
@@ -167,7 +158,6 @@ export const Domain = [
   DictionaryEntity,
   GroupEntity,
   ClassEntity,
-  DataTemplateEntity,
   PropertyGroupEntity,
   PropertyEntity,
   ValueListEntity,

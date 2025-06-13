@@ -1,6 +1,8 @@
 {
   "verification": {
     "title": "Prüfkriterium",
+    "error": "Fehler beim Aufrufen der Prüfroutine.",
+    "no_data": "Keine Daten gefunden.",
     "category_title": "Kategorie",
     "criteria": {
       "integrity": "Integrität",
@@ -8,14 +10,14 @@
       "language": "Sprache"
     },
     "category": {
-      "no_model_group": "Dictionaries ohne Gruppe",
-      "no_group_class": "Gruppen ohne Klasse",
+      "no_model_group": "Fachmodelle ohne Thema",
+      "no_group_class": "Themen ohne Klasse",
       "no_class_properties": "Klassen ohne Merkmale/Merkmalsgruppen",
       "no_property_group": "Merkmalsgruppen ohne Merkmale",
       "no_property": "Merkmale ohne Klasse oder Merkmalsgruppe",
-      "no_measure": "Größen ohne Merkmal",
-      "no_unit": "Einheiten ohne Größe",
-      "no_value": "Werte ohne Größe",
+      "no_valuelist": "Wertelisten ohne Merkmal",
+      "no_unit": "Einheiten ohne Werteliste",
+      "no_value": "Werte ohne Werteliste",
       "duplicate_id": "ID-Duplikate",
       "duplicate_name_type": "Namen-Duplikate (innerhalb eines Types)",
       "duplicate_name_all": "Namen-Duplikate (gesamter Datenbestand)",
@@ -26,15 +28,6 @@
     "result": {
       "select_criteria": "Prüfkriterium und Kategorie auswählen.",
       "select_entry": "Prüfergebnis in der Listenansicht auswählen, um Eigenschaften anzuzeigen."
-    },
-    "edit": {
-      "theme": "Thema bearbeiten",
-      "class": "Klasse bearbeiten",
-      "property": "Merkmal bearbeiten",
-      "valuelist": "Werteliste bearbeiten",
-      "unit": "Einheit bearbeiten",
-      "value": "Wert bearbeiten",
-      "model": "Dictionary bearbeiten"
     }
   },
   "home": {
@@ -240,13 +233,6 @@
   "hierarchy": {
     "error": "Beim Aufrufen des Merkmalsbaums ist ein Fehler aufgetreten.",
     "select_concept": "Konzept in der Baumansicht auswählen, um Eigenschaften anzuzeigen.",
-    "edit_theme": "Thema bearbeiten",
-    "edit_class": "Klasse bearbeiten",
-    "edit_property": "Merkmal bearbeiten",
-    "edit_measure": "Größe bearbeiten",
-    "edit_unit": "Einheit bearbeiten",
-    "edit_value": "Wert bearbeiten",
-    "edit_model": "Dictionary bearbeiten",
     "search_catalog": "Katalog durchsuchen"
   },
   "grid_view": {
@@ -293,6 +279,7 @@
   "document": {
     "title": "Referenzdokument",
     "titlePlural": "Referenzdokumente",
+    "edit": "Referenzdokument bearbeiten",
     "description": "Ein Eintrag vom Typ Referenzdokument wird genutzt, um externe Dokumente, Bücher oder andere schriftliche Informationen abzubilden.",
     "loading": "Lade Referenzdokument...",
     "more_infos": "Mehr Informationen",
@@ -314,12 +301,14 @@
   "model": {
     "title": "Fachmodell",
     "titlePlural": "Fachmodelle",
+    "edit": "Fachmodell bearbeiten",
     "loading": "Lade Fachmodell...",
     "delete_success": "Fachmodell gelöscht."
   },
   "dictionary": {
     "title": "Dictionary",
     "titlePlural": "Dictionaries",
+    "edit": "Dictionary bearbeiten",
     "loading": "Lade Dictionary...", 
     "delete_success": "Dictionary gelöscht.",
     "related_concepts": ", die im Dictionary enthalten sind",
@@ -328,6 +317,7 @@
   "theme": {
     "title": "Thema",
     "titlePlural": "Themen",
+    "edit": "Thema bearbeiten",
     "loading": "Lade Thema...",
     "delete_success": "Thema gelöscht.",
     "assigned_classes": ", die diesem Thema zugewiesen sind",
@@ -339,6 +329,7 @@
   "class": {
     "title": "Klasse",
     "titlePlural": "Klassen",
+    "edit": "Klasse bearbeiten",
     "loading": "Lade Klasse...",
     "delete_success": "Klasse gelöscht.",
     "assigned_concepts": ", die der Klasse zugewiesen sind",
@@ -348,6 +339,7 @@
   "propertyGroup": {
     "title": "Merkmalsgruppe",
     "titlePlural": "Merkmalsgruppen",
+    "edit": "Merkmalsgruppe bearbeiten",
     "loading": "Lade Merkmalsgruppe...",
     "delete_success": "Merkmalsgruppe gelöscht.",
     "grouped_properties": ", die in der Merkmalsgruppe enthalten sind",
@@ -357,6 +349,7 @@
   "property": {
     "title": "Merkmal",
     "titlePlural": "Merkmale",
+    "edit": "Merkmal bearbeiten",
     "dataType": "Datentyp",
     "dataType_helper": "Der Datentyp des Merkmals. Dies kann ein einfacher Datentyp wie String, Integer oder Boolean sein.",
     "dataFormat": "Datenformat",
@@ -372,6 +365,7 @@
   "valuelist": {
     "title": "Werteliste",
     "titlePlural": "Wertelisten",
+    "edit": "Werteliste bearbeiten",
     "language": "Sprache",
     "language_helper": "Sprache der Werteliste.",
     "loading": "Lade Werteliste...",
@@ -384,6 +378,7 @@
   "unit": {
     "title": "Maßeinheit",
     "titlePlural": "Maßeinheiten",
+    "edit": "Maßeinheit bearbeiten",
     "scale": "Skala",
     "scale_helper": "Die Skala der Maßeinheit. Dies kann eine lineare Skala oder eine logarithmische Skala sein.",
     "base": "Basis",
@@ -397,6 +392,7 @@
   "value": {
     "title": "Wert",
     "titlePlural": "Werte",
+    "edit": "Wert bearbeiten",
     "nominalValue": "Nennwert",
     "nominalValue_helper": "Der Nennwert des Wertes. Dies ist der Wert, der in der Regel gemessen oder angegeben wird.",
     "loading": "Lade Wert...",

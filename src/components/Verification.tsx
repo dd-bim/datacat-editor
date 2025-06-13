@@ -17,7 +17,7 @@ const StyledTreeView = styled(SimpleTreeView)(({ theme }) => ({
 
 export type VerificationProps = {
   leaves: ObjectPropsFragment[];
-  paths: string[][];
+  paths: string[];
   onSelect(selection: ObjectPropsFragment): void;
 };
 

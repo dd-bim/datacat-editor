@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import LinearProgress from "@mui/material/LinearProgress";
-import { Button, Paper, Typography, Box, Stack } from "@mui/material";
+import { Paper, Typography, Box, Stack } from "@mui/material";
 import DomainModelForm from "./forms/DomainModelForm";
 import DomainGroupForm from "./forms/DomainGroupForm";
 import DomainClassForm from "./forms/DomainClassForm";
@@ -16,7 +15,6 @@ import {
   FindVerification
 } from "../components/Verification";
 import {
-  ConceptPropsFragment,
   useFindPropGroupWithoutPropTreeQuery,
   useFindPropWithoutSubjectOrPropGroupTreeQuery,
   useFindModelWithoutGroupTreeQuery,
@@ -31,6 +29,7 @@ import {
   useFindMissingEnglishDescriptionTreeQuery,
   useFindMultipleNamesTreeQuery,
   useFindMultipleNamesAcrossClassesTreeQuery,
+  ObjectDetailPropsFragment,
 } from "../generated/types";
 import {
   ClassEntity,
@@ -50,8 +49,13 @@ import {
   UnitIcon,
   ValueEntity,
   ValueIcon,
+  DictionaryEntity,
+  DocumentEntity,
+  ReferenceDocumentIcon
 } from "../domain";
 import { T } from "@tolgee/react";
+import DocumentForm from "./forms/DocumentForm";
+import DictionaryForm from "./forms/DictionaryForm";
 
 // Replace makeStyles with styled components
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -63,37 +67,12 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   overflow: 'auto',
 }));
 
-const TreeContainer = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(1),
-}));
-
-const FormContainer = styled(Box)(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  padding: theme.spacing(1),
-  borderLeft: `${theme.spacing(0.5)}px solid ${theme.palette.primary.light}`,
-  borderRadius: theme.shape.borderRadius,
-}));
-
 const HintTypography = styled(Typography)(({ theme }) => ({
   textAlign: "center",
   color: theme.palette.grey[600],
   padding: theme.spacing(3),
   alignSelf: 'center',
 }));
-
-const HeadlineTypography = styled(Typography)(({ theme }) => ({
-  marginBottom: 5,
-  marginTop: 5,
-}));
-
-const ButtonContainer = styled(Box)(({ theme }) => ({
-  marginBottom: theme.spacing(2),
-}));
-
-const LeftAlignBox = styled(Box)({
-  textAlign: "left",
-});
 
 // Add a styled component for left-aligned buttons
 const LeftAlignedButton = styled(ButtonComponent)(({ theme }) => ({
@@ -102,509 +81,307 @@ const LeftAlignedButton = styled(ButtonComponent)(({ theme }) => ({
   textAlign: 'left',
 }));
 
-// Main component without FC type
+const verificationQueries = {
+  "Fachmodelle ohne Thema": {
+    useQuery: useFindModelWithoutGroupTreeQuery,
+    dataPath: "findModelWithoutGroup",
+    titleKey: "verification.category.no_model_group",
+    buttonGroup: "Integrität",
+  },
+  "Themen ohne Klasse": {
+    useQuery: useFindGroupWithoutSubjectTreeQuery,
+    dataPath: "findGroupWithoutSubject",
+    titleKey: "verification.category.no_group_class",
+    buttonGroup: "Integrität",
+  },
+  "Klassen ohne Merkmale/Merkmalsgruppen": {
+    useQuery: useFindSubjectWithoutPropTreeQuery,
+    dataPath: "findSubjectWithoutProp",
+    titleKey: "verification.category.no_class_properties",
+    buttonGroup: "Integrität",
+  },
+  "Merkmalsgruppen ohne Merkmale": {
+    useQuery: useFindPropGroupWithoutPropTreeQuery,
+    dataPath: "findPropGroupWithoutProp",
+    titleKey: "verification.category.no_property_group",
+    buttonGroup: "Integrität",
+  },
+  "Merkmale ohne Klasse oder Merkmalsgruppe": {
+    useQuery: useFindPropWithoutSubjectOrPropGroupTreeQuery,
+    dataPath: "findPropWithoutSubjectOrPropGroup",
+    titleKey: "verification.category.no_property",
+    buttonGroup: "Integrität",
+  },
+  "Wertelisten die keinem Merkmal zugeordnet sind": {
+    useQuery: useFindValueListWithoutPropTreeQuery,
+    dataPath: "findValueListWithoutProp",
+    titleKey: "verification.category.no_valuelist",
+    buttonGroup: "Integrität",
+  },
+  "Einheiten ohne Werteliste": {
+    useQuery: useFindUnitWithoutValueListTreeQuery,
+    dataPath: "findUnitWithoutValueList",
+    titleKey: "verification.category.no_unit",
+    buttonGroup: "Integrität",
+  },
+  "Werte ohne Werteliste": {
+    useQuery: useFindValueWithoutValueListTreeQuery,
+    dataPath: "findValueWithoutValueList",
+    titleKey: "verification.category.no_value",
+    buttonGroup: "Integrität",
+  },
+  "ID-Duplikate": {
+    useQuery: useFindMultipleIDsTreeQuery,
+    dataPath: "findMultipleIDs",
+    titleKey: "verification.category.duplicate_id",
+    buttonGroup: "Eindeutigkeit",
+  },
+  "Namen-Duplikate (innerhalb eines Types)": {
+    useQuery: useFindMultipleNamesTreeQuery,
+    dataPath: "findMultipleNames",
+    titleKey: "verification.category.duplicate_name_type",
+    buttonGroup: "Eindeutigkeit",
+  },
+  "Namen-Duplikate (gesamter Datenbestand)": {
+    useQuery: useFindMultipleNamesAcrossClassesTreeQuery,
+    dataPath: "findMultipleNamesAcrossClasses",
+    titleKey: "verification.category.duplicate_name_all",
+    buttonGroup: "Eindeutigkeit",
+  },
+  "Fehlende Beschreibung": {
+    useQuery: useFindMissingDescriptionTreeQuery,
+    dataPath: "findMissingDescription",
+    titleKey: "verification.category.missing_description",
+    buttonGroup: "Sprache",
+  },
+  "Fehlende Beschreibung (englisch)": {
+    useQuery: useFindMissingEnglishDescriptionTreeQuery,
+    dataPath: "findMissingEnglishDescription",
+    titleKey: "verification.category.missing_description_en",
+    buttonGroup: "Sprache",
+  },
+  "Fehlende Namens-Übersetzung (englisch)": {
+    useQuery: useFindMissingEnglishNameTreeQuery,
+    dataPath: "findMissingEnglishName",
+    titleKey: "verification.category.missing_translation_en",
+    buttonGroup: "Sprache",
+  },
+};
+
 export function VerificationView() {
-  const location = useLocation();
   const [selectButton, setSelectButton] = useState("");
   const [selectCategory, setSelectCategory] = useState("");
-  const [selectedConcept, setSelectedConcept] = useState<ConceptPropsFragment | null>(null);
+  const [selectedConcept, setSelectedConcept] = useState<ObjectDetailPropsFragment | null>(null);
   const [title, setTitle] = useState<React.ReactNode>("");
 
-  const handleOnSelect = (concept: ConceptPropsFragment) => {
+  const handleOnSelect = (concept: ObjectDetailPropsFragment) => {
     setSelectedConcept(concept);
   };
 
-  const handleOnDelete = () => {
+  useEffect(() => {
     setSelectedConcept(null);
-  };
+  }, [selectCategory, selectButton]);
+
+  useEffect(() => {
+    setSelectCategory("");
+  }, [selectButton]);
 
   // Left column: Criteria selection
+  const buttonGroups = [
+    { key: "Integrität", label: "verification.criteria.integrity" },
+    { key: "Eindeutigkeit", label: "verification.criteria.uniqueness" },
+    { key: "Sprache", label: "verification.criteria.language" },
+  ];
+
   const renderCriteriaButtons = () => (
     <StyledPaper>
       <Typography variant="h6">
-        <T keyName="verification.title">Prüfkriterium</T>
+        <T keyName="verification.title"/>
       </Typography>
       <Stack direction="column" spacing={1} alignItems="stretch">
-        <LeftAlignedButton onClick={() => setSelectButton("Integrität")}>
-          <T keyName="verification.criteria.integrity">Integrität</T>
-        </LeftAlignedButton>
-        <LeftAlignedButton onClick={() => setSelectButton("Eindeutigkeit")}>
-          <T keyName="verification.criteria.uniqueness">Eindeutigkeit</T>
-        </LeftAlignedButton>
-        <LeftAlignedButton onClick={() => setSelectButton("Sprache")}>
-          <T keyName="verification.criteria.language">Sprache</T>
-        </LeftAlignedButton>
+        {buttonGroups.map(group => (
+          <LeftAlignedButton key={group.key} onClick={() => setSelectButton(group.key)}>
+            <T keyName={group.label}>{group.key}</T>
+          </LeftAlignedButton>
+        ))}
       </Stack>
-      
       <Typography variant="h6" sx={{ mt: 2 }}>
-        <T keyName="verification.category_title">Kategorie</T>
+        <T keyName="verification.category_title"/>
       </Typography>
       <Stack direction="column" spacing={1} alignItems="stretch">
-        {renderCategoryButtons()}
+        {Object.entries(verificationQueries)
+          .filter(([_, cfg]) => cfg.buttonGroup === selectButton)
+          .map(([cat, cfg]) => (
+            <LeftAlignedButton key={cat} onClick={() => setSelectCategory(cat)}>
+              <T keyName={cfg.titleKey}>{cat}</T>
+            </LeftAlignedButton>
+          ))}
       </Stack>
     </StyledPaper>
   );
 
-  // Category buttons
-  const renderCategoryButtons = () => {
-    switch (selectButton) {
-      case "Integrität":
-        return (
-          <>
-            <LeftAlignedButton onClick={() => setSelectCategory("Fachmodelle ohne Gruppe")}>
-              <T keyName="verification.category.no_model_group">Fachmodelle ohne Gruppe</T>
-            </LeftAlignedButton>
-            <LeftAlignedButton onClick={() => setSelectCategory("Gruppen ohne Klasse")}>
-              <T keyName="verification.category.no_group_class">Gruppen ohne Klasse</T>
-            </LeftAlignedButton>
-            <LeftAlignedButton onClick={() => setSelectCategory("Klassen ohne Merkmale/Merkmalsgruppen")}>
-              <T keyName="verification.category.no_class_properties">Klassen ohne Merkmale/Merkmalsgruppen</T>
-            </LeftAlignedButton>
-            <LeftAlignedButton onClick={() => setSelectCategory("Merkmalsgruppen ohne Merkmale")}>
-              <T keyName="verification.category.no_property_group">Merkmalsgruppen ohne Merkmale</T>
-            </LeftAlignedButton>
-            <LeftAlignedButton onClick={() => setSelectCategory("Merkmale ohne Klasse oder Merkmalsgruppe")}>
-              <T keyName="verification.category.no_property">Merkmale ohne Klasse oder Merkmalsgruppe</T>
-            </LeftAlignedButton>
-            <LeftAlignedButton onClick={() => setSelectCategory("Größen die keinem Merkmal zugeordnet sind")}>
-              <T keyName="verification.category.no_measure">Größen ohne Merkmal</T>
-            </LeftAlignedButton>
-            <LeftAlignedButton onClick={() => setSelectCategory("Einheiten ohne Größe")}>
-              <T keyName="verification.category.no_unit">Einheiten ohne Größe</T>
-            </LeftAlignedButton>
-            <LeftAlignedButton onClick={() => setSelectCategory("Werte ohne Größe")}>
-              <T keyName="verification.category.no_value">Werte ohne Größe</T>
-            </LeftAlignedButton>
-          </>
-        );
-      case "Eindeutigkeit":
-        return (
-          <>
-            <LeftAlignedButton onClick={() => setSelectCategory("ID-Duplikate")}>
-              <T keyName="verification.category.duplicate_id">ID-Duplikate</T>
-            </LeftAlignedButton>
-            <LeftAlignedButton onClick={() => setSelectCategory("Namen-Duplikate (innerhalb eines Types)")}>
-              <T keyName="verification.category.duplicate_name_type">Namen-Duplikate (innerhalb eines Types)</T>
-            </LeftAlignedButton>
-            <LeftAlignedButton onClick={() => setSelectCategory("Namen-Duplikate (gesamter Datenbestand)")}>
-              <T keyName="verification.category.duplicate_name_all">Namen-Duplikate (gesamter Datenbestand)</T>
-            </LeftAlignedButton>
-          </>
-        );
-      case "Sprache":
-        return (
-          <>
-            <LeftAlignedButton onClick={() => setSelectCategory("Fehlende Beschreibung")}>
-              <T keyName="verification.category.missing_description">Fehlende Beschreibung</T>
-            </LeftAlignedButton>
-            <LeftAlignedButton onClick={() => setSelectCategory("Fehlende Beschreibung (englisch)")}>
-              <T keyName="verification.category.missing_description_en">Fehlende Beschreibung (englisch)</T>
-            </LeftAlignedButton>
-            <LeftAlignedButton onClick={() => setSelectCategory("Fehlende Namens-Übersetzung (englisch)")}>
-              <T keyName="verification.category.missing_translation_en">Fehlende Namens-Übersetzung (englisch)</T>
-            </LeftAlignedButton>
-          </>
-        );
-      default:
-        return null;
-    }
-  };
-
+  // middle column: Results
   useEffect(() => {
-    switch (selectCategory) {
-      case "Fachmodelle ohne Gruppe":
-        setTitle(<T keyName="verification.category.no_model_group">Fachmodelle ohne Gruppe</T>);
-        break;
-      case "Gruppen ohne Klasse":
-        setTitle(<T keyName="verification.category.no_group_class">Gruppen ohne Klasse</T>);
-        break;
-      case "Klassen ohne Merkmale/Merkmalsgruppen":
-        setTitle(<T keyName="verification.category.no_class_properties">Klassen ohne Merkmale/Merkmalsgruppen</T>);
-        break;
-      case "Merkmalsgruppen ohne Merkmale":
-        setTitle(<T keyName="verification.category.no_property_group">Merkmalsgruppen ohne Merkmale</T>);
-        break;
-      case "Merkmale ohne Klasse oder Merkmalsgruppe":
-        setTitle(<T keyName="verification.category.no_property">Merkmale ohne Klasse oder Merkmalsgruppe</T>);
-        break;
-      case "Größen die keinem Merkmal zugeordnet sind":
-        setTitle(<T keyName="verification.category.no_measure">Größen ohne Merkmal</T>);
-        break;
-      case "Einheiten ohne Größe":
-        setTitle(<T keyName="verification.category.no_unit">Einheiten ohne Größe</T>);
-        break;
-      case "Werte ohne Größe":
-        setTitle(<T keyName="verification.category.no_value">Werte ohne Größe</T>);
-        break;
-      case "ID-Duplikate":
-        setTitle(<T keyName="verification.category.duplicate_id">ID-Duplikate</T>);
-        break;
-      case "Namen-Duplikate (innerhalb eines Types)":
-        setTitle(<T keyName="verification.category.duplicate_name_type">Namen-Duplikate (innerhalb eines Types)</T>);
-        break;
-      case "Namen-Duplikate (gesamter Datenbestand)":
-        setTitle(<T keyName="verification.category.duplicate_name_all">Namen-Duplikate (gesamter Datenbestand)</T>);
-        break;
-      case "Fehlende Beschreibung":
-        setTitle(<T keyName="verification.category.missing_description">Fehlende Beschreibung</T>);
-        break;
-      case "Fehlende Beschreibung (englisch)":
-        setTitle(<T keyName="verification.category.missing_description_en">Fehlende Beschreibung (englisch)</T>);
-        break;
-      case "Fehlende Namens-Übersetzung (englisch)":
-        setTitle(<T keyName="verification.category.missing_translation_en">Fehlende Namens-Übersetzung (englisch)</T>);
-        break;
-      default:
-        setTitle("");
-        break;
-    }
+    const cfg = verificationQueries[selectCategory as keyof typeof verificationQueries];
+    setTitle(cfg ? <T keyName={cfg.titleKey} /> : "");
   }, [selectCategory]);
 
-  // Middle column: Result list
   const renderResultList = () => {
-    switch (selectCategory) {
-      case "Fachmodelle ohne Gruppe":
-        return <ThisFindModelWithoutGroup />;
-      case "Gruppen ohne Klasse":
-        return <ThisFindGroupWithoutSubject />;
-      case "Klassen ohne Merkmale/Merkmalsgruppen":
-        return <ThisFindSubjectWithoutProp />;
-      case "Merkmalsgruppen ohne Merkmale":
-        return <ThisFindPropGroupWithoutProp />;
-      case "Merkmale ohne Klasse oder Merkmalsgruppe":
-        return <ThisFindPropWithoutSubjectOrPropGroup />;
-      case "Größen die keinem Merkmal zugeordnet sind":
-        return <ThisFindValueListWithoutProp />;
-      case "Einheiten ohne Größe":
-        return <ThisFindUnitWithoutValueList />;
-      case "Werte ohne Größe":
-        return <ThisFindValueWithoutValueList />;
-      case "ID-Duplikate":
-        return <ThisFindMultipleIDs />;
-      case "Namen-Duplikate (innerhalb eines Types)":
-        return <ThisFindMultipleNames />;
-      case "Namen-Duplikate (gesamter Datenbestand)":
-        return <ThisFindMultipleNamesAcrossClasses />;
-      case "Fehlende Beschreibung":
-        return <ThisFindMissingDescription />;
-      case "Fehlende Beschreibung (englisch)":
-        return <ThisFindMissingEnglishDescription />;
-      case "Fehlende Namens-Übersetzung (englisch)":
-        return <ThisFindMissingEnglishName />;
-      default:
-        return (
-          <StyledPaper>
-            <HintTypography variant="body1">
-              <T keyName="verification.result.select_criteria">Prüfkriterium und Kategorie auswählen.</T>
-            </HintTypography>
-          </StyledPaper>
-        );
+    const queryConfig = verificationQueries[selectCategory as keyof typeof verificationQueries];
+    if (queryConfig) {
+      return (
+        <GenericVerificationQuery
+          useQuery={queryConfig.useQuery}
+          dataPath={queryConfig.dataPath}
+          onSelect={handleOnSelect}
+        />
+      );
     }
+    return (
+      <StyledPaper>
+        <HintTypography variant="body1">
+          <T keyName="verification.result.select_criteria" />
+        </HintTypography>
+      </StyledPaper>
+    );
   };
 
-  // Right column: Detail view
+// right column: Detail view
+  const entityTypeMap = {
+    [GroupEntity.path]: {
+      icon: <DomainGroupIcon />,
+      title: <T keyName="theme.edit" />,
+      component: DomainGroupForm,
+    },
+    [ClassEntity.path]: {
+      icon: <DomainClassIcon />,
+      title: <T keyName="class.edit" />,
+      component: DomainClassForm,
+    },
+    [PropertyEntity.path]: {
+      icon: <PropertyIcon />,
+      title: <T keyName="property.edit" />,
+      component: PropertyForm,
+    },
+    [PropertyGroupEntity.path]: {
+      icon: <PropertyGroupIcon />,
+      title: <T keyName="propertyGroup.edit" />,
+      component: PropertyGroupForm,
+    },
+    [ValueListEntity.path]: {
+      icon: <MeasureIcon />,
+      title: <T keyName="valuelist.edit" />,
+      component: ValueListForm,
+    },
+    [UnitEntity.path]: {
+      icon: <UnitIcon />,
+      title: <T keyName="unit.edit" />,
+      component: UnitForm,
+    },
+    [ValueEntity.path]: {
+      icon: <ValueIcon />,
+      title: <T keyName="value.edit" />,
+      component: ValueForm,
+    },
+    [DictionaryEntity.path]: {
+      icon: <DomainGroupIcon />,
+      title: <T keyName="dictionary.edit" />,
+      component: DictionaryForm,
+    },
+    [DocumentEntity.path]: {
+      icon: <ReferenceDocumentIcon />,
+      title: <T keyName="document.edit" />,
+      component: DocumentForm,
+    },
+    default: {
+      icon: <DomainModelIcon />,
+      title: <T keyName="model.edit" />,
+      component: DomainModelForm,
+    },
+  };
+
   const renderDetailView = () => {
     if (!selectedConcept) {
       return (
         <HintTypography variant="body1">
-          <T keyName="verification.result.select_entry">Prüfergebnis in der Listenansicht auswählen um Eigenschaften anzuzeigen.</T>
+          <T keyName="verification.result.select_entry" />
         </HintTypography>
       );
     }
     const { id, recordType, tags } = selectedConcept;
     const entityType = getEntityType(recordType, tags.map((x) => x.id));
-    switch (entityType?.path) {
-      case GroupEntity.path:
-        return (
-          <>
-            <Typography variant="h5">
-              <DomainGroupIcon /> Gruppe bearbeiten
-            </Typography>
-            <DomainGroupForm id={id} onDelete={() => setSelectedConcept(null)} />
-          </>
-        );
-      case ClassEntity.path:
-        return (
-          <>
-            <Typography variant="h5">
-              <DomainClassIcon /> Klasse bearbeiten
-            </Typography>
-            <DomainClassForm id={id} onDelete={() => setSelectedConcept(null)} />
-          </>
-        );
-      case PropertyEntity.path:
-        return (
-          <>
-            <Typography variant="h5">
-              <PropertyIcon /> Merkmal bearbeiten
-            </Typography>
-            <PropertyForm id={id} onDelete={() => setSelectedConcept(null)} />
-          </>
-        );
-      case ValueListEntity.path:
-        return (
-          <>
-            <Typography variant="h5">
-              <MeasureIcon /> Größe bearbeiten
-            </Typography>
-            <ValueListForm id={id} onDelete={() => setSelectedConcept(null)} />
-          </>
-        );
-      case UnitEntity.path:
-        return (
-          <>
-            <Typography variant="h5">
-              <UnitIcon /> Einheit bearbeiten
-            </Typography>
-            <UnitForm id={id} onDelete={() => setSelectedConcept(null)} />
-          </>
-        );
-      case ValueEntity.path:
-        return (
-          <>
-            <Typography variant="h5">
-              <ValueIcon /> Wert bearbeiten
-            </Typography>
-            <ValueForm id={id} onDelete={() => setSelectedConcept(null)} />
-          </>
-        );
-      default:
-        return (
-          <>
-            <Typography variant="h5">
-              <DomainModelIcon /> Fachmodell bearbeiten
-            </Typography>
-            <DomainModelForm id={id} onDelete={() => setSelectedConcept(null)} />
-          </>
-        );
-    }
+    const typeConfig = entityTypeMap[entityType?.path] || entityTypeMap.default;
+    const DetailComponent = typeConfig.component;
+    return (
+      <>
+        <Typography variant="h5">
+          {typeConfig.icon} {typeConfig.title}
+        </Typography>
+        <DetailComponent id={id} onDelete={() => setSelectedConcept(null)} />
+      </>
+    );
   };
 
-  // Components for verification queries
-  function ThisFindPropGroupWithoutProp() {
-    const { loading, error, data } = useFindPropGroupWithoutPropTreeQuery({});
-    if (loading) return <LinearProgress />;
-    if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
-    return (
-      <FindVerification
-        leaves={data!.findPropGroupWithoutProp.nodes}
-        paths={data!.findPropGroupWithoutProp.paths}
-        onSelect={handleOnSelect}
-      />
-    );
-  }
+  type VerificationQueryProps = {
+    useQuery: () => { loading: boolean; error?: any; data?: any };
+    dataPath: string;
+    onSelect: (concept: ObjectDetailPropsFragment) => void;
+  };
 
-  function ThisFindPropWithoutSubjectOrPropGroup() {
-    const { loading, error, data } = useFindPropWithoutSubjectOrPropGroupTreeQuery({});
+  function GenericVerificationQuery({ useQuery, dataPath, onSelect }: VerificationQueryProps) {
+    const { loading, error, data } = useQuery();
     if (loading) return <LinearProgress />;
-    if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
+    if (error) return <p><T keyName="verification.error"/></p>;
+    const result = data?.[dataPath];
+    if (!result) return <p><T keyName="verification.no_data" /></p>;
     return (
       <FindVerification
-        leaves={data!.findPropWithoutSubjectOrPropGroup.nodes}
-        paths={data!.findPropWithoutSubjectOrPropGroup.paths}
-        onSelect={handleOnSelect}
-      />
-    );
-  }
-
-  function ThisFindModelWithoutGroup() {
-    const { loading, error, data } = useFindModelWithoutGroupTreeQuery({});
-    if (loading) return <LinearProgress />;
-    if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
-    return (
-      <FindVerification
-        leaves={data!.findModelWithoutGroup.nodes}
-        paths={data!.findModelWithoutGroup.paths}
-        onSelect={handleOnSelect}
-      />
-    );
-  }
-
-  function ThisFindGroupWithoutSubject() {
-    const { loading, error, data } = useFindGroupWithoutSubjectTreeQuery({});
-    if (loading) return <LinearProgress />;
-    if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
-    return (
-      <FindVerification
-        leaves={data!.findGroupWithoutSubject.nodes}
-        paths={data!.findGroupWithoutSubject.paths}
-        onSelect={handleOnSelect}
-      />
-    );
-  }
-
-  function ThisFindSubjectWithoutProp() {
-    const { loading, error, data } = useFindSubjectWithoutPropTreeQuery({});
-    if (loading) return <LinearProgress />;
-    if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
-    return (
-      <FindVerification
-        leaves={data!.findSubjectWithoutProp.nodes}
-        paths={data!.findSubjectWithoutProp.paths}
-        onSelect={handleOnSelect}
-      />
-    );
-  }
-
-  function ThisFindValueListWithoutProp() {
-    const { loading, error, data } = useFindValueListWithoutPropTreeQuery({});
-    if (loading) return <LinearProgress />;
-    if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
-    return (
-      <FindVerification
-        leaves={data!.FindValueListWithoutProp.nodes}
-        paths={data!.FindValueListWithoutProp.paths}
-        onSelect={handleOnSelect}
-      />
-    );
-  }
-
-  function ThisFindUnitWithoutValueList() {
-    const { loading, error, data } = useFindUnitWithoutValueListTreeQuery({});
-    if (loading) return <LinearProgress />;
-    if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
-    return (
-      <FindVerification
-        leaves={data!.FindUnitWithoutValueList.nodes}
-        paths={data!.FindUnitWithoutValueList.paths}
-        onSelect={handleOnSelect}
-      />
-    );
-  }
-
-  function ThisFindValueWithoutValueList() {
-    const { loading, error, data } = useFindValueWithoutValueListTreeQuery({});
-    if (loading) return <LinearProgress />;
-    if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
-    return (
-      <FindVerification
-        leaves={data!.FindValueWithoutValueList.nodes}
-        paths={data!.FindValueWithoutValueList.paths}
-        onSelect={handleOnSelect}
-      />
-    );
-  }
-
-  function ThisFindMissingEnglishName() {
-    const { loading, error, data } = useFindMissingEnglishNameTreeQuery({});
-    if (loading) return <LinearProgress />;
-    if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
-    return (
-      <FindVerification
-        leaves={data!.findMissingEnglishName.nodes}
-        paths={data!.findMissingEnglishName.paths}
-        onSelect={handleOnSelect}
-      />
-    );
-  }
-
-  function ThisFindMultipleIDs() {
-    const { loading, error, data } = useFindMultipleIDsTreeQuery({});
-    if (loading) return <LinearProgress />;
-    if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
-    return (
-      <FindVerification
-        leaves={data!.findMultipleIDs.nodes}
-        paths={data!.findMultipleIDs.paths}
-        onSelect={handleOnSelect}
-      />
-    );
-  }
-
-  function ThisFindMissingDescription() {
-    const { loading, error, data } = useFindMissingDescriptionTreeQuery({});
-    if (loading) return <LinearProgress />;
-    if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
-    return (
-      <FindVerification
-        leaves={data!.findMissingDescription.nodes}
-        paths={data!.findMissingDescription.paths}
-        onSelect={handleOnSelect}
-      />
-    );
-  }
-
-  function ThisFindMissingEnglishDescription() {
-    const { loading, error, data } = useFindMissingEnglishDescriptionTreeQuery({});
-    if (loading) return <LinearProgress />;
-    if (error) {
-      console.error(error.message);
-      return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
-    }
-    return (
-      <FindVerification
-        leaves={data!.findMissingEnglishDescription.nodes}
-        paths={data!.findMissingEnglishDescription.paths}
-        onSelect={handleOnSelect}
-      />
-    );
-  }
-
-  function ThisFindMultipleNames() {
-    const { loading, error, data } = useFindMultipleNamesTreeQuery({});
-    if (loading) return <LinearProgress />;
-    if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
-    return (
-      <FindVerification
-        leaves={data!.findMultipleNames.nodes}
-        paths={data!.findMultipleNames.paths}
-        onSelect={handleOnSelect}
-      />
-    );
-  }
-
-  function ThisFindMultipleNamesAcrossClasses() {
-    const { loading, error, data } = useFindMultipleNamesAcrossClassesTreeQuery({});
-    if (loading) return <LinearProgress />;
-    if (error) return <p>Fehler beim Aufrufen der Prüfroutine.</p>;
-    return (
-      <FindVerification
-        leaves={data!.findMultipleNamesAcrossClasses.nodes}
-        paths={data!.findMultipleNamesAcrossClasses.paths}
-        onSelect={handleOnSelect}
+        leaves={result.nodes}
+        paths={result.paths}
+        onSelect={onSelect}
       />
     );
   }
 
   return (
-    <Stack 
-      direction="row" 
-      spacing={2} 
-      sx={{ 
-        minHeight: 'calc(100vh - 140px)', 
+    <Stack
+      direction="row"
+      spacing={2}
+      sx={{
+        minHeight: 'calc(100vh - 140px)',
         width: '100%',
         alignItems: 'flex-start' // Align items to the top
       }}
     >
       {/* Left column - Criteria */}
-      <Box sx={{ 
-        width: '20%', 
+      <Box sx={{
+        width: '20%',
         flexShrink: 0,
         alignSelf: 'flex-start' // Don't stretch vertically
       }}>
         {renderCriteriaButtons()}
       </Box>
-      
+
       {/* Middle column - Results */}
-      <Box sx={{ 
-        width: '30%', 
+      <Box sx={{
+        width: '30%',
         flexShrink: 0,
         alignSelf: 'flex-start' // Don't stretch vertically
       }}>
         <StyledPaper>
           <Typography variant="h6">{title}</Typography>
-          <Box sx={{ 
-            flexGrow: title ? 1 : 0, 
-            display: 'flex', 
-            flexDirection: 'column' 
+          <Box sx={{
+            flexGrow: title ? 1 : 0,
+            display: 'flex',
+            flexDirection: 'column'
           }}>
             {renderResultList()}
           </Box>
         </StyledPaper>
       </Box>
-      
+
       {/* Right column - Details */}
-      <Box sx={{ 
+      <Box sx={{
         flexGrow: 1,
         alignSelf: 'flex-start', // Don't stretch vertically
         minHeight: !selectedConcept ? 'auto' : undefined

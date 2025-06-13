@@ -1,8 +1,7 @@
 import { UnitDetailPropsFragment, useDeleteEntryMutation, useGetUnitEntryQuery } from "../../generated/types";
-import { Typography } from "@mui/material";
+import { Typography, Button, Box } from "@mui/material";
 import { useSnackbar } from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
-import Button from "@mui/material/Button";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
@@ -137,6 +136,57 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
                 <Typography sx={{ mt: 1 }}>
                     Herkunftsland: {entry.countryOfOrigin ? entry.countryOfOrigin.name + " (" + entry.countryOfOrigin.code + ")" : "-"}
                 </Typography>
+                <Typography sx={{ mt: 1 }}>
+                    Offset: {entry.offset ? `${entry.offset.numerator} / ${entry.offset.denominator}` : "-"}
+                </Typography>
+                <Typography sx={{ mt: 1 }}>
+                    Coefficient: {entry.coefficient ? `${entry.coefficient.numerator} / ${entry.coefficient.denominator}` : "-"}
+                </Typography>
+                <Typography sx={{ mt: 1 }}>
+                    Dimension: {!entry.dimension && " -"}
+                </Typography>
+                {entry.dimension ? (
+                    <Box sx={{ mt: 1 }}>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th align="left">SI-Einheit</th>
+                                    <th align="right">Exponent</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Länge (m)</td>
+                                    <td align="right">{entry.dimension.lengthExponent ? `${entry.dimension.lengthExponent.numerator} / ${entry.dimension.lengthExponent.denominator}` : "-"}</td>
+                                </tr>
+                                <tr>
+                                    <td>Masse (kg)</td>
+                                    <td align="right">{entry.dimension.massExponent ? `${entry.dimension.massExponent.numerator} / ${entry.dimension.massExponent.denominator}` : "-"}</td>
+                                </tr>
+                                <tr>
+                                    <td>Zeit (s)</td>
+                                    <td align="right">{entry.dimension.timeExponent ? `${entry.dimension.timeExponent.numerator} / ${entry.dimension.timeExponent.denominator}` : "-"}</td>
+                                </tr>
+                                <tr>
+                                    <td>Stromstärke (A)</td>
+                                    <td align="right">{entry.dimension.electricCurrentExponent ? `${entry.dimension.electricCurrentExponent.numerator} / ${entry.dimension.electricCurrentExponent.denominator}` : "-"}</td>
+                                </tr>
+                                <tr>
+                                    <td>Temperatur (K)</td>
+                                    <td align="right">{entry.dimension.thermodynamicTemperatureExponent ? `${entry.dimension.thermodynamicTemperatureExponent.numerator} / ${entry.dimension.thermodynamicTemperatureExponent.denominator}` : "-"}</td>
+                                </tr>
+                                <tr>
+                                    <td>Lichtstärke (cd)</td>
+                                    <td align="right">{entry.dimension.luminousIntensityExponent ? `${entry.dimension.luminousIntensityExponent.numerator} / ${entry.dimension.luminousIntensityExponent.denominator}` : "-"}</td>
+                                </tr>
+                                <tr>
+                                    <td>Stoffmenge (mol)</td>
+                                    <td align="right">{entry.dimension.amountOfSubstanceExponent ? `${entry.dimension.amountOfSubstanceExponent.numerator} / ${entry.dimension.amountOfSubstanceExponent.denominator}` : "-"}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </Box>
+                ) : null}
             </FormSet>
 
             <TransferListView
