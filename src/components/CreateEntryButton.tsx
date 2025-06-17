@@ -20,7 +20,6 @@ import {
     Entity,
     GroupEntity,
     ValueListEntity,
-    ModelEntity,
     PropertyEntity,
     PropertyGroupEntity,
     UnitEntity,
@@ -30,14 +29,14 @@ import {
 
 const options = [
     DocumentEntity,
-    ModelEntity,
     GroupEntity,
     ClassEntity,
     PropertyGroupEntity,
     PropertyEntity,
     ValueListEntity,
     UnitEntity,
-    ValueEntity
+    ValueEntity,
+    DictionaryEntity
 ];
 
 type CreateEntryProps = {

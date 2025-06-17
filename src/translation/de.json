@@ -10,7 +10,6 @@
       "language": "Sprache"
     },
     "category": {
-      "no_model_group": "Fachmodelle ohne Thema",
       "no_group_class": "Themen ohne Klasse",
       "no_class_properties": "Klassen ohne Merkmale/Merkmalsgruppen",
       "no_property_group": "Merkmalsgruppen ohne Merkmale",
@@ -126,7 +125,7 @@
     "name": "Name",
     "id": "ID",
     "document": "Referenzdokumente",
-    "model": "Dictionaries",
+    "dictionary": "Dictionaries",
     "theme": "Themen",
     "class": "Klassen",
     "property": "Merkmale",
@@ -248,14 +247,8 @@
     "no_tags_added": "Es wurden keine Tags hinzugefügt.",
     "error_updating_tags": "Fehler beim Aktualisieren der Tags.",
     "adding_tags_please_wait": "Tags werden hinzugefügt, bitte warten...",
-    "reference_documents": "Referenzdokumente",
-    "domain_models": "Dictionaries",
-    "themes": "Themen",
-    "classes": "Klassen",
-    "property_groups": "Merkmalsgruppen",
-    "properties": "Merkmale",
     "show_only_documents": "Nur Referenzdokumente anzeigen",
-    "show_only_models": "Nur Dictionaries anzeigen",
+    "show_only_dictionaries": "Nur Dictionaries anzeigen",
     "show_only_themes": "Nur Themen anzeigen",
     "show_only_classes": "Nur Klassen anzeigen",
     "show_only_property_groups": "Nur Merkmalsgruppen anzeigen",
@@ -297,13 +290,6 @@
     "dateOfPublication_helper": "Das Datum, an dem das Referenzdokument veröffentlicht wurde.",
     "languageTag": "Sprache",
     "languageTag_helper": "Die Sprache, in der das Dokument verfasst ist."
-  },
-  "model": {
-    "title": "Fachmodell",
-    "titlePlural": "Fachmodelle",
-    "edit": "Fachmodell bearbeiten",
-    "loading": "Lade Fachmodell...",
-    "delete_success": "Fachmodell gelöscht."
   },
   "dictionary": {
     "title": "Dictionary",

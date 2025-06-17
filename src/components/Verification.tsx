@@ -7,7 +7,7 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 
 // Importiere alle benötigten Hooks:
-import useVerification from "../hooks/verification/useVerification";
+import useVerification from "../hooks/useVerification";
 
 const StyledTreeView = styled(SimpleTreeView)(({ theme }) => ({
   flexGrow: 1,

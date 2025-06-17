@@ -1,8 +1,7 @@
-import { tolgee } from './providers/tolgee'; // Importiere deine global initialisierte Tolgee-Instanz
-import DomainModelIcon from "@mui/icons-material/Category";
+import { tolgee } from './providers/tolgee';
+import ThemeIcon from "@mui/icons-material/Category";
 import DomainClassIcon from "@mui/icons-material/Class";
 import ReferenceDocumentIcon from "@mui/icons-material/Gavel";
-import DomainGroupIcon from "@mui/icons-material/FolderSpecial";
 import PropertyGroupIcon from "@mui/icons-material/AccountTree";
 import { SvgIconComponent } from "@mui/icons-material";
 import PropertyIcon from "@mui/icons-material/Palette";
@@ -10,16 +9,16 @@ import ValueIcon from "@mui/icons-material/LocalOffer";
 import RelationshipIcon from '@mui/icons-material/SettingsEthernet';
 import DataTemplateIcon from '@mui/icons-material/DynamicFeed';
 import { CatalogRecordType } from "./generated/types";
-import MeasureIcon from '@mui/icons-material/Speed';
 import UnitIcon from '@mui/icons-material/AcUnit';
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import DictionaryIcon from '@mui/icons-material/ImportContacts';
+import MeasureIcon from '@mui/icons-material/FormatListNumbered';
 
 
 export {
   DataTemplateIcon,
   DomainClassIcon,
-  DomainGroupIcon,
-  DomainModelIcon,
+  ThemeIcon,
   MeasureIcon,
   PropertyGroupIcon,
   PropertyIcon,
@@ -27,7 +26,8 @@ export {
   RelationshipIcon,
   UnitIcon,
   ValueIcon,
-  HelpOutlineIcon
+  HelpOutlineIcon,
+  DictionaryIcon
 };
 
 export type Entity = {
@@ -58,17 +58,7 @@ export const DictionaryEntity: Entity = {
   get titlePlural() { return tolgee.t("dictionary.titlePlural"); },
   recordType: CatalogRecordType.Dictionary,
   path: "dictionary",
-  Icon: DomainModelIcon,
-  export: true
-};
-
-export const ModelEntity: Entity = {
-  tags: ["6f96aaa7-e08f-49bb-ac63-93061d4c5db2"],
-  get title() { return tolgee.t("model.title"); },
-  get titlePlural() { return tolgee.t("model.titlePlural"); },
-  recordType: CatalogRecordType.Subject,
-  path: "model",
-  Icon: DomainModelIcon,
+  Icon: DictionaryIcon,
   export: true
 };
 
@@ -78,7 +68,7 @@ export const GroupEntity: Entity = {
   get titlePlural() { return tolgee.t("theme.titlePlural"); },
   recordType: CatalogRecordType.Subject,
   path: "theme",
-  Icon: DomainGroupIcon,
+  Icon: ThemeIcon,
   export: true
 };
 
@@ -154,7 +144,6 @@ export const UndefinedEntity: Entity = {
 
 export const Domain = [
   DocumentEntity,
-  ModelEntity,
   DictionaryEntity,
   GroupEntity,
   ClassEntity,

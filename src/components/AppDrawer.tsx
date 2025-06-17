@@ -23,11 +23,9 @@ import PublishIcon from "@mui/icons-material/Publish";
 import DescriptionIcon from "@mui/icons-material/Description";
 import {
   ClassEntity,
-  DataTemplateEntity,
   DocumentEntity,
   GroupEntity,
   ValueListEntity,
-  ModelEntity,
   PropertyEntity,
   PropertyGroupEntity,
   UnitEntity,
@@ -246,16 +244,9 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
           />
 
           <AppDrawerItem
-            icon={<ModelEntity.Icon />}
+            icon={<DictionaryEntity.Icon />}
             primary={<T keyName="dictionary.titlePlural">Dictionary</T>}
             to={`/${DictionaryEntity.path}`}
-            onClick={handleItemClick}
-          />
-
-          <AppDrawerItem
-            icon={<ModelEntity.Icon />}
-            primary={<T keyName="model.titlePlural">Fachmodelle</T>}
-            to={`/${ModelEntity.path}`}
             onClick={handleItemClick}
           />
 

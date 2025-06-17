@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import LinearProgress from "@mui/material/LinearProgress";
 import { Paper, Typography, Box, Stack } from "@mui/material";
-import DomainModelForm from "./forms/DomainModelForm";
 import DomainGroupForm from "./forms/DomainGroupForm";
 import DomainClassForm from "./forms/DomainClassForm";
 import PropertyGroupForm from "./forms/PropertyGroupForm";
@@ -17,7 +16,6 @@ import {
 import {
   useFindPropGroupWithoutPropTreeQuery,
   useFindPropWithoutSubjectOrPropGroupTreeQuery,
-  useFindModelWithoutGroupTreeQuery,
   useFindGroupWithoutSubjectTreeQuery,
   useFindSubjectWithoutPropTreeQuery,
   useFindValueListWithoutPropTreeQuery,
@@ -34,13 +32,12 @@ import {
 import {
   ClassEntity,
   DomainClassIcon,
-  DomainGroupIcon,
-  DomainModelIcon,
+  ThemeIcon,
+  DictionaryIcon,
   getEntityType,
   GroupEntity,
   ValueListEntity,
   MeasureIcon,
-  ModelEntity,
   PropertyEntity,
   PropertyGroupEntity,
   PropertyGroupIcon,
@@ -82,12 +79,6 @@ const LeftAlignedButton = styled(ButtonComponent)(({ theme }) => ({
 }));
 
 const verificationQueries = {
-  "Fachmodelle ohne Thema": {
-    useQuery: useFindModelWithoutGroupTreeQuery,
-    dataPath: "findModelWithoutGroup",
-    titleKey: "verification.category.no_model_group",
-    buttonGroup: "Integrität",
-  },
   "Themen ohne Klasse": {
     useQuery: useFindGroupWithoutSubjectTreeQuery,
     dataPath: "findGroupWithoutSubject",
@@ -249,7 +240,7 @@ export function VerificationView() {
 // right column: Detail view
   const entityTypeMap = {
     [GroupEntity.path]: {
-      icon: <DomainGroupIcon />,
+      icon: <ThemeIcon />,
       title: <T keyName="theme.edit" />,
       component: DomainGroupForm,
     },
@@ -284,7 +275,7 @@ export function VerificationView() {
       component: ValueForm,
     },
     [DictionaryEntity.path]: {
-      icon: <DomainGroupIcon />,
+      icon: <DictionaryIcon />,
       title: <T keyName="dictionary.edit" />,
       component: DictionaryForm,
     },
@@ -294,9 +285,9 @@ export function VerificationView() {
       component: DocumentForm,
     },
     default: {
-      icon: <DomainModelIcon />,
-      title: <T keyName="model.edit" />,
-      component: DomainModelForm,
+      icon: <DomainClassIcon />,
+      title: <T keyName="class.edit" />,
+      component: DomainClassForm,
     },
   };
 

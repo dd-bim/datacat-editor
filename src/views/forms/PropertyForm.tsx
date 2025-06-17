@@ -41,7 +41,7 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
         XTD_REAL: "Real",
         XTD_COMPLEX: "Complex"
     };
-    // fetch domain model
+    // fetch properties
     const { loading, error, data, refetch } = useGetPropertyEntryQuery({
         fetchPolicy: "network-only",
         variables: { id }

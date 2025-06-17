@@ -33,7 +33,7 @@ export default function DomainClassForm(
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
-  // fetch domain model
+  // fetch subjects
   const { loading, error, data, refetch } = useGetSubjectEntryQuery({
     fetchPolicy: "network-only",
     variables: { id },

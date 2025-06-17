@@ -37,7 +37,7 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
         XTD_TEN: "10"
     };
 
-    // fetch domain model
+    // fetch units
     const { loading, error, data, refetch } = useGetUnitEntryQuery({
         fetchPolicy: "network-only",
         variables: { id }

@@ -4,7 +4,6 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { styled } from "@mui/material/styles";
 import { Hierarchy } from "../components/Hierarchy";
 import { ObjectPropsFragment, usePropertyTreeQuery } from "../generated/types";
-import DomainModelForm from "./forms/DomainModelForm";
 import DomainGroupForm from "./forms/DomainGroupForm";
 import DomainClassForm from "./forms/DomainClassForm";
 import PropertyGroupForm from "./forms/PropertyGroupForm";
@@ -13,10 +12,10 @@ import ValueListForm from "./forms/ValueListForm";
 import UnitForm from "./forms/UnitForm";
 import ValueForm from "./forms/ValueForm";
 import {
-  DomainModelIcon,
-  DomainGroupIcon,
+  ThemeIcon,
   DomainClassIcon,
   PropertyGroupIcon,
+  DictionaryIcon,
   PropertyIcon,
   MeasureIcon,
   UnitIcon,
@@ -76,7 +75,6 @@ const HierarchyView = () => {
   const { loading, error, data } = usePropertyTreeQuery({
     fetchPolicy: "cache-and-network" // Improve performance with caching
   });
-  console.log("hierarchy", error);
   
   // State for the currently selected concept:
   const [selectedConcept, setSelectedConcept] = useState<ObjectPropsFragment | null>(null);
@@ -145,7 +143,7 @@ const HierarchyView = () => {
         return (
           <>
             <Typography variant="h5">
-              <DomainGroupIcon /> <T keyName="theme.edit"/>
+              <ThemeIcon /> <T keyName="theme.edit"/>
             </Typography>
             <DomainGroupForm id={id} onDelete={handleDelete} />
           </>
@@ -199,9 +197,9 @@ const HierarchyView = () => {
         return (
           <>
             <Typography variant="h5">
-              <DomainModelIcon /> <T keyName="model.edit"/>
+              <DomainClassIcon /> <T keyName="class.edit"/>
             </Typography>
-            <DomainModelForm id={id} onDelete={handleDelete} />
+            <DomainClassForm id={id} onDelete={handleDelete} />
           </>
         );
     }

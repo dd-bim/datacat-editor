@@ -29,7 +29,7 @@ const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => 
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
 
-    // fetch domain model
+    // fetch documents
     const { loading, error, data, refetch } = useGetDocumentEntryQuery({
         fetchPolicy: "network-only",
         variables: { id }

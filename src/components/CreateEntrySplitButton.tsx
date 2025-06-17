@@ -21,11 +21,11 @@ import {
   Entity,
   GroupEntity,
   ValueListEntity,
-  ModelEntity,
   PropertyEntity,
   PropertyGroupEntity,
   UnitEntity,
   ValueEntity,
+  DictionaryEntity
 } from "../domain";
 import { T, useTolgee } from "@tolgee/react";
 
@@ -35,7 +35,6 @@ type CreateEntrySplitButtonProps = {
 
 const options = [
   DocumentEntity,
-  ModelEntity,
   GroupEntity,
   ClassEntity,
   PropertyGroupEntity,
@@ -43,6 +42,7 @@ const options = [
   ValueListEntity,
   UnitEntity,
   ValueEntity,
+  DictionaryEntity
 ];
 
 const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
@@ -93,8 +93,8 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
     id: "",
     name: "",
     description: "",
-    versionId: "",
-    versionDate: "",
+    majorVersion: "",
+    minorVersion: "",
     comment: "",
   };
 
@@ -116,12 +116,12 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
     setMenuOpen(false);
   };
 
-  const onSubmit = async ({ id, versionId, versionDate, name, description, comment }: CreateEntryFormValues) => {
+  const onSubmit = async ({ id, majorVersion, minorVersion, name, description, comment }: CreateEntryFormValues) => {
     const catalogRecordType = input?.recordType! as unknown as CatalogRecordType;
     const names = [{ languageTag: "de", value: name }];
     const descriptions = description ? [{ languageTag: "de", value: description }] : [];
     const comments = comment ? [{ languageTag: "de", value: comment }] : [];
-    const version = { versionId, versionDate };
+    const version = { majorVersion, minorVersion };
     const properties = {
       id,
       version: version,

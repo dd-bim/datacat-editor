@@ -31,7 +31,7 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
 
-    // fetch domain model
+    // fetch value lists
     const { loading, error, data, refetch } = useGetValueListEntryQuery({
         fetchPolicy: "network-only",
         variables: { id }

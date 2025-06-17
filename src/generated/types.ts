@@ -565,7 +565,7 @@ type ObjectProps_XtdProperty_Fragment = ObjectProps<'XtdProperty'>;
 type ObjectProps_XtdSubject_Fragment = ObjectProps<'XtdSubject'>;
 type ObjectProps_XtdUnit_Fragment = ObjectProps<'XtdUnit'>;
 type ObjectProps_XtdValue_Fragment = ObjectProps<'XtdValue'>;
-type ObjectProps_XtdOrderedValue_Fragment = ObjectProps<'XtdOrderedValue'>;
+type ObjectProps_XtdOrderedValue_Fragment = ObjectProps<'XtdOrderedValue'> & {order: number};
 type ObjectProps_XtdValueList_Fragment = ObjectProps<'XtdValueList'>;
 type ObjectProps_XtdDimension_Fragment = ObjectProps<'XtdDimension'>;
 type ObjectProps_XtdCountry_Fragment = ObjectProps<'XtdCountry'>;
@@ -3223,6 +3223,7 @@ export const PropertyTreeDocument = gql`
     input: {rootNodeFilter: {entityTypeIn: [Subject], tagged: ["6f96aaa7-e08f-49bb-ac63-93061d4c5db2"]}}
   ) {
     nodes {
+      recordType
       # ...ObjectProps
       id 
       name
@@ -3307,29 +3308,6 @@ export function useFindPropWithoutSubjectOrPropGroupTreeLazyQuery(baseOptions?: 
 export type FindPropWithoutSubjectOrPropGroupTreeQueryHookResult = ReturnType<typeof useFindPropWithoutSubjectOrPropGroupTreeQuery>;
 export type FindPropWithoutSubjectOrPropGroupTreeLazyQueryHookResult = ReturnType<typeof useFindPropWithoutSubjectOrPropGroupTreeLazyQuery>;
 export type FindPropWithoutSubjectOrPropGroupTreeQueryResult = Apollo.QueryResult<FindPropWithoutSubjectOrPropGroupTreeQuery, FindVerificationTreeQueryVariables>;
-
-// FindModelWithoutGroup
-
-export const FindModelWithoutGroupTreeDocument = gql`
-    query FindModelWithoutGroupTree {
-      findModelWithoutGroup{
-    nodes {
-      ...VerificationProps
-    }
-    paths
-  }
-}
-    ${VerificationPropsFragmentDoc}`;
-
-export function useFindModelWithoutGroupTreeQuery(baseOptions?: Apollo.QueryHookOptions<FindModelWithoutGroupTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useQuery<FindModelWithoutGroupTreeQuery, FindVerificationTreeQueryVariables>(FindModelWithoutGroupTreeDocument, baseOptions);
-}
-export function useFindModelWithoutGroupTreeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindModelWithoutGroupTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindModelWithoutGroupTreeQuery, FindVerificationTreeQueryVariables>(FindModelWithoutGroupTreeDocument, baseOptions);
-}
-export type FindModelWithoutGroupTreeQueryHookResult = ReturnType<typeof useFindModelWithoutGroupTreeQuery>;
-export type FindModelWithoutGroupTreeLazyQueryHookResult = ReturnType<typeof useFindModelWithoutGroupTreeLazyQuery>;
-export type FindModelWithoutGroupTreeQueryResult = Apollo.QueryResult<FindModelWithoutGroupTreeQuery, FindVerificationTreeQueryVariables>;
 
 // FindGroupWithoutSubject
 

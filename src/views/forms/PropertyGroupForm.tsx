@@ -30,7 +30,7 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
 
-    // fetch domain model
+    // fetch property groups
     const { loading, error, data, refetch } = useGetSubjectEntryQuery({
         fetchPolicy: "network-only",
         variables: { id }
