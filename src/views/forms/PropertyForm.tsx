@@ -46,7 +46,6 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
         fetchPolicy: "network-only",
         variables: { id }
     });
-    console.log("Property Error", error);
 
     let entry = data?.node as PropertyDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation({

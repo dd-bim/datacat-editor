@@ -36,7 +36,6 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
         fetchPolicy: "network-only",
         variables: { id }
     });
-    console.log("ValueListForm error", error);
 
     let entry = data?.node as ValueListDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntryMutation({

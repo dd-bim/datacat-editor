@@ -1,21 +1,21 @@
-import React from "react";
-import { useExportCatalogItemsQuery, ExportCatalogRecord_Fragment, useExportCatalogItemsRelationshipsQuery, ExportCatalogRecordRelationship_Fragment } from "../generated/types";
+import { useExportCatalogRecordsQuery, ExportCatalogRecord_Fragment, useExportCatalogRecordsRelationshipsQuery, ExportCatalogRecordRelationship_Fragment } from "../generated/types";
 import Button from "@mui/material/Button";
 import View from "./View";
 import Typography from "@mui/material/Typography";
 import dateUtil from "../dateUtil";
 import JSZip from "jszip";
 import FileSaver from "file-saver";
-import { T, useTranslate } from "@tolgee/react";
+import { T } from "@tolgee/react";
 
 export function ExportView() {
-  const { data: entity } = useExportCatalogItemsQuery();
-  const { data: relation } = useExportCatalogItemsRelationshipsQuery();
-  let loaded = false;
-  if (relation && entity) loaded = true;
+  const { data: entity, loading: entityLoading } = useExportCatalogRecordsQuery();
+  const { data: relation, loading: relationLoading } = useExportCatalogRecordsRelationshipsQuery();
+console.log("entity", entity);
+console.log("relation", relation);
+  const loaded = !entityLoading && !relationLoading && !!entity && !!relation;
+
 
   let zip = new JSZip();
-  const { t } = useTranslate();
 
   const handleOnClick = () => {
     const entities: string[][] = [];
@@ -26,19 +26,35 @@ export function ExportView() {
       }
       entities.push([
         node.id,
-        `${node.typ ?? ""}`,
-        `"${node.schlagworte ?? ""}"`,
+        `"${node.type ?? ""}"`,
+        `"${node.tags ?? ""}"`,
         `"${node.name ?? ""}"`,
         `"${node.name_en ?? ""}"`,
         `"${description ?? ""}"`,
-        `${node.versionId ?? ""}`,
-        `${node.createdBy ?? ""}`,
-        `${node.created ?? ""}`,
-        `${node.lastModified ?? ""}`,
-        `${node.lastModifiedBy ?? ""}`,
+        `${node.majorVersion ?? ""}`,
+        `${node.minorVersion ?? ""}`,
+        `"${node.createdBy ?? ""}"`,
+        `"${node.created ?? ""}"`,
+        `"${node.lastModified ?? ""}"`,
+        `"${node.lastModifiedBy ?? ""}"`,
+        `"${node.status ?? ""}"`,
+        `"${node.languageOfCreator ?? ""}"`,
+        `"${node.countryOfOrigin ?? ""}"`,
+        `"${node.deprecationExplanation ?? ""}"`,
+        `"${node.languages ?? ""}"`,
+        `"${node.examples ?? ""}"`,
+        `"${node.dataType ?? ""}"`,
+        `"${node.dataFormat ?? ""}"`,
+        `"${node.scale ?? ""}"`,
+        `"${node.base ?? ""}"`,
+        `"${node.uri ?? ""}"`,
+        `"${node.author ?? ""}"`,
+        `"${node.publisher ?? ""}"`,
+        `"${node.isbn ?? ""}"`,
+        `"${node.dateOfPublication ?? ""}"`
       ]);
     };
-    entity?.findExportCatalogItems.nodes.forEach(writeEntities);
+    entity?.findExportCatalogRecords.nodes.forEach(writeEntities);
     let entitySet = new Set(entities.map((e) => JSON.stringify(e)));
     let entityArr: string[][] = [];
 
@@ -47,7 +63,7 @@ export function ExportView() {
     });
 
     const csvEntity =
-      "id;typ;tags;name;name_en;description;version;createdBy;created;lastModified;lastModifiedBy\n" +
+      "id;typ;tags;name;name_en;description;majorVersion;minorVersion;createdBy;created;lastModified;lastModifiedBy;status;languageOfCreator;countryOfOrigin;deprecationExplanation;languages;examples;datatype;dataFormat;scale;base;uri;author;publisher;isbn;dateOfPublication \n" +
       entityArr.map((e) => e.join(";")).join("\n");
     var entityBlob = new Blob([csvEntity], { type: "text/csv;charset=utf-8" });
     zip.file(`Entities.csv`, entityBlob);
@@ -55,15 +71,12 @@ export function ExportView() {
     const relations: string[][] = [];
     const writeRelations = (node: ExportCatalogRecordRelationship_Fragment) => {
       relations.push([
-        node.Entity1,
-        node.Entity1Type,
-        node.RelationId,
-        node.RelationshipType,
-        node.Entity2,
-        node.Entity2Type,
+        node.entity1,
+        node.relationship,
+        node.entity2
       ]);
     };
-    relation?.findExportCatalogItemsRelationships.nodes.forEach(writeRelations);
+    relation?.findExportCatalogRecordsRelationships.nodes.forEach(writeRelations);
 
     let relationSet = new Set(relations.map((e) => JSON.stringify(e)));
     let relationArr: string[][] = [];
@@ -73,7 +86,7 @@ export function ExportView() {
     });
 
     const csvRelation =
-      "entity1;entity1Type;relationId;relationshipType;entity2;entity2Type\n" +
+      "entity1;relationship;entity2\n" +
       relationArr.map((e) => e.join(";")).join("\n");
     var relationBlob = new Blob([csvRelation], { type: "text/csv;charset=utf-8" });
     zip.file(`Relationships.csv`, relationBlob);
@@ -85,20 +98,10 @@ export function ExportView() {
   };
 
   const renderDescription = () => {
-    const description = t("export_view.description").split("\n");
     return (
-      <>
-        {description[0]}
-        <br />
-        {description[1]}
-        {description[2]}
-        <br />
-        {description[3]}
-        <br />
-        <br />
-        {description[4]}
-        <br />
-      </>
+      <span style={{ whiteSpace: "pre-line" }}>
+        <T keyName="export_view.description" />
+      </span>
     );
   };
 

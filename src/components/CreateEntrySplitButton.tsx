@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from "react";
-import { CatalogRecordType, useCreateEntryMutation } from "../generated/types";
+import { CatalogRecordType, useCreateEntryMutation, useCreateRelationshipMutation, RelationshipRecordType } from "../generated/types";
 import { ButtonGroup, ButtonGroupProps, Dialog } from "@mui/material";
 import Button from "@mui/material/Button";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -28,21 +28,21 @@ import {
   DictionaryEntity
 } from "../domain";
 import { T, useTolgee } from "@tolgee/react";
-
+ 
 type CreateEntrySplitButtonProps = {
   ButtonGroupProps?: ButtonGroupProps;
 };
 
 const options = [
   DocumentEntity,
+  DictionaryEntity,
   GroupEntity,
   ClassEntity,
   PropertyGroupEntity,
   PropertyEntity,
   ValueListEntity,
   UnitEntity,
-  ValueEntity,
-  DictionaryEntity
+  ValueEntity
 ];
 
 const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
@@ -59,7 +59,7 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
     };
 
     window.addEventListener('languageChanged', handleLanguageChange);
-    
+
     return () => {
       window.removeEventListener('languageChanged', handleLanguageChange);
     };
@@ -82,6 +82,7 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
     },
   });
 
+  const [createRelationship] = useCreateRelationshipMutation();
   const [lastUsedOption, setLastUsedOption] = React.useState(ClassEntity);
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -93,9 +94,24 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
     id: "",
     name: "",
     description: "",
-    majorVersion: "",
-    minorVersion: "",
+    majorVersion: 1,
+    minorVersion: 0,
     comment: "",
+    languageOfCreator: "de",
+    countryOfOrigin: "DE",
+    languageTag: ["de"],
+    uri: "",
+    author: "",
+    isbn: "",
+    publisher: "",
+    dateOfPublication: "",
+    nominalValue: "",
+    dataType: "XTD_STRING",
+    dataFormat: "",
+    scale: "XTD_LINEAR",
+    base: "XTD_ONE",
+    valueListLanguage: "de",
+    dictionary: ""
   };
 
   const onClick = (tag: Entity) => {
@@ -116,28 +132,112 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
     setMenuOpen(false);
   };
 
-  const onSubmit = async ({ id, majorVersion, minorVersion, name, description, comment }: CreateEntryFormValues) => {
-    const catalogRecordType = input?.recordType! as unknown as CatalogRecordType;
-    const names = [{ languageTag: "de", value: name }];
-    const descriptions = description ? [{ languageTag: "de", value: description }] : [];
-    const comments = comment ? [{ languageTag: "de", value: comment }] : [];
-    const version = { majorVersion, minorVersion };
-    const properties = {
-      id,
-      version: version,
-      names: names,
-      descriptions,
-      comments,
-    };
-    await create({
-      variables: {
-        input: {
-          catalogEntryType: catalogRecordType,
-          properties: properties,
-          tags: input?.tags,
-        },
-      },
-    });
+  const onSubmit = async (formValues: CreateEntryFormValues) => {
+    // const catalogRecordType = input?.recordType! as unknown as CatalogRecordType;
+    // const names = [{ languageTag: "de", value: name }];
+    // const descriptions = description ? [{ languageTag: "de", value: description }] : [];
+    // const comments = comment ? [{ languageTag: "de", value: comment }] : [];
+    // const version = { majorVersion, minorVersion };
+    // const properties = {
+    //   id,
+    //   version: version,
+    //   names: names,
+    //   descriptions,
+    //   comments,
+    // };
+    // await create({
+    //   variables: {
+    //     input: {
+    //       catalogEntryType: catalogRecordType,
+    //       properties: properties,
+    //       tags: input?.tags,
+    //     },
+    //   },
+    // });
+       const catalogRecordType = (input?.recordType! as unknown as CatalogRecordType);
+        const names = [
+            { languageTag: "de", value: formValues.name }
+        ];
+        const properties: any = {
+            id: formValues.id,
+            names: names
+        };
+        if (input !== DictionaryEntity) {
+            const descriptions = formValues.description
+                ? [{ languageTag: "de", value: formValues.description }]
+                : [];
+            const comments = formValues.comment
+                ? [{ languageTag: "de", value: formValues.comment }]
+                : [];
+
+            properties.descriptions = descriptions;
+            properties.comments = comments;
+            properties.majorVersion = Number(formValues.majorVersion);
+            properties.minorVersion = Number(formValues.minorVersion);
+        }
+
+        if (input !== ValueEntity && input !== DictionaryEntity) {
+            properties.languageOfCreator = formValues.languageOfCreator;
+            properties.countryOfOrigin = formValues.countryOfOrigin;
+        }
+
+        if (input === DocumentEntity) {
+            properties.externalDocumentProperties = {
+                languageTag: formValues.languageTag,
+                documentUri: formValues.uri,
+                author: formValues.author,
+                isbn: formValues.isbn,
+                publisher: formValues.publisher,
+                dateOfPublication: formValues.dateOfPublication
+            };
+        }
+        else if (input === ValueEntity) {
+            properties.valueProperties = {
+                nominalValue: formValues.nominalValue
+            }
+        }
+        else if (input === PropertyEntity) {
+            properties.propertyProperties = {
+                dataType: formValues.dataType,
+                dataFormat: formValues.dataFormat
+            };
+        }
+        else if (input === UnitEntity) {
+            properties.unitProperties = {
+                scale: formValues.scale,
+                base: formValues.base
+            };
+        }
+        else if (input === ValueListEntity) {
+            properties.valueListProperties = {
+                languageTag: formValues.valueListLanguage
+            };
+        }
+
+
+        const result = await create({
+            variables: {
+                input: {
+                    catalogEntryType: catalogRecordType,
+                    properties: properties,
+                    tags: input?.tags
+                }
+            },
+            refetchQueries: ["FindDictionariesQuery", "FindItemsQuery"]
+        });
+
+        const newConceptId = result.data?.createCatalogEntry?.catalogEntry?.id;
+        if (formValues.dictionary && newConceptId) {
+            await createRelationship({
+                variables: {
+                    input: {
+                        fromId: newConceptId,
+                        toIds: [formValues.dictionary], 
+                        relationshipType: RelationshipRecordType.Dictionary
+                    }
+                }
+            });
+        }
 
     setDialogOpen(false);
     enqueueSnackbar(<T keyName="create_entry_split_button.create_entry" params={{ title: input!.title }} />);
@@ -197,7 +297,7 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
           </T>
         </DialogTitle>
         <DialogContent>
-          <CreateEntryForm defaultValues={defaultValues} onSubmit={onSubmit} />
+          <CreateEntryForm defaultValues={defaultValues} onSubmit={onSubmit} entityType={input!} />
         </DialogContent>
       </Dialog>
     </React.Fragment>

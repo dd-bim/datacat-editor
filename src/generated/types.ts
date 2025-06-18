@@ -576,9 +576,9 @@ type ObjectProps_XtdQuantityKind_Fragment = ObjectProps<'XtdQuantityKind'>;
 
 export type ObjectPropsFragment = ObjectProps_XtdExternalDocument_Fragment | ObjectProps_XtdProperty_Fragment | ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment | ObjectProps_XtdOrderedValue_Fragment | ObjectProps_XtdValueList_Fragment | ObjectProps_XtdDimension_Fragment | ObjectProps_XtdCountry_Fragment | ObjectProps_XtdSubdivision_Fragment | ObjectProps_XtdRelationshipToSubject_Fragment | ObjectProps_XtdRelationshipToProperty_Fragment | ObjectProps_XtdQuantityKind_Fragment;
 
-export type ExportCatalogRecord_Fragment = { __typename: 'ExportResult', id: string, typ?: Maybe<string>, schlagworte?: Maybe<string>, name?: Maybe<string>, name_en?: Maybe<string>, description?: Maybe<string>, versionId?: Maybe<string>, created?: Maybe<string>, createdBy?: Maybe<string>, lastModified?: Maybe<string>, lastModifiedBy?: Maybe<string> };
+export type ExportCatalogRecord_Fragment = { __typename: 'ExportResult', id: string, type?: Maybe<string>, tags?: Maybe<string>, name?: Maybe<string>, name_en?: Maybe<string>, description?: Maybe<string>, majorVersion?: Maybe<number>, minorVersion?: Maybe<number>, created?: Maybe<string>, createdBy?: Maybe<string>, lastModified?: Maybe<string>, lastModifiedBy?: Maybe<string>, status?: Maybe<StatusOfActivationEnum>, languageOfCreator?: Maybe<string>, countryOfOrigin?: Maybe<string>, deprecationExplanation?: Maybe<string>, languages?: Maybe<string>, examples?: Maybe<string>, dataType?: Maybe<DataTypeEnum>, dataFormat?: Maybe<string>, scale?: Maybe<UnitScaleEnum>, base?: Maybe<UnitBaseEnum>, uri?: Maybe<string>, author?: Maybe<string>, publisher?: Maybe<string>, isbn?: Maybe<string>, dateOfPublication?: Maybe<string> };
 
-export type ExportCatalogRecordRelationship_Fragment = { __typename: 'ExportRelationshipResult', Entity1: string, Entity1Type: string, RelationId: string, RelationshipType: string, Entity2: string, Entity2Type: string };
+export type ExportCatalogRecordRelationship_Fragment = { __typename: 'ExportRelationshipResult', entity1: string, relationship: string, entity2: string };
 
 export type SearchResultPropsFragment = { __typename: 'XtdObject', id: string, recordType: CatalogRecordType, name?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> }; // description?: Maybe<string>, 
 
@@ -1171,9 +1171,9 @@ export type FindMultipleNamesTreeQuery = { findMultipleNames: { paths: Array<Arr
 
 export type FindMultipleNamesAcrossClassesTreeQuery = { findMultipleNamesAcrossClasses: { paths: Array<Array<string>>, nodes: Array<ObjectPropsFragment> } };
 
-export type FindExportCatalogItemsTreeQuery = { findExportCatalogItems: { paths: Array<Array<string>>, nodes: Array<ExportCatalogRecord_Fragment> } };
+export type FindExportCatalogRecordsTreeQuery = { findExportCatalogRecords: { paths: Array<Array<string>>, nodes: Array<ExportCatalogRecord_Fragment> } };
 
-export type FindExportCatalogItemsRelationshipsTreeQuery = { findExportCatalogItemsRelationships: { paths: Array<Array<string>>, nodes: Array<ExportCatalogRecordRelationship_Fragment> } };
+export type FindExportCatalogRecordsRelationshipsTreeQuery = { findExportCatalogRecordsRelationships: { paths: Array<Array<string>>, nodes: Array<ExportCatalogRecordRelationship_Fragment> } };
 
 
 export type GetDocumentEntryQueryVariables = Exact<{
@@ -3220,11 +3220,10 @@ export type FindTagsQueryResult = Apollo.QueryResult<FindTagsQuery, FindTagsQuer
 export const PropertyTreeDocument = gql`
     query PropertyTree {
   hierarchy(
-    input: {rootNodeFilter: {entityTypeIn: [Subject], tagged: ["6f96aaa7-e08f-49bb-ac63-93061d4c5db2"]}}
+    input: {rootNodeFilter: {entityTypeIn: [Subject], tagged: ["5997da9b-a716-45ae-84a9-e2a7d186bcf9"]}}
   ) {
     nodes {
       recordType
-      # ...ObjectProps
       id 
       name
       tags {
@@ -3237,7 +3236,7 @@ export const PropertyTreeDocument = gql`
 }
     
     `;
-// ${ObjectPropsFragmentDoc}
+
 /**
  * __usePropertyTreeQuery__
  *
@@ -5189,58 +5188,72 @@ export type ProfileQueryHookResult = ReturnType<typeof useProfileQuery>;
 export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
 export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
 
-//__useExportCatalogItemsQuery__
-export const GetExportCatalogItems = gql`
-query findExportCatalogItems {
-  findExportCatalogItems {
+//__useExportCatalogRecordsQuery__
+export const GetExportCatalogRecords = gql`
+query findExportCatalogRecords {
+  findExportCatalogRecords {
 	  nodes {
-      id,
-      typ,
-      schlagworte,
-      name,
-      name_en,
-      description,
-      versionId,
-      created,
-      createdBy,
-      lastModified,
+      id
+      type
+      tags
+      name
+      name_en
+      description
+      description_en
+      created
+      createdBy
+      lastModified
       lastModifiedBy
+      majorVersion
+      minorVersion
+      status
+      languageOfCreator
+      countryOfOrigin
+      deprecationExplanation
+      languages
+      examples
+      dataType
+      dataFormat
+      scale
+      base
+      uri
+      author
+      publisher
+      isbn
+      dateOfPublication
     }
   }
 }`;
-export function useExportCatalogItemsQuery(baseOptions?: Apollo.QueryHookOptions<FindExportCatalogItemsTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useQuery<FindExportCatalogItemsTreeQuery, FindVerificationTreeQueryVariables>(GetExportCatalogItems, baseOptions);
+export function useExportCatalogRecordsQuery(baseOptions?: Apollo.QueryHookOptions<FindExportCatalogRecordsTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindExportCatalogRecordsTreeQuery, FindVerificationTreeQueryVariables>(GetExportCatalogRecords, baseOptions);
 }
-export function useExportCatalogItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindExportCatalogItemsTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindExportCatalogItemsTreeQuery, FindVerificationTreeQueryVariables>(GetExportCatalogItems, baseOptions);
+export function useExportCatalogRecordsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindExportCatalogRecordsTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindExportCatalogRecordsTreeQuery, FindVerificationTreeQueryVariables>(GetExportCatalogRecords, baseOptions);
 }
-export type ExportCatalogItemsQueryHookResult = ReturnType<typeof useExportCatalogItemsQuery>;
-export type ExportCatalogItemsLazyQueryHookResult = ReturnType<typeof useExportCatalogItemsLazyQuery>;
-export type ExportCatalogItemsQueryResult = Apollo.QueryResult<FindExportCatalogItemsTreeQuery, FindVerificationTreeQueryVariables>;
+export type ExportCatalogRecordsQueryHookResult = ReturnType<typeof useExportCatalogRecordsQuery>;
+export type ExportCatalogRecordsLazyQueryHookResult = ReturnType<typeof useExportCatalogRecordsLazyQuery>;
+export type ExportCatalogRecordsQueryResult = Apollo.QueryResult<FindExportCatalogRecordsTreeQuery, FindVerificationTreeQueryVariables>;
 
 
-//__useExportCatalogItemsRelationshipsQuery__
+//__useExportCatalogRecordsRelationshipsQuery__
 
-export const GetExportCatalogItemsRelationships = gql`
-query findExportCatalogItemsRelationships {
-  findExportCatalogItemsRelationships {
+export const GetExportCatalogRecordsRelationships = gql`
+query findExportCatalogRecordsRelationships {
+  findExportCatalogRecordsRelationships {
     nodes {
-      Entity1,
-      Entity1Type,
-      RelationId,
-      RelationshipType,
-      Entity2,
-      Entity2Type
+      entity1,
+      relationship,
+      entity2,
       __typename
     }
   }
   }`;
-export function useExportCatalogItemsRelationshipsQuery(baseOptions?: Apollo.QueryHookOptions<FindExportCatalogItemsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useQuery<FindExportCatalogItemsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>(GetExportCatalogItemsRelationships, baseOptions);
+export function useExportCatalogRecordsRelationshipsQuery(baseOptions?: Apollo.QueryHookOptions<FindExportCatalogRecordsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useQuery<FindExportCatalogRecordsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>(GetExportCatalogRecordsRelationships, baseOptions);
 }
-export function useExportCatalogItemsRelationshipsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindExportCatalogItemsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>) {
-  return Apollo.useLazyQuery<FindExportCatalogItemsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>(GetExportCatalogItemsRelationships, baseOptions);
+export function useExportCatalogRecordsRelationshipsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindExportCatalogRecordsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>) {
+  return Apollo.useLazyQuery<FindExportCatalogRecordsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>(GetExportCatalogRecordsRelationships, baseOptions);
 }
-export type ExportCatalogItemsRelationshipsQueryHookResult = ReturnType<typeof useExportCatalogItemsRelationshipsQuery>;
-export type ExportCatalogItemsRelationshipsLazyQueryHookResult = ReturnType<typeof useExportCatalogItemsRelationshipsLazyQuery>;
-export type ExportCatalogItemsRelationshipsQueryResult = Apollo.QueryResult<FindExportCatalogItemsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>;
+export type ExportCatalogRecordsRelationshipsQueryHookResult = ReturnType<typeof useExportCatalogRecordsRelationshipsQuery>;
+export type ExportCatalogRecordsRelationshipsLazyQueryHookResult = ReturnType<typeof useExportCatalogRecordsRelationshipsLazyQuery>;
+export type ExportCatalogRecordsRelationshipsQueryResult = Apollo.QueryResult<FindExportCatalogRecordsRelationshipsTreeQuery, FindVerificationTreeQueryVariables>;
