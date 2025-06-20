@@ -12,6 +12,10 @@ import {
   DialogActions,
   LinearProgress,
   Alert,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import View from "./View";
 import { useState, ChangeEvent, useEffect } from "react";
@@ -30,7 +34,6 @@ import {
   DataGrid,
   GridColDef,
   GridRenderCellParams,
-  GridValidRowModel,
   GridRowSelectionModel,
 } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
@@ -53,13 +56,6 @@ export function DeleteImportView() {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  // Handle tag text input with proper typing
-  const handleTagChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setTag(value);
-    setOutput(""); // Clear previous messages when input changes
-  };
-
   // Get all tags in database
   const { data: tagsData, loading: tagsLoading } = useFindTagsQuery({
     variables: {
@@ -68,68 +64,53 @@ export function DeleteImportView() {
   });
 
   // Search entries with properties
-  const { refetch, loading: searchLoading } = useFindItemQuery({
+  const { refetch, loading: searchLoading, error } = useFindItemQuery({
     variables: {
       input: {
-        tagged: tagId ? [tagId] : [],
-        entityTypeIn: Domain.map((x) => x.recordType),
+        tagged: [tagId],
       },
       pageSize: 10000,
     },
-    fetchPolicy: "no-cache",
-    skip: !tagId,
+    fetchPolicy: "no-cache"
   });
+  const tagList = tagsData?.findTags.nodes ?? [];
 
   // Search if tag exists, if yes, find all entries tagged with it
   const handleSearch = async () => {
-    if (!tag.trim()) {
-      setRecords([]);
-      return;
-    }
-
     setIsFetching(true);
 
     try {
-      const tagList = tagsData?.findTags.nodes ?? [];
-      const tagObj = tagList.find((obj) => obj.name === tag);
+      const result = await refetch({
+        input: {
+          tagged: [tagId],
+        },
+        pageSize: 10000,
+      });
 
-      if (tagObj) {
-        setTagId(tagObj.id);
-        const result = await refetch({
-          input: {
-            tagged: [tagObj.id],
-            entityTypeIn: Domain.map((x) => x.recordType),
-          },
-          pageSize: 10000,
-        });
-
-        const foundRecords = result.data.search.nodes || [];
-        setRecords(foundRecords);
-
-        // Set all rows as selected by default
-        setSelectedRows({
-          type: "include",
-          ids: new Set(foundRecords.map((record) => record.id)),
-        });
-
-        if (foundRecords.length === 0) {
-          setOutput(
-            <Alert severity="info">
-              <T
-                keyName="delete_import_view.no_entries_found"
-                params={{ tag }}
-              />
-            </Alert>
-          );
+      const foundRecords = (result.data.search.nodes || []).map((record: any) => {
+        if (record.recordType === "Dictionary" && record.dname?.texts?.length > 0) {
+          return {
+            ...record,
+            name: record.dname.texts[0].text,
+          };
         }
-      } else {
-        setTagId("");
-        setRecords([]);
+        return record;
+      });
+      setRecords(foundRecords);
+
+      setSelectedRows({
+        type: "include",
+        ids: new Set(foundRecords.map((record) => record.id)),
+      });
+
+      if (foundRecords.length === 0) {
         setOutput(
-          <Alert severity="warning">
-            <T keyName="delete_import_view.tag_not_exist" params={{ tag }} />
+          <Alert severity="info">
+            <T keyName="delete_import_view.no_entries_found" />
           </Alert>
         );
+      } else {
+        setOutput("");
       }
     } catch (error) {
       console.error("Error searching for records:", error);
@@ -185,13 +166,12 @@ export function DeleteImportView() {
           enqueueSnackbar(
             <T
               keyName="delete_import_view.delete_success"
-              params={{ name: record.name }}
             />,
             { variant: "success" }
           );
         } catch (error) {
           errorCount++;
-          console.error(`Error deleting entry ${record.name}:`, error);
+          console.error(`Error deleting entry: `, error);
         }
 
         // Update progress
@@ -242,72 +222,16 @@ export function DeleteImportView() {
   };
 
   // Navigation handler for clicking on entries - updated to match GridViewView behavior
-  const handleEntityClick = (entityType: string, id: string) => {
-    let entityTypePath = "";
-
-    // Map the entity type to the correct URL path
-    switch (entityType) {
-      case "Document":
-        entityTypePath = "document";
-        break;
-      case "Bag":
-        entityTypePath = "model";
-        break;
-      case "Theme":
-        entityTypePath = "theme";
-        break;
-      case "Subject":
-        entityTypePath = "class";
-        break;
-      case "Property":
-        entityTypePath = "property";
-        break;
-      case "Nest":
-        entityTypePath = "property-group";
-        break;
-      case "Value":
-        entityTypePath = "value";
-        break;
-      case "Measure":
-        entityTypePath = "measure";
-        break;
-      case "Unit":
-        entityTypePath = "unit";
-        break;
-      default:
-        console.warn(`Unknown entity type: ${entityType}`);
-        return;
+  const handleEntityClick = (tags: any[], id: string) => {
+    let entityPath = "import";
+    const recordTags: string[] = tags.map(tag => tag.id);
+    for (const entity of Domain) {
+      if (entity.tags && entity.tags.some(entityTag => recordTags.includes(entityTag))) {
+        entityPath = entity.path;
+      }
     }
-
-    // Navigate to the entity page and reload to ensure data is fresh
-    const newUrl = `/${entityTypePath}/${id}`;
-    navigate(newUrl);
+    navigate(`/${entityPath}/${id}`);
     window.location.reload();
-  };
-
-  // Debug records to understand tag structure when data is loaded
-  useEffect(() => {
-    if (records.length > 0) {
-      console.log("Record structure:", records[0]);
-    }
-  }, [records]);
-
-  // Process tags for display in the DataGrid
-  const getFormattedTags = (record: SearchResultPropsFragment) => {
-    if (!record.tags || !Array.isArray(record.tags)) {
-      return "";
-    }
-
-    // Extract tag names, ensuring we handle different tag structures
-    return record.tags
-      .map((tag: any) => {
-        if (typeof tag === "string") return tag;
-        if (tag && typeof tag === "object")
-          return tag.name || tag.label || tag.id;
-        return null;
-      })
-      .filter(Boolean)
-      .join(", ");
   };
 
   // DataGrid columns configuration
@@ -324,7 +248,7 @@ export function DeleteImportView() {
             "&:hover": { textDecoration: "underline" },
           }}
           onClick={() =>
-            handleEntityClick(params.row.recordType, params.row.id)
+            handleEntityClick(params.row.tags, params.row.id)
           }
         >
           {params.value}
@@ -333,50 +257,19 @@ export function DeleteImportView() {
     },
     { field: "recordType", headerName: "Type", flex: 1 },
     {
-      field: "tags", // Use the actual field name from the data
+      field: "tags",
       headerName: "Tags",
       flex: 2,
-      // Use renderCell instead of valueGetter for more control
       renderCell: (params: GridRenderCellParams) => {
-        const row = params.row;
-        if (!row || !row.tags) return null;
+        const tags = params.row.tags;
+        if (!tags) return <span style={{ color: "gray" }}>No tags</span>;
 
-        // Extract tag names from different possible structures
-        let tagNames: string[] = [];
+        const tagArray = Array.isArray(tags) ? tags : [tags];
+        const tagNames = tagArray.map((tag: any) => tag.name);
 
-        try {
-          if (Array.isArray(row.tags)) {
-            tagNames = row.tags
-              .map((tag: any) => {
-                // Handle different tag structures
-                if (typeof tag === "string") return tag;
-                if (tag && typeof tag === "object") {
-                  // Try different properties that might contain the tag name
-                  return tag.name || tag.label || tag.id || JSON.stringify(tag);
-                }
-                return null;
-              })
-              .filter(Boolean);
-          } else if (typeof row.tags === "object") {
-            // Handle case where tags might be a single object
-            tagNames = [
-              row.tags.name ||
-                row.tags.label ||
-                row.tags.id ||
-                JSON.stringify(row.tags),
-            ];
-          }
-        } catch (e) {
-          console.error("Error processing tags:", e);
-        }
-
-        // If we found any tag names, join them
-        if (tagNames.length > 0) {
-          return <span>{tagNames.join(", ")}</span>;
-        }
-
-        // Fallback - show something to help debug
-        return <span style={{ color: "gray" }}>No tags</span>;
+        return tagNames.length > 0
+          ? <span>{tagNames.join(", ")}</span>
+          : <span style={{ color: "gray" }}>No tags</span>;
       },
     },
   ];
@@ -390,16 +283,30 @@ export function DeleteImportView() {
       <Paper elevation={2} sx={{ p: 3, mb: 3 }}>
         <Grid container spacing={2} alignItems="center">
           <Grid>
-            <TextField
-              id="importTag"
-              label={<T keyName="delete_import_view.tag_label" />}
-              name="importTag"
-              variant="outlined"
-              fullWidth
-              value={tag}
-              onChange={handleTagChange}
-              disabled={isLoading || isFetching}
-            />
+            <FormControl fullWidth sx={{ minWidth: 240 }}>
+              <InputLabel id="importTag-label">
+                <T keyName="delete_import_view.tag_label" />
+              </InputLabel>
+              <Select
+                labelId="importTag-label"
+                id="importTag"
+                value={tag}
+                label={<T keyName="delete_import_view.tag_label" />}
+                onChange={(e) => {
+                  const selectedTagName = e.target.value;
+                  setTag(selectedTagName);
+                  setOutput("");
+                  const tagObj = tagList.find((t) => t.name === selectedTagName);
+                  setTagId(tagObj ? tagObj.id : "");
+                }}
+              >
+                {tagList.map((tagObj) => (
+                  <MenuItem key={tagObj.id} value={tagObj.name}>
+                    {tagObj.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Grid>
           <Grid>
             <Box display="flex" gap={2}>
@@ -507,7 +414,7 @@ export function DeleteImportView() {
         <DialogContent>
           <DialogContentText>
             <T
-              keyName="delete_import_view.confirm_delete_message_simple"
+              keyName="delete_import_view.confirm_delete_message"
               params={{ tag, count: selectedRows.ids.size }}
             />
           </DialogContentText>

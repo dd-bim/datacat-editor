@@ -67,8 +67,11 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
     });
 
     if (loading) return <Typography><T keyName="property.loading">Lade Merkmal..</T></Typography>;
-    if (error || !entry) return <Typography><T keyName="error.error">Es ist ein Fehler aufgetreten..</T></Typography>;
+    if (error || !entry) {
+        console.error(error); 
+        return <Typography><T keyName="error.error">Es ist ein Fehler aufgetreten..</T></Typography>;
 
+    } 
     const handleOnUpdate = async () => {
         await refetch();
         enqueueSnackbar(<T keyName="update.update_success">Update erfolgreich.</T>);

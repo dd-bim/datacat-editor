@@ -57,7 +57,7 @@ function DictionaryForm(props: FormProps<DictionaryPropsFragment>) {
         enqueueSnackbar(<T keyName="dictionary.delete_success">Dictionary gelöscht.</T>);
             navigate(`/${DictionaryEntity.path}`, { replace: true });
     };
-console.log("DictionaryForm entry", entry);
+
     return (
         <FormView>
             <NameFormSet

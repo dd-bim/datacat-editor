@@ -161,8 +161,8 @@ export type DeleteCatalogEntryInput = {
 };
 
 export type AddTagInput = {
-    catalogEntryId: Scalars['ID'];
-    tagId: Scalars['ID'];
+  catalogEntryId: Scalars['ID'];
+  tagId: Scalars['ID'];
 }
 
 export type DeleteTextInput = {
@@ -246,7 +246,7 @@ export type PropertiesInput = {
   languageOfCreator?: Maybe<Scalars['ID']>;
   CountryOfOrigin?: Maybe<Scalars['ID']>;
   examples?: Maybe<Array<TranslationInput>>;
-  propertyProperties?:Maybe<PropertyInput>;
+  propertyProperties?: Maybe<PropertyInput>;
   unitProperties?: Maybe<UnitInput>;
   valueProperties?: Maybe<ValueInput>;
   externalDocumentProperties?: Maybe<ExternalDocumentInput>;
@@ -336,7 +336,7 @@ export type ValueListInput = {
 export type IntervalInput = {
   minimumIncluded?: Maybe<Scalars['Boolean']>;
   maximumIncluded?: Maybe<Scalars['Boolean']>;
-} 
+}
 
 export type LanguageInput = {
   englishName?: Maybe<Scalars['String']>;
@@ -460,7 +460,7 @@ export enum PropertyRelationshipTypeEnum {
   XTD_SPECIALIZES = 'XTD_SPECIALIZES'
 }
 
-export enum RelationshipKindEnum {  
+export enum RelationshipKindEnum {
   XTD_INSTANCE_LEVEL = 'XTD_INSTANCE_LEVEL',
   XTD_SCHEMA_LEVEL = 'XTD_SCHEMA_LEVEL'
 }
@@ -565,13 +565,13 @@ type ObjectProps_XtdProperty_Fragment = ObjectProps<'XtdProperty'>;
 type ObjectProps_XtdSubject_Fragment = ObjectProps<'XtdSubject'>;
 type ObjectProps_XtdUnit_Fragment = ObjectProps<'XtdUnit'>;
 type ObjectProps_XtdValue_Fragment = ObjectProps<'XtdValue'>;
-type ObjectProps_XtdOrderedValue_Fragment = ObjectProps<'XtdOrderedValue'> & {order: number};
+type ObjectProps_XtdOrderedValue_Fragment = ObjectProps<'XtdOrderedValue'> & { order: number };
 type ObjectProps_XtdValueList_Fragment = ObjectProps<'XtdValueList'>;
 type ObjectProps_XtdDimension_Fragment = ObjectProps<'XtdDimension'>;
 type ObjectProps_XtdCountry_Fragment = ObjectProps<'XtdCountry'>;
 type ObjectProps_XtdSubdivision_Fragment = ObjectProps<'XtdSubdivision'>;
 type ObjectProps_XtdRelationshipToSubject_Fragment = ObjectProps<'XtdRelationshipToSubject'>;
-type ObjectProps_XtdRelationshipToProperty_Fragment = ObjectProps<'XtdRelationshipToProperty'>; 
+type ObjectProps_XtdRelationshipToProperty_Fragment = ObjectProps<'XtdRelationshipToProperty'>;
 type ObjectProps_XtdQuantityKind_Fragment = ObjectProps<'XtdQuantityKind'>;
 
 export type ObjectPropsFragment = ObjectProps_XtdExternalDocument_Fragment | ObjectProps_XtdProperty_Fragment | ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment | ObjectProps_XtdOrderedValue_Fragment | ObjectProps_XtdValueList_Fragment | ObjectProps_XtdDimension_Fragment | ObjectProps_XtdCountry_Fragment | ObjectProps_XtdSubdivision_Fragment | ObjectProps_XtdRelationshipToSubject_Fragment | ObjectProps_XtdRelationshipToProperty_Fragment | ObjectProps_XtdQuantityKind_Fragment;
@@ -580,7 +580,11 @@ export type ExportCatalogRecord_Fragment = { __typename: 'ExportResult', id: str
 
 export type ExportCatalogRecordRelationship_Fragment = { __typename: 'ExportRelationshipResult', entity1: string, relationship: string, entity2: string };
 
-export type SearchResultPropsFragment = { __typename: 'XtdObject', id: string, recordType: CatalogRecordType, name?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> }; // description?: Maybe<string>, 
+export type SearchResultPropsFragment = { __typename: 'XtdRoot', id: string, recordType: CatalogRecordType, name?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> }; // description?: Maybe<string>, 
+// export type SearchResultPropsFragment =
+//   | ({ __typename: 'XtdObject', id: string, recordType: CatalogRecordType, name?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> })
+//   | ({ __typename: 'XtdDictionary', id: string, recordType: CatalogRecordType, dname?: { texts: { text: string }[] }, tags: Array<TagPropsFragment> })
+//   | ({ __typename: 'XtdRoot', id: string, recordType: CatalogRecordType, tags: Array<TagPropsFragment> });
 
 export type FindTagsResultFragment = { id: string, name: string };
 
@@ -607,7 +611,7 @@ type ConceptProps_XtdSubdivision_Fragment = ConceptProps_Base_Fragment & ObjectP
 type ConceptProps_XtdRelationshipToProperty_Fragment = ConceptProps_Base_Fragment & ObjectProps_XtdRelationshipToProperty_Fragment;
 type ConceptProps_XtdQuantityKind_Fragment = ConceptProps_Base_Fragment & ObjectProps_XtdQuantityKind_Fragment;
 
-export type ConceptPropsFragment =  ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValueList_Fragment | ConceptProps_XtdDimension_Fragment | ConceptProps_XtdCountry_Fragment | ConceptProps_XtdSubdivision_Fragment | ConceptProps_XtdRelationshipToProperty_Fragment | ConceptProps_XtdQuantityKind_Fragment;
+export type ConceptPropsFragment = ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValueList_Fragment | ConceptProps_XtdDimension_Fragment | ConceptProps_XtdCountry_Fragment | ConceptProps_XtdSubdivision_Fragment | ConceptProps_XtdRelationshipToProperty_Fragment | ConceptProps_XtdQuantityKind_Fragment;
 
 type MetaProps_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
 
@@ -626,35 +630,36 @@ type ObjectDetailProps_XtdRelationshipToSubject_Fragment = MetaProps_Fragment & 
 type ObjectDetailProps_XtdQuantityKind_Fragment = MetaProps_Fragment & ConceptProps_XtdQuantityKind_Fragment;
 type DictionaryDetailPropsFragment = MetaProps_Fragment & DictionaryPropsFragment;
 
-export type ObjectDetailPropsFragment =  ObjectDetailProps_XtdExternalDocument_Fragment | ObjectDetailProps_XtdProperty_Fragment | ObjectDetailProps_XtdSubject_Fragment | ObjectDetailProps_XtdUnit_Fragment | ObjectDetailProps_XtdValue_Fragment | ObjectDetailProps_XtdOrderedValue_Fragment | ObjectDetailProps_XtdValueList_Fragment | ObjectDetailProps_XtdDimension_Fragment | ObjectDetailProps_XtdCountry_Fragment | ObjectDetailProps_XtdSubdivision_Fragment | ObjectDetailProps_XtdRelationshipToProperty_Fragment | ObjectDetailProps_XtdRelationshipToSubject_Fragment | ObjectDetailProps_XtdQuantityKind_Fragment;
+export type ObjectDetailPropsFragment = ObjectDetailProps_XtdExternalDocument_Fragment | ObjectDetailProps_XtdProperty_Fragment | ObjectDetailProps_XtdSubject_Fragment | ObjectDetailProps_XtdUnit_Fragment | ObjectDetailProps_XtdValue_Fragment | ObjectDetailProps_XtdOrderedValue_Fragment | ObjectDetailProps_XtdValueList_Fragment | ObjectDetailProps_XtdDimension_Fragment | ObjectDetailProps_XtdCountry_Fragment | ObjectDetailProps_XtdSubdivision_Fragment | ObjectDetailProps_XtdRelationshipToProperty_Fragment | ObjectDetailProps_XtdRelationshipToSubject_Fragment | ObjectDetailProps_XtdQuantityKind_Fragment;
 
 export type ExternalDocumentDetailPropsFragment = ObjectDetailProps_XtdExternalDocument_Fragment & {
-  documentUri?: Maybe<string>, 
-  author?: Maybe<string>, 
-  isbn?: Maybe<string>, 
-  publisher?: Maybe<string>, 
-  dateOfPublication?: Maybe<string>, 
-  languages: Array<LanguagePropsFragment>, 
+  documentUri?: Maybe<string>,
+  author?: Maybe<string>,
+  isbn?: Maybe<string>,
+  publisher?: Maybe<string>,
+  dateOfPublication?: Maybe<string>,
+  languages: Array<LanguagePropsFragment>,
   documents?: Maybe<Array<ConceptPropsFragment>>
 };
 
-export type SubjectDetailPropsFragment = ObjectDetailProps_XtdSubject_Fragment & { 
-  properties?: Maybe<Array<PropertyDetailPropsFragment>>, 
+export type SubjectDetailPropsFragment = ObjectDetailProps_XtdSubject_Fragment & {
+  properties?: Maybe<Array<PropertyDetailPropsFragment>>,
   connectedSubjects?: Maybe<Array<RelationshipToSubjectDetailPropsFragment>>,
   connectingSubjects?: Maybe<Array<RelationshipToSubjectDetailPropsFragment>>
 };
 
-export type PropertyDetailPropsFragment = ObjectDetailProps_XtdProperty_Fragment & { 
-  dataType: DataTypeEnum , 
-  dataFormat?: Maybe<string>, 
-  symbols?: Maybe<Array<SymbolPropsFragment>>, 
-  boundaryValues?: Maybe<Array<IntervalPropsFragment>>, 
+export type PropertyDetailPropsFragment = ObjectDetailProps_XtdProperty_Fragment & {
+  dataType: DataTypeEnum,
+  dataFormat?: Maybe<string>,
+  symbols?: Maybe<Array<SymbolPropsFragment>>,
+  boundaryValues?: Maybe<Array<IntervalPropsFragment>>,
   possibleValues?: Maybe<Array<ValueListDetailPropsFragment>>,
   dimension?: Maybe<DimensionDetailPropsFragment>,
   quantityKinds?: Maybe<Array<QuantityKindDetailPropsFragment>>,
   units?: Maybe<Array<UnitDetailPropsFragment>>,
   subjects?: Maybe<Array<SubjectDetailPropsFragment>>,
-  connectedProperties?: Maybe<Array<RelationshipToPropertyDetailPropsFragment>>};
+  connectedProperties?: Maybe<Array<RelationshipToPropertyDetailPropsFragment>>
+};
 
 export type ValueListDetailPropsFragment = ObjectDetailProps_XtdValueList_Fragment & {
   values: Array<OrderedValueDetailPropsFragment>,
@@ -685,7 +690,7 @@ export type ValueDetailPropsFragment = ObjectDetailProps_XtdValue_Fragment & {
 };
 
 export type DimensionDetailPropsFragment = ObjectDetailProps_XtdDimension_Fragment & {
-  lengthExponent: RationalPropsFragment,  
+  lengthExponent: RationalPropsFragment,
   massExponent: RationalPropsFragment,
   timeExponent: RationalPropsFragment,
   electricCurrentExponent: RationalPropsFragment,
@@ -704,12 +709,12 @@ export type SubdivisionDetailPropsFragment = ObjectDetailProps_XtdSubdivision_Fr
   subdivisions: Array<SubdivisionDetailPropsFragment>
 };
 
-export type RelationshipToPropertyDetailPropsFragment =  { 
+export type RelationshipToPropertyDetailPropsFragment = {
   relationshipType: PropertyRelationshipTypeEnum,
   targetProperties: Array<PropertyDetailPropsFragment>
 };
 
-export type RelationshipToSubjectDetailPropsFragment = ObjectDetailProps_XtdRelationshipToSubject_Fragment & { 
+export type RelationshipToSubjectDetailPropsFragment = ObjectDetailProps_XtdRelationshipToSubject_Fragment & {
   relationshipType: RelationshipRecordType,
   targetSubjects: Array<SubjectDetailPropsFragment>,
   connectingSubject: SubjectDetailPropsFragment
@@ -929,7 +934,7 @@ export type AddTagMutationVariables = Exact<{
   input: AddTagInput;
 }>;
 
-export type AddTagMutation = { addTag?: Maybe<{ catalogEntry: {__typename: string}}>};
+export type AddTagMutation = { addTag?: Maybe<{ catalogEntry: { __typename: string } }> };
 // __typename ist erforderlich, da es explizit in der Mutation enthalten ist.
 
 export type UpdateTagMutationVariables = Exact<{
@@ -1086,7 +1091,7 @@ export type FindQuantityKindsQueryVariables = Exact<{
 export type FindQuantityKindsQuery = { findQuantityKinds?: Maybe<{ totalElements: number, nodes: Array<QuantityKindDetailPropsFragment> }> };
 
 export type FindRationalsQueryVariables = Exact<{
-  input: FilterInput; 
+  input: FilterInput;
 }>;
 
 export type FindRationalsQuery = { findRationals?: Maybe<{ totalElements: number, nodes: Array<RationalPropsFragment> }> };
@@ -1110,7 +1115,7 @@ export type FindDictionariesQueryVariables = Exact<{
 export type FindDictionariesQuery = { findDictionaries?: Maybe<{ totalElements: number, nodes: Array<DictionaryDetailPropsFragment>, pageInfo: PagePropsFragment }> };
 
 export type FindMultiLanguageTextsQueryVariables = Exact<{
-  input: FilterInput; 
+  input: FilterInput;
 }>;
 
 export type FindMultiLanguageTextsQuery = { findMultiLanguageTexts?: Maybe<{ totalElements: number, nodes: Array<MultiLanguageTextPropsFragment> }> };
@@ -1122,7 +1127,7 @@ export type FindTextsQueryVariables = Exact<{
 export type FindTextsQuery = { findTexts?: Maybe<{ totalElements: number, nodes: Array<TextPropsFragment> }> };
 
 export type FindConceptsQueryVariables = Exact<{
-  input: FilterInput; 
+  input: FilterInput;
 }>;
 
 export type FindConceptsQuery = { findConcepts?: Maybe<{ totalElements: number, nodes: Array<ConceptPropsFragment> }> };
@@ -1369,9 +1374,34 @@ export const SearchResultPropsFragmentDoc = gql`
   __typename
   id
   recordType
-  name(input: {languageTags: ["de-DE", "en-US"]})
-  # description(input: {languageTags: ["de-DE", "en-US"]})
-  comment(input: {languageTags: ["de-DE", "en-US"]})
+  # ... on XtdObject {
+    name(input: {languageTags: ["de-DE", "en-US"]})
+    # description(input: {languageTags: ["de-DE", "en-US"]})
+    comment(input: {languageTags: ["de-DE", "en-US"]})
+  # }
+  # ... on XtdDictionary {
+  #   id
+  #   dname: name {
+  #     texts {
+  #       text
+  #     }
+  #   }
+  # }
+  tags {
+    ...TagProps
+  }
+}
+    ${TagPropsFragmentDoc}`;
+export const SearchResultDictionaryPropsFragmentDoc = gql`
+    fragment SearchResultDictionaryProps on XtdDictionary {
+  __typename
+  id
+  recordType
+  dname: name {
+    texts {
+      text
+    }
+  }
   tags {
     ...TagProps
   }
@@ -2510,7 +2540,7 @@ export type AddDeprecationExplanationMutationFn = Apollo.MutationFunction<AddDep
  */
 export function useAddDeprecationExplanationMutation(baseOptions?: Apollo.MutationHookOptions<AddDeprecationExplanationMutation, AddDeprecationExplanationMutationVariables>) {
   return Apollo.useMutation<AddDeprecationExplanationMutation, AddDeprecationExplanationMutationVariables>(AddDeprecationExplanationDocument, baseOptions);
-} 
+}
 export type AddDeprecationExplanationMutationHookResult = ReturnType<typeof useAddDeprecationExplanationMutation>;
 export type AddDeprecationExplanationMutationResult = Apollo.MutationResult<AddDeprecationExplanationMutation>;
 export type AddDeprecationExplanationMutationOptions = Apollo.BaseMutationOptions<AddDeprecationExplanationMutation, AddDeprecationExplanationMutationVariables>;
@@ -3140,6 +3170,7 @@ export const FindItemDocument = gql`
   search(input: $input, pageSize: $pageSize, pageNumber: $pageNumber) {
     nodes {
       ...SearchResultProps
+      ...SearchResultDictionaryProps
     }
     pageInfo {
       ...PageProps
@@ -3148,6 +3179,7 @@ export const FindItemDocument = gql`
   }
 }
     ${SearchResultPropsFragmentDoc}
+    ${SearchResultDictionaryPropsFragmentDoc}
 ${PagePropsFragmentDoc}`;
 
 /**
@@ -3629,7 +3661,7 @@ export const FindPropertiesQueryDocument = gql`
     totalElements
   }
 }
-    ${PropertyDetailPropsFragmentDoc}`; 
+    ${PropertyDetailPropsFragmentDoc}`;
 /**
  * __useFindPropertiesQuery__
  * 
