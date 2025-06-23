@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import { styled } from "@mui/material/styles";
-import React, {useRef, useState} from "react";
+import {useRef, useState} from "react";
 import {Popper} from "@mui/material";
 import Fade from "@mui/material/Fade";
 import Paper from "@mui/material/Paper";
@@ -41,9 +41,9 @@ export function QuickSearchWidget(props: QuickSearchWidgetProps) {
 
     const debouncedSearchTerm = useDebounce(searchTerm, 500);
     const input = {
-        query: debouncedSearchTerm,
-        entityTypeIn: Domain.map(x => x.recordType)
+        query: debouncedSearchTerm
     };
+
     const {error, loading, data, fetchMore} = useFindItemQuery({
         skip: !debouncedSearchTerm,
         variables: {

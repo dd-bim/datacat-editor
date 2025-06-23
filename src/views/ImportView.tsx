@@ -388,7 +388,7 @@ export function ImportView() {
       .join("");
 
     if (input === "Groups") {
-      input = "RelationshipToSubject"; // Special case for "Xtd"
+      input = "RelationshipToSubject";
     }
     return input as RelationshipRecordType;
   }

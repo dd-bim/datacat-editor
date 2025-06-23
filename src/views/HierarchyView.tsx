@@ -26,6 +26,7 @@ import {
   ValueListEntity,
   UnitEntity,
   ValueEntity,
+  PropertyGroupEntity,
   getEntityType,
 } from "../domain";
 import { T } from "@tolgee/react";
@@ -191,6 +192,15 @@ const HierarchyView = () => {
               <ValueIcon /> <T keyName="value.edit"/>
             </Typography>
             <ValueForm id={id} onDelete={handleDelete} />
+          </>
+        );
+      case PropertyGroupEntity.path:
+        return (
+          <>
+            <Typography variant="h5">
+              <PropertyGroupIcon /> <T keyName="propertyGroup.edit"/>
+            </Typography>
+            <PropertyGroupForm id={id} onDelete={handleDelete} />
           </>
         );
       default:
