@@ -1,7 +1,8 @@
 import {GraphiQL} from "graphiql";
-import "graphiql/graphiql.css"; // Import the CSS for proper styling
+import "graphiql/graphiql.css";
 import useGraphiQLFetcher from "./hooks/useGraphiQLFetcher";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import Footer from "./components/Footer"; // Footer importieren
 
 // Updated styles to balance panel widths
 const graphiqlStyles = `
@@ -77,19 +78,6 @@ html, body, #root {
   display: flex !important;
 }
 
-/* Footer */
-.footer-info {
-  position: fixed; /* Changed to fixed to ensure it's always visible */
-  bottom: 8px;
-  right: 8px;
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 6px 10px;
-  border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  font-size: 11px;
-  z-index: 999;
-}
-
 /* Make core GraphiQL components fill available space */
 .graphiql-container .graphiql-sessions,
 .graphiql-container .graphiql-session {
@@ -130,7 +118,6 @@ html, body, #root {
 
 export default function GraphiQLEditor() {
     const graphiqlFetcher = useGraphiQLFetcher();
-    const [appVersion] = useState(import.meta.env.VITE_APP_VERSION || "1.0 beta");
     
     useEffect(() => {
         // Create style element
@@ -166,13 +153,7 @@ export default function GraphiQLEditor() {
                     showPersistHeadersSettings={false}
                 />
             </div>
-            <div className="footer-info">
-                <div style={{ marginBottom: '3px' }}>
-                    <a href="#" style={{ marginRight: '12px', textDecoration: 'none', color: '#666' }}>Fragen & Kontakt</a>
-                    <a href="#" style={{ textDecoration: 'none', color: '#666' }}>Problem melden</a>
-                </div>
-                <div style={{ color: '#888' }}>datacat editor {appVersion}</div>
-            </div>
+            <Footer />
         </div>
     );
 }
