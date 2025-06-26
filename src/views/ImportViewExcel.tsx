@@ -33,7 +33,7 @@ import {
   useCreateRelationshipMutation,
   useCreateTagMutation,
 } from "../generated/types";
-import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 import { v4 as uuidv4 } from "uuid";
 import { T, useTranslate } from '@tolgee/react';
 
@@ -509,8 +509,10 @@ export function ImportViewExcel() {
       return;
     }
 
+    // ExcelJS Workbook laden
     const data = await file.arrayBuffer();
-    const workbook = XLSX.read(data);
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.load(data);
 
     // Hilfsfunktion zum Überprüfen von Duplikaten
     const isDuplicate = (
@@ -590,41 +592,33 @@ export function ImportViewExcel() {
             }
           }
 
-          const sheet = workbook.Sheets[sheetName];
+          const sheet = workbook.getWorksheet(sheetName);
           if (!sheet) {
             console.error(`Tabellenblatt ${sheetName} nicht gefunden.`);
             return;
           }
 
-          const nameColumnIndex = columnLetterToIndex(nameColumnLetter);
-          const idColumnIndex = columnLetterToIndex(idColumnLetter);
-
-          const jsonData = XLSX.utils.sheet_to_json<{ [key: string]: string }>(
-            sheet,
-            { header: 1 }
-          );
+          const nameColumnIndex = columnLetterToIndex(nameColumnLetter) + 1; // ExcelJS ist 1-basiert
+          const idColumnIndex = columnLetterToIndex(idColumnLetter) + 1;
 
           // Überspringe die Kopfzeile und verarbeite die Daten ab Zeile 2
-          jsonData.slice(1).forEach((row, rowIndex) => {
-            const name = row[nameColumnIndex];
-            let id = row[idColumnIndex];
+          sheet.eachRow({ includeEmpty: false }, (row: ExcelJS.Row, rowNumber: number) => {
+            if (rowNumber === 1) return; // Kopfzeile überspringen
+            const name = row.getCell(nameColumnIndex).value as string;
+            let id = row.getCell(idColumnIndex).value as string;
 
             if (!id && index <= 2) {
               id = uuidv4();
             }
 
             if (name) {
-              // Duplikatprüfung beim Hinzufügen
-              if (
-                !isDuplicate(entityExcelDataTemp[entityLabel], name, id)
-              ) {
+              if (!isDuplicate(entityExcelDataTemp[entityLabel], name, id)) {
                 entityExcelDataTemp[entityLabel].push({ name, id });
               }
             } else {
               console.warn(
-                `Zeile ${rowIndex + 2
-                } in ${sheetName} enthält keine gültigen Werte für Name:`,
-                row
+                `Zeile ${rowNumber} in ${sheetName} enthält keine gültigen Werte für Name:`,
+                row.values
               );
             }
           });
@@ -666,7 +660,7 @@ export function ImportViewExcel() {
           return;
         }
 
-        const sheet = workbook.Sheets[sheetName];
+        const sheet = workbook.getWorksheet(sheetName);
         if (!sheet) {
           console.error(`Tabellenblatt ${sheetName} nicht gefunden.`);
           return;
@@ -677,22 +671,16 @@ export function ImportViewExcel() {
         }
 
         // Convert column letters to indices
-        const id1ColumnIndex = columnLetterToIndex(id1ColumnLetter);
-        const id2ColumnIndex = columnLetterToIndex(id2ColumnLetter);
+        const id1ColumnIndex = columnLetterToIndex(id1ColumnLetter) + 1;
+        const id2ColumnIndex = columnLetterToIndex(id2ColumnLetter) + 1;
 
-        // Auslesen der Excel-Daten
-        const jsonData = XLSX.utils.sheet_to_json<{ [key: string]: string }>(
-          sheet,
-          { header: 1 }
-        ); // Read as 2D array
-
-        // Start from the second row (index 1) to skip the header row
-        for (let rowIndex = 1; rowIndex < jsonData.length; rowIndex++) {
-          const id1 = jsonData[rowIndex][id1ColumnIndex];
-          const id2 = jsonData[rowIndex][id2ColumnIndex];
+        // Start from the second row (index 2) to skip the header row
+        sheet.eachRow({ includeEmpty: false }, (row: ExcelJS.Row, rowNumber: number) => {
+          if (rowNumber === 1) return;
+          const id1 = row.getCell(id1ColumnIndex).value as string;
+          const id2 = row.getCell(id2ColumnIndex).value as string;
 
           if (id1 && id2) {
-            // Prüfe auf Duplikate vor dem Hinzufügen
             if (
               !isRelationDuplicate(
                 relationExcelDataTemp[relationLabel],
@@ -704,12 +692,11 @@ export function ImportViewExcel() {
             }
           } else {
             console.warn(
-              `Zeile ${rowIndex + 1
-              } in ${sheetName} enthält keine gültigen Werte für ID1 oder ID2:`,
-              jsonData[rowIndex]
+              `Zeile ${rowNumber} in ${sheetName} enthält keine gültigen Werte für ID1 oder ID2:`,
+              row.values
             );
           }
-        }
+        });
 
         console.log(
           `Excel data for ${relationLabel}:`,
