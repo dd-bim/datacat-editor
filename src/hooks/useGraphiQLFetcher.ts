@@ -1,6 +1,6 @@
 import useAuthContext from "./useAuthContext";
 
-export const useGraphiQLFetcher = () => {
+const useGraphiQLFetcher = () => {
     const {token} = useAuthContext();
     let headers: Record<string, string> = { 'Content-Type': 'application/json' };
     if (token) {

@@ -1,4 +1,3 @@
-import React from "react";
 import CompositeCatalogEntryView from "../views/CompositeCatalogEntryView";
 import DocumentForm from "../views/forms/DocumentForm";
 import ThemeForm from "../views/forms/ThemeForm";
@@ -122,5 +121,3 @@ export const catalogEntryRoutes = [
     ),
   },
 ];
-
-export default catalogEntryRoutes;

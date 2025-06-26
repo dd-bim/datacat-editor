@@ -470,5 +470,3 @@ export function VerificationView() {
     </Stack>
   );
 }
-
-export default VerificationView;
