@@ -30,7 +30,7 @@ import {
 } from "@mui/x-data-grid";
 import { T, useTranslate } from "@tolgee/react";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
-import { DictionaryEntity, DocumentEntity, ClassEntity, PropertyEntity, PropertyGroupEntity, ValueEntity, ValueListEntity, GroupEntity } from "../domain";
+import { DictionaryEntity, DocumentEntity, ClassEntity, PropertyEntity, PropertyGroupEntity, ValueEntity, ValueListEntity, ThemeEntity } from "../domain";
 
 // Replace makeStyles with styled components
 const TableContainer = styled(Paper)(({ theme }) => ({
@@ -284,7 +284,7 @@ const GridViewView = () => {
                 return "";
             case "theme":
                 for (const tag of tags) {
-                    if (GroupEntity.tags!.includes(tag.id)) {
+                    if (ThemeEntity.tags!.includes(tag.id)) {
                         return node.name || "";
                     }
                 }

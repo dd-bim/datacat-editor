@@ -1,5 +1,5 @@
-import FormSet, { FormSetDescription, FormSetTitle } from "./FormSet";
-import React, { FC, useState } from "react";
+import FormSet, { FormSetTitle } from "./FormSet";
+import { FC } from "react";
 import { useEffect } from "react";
 import {
   useUpdateDataTypeMutation,
@@ -8,8 +8,7 @@ import {
 import { useSnackbar } from "notistack";
 import { styled } from "@mui/material/styles";
 import { T } from "@tolgee/react";
-import { ClickAwayListener, MenuItem, Select, SelectChangeEvent, Box, Typography } from "@mui/material";
-import InlineButtonGroup from "./InlineButtonGroup";
+import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 
 type DataTypeFormSetProps = {

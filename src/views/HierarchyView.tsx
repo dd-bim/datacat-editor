@@ -4,7 +4,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { styled } from "@mui/material/styles";
 import { Hierarchy } from "../components/Hierarchy";
 import { ObjectPropsFragment, usePropertyTreeQuery } from "../generated/types";
-import DomainGroupForm from "./forms/DomainGroupForm";
+import ThemeForm from "./forms/ThemeForm";
 import DomainClassForm from "./forms/DomainClassForm";
 import PropertyGroupForm from "./forms/PropertyGroupForm";
 import PropertyForm from "./forms/PropertyForm";
@@ -20,7 +20,7 @@ import {
   MeasureIcon,
   UnitIcon,
   ValueIcon,
-  GroupEntity,
+  ThemeEntity,
   ClassEntity,
   PropertyEntity,
   ValueListEntity,
@@ -140,13 +140,13 @@ const HierarchyView = () => {
     const entityType = getEntityType(recordType, tags.map(x => x.id));
     
     switch(entityType?.path) {
-      case GroupEntity.path:
+      case ThemeEntity.path:
         return (
           <>
             <Typography variant="h5">
               <ThemeIcon /> <T keyName="theme.edit"/>
             </Typography>
-            <DomainGroupForm id={id} onDelete={handleDelete} />
+            <ThemeForm id={id} onDelete={handleDelete} />
           </>
         );
       case ClassEntity.path:

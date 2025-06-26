@@ -10,19 +10,22 @@
       "language": "Sprache"
     },
     "category": {
-      "no_group_class": "Themen ohne Klasse",
-      "no_class_properties": "Klassen ohne Merkmale/Merkmalsgruppen",
+      "no_theme_class": "Themen ohne Klasse",
+      "no_class_properties": "Klassen ohne Merkmale und Merkmalsgruppen",
       "no_property_group": "Merkmalsgruppen ohne Merkmale",
-      "no_property": "Merkmale ohne Klasse oder Merkmalsgruppe",
+      "no_property": "Merkmale ohne Klasse und Merkmalsgruppe",
       "no_valuelist": "Wertelisten ohne Merkmal",
-      "no_unit": "Einheiten ohne Werteliste",
+      "no_unit": "Einheiten ohne Werteliste und Merkmal",
       "no_value": "Werte ohne Werteliste",
       "duplicate_id": "ID-Duplikate",
       "duplicate_name_type": "Namen-Duplikate (innerhalb eines Types)",
       "duplicate_name_all": "Namen-Duplikate (gesamter Datenbestand)",
       "missing_description": "Fehlende Beschreibung",
       "missing_description_en": "Fehlende Beschreibung (englisch)",
-      "missing_translation_en": "Fehlende Namens-Übersetzung (englisch)"
+      "missing_translation_en": "Fehlende Namens-Übersetzung (englisch)",
+      "no_dictionary": "Konzepte ohne Dictionary",
+      "no_document": "Konzepte ohne Referenzdokument",
+      "inactive_concepts": "Inaktive Konzepte"
     },
     "result": {
       "select_criteria": "Prüfkriterium und Kategorie auswählen.",
@@ -95,7 +98,7 @@
     "heading": "Katalog Importieren (CSV)",
     "description": "Über diese Seite lassen sich Entitäten und deren Relationen importieren. Analog zum Export können hier zwei CSV-Dateien importiert werden. Die eine Datei enthält die Entitäten in folgendem Schema:",
     "entity_columns_note": "Mit o gekennzeichnete Spalten können optional Werte enthalten.",
-    "tags_note": "Damit die Entitäten in der datacat Editor Oberfläche sichtbar sind, müssen ihnen Tags der dort gewählten Taxonomie gegeben werden. (Referenzdokument, Dictionary, Gruppe (für Thema), Klasse, Merkmalsgruppe, Merkmal, Werteliste, Wert, Maßeinheit)",
+    "tags_note": "Damit die Entitäten in der datacat Editor Oberfläche sichtbar sind, müssen ihnen Tags der dort gewählten Taxonomie gegeben werden. (Referenzdokument, Dictionary, Thema, Klasse, Merkmalsgruppe, Merkmal, Werteliste, Wert, Maßeinheit)",
     "relation_columns_note": "Die andere Datei enthält optional die Relationen zwischen Entitäten mit den folgenden Spalten:",
     "entities_file_button": "Entitäten Datei auswählen",
     "relations_file_button": "Relationen Datei auswählen",

@@ -24,7 +24,7 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import {
   ClassEntity,
   DocumentEntity,
-  GroupEntity,
+  ThemeEntity,
   ValueListEntity,
   PropertyEntity,
   PropertyGroupEntity,
@@ -251,9 +251,9 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
           />
 
           <AppDrawerItem
-            icon={<GroupEntity.Icon />}
+            icon={<ThemeEntity.Icon />}
             primary={<T keyName="theme.titlePlural">Themen</T>}
-            to={`/${GroupEntity.path}`}
+            to={`/${ThemeEntity.path}`}
             onClick={handleItemClick}
           />
 

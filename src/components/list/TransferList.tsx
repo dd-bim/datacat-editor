@@ -71,7 +71,7 @@ export default function TransferList(props: TransferListProps) {
                     <FilterableList
                         height={height}
                         loading={loading}
-                        items={items}
+                        items={[...items].sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "") || a.id.localeCompare(b.id))}
                         onSelect={onSelect}
                         onRemove={enabled && onRemove ? onRemove : undefined}
                     />

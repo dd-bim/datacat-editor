@@ -15,7 +15,7 @@ import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
 import FormView, { FormProps } from "./FormView";
 import MetaFormSet from "../../components/forms/MetaFormSet";
-import { PropertyEntity, DocumentEntity, ClassEntity, ValueListEntity, UnitEntity, GroupEntity } from "../../domain";
+import { PropertyEntity, DocumentEntity, ClassEntity, ValueListEntity, UnitEntity, ThemeEntity } from "../../domain";
 import TransferListView from "../TransferListView";
 import { T } from "@tolgee/react";
 import StatusFormSet from "../../components/forms/StatusFormSet";
@@ -26,7 +26,7 @@ import DictionaryFormSet from "../../components/forms/DictionaryFormSet";
 import TransferListViewRelationshipToSubject from "../TransferListViewRelationshipToSubject";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 
-const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
+const ThemeForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
     const { id } = props;
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
@@ -61,7 +61,7 @@ const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
     const handleOnDelete = async () => {
         await deleteEntry({ variables: { id } });
         enqueueSnackbar(<T keyName="theme.delete_success">Thema gelöscht.</T>)
-        navigate(`/${GroupEntity.path}`, { replace: true });
+        navigate(`/${ThemeEntity.path}`, { replace: true });
     };
 
     const handleOnUpdate = async () => {
@@ -184,8 +184,8 @@ const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
                 relationshipType={RelationshipRecordType.RelationshipToSubject}
                 relationships={relatedPropertyGroups}
                 searchInput={{
-                    entityTypeIn: [GroupEntity.recordType],
-                    tagged: GroupEntity.tags
+                    entityTypeIn: [ThemeEntity.recordType],
+                    tagged: ThemeEntity.tags
                 }}
                 onCreate={handleOnUpdate}
                 onUpdate={handleOnUpdate}
@@ -212,4 +212,4 @@ const DomainGroupForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
     );
 }
 
-export default DomainGroupForm;
+export default ThemeForm;

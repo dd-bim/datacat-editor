@@ -19,7 +19,7 @@ import {
   ClassEntity,
   DocumentEntity,
   Entity,
-  GroupEntity,
+  ThemeEntity,
   ValueListEntity,
   PropertyEntity,
   PropertyGroupEntity,
@@ -36,7 +36,7 @@ type CreateEntrySplitButtonProps = {
 const options = [
   DocumentEntity,
   DictionaryEntity,
-  GroupEntity,
+  ThemeEntity,
   ClassEntity,
   PropertyGroupEntity,
   PropertyEntity,

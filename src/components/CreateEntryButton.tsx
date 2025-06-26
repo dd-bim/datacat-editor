@@ -18,7 +18,7 @@ import {
     ClassEntity,
     DocumentEntity,
     Entity,
-    GroupEntity,
+    ThemeEntity,
     ValueListEntity,
     PropertyEntity,
     PropertyGroupEntity,
@@ -29,7 +29,7 @@ import {
 
 const options = [
     DocumentEntity,
-    GroupEntity,
+    ThemeEntity,
     ClassEntity,
     PropertyGroupEntity,
     PropertyEntity,

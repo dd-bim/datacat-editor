@@ -769,7 +769,7 @@ export function ImportViewExcel() {
       },
       Thema: {
         recordType: CatalogRecordType.Subject,
-        tag: "Gruppe",
+        tag: "Thema",
       },
       Klasse: {
         recordType: CatalogRecordType.Subject,

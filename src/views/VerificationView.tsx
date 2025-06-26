@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import LinearProgress from "@mui/material/LinearProgress";
 import { Paper, Typography, Box, Stack } from "@mui/material";
-import DomainGroupForm from "./forms/DomainGroupForm";
+import ThemeForm from "./forms/ThemeForm";
 import DomainClassForm from "./forms/DomainClassForm";
 import PropertyGroupForm from "./forms/PropertyGroupForm";
 import PropertyForm from "./forms/PropertyForm";
@@ -11,12 +11,9 @@ import UnitForm from "./forms/UnitForm";
 import ValueForm from "./forms/ValueForm";
 import ButtonComponent from "@mui/material/Button";
 import {
-  FindVerification
-} from "../components/Verification";
-import {
   useFindPropGroupWithoutPropTreeQuery,
   useFindPropWithoutSubjectOrPropGroupTreeQuery,
-  useFindGroupWithoutSubjectTreeQuery,
+  useFindThemeWithoutSubjectTreeQuery,
   useFindSubjectWithoutPropTreeQuery,
   useFindValueListWithoutPropTreeQuery,
   useFindUnitWithoutValueListTreeQuery,
@@ -27,6 +24,9 @@ import {
   useFindMissingEnglishDescriptionTreeQuery,
   useFindMultipleNamesTreeQuery,
   useFindMultipleNamesAcrossClassesTreeQuery,
+  useFindMissingDictionaryTreeQuery,
+  useFindMissingReferenceDocumentTreeQuery,
+  useFindInactiveConceptsTreeQuery,
   ObjectDetailPropsFragment,
 } from "../generated/types";
 import {
@@ -35,7 +35,7 @@ import {
   ThemeIcon,
   DictionaryIcon,
   getEntityType,
-  GroupEntity,
+  ThemeEntity,
   ValueListEntity,
   MeasureIcon,
   PropertyEntity,
@@ -53,6 +53,8 @@ import {
 import { T } from "@tolgee/react";
 import DocumentForm from "./forms/DocumentForm";
 import DictionaryForm from "./forms/DictionaryForm";
+import { ListOnItemsRenderedProps } from "react-window";
+import ItemList from "../components/list/ItemList";
 
 // Replace makeStyles with styled components
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -80,9 +82,9 @@ const LeftAlignedButton = styled(ButtonComponent)(({ theme }) => ({
 
 const verificationQueries = {
   "Themen ohne Klasse": {
-    useQuery: useFindGroupWithoutSubjectTreeQuery,
-    dataPath: "findGroupWithoutSubject",
-    titleKey: "verification.category.no_group_class",
+    useQuery: useFindThemeWithoutSubjectTreeQuery,
+    dataPath: "findThemeWithoutSubject",
+    titleKey: "verification.category.no_theme_class",
     buttonGroup: "Integrität",
   },
   "Klassen ohne Merkmale/Merkmalsgruppen": {
@@ -157,6 +159,24 @@ const verificationQueries = {
     titleKey: "verification.category.missing_translation_en",
     buttonGroup: "Sprache",
   },
+  "Fehlende Dictionary-Zuordnung": {
+    useQuery: useFindMissingDictionaryTreeQuery,
+    dataPath: "findMissingDictionary",
+    titleKey: "verification.category.no_dictionary",
+    buttonGroup: "Integrität",
+  },
+  "Fehlende Dokumenten-Zuordnung": {
+    useQuery: useFindMissingReferenceDocumentTreeQuery,
+    dataPath: "findMissingReferenceDocument",
+    titleKey: "verification.category.no_document",
+    buttonGroup: "Integrität",
+  },
+  "Inaktive Konzepte": {
+    useQuery: useFindInactiveConceptsTreeQuery,
+    dataPath: "findInactiveConcepts",
+    titleKey: "verification.category.inactive_concepts",
+    buttonGroup: "Integrität",
+  },
 };
 
 export function VerificationView() {
@@ -187,7 +207,7 @@ export function VerificationView() {
   const renderCriteriaButtons = () => (
     <StyledPaper>
       <Typography variant="h6">
-        <T keyName="verification.title"/>
+        <T keyName="verification.title" />
       </Typography>
       <Stack direction="column" spacing={1} alignItems="stretch">
         {buttonGroups.map(group => (
@@ -197,7 +217,7 @@ export function VerificationView() {
         ))}
       </Stack>
       <Typography variant="h6" sx={{ mt: 2 }}>
-        <T keyName="verification.category_title"/>
+        <T keyName="verification.category_title" />
       </Typography>
       <Stack direction="column" spacing={1} alignItems="stretch">
         {Object.entries(verificationQueries)
@@ -237,12 +257,12 @@ export function VerificationView() {
     );
   };
 
-// right column: Detail view
+  // right column: Detail view
   const entityTypeMap = {
-    [GroupEntity.path]: {
+    [ThemeEntity.path]: {
       icon: <ThemeIcon />,
       title: <T keyName="theme.edit" />,
-      component: DomainGroupForm,
+      component: ThemeForm,
     },
     [ClassEntity.path]: {
       icon: <DomainClassIcon />,
@@ -314,23 +334,89 @@ export function VerificationView() {
   };
 
   type VerificationQueryProps = {
-    useQuery: () => { loading: boolean; error?: any; data?: any };
+    useQuery: (options: { variables: { pageNumber: number; pageSize: number } }) => { loading: boolean; error?: any; data?: any; fetchMore: any };
     dataPath: string;
     onSelect: (concept: ObjectDetailPropsFragment) => void;
   };
 
   function GenericVerificationQuery({ useQuery, dataPath, onSelect }: VerificationQueryProps) {
-    const { loading, error, data } = useQuery();
-    if (loading) return <LinearProgress />;
-    if (error) return <p><T keyName="verification.error"/></p>;
-    const result = data?.[dataPath];
-    if (!result) return <p><T keyName="verification.no_data" /></p>;
+    const pageSize = 20;
+    const { loading, error, data, fetchMore } = useQuery({ variables: { pageNumber: 0, pageSize } });
+
+    // Lokaler State für alle geladenen Items
+    const [allItems, setAllItems] = React.useState<ObjectDetailPropsFragment[]>([]);
+    const [lastPage, setLastPage] = React.useState<number>(-1);
+
+    // Items aus aktueller Page holen
+    const items: ObjectDetailPropsFragment[] = (data?.[dataPath]?.nodes ?? []).slice().sort((a: { name: string; }, b: { name: any; }) => {
+      if (!a.name || !b.name) return 0;
+      return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
+    });
+    const pageInfo = data?.[dataPath]?.pageInfo;
+
+    // Items im State zusammenführen, wenn neue Daten kommen
+    React.useEffect(() => {
+      if (!pageInfo) return;
+      if (pageInfo.pageNumber === 0) {
+        setAllItems(items);
+        setLastPage(0);
+      } else if (pageInfo.pageNumber > lastPage) {
+        // Duplikate anhand der ID herausfiltern
+        setAllItems(prev => {
+          const existingIds = new Set(prev.map(item => item.id));
+          const newUniqueItems = items.filter(item => !existingIds.has(item.id));
+          return [...prev, ...newUniqueItems];
+        });
+        setLastPage(pageInfo.pageNumber);
+      }
+    }, [data]);
+
+    const handleScroll = async (props: ListOnItemsRenderedProps) => {
+      const { visibleStopIndex } = props;
+      if (pageInfo?.hasNext && visibleStopIndex >= allItems.length - 5) {
+        await fetchMore({
+          variables: {
+            pageSize,
+            pageNumber: pageInfo.pageNumber + 1
+          },
+          updateQuery: (prev: any, { fetchMoreResult }: { fetchMoreResult?: any }) => {
+            if (!fetchMoreResult) return prev;
+            const prevNodes = prev[dataPath].nodes;
+            const newNodes = fetchMoreResult[dataPath].nodes;
+            // Nur eindeutige Items (nach id)
+            const allNodes = [
+              ...prevNodes,
+              ...newNodes.filter((item: any) => !prevNodes.some((p: any) => p.id === item.id))
+            ];
+            return {
+              ...fetchMoreResult,
+              [dataPath]: {
+                ...fetchMoreResult[dataPath],
+                nodes: allNodes,
+                pageInfo: fetchMoreResult[dataPath].pageInfo
+              }
+            };
+          }
+        });
+      }
+    }
+
+    if (loading && pageInfo?.pageNumber === 0) return <LinearProgress />;
+    if (error) return <p><T keyName="verification.error" /></p>;
+    if (!loading && (!allItems || allItems.length === 0)) {
+      return <p><T keyName="verification.no_data" /></p>;
+    }
     return (
-      <FindVerification
-        leaves={result.nodes}
-        paths={result.paths}
-        onSelect={onSelect}
-      />
+      <Box>
+        <ItemList
+          loading={loading}
+          items={allItems}
+          searchLabel={<T keyName="search.search_placeholder" />}
+          onItemsRendered={handleScroll}
+          height={500}
+          onSelect={onSelect}
+        />
+      </Box>
     );
   }
 

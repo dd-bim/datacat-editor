@@ -1,7 +1,7 @@
 import React from "react";
 import CompositeCatalogEntryView from "../views/CompositeCatalogEntryView";
 import DocumentForm from "../views/forms/DocumentForm";
-import DomainGroupForm from "../views/forms/DomainGroupForm";
+import ThemeForm from "../views/forms/ThemeForm";
 import DomainClassForm from "../views/forms/DomainClassForm";
 import PropertyGroupForm from "../views/forms/PropertyGroupForm";
 import PropertyForm from "../views/forms/PropertyForm";
@@ -12,7 +12,7 @@ import DictionaryForm from "../views/forms/DictionaryForm";
 import {
   ClassEntity,
   DocumentEntity,
-  GroupEntity,
+  ThemeEntity,
   ValueListEntity,
   DictionaryEntity,
   PropertyEntity,
@@ -45,12 +45,12 @@ export const catalogEntryRoutes = [
     ),
   },
   {
-    path: `/${GroupEntity.path}/:id?`,
+    path: `/${ThemeEntity.path}/:id?`,
     element: (
       <CompositeCatalogEntryView
-        entryType={GroupEntity}
+        entryType={ThemeEntity}
         renderForm={(id) => (
-          <DomainGroupForm id={id}/>
+          <ThemeForm id={id}/>
         )}
       />
     ),

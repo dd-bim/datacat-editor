@@ -62,7 +62,7 @@ export const DictionaryEntity: Entity = {
   export: true
 };
 
-export const GroupEntity: Entity = {
+export const ThemeEntity: Entity = {
   tags: ["5997da9b-a716-45ae-84a9-e2a7d186bcf9"],
   get title() { return tolgee.t("theme.title"); },
   get titlePlural() { return tolgee.t("theme.titlePlural"); },
@@ -132,20 +132,10 @@ export const ValueEntity: Entity = {
   export: true
 };
 
-export const UndefinedEntity: Entity = {
-  tags: [],
-  get title() { return "undefined" },
-  get titlePlural() { return "undefined"; },
-  recordType: CatalogRecordType.RelationshipToSubject,
-  path: "value",
-  Icon: HelpOutlineIcon,
-  export: true
-};
-
 export const Domain = [
   DocumentEntity,
   DictionaryEntity,
-  GroupEntity,
+  ThemeEntity,
   ClassEntity,
   PropertyGroupEntity,
   PropertyEntity,
@@ -155,9 +145,6 @@ export const Domain = [
 ];
 
 export function getEntityType(recordType: string, tags?: string[]): Entity {
-  if (tags?.length === 0) {
-    return UndefinedEntity;
-  }
   for (const id of tags || []) {
     for (const entityType of Domain) {
       if (entityType.tags?.includes(id)) {
