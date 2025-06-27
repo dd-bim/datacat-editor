@@ -208,7 +208,8 @@
   "export_view": {
     "heading": "Katalog exportieren",
     "description": "Der folgende Button startet den Download einer ZIP-Datei mit zwei CSV-Dateien im Inneren.\nDie Datei 'Entities.csv' enthält alle Katalogeinträge mit deren Metadaten.\nIn der Datei 'Relationships.csv' sind die Relationen gespeichert, die zwischen den Katalogeinträgen bestehen.\nDie Ergebnisdatei ist in UTF-8 encodiert, verwendet Komma (,) als Trennzeichen und doppelte Anführungszeichen (\") als Textqualifizierer.\nDie Daten stehen zum Export bereit, sobald der Button nicht mehr ausgegraut ist.",
-    "export_button": "CSV exportieren"
+    "export_button": "CSV exportieren",
+    "export_ontology_button": "Ontologie exportieren"
   },
   "tag_view": {
     "heading": "Vorhandene Tags",

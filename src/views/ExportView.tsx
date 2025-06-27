@@ -6,6 +6,7 @@ import dateUtil from "../dateUtil";
 import JSZip from "jszip";
 import FileSaver from "file-saver";
 import { T } from "@tolgee/react";
+import ontologyExport from "./OntologyExport";
 
 export function ExportView() {
   const { data: entity, loading: entityLoading } = useExportCatalogRecordsQuery();
@@ -112,6 +113,9 @@ console.log("relation", relation);
       </Typography>
       <Button onClick={handleOnClick} disabled={!loaded}>
         <T keyName="export_view.export_button" />
+      </Button>
+      <Button onClick={ontologyExport}>
+        <T keyName="export_view.export_ontology_button" />
       </Button>
     </View>
   );
