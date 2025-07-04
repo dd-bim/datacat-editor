@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import { defaultFormFieldOptions } from "../../hooks/useFormStyles";
@@ -10,6 +10,8 @@ import LanguageSelectField from "./LanguageSelectField";
 import CountrySelectField from "./CountrySelectField";
 import Autocomplete from "@mui/material/Autocomplete";
 import DictionarySelectField from "./DictionarySelectField";
+import { useFindItemLazyQuery } from "../../generated/types";
+
 
 const FormContainer = styled('form')(({ theme }) => ({
   "& > *": {
@@ -78,7 +80,10 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
     handleSubmit,
   } = useForm({
     defaultValues,
+    mode: "onChange"
   });
+  const [checkName, { data }] = useFindItemLazyQuery();
+  const [nameExists, setNameExists] = useState(false);
 
   return (
     <FormContainer onSubmit={handleSubmit(onSubmit)}>
@@ -87,17 +92,47 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
       <Controller
         name="name"
         control={control}
-        rules={{ required: true }}
+        rules={{
+          required: true,
+          validate: async (value) => {
+            if (!value) {
+              setNameExists(false);
+              return true;
+            }
+            const { data } = await checkName({
+              variables: {
+                input: { query: value },
+                pageSize: 1,
+                pageNumber: 0,
+              },
+              fetchPolicy: "network-only",
+            });
+            const exists = data?.search?.nodes?.some(
+              (node) =>
+                typeof node.name === "string" &&
+                node.name.toLowerCase() === value.toLowerCase()
+            );
+            setNameExists(!!exists);
+            return true;
+          }
+        }}
         render={({ field }) => (
           <TextField
             {...field}
             autoFocus
             label={<T keyName="create_entry_form.name_label">Name (de)</T>}
             helperText={
-              <T keyName="create_entry_form.name_helper">
-                Benennen Sie das Konzept im fachlichen Kontext und möglichst
-                genau. Trennen Sie Synonyme durch Semikolon voneinander ab.
-              </T>
+              errors.name
+                ? errors.name.message
+                : nameExists
+                  ? (
+                    <span style={{ color: "#e69138" }}>
+                      <T keyName="create_entry_form.name_duplicate_hint"/>
+                    </span>
+                  )
+                  : (
+                    <T keyName="create_entry_form.name_helper"/>
+                  )
             }
             error={!!errors.name}
             required
@@ -467,8 +502,8 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label={<T keyName="property.scale" />}
-                    helperText={<T keyName="property.scale_helper" />}
+                    label={<T keyName="unit.scale" />}
+                    helperText={<T keyName="unit.scale_helper" />}
                     error={!!errors.scale}
                     {...defaultFormFieldOptions}
                   />
@@ -490,8 +525,8 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label={<T keyName="property.base" />}
-                    helperText={<T keyName="property.base_helper" />}
+                    label={<T keyName="unit.base" />}
+                    helperText={<T keyName="unit.base_helper" />}
                     error={!!errors.base}
                     {...defaultFormFieldOptions}
                   />

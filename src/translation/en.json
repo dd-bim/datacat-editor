@@ -175,7 +175,8 @@
     "id_helper": "The ID is usually generated automatically. An ID can be specified if it has already been assigned to the concept in a higher-level context.",
     "save_button": "Save",
     "dictionary": "Dictionary",
-    "dictionary_helper": "The dictionary in which the concept is created. A concept can only be created in one dictionary."
+    "dictionary_helper": "The dictionary in which the concept is created. A concept can only be created in one dictionary.",
+    "name_duplicate_hint": "Note: This name is already taken. You can still save the concept."
   },
   "create_entry_split_button": {
     "add_entry": "Add entry",

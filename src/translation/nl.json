@@ -175,7 +175,8 @@
     "id_helper": "De ID wordt meestal automatisch gegenereerd. Een ID kan worden opgegeven als deze al in een overkoepelende context aan het concept is toegewezen.",
     "save_button": "Opslaan",
     "dictionary": "Woordenboek",
-    "dictionary_helper": "Het woordenboek waarin het concept wordt aangemaakt. Een concept kan slechts in één woordenboek worden aangemaakt."
+    "dictionary_helper": "Het woordenboek waarin het concept wordt aangemaakt. Een concept kan slechts in één woordenboek worden aangemaakt.",
+    "name_duplicate_hint": "Let op: Deze naam is al in gebruik. U kunt het concept toch opslaan."
   },
   "create_entry_split_button": {
     "add_entry": "Item toevoegen",

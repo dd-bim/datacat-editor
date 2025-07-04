@@ -133,27 +133,6 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
   };
 
   const onSubmit = async (formValues: CreateEntryFormValues) => {
-    // const catalogRecordType = input?.recordType! as unknown as CatalogRecordType;
-    // const names = [{ languageTag: "de", value: name }];
-    // const descriptions = description ? [{ languageTag: "de", value: description }] : [];
-    // const comments = comment ? [{ languageTag: "de", value: comment }] : [];
-    // const version = { majorVersion, minorVersion };
-    // const properties = {
-    //   id,
-    //   version: version,
-    //   names: names,
-    //   descriptions,
-    //   comments,
-    // };
-    // await create({
-    //   variables: {
-    //     input: {
-    //       catalogEntryType: catalogRecordType,
-    //       properties: properties,
-    //       tags: input?.tags,
-    //     },
-    //   },
-    // });
        const catalogRecordType = (input?.recordType! as unknown as CatalogRecordType);
         const names = [
             { languageTag: "de", value: formValues.name }
@@ -292,9 +271,7 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
 
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
         <DialogTitle>
-          <T keyName="create_entry_split_button.create_entry" params={{ title: input?.title ?? "" }}>
-            {`${input?.title ?? ""} erstellen...`}
-          </T>
+          <T keyName="create_entry_split_button.create_entry" params={{ title: input?.title ?? "" }}/>
         </DialogTitle>
         <DialogContent>
           <CreateEntryForm defaultValues={defaultValues} onSubmit={onSubmit} entityType={input!} />

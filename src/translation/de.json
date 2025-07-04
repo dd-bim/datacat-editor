@@ -175,7 +175,8 @@
     "id_helper": "Die ID wird in der Regel automatisch generiert. Eine ID kann angegeben werden, wenn diese bereits in einem übergeordnetem Kontext für das Konzept vergeben wurde.",
     "save_button": "Speichern",
     "dictionary": "Dictionary",
-    "dictionary_helper": "Das Dictionary, in dem das Konzept angelegt wird. Ein Konzept kann nur in einem Dictionary angelegt werden."
+    "dictionary_helper": "Das Dictionary, in dem das Konzept angelegt wird. Ein Konzept kann nur in einem Dictionary angelegt werden.",
+    "name_duplicate_hint": "Hinweis: Dieser Name ist bereits vergeben. Sie können das Konzept trotzdem speichern."
   },
   "create_entry_split_button": {
     "add_entry": "Eintrag hinzufügen",

@@ -175,7 +175,8 @@
     "id_helper": "ID通常自动生成。如在上级环境中已分配，可手动填写。",
     "save_button": "保存",
     "dictionary": "字典",
-    "dictionary_helper": "概念所属字典。一个概念只能属于一个字典。"
+    "dictionary_helper": "概念所属字典。一个概念只能属于一个字典。",
+    "name_duplicate_hint": "提示：该名称已被占用。您仍可保存该概念。"
   },
   "create_entry_split_button": {
     "add_entry": "添加条目",

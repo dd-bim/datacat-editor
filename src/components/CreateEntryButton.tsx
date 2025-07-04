@@ -26,6 +26,7 @@ import {
     ValueEntity,
     DictionaryEntity
 } from "../domain";
+import { T } from "@tolgee/react";
 
 const options = [
     DocumentEntity,
@@ -230,7 +231,7 @@ const CreateEntryButton = (props: CreateEntryProps) => {
             </Popper>
 
             <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
-                <DialogTitle>{input?.title} erstellen...</DialogTitle>
+                <DialogTitle><T keyName="create_entry_split_button.create_entry" params={{ title: input?.title ?? "" }}/></DialogTitle>
                 <DialogContent>
                     <CreateEntryForm
                         defaultValues={defaultValues}

@@ -175,7 +175,8 @@
     "id_helper": "L'ID viene generalmente generato automaticamente. Può essere specificato se già assegnato in un contesto superiore.",
     "save_button": "Salva",
     "dictionary": "Dizionario",
-    "dictionary_helper": "Il dizionario in cui viene creato il concetto. Un concetto può essere creato solo in un dizionario."
+    "dictionary_helper": "Il dizionario in cui viene creato il concetto. Un concetto può essere creato solo in un dizionario.",
+    "name_duplicate_hint": "Nota: Questo nome è già stato assegnato. Puoi comunque salvare il concetto."
   },
   "create_entry_split_button": {
     "add_entry": "Aggiungi voce",

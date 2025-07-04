@@ -175,7 +175,8 @@
     "id_helper": "El ID generalmente se genera automáticamente. Se puede proporcionar un ID si ya se ha asignado al concepto en un contexto superior.",
     "save_button": "Guardar",
     "dictionary": "Diccionario",
-    "dictionary_helper": "El diccionario en el que se crea el concepto. Un concepto solo puede crearse en un diccionario."
+    "dictionary_helper": "El diccionario en el que se crea el concepto. Un concepto solo puede crearse en un diccionario.",
+    "name_duplicate_hint": "Aviso: Este nombre ya está en uso. Puede guardar el concepto igualmente."
   },
   "create_entry_split_button": {
     "add_entry": "Añadir entrada",
