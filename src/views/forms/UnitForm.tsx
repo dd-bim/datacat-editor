@@ -125,25 +125,25 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
                     </b>
                 </FormSetTitle>
                 <Typography sx={{ mt: 1 }}>
-                    Scala: {entry.scale ? UnitScale[entry.scale] : "-"}
+                    <T keyName="unit.scale"/>: {entry.scale ? UnitScale[entry.scale] : "-"}
                 </Typography>
                 <Typography sx={{ mt: 1 }}>
-                    Basis: {entry.base ? UnitBase[entry.base] : "-"}
+                    <T keyName="unit.base"/>: {entry.base ? UnitBase[entry.base] : "-"}
                 </Typography>
                 <Typography sx={{ mt: 1 }}>
-                    Sprache des Erstellers: {entry.languageOfCreator ? entry.languageOfCreator.code : "-"}
+                    <T keyName="create_entry_form.languageOfCreator"/>: {entry.languageOfCreator ? entry.languageOfCreator.code : "-"}
                 </Typography>
                 <Typography sx={{ mt: 1 }}>
-                    Herkunftsland: {entry.countryOfOrigin ? entry.countryOfOrigin.name + " (" + entry.countryOfOrigin.code + ")" : "-"}
+                    <T keyName="create_entry_form.countryOfOrigin"/>: {entry.countryOfOrigin ? entry.countryOfOrigin.name + " (" + entry.countryOfOrigin.code + ")" : "-"}
                 </Typography>
                 <Typography sx={{ mt: 1 }}>
-                    Offset: {entry.offset ? `${entry.offset.numerator} / ${entry.offset.denominator}` : "-"}
+                    <T keyName="unit.offset"/>: {entry.offset ? `${entry.offset.numerator} / ${entry.offset.denominator}` : "-"}
                 </Typography>
                 <Typography sx={{ mt: 1 }}>
-                    Coefficient: {entry.coefficient ? `${entry.coefficient.numerator} / ${entry.coefficient.denominator}` : "-"}
+                    <T keyName="unit.coefficient"/>: {entry.coefficient ? `${entry.coefficient.numerator} / ${entry.coefficient.denominator}` : "-"}
                 </Typography>
                 <Typography sx={{ mt: 1 }}>
-                    Dimension: {!entry.dimension && " -"}
+                    <T keyName="unit.dimension"/>: {!entry.dimension && " -"}
                 </Typography>
                 {entry.dimension ? (
                     <Box sx={{ mt: 1 }}>

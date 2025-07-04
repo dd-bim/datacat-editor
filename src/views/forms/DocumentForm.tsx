@@ -123,34 +123,34 @@ const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => 
                     </b>
                 </FormSetTitle>
                 <Typography sx={{ mt: 2 }}>
-                    Uri: {entry.documentUri ? (
+                    <T keyName="document.uri"/>: {entry.documentUri ? (
                         <a href={entry.documentUri} target="_blank" rel="noopener noreferrer">
                             {entry.documentUri}
                         </a>
                     ) : "-"}
                 </Typography>
                 <Typography sx={{ mt: 1 }}>
-                    Autor: {entry.author ? entry.author : "-"}
+                    <T keyName="document.author"/>: {entry.author ? entry.author : "-"}
                 </Typography>
                 <Typography sx={{ mt: 1 }}>
-                    Herausgeber: {entry.publisher ? entry.publisher : "-"}
+                    <T keyName="document.publisher"/>: {entry.publisher ? entry.publisher : "-"}
                 </Typography>
                 <Typography sx={{ mt: 1 }}>
-                    ISBN: {entry.isbn ? entry.isbn : "-"}
+                    <T keyName="document.isbn"/>: {entry.isbn ? entry.isbn : "-"}
                 </Typography>
                 <Typography sx={{ mt: 1 }}>
-                    Erscheinungsdatum: {entry.dateOfPublication ? entry.dateOfPublication : "-"}
+                    <T keyName="document.dateOfPublication"/>: {entry.dateOfPublication ? entry.dateOfPublication : "-"}
                 </Typography>
                 <Typography sx={{ mt: 1 }}>
-                    Sprache: {entry.languages && entry.languages.length > 0
+                    <T keyName="document.languageTag"/>: {entry.languages && entry.languages.length > 0
                         ? entry.languages.map(lang => lang.nativeName).join(", ")
                         : "-"}
                 </Typography>
                 <Typography sx={{ mt: 1 }}>
-                    Sprache des Erstellers: {entry.languageOfCreator ? entry.languageOfCreator.code : "-"}
+                    <T keyName="create_entry_form.languageOfCreator"/>: {entry.languageOfCreator ? entry.languageOfCreator.code : "-"}
                 </Typography>
                 <Typography sx={{ mt: 1 }}>
-                    Herkunftsland: {entry.countryOfOrigin ? entry.countryOfOrigin.name + " (" + entry.countryOfOrigin.code + ")" : "-"}
+                    <T keyName="create_entry_form.countryOfOrigin"/>: {entry.countryOfOrigin ? entry.countryOfOrigin.name + " (" + entry.countryOfOrigin.code + ")" : "-"}
                 </Typography>
             </FormSet>
 
@@ -188,7 +188,7 @@ const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => 
                 startIcon={<DeleteForeverIcon />}
                 onClick={handleOnDelete}
             >
-                Löschen
+                <T keyName="delete.delete_button"/>
             </Button>
         </FormView>
     );

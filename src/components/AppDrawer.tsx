@@ -238,7 +238,7 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
 
           <AppDrawerItem
             icon={<DocumentEntity.Icon />}
-            primary={<T keyName="documents.titlePlural">Referenzdokumente</T>}
+            primary={<T keyName="document.titlePlural">Referenzdokumente</T>}
             to={`/${DocumentEntity.path}`}
             onClick={handleItemClick}
           />

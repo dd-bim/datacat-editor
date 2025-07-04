@@ -1,6 +1,8 @@
 {
   "verification": {
     "title": "Criterio de verificación",
+    "error": "Error al ejecutar la rutina de verificación.",
+    "no_data": "No se encontraron datos.",
     "category_title": "Categoría",
     "criteria": {
       "integrity": "Integridad",
@@ -8,39 +10,32 @@
       "language": "Idioma"
     },
     "category": {
-      "no_model_group": "Modelos de dominio sin grupo",
-      "no_group_class": "Grupos sin clase",
-      "no_class_properties": "Clases sin propiedades/grupos de propiedades",
+      "no_theme_class": "Temas sin clase",
+      "no_class_properties": "Clases sin propiedades ni grupos de propiedades",
       "no_property_group": "Grupos de propiedades sin propiedades",
-      "no_property": "Propiedades sin clase o grupo de propiedades",
-      "no_measure": "Medidas sin propiedad",
-      "no_unit": "Unidades sin medida",
-      "no_value": "Valores sin medida",
+      "no_property": "Propiedades sin clase ni grupo de propiedades",
+      "no_valuelist": "Listas de valores sin propiedad",
+      "no_unit": "Unidades sin lista de valores ni propiedad",
+      "no_value": "Valores sin lista de valores",
       "duplicate_id": "IDs duplicados",
       "duplicate_name_type": "Nombres duplicados (dentro de un tipo)",
-      "duplicate_name_all": "Nombres duplicados (base de datos completa)",
+      "duplicate_name_all": "Nombres duplicados (en todo el catálogo)",
       "missing_description": "Descripción faltante",
       "missing_description_en": "Descripción faltante (inglés)",
-      "missing_translation_en": "Traducción de nombre faltante (inglés)"
+      "missing_translation_en": "Traducción de nombre faltante (inglés)",
+      "no_dictionary": "Conceptos sin diccionario",
+      "no_document": "Conceptos sin documento de referencia",
+      "inactive_concepts": "Conceptos inactivos"
     },
     "result": {
-      "select_criteria": "Seleccionar criterio de verificación y categoría.",
-      "select_entry": "Seleccionar resultado de verificación en la vista de lista para mostrar propiedades."
-    },
-    "edit": {
-      "group": "Editar grupo",
-      "class": "Editar clase",
-      "property": "Editar propiedad",
-      "measure": "Editar medida",
-      "unit": "Editar unidad",
-      "value": "Editar valor",
-      "model": "Editar modelo de dominio"
+      "select_criteria": "Seleccione criterio y categoría de verificación.",
+      "select_entry": "Seleccione un resultado en la vista de lista para mostrar propiedades."
     }
   },
   "home": {
     "title": "Bienvenido a datacat",
     "about.title": "Sobre el proyecto",
-    "about.description": "La plataforma datacat representa un trabajo de investigación interdisciplinario del departamento de \"Geodesia y BIM\" de la Facultad de Geoinformación de la Universidad de Ciencias Aplicadas de Dresde (HTW Dresden). La plataforma tiene como objetivo proporcionar componentes fáciles de usar y desarrollar para la elaboración y publicación de sistemas de clasificación, catálogos de tipos de objetos y bases de datos de propiedades en el contexto del método BIM.",
+    "about.description": "La plataforma datacat es un trabajo de investigación interdisciplinario del departamento de \"Geodesia y BIM\" de la Facultad de Geoinformación de la Universidad de Ciencias Aplicadas de Dresde (HTW Dresden). La plataforma tiene como objetivo proporcionar componentes fáciles de usar y desarrollar para la elaboración y publicación de sistemas de clasificación, catálogos de tipos de objetos y bases de datos de propiedades en el contexto del método BIM.",
     "components.title": "Los componentes",
     "components.description": "Actualmente, la plataforma se divide en los componentes principales: datacat API, una interfaz GraphQL autodocumentada y amigable para desarrolladores para consultas complejas en el catálogo de datos, y el datacat editor, una herramienta de usuario basada en navegador para navegar y editar la base de datos.",
     "methodology.title": "La metodología",
@@ -49,11 +44,11 @@
     "opensource.description": "datacat se desarrolla como software libre y de código abierto bajo la licencia GPLv3 y puede ser utilizado y reproducido por cualquier persona, incluso comercialmente. El código fuente está alojado en GitHub. Cualquier tipo de apoyo al proyecto es bienvenido."
   },
   "intro": {
-    "description1": "datacat editor es una herramienta de trabajo basada en web, de código abierto, para el desarrollo colaborativo de catálogos de datos para la industria de la construcción. El código fuente se proporciona bajo la licencia GPL v3.",
+    "description1": "datacat editor es una herramienta web de código abierto para el desarrollo colaborativo de catálogos de datos para la industria de la construcción. El código fuente se proporciona bajo la licencia GPL v3.",
     "description2": "En un catálogo de datos, puede nombrar, describir y categorizar conceptos como actores, actividades, componentes de construcción y propiedades en varios idiomas según su función y forma, de conformidad con los estándares. Al formar relaciones entre estos conceptos, el entorno construido puede describirse con más detalle.",
     "description3": "La base de datos desarrollada está disponible para su recuperación a través de una API para desarrolladores de herramientas de importación/exportación y complementos CAD/BIM. En el futuro, se desarrollarán rutinas de verificación que permitirán identificar inconsistencias como conceptos no utilizados, posibles duplicados y traducciones faltantes en el catálogo.",
     "description4": "datacat se desarrolla en la Universidad de Ciencias Aplicadas de Dresde (HTW Dresden). Si está interesado en el proyecto o tiene preguntas sobre la aplicación, no dude en contactarnos directamente a través de los datos indicados a continuación.",
-    "call_to_action": "Esta es una vista previa del software. Su participación directa como desarrollador de código abierto o indirectamente proporcionando comentarios es muy bienvenida."
+    "call_to_action": "Su participación directa como desarrollador de código abierto o indirectamente proporcionando comentarios es muy bienvenida."
   },
   "profile": {
     "heading": "Editar perfil de usuario",
@@ -71,11 +66,11 @@
     }
   },
   "boarding": {
-    "welcome": "Bienvenido a datacat editor",
+    "welcome": "Bienvenido al editor datacat",
     "login_tab": "Iniciar sesión",
     "signup_tab": "Registrarse",
     "login_message": "Por favor, utilice su nombre de usuario y contraseña para iniciar sesión en el editor.",
-    "signup_message": "Puede registrarse para obtener acceso de lectura al catálogo. Si desea participar en la edición del catálogo, informe al administrador.",
+    "signup_message": "Puede registrarse para obtener acceso de solo lectura al catálogo. Si desea participar en la edición del catálogo, informe al administrador.",
     "signup_success": "Recibirá un código de confirmación por correo electrónico en los próximos minutos, con el que podrá activar su cuenta.",
     "login_success": "¡Bienvenido de nuevo!"
   },
@@ -102,12 +97,9 @@
   "import": {
     "heading": "Importar catálogo (CSV)",
     "description": "A través de esta página se pueden importar entidades y sus relaciones. De manera similar a la exportación, aquí se pueden importar dos archivos CSV. Un archivo contiene las entidades en el siguiente esquema:",
-    "entity_columns": "id;typ;tags;name;name_en;description;version;createdBy;created;lastModified;lastModifiedBy",
-    "entity_columns_note": "Las columnas marcadas con r deben completarse para cada entidad, las columnas marcadas con o pueden contener valores opcionales. Las columnas restantes no se consideran durante la importación y por lo tanto pueden dejarse vacías.",
-    "tags_note": "Para que las entidades sean visibles en la interfaz del datacatEditor, deben tener etiquetas de la taxonomía seleccionada allí. (Documento de referencia, Modelo de dominio, Grupo, Clase, Grupo de propiedades, Propiedad, Medida, Valor, Unidad de medida)",
+    "entity_columns_note": "Las columnas marcadas con o pueden contener valores opcionales.",
+    "tags_note": "Para que las entidades sean visibles en la interfaz del datacat Editor, deben tener etiquetas de la taxonomía seleccionada allí. (Documento de referencia, Diccionario, Tema, Clase, Grupo de propiedades, Propiedad, Lista de valores, Valor, Unidad de medida)",
     "relation_columns_note": "El otro archivo contiene opcionalmente las relaciones entre entidades con las siguientes columnas:",
-    "relation_columns": "entity1;entity1Type;relationId;relationshipType;entity2;entity2Type",
-    "relation_columns_note_2": "Los tipos de entidad pueden dejarse vacíos aquí.",
     "entities_file_button": "Seleccionar archivo de entidades",
     "relations_file_button": "Seleccionar archivo de relaciones",
     "import_button": "Importar",
@@ -126,29 +118,24 @@
   },
   "import_excel": {
     "heading": "Importar catálogo (tabla Excel)",
-    "description": "A través de esta página también se pueden importar entidades y sus relaciones. A diferencia de la importación CSV, se puede usar una tabla Excel externa. Para que la importación funcione, las columnas en las que se enumeran las respectivas entidades deben especificarse correctamente: Documento de referencia, Modelo de dominio, Grupo, Clase, Propiedad, Medida (Enum), Unidad de medida y Valor.",
+    "description": "A través de esta página también se pueden importar entidades y sus relaciones. A diferencia de la importación CSV, se puede usar una tabla Excel externa. Para que la importación funcione, las columnas en las que se enumeran las respectivas entidades deben especificarse correctamente: Documento de referencia, Diccionario, Tema, Clase, Propiedad, Lista de valores, Unidad de medida y Valor.",
     "select_all": "Seleccionar/deseleccionar todo",
-    "label": "Etiqueta:",
+    "label": "Etiqueta",
     "sheet": "Hoja de cálculo",
     "name": "Nombre",
     "id": "ID",
-    "document": "Documentos de referencia",
-    "model": "Modelos de dominio",
-    "group": "Grupos",
-    "class": "Clases",
-    "property": "Propiedades",
-    "measure": "Medidas",
-    "unit": "Unidades de medida",
-    "value": "Valores",
     "sheetName": "Hoja de cálculo",
     "relations": "Relaciones:",
-    "rel_doc_model": "Documento de referencia - Modelo de dominio",
-    "rel_model_group": "Modelo de dominio - Grupo",
-    "rel_group_class": "Grupo - Clase",
+    "rel_concept_doc": "Concepto - Documento de referencia",
+    "rel_concept_dictionary": "Concepto - Diccionario",
+    "rel_theme_class": "Tema - Clase",
     "rel_class_property": "Clase - Propiedad",
-    "rel_property_measure": "Propiedad - Medida",
-    "rel_measure_unit": "Medida - Unidad de medida",
-    "rel_measure_value": "Medida - Valor",
+    "rel_property_valuelist": "Propiedad - Lista de valores",
+    "rel_valuelist_unit": "Lista de valores - Unidad de medida",
+    "rel_valuelist_value": "Lista de valores - Valor",
+    "rel_property_unit": "Propiedad - Unidad de medida",
+    "rel_class_propertygroup": "Clase - Grupo de propiedades",
+    "rel_propertygroup_property": "Grupo de propiedades - Propiedad",
     "validation_failed": "La validación falló. Por favor, compruebe los mensajes de error.",
     "validation_success": "Validación exitosa. Ahora puede importar el archivo Excel.",
     "no_file_selected": "Ningún archivo seleccionado",
@@ -167,33 +154,28 @@
     "audit": "Verificar",
     "import": "Importar",
     "export": "Exportar",
+    "ids_export": "Exportar IDS",
     "graphiql": "Interfaz GraphiQL",
     "new_tags": "Crear nuevas etiquetas",
     "grid_view": "Vista de tabla",
-    "catalog": "Catálogo",
-    "documents": "Documentos de referencia",
-    "models": "Modelos de dominio",
-    "groups": "Grupos",
-    "classes": "Clases",
-    "data_templates": "Plantillas de datos",
-    "property_groups": "Grupos de propiedades",
-    "properties": "Propiedades",
-    "measures": "Medidas",
-    "units": "Unidades de medida",
-    "values": "Valores"
+    "catalog": "Catálogo"
   },
   "create_entry_form": {
-    "name_label": "Nombre (de)",
+    "name_label": "Nombre (es)",
     "name_helper": "Nombre el concepto en el contexto técnico y con la mayor precisión posible. Separe los sinónimos con punto y coma.",
-    "description_label": "Descripción (de)",
+    "description_label": "Descripción (es)",
     "description_helper": "Describa el concepto en su significado. Use la descripción especialmente para distinguirlo de conceptos posiblemente nombrados de manera similar pero técnicamente diferentes.",
-    "comment_label": "Comentario (de)",
+    "comment_label": "Comentario (es)",
     "comment_helper": "Deje un comentario sobre este concepto. Aquí se puede intercambiar información adicional entre editores.",
+    "languageOfCreator": "Idioma del creador",
+    "languageOfCreator_helper": "El idioma en el que se creó el concepto.",
+    "countryOfOrigin": "País de origen",
+    "countryOfOrigin_helper": "El país en el que se creó el concepto.",
     "id_label": "ID",
     "id_helper": "El ID generalmente se genera automáticamente. Se puede proporcionar un ID si ya se ha asignado al concepto en un contexto superior.",
-    "version_id_label": "ID de versión",
-    "version_date_label": "Fecha de versión",
-    "save_button": "Guardar"
+    "save_button": "Guardar",
+    "dictionary": "Diccionario",
+    "dictionary_helper": "El diccionario en el que se crea el concepto. Un concepto solo puede crearse en un diccionario."
   },
   "create_entry_split_button": {
     "add_entry": "Añadir entrada",
@@ -203,65 +185,34 @@
   "composite_catalog_entry_view": {
     "more_results": "Más resultados",
     "edit_entry": "Editar {title}",
-    "select_entry": "Seleccionar {title} en la vista de lista para mostrar propiedades."
-  },
-  "document_form": {
-    "loading": "Cargando documento de referencia...",
-    "error": "Se ha producido un error...",
-    "update_success": "Actualización exitosa.",
-    "delete_success": "Documento de referencia eliminado.",
-    "described_concepts": "Conceptos descritos por el documento de referencia",
-    "delete_button": "Eliminar"
-  },
-  "domain_class_form": {
-    "loading": "Cargando clase...",
-    "error": "Se ha producido un error...",
-    "update_success": "Actualización exitosa.",
-    "delete_success": "Clase eliminada.",
-    "assigned_property_groups": "Grupos de propiedades asignados a la clase {name}",
-    "assigned_properties": "Propiedades directamente asignadas a la clase {name}",
-    "reference_documents": "que describen esta clase",
-    "no_reference_documents": "No descrita por ningún documento de referencia almacenado en el catálogo de datos",
-    "groups_using_class": "que utilizan esta clase",
-    "no_groups_using_class": "La clase no es utilizada por ningún grupo",
-    "delete_button": "Eliminar"
-  },
-  "domain_group_form": {
-    "loading": "Cargando grupo...",
-    "error": "Se ha producido un error...",
-    "update_success": "Actualización exitosa.",
-    "delete_success": "Grupo eliminado.",
-    "grouped_classes": "Clases agrupadas",
-    "grouped_classes_description": "Clases que están asignadas a este grupo.",
-    "reference_documents": "que describen este grupo",
-    "no_reference_documents": "No descrito por ningún documento de referencia almacenado en el catálogo de datos",
-    "domain_models_using_group": "que utilizan este grupo",
-    "no_domain_models_using_group": "El grupo no es utilizado por ningún modelo de dominio",
-    "delete_button": "Eliminar"
-  },
-  "domain_model_form": {
-    "loading": "Cargando modelo de dominio...",
-    "error": "Se ha producido un error...",
-    "update_success": "Actualización exitosa.",
-    "delete_success": "Modelo de dominio eliminado.",
-    "reference_documents": "que describen este modelo de dominio",
-    "no_reference_documents": "No descrito por ningún documento de referencia almacenado en el catálogo de datos",
-    "delete_button": "Eliminar"
+    "select_entry": "Seleccione {title} en la vista de lista para mostrar propiedades."
   },
   "delete_import_view": {
     "heading": "Eliminar entradas del catálogo con una etiqueta específica",
     "description": "Las entidades que tienen una etiqueta específica pueden eliminarse aquí. También se eliminarán todas las relaciones vinculadas a las entidades.",
     "tag_label": "Etiqueta",
+    "search_button": "Buscar entradas del catálogo con etiqueta",
     "delete_button": "Eliminar entradas del catálogo",
-    "tag_not_exist": "¡La etiqueta {tag} no existe!",
-    "delete_success": "Entrada del catálogo {name} eliminada",
-    "error_occurred": "Se ha producido un error..."
+    "no_entries_found": "No se encontraron entradas del catálogo con la etiqueta.",
+    "delete_success": "Entrada del catálogo eliminada",
+    "error_occurred": "Se ha producido un error...",
+    "search_error": "Se produjo un error durante la búsqueda.",
+    "delete_summary": "Entradas del catálogo eliminadas correctamente.",
+    "delete_error_summary": "No se pudieron eliminar las entradas del catálogo.",
+    "entries_to_delete": "Entradas del catálogo encontradas para eliminar:",
+    "confirm_delete_title": "Confirmar eliminación",
+    "confirm_delete_message": "¿Está seguro de que desea eliminar todas las entradas del catálogo con la etiqueta {tag}? Esta acción no se puede deshacer.",
+    "cancel": "Cancelar",
+    "confirm_delete": "Sí, eliminar"
   },
   "export_view": {
-    "heading": "Exportar catálogo",
-    "description": "El siguiente botón inicia la descarga de un archivo ZIP con dos archivos CSV en su interior.\nEl archivo 'Entities.csv' contiene todas las entradas del catálogo con sus metadatos.\nEn el archivo 'Relationships.csv' se almacenan las relaciones que existen entre las entradas del catálogo.\nEl archivo resultante está codificado en UTF-8, utiliza coma (,) como separador y comillas dobles (\") como calificador de texto.\nLos datos están listos para exportar tan pronto como el botón ya no esté desactivado.",
-    "export_button": "Exportar CSV"
-  },
+      "heading": "Exportar catálogo como CSV",
+      "description": "El siguiente botón inicia la descarga de un archivo ZIP que contiene dos archivos CSV.\nEl archivo 'Entities.csv' contiene todas las entradas del catálogo con sus metadatos.\nEl archivo 'Relationships.csv' almacena las relaciones entre las entradas del catálogo.\nEl archivo resultante está codificado en UTF-8, utiliza coma (,) como separador y comillas dobles (\") como calificador de texto.\nLos datos están listos para exportar tan pronto como el botón ya no esté atenuado.",
+      "export_button": "Exportar CSV",
+      "export_ontology_button": "Exportar ontología",
+      "heading_ontology": "Exportar catálogo como ontología (.ttl)",
+      "description_ontology": "La exportación de ontología actualmente incluye todas las clases, propiedades, listas de valores y valores. Es importante para la exportación de ontología que los nombres de los conceptos sean únicos para evitar errores. Para garantizar esto, se pueden utilizar las herramientas de verificación.\nLa ontología se puede exportar utilizando nombres en alemán o inglés como identificadores."
+    },
   "tag_view": {
     "heading": "Etiquetas existentes",
     "explanation": "Esta página se utiliza para añadir nuevas etiquetas a la base de datos. Las etiquetas pueden utilizarse en la vista de tabla para añadir nuevas etiquetas a las entradas existentes.",
@@ -276,95 +227,169 @@
   },
   "hierarchy": {
     "error": "Se ha producido un error al acceder al árbol de propiedades.",
-    "select_concept": "Seleccionar concepto en la vista de árbol para mostrar propiedades.",
-    "edit_group": "Editar grupo",
-    "edit_class": "Editar clase",
-    "edit_property": "Editar propiedad",
-    "edit_measure": "Editar medida",
-    "edit_unit": "Editar unidad",
-    "edit_value": "Editar valor",
-    "edit_model": "Editar modelo de dominio",
+    "select_concept": "Seleccione un concepto en la vista de árbol para mostrar propiedades.",
     "search_catalog": "Buscar en el catálogo"
   },
   "grid_view": {
     "loading": "Cargando contenido de la tabla",
     "tag_filter_title": "Opción de filtrado por etiquetas",
+    "tag_filter_placeholder": "Seleccionar etiqueta",
     "select_tag": "Seleccionar etiqueta",
     "add_tag": "Añadir etiqueta",
+    "show_all": "Mostrar todo",
+    "please_select_tag": "Por favor, seleccione una etiqueta.",
+    "adding_tags": "Añadiendo etiquetas...",
+    "tags_added_success": "Etiquetas añadidas correctamente.",
+    "no_tags_added": "No se añadieron etiquetas.",
+    "error_updating_tags": "Error al actualizar las etiquetas.",
+    "adding_tags_please_wait": "Añadiendo etiquetas, por favor espere...",
     "show_only_documents": "Mostrar solo documentos de referencia",
-    "show_only_models": "Mostrar solo modelos de dominio",
-    "show_only_groups": "Mostrar solo grupos",
+    "show_only_dictionaries": "Mostrar solo diccionarios",
+    "show_only_themes": "Mostrar solo temas",
     "show_only_classes": "Mostrar solo clases",
     "show_only_property_groups": "Mostrar solo grupos de propiedades",
     "show_only_properties": "Mostrar solo propiedades",
-    "show_all": "Mostrar todo",
-    "reference_documents": "Documentos de referencia",
-    "domain_models": "Modelos de dominio",
-    "groups": "Grupos",
-    "classes": "Clases",
-    "property_groups": "Grupos de propiedades",
-    "properties": "Propiedades",
-    "tag_filter_placeholder": "Seleccionar etiqueta"
+    "selection_help": "Ayuda de selección:",
+    "for_range": "para selección de rango",
+    "for_multiple": "para selección múltiple",
+    "drag_to_select": "Arrastrar para seleccionar varias filas",
+    "please_select_rows": "Por favor, seleccione al menos una fila",
+    "tag_id_not_found": "ID de etiqueta no encontrada",
+    "tags_added_with_skips": "Etiquetas añadidas. {count} entradas omitidas porque ya tenían la etiqueta",
+    "all_entries_already_tagged": "Todas las {count} entradas seleccionadas ya tienen la etiqueta",
+    "tags_added_with_existing": "Etiqueta añadida a {added} entradas. {existing} entradas ya tenían esta etiqueta.",
+    "tags_added_count": "Etiqueta añadida a {count} entradas.",
+    "no_tags_to_add": "No se necesitan etiquetas para añadir.",
+    "tags_adding_failed": "Error al añadir etiquetas."
   },
-  "error":{
+  "error": {
     "error": "Se ha producido un error..."
   },
   "document": {
     "title": "Documento de referencia",
     "titlePlural": "Documentos de referencia",
+    "edit": "Editar documento de referencia",
     "description": "Una entrada de tipo Documento de referencia se utiliza para representar documentos externos, libros u otra información escrita.",
     "loading": "Cargando documento de referencia...",
-    "TransferList": "Conceptos descritos por el documento de referencia ",
-    "TransferList2": ""
+    "more_infos": "Más información",
+    "references": ", que describe este documento de referencia",
+    "no_references": "No describe ningún concepto en el catálogo de datos.",
+    "uri": "URI",
+    "uri_helper": "La URI del documento de referencia. Se utiliza para referenciar el documento.",
+    "author": "Autor",
+    "author_helper": "El autor del documento de referencia. Puede ser una persona o una organización.",
+    "isbn": "ISBN",
+    "isbn_helper": "El ISBN del documento de referencia. Se utiliza para identificar libros de forma única.",
+    "publisher": "Editorial",
+    "publisher_helper": "La editorial del documento de referencia. Puede ser una persona o una organización.",
+    "dateOfPublication": "Fecha de publicación",
+    "dateOfPublication_helper": "La fecha en que se publicó el documento de referencia.",
+    "languageTag": "Idioma",
+    "languageTag_helper": "El idioma en el que está redactado el documento."
   },
-  "model": {
-    "title": "Modelo de dominio",
-    "titlePlural": "Modelos de dominio",
-    "loading": "Cargando modelo de dominio...", 
-    "TransferList": "Grupos descritos por el modelo de dominio ",
-    "TransferList2": ""
+  "dictionary": {
+    "title": "Diccionario",
+    "titlePlural": "Diccionarios",
+    "edit": "Editar diccionario",
+    "loading": "Cargando diccionario...",
+    "delete_success": "Diccionario eliminado.",
+    "related_concepts": ", que están contenidos en el diccionario",
+    "no_related_concepts": "El diccionario no contiene conceptos."
   },
-  "group": {
-    "title": "Grupo",
-    "titlePlural": "Grupos",
-    "loading": "Cargando grupo...",
-    "TransferList": "Clases ",
-    "TransferList2": "agrupadas"
+  "theme": {
+    "title": "Tema",
+    "titlePlural": "Temas",
+    "edit": "Editar tema",
+    "loading": "Cargando tema...",
+    "delete_success": "Tema eliminado.",
+    "assigned_classes": ", que están asignadas a este tema",
+    "child_themes": "Subtemas",
+    "parent_theme": "Tema principal",
+    "assigning_theme": ", al que está asignado este tema",
+    "no_assigning_theme": "El tema no está subordinado a ningún otro tema."
   },
   "class": {
     "title": "Clase",
     "titlePlural": "Clases",
+    "edit": "Editar clase",
     "loading": "Cargando clase...",
-    "TransferList": "Grupos de propiedades asignados ",
-    "TransferList2": "a la clase ",
-    "TransferList3": ""
-  },
-  "dataTemplate": {
-    "title": "Plantilla de datos",
-    "titlePlural": "Plantillas de datos"
+    "delete_success": "Clase eliminada.",
+    "assigned_concepts": ", que están asignados a la clase",
+    "themes_using_class": ", que contienen esta clase",
+    "no_themes_using_class": "La clase no es utilizada por ningún tema."
   },
   "propertyGroup": {
     "title": "Grupo de propiedades",
-    "titlePlural": "Grupos de propiedades"
+    "titlePlural": "Grupos de propiedades",
+    "edit": "Editar grupo de propiedades",
+    "loading": "Cargando grupo de propiedades...",
+    "delete_success": "Grupo de propiedades eliminado.",
+    "grouped_properties": ", que están contenidos en el grupo de propiedades",
+    "assigned_classes": ", a las que se ha asignado este grupo de propiedades",
+    "no_assigned_classes": "Este grupo de propiedades no ha sido asignado a ninguna clase"
   },
   "property": {
     "title": "Propiedad",
-    "titlePlural": "Propiedades"
+    "titlePlural": "Propiedades",
+    "edit": "Editar propiedad",
+    "dataType": "Tipo de dato",
+    "dataType_helper": "El tipo de dato de la propiedad. Puede ser un tipo de dato simple como cadena, entero o booleano.",
+    "dataFormat": "Formato de datos",
+    "dataFormat_helper": "El formato de datos de la propiedad.",
+    "loading": "Cargando propiedad...",
+    "delete_success": "Propiedad eliminada.",
+    "assigned_concepts": ", que han sido asignados a esta propiedad",
+    "assigning_property_groups": ", en los que está contenida esta propiedad",
+    "no_assigning_property_groups": "La propiedad no se utiliza en ningún grupo de propiedades.",
+    "assigned_classes": ", a las que se ha asignado esta propiedad",
+    "no_assigned_classes": "La propiedad no ha sido asignada directamente a ninguna clase"
   },
-  "measure": {
-    "title": "Medida",
-    "titlePlural": "Medidas"
+  "valuelist": {
+    "title": "Lista de valores",
+    "titlePlural": "Listas de valores",
+    "edit": "Editar lista de valores",
+    "language": "Idioma",
+    "language_helper": "Idioma de la lista de valores",
+    "loading": "Cargando lista de valores...",
+    "delete_success": "Lista de valores eliminada.",
+    "applicable_units": ", que aplican la lista de valores",
+    "value_range": ", que han sido asignados a esta lista de valores",
+    "assigned_properties": "a las que se ha asignado esta lista de valores",
+    "no_assigned_properties": "La lista de valores no ha sido asignada a ninguna propiedad"
   },
   "unit": {
     "title": "Unidad de medida",
-    "titlePlural": "Unidades de medida"
+    "titlePlural": "Unidades de medida",
+    "edit": "Editar unidad de medida",
+    "scale": "Escala",
+    "scale_helper": "La escala de la unidad de medida. Puede ser una escala lineal o logarítmica.",
+    "base": "Base",
+    "base_helper": "La base de la unidad de medida. Es la magnitud a la que se refiere la unidad de medida.",
+    "loading": "Cargando unidad de medida...",
+    "delete_success": "Unidad de medida eliminada.",
+    "assigned_to_properties": "a las que se ha asignado esta unidad de medida",
+    "no_assigned_to_properties": "La unidad de medida no es utilizada por ninguna propiedad",
+    "no_assigned_to_valueLists": "La unidad de medida no es utilizada por ninguna lista de valores",
+    "offset": "Offset",
+    "coefficient": "Coeficiente",
+    "dimension": "Dimensión"
   },
   "value": {
     "title": "Valor",
-    "titlePlural": "Valores"
+    "titlePlural": "Valores",
+    "edit": "Editar valor",
+    "nominalValue": "Valor nominal",
+    "nominalValue_helper": "El valor nominal. Es el valor que normalmente se mide o se indica.",
+    "loading": "Cargando valor...",
+    "delete_success": "Valor eliminado.",
+    "assigned_valuelists": "a las que se ha asignado este valor",
+    "no_assigned_valuelists": "El valor no es utilizado por ninguna lista de valores"
   },
-  "tolerance": {
-    "description": "La tolerancia de un valor puede especificarse de forma absoluta y porcentual."
+  "concept": {
+    "title": "Concepto",
+    "titlePlural": "Conceptos",
+    "reference_documents": ", que describen este concepto",
+    "similar_concepts": "Conceptos similares"
   },
   "translation_form": {
     "no_translations": "Aún no hay traducciones disponibles.",
@@ -376,7 +401,14 @@
   "version": {
     "title": "Versión",
     "description": "La versión puede determinarse y formatearse libremente para el dominio de aplicación.",
-    "date": "Fecha"
+    "majorVersion_label": "Versión principal",
+    "minorVersion_label": "Versión secundaria"
+  },
+  "status": {
+    "title": "Estado",
+    "description": "El concepto puede establecerse como activo o inactivo.",
+    "active": "Activo",
+    "inactive": "Inactivo"
   },
   "meta": {
     "title": "Metainformación",
@@ -391,6 +423,14 @@
     "title": "Nombre",
     "description": "Identifica el concepto en el idioma respectivo."
   },
+  "example": {
+    "title": "Ejemplo",
+    "description": "Uso ejemplar del concepto."
+  },
+  "definition": {
+    "title": "Definición",
+    "description": "Define el concepto en el idioma respectivo."
+  },
   "comment": {
     "title": "Comentario",
     "description": "Permite a los editores intercambiar información adicional, por ejemplo, sobre el estado de edición del concepto."
@@ -399,7 +439,7 @@
     "title": "Descripción",
     "description": "Caracteriza más detalladamente el concepto en su manifestación y concepto de aplicación."
   },
-  "search":{
+  "search": {
     "search": "Buscar",
     "search_placeholder": "Buscar en el catálogo",
     "search_results": "Resultados de la búsqueda"
@@ -409,82 +449,17 @@
     "report_issue": "Reportar problema",
     "version": "datacat editor {version}"
   },
-  "property_group_form": {
-    "loading": "Cargando grupo de propiedades...",
-    "error": "Se ha producido un error...",
-    "update_success": "Actualización exitosa.",
-    "delete_success": "Grupo de propiedades eliminado.",
-    "grouped_properties": "Propiedades agrupadas en el grupo de propiedades",
-    "reference_documents": "que describen este grupo de propiedades",
-    "no_reference_documents": "No descrito por ningún documento de referencia almacenado en el catálogo de datos",
-    "assigned_classes": "a las que se ha asignado este grupo de propiedades",
-    "no_assigned_classes": "Este grupo de propiedades no ha sido asignado a ninguna clase",
+  "update": {
+    "update_success": "Actualización exitosa."
+  },
+  "delete": {
     "delete_button": "Eliminar"
   },
-  "property_form": {
-    "loading": "Cargando propiedad...",
-    "error": "Se ha producido un error...",
-    "update_success": "Actualización exitosa.",
-    "delete_success": "Propiedad eliminada.",
-    "property_measure": "Medida de la propiedad",
-    "reference_documents": "que describen esta propiedad",
-    "no_reference_documents": "No descrita por ningún documento de referencia almacenado en el catálogo de datos",
-    "aggregating_property_groups": "que agregan esta propiedad",
-    "no_aggregating_property_groups": "La propiedad no se utiliza en ningún grupo de propiedades",
-    "assigned_classes": "a las que esta propiedad ha sido asignada directamente",
-    "no_assigned_classes": "La propiedad no ha sido asignada directamente a ninguna clase",
-    "delete_button": "Eliminar"
-  },
-  "measure_form": {
-    "loading": "Cargando medida...",
-    "error": "Se ha producido un error...",
-    "update_success": "Actualización exitosa.",
-    "delete_success": "Medida eliminada.",
-    "applicable_units": "Unidades de medida aplicables a la medida",
-    "value_range": "Rango de valores de la medida",
-    "reference_documents": "que describen esta medida",
-    "no_reference_documents": "No descrita por ningún documento de referencia almacenado en el catálogo de datos",
-    "quantified_properties": "que son cuantificadas por esta medida",
-    "no_quantified_properties": "La medida no es utilizada por ninguna propiedad",
-    "delete_button": "Eliminar"
-  },
-  "unit_form": {
-    "loading": "Cargando unidad de medida...",
-    "error": "Se ha producido un error...",
-    "delete_success": "Unidad de medida eliminada.",
-    "reference_documents": "que describen esta unidad",
-    "no_reference_documents": "No descrita por ningún documento de referencia almacenado en el catálogo de datos",
-    "assigned_measures": "a las que se ha asignado esta unidad",
-    "no_assigned_measures": "La unidad no es utilizada por ninguna medida",
-    "delete_button": "Eliminar"
-  },
-  "value_form": {
-    "loading": "Cargando valor...",
-    "error": "Se ha producido un error...",
-    "update_success": "Actualización exitosa.",
-    "delete_success": "Valor eliminado.",
-    "reference_documents": "que describen este valor",
-    "no_reference_documents": "No descrito por ningún documento de referencia almacenado en el catálogo de datos",
-    "assigned_measures": "a las que se ha asignado este valor",
-    "no_assigned_measures": "El valor no es utilizado por ninguna medida",
-    "delete_button": "Eliminar"
-  },
-  "nominal_value_form": {
-    "title": "Valor nominal",
-    "role_label": "Rol",
-    "type_label": "Tipo de dato",
-    "value_label": "Valor",
-    "updated": "Valor nominal actualizado.",
-    "removed": "Valor nominal eliminado."
-  },
-  "tolerance_form": {
-    "title": "Tolerancia",
-    "type_label": "Tipo",
-    "lower_tolerance_label": "Tolerancia inferior",
-    "upper_tolerance_label": "Tolerancia superior",
-    "save_button": "Guardar",
-    "delete_button": "Eliminar",
-    "reset_button": "Restablecer",
-    "description": "La tolerancia de un valor puede especificarse de forma absoluta y porcentual."
+  "transfer_list": {
+    "new": "Nueva asignación",
+    "no_assignement": "No se ha realizado ninguna asignación.",
+    "assignement": "Asignación",
+    "close": "Finalizar edición",
+    "edit": "Editar asignación"
   }
 }

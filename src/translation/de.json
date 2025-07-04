@@ -48,7 +48,7 @@
     "description2": "In einem Datenkatalog können Sie Konzepte wie Akteure, Aktivitäten, Bauteile und Merkmale mehrsprachig benennen, beschreiben und nach Ihrer Funktion und Gestalt standardkonform kategorisieren. Durch das Bilden von Beziehungen zwischen diesen Konzepten, kann die bebaute Umwelt schließlich näher beschrieben werden.",
     "description3": "Der entwickelte Datenbestand steht zum Abruf über eine API für Entwickler von Import/Export-Werkzeugen und CAD/BIM-Plugins zur Verfügung. Zukünftig sollen Prüfroutinen entwickelt werden, die es erlauben, Inkonsistenzen wie ungenutzte Konzepte, mögliche Duplikate, und fehlende Übersetzungen im Katalog ausfindig zu machen.",
     "description4": "datacat wird an der Hochschule für Technik und Wirtschaft Dresden (HTW Dresden) entwickelt. Wenn Sie weiteres Interesse am Projekt oder Fragen zur Anwendung haben, kontaktieren Sie uns gern direkt über die unten genannten Daten.",
-    "call_to_action": "Es handelt sich um ein Software-Preview. Ihre direkte Mitwirkung als OpenSource-Entwickler oder indirekt durch die Gabe von Feedback ist sehr erwünscht."
+    "call_to_action": "Ihre direkte Mitwirkung als OpenSource-Entwickler oder indirekt durch die Gabe von Feedback ist sehr erwünscht."
   },
   "profile": {
     "heading": "Benutzerprofil bearbeiten",
@@ -120,7 +120,7 @@
     "heading": "Katalog Importieren (Excel Tabelle)",
     "description": "Über diese Seite lassen sich ebenfalls Entitäten und deren Relationen importieren. Anders als beim CSV-Import kann eine externe Excel-Tabelle verwendet werden. Damit der Import funktioniert müssen die Spalten korrekt angegeben werden in denen die jeweiligen Entitäten aufgeführt sind: Referenzdokument, Dictionary, Thema, Klasse, Merkmal, Werteliste, Maßeinheit und Wert.",
     "select_all": "Alle aus-/ abwählen",
-    "label": "Bezeichnung:",
+    "label": "Bezeichnung",
     "sheet": "Tabellenblatt",
     "name": "Name",
     "id": "ID",
@@ -206,10 +206,12 @@
     "confirm_delete": "Ja, löschen"
   },
   "export_view": {
-    "heading": "Katalog exportieren",
+    "heading": "Katalog als CSV exportieren",
     "description": "Der folgende Button startet den Download einer ZIP-Datei mit zwei CSV-Dateien im Inneren.\nDie Datei 'Entities.csv' enthält alle Katalogeinträge mit deren Metadaten.\nIn der Datei 'Relationships.csv' sind die Relationen gespeichert, die zwischen den Katalogeinträgen bestehen.\nDie Ergebnisdatei ist in UTF-8 encodiert, verwendet Komma (,) als Trennzeichen und doppelte Anführungszeichen (\") als Textqualifizierer.\nDie Daten stehen zum Export bereit, sobald der Button nicht mehr ausgegraut ist.",
     "export_button": "CSV exportieren",
-    "export_ontology_button": "Ontologie exportieren"
+    "export_ontology_button": "Ontologie exportieren",
+    "heading_ontology": "Katalog als Ontologie (.ttl) exportieren",
+    "description_ontology": "Der Ontologieexport umfasst aktuell alle Klassen, Merkmale, Wertelisten und Werte. Wichtig für den Export als Ontologie ist, dass die Namen der Konzepte eindeutig sind, um Fehler zu vermeiden. Um dies sicher zu stellen, können die Prüftools verwendet werden.\nDie Ontologie kann mit deutschen oder englischen Namen als Identifier exportiert werden."
   },
   "tag_view": {
     "heading": "Vorhandene Tags",
@@ -347,7 +349,7 @@
     "titlePlural": "Wertelisten",
     "edit": "Werteliste bearbeiten",
     "language": "Sprache",
-    "language_helper": "Sprache der Werteliste.",
+    "language_helper": "Sprache der Werteliste",
     "loading": "Lade Werteliste...",
     "delete_success": "Werteliste gelöscht.",
     "applicable_units": ", welche die Werteliste anwendet",
@@ -367,7 +369,10 @@
     "delete_success": "Maßeinheit gelöscht.",
     "assigned_to_properties": "denen diese Maßeinheit zugewiesen wurde",
     "no_assigned_to_properties": "Die Maßeinheit wird von keinem Merkmal genutzt",
-    "no_assigned_to_valueLists": "Die Maßeinheit wird von keiner Werteliste genutzt"
+    "no_assigned_to_valueLists": "Die Maßeinheit wird von keiner Werteliste genutzt",
+    "offset": "Offset",
+    "coefficient": "Koeffizient",
+    "dimension": "Dimension"
   },
   "value": {
     "title": "Wert",
@@ -401,7 +406,9 @@
   },
     "status": {
     "title": "Status",
-    "description": "Das Konzept kann aktiv oder inaktiv gesetzt werden."
+    "description": "Das Konzept kann aktiv oder inaktiv gesetzt werden.",
+    "active": "Aktiv",
+    "inactive": "Inaktiv"
   },
   "meta": {
     "title": "Metainformationen",
@@ -447,5 +454,12 @@
   },
   "delete": {
     "delete_button": "Löschen"
+  },
+  "transfer_list": {
+    "new": "Neue Zuordnung",
+    "no_assignement": "Keine Zuordnung getroffen.",
+    "assignement": "Zuordnung",
+    "close": "Bearbeitung abschließen",
+    "edit": "Zuordnung bearbeiten"
   }
 }

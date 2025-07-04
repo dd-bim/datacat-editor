@@ -7,7 +7,7 @@ import {
 } from "../../generated/types";
 import { useSnackbar } from "notistack";
 import { styled } from "@mui/material/styles";
-import { T } from "@tolgee/react";
+import { T, useTranslate } from "@tolgee/react";
 import { ClickAwayListener, MenuItem, Select, SelectChangeEvent, Box, Typography } from "@mui/material";
 import InlineButtonGroup from "./InlineButtonGroup";
 import { Controller, useForm } from "react-hook-form";
@@ -21,12 +21,6 @@ type StatusFormValues = {
   selectedStatus: StatusOfActivationEnum;
 };
 
-
-const statusOptions = [
-  { value: "XTD_ACTIVE", label: "Aktiv" },
-  { value: "XTD_INACTIVE", label: "Inaktiv" }
-];
-
 // Replace makeStyles with styled component
 const FormContainer = styled('form')(({ theme }) => ({
   display: "flex",
@@ -39,6 +33,11 @@ const FormContainer = styled('form')(({ theme }) => ({
 const StatusFormSet: FC<StatusFormSetProps> = (props) => {
   const { catalogEntryId, status } = props;
   const { enqueueSnackbar } = useSnackbar();
+  const { t } = useTranslate();
+  const statusOptions = [
+    { value: "XTD_ACTIVE", label: t("status.active") },
+    { value: "XTD_INACTIVE", label: t("status.inactive") },
+  ];
 
   const [setStatus] = useUpdateStatusMutation();
   const {

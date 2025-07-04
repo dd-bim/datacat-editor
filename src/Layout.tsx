@@ -22,6 +22,7 @@ import TagView from "./views/TagView";
 import GraphiQLEditor from "./GraphiQLEditor";
 import IDSExportView from "./views/IDSExportView"; // Import the new IDSExportView
 import { catalogEntryRoutes } from "./routes/CatalogEntryRoutes";
+import { OntologyExportView } from "./views/OntologyExportView";
 
 const drawerWidth = 250;
 
@@ -88,7 +89,7 @@ export default function Layout() {
         </>
       ),
     },
-    { path: "/export", element: <ExportView /> },
+    { path: "/export", element: <><ExportView /><OntologyExportView/></> },
     { path: "/ids-export", element: <IDSExportView /> }, // Add route for IDS Export View
     {
       path: "/graphiql",

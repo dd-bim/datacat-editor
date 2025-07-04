@@ -17,6 +17,7 @@ import { ApolloCache } from "@apollo/client";
 import { CatalogRecord } from "../types";
 import { useNavigate } from "react-router-dom";
 import { getEntityType } from "../domain";
+import { T } from "@tolgee/react";
 
 export type RelationshipProps = {
     relId: string;
@@ -129,7 +130,7 @@ export default function TransferListView(props: TransferListViewProps) {
         if (editState) {
             content = (
                 <React.Fragment key="new-relationship">
-                    <Typography variant="caption">Neue Zuordnung</Typography>
+                    <Typography variant="caption"><T keyName="transfer_list.new"/></Typography>
                     <TransferList
                         enabled={true}
                         searchInput={searchInput}
@@ -142,13 +143,13 @@ export default function TransferListView(props: TransferListViewProps) {
             );
         } else {
             content = (
-                <FormSetNotice key="no-relationship">Keine Zuordnung getroffen.</FormSetNotice>
+                <FormSetNotice key="no-relationship"><T keyName="transfer_list.no_assignement"/></FormSetNotice>
             );
         }
     } else {
         content = (
             <React.Fragment key={relationshipType}>
-                <Typography variant="caption">{relationshipType}-Zuordnung</Typography>
+                <Typography variant="caption">{relationshipType}-<T keyName="transfer_list.assignement"/></Typography>
                 <TransferList
                     enabled={editState}
                     searchInput={searchInput}
@@ -177,7 +178,7 @@ export default function TransferListView(props: TransferListViewProps) {
                         onClick={() => setEditState(false)}
                         startIcon={<CheckIcon />}
                     >
-                        Bearbeitung abschließen
+                        <T keyName="transfer_list.close"/>
                     </Button>
                 ) : (
                     <Button
@@ -186,7 +187,7 @@ export default function TransferListView(props: TransferListViewProps) {
                         onClick={() => setEditState(true)}
                         startIcon={<EditIcon />}
                     >
-                        Zuordnung bearbeiten
+                        <T keyName="transfer_list.edit"/>
                     </Button>
 
                 )}

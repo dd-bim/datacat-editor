@@ -31,16 +31,6 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
 
-    const PropertyDataType: Record<string, string> = {
-        XTD_BOOLEAN: "Boolean",
-        XTD_DATE: "Date",
-        XTD_DATETIME: "DateTime",
-        XTD_INTEGER: "Integer",
-        XTD_RATIONAL: "Rational",
-        XTD_STRING: "String",
-        XTD_REAL: "Real",
-        XTD_COMPLEX: "Complex"
-    };
     // fetch properties
     const { loading, error, data, refetch } = useGetPropertyEntryQuery({
         fetchPolicy: "network-only",
@@ -143,13 +133,13 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
                     </b>
                 </FormSetTitle>
                 <Typography sx={{ mt: 1 }}>
-                    Datenformat: {entry.dataFormat ? entry.dataFormat : "-"}
+                    <T keyName="property.dataFormat"/>: {entry.dataFormat ? entry.dataFormat : "-"}
                 </Typography>
                 <Typography sx={{ mt: 1 }}>
-                    Sprache des Erstellers: {entry.languageOfCreator ? entry.languageOfCreator.code : "-"}
+                    <T keyName="create_entry_form.languageOfCreator"/>: {entry.languageOfCreator ? entry.languageOfCreator.code : "-"}
                 </Typography>
                 <Typography sx={{ mt: 1 }}>
-                    Herkunftsland: {entry.countryOfOrigin ? entry.countryOfOrigin.name + " (" + entry.countryOfOrigin.code + ")" : "-"}
+                    <T keyName="create_entry_form.countryOfOrigin"/>: {entry.countryOfOrigin ? entry.countryOfOrigin.name + " (" + entry.countryOfOrigin.code + ")" : "-"}
                 </Typography>
                 <Typography sx={{ mt: 1 }}>
                     Art der Menge: {!entry.quantityKinds && " -"}

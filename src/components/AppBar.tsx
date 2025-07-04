@@ -3,7 +3,6 @@ import { styled } from '@mui/material/styles';
 import Button from "@mui/material/Button";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import MaterialUIAppBar from "@mui/material/AppBar";
-import React from "react";
 import useAuthContext, { useWriteAccess } from "../hooks/useAuthContext";
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
@@ -19,6 +18,7 @@ import { useLocation } from 'react-router-dom';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Link from '@mui/material/Link';
+import { useTranslate, T } from "@tolgee/react";
 
 // Replace makeStyles with styled components
 const StyledAppBar = styled(MaterialUIAppBar)(({ theme }) => ({
@@ -49,6 +49,7 @@ type AppBarProps = {
 const AppBreadcrumbs = () => {
   const location = useLocation();
   const pathnames = location.pathname.split('/').filter(x => x);
+  const { t } = useTranslate();
   
   // Skip breadcrumbs on home page
   if (pathnames.length === 0) return null;
@@ -56,23 +57,24 @@ const AppBreadcrumbs = () => {
   // Map path segments to readable names
   const getPathName = (path: string) => {
     const entityMapping: Record<string, string> = {
-      'document': 'Dokumente',
-      'dictionary': 'Dictionary',
-      'class': 'Klassen',
-      'property': 'Merkmale',
-      'property-group': 'Merkmalsgruppen',
-      'theme': 'Themen',
-      'value': 'Werte',
-      'valuelist': 'Wertelisten',
-      'unit': 'Maßeinheiten',
-      'import': 'Import',
-      'export': 'Export',
-      'search': 'Suche',
-      'profile': 'Profil',
-      'audit': 'Prüfen',
-      'gridview': 'Tabellenansicht',
-      'tagview': 'Tags',
-      'graphiql': 'GraphiQL',
+      'document': t('document.titlePlural'),
+      'dictionary': t('dictionary.titlePlural'),
+      'class': t('class.titlePlural'),
+      'property': t('property.titlePlural'),
+      'property-group': t('propertyGroup.titlePlural'),
+      'theme': t('theme.titlePlural'),
+      'value': t('value.titlePlural'),
+      'valuelist': t('valuelist.titlePlural'),
+      'unit': t('unit.titlePlural'),
+      'import': t('app_drawer.import'),
+      'export': t('app_drawer.export'),
+      'search': t('app_drawer.search_catalog'),
+      'profile': t('app_drawer.edit_profile'),
+      'audit': t('app_drawer.audit'),
+      'gridview': t('app_drawer.grid_view'),
+      'tagview': t('app_drawer.new_tags'),
+      'graphiql': t('app_drawer.graphiql'),
+      'ids-export': t('app_drawer.ids_export'),
     };
     
     return entityMapping[path] || path;
@@ -91,7 +93,7 @@ const AppBreadcrumbs = () => {
       }}
     >
       <Link color="inherit" href="/">
-        Home
+        <T keyName="app_drawer.home"/>
       </Link>
       {pathnames.map((value, index) => {
         const isLast = index === pathnames.length - 1;

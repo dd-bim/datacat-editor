@@ -580,7 +580,8 @@ export type ExportCatalogRecord_Fragment = { __typename: 'ExportResult', id: str
 
 export type ExportCatalogRecordRelationship_Fragment = { __typename: 'ExportRelationshipResult', entity1: string, relationship: string, entity2: string };
 
-export type SearchResultPropsFragment = { __typename: 'XtdRoot', id: string, recordType: CatalogRecordType, name?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment> }; // description?: Maybe<string>, 
+export type SearchResultPropsFragment = { __typename: 'XtdRoot', id: string, recordType: CatalogRecordType, name?: Maybe<string>, names: Array<MultiLanguageTextPropsFragment>, comment?: Maybe<string>, tags: Array<TagPropsFragment>, majorVersion?: Maybe<number>, minorVersion?: Maybe<number> }; // description?: Maybe<string>, 
+export type SearchResultDictionaryPropsFragment = { __typename: 'XtdDictionary', id: string, name: MultiLanguageTextPropsFragment, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
 
 export type FindTagsResultFragment = { id: string, name: string };
 
@@ -1000,7 +1001,7 @@ export type FindItemQueryVariables = Exact<{
   pageNumber?: Maybe<Scalars['Int']>;
 }>;
 
-export type FindItemQuery = { search: { totalElements: number, nodes: Array<SearchResultPropsFragment>, pageInfo: PagePropsFragment } };
+export type FindItemQuery = { search: { totalElements: number, nodes: Array<SearchResultPropsFragment | SearchResultDictionaryPropsFragment>, pageInfo: PagePropsFragment } };
 
 export type FindTagsQuery = { findTags: { totalElements: number, nodes: Array<FindTagsResultFragment> } };
 
@@ -1359,61 +1360,6 @@ export const TagPropsFragmentDoc = gql`
   name
 }
     `;
-export const RelationsPropsFragmentDoc = gql`
-    fragment RelationsProps on XtdObject {
-      id
-      name(input: {languageTags: ["de", "en"]})
-      tags {
-        ...TagProps
-      }
-    }
-    ${TagPropsFragmentDoc}`;
-export const SearchResultPropsFragmentDoc = gql`
-    fragment SearchResultProps on XtdObject {
-  __typename
-  id
-  recordType
-  # ... on XtdObject {
-    name(input: {languageTags: ["de-DE", "en-US"]})
-    # description(input: {languageTags: ["de-DE", "en-US"]})
-    comment(input: {languageTags: ["de-DE", "en-US"]})
-  # }
-  # ... on XtdDictionary {
-  #   id
-  #   dname: name {
-  #     texts {
-  #       text
-  #     }
-  #   }
-  # }
-  tags {
-    ...TagProps
-  }
-}
-    ${TagPropsFragmentDoc}`;
-export const SearchResultDictionaryPropsFragmentDoc = gql`
-    fragment SearchResultDictionaryProps on XtdDictionary {
-  __typename
-  id
-  recordType
-  dname: name {
-    texts {
-      text
-    }
-  }
-  tags {
-    ...TagProps
-  }
-}
-    ${TagPropsFragmentDoc}`;
-export const MetaPropsFragmentDoc = gql`
-    fragment MetaProps on XtdRoot {
-  created
-  createdBy
-  lastModified
-  lastModifiedBy
-}
-    `;
 export const LanguagePropsFragmentDoc = gql`
     fragment LanguageProps on XtdLanguage {
     id
@@ -1434,6 +1380,55 @@ export const TranslationPropsFragmentDoc = gql`
     }
 }
     ${LanguagePropsFragmentDoc}`;
+export const RelationsPropsFragmentDoc = gql`
+    fragment RelationsProps on XtdObject {
+      id
+      name(input: {languageTags: ["de", "en"]})
+      tags {
+        ...TagProps
+      }
+    }
+    ${TagPropsFragmentDoc}`;
+export const SearchResultPropsFragmentDoc = gql`
+    fragment SearchResultProps on XtdObject {
+  __typename
+  id
+  recordType
+    name(input: {languageTags: ["de-DE", "en-US"]})
+    names {
+      ...TranslationProps
+    }
+    comment(input: {languageTags: ["de-DE", "en-US"]})
+  tags {
+    ...TagProps
+  }
+}
+  ${TranslationPropsFragmentDoc}
+    ${TagPropsFragmentDoc}`;
+export const SearchResultDictionaryPropsFragmentDoc = gql`
+    fragment SearchResultDictionaryProps on XtdDictionary {
+  __typename
+  id
+  recordType
+  dname: name {
+    texts {
+      text
+    }
+  }
+  tags {
+    ...TagProps
+  }
+}
+  ${TranslationPropsFragmentDoc}
+    ${TagPropsFragmentDoc}`;
+export const MetaPropsFragmentDoc = gql`
+    fragment MetaProps on XtdRoot {
+  created
+  createdBy
+  lastModified
+  lastModifiedBy
+}
+    `;
 export const ObjectPropsFragmentDoc = gql`
 fragment ObjectProps on XtdObject {
     ...MetaProps
@@ -1614,6 +1609,7 @@ export const SubjectDetailPropsFragmentDoc = gql`
         ...PropertyProps
         possibleValues {
             id
+            name(input: {languageTags: ["de", "en"]})
             values {
                 id
                 order
@@ -1641,8 +1637,30 @@ ${ValuePropsFragmentDoc}
 ${RelationsPropsFragmentDoc}
 ${PropertyPropsFragmentDoc}
 `;
+export const SubjectWithPropsAndListsPropsFragmentDoc = gql`
+  fragment SubjectWithPropsAndListsProps on XtdSubject {
+    ...RelationsProps
+    names {
+        ...TranslationProps
+    }
+    properties {
+        ...RelationsProps
+        names {
+        ...TranslationProps
+        }
+        possibleValues {
+            ...RelationsProps
+            names {
+              ...TranslationProps
+            }
+        }
+    }
+  }
+${RelationsPropsFragmentDoc}
+${TranslationPropsFragmentDoc}
+`;
 export const RelationshipToSubjectDetailPropsFragmentDoc = gql`
-  fragment RelationshipToSubjectProps on XtdRelationshipToSubject {
+  fragment RelationshipToSubjectDetailProps on XtdRelationshipToSubject {
     ...RelationshipToSubjectProps
     scopeSubjects {
         ...RelationsProps
@@ -1823,6 +1841,28 @@ ${PropertyPropsFragmentDoc}
 ${UnitPropsFragmentDoc}
 ${LanguagePropsFragmentDoc}
 ${ValuePropsFragmentDoc}`;
+
+export const ValueListWithValuesPropsFragmentDoc = gql`
+  fragment ValueListWithValuesProps on XtdValueList {
+      id
+      name(input: {languageTags: ["de", "en"]})
+      names {
+          ...TranslationProps
+      }
+      values {
+          id
+          order
+          orderedValue {
+              id
+              name(input: {languageTags: ["de", "en"]})
+              names {
+                  ...TranslationProps
+              }
+          }
+      }
+  }
+  ${TranslationPropsFragmentDoc}
+`;
 
 export const VerificationPropsFragmentDoc = gql`
   fragment VerificationProps on XtdObject {
@@ -3208,6 +3248,64 @@ export function useFindItemLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<F
 export type FindItemQueryHookResult = ReturnType<typeof useFindItemQuery>;
 export type FindItemLazyQueryHookResult = ReturnType<typeof useFindItemLazyQuery>;
 export type FindItemQueryResult = Apollo.QueryResult<FindItemQuery, FindItemQueryVariables>;
+
+export const FindConceptsForOntoExportDocument = gql`
+    query FindConceptsForOntoExport($input: SearchInput!, $pageSize: Int, $pageNumber: Int) {
+  search(input: $input, pageSize: $pageSize, pageNumber: $pageNumber) {
+    nodes {
+      id
+      tags {
+        name
+      }
+      ...on XtdDictionary {
+        dname: name {
+          texts {
+            text
+          }
+        }
+      }
+      ...on XtdObject {
+        name(input: {languageTags: ["de", "en"]})
+        names {
+          ...TranslationProps
+        }
+        majorVersion
+        minorVersion
+      }
+      ...on XtdConcept {
+        descriptions {
+          ...TranslationProps
+        }
+      }
+    }
+  }
+    }
+    ${TranslationPropsFragmentDoc}`;
+
+/** * __useFindConceptsForOntoExportQuery__
+ * To run a query within a React component, call `useFindConceptsForOntoExportQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindConceptsForOntoExportQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @example
+ * const { data, loading, error } = useFindConceptsForOntoExportQuery({
+ *   variables: {
+ *     input: // value for 'input'
+ *    pageSize: // value for 'pageSize'
+ *   pageNumber: // value for 'pageNumber'
+ *  },
+ * });
+ */
+export function useFindConceptsForOntoExportQuery(baseOptions: Apollo.QueryHookOptions<FindItemQuery, FindItemQueryVariables>) {
+  return Apollo.useQuery<FindItemQuery, FindItemQueryVariables>(FindConceptsForOntoExportDocument, baseOptions);
+}
+export function useFindConceptsForOntoExportLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindItemQuery, FindItemQueryVariables>) {
+  return Apollo.useLazyQuery<FindItemQuery, FindItemQueryVariables>(FindConceptsForOntoExportDocument, baseOptions);
+}
+export type FindConceptsForOntoExportQueryHookResult = ReturnType<typeof useFindConceptsForOntoExportQuery>;
+export type FindConceptsForOntoExportLazyQueryHookResult = ReturnType<typeof useFindConceptsForOntoExportLazyQuery>;
+export type FindConceptsForOntoExportQueryResult = Apollo.QueryResult<FindItemQuery, FindItemQueryVariables>;
+
 export const FindTagsDocument = gql`
     query FindTags($pageSize: Int) {  
   findTags(input: {pageSize: $pageSize}) {
@@ -3859,6 +3957,45 @@ export function useFindSubjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type FindSubjectsQueryHookResult = ReturnType<typeof useFindSubjectsQuery>;
 export type FindSubjectsLazyQueryHookResult = ReturnType<typeof useFindSubjectsLazyQuery>;
 export type FindSubjectsQueryResult = Apollo.QueryResult<FindSubjectsQuery, FindSubjectsQueryVariables>;
+
+export const FindSubjectsWithPropsAndListsQueryDocument = gql`
+    query FindSubjectsWithPropsAndListsQuery($input: FilterInput!) {
+      findSubjects(input: $input) {
+    nodes {
+      ...SubjectWithPropsAndListsProps
+    }
+      }
+    }
+${SubjectWithPropsAndListsPropsFragmentDoc}`;
+
+/**
+ * __useFindSubjectsWithPropsAndListsQuery__
+ * 
+ * To run a query within a React component, call `useFindSubjectsWithPropsAndListsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindSubjectsWithPropsAndListsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useFindSubjectsWithPropsAndListsQuery({
+ *  variables: {
+ *    input: // value for 'input'
+ *  },
+ * });
+ */
+
+export function useFindSubjectsWithPropsAndListsQuery(baseOptions: Apollo.QueryHookOptions<FindSubjectsQuery, FindSubjectsQueryVariables>) {
+  return Apollo.useQuery<FindSubjectsQuery, FindSubjectsQueryVariables>(FindSubjectsWithPropsAndListsQueryDocument, baseOptions);
+}
+export function useFindSubjectsWithPropsAndListsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindSubjectsQuery, FindSubjectsQueryVariables>) {
+  return Apollo.useLazyQuery<FindSubjectsQuery, FindSubjectsQueryVariables>(FindSubjectsWithPropsAndListsQueryDocument, baseOptions);
+}
+export type FindSubjectsWithPropsAndListsQueryHookResult = ReturnType<typeof useFindSubjectsWithPropsAndListsQuery>;
+export type FindSubjectsWithPropsAndListsLazyQueryHookResult = ReturnType<typeof useFindSubjectsWithPropsAndListsLazyQuery>;
+export type FindSubjectsWithPropsAndListsQueryResult = Apollo.QueryResult<FindSubjectsQuery, FindSubjectsQueryVariables>;
+
+
 export const FindUnitsQueryDocument = gql`
     query FindUnitsQuery($input: FilterInput!) {
   findUnits(input: $input) {
@@ -3964,6 +4101,40 @@ export function useFindValueListsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type FindValueListsQueryHookResult = ReturnType<typeof useFindValueListsQuery>;
 export type FindValueListsLazyQueryHookResult = ReturnType<typeof useFindValueListsLazyQuery>;
 export type FindValueListsQueryResult = Apollo.QueryResult<FindValueListsQuery, FindValueListsQueryVariables>;
+
+export const ValueListWithValuesQueryDocument = gql`
+    query ValueListWithValuesQuery($input: FilterInput!) {
+  findValueLists(input: $input) {
+    nodes {
+      ...ValueListWithValuesProps
+    }
+  }
+    }
+    ${ValueListWithValuesPropsFragmentDoc}`;
+
+/** * __useValueListWithValuesQuery__
+ *
+ * To run a query within a React component, call `useValueListWithValuesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useValueListWithValuesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @example
+ * const { data, loading, error } = useValueListWithValuesQuery({ 
+ *  variables: {
+ *    input: // value for 'input'
+ * },
+ *  });
+ */
+export function useValueListWithValuesQuery(baseOptions: Apollo.QueryHookOptions<FindValueListsQuery, FindValueListsQueryVariables>) {
+  return Apollo.useQuery<FindValueListsQuery, FindValueListsQueryVariables>(ValueListWithValuesQueryDocument, baseOptions);
+}
+export function useValueListWithValuesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindValueListsQuery, FindValueListsQueryVariables>) {
+  return Apollo.useLazyQuery<FindValueListsQuery, FindValueListsQueryVariables>(ValueListWithValuesQueryDocument, baseOptions);
+}
+export type ValueListWithValuesQueryHookResult = ReturnType<typeof useValueListWithValuesQuery>;
+export type ValueListWithValuesLazyQueryHookResult = ReturnType<typeof useValueListWithValuesLazyQuery>;
+export type ValueListWithValuesQueryResult = Apollo.QueryResult<FindValueListsQuery, FindValueListsQueryVariables>;
+
 export const FindOrderedValuesQueryDocument = gql`
     query FindOrderedValuesQuery($input: FilterInput!) {
   findOrderedValues(input: $input) {

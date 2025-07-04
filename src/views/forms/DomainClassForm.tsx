@@ -157,10 +157,10 @@ export default function DomainClassForm(
           </b>
         </FormSetTitle>
         <Typography sx={{ mt: 2 }}>
-          Sprache des Erstellers: {entry.languageOfCreator ? entry.languageOfCreator.code : "-"}
+          <T keyName="create_entry_form.languageOfCreator"/>: {entry.languageOfCreator ? entry.languageOfCreator.code : "-"}
         </Typography>
         <Typography sx={{ mt: 1 }}>
-          Herkunftsland: {entry.countryOfOrigin ? entry.countryOfOrigin.name + " (" + entry.countryOfOrigin.code + ")" : "-"}
+          <T keyName="create_entry_form.countryOfOrigin"/>: {entry.countryOfOrigin ? entry.countryOfOrigin.name + " (" + entry.countryOfOrigin.code + ")" : "-"}
         </Typography>
       </FormSet>
 

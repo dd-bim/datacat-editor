@@ -1,6 +1,8 @@
 {
   "verification": {
-    "title": "验证标准",
+    "title": "校验标准",
+    "error": "调用校验程序时出错。",
+    "no_data": "未找到数据。",
     "category_title": "类别",
     "criteria": {
       "integrity": "完整性",
@@ -8,90 +10,83 @@
       "language": "语言"
     },
     "category": {
-      "no_model_group": "没有分组的专业模型",
-      "no_group_class": "没有类的分组",
-      "no_class_properties": "没有特性/特性组的类",
-      "no_property_group": "没有特性的特性组",
-      "no_property": "没有类或特性组的特性",
-      "no_measure": "没有特性的量度",
-      "no_unit": "没有量度的单位",
-      "no_value": "没有量度的值",
+      "no_theme_class": "没有类别的主题",
+      "no_class_properties": "没有属性和属性组的类别",
+      "no_property_group": "没有属性的属性组",
+      "no_property": "没有类别和属性组的属性",
+      "no_valuelist": "没有属性的值列表",
+      "no_unit": "没有值列表和属性的单位",
+      "no_value": "没有值列表的值",
       "duplicate_id": "ID重复",
-      "duplicate_name_type": "名称重复（同一类型内）",
-      "duplicate_name_all": "名称重复（整个数据库）",
+      "duplicate_name_type": "名称重复（同类型内）",
+      "duplicate_name_all": "名称重复（整个数据集）",
       "missing_description": "缺少描述",
       "missing_description_en": "缺少描述（英文）",
-      "missing_translation_en": "缺少名称翻译（英文）"
+      "missing_translation_en": "缺少名称翻译（英文）",
+      "no_dictionary": "没有字典的概念",
+      "no_document": "没有参考文档的概念",
+      "inactive_concepts": "非活动概念"
     },
     "result": {
-      "select_criteria": "选择验证标准和类别。",
-      "select_entry": "在列表视图中选择验证结果以显示属性。"
-    },
-    "edit": {
-      "group": "编辑分组",
-      "class": "编辑类",
-      "property": "编辑特性",
-      "measure": "编辑量度",
-      "unit": "编辑单位",
-      "value": "编辑值",
-      "model": "编辑专业模型"
+      "select_criteria": "请选择校验标准和类别。",
+      "select_entry": "在列表视图中选择校验结果以显示属性。"
     }
   },
   "home": {
     "title": "欢迎使用datacat",
     "about.title": "关于项目",
-    "about.description": "datacat平台代表着德累斯顿应用科技大学（HTW Dresden）地理信息学院\"测绘学与BIM\"教研室的跨项目研究工作。该平台旨在提供用户和开发者友好的组件，用于在BIM方法背景下制定和发布分类系统、对象类型目录和特性数据库。",
+    "about.description": "datacat平台是德累斯顿应用科技大学（HTW Dresden）“测绘与BIM”教研室跨项目研究成果。该平台旨在为BIM方法背景下的分类系统、对象类型目录和属性数据库的开发与发布，提供用户和开发者友好的组件。",
     "components.title": "组件",
-    "components.description": "该平台目前分为核心组件datacat API，这是一个开发者友好的、自文档化的GraphQL接口，用于对数据目录进行复杂查询，以及datacat editor，这是一个基于浏览器的用户工具，用于导航和编辑数据库。",
+    "components.description": "平台目前分为核心组件datacat API（一个面向开发者、自动文档化的GraphQL接口，用于复杂的数据目录查询）和datacat editor（一个基于浏览器的数据浏览和编辑工具）。",
     "methodology.title": "方法论",
-    "methodology.description": "开发的核心是一个与既定标准DIN EN ISO 12006-3和DIN EN ISO 23387紧密相联的数据模式，它允许在目录中维护复杂的分类系统。API对将在数据目录中实施的应用场景特定结构完全不可知。",
+    "methodology.description": "开发的核心是一个基于DIN EN ISO 12006-3和DIN EN ISO 23387标准的数据模式，使得可以在目录中维护复杂的分类系统。API对应用场景结构完全无关，可以灵活适配。",
     "opensource.title": "开源",
-    "opensource.description": "datacat是根据GPLv3许可证开发的自由、开源软件，任何人都可以使用和复制，包括商业用途。源代码托管在GitHub上。欢迎对项目的任何形式的支持。"
+    "opensource.description": "datacat以GPLv3许可证作为自由开源软件开发，任何人都可以免费甚至商业使用和复制。源代码托管在GitHub上。欢迎任何形式的项目支持。"
   },
   "intro": {
-    "description1": "datacat editor是一个基于网络的开源工作工具，用于建筑行业数据目录的协作开发。源代码在GPL v3许可下提供。",
-    "description2": "在数据目录中，您可以按照标准，根据功能和形式，以多种语言命名、描述和分类参与者、活动、建筑部件和特性等概念。通过在这些概念之间建立关系，可以更详细地描述建筑环境。",
-    "description3": "开发的数据库可通过API供开发导入/导出工具和CAD/BIM插件使用。未来，将开发验证例程，以识别目录中的不一致性，如未使用的概念、可能的重复项和缺失的翻译。",
-    "description4": "datacat在德累斯顿应用科技大学（HTW Dresden）开发。如果您对项目有更多兴趣或对应用有疑问，请通过以下数据直接与我们联系。",
-    "call_to_action": "这是软件预览版。非常欢迎您直接作为开源开发者参与，或通过提供反馈间接参与。"
+    "description1": "datacat editor是一个基于Web的开源工具，用于协作开发建筑行业的数据目录。源代码以GPL v3许可证提供。",
+    "description2": "在数据目录中，您可以为参与者、活动、构件和属性等概念进行多语言命名、描述，并根据其功能和形态进行标准化分类。通过建立这些概念之间的关系，可以更详细地描述建成环境。",
+    "description3": "开发的数据可通过API供导入/导出工具和CAD/BIM插件开发者调用。未来将开发校验程序，用于发现目录中的未使用概念、可能的重复项和缺失的翻译。",
+    "description4": "datacat由德累斯顿应用科技大学（HTW Dresden）开发。如果您对项目感兴趣或有应用问题，欢迎通过下方联系方式直接联系我们。",
+    "call_to_action": "非常欢迎您作为开源开发者直接参与，或通过反馈间接支持本项目。"
   },
   "profile": {
     "heading": "编辑用户资料",
     "update_success": "用户资料已更新！",
-    "error": "访问用户资料时出错。",
+    "error": "获取用户资料时出错。",
     "form": {
       "first_name": "名字",
-      "first_name_helper": "必须提供您的名字。它将显示给其他目录用户，以归属条目和更改，并促进协作。",
+      "first_name_helper": "必须填写您的名字。它将显示给其他目录用户，以便分配条目和更好协作。",
       "last_name": "姓氏",
-      "last_name_helper": "必须提供您的姓氏。它将显示给其他目录用户，以归属条目和更改，并促进协作。",
-      "email": "电子邮件",
-      "email_helper": "必须提供有效的电子邮件地址。它将用于验证您的账户并通知您目录中的更改。",
+      "last_name_helper": "必须填写您的姓氏。它将显示给其他目录用户，以便分配条目和更好协作。",
+      "email": "邮箱",
+      "email_helper": "必须填写有效的邮箱地址。用于验证您的账户并通知目录变更。",
       "organization": "组织",
-      "organization_helper": "如适用，请提供您所服务的公司、组织或机构。"
+      "organization_helper": "如适用，请填写您所在公司、组织或机构。"
     }
   },
   "boarding": {
-    "welcome": "欢迎使用datacat编辑器",
+    "welcome": "欢迎使用datacat editor",
     "login_tab": "登录",
     "signup_tab": "注册",
     "login_message": "请使用您的用户名和密码登录编辑器。",
-    "signup_message": "您可以注册以获得对目录的只读访问权限。如果您想参与编辑目录，请通知管理员。",
-    "signup_success": "您将在几分钟内收到一个确认码，您可以用它来激活您的账户。",
+    "signup_message": "您可以注册以获得目录的只读访问权限。如需参与目录编辑，请联系管理员。",
+    "signup_success": "您将在几分钟内收到一封包含激活码的邮件，用于激活您的账户。",
     "login_success": "欢迎回来！"
   },
   "signup": {
-    "username_helper": "需要用户名。不含空格。必须以字母开头，最小长度为3。",
-    "password_helper": "需要密码，最小长度为8。",
+    "username_helper": "用户名为必填项。不能有空格。必须以字母开头，最少3个字符。",
+    "password_helper": "密码为必填项，最少8个字符。",
     "username_label": "用户名",
-    "username_error": "注册后无法更改用户名。",
+    "username_error": "注册后用户名不可更改。",
     "password_label": "密码",
     "password_repeat_label": "重复密码",
-    "password_repeat_error": "输入与密码不匹配。",
+    "password_repeat_error": "输入与密码不一致。",
     "first_name_label": "名字",
     "last_name_label": "姓氏",
-    "email_label": "电子邮件",
-    "email_error": "请输入有效的电子邮件地址。",
-    "organization_label": "公司/机构",
+    "email_label": "邮箱",
+    "email_error": "请输入有效的邮箱地址。",
+    "organization_label": "公司 / 机构",
     "signup_button": "注册"
   },
   "login": {
@@ -101,99 +96,86 @@
   },
   "import": {
     "heading": "导入目录（CSV）",
-    "description": "通过此页面可以导入实体及其关系。与导出类似，这里可以导入两个CSV文件。一个文件包含以下模式的实体：",
-    "entity_columns": "id;typ;tags;name;name_en;description;version;createdBy;created;lastModified;lastModifiedBy",
-    "entity_columns_note": "标有r的列必须为每个实体填写，标有o的列可以包含可选值。其余列在导入过程中不会被考虑，因此可以留空。",
-    "tags_note": "为了使实体在datacatEditor界面中可见，它们必须有该处选择的分类标签。（参考文档，专业模型，分组，类，特性组，特性，量度，值，计量单位）",
-    "relation_columns_note": "另一个文件可选地包含实体之间的关系，具有以下列：",
-    "relation_columns": "entity1;entity1Type;relationId;relationshipType;entity2;entity2Type",
-    "relation_columns_note_2": "实体类型可以在此处留空。",
+    "description": "通过此页面可导入实体及其关系。与导出类似，可导入两个CSV文件。一个文件包含如下结构的实体：",
+    "entity_columns_note": "带o标记的列为可选。",
+    "tags_note": "为使实体在datacat编辑器界面可见，必须分配所选分类法的标签（参考文档、字典、主题、类别、属性组、属性、值列表、值、单位）。",
+    "relation_columns_note": "另一个文件可选地包含实体之间的关系，列如下：",
     "entities_file_button": "选择实体文件",
     "relations_file_button": "选择关系文件",
     "import_button": "导入",
     "import_tag_label": "导入标签（可选）",
     "csv_templates_button": "CSV模板",
     "no_file_selected": "未选择文件",
-    "note_entities_only": "注意：只导入实体，不导入它们之间的关系！",
-    "note_relations_only": "注意：只导入关系。实体必须已包含在特性服务器中！",
-    "error_columns_mismatch": "列名与规范不符。",
+    "note_entities_only": "注意：仅导入实体，不导入实体间关系！",
+    "note_relations_only": "注意：仅导入关系。实体必须已存在于属性服务器！",
+    "error_columns_mismatch": "列名与要求不符。",
     "error_creating_record": "创建记录时出错",
     "error_creating_relationship": "创建关系时出错",
     "new_tag_created": "新标签已创建",
     "create_tag_failed": "创建新标签失败",
-    "created_record": "已创建新记录",
-    "created_relationship": "已创建新关系"
+    "created_record": "新记录已创建",
+    "created_relationship": "新关系已创建"
   },
   "import_excel": {
-    "heading": "导入目录（Excel表格）",
-    "description": "通过此页面也可以导入实体及其关系。与CSV导入不同，可以使用外部Excel表格。为了使导入成功，必须正确指定列出各实体的列：参考文档，专业模型，分组，类，特性，量度（枚举），计量单位和值。",
-    "select_all": "全选/取消全选",
-    "label": "标签：",
+    "heading": "导入目录（Excel表）",
+    "description": "通过此页面也可导入实体及其关系。与CSV导入不同，可使用外部Excel表。为保证导入成功，需正确指定各实体所在列：参考文档、字典、主题、类别、属性、值列表、单位和值。",
+    "select_all": "全选/全不选",
+    "label": "标签",
     "sheet": "工作表",
     "name": "名称",
     "id": "ID",
-    "document": "参考文档",
-    "model": "专业模型",
-    "group": "分组",
-    "class": "类",
-    "property": "特性",
-    "measure": "量度",
-    "unit": "计量单位",
-    "value": "值",
-    "sheetName": "工作表名称",
+    "sheetName": "工作表",
     "relations": "关系：",
-    "rel_doc_model": "参考文档 - 专业模型",
-    "rel_model_group": "专业模型 - 分组",
-    "rel_group_class": "分组 - 类",
-    "rel_class_property": "类 - 特性",
-    "rel_property_measure": "特性 - 量度",
-    "rel_measure_unit": "量度 - 计量单位",
-    "rel_measure_value": "量度 - 值",
-    "validation_failed": "验证失败。请检查错误消息。",
-    "validation_success": "验证成功。现在可以导入Excel文件。",
+    "rel_concept_doc": "概念-参考文档",
+    "rel_concept_dictionary": "概念-字典",
+    "rel_theme_class": "主题-类别",
+    "rel_class_property": "类别-属性",
+    "rel_property_valuelist": "属性-值列表",
+    "rel_valuelist_unit": "值列表-单位",
+    "rel_valuelist_value": "值列表-值",
+    "rel_property_unit": "属性-单位",
+    "rel_class_propertygroup": "类别-属性组",
+    "rel_propertygroup_property": "属性组-属性",
+    "validation_failed": "校验失败。请检查错误信息。",
+    "validation_success": "校验成功。现在可以导入Excel文件。",
     "no_file_selected": "未选择文件",
-    "select_file_button": "选择Excel表格",
+    "select_file_button": "选择Excel文件",
     "check_inputs_button": "检查输入",
     "import_tag_label": "导入标签（可选）",
-    "import_button": "导入Excel表格",
+    "import_button": "导入Excel文件",
     "reset_button": "重置输入",
-    "progress": "已完成{progress}%"
+    "progress": "{progress}% 已完成"
   },
   "app_drawer": {
-    "general": "常规",
-    "home": "首页",
+    "general": "通用",
+    "home": "主页",
     "edit_profile": "编辑资料",
     "search_catalog": "搜索目录",
-    "audit": "审核",
+    "audit": "校验",
     "import": "导入",
     "export": "导出",
-    "graphiql": "GraphiQL接口",
-    "new_tags": "创建新标签",
+    "ids_export": "IDS导出",
+    "graphiql": "GraphiQL界面",
+    "new_tags": "新建标签",
     "grid_view": "表格视图",
-    "catalog": "目录",
-    "documents": "参考文档",
-    "models": "专业模型",
-    "groups": "分组",
-    "classes": "类",
-    "data_templates": "数据模板",
-    "property_groups": "特性组",
-    "properties": "特性",
-    "measures": "量度",
-    "units": "计量单位",
-    "values": "值"
+    "catalog": "目录"
   },
   "create_entry_form": {
-    "name_label": "名称（德文）",
-    "name_helper": "在专业背景下尽可能准确地命名概念。用分号分隔同义词。",
-    "description_label": "描述（德文）",
-    "description_helper": "描述概念的含义。特别使用描述来区分可能命名相同但专业上不同的概念。",
-    "comment_label": "评论（德文）",
-    "comment_helper": "留下关于此概念的评论。编辑者可以在此交换额外信息。",
+    "name_label": "名称（zh）",
+    "name_helper": "请在专业语境下尽可能准确地命名概念。用分号分隔同义词。",
+    "description_label": "描述（zh）",
+    "description_helper": "请描述概念的含义，尤其用于区分可能同名但专业不同的概念。",
+    "comment_label": "备注（zh）",
+    "comment_helper": "请为该概念留下备注。可用于编辑者之间交流补充信息。",
+    "languageOfCreator": "创建者语言",
+    "languageOfCreator_helper": "概念创建时所用语言。",
+    "countryOfOrigin": "原产国",
+    "countryOfOrigin_helper": "概念创建所在国家。",
     "id_label": "ID",
-    "id_helper": "ID通常自动生成。如果在上级环境中已为概念分配ID，则可以提供ID。",
-    "version_id_label": "版本ID",
-    "version_date_label": "版本日期",
-    "save_button": "保存"
+    "id_helper": "ID通常自动生成。如在上级环境中已分配，可手动填写。",
+    "save_button": "保存",
+    "dictionary": "字典",
+    "dictionary_helper": "概念所属字典。一个概念只能属于一个字典。"
   },
   "create_entry_split_button": {
     "add_entry": "添加条目",
@@ -205,106 +187,80 @@
     "edit_entry": "编辑{title}",
     "select_entry": "在列表视图中选择{title}以显示属性。"
   },
-  "document_form": {
-    "loading": "加载参考文档...",
-    "error": "发生错误...",
-    "update_success": "更新成功。",
-    "delete_success": "参考文档已删除。",
-    "described_concepts": "由参考文档描述的概念",
-    "delete_button": "删除"
-  },
-  "domain_class_form": {
-    "loading": "加载类...",
-    "error": "发生错误...",
-    "update_success": "更新成功。",
-    "delete_success": "类已删除。",
-    "assigned_property_groups": "分配给类{name}的特性组",
-    "assigned_properties": "类{name}的直接分配特性",
-    "reference_documents": "描述此类的",
-    "no_reference_documents": "未被数据目录中存储的任何参考文档描述",
-    "groups_using_class": "使用此类的",
-    "no_groups_using_class": "此类未被任何分组使用",
-    "delete_button": "删除"
-  },
-  "domain_group_form": {
-    "loading": "加载分组...",
-    "error": "发生错误...",
-    "update_success": "更新成功。",
-    "delete_success": "分组已删除。",
-    "grouped_classes": "分组的类",
-    "grouped_classes_description": "分配给此分组的类。",
-    "reference_documents": "描述此分组的",
-    "no_reference_documents": "未被数据目录中存储的任何参考文档描述",
-    "domain_models_using_group": "使用此分组的",
-    "no_domain_models_using_group": "此分组未被任何专业模型使用",
-    "delete_button": "删除"
-  },
-  "domain_model_form": {
-    "loading": "加载专业模型...",
-    "error": "发生错误...",
-    "update_success": "更新成功。",
-    "delete_success": "专业模型已删除。",
-    "reference_documents": "描述此专业模型的",
-    "no_reference_documents": "未被数据目录中存储的任何参考文档描述",
-    "delete_button": "删除"
-  },
   "delete_import_view": {
-    "heading": "删除具有特定标签的目录条目",
-    "description": "可以在此删除具有特定标签的实体。附加到实体的所有关系也将被删除。",
+    "heading": "删除带有指定标签的目录条目",
+    "description": "可删除带有指定标签的实体。所有相关关系也将被删除。",
     "tag_label": "标签",
+    "search_button": "搜索带标签的目录条目",
     "delete_button": "删除目录条目",
-    "tag_not_exist": "标签{tag}不存在！",
-    "delete_success": "目录条目{name}已删除",
-    "error_occurred": "发生错误..."
+    "no_entries_found": "未找到带该标签的目录条目。",
+    "delete_success": "目录条目已删除",
+    "error_occurred": "发生错误...",
+    "search_error": "搜索时发生错误。",
+    "delete_summary": "目录条目已成功删除。",
+    "delete_error_summary": "目录条目无法删除。",
+    "entries_to_delete": "找到待删除的目录条目：",
+    "confirm_delete_title": "确认删除",
+    "confirm_delete_message": "确定要删除所有带有标签{tag}的目录条目吗？此操作不可撤销。",
+    "cancel": "取消",
+    "confirm_delete": "是，删除"
   },
   "export_view": {
-    "heading": "导出目录",
-    "description": "以下按钮将启动下载一个ZIP文件，其中包含两个CSV文件。\n文件'Entities.csv'包含所有目录条目及其元数据。\n文件'Relationships.csv'存储了目录条目之间存在的关系。\n生成的文件采用UTF-8编码，使用逗号(,)作为分隔符，双引号(\")作为文本限定符。\n一旦按钮不再灰显，数据就准备好导出了。",
-    "export_button": "导出CSV"
-  },
+      "heading": "以CSV格式导出目录",
+      "description": "点击下方按钮将下载一个包含两个CSV文件的ZIP文件。\n“Entities.csv”文件包含所有目录条目及其元数据。\n“Relationships.csv”文件存储目录条目之间的关系。\n结果文件采用UTF-8编码，使用逗号（,）作为分隔符，双引号（\"）作为文本限定符。\n当按钮不再置灰时，数据即可导出。",
+      "export_button": "导出CSV",
+      "export_ontology_button": "导出本体",
+      "heading_ontology": "以本体（.ttl）格式导出目录",
+      "description_ontology": "本体导出目前包含所有类、属性、值列表和值。为避免错误，概念名称必须唯一。可使用校验工具确保这一点。\n本体可使用德语或英语名称作为标识符导出。"
+    },
   "tag_view": {
     "heading": "现有标签",
-    "explanation": "此页面用于向数据库添加新标签。标签可以在表格视图中使用，为现有条目添加新标签。",
-    "new_tag_label": "创建新标签",
+    "explanation": "本页面用于向数据库添加新标签。标签可在表格视图中分配给现有条目。",
+    "new_tag_label": "新建标签",
     "add_tag_button": "添加标签",
     "loading": "加载中...",
     "error_loading": "加载标签时出错：{error}",
     "enter_tag_name": "请输入标签名称。",
-    "tag_exists": "标签\"{tag}\"已存在。",
-    "tag_added_success": "标签\"{tag}\"添加成功。",
-    "tag_added_error": "添加标签\"{tag}\"时出错。"
+    "tag_exists": "标签“{tag}”已存在。",
+    "tag_added_success": "标签“{tag}”添加成功。",
+    "tag_added_error": "添加标签“{tag}”时出错。"
   },
   "hierarchy": {
-    "error": "访问特性树时发生错误。",
+    "error": "加载属性树时出错。",
     "select_concept": "在树视图中选择概念以显示属性。",
-    "edit_group": "编辑分组",
-    "edit_class": "编辑类",
-    "edit_property": "编辑特性",
-    "edit_measure": "编辑量度",
-    "edit_unit": "编辑单位",
-    "edit_value": "编辑值",
-    "edit_model": "编辑专业模型",
     "search_catalog": "搜索目录"
   },
   "grid_view": {
     "loading": "正在加载表格内容",
-    "tag_filter_title": "按标签筛选的选项",
+    "tag_filter_title": "标签筛选",
+    "tag_filter_placeholder": "选择标签",
     "select_tag": "选择标签",
     "add_tag": "添加标签",
-    "show_only_documents": "只显示参考文档",
-    "show_only_models": "只显示专业模型",
-    "show_only_groups": "只显示分组",
-    "show_only_classes": "只显示类",
-    "show_only_property_groups": "只显示特性组",
-    "show_only_properties": "只显示特性",
     "show_all": "显示全部",
-    "reference_documents": "参考文档",
-    "domain_models": "专业模型",
-    "groups": "分组",
-    "classes": "类",
-    "property_groups": "特性组",
-    "properties": "特性",
-    "tag_filter_placeholder": "选择标签"
+    "please_select_tag": "请选择一个标签。",
+    "adding_tags": "正在添加标签...",
+    "tags_added_success": "标签添加成功。",
+    "no_tags_added": "未添加任何标签。",
+    "error_updating_tags": "更新标签时出错。",
+    "adding_tags_please_wait": "正在添加标签，请稍候...",
+    "show_only_documents": "仅显示参考文档",
+    "show_only_dictionaries": "仅显示字典",
+    "show_only_themes": "仅显示主题",
+    "show_only_classes": "仅显示类别",
+    "show_only_property_groups": "仅显示属性组",
+    "show_only_properties": "仅显示属性",
+    "selection_help": "选择帮助：",
+    "for_range": "用于范围选择",
+    "for_multiple": "用于多选",
+    "drag_to_select": "拖动以选择多行",
+    "please_select_rows": "请至少选择一行",
+    "tag_id_not_found": "未找到标签ID",
+    "tags_added_with_skips": "标签已添加。{count}条因已存在标签被跳过",
+    "all_entries_already_tagged": "所有{count}个选中条目已存在该标签",
+    "tags_added_with_existing": "标签已添加到{added}条。{existing}条已存在该标签。",
+    "tags_added_count": "标签已添加到{count}条。",
+    "no_tags_to_add": "无需添加标签。",
+    "tags_adding_failed": "添加标签失败。"
   },
   "error":{
     "error": "发生错误..."
@@ -312,92 +268,176 @@
   "document": {
     "title": "参考文档",
     "titlePlural": "参考文档",
-    "description": "参考文档类型的条目用于表示外部文档、书籍或其他书面信息。",
-    "loading": "加载参考文档...",
-    "TransferList": "由参考文档描述的",
-    "TransferList2": "概念"
+    "edit": "编辑参考文档",
+    "description": "参考文档类型条目用于表示外部文档、书籍或其他书面信息。",
+    "loading": "正在加载参考文档...",
+    "more_infos": "更多信息",
+    "references": "，描述该参考文档",
+    "no_references": "未描述数据目录中的概念。",
+    "uri" : "URI",
+    "uri_helper": "参考文档的URI。用于引用该文档。",
+    "author": "作者",
+    "author_helper": "参考文档的作者。可以是个人或组织。",
+    "isbn": "ISBN",
+    "isbn_helper": "参考文档的ISBN。用于唯一标识书籍。",
+    "publisher": "出版者",
+    "publisher_helper": "参考文档的出版者。可以是个人或组织。",
+    "dateOfPublication": "出版日期",
+    "dateOfPublication_helper": "参考文档的出版日期。",
+    "languageTag": "语言",
+    "languageTag_helper": "文档所用语言。"
   },
-  "model": {
-    "title": "专业模型",
-    "titlePlural": "专业模型",
-    "loading": "加载专业模型...", 
-    "TransferList": "由专业模型描述的",
-    "TransferList2": "分组"
+  "dictionary": {
+    "title": "字典",
+    "titlePlural": "字典",
+    "edit": "编辑字典",
+    "loading": "正在加载字典...",
+    "delete_success": "字典已删除。",
+    "related_concepts": "，包含在字典中",
+    "no_related_concepts": "字典中没有概念。"
   },
-  "group": {
-    "title": "分组",
-    "titlePlural": "分组",
-    "loading": "加载分组...",
-    "TransferList": "分组的",
-    "TransferList2": "类"
+  "theme": {
+    "title": "主题",
+    "titlePlural": "主题",
+    "edit": "编辑主题",
+    "loading": "正在加载主题...",
+    "delete_success": "主题已删除。",
+    "assigned_classes": "，分配给该主题",
+    "child_themes": "子主题",
+    "parent_theme": "父主题",
+    "assigning_theme": "，分配给该主题",
+    "no_assigning_theme": "该主题未隶属于其他主题。"
   },
   "class": {
-    "title": "类",
-    "titlePlural": "类",
-    "loading": "加载类...",
-    "TransferList": "分配给类",
-    "TransferList2": "的",
-    "TransferList3": "特性组"
-  },
-  "dataTemplate": {
-    "title": "数据模板",
-    "titlePlural": "数据模板"
+    "title": "类别",
+    "titlePlural": "类别",
+    "edit": "编辑类别",
+    "loading": "正在加载类别...",
+    "delete_success": "类别已删除。",
+    "assigned_concepts": "，分配给该类别",
+    "themes_using_class": "，包含该类别",
+    "no_themes_using_class": "该类别未被任何主题使用。"
   },
   "propertyGroup": {
-    "title": "特性组",
-    "titlePlural": "特性组"
+    "title": "属性组",
+    "titlePlural": "属性组",
+    "edit": "编辑属性组",
+    "loading": "正在加载属性组...",
+    "delete_success": "属性组已删除。",
+    "grouped_properties": "，包含在属性组中",
+    "assigned_classes": "，分配给该属性组",
+    "no_assigned_classes": "该属性组未分配给任何类别"
   },
   "property": {
-    "title": "特性",
-    "titlePlural": "特性"
+    "title": "属性",
+    "titlePlural": "属性",
+    "edit": "编辑属性",
+    "dataType": "数据类型",
+    "dataType_helper": "属性的数据类型。可以是字符串、整数或布尔等简单类型。",
+    "dataFormat": "数据格式",
+    "dataFormat_helper": "属性的数据格式。",
+    "loading": "正在加载属性...",
+    "delete_success": "属性已删除。",
+    "assigned_concepts": "，分配给该属性",
+    "assigning_property_groups": "，包含在这些属性组中",
+    "no_assigning_property_groups": "该属性未被任何属性组使用。",
+    "assigned_classes": "，分配给该属性",
+    "no_assigned_classes": "该属性未直接分配给任何类别"
   },
-  "measure": {
-    "title": "量度",
-    "titlePlural": "量度"
+  "valuelist": {
+    "title": "值列表",
+    "titlePlural": "值列表",
+    "edit": "编辑值列表",
+    "language": "语言",
+    "language_helper": "值列表的语言",
+    "loading": "正在加载值列表...",
+    "delete_success": "值列表已删除。",
+    "applicable_units": "，应用该值列表",
+    "value_range": "，分配给该值列表",
+    "assigned_properties": "分配给该值列表的属性",
+    "no_assigned_properties": "该值列表未分配给任何属性"
   },
   "unit": {
-    "title": "计量单位",
-    "titlePlural": "计量单位"
+    "title": "单位",
+    "titlePlural": "单位",
+    "edit": "编辑单位",
+    "scale": "刻度",
+    "scale_helper": "单位的刻度。可以是线性或对数刻度。",
+    "base": "基准",
+    "base_helper": "单位的基准。即单位所依据的量。",
+    "loading": "正在加载单位...",
+    "delete_success": "单位已删除。",
+    "assigned_to_properties": "分配给该单位的属性",
+    "no_assigned_to_properties": "该单位未被任何属性使用",
+    "no_assigned_to_valueLists": "该单位未被任何值列表使用",
+    "offset": "偏移量",
+    "coefficient": "系数",
+    "dimension": "维度"
   },
   "value": {
     "title": "值",
-    "titlePlural": "值"
+    "titlePlural": "值",
+    "edit": "编辑值",
+    "nominalValue": "标称值",
+    "nominalValue_helper": "值的标称值。通常为测量或指定的值。",
+    "loading": "正在加载值...",
+    "delete_success": "值已删除。",
+    "assigned_valuelists": "分配给该值的值列表",
+    "no_assigned_valuelists": "该值未被任何值列表使用"
   },
-  "tolerance": {
-    "description": "值的公差可以绝对和百分比表示。"
+  "concept": {
+    "title": "概念",
+    "titlePlural": "概念",
+    "reference_documents": "，描述该概念",
+    "similar_concepts": "相似概念"
   },
   "translation_form": {
-    "no_translations": "尚无可用翻译。",
+    "no_translations": "尚无翻译。",
     "add_translation": "添加翻译",
     "add_translation_title": "添加翻译",
     "language": "语言",
-    "language_helper": "将创建翻译的语言。"
+    "language_helper": "翻译所用语言。"
   },
   "version": {
     "title": "版本",
-    "description": "版本可以为应用领域自由确定和格式化。",
-    "date": "日期"
+    "description": "版本可根据应用领域自由定义和格式化。",
+    "majorVersion_label": "主版本",
+    "minorVersion_label": "次版本"
+  },
+  "status": {
+    "title": "状态",
+    "description": "概念可设置为激活或非激活。",
+    "active": "激活",
+    "inactive": "未激活"
   },
   "meta": {
     "title": "元信息",
-    "description": "关于概念的技术信息",
+    "description": "概念的技术信息",
     "keyword": "关键词",
-    "created": "创建于",
+    "created": "创建时间",
     "created_by": "创建者",
-    "updated": "最近更新",
-    "updated_by": "最近更新者"
+    "updated": "最后更新",
+    "updated_by": "最后更新者"
   },
   "name": {
     "title": "名称",
-    "description": "在各自语言中标识概念。"
+    "description": "在相应语言中标识概念。"
+  },
+  "example": {
+    "title": "示例",
+    "description": "概念的示例用法。"
+  },
+  "definition": {
+    "title": "定义",
+    "description": "在相应语言中定义概念。"
   },
   "comment": {
-    "title": "评论",
-    "description": "允许编辑者交换额外信息，例如关于概念的编辑状态。"
+    "title": "备注",
+    "description": "允许编辑者交流补充信息，例如概念的编辑状态。"
   },
   "description": {
     "title": "描述",
-    "description": "进一步描述概念在其表现和应用概念中的特点。"
+    "description": "详细描述概念的特征和应用。"
   },
   "search":{
     "search": "搜索",
@@ -409,82 +449,17 @@
     "report_issue": "报告问题",
     "version": "datacat editor {version}"
   },
-  "property_group_form": {
-    "loading": "加载特性组...",
-    "error": "发生错误...",
-    "update_success": "更新成功。",
-    "delete_success": "特性组已删除。",
-    "grouped_properties": "特性组中分组的特性",
-    "reference_documents": "描述此特性组的",
-    "no_reference_documents": "未被数据目录中存储的任何参考文档描述",
-    "assigned_classes": "此特性组分配给的",
-    "no_assigned_classes": "此特性组未分配给任何类",
+  "update": {
+    "update_success": "更新成功。"
+  },
+  "delete": {
     "delete_button": "删除"
   },
-  "property_form": {
-    "loading": "加载特性...",
-    "error": "发生错误...",
-    "update_success": "更新成功。",
-    "delete_success": "特性已删除。",
-    "property_measure": "特性的量度",
-    "reference_documents": "描述此特性的",
-    "no_reference_documents": "未被数据目录中存储的任何参考文档描述",
-    "aggregating_property_groups": "聚合此特性的",
-    "no_aggregating_property_groups": "此特性未在任何特性组中使用",
-    "assigned_classes": "直接分配此特性的",
-    "no_assigned_classes": "此特性未直接分配给任何类",
-    "delete_button": "删除"
-  },
-  "measure_form": {
-    "loading": "加载量度...",
-    "error": "发生错误...",
-    "update_success": "更新成功。",
-    "delete_success": "量度已删除。",
-    "applicable_units": "适用于量度的计量单位",
-    "value_range": "量度的值范围",
-    "reference_documents": "描述此量度的",
-    "no_reference_documents": "未被数据目录中存储的任何参考文档描述",
-    "quantified_properties": "由此量度量化的",
-    "no_quantified_properties": "此量度未被任何特性使用",
-    "delete_button": "删除"
-  },
-  "unit_form": {
-    "loading": "加载计量单位...",
-    "error": "发生错误...",
-    "delete_success": "计量单位已删除。",
-    "reference_documents": "描述此单位的",
-    "no_reference_documents": "未被数据目录中存储的任何参考文档描述",
-    "assigned_measures": "分配此单位的",
-    "no_assigned_measures": "此单位未被任何量度使用",
-    "delete_button": "删除"
-  },
-  "value_form": {
-    "loading": "加载值...",
-    "error": "发生错误...",
-    "update_success": "更新成功。",
-    "delete_success": "值已删除。",
-    "reference_documents": "描述此值的",
-    "no_reference_documents": "未被数据目录中存储的任何参考文档描述",
-    "assigned_measures": "分配此值的",
-    "no_assigned_measures": "此值未被任何量度使用",
-    "delete_button": "删除"
-  },
-  "nominal_value_form": {
-    "title": "标称值",
-    "role_label": "角色",
-    "type_label": "数据类型",
-    "value_label": "值",
-    "updated": "标称值已更新。",
-    "removed": "标称值已移除。"
-  },
-  "tolerance_form": {
-    "title": "公差",
-    "type_label": "类型",
-    "lower_tolerance_label": "下公差",
-    "upper_tolerance_label": "上公差",
-    "save_button": "保存",
-    "delete_button": "删除",
-    "reset_button": "重置",
-    "description": "值的公差可以绝对和百分比表示。"
+  "transfer_list": {
+    "new": "新分配",
+    "no_assignement": "尚未进行分配。",
+    "assignement": "分配",
+    "close": "完成编辑",
+    "edit": "编辑分配"
   }
 }
