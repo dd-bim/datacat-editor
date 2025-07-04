@@ -4,6 +4,7 @@
     "error": "Fehler beim Aufrufen der Prüfroutine.",
     "no_data": "Keine Daten gefunden.",
     "category_title": "Kategorie",
+    "total_count": "Gesamtanzahl",
     "criteria": {
       "integrity": "Integrität",
       "uniqueness": "Eindeutigkeit",

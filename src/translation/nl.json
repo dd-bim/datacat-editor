@@ -4,6 +4,7 @@
     "error": "Fout bij het uitvoeren van de verificatieroutine.",
     "no_data": "Geen gegevens gevonden.",
     "category_title": "Categorie",
+    "total_count": "Totaal aantal",
     "criteria": {
       "integrity": "Integriteit",
       "uniqueness": "Uniciteit",

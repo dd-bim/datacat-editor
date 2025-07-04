@@ -3403,6 +3403,7 @@ export const FindPropGroupWithoutPropTreeDocument = gql`
     pageInfo {
       ...PageProps
     }
+    totalElements
   }
 }
 ${PagePropsFragmentDoc}
@@ -3430,6 +3431,7 @@ export const FindPropWithoutSubjectOrPropGroupTreeDocument = gql`
     pageInfo {
       ...PageProps
     }
+    totalElements
   }
 }
 ${PagePropsFragmentDoc}
@@ -3457,6 +3459,7 @@ export const FindThemeWithoutSubjectTreeDocument = gql`
     pageInfo {
       ...PageProps
     }
+    totalElements
   }
 }
 ${PagePropsFragmentDoc}
@@ -3484,6 +3487,7 @@ export const FindSubjectWithoutPropTreeDocument = gql`
     pageInfo {
       ...PageProps
     }
+    totalElements
   }
 }
 ${PagePropsFragmentDoc}
@@ -3511,6 +3515,7 @@ export const FindValueListWithoutPropTreeDocument = gql`
     pageInfo {
       ...PageProps
     }
+    totalElements
   }
 }
 ${PagePropsFragmentDoc}
@@ -3538,6 +3543,7 @@ export const FindUnitWithoutValueListTreeDocument = gql`
     pageInfo {
       ...PageProps
     }
+    totalElements
   }
 }
 ${PagePropsFragmentDoc}
@@ -3565,6 +3571,7 @@ export const FindValueWithoutValueListTreeDocument = gql`
     pageInfo {
       ...PageProps
     }
+    totalElements
   }
 }
 ${PagePropsFragmentDoc}
@@ -3592,6 +3599,7 @@ export const FindMissingTagsTreeDocument = gql`
     pageInfo {
       ...PageProps
     }
+    totalElements
   }
 }
 ${PagePropsFragmentDoc}
@@ -3618,6 +3626,7 @@ export const FindMissingEnglishNameTreeDocument = gql`
     pageInfo {
       ...PageProps
     }
+    totalElements
   }
 }
 ${PagePropsFragmentDoc}
@@ -3645,6 +3654,7 @@ export const FindMultipleIDsTreeDocument = gql`
     pageInfo {
       ...PageProps
     }
+    totalElements
   }
 }
 ${PagePropsFragmentDoc}
@@ -3672,6 +3682,7 @@ export const FindMissingDescriptionTreeDocument = gql`
     pageInfo {
       ...PageProps
     }
+    totalElements
   }
 }
 ${PagePropsFragmentDoc}
@@ -3699,6 +3710,7 @@ export const FindMissingEnglishDescriptionTreeDocument = gql`
     pageInfo {
       ...PageProps
     }
+    totalElements
   }
 }
 ${PagePropsFragmentDoc}
@@ -3726,6 +3738,7 @@ export const FindMultipleNamesTreeDocument = gql`
     pageInfo {
       ...PageProps
     }
+    totalElements
   }
 }
 ${PagePropsFragmentDoc}
@@ -3753,6 +3766,7 @@ export const FindMultipleNamesAcrossClassesTreeDocument = gql`
     pageInfo {
       ...PageProps
     }
+    totalElements
   }
 }
     ${PagePropsFragmentDoc}
@@ -3780,6 +3794,7 @@ export const FindMissingDictionaryTreeDocument = gql`
     pageInfo {
       ...PageProps
     }
+    totalElements
   }
 }
 ${PagePropsFragmentDoc}
@@ -3807,6 +3822,7 @@ export const FindMissingReferenceDocumentTreeDocument = gql`
     pageInfo {
       ...PageProps
     }
+    totalElements
   }
 }
 ${PagePropsFragmentDoc}
@@ -3834,6 +3850,7 @@ export const FindInactiveConceptsTreeDocument = gql`
     pageInfo {
       ...PageProps
     }
+    totalElements
   }
 }
 ${PagePropsFragmentDoc}

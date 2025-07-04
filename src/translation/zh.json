@@ -4,6 +4,7 @@
     "error": "调用校验程序时出错。",
     "no_data": "未找到数据。",
     "category_title": "类别",
+    "total_count": "总数",
     "criteria": {
       "integrity": "完整性",
       "uniqueness": "唯一性",

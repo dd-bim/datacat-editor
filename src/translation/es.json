@@ -4,6 +4,7 @@
     "error": "Error al ejecutar la rutina de verificación.",
     "no_data": "No se encontraron datos.",
     "category_title": "Categoría",
+    "total_count": "Cantidad total",
     "criteria": {
       "integrity": "Integridad",
       "uniqueness": "Unicidad",

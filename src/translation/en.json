@@ -4,6 +4,7 @@
     "error": "Error when calling the verification routine.",
     "no_data": "No data found.",
     "category_title": "Category",
+    "total_count": "Total count",
     "criteria": {
       "integrity": "Integrity",
       "uniqueness": "Uniqueness",

@@ -4,6 +4,7 @@
     "error": "Errore durante la chiamata della routine di verifica.",
     "no_data": "Nessun dato trovato.",
     "category_title": "Categoria",
+    "total_count": "Conteggio totale",
     "criteria": {
       "integrity": "Integrità",
       "uniqueness": "Unicità",

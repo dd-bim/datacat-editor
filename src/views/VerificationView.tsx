@@ -353,6 +353,7 @@ export function VerificationView() {
       return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
     });
     const pageInfo = data?.[dataPath]?.pageInfo;
+    const totalElements = data?.[dataPath]?.totalElements ?? 0;
 
     // Items im State zusammenführen, wenn neue Daten kommen
     React.useEffect(() => {
@@ -400,7 +401,7 @@ export function VerificationView() {
         });
       }
     }
-
+console.log(totalElements, " Total Elements");
     if (loading && pageInfo?.pageNumber === 0) return <LinearProgress />;
     if (error) return <p><T keyName="verification.error" /></p>;
     if (!loading && (!allItems || allItems.length === 0)) {
@@ -408,6 +409,9 @@ export function VerificationView() {
     }
     return (
       <Box>
+        <Typography variant="body2" sx={{ mb: 1 }}>
+          <T keyName="verification.total_count" />: {totalElements}
+        </Typography>
         <ItemList
           loading={loading}
           items={allItems}
