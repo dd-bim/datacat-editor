@@ -98,8 +98,8 @@ const StyledFormControl = styled(FormControl)(({ theme }) => ({
 }));
 
 interface VisibleColumns {
-    dictionary: boolean;
-    document: boolean;
+    // dictionary: boolean;
+    // document: boolean;
     theme: boolean;
     class: boolean;
     property: boolean;
@@ -213,8 +213,8 @@ const GridViewView = () => {
     const [addTag] = useAddTagMutation();
 
     const [visibleColumns, setVisibleColumns] = useState<VisibleColumns>({
-        dictionary: true,
-        document: true,
+        // dictionary: true,
+        // document: true,
         theme: true,
         class: true,
         property: true,
@@ -241,8 +241,8 @@ const GridViewView = () => {
     // Column visibility handlers
     const handleShowOnlyColumn = useCallback((column: keyof VisibleColumns) => {
         setVisibleColumns({
-            dictionary: false,
-            document: false,
+            // dictionary: false,
+            // document: false,
             theme: false,
             class: false,
             property: false,
@@ -254,8 +254,8 @@ const GridViewView = () => {
 
     const handleShowAllColumns = useCallback(() => {
         setVisibleColumns({
-            dictionary: true,
-            document: true,
+            // dictionary: true,
+            // document: true,
             theme: true,
             class: true,
             property: true,
@@ -268,20 +268,20 @@ const GridViewView = () => {
     const mapRecordTypeToColumn = (node: any, column: string) => {
         const tags = node.tags || [];
         switch (column) {
-            case "dictionary":
-                for (const tag of tags) {
-                    if (DictionaryEntity.tags!.includes(tag.id)) {
-                        return node.name || "";
-                    }
-                }
-                return "";
-            case "document":
-                for (const tag of tags) {
-                    if (DocumentEntity.tags!.includes(tag.id)) {
-                        return node.name || "";
-                    }
-                }
-                return "";
+            // case "dictionary":
+            //     for (const tag of tags) {
+            //         if (DictionaryEntity.tags!.includes(tag.id)) {
+            //             return node.name || "";
+            //         }
+            //     }
+            //     return "";
+            // case "document":
+            //     for (const tag of tags) {
+            //         if (DocumentEntity.tags!.includes(tag.id)) {
+            //             return node.name || "";
+            //         }
+            //     }
+            //     return "";
             case "theme":
                 for (const tag of tags) {
                     if (ThemeEntity.tags!.includes(tag.id)) {
@@ -319,12 +319,12 @@ const GridViewView = () => {
     const handleOnSelect = (id: string, column: string) => {
         let entityTypePath = "";
         switch (column) {
-            case "dictionary":
-                entityTypePath = "dictionary";
-                break;
-            case "document":
-                entityTypePath = "document";
-                break;
+            // case "dictionary":
+            //     entityTypePath = "dictionary";
+            //     break;
+            // case "document":
+            //     entityTypePath = "document";
+            //     break;
             case "theme":
                 entityTypePath = "theme";
                 break;
@@ -352,15 +352,15 @@ const GridViewView = () => {
 
         paths.forEach((path, index) => {
             const row: any = {
-                dictionary: "",
-                document: "",
+                // dictionary: "",
+                // document: "",
                 theme: "",
                 class: "",
                 property: "",
                 propertyGroup: "",
                 ids: {
-                    dictionary: "",
-                    document: "",
+                    // dictionary: "",
+                    // document: "",
                     theme: "",
                     class: "",
                     property: "",
@@ -375,8 +375,8 @@ const GridViewView = () => {
                 const node = nodes.find((node) => node.id === id);
                 if (node) {
                     [
-                        "dictionary",
-                        "document",
+                        // "dictionary",
+                        // "document",
                         "theme",
                         "class",
                         "property",
@@ -393,7 +393,7 @@ const GridViewView = () => {
                 }
             });
 
-            const combinationKey = `${row.dictionary}-${row.document}-${row.theme}-${row.class}-${row.property}-${row.propertyGroup}`;
+            const combinationKey = `${row.theme}-${row.class}-${row.property}-${row.propertyGroup}`; // ${row.dictionary}-${row.document}-
             if (!seenCombinations.has(combinationKey)) {
                 seenCombinations.add(combinationKey);
                 rows.push(row);
@@ -401,10 +401,10 @@ const GridViewView = () => {
         });
 
         rows.sort((a, b) => {
-            if (a.document !== b.document)
-                return a.document.localeCompare(b.document);
-            if (a.dictionary !== b.dictionary)
-                return a.dictionary.localeCompare(b.dictionary);
+            // if (a.document !== b.document)
+            //     return a.document.localeCompare(b.document);
+            // if (a.dictionary !== b.dictionary)
+            //     return a.dictionary.localeCompare(b.dictionary);
             if (a.theme !== b.theme) return a.theme.localeCompare(b.theme);
             if (a.class !== b.class) return a.class.localeCompare(b.class);
             if (a.propertyGroup !== b.propertyGroup)
@@ -665,6 +665,8 @@ const GridViewView = () => {
         "Wert",
         "Maßeinheit",
         "Werteliste",
+        "Merkmalsgruppe",
+        "Referenzdokument"
     ];
 
     const filterTags = (tags: string[]) =>
@@ -678,77 +680,77 @@ const GridViewView = () => {
 
     // DataGrid column definitions
     const columns: GridColDef[] = [
-        ...(visibleColumns.document
-            ? [
-                {
-                    field: "document",
-                    headerName: t("document.titlePlural"),
-                    flex: 1,
-                    minWidth: 200,
-                    renderCell: (params: GridRenderCellParams) => {
-                        const documentName =
-                            documentNames[params.row.ids.model]?.name || params.value;
-                        const documentId = documentNames[params.row.ids.model]?.id;
+        // ...(visibleColumns.document
+        //     ? [
+        //         {
+        //             field: "document",
+        //             headerName: t("document.titlePlural"),
+        //             flex: 1,
+        //             minWidth: 200,
+        //             renderCell: (params: GridRenderCellParams) => {
+        //                 const documentName =
+        //                     documentNames[params.row.ids.model]?.name || params.value;
+        //                 const documentId = documentNames[params.row.ids.model]?.id;
 
-                        return (
-                            <Box
-                                sx={{
-                                    cursor: documentId ? "pointer" : "default",
-                                    width: "100%",
-                                    height: "100%",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    "&:hover": {
-                                        textDecoration: documentId ? "underline" : "none",
-                                    },
-                                }}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    if (documentId) {
-                                        handleOnSelect(documentId, "document");
-                                    }
-                                }}
-                            >
-                                {documentName || "\u00A0"}
-                            </Box>
-                        );
-                    },
-                },
-            ]
-            : []),
+        //                 return (
+        //                     <Box
+        //                         sx={{
+        //                             cursor: documentId ? "pointer" : "default",
+        //                             width: "100%",
+        //                             height: "100%",
+        //                             display: "flex",
+        //                             alignItems: "center",
+        //                             "&:hover": {
+        //                                 textDecoration: documentId ? "underline" : "none",
+        //                             },
+        //                         }}
+        //                         onClick={(e) => {
+        //                             e.stopPropagation();
+        //                             if (documentId) {
+        //                                 handleOnSelect(documentId, "document");
+        //                             }
+        //                         }}
+        //                     >
+        //                         {documentName || "\u00A0"}
+        //                     </Box>
+        //                 );
+        //             },
+        //         },
+        //     ]
+        //     : []),
 
-        ...(visibleColumns.dictionary
-            ? [
-                {
-                    field: "dictionary",
-                    headerName: t("dictionary.titlePlural"),
-                    flex: 1,
-                    minWidth: 200,
-                    renderCell: (params: GridRenderCellParams) => (
-                        <Box
-                            sx={{
-                                cursor: params.value ? "pointer" : "default",
-                                width: "100%",
-                                height: "100%",
-                                display: "flex",
-                                alignItems: "center",
-                                "&:hover": {
-                                    textDecoration: params.value ? "underline" : "none",
-                                },
-                            }}
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                if (params.value) {
-                                    handleOnSelect(params.row.ids.dictionary, "dictionary");
-                                }
-                            }}
-                        >
-                            {params.value || "\u00A0"}
-                        </Box>
-                    ),
-                },
-            ]
-            : []),
+        // ...(visibleColumns.dictionary
+        //     ? [
+        //         {
+        //             field: "dictionary",
+        //             headerName: t("dictionary.titlePlural"),
+        //             flex: 1,
+        //             minWidth: 200,
+        //             renderCell: (params: GridRenderCellParams) => (
+        //                 <Box
+        //                     sx={{
+        //                         cursor: params.value ? "pointer" : "default",
+        //                         width: "100%",
+        //                         height: "100%",
+        //                         display: "flex",
+        //                         alignItems: "center",
+        //                         "&:hover": {
+        //                             textDecoration: params.value ? "underline" : "none",
+        //                         },
+        //                     }}
+        //                     onClick={(e) => {
+        //                         e.stopPropagation();
+        //                         if (params.value) {
+        //                             handleOnSelect(params.row.ids.dictionary, "dictionary");
+        //                         }
+        //                     }}
+        //                 >
+        //                     {params.value || "\u00A0"}
+        //                 </Box>
+        //             ),
+        //         },
+        //     ]
+        //     : []),
 
         ...(visibleColumns.theme
             ? [
@@ -915,7 +917,7 @@ const GridViewView = () => {
                     }}
                 >
                     <ButtonContainer>
-                        <Button
+                        {/* <Button
                             variant="contained"
                             color="primary"
                             onClick={() => handleShowOnlyColumn("dictionary")}
@@ -928,7 +930,7 @@ const GridViewView = () => {
                             onClick={() => handleShowOnlyColumn("document")}
                         >
                             {<T keyName="grid_view.show_only_documents" />}
-                        </Button>
+                        </Button> */}
                         <Button
                             variant="contained"
                             color="primary"
