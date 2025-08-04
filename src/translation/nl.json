@@ -234,6 +234,7 @@
   },
   "grid_view": {
     "loading": "Tabelinhoud wordt geladen",
+    "loading_table_contents": "Tabelinhoud wordt geladen",
     "tag_filter_title": "Filtermogelijkheid op tags",
     "tag_filter_placeholder": "Tag selecteren",
     "select_tag": "Tag selecteren",
@@ -262,7 +263,36 @@
     "tags_added_with_existing": "Tag toegevoegd aan {added} items. {existing} items hadden deze tag al.",
     "tags_added_count": "Tag toegevoegd aan {count} items.",
     "no_tags_to_add": "Geen tags toe te voegen nodig.",
-    "tags_adding_failed": "Toevoegen van tags mislukt."
+    "tags_adding_failed": "Toevoegen van tags mislukt.",
+    "loading_hierarchy_data": "Hiërarchische gegevens worden geladen...",
+    "show_only_documents_tooltip": "Toont alleen de kolom voor referentiedocumenten",
+    "show_only_models_tooltip": "Toont alleen de kolom voor vakmodellen",
+    "show_only_themes_tooltip": "Toont alleen de kolom voor thema's",
+    "show_only_classes_tooltip": "Toont alleen de kolom voor klassen",
+    "show_only_properties_tooltip": "Toont alleen de kolom voor kenmerken",
+    "show_only_property_groups_tooltip": "Toont alleen de kolom voor kenmerkgroepen",
+    "show_all_columns_tooltip": "Toont alle kolommen weer",
+    "refresh": "Bijwerken",
+    "refresh_data_tooltip": "Gegevens handmatig opnieuw laden",
+    "refreshing_data": "Gegevens worden bijgewerkt...",
+    "data_refreshed": "Gegevens succesvol bijgewerkt.",
+    "refresh_failed": "Bijwerken mislukt.",
+    "error_fetching_latest_tags": "Fout bij het ophalen van de nieuwste tags.",
+    "tags_adding_failed_count": "Fout bij het toevoegen van {count} tags.",
+    "search_placeholder": "Zoeken in tabel...",
+    "total_entries": "Totaal aantal items",
+    "selected": "geselecteerd",
+    "export_csv": "CSV-export",
+    "export_csv_tooltip": "Tabelgegevens downloaden als CSV-bestand",
+    "export_success": "CSV-export succesvol gedownload",
+    "table_density": "Tabeldichtheid",
+    "density_large": "Groot",
+    "density_medium": "Gemiddeld",
+    "density_small": "Klein",
+    "rows_per_page": "Rijen per pagina:",
+    "of": "van",
+    "more_than": "meer dan",
+    "multiselect_help": "Meervoudige selectie: Ctrl + Klik"
   },
   "error": {
     "error": "Er is een fout opgetreden..."
@@ -463,5 +493,313 @@
     "assignement": "Toewijzing",
     "close": "Bewerken voltooien",
     "edit": "Toewijzing bewerken"
+  },
+  "ids_export": {
+    "tag_filter": {
+      "classes": "Tagfilter voor klassen:",
+      "properties": "Tagfilter voor eigenschappen:"
+    },
+    "actions": {
+      "add_all": "Alles toevoegen",
+      "add_all_with_tag": "Alles toevoegen met tag \"{tag}\"",
+      "select_all": "Alles selecteren"
+    },
+    "success_messages": {
+      "auto_save_found": "Automatisch opgeslagen gegevens gevonden. Via 'Opslaan & Laden' kun je deze herstellen.",
+      "auto_saved": "Gegevens automatisch opgeslagen.",
+      "ids_data_loaded": "IDS-gegevens succesvol geladen.",
+      "ids_downloaded": "IDS-bestand succesvol gedownload.",
+      "ids_generated": "IDS-bestand succesvol gegenereerd en kan nu worden gedownload.",
+      "property_set_created": "IFC-eigenschappenset \"{name}\" succesvol aangemaakt en is direct beschikbaar.",
+      "specification_loaded": "Specificatie succesvol geladen."
+    },
+    "notifications": {
+      "classes_with_tag_added": "{count} klassen met tag '{tag}' toegevoegd.",
+      "no_classes_with_tag": "Geen klassen met tag '{tag}' gevonden.",
+      "no_properties_with_tag": "Geen eigenschappen met tag '{tag}' gevonden.",
+      "properties_with_tag_added": "{count} eigenschappen met tag '{tag}' toegevoegd."
+    },
+    "validation": {
+      "and_more": "en meer",
+      "errors_found": "Validatiefouten gevonden",
+      "ready_for_export": "Alle validaties geslaagd - klaar voor export!",
+      "warnings": "Waarschuwingen"
+    },
+    "requirements": {
+      "specifications": "Specificaties toegevoegd",
+      "title": "IDS-titel ingevoerd",
+      "version": "IDS-versie ingevoerd"
+    },
+    "labels": {
+      "specification_name": "Specificatienaam",
+      "cardinality": "Kardinaliteit",
+      "instructions": "Instructies",
+      "applicability": "Toepasbaarheid",
+      "applicability_type": "Toepasbaarheid",
+      "class_select": "Klasse selecteren",
+      "classification": "Classificatie",
+      "classification_auto_ifcclassification": "Voor classificatie wordt automatisch IFCCLASSIFICATION gebruikt",
+      "classification_system_select": "Classificatiesysteem selecteren",
+      "create_new_property_set": "Nieuwe IFC-eigenschappenset aanmaken (eigenschappengroep)",
+      "datatype_optional": "gegevenstype",
+      "edit_specification": "Specificatie bewerken",
+      "entity_type": "Entiteitstype",
+      "entity_type_select": "IFC-entiteitstype selecteren",
+      "ids_name": "IDS-naam",
+      "ids_version": "IDS-versie",
+      "ids_version_description": "Voer de versie van je IDS-bestand in (bijv. 1.0, 2.1). Dit is niet de schemaversie.",
+      "ifc_class": "IFC-klasse",
+      "ifc_class_placeholder": "IFC-klasse invoeren (bijv. IFCWALL)",
+      "ifc_classes": "IFC-klassen (meervoudige selectie)",
+      "ifc_versions": "IFC-versies (meervoudige selectie)",
+      "instructions_optional": "Instructies (optioneel)",
+      "loading_property_groups": "Eigenschappengroepen laden...",
+      "local_created": "Lokaal aangemaakt",
+      "material_category": "Materiaalkategorie",
+      "material_properties_optional": "Materiaaleigenschappen (optioneel)",
+      "material_select": "Materiaal selecteren",
+      "materials": "Materialen",
+      "mechanical_properties": "Mechanische eigenschappen",
+      "model_class_select": "Vakmodel/referentiedocument selecteren",
+      "no_property_groups_found": "Geen eigenschappengroepen gevonden",
+      "none": "Geen",
+      "optical_properties": "Optische eigenschappen",
+      "predefined_type": "Voorgedefinieerd type",
+      "predefined_type_optional": "Voorgedefinieerd type (optioneel)",
+      "property_group_select": "Eigenschappengroep (eigenschappenset)",
+      "requirements": "Vereisten",
+      "search_classes": "Klassen zoeken...",
+      "search_properties": "Eigenschappen zoeken...",
+      "search_values": "Waarden zoeken...",
+      "select_all_properties": "Alles selecteren",
+      "select_classes_optional": "Klassen selecteren (optioneel)",
+      "select_datatype": "Gegevenstype selecteren",
+      "select_model_from_datacat": "Datacat vakmodel selecteren",
+      "select_properties": "Eigenschappen selecteren",
+      "select_property_group": "Eigenschappengroep selecteren",
+      "thermal_properties": "Thermische eigenschappen",
+      "type_ifc_class": "Type (IFC-klasse)",
+      "uri_automatic": "URI (automatisch)"
+    },
+    "placeholders": {
+      "attribute_class_search": "Zoek en selecteer klasse...",
+      "attribute_model_search": "Zoek en selecteer vakmodel...",
+      "classification_system_search": "Zoek en selecteer classificatiesysteem...",
+      "datatype_search": "Zoek en selecteer gegevenstype...",
+      "entity_type_search": "Zoek en selecteer entiteitstype...",
+      "ids_name_example": "bijv. Vereisten-Brandbeveiliging-2024",
+      "ids_version_example": "1.0",
+      "ifc_classes_search": "Zoek en selecteer IFC-klassen...",
+      "ifc_versions_select": "Selecteer IFC-versies...",
+      "instructions": "Aanvullende instructies of opmerkingen...",
+      "material_search": "Zoek en selecteer materiaal...",
+      "mechanical_properties": "bijv. Elasticiteitsmodulus, treksterkte...",
+      "optical_properties": "bijv. Transparantie, reflectiviteit...",
+      "predefined_type": "bijv. WALL, COLUMN, BEAM...",
+      "property_set_search": "Zoek en selecteer eigenschappengroep...",
+      "specification_name_example": "bijv. Verificatie brandweerstandsklassen",
+      "thermal_properties": "bijv. Warmtegeleiding, specifieke warmte...",
+      "unnamed_ids": "IDS zonder naam",
+      "unnamed_specification": "Specificatie zonder naam"
+    },
+    "buttons": {
+      "add_by_tag": "Toevoegen op tag",
+      "add_requirement": "Vereiste toevoegen",
+      "create_pset": "Nieuwe IFC-eigenschappenset aanmaken",
+      "add_specification": "Specificatie toevoegen",
+      "applicability_summary": "Toepassingssamenvatting",
+      "attribute": "Attribuut",
+      "cancel": "Annuleren",
+      "classes": "Klassen",
+      "classification": "Classificatie",
+      "classification_system": "Classificatiesysteem",
+      "download_ids": "IDS-bestand downloaden",
+      "entity": "Entiteit",
+      "export_actions": "Exportacties",
+      "export_requirements": "Exportvereisten",
+      "exporting": "Exporteren...",
+      "facet": "Facet",
+      "generate_ids": "IDS-bestand genereren",
+      "ifc_versions": "IFC-versies",
+      "last_export": "Laatste export",
+      "material": "Materiaal",
+      "preview_xml": "XML-voorbeeld",
+      "property": "Eigenschap",
+      "requirement": "Vereiste",
+      "save": "Opslaan",
+      "save_and_load": "Opslaan en laden",
+      "save_spec": "Specificatie opslaan",
+      "select_all_properties": "Alles selecteren",
+      "select_all_values": "Alles selecteren",
+      "select_facet": "Facet selecteren",
+      "type": "Type",
+      "update": "Bijwerken"
+    },
+    "errors": {
+      "unknown_facet": "Onbekend facet"
+    },
+    "error_messages": {
+      "login_required": "Inloggen vereist om een IDS-bestand aan te maken."
+    },
+    "messages": {
+      "no_requirements": "Er zijn nog geen vereisten toegevoegd. Klik op een van de knoppen hierboven om een vereiste toe te voegen."
+    },
+    "tooltips": {
+      "export_disabled": "Kan niet exporteren: titel, versie en minimaal één specificatie zijn vereist"
+    },
+    "tips": {
+      "title": "Exporttips",
+      "filename_based_on_title": "De bestandsnaam is gebaseerd op de IDS-titel",
+      "xml_validated_before_download": "XML gevalideerd voor download",
+      "save_project_before_export": "Project opslaan voor export"
+    },
+    "value_labels": {
+      "values_for": "Waarden voor"
+    },
+    "cardinality": {
+      "required": "vereist",
+      "optional": "optioneel",
+      "prohibited": "verboden"
+    },
+    "material_category": {
+      "none": "Geen categorie",
+      "concrete": "Beton",
+      "steel": "Staal",
+      "wood": "Hout",
+      "glass": "Glas",
+      "insulation": "Isolatie",
+      "other": "Overig"
+    }
+  },
+  "create_property_set": {
+    "title": "Eigenschappenset aanmaken",
+    "actions": {
+      "add_all_with_tag": "Alles toevoegen met tag \"{tag}\"",
+      "cancel": "Annuleren",
+      "create": "IFC-eigenschappenset aanmaken",
+      "creating": "Aanmaken..."
+    },
+    "help": {
+      "custom_values_format": "Scheid meerdere waarden met komma's"
+    },
+    "info": {
+      "selection_help": "Selecteer de overeenkomstige eigenschappen in datacat die tot deze nieuwe IFC-eigenschappenset zouden moeten behoren. Deze eigenschappenset wordt alleen lokaal gebruikt voor IDS-aanmaak en wordt niet opgeslagen in de datacat eigenschappenserver.",
+      "values_help": "Je kunt optioneel waarden definiëren voor elke eigenschap. Laat de velden leeg als geen waardebeperking gewenst is."
+    },
+    "labels": {
+      "property_set_name": "IFC-eigenschappensetnaam",
+      "description_optional": "Beschrijving (optioneel)",
+      "assign_properties": "Eigenschappen toewijzen",
+      "select_properties": "Eigenschappen selecteren",
+      "property_values_optional": "Waarden voor eigenschappen (optioneel)",
+      "values_from_datacat": "DataCat waarden selecteren:",
+      "custom_values": "Of aangepaste waarden invoeren:"
+    },
+    "notifications": {
+      "properties_with_tag_added": "{count} eigenschappen met tag \"{tag}\" toegevoegd",
+      "no_properties_with_tag": "Geen eigenschappen met tag \"{tag}\" gevonden",
+      "name_required": "Voer een naam in voor de nieuwe IFC-eigenschappenset.",
+      "created_successfully": "Eigenschappenset \"{name}\" succesvol lokaal aangemaakt.",
+      "creation_error": "Fout tijdens aanmaken: {error}"
+    },
+    "placeholders": {
+      "property_set_example": "bijv. Geometrische eigenschappen",
+      "description_text": "Beschrijving van de IFC-eigenschappenset...",
+      "search_and_select": "Zoek en selecteer eigenschappen...",
+      "select_values_from_datacat": "Waarden selecteren...",
+      "enter_custom_values": "Waarden gescheiden door komma's invoeren..."
+    },
+    "status": {
+      "properties_selected": "{count} eigenschap{plural} geselecteerd"
+    },
+    "tag_filter": {
+      "properties": "Tagfilter voor eigenschappen:",
+      "all": "Alles"
+    }
+  },
+  "save_load_dialog": {
+    "title": "Sessie opslaan/laden",
+    "buttons": {
+      "close": "Sluiten"
+    },
+    "auto_save": {
+      "found_message": "Automatisch opgeslagen gegevens gevonden van {timestamp}",
+      "restore": "Herstellen",
+      "discard": "Verwijderen"
+    },
+    "load_section": {
+      "title": "Laden",
+      "empty_message": "Geen opgeslagen bestanden gevonden"
+    },
+    "save_section": {
+      "title": "Opslaan",
+      "name_placeholder": "Naam invoeren...",
+      "save_button": "Opslaan"
+    },
+    "tabs": {
+      "ids_files": "IDS-bestanden",
+      "specifications": "Specificaties"
+    }
+  },
+  "common": {
+    "close": "Sluiten",
+    "info": "Informatie"
+  },
+  "info_dialogs": {
+    "applicability": {
+      "title": "Toepasbaarheid - Hulp",
+      "content": "Toepasbaarheid definieert op welke BIM-objecten deze specificatie betrekking heeft. 🏗️ Type (IFC-klasse): • Verwijst naar specifieke IFC-objecttypen (bijv. muren, deuren, ramen) • Je kunt meerdere IFC-klassen selecteren • Voorbeeld: IFCWALL, IFCDOOR, IFCWINDOW 🏷️ Classificatie: • Verwijst naar geclassificeerde objecten (bijv. volgens DIN 276, OMNICLASS) • Gebruikt IFCCLASSIFICATION als IFC-klasse • Voorbeeld: objecten met bepaalde kostengroepen of functionele klassen"
+    },
+    "cardinality": {
+      "title": "Kardinaliteit - Hulp",
+      "content": "Kardinaliteit bepaalt of een eigenschap aanwezig moet zijn. ✅ Vereist: • De eigenschap MOET aanwezig zijn • Objecten zonder deze eigenschap zijn ongeldig • Standaardinstelling voor de meeste vereisten ❓ Optioneel: • De eigenschap KAN aanwezig zijn • Indien aanwezig, moet deze overeenkomen met de gedefinieerde waarden • Indien niet aanwezig, is het object nog steeds geldig ❌ Verboden: • De eigenschap MAG NIET aanwezig zijn • Objecten met deze eigenschap zijn ongeldig • Nuttig voor uitsluitingsregels"
+    },
+    "classification_system": {
+      "title": "Classificatiesysteem - Hulp",
+      "content": "Selecteer het vakmodel of referentiedocument dat de classificatie definieert. Dit kan zijn: • Een kostenverdeling systeem (bijv. DIN 276) • Een functioneel classificatiesysteem • Een fabrikant-specifiek classificatiesysteem • Een project-specifiek referentiedocument. Het geselecteerde systeem wordt gebruikt als 'System' in de IDS-classificatie."
+    },
+    "datatype": {
+      "title": "Gegevenstype - Hulp",
+      "content": "Het gegevenstype definieert welk type waarden voor deze eigenschap worden verwacht. Veelgebruikte gegevenstypen: • IFCLABEL - Korte tekst (bijv. materiaalnaam) • IFCTEXT - Langere tekst (bijv. beschrijving) • IFCBOOLEAN - Ja/nee waarden (bijv. dragend) • IFCREAL - Decimale getallen (bijv. U-waarde: 0.24) • IFCINTEGER - Gehele getallen (bijv. aantal: 5) • IFCLENGTHMEASURE - Lengtemetingen (bijv. 2.5m) • IFCAREAMEASURE - Oppervlaktemetingen (bijv. 25.5m²) Het gegevenstype is optioneel, maar aanbevolen voor precieze validatie."
+    },
+    "ids_name": {
+      "title": "IDS-naam - Hulp",
+      "content": "De IDS-naam is de hoofdtitel van je Information Delivery Specification. Deze naam wordt gebruikt: • Als titel in het gegenereerde IDS-XML bestand • Als bestandsnaam bij de download (speciale tekens worden verwijderd) • Voor identificatie bij opslaan en laden. Tip: Kies een beschrijvende naam zoals 'Verificatie-Structuur-2024' of 'Vereisten-Brandbeveiliging'."
+    },
+    "ids_version": {
+      "title": "IDS-versie - Hulp",
+      "content": "De IDS-versie is het versienummer van je specifieke IDS-bestand (niet de schemaversie). Voorbeelden: • '1.0' voor de eerste versie • '2.1' voor een verbeterde versie • '3.0-beta' voor een bètaversie. Deze versie wordt opgeslagen in het <ids:version> element van het XML-bestand en helpt bij versiebeheer van je IDS-specificaties."
+    },
+    "ifc_classes": {
+      "title": "IFC-klassen - Hulp",
+      "content": "Selecteer de IFC-entiteitstypen waar deze specificatie betrekking op heeft. Veelgebruikte klassen: • IFCWALL - Muren • IFCDOOR - Deuren • IFCWINDOW - Ramen • IFCSLAB - Vloeren/Plaatvloeren • IFCBEAM - Balken • IFCCOLUMN - Kolommen • IFCSPACE - Ruimtes. Je kunt meerdere klassen selecteren als dezelfde vereisten gelden voor verschillende objecttypen. Tip: Gebruik de zoekfunctie om snel de gewenste IFC-klassen te vinden."
+    },
+    "ifc_versions": {
+      "title": "IFC-versies - Hulp",
+      "content": "Selecteer de IFC-versies waarvoor deze IDS-specificatie geldig moet zijn. Beschikbare versies: • IFC2X3: Oudere versie, nog steeds wijdverspreid • IFC4: Huidige standaardversie • IFC4X3: Nieuwste versie met uitgebreide functionaliteiten Je kunt meerdere versies selecteren als je specificatie compatibel is met verschillende IFC-versies."
+    },
+    "property_group": {
+      "title": "Eigenschappengroep (eigenschappenset) - Hulp",
+      "content": "Eigenschappensets zijn groepen van gerelateerde eigenschappen in IFC. Voorbeelden: • Pset_WallCommon - Algemene muureigenschappen • Pset_DoorCommon - Algemene deureigenschappen • Pset_SpaceFireSafetyRequirements - Brandveiligheidsvereisten voor ruimtes Je kunt: • Bestaande eigenschappensets uit de catalogus selecteren • Nieuwe eigenschappensets aanmaken met de ➕ knop • Meerdere eigenschappen voor een eigenschappenset selecteren De URI wordt automatisch gegenereerd en verwijst naar de definitie in de catalogus."
+    },
+    "property_values": {
+      "title": "Eigenschapwaarden - Hulp",
+      "content": "Hier kun je specifieke waarden definiëren voor de geselecteerde eigenschap. 🎯 Gebruik: • Definieer toegestane waarden voor deze eigenschap • Meervoudige selectie mogelijk voor alternatieve waarden • Voorbeelden: REI30, REI60, REI90 voor brandweerstandsklassen 📋 Waarden opsomming: • Alle geselecteerde waarden worden gedefinieerd als toegestane opties in de IDS • Het object moet een van deze waarden hebben om geldig te zijn • Lege selectie betekent: elke waarde is toegestaan (alleen de eigenschap moet aanwezig zijn)"
+    },
+    "requirements": {
+      "title": "Vereisten - Hulp",
+      "content": "Vereisten definiëren welke eigenschappen de geselecteerde objecten moeten hebben. 🏷️ Classificatie: • Controleert classificatiewaarden (bijv. kostengroepen, functionele klassen) • Selecteer het classificatiesysteem en optioneel specifieke klassen 📝 Attributen: • Controleert IFC-attributen van objecten • Voorbeeld: naam, beschrijving of andere directe objecteigenschappen 🔧 Eigenschappen: • Controleert eigenschappensets en hun eigenschappen • Voorbeeld: brandweerstandsklasse, U-waarde, materiaaltype • Je kunt meerdere eigenschappen en hun toegestane waarden definiëren Elke vereiste kan worden gemarkeerd als 'required' (vereist), 'optional' (optioneel) of 'prohibited' (verboden)."
+    },
+    "specification_name": {
+      "title": "Specificatienaam - Hulp",
+      "content": "De naam van de individuele specificatie binnen je IDS-bestand. Een IDS-bestand kan meerdere specificaties bevatten. Elke specificatie controleert bepaalde aspecten van je BIM-modellen. Voorbeelden: • 'Muureigenschappen verificatie' • 'Brandweerstandsklassen controle' • 'Structurele elementen validatie' De naam moet duidelijk beschrijven wat deze specificatie controleert."
+    }
+  },
+  "metadata": {
+    "defaultDescription": "IDS-specificatie gegenereerd voor validatie van gebouwinformatie",
+    "defaultMilestone": "Planning",
+    "defaultPurpose": "Ontwerp validatie",
+    "defaultTitle": "Nieuwe IDS-specificatie",
+    "untitledSpecification": "Specificaties zonder titel"
   }
 }

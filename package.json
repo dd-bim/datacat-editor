@@ -1,6 +1,6 @@
 {
   "name": "datacat-editor",
-  "version": "1.0 beta",
+  "version": "2.0",
   "license": "GPL-3.0",
   "private": true,
   "dependencies": {
@@ -32,7 +32,7 @@
     "node-fetch": "^3.3.2",
     "notistack": "^3.0.2",
     "react": "19.1.1",
-    "react-dom": "19.1.0",
+    "react-dom": "19.1.1",
     "react-hook-form": "^7.61.1",
     "react-router-dom": "^7.7.1",
     "react-window": "^1.8.11",

@@ -234,6 +234,7 @@
   },
   "grid_view": {
     "loading": "Caricamento contenuti tabella",
+    "loading_table_contents": "Contenuti della tabella in caricamento",
     "tag_filter_title": "Filtro per tag",
     "tag_filter_placeholder": "Seleziona tag",
     "select_tag": "Seleziona tag",
@@ -262,7 +263,36 @@
     "tags_added_with_existing": "Tag aggiunto a {added} voci. {existing} voci avevano già questo tag.",
     "tags_added_count": "Tag aggiunto a {count} voci.",
     "no_tags_to_add": "Nessun tag da aggiungere necessario.",
-    "tags_adding_failed": "Aggiunta tag non riuscita."
+    "tags_adding_failed": "Aggiunta tag non riuscita.",
+    "loading_hierarchy_data": "Dati gerarchici in caricamento...",
+    "show_only_documents_tooltip": "Mostra solo la colonna per documenti di riferimento",
+    "show_only_models_tooltip": "Mostra solo la colonna per modelli di dominio",
+    "show_only_themes_tooltip": "Mostra solo la colonna per temi",
+    "show_only_classes_tooltip": "Mostra solo la colonna per classi",
+    "show_only_properties_tooltip": "Mostra solo la colonna per proprietà",
+    "show_only_property_groups_tooltip": "Mostra solo la colonna per gruppi di proprietà",
+    "show_all_columns_tooltip": "Mostra di nuovo tutte le colonne",
+    "refresh": "Aggiorna",
+    "refresh_data_tooltip": "Ricarica dati manualmente",
+    "refreshing_data": "Dati in aggiornamento...",
+    "data_refreshed": "Dati aggiornati con successo.",
+    "refresh_failed": "Aggiornamento fallito.",
+    "error_fetching_latest_tags": "Errore nel recupero dei tag più recenti.",
+    "tags_adding_failed_count": "Errore nell'aggiunta di {count} tag.",
+    "search_placeholder": "Cerca nella tabella...",
+    "total_entries": "Voci totali",
+    "selected": "selezionato",
+    "export_csv": "Esportazione CSV",
+    "export_csv_tooltip": "Scarica i dati della tabella come file CSV",
+    "export_success": "Esportazione CSV scaricata con successo",
+    "table_density": "Densità tabella",
+    "density_large": "Grande",
+    "density_medium": "Medio",
+    "density_small": "Piccolo",
+    "rows_per_page": "Righe per pagina:",
+    "of": "di",
+    "more_than": "più di",
+    "multiselect_help": "Selezione multipla: Ctrl + Clic"
   },
   "error":{
     "error": "Si è verificato un errore..."
@@ -463,5 +493,313 @@
     "assignement": "Assegnazione",
     "close": "Termina modifica",
     "edit": "Modifica assegnazione"
+  },
+  "ids_export": {
+    "tag_filter": {
+      "classes": "Filtro tag per classi:",
+      "properties": "Filtro tag per proprietà:"
+    },
+    "actions": {
+      "add_all": "Aggiungi tutto",
+      "add_all_with_tag": "Aggiungi tutto con tag \"{tag}\"",
+      "select_all": "Seleziona tutto"
+    },
+    "success_messages": {
+      "auto_save_found": "Dati salvati automaticamente trovati. Tramite 'Salva & Carica' puoi ripristinarli.",
+      "auto_saved": "Dati salvati automaticamente.",
+      "ids_data_loaded": "Dati IDS caricati con successo.",
+      "ids_downloaded": "File IDS scaricato con successo.",
+      "ids_generated": "File IDS generato con successo e può ora essere scaricato.",
+      "property_set_created": "Set di proprietà IFC \"{name}\" creato con successo ed è immediatamente disponibile.",
+      "specification_loaded": "Specifica caricata con successo."
+    },
+    "notifications": {
+      "classes_with_tag_added": "{count} classi con tag '{tag}' aggiunte.",
+      "no_classes_with_tag": "Nessuna classe con tag '{tag}' trovata.",
+      "no_properties_with_tag": "Nessuna proprietà con tag '{tag}' trovata.",
+      "properties_with_tag_added": "{count} proprietà con tag '{tag}' aggiunte."
+    },
+    "validation": {
+      "and_more": "e altri",
+      "errors_found": "Errori di validazione trovati",
+      "ready_for_export": "Tutte le validazioni superate - pronto per l'esportazione!",
+      "warnings": "Avvertimenti"
+    },
+    "requirements": {
+      "specifications": "Specifiche aggiunte",
+      "title": "Titolo IDS inserito",
+      "version": "Versione IDS inserita"
+    },
+    "labels": {
+      "specification_name": "Nome specifica",
+      "cardinality": "Cardinalità",
+      "instructions": "Istruzioni",
+      "applicability": "Applicabilità",
+      "applicability_type": "Applicabilità",
+      "class_select": "Seleziona classe",
+      "classification": "Classificazione",
+      "classification_auto_ifcclassification": "Per la classificazione viene utilizzato automaticamente IFCCLASSIFICATION",
+      "classification_system_select": "Seleziona sistema di classificazione",
+      "create_new_property_set": "Crea nuovo set di proprietà IFC (gruppo di proprietà)",
+      "datatype_optional": "tipo di dati",
+      "edit_specification": "Modifica specifica",
+      "entity_type": "Tipo di entità",
+      "entity_type_select": "Seleziona tipo di entità IFC",
+      "ids_name": "Nome IDS",
+      "ids_version": "Versione IDS",
+      "ids_version_description": "Inserisci la versione del tuo file IDS (es. 1.0, 2.1). Questa non è la versione dello schema.",
+      "ifc_class": "Classe IFC",
+      "ifc_class_placeholder": "Inserisci classe IFC (es. IFCWALL)",
+      "ifc_classes": "Classi IFC (selezione multipla)",
+      "ifc_versions": "Versioni IFC (selezione multipla)",
+      "instructions_optional": "Istruzioni (opzionale)",
+      "loading_property_groups": "Caricamento gruppi di proprietà...",
+      "local_created": "Creato localmente",
+      "material_category": "Categoria materiale",
+      "material_properties_optional": "Proprietà materiale (opzionale)",
+      "material_select": "Seleziona materiale",
+      "materials": "Materiali",
+      "mechanical_properties": "Proprietà meccaniche",
+      "model_class_select": "Seleziona modello specialistico/documento di riferimento",
+      "no_property_groups_found": "Nessun gruppo di proprietà trovato",
+      "none": "Nessuno",
+      "optical_properties": "Proprietà ottiche",
+      "predefined_type": "Tipo predefinito",
+      "predefined_type_optional": "Tipo predefinito (opzionale)",
+      "property_group_select": "Gruppo di proprietà (set di proprietà)",
+      "requirements": "Requisiti",
+      "search_classes": "Cerca classi...",
+      "search_properties": "Cerca proprietà...",
+      "search_values": "Cerca valori...",
+      "select_all_properties": "Seleziona tutto",
+      "select_classes_optional": "Seleziona classi (opzionale)",
+      "select_datatype": "Seleziona tipo di dati",
+      "select_model_from_datacat": "Seleziona modello specialistico datacat",
+      "select_properties": "Seleziona proprietà",
+      "select_property_group": "Seleziona gruppo di proprietà",
+      "thermal_properties": "Proprietà termiche",
+      "type_ifc_class": "Tipo (classe IFC)",
+      "uri_automatic": "URI (automatico)"
+    },
+    "placeholders": {
+      "attribute_class_search": "Cerca e seleziona classe...",
+      "attribute_model_search": "Cerca e seleziona modello specialistico...",
+      "classification_system_search": "Cerca e seleziona sistema di classificazione...",
+      "datatype_search": "Cerca e seleziona tipo di dati...",
+      "entity_type_search": "Cerca e seleziona tipo di entità...",
+      "ids_name_example": "es. Requisiti-Protezione-Incendi-2024",
+      "ids_version_example": "1.0",
+      "ifc_classes_search": "Cerca e seleziona classi IFC...",
+      "ifc_versions_select": "Seleziona versioni IFC...",
+      "instructions": "Istruzioni aggiuntive o note...",
+      "material_search": "Cerca e seleziona materiale...",
+      "mechanical_properties": "es. Modulo di elasticità, resistenza alla trazione...",
+      "optical_properties": "es. Trasparenza, riflettività...",
+      "predefined_type": "es. WALL, COLUMN, BEAM...",
+      "property_set_search": "Cerca e seleziona gruppo di proprietà...",
+      "specification_name_example": "es. Verifica classi di protezione antincendio",
+      "thermal_properties": "es. Conduttività termica, calore specifico...",
+      "unnamed_ids": "IDS senza nome",
+      "unnamed_specification": "Specifica senza nome"
+    },
+    "buttons": {
+      "add_by_tag": "Aggiungi per tag",
+      "add_requirement": "Aggiungi requisito",
+      "create_pset": "Crea nuovo set di proprietà IFC",
+      "add_specification": "Aggiungi specifica",
+      "applicability_summary": "Riepilogo applicabilità",
+      "attribute": "Attributo",
+      "cancel": "Annulla",
+      "classes": "Classi",
+      "classification": "Classificazione",
+      "classification_system": "Sistema di classificazione",
+      "download_ids": "Scarica file IDS",
+      "entity": "Entità",
+      "export_actions": "Azioni di esportazione",
+      "export_requirements": "Requisiti di esportazione",
+      "exporting": "Esportazione...",
+      "facet": "Facet",
+      "generate_ids": "Genera file IDS",
+      "ifc_versions": "Versioni IFC",
+      "last_export": "Ultima esportazione",
+      "material": "Materiale",
+      "preview_xml": "Anteprima XML",
+      "property": "Proprietà",
+      "requirement": "Requisito",
+      "save": "Salva",
+      "save_and_load": "Salva e carica",
+      "save_spec": "Salva specifica",
+      "select_all_properties": "Seleziona tutto",
+      "select_all_values": "Seleziona tutto",
+      "select_facet": "Seleziona facet",
+      "type": "Tipo",
+      "update": "Aggiorna"
+    },
+    "errors": {
+      "unknown_facet": "Facet sconosciuto"
+    },
+    "error_messages": {
+      "login_required": "Effettuare l'accesso per creare un file IDS."
+    },
+    "messages": {
+      "no_requirements": "Non sono ancora stati aggiunti requisiti. Fare clic su uno dei pulsanti sopra per aggiungere un requisito."
+    },
+    "tooltips": {
+      "export_disabled": "Impossibile esportare: sono necessari titolo, versione e almeno una specifica"
+    },
+    "tips": {
+      "title": "Suggerimenti di esportazione",
+      "filename_based_on_title": "Il nome del file si basa sul titolo IDS",
+      "xml_validated_before_download": "XML valilàto prima del download",
+      "save_project_before_export": "Salvare il progetto prima dell'esportazione"
+    },
+    "value_labels": {
+      "values_for": "Valori per"
+    },
+    "cardinality": {
+      "required": "richiesto",
+      "optional": "opzionale",
+      "prohibited": "proibito"
+    },
+    "material_category": {
+      "none": "Nessuna categoria",
+      "concrete": "Calcestruzzo",
+      "steel": "Acciaio",
+      "wood": "Legno",
+      "glass": "Vetro",
+      "insulation": "Isolamento",
+      "other": "Altro"
+    }
+  },
+  "create_property_set": {
+    "title": "Crea set di proprietà",
+    "actions": {
+      "add_all_with_tag": "Aggiungi tutto con tag \"{tag}\"",
+      "cancel": "Annulla",
+      "create": "Crea set di proprietà IFC",
+      "creating": "Creazione..."
+    },
+    "help": {
+      "custom_values_format": "Separa più valori con virgola"
+    },
+    "info": {
+      "selection_help": "Seleziona le proprietà corrispondenti in datacat che dovrebbero appartenere a questo nuovo set di proprietà IFC. Questo set di proprietà viene utilizzato solo localmente per la creazione IDS e non viene salvato nel server delle proprietà datacat.",
+      "values_help": "Puoi opzionalmente definire valori per ogni proprietà. Lascia i campi vuoti se non è desiderata alcuna limitazione di valore."
+    },
+    "labels": {
+      "property_set_name": "Nome del set di proprietà IFC",
+      "description_optional": "Descrizione (opzionale)",
+      "assign_properties": "Assegna proprietà",
+      "select_properties": "Seleziona proprietà",
+      "property_values_optional": "Valori per proprietà (opzionale)",
+      "values_from_datacat": "Seleziona valori DataCat:",
+      "custom_values": "Oppure inserisci valori personalizzati:"
+    },
+    "notifications": {
+      "properties_with_tag_added": "{count} proprietà con tag \"{tag}\" aggiunte",
+      "no_properties_with_tag": "Nessuna proprietà con tag \"{tag}\" trovata",
+      "name_required": "Si prega di inserire un nome per il nuovo set di proprietà IFC.",
+      "created_successfully": "Set di proprietà \"{name}\" creato con successo localmente.",
+      "creation_error": "Errore durante la creazione: {error}"
+    },
+    "placeholders": {
+      "property_set_example": "es. Proprietà geometriche",
+      "description_text": "Descrizione del set di proprietà IFC...",
+      "search_and_select": "Cerca e seleziona proprietà...",
+      "select_values_from_datacat": "Seleziona valori...",
+      "enter_custom_values": "Inserisci valori separati da virgola..."
+    },
+    "status": {
+      "properties_selected": "{count} proprietà selezionata{plural}"
+    },
+    "tag_filter": {
+      "properties": "Filtro tag per proprietà:",
+      "all": "Tutto"
+    }
+  },
+  "save_load_dialog": {
+    "title": "Salva/Carica sessione",
+    "buttons": {
+      "close": "Chiudi"
+    },
+    "auto_save": {
+      "found_message": "Trovati dati salvati automaticamente dal {timestamp}",
+      "restore": "Ripristina",
+      "discard": "Scarta"
+    },
+    "load_section": {
+      "title": "Carica",
+      "empty_message": "Nessun file salvato trovato"
+    },
+    "save_section": {
+      "title": "Salva",
+      "name_placeholder": "Inserisci nome...",
+      "save_button": "Salva"
+    },
+    "tabs": {
+      "ids_files": "File IDS",
+      "specifications": "Specifiche"
+    }
+  },
+  "common": {
+    "close": "Chiudi",
+    "info": "Informazione"
+  },
+  "info_dialogs": {
+    "applicability": {
+      "title": "Applicabilità - Aiuto",
+      "content": "L'applicabilità definisce a quali oggetti BIM si riferisce questa specifica. 🏗️ Tipo (classe IFC): • Si riferisce a specifici tipi di oggetti IFC (es. muri, porte, finestre) • Puoi selezionare più classi IFC • Esempio: IFCWALL, IFCDOOR, IFCWINDOW 🏷️ Classificazione: • Si riferisce a oggetti classificati (es. secondo DIN 276, OMNICLASS) • Utilizza IFCCLASSIFICATION come classe IFC • Esempio: oggetti con determinati gruppi di costi o classi funzionali"
+    },
+    "cardinality": {
+      "title": "Cardinalità - Aiuto",
+      "content": "La cardinalità determina se una proprietà deve essere presente. ✅ Richiesto: • La proprietà DEVE essere presente • Gli oggetti senza questa proprietà sono non validi • Impostazione standard per la maggior parte dei requisiti ❓ Opzionale: • La proprietà PUÒ essere presente • Se presente, deve corrispondere ai valori definiti • Se non presente, l'oggetto è comunque valido ❌ Proibito: • La proprietà NON DEVE essere presente • Gli oggetti con questa proprietà sono non validi • Utile per regole di esclusione"
+    },
+    "classification_system": {
+      "title": "Sistema di classificazione - Aiuto",
+      "content": "Seleziona il modello specialistico o documento di riferimento che definisce la classificazione. Questo può essere: • Un sistema di ripartizione dei costi (es. DIN 276) • Un sistema di classificazione funzionale • Un sistema di classificazione specifico del produttore • Un documento di riferimento specifico del progetto. Il sistema selezionato viene utilizzato come 'System' nella classificazione IDS."
+    },
+    "datatype": {
+      "title": "Tipo di dati - Aiuto",
+      "content": "Il tipo di dati definisce che tipo di valori sono attesi per questa proprietà. Tipi di dati comuni: • IFCLABEL - Testo breve (es. nome materiale) • IFCTEXT - Testo più lungo (es. descrizione) • IFCBOOLEAN - Valori sì/no (es. portante) • IFCREAL - Numeri decimali (es. valore U: 0.24) • IFCINTEGER - Numeri interi (es. quantità: 5) • IFCLENGTHMEASURE - Misure di lunghezza (es. 2.5m) • IFCAREAMEASURE - Misure di area (es. 25.5m²) Il tipo di dati è opzionale, ma raccomandato per una validazione precisa."
+    },
+    "ids_name": {
+      "title": "Nome IDS - Aiuto",
+      "content": "Il nome IDS è il titolo principale della tua Specifica di Consegna delle Informazioni. Questo nome viene utilizzato: • Come titolo nel file IDS-XML generato • Come nome file nel download (i caratteri speciali vengono rimossi) • Per l'identificazione nel salvataggio e caricamento. Suggerimento: Scegli un nome descrittivo come 'Verifica-Struttura-2024' o 'Requisiti-Protezione-Incendi'."
+    },
+    "ids_version": {
+      "title": "Versione IDS - Aiuto",
+      "content": "La versione IDS è il numero di versione del tuo file IDS specifico (non la versione dello schema). Esempi: • '1.0' per la prima versione • '2.1' per una versione migliorata • '3.0-beta' per una versione beta. Questa versione viene salvata nell'elemento <ids:version> del file XML e aiuta nella gestione delle versioni delle tue specifiche IDS."
+    },
+    "ifc_classes": {
+      "title": "Classi IFC - Aiuto",
+      "content": "Seleziona i tipi di entità IFC ai quali si riferisce questa specifica. Classi comunemente utilizzate: • IFCWALL - Muri • IFCDOOR - Porte • IFCWINDOW - Finestre • IFCSLAB - Solai/Lastre di pavimento • IFCBEAM - Travi • IFCCOLUMN - Colonne • IFCSPACE - Spazi. Puoi selezionare più classi se gli stessi requisiti si applicano a diversi tipi di oggetti. Suggerimento: Usa la ricerca per trovare rapidamente le classi IFC desiderate."
+    },
+    "ifc_versions": {
+      "title": "Versioni IFC - Aiuto",
+      "content": "Seleziona le versioni IFC per le quali questa specifica IDS deve essere valida. Versioni disponibili: • IFC2X3: Versione più vecchia, ancora ampiamente diffusa • IFC4: Versione standard attuale • IFC4X3: Versione più recente con funzionalità estese Puoi selezionare più versioni se la tua specifica è compatibile con diverse versioni IFC."
+    },
+    "property_group": {
+      "title": "Gruppo di proprietà (set di proprietà) - Aiuto",
+      "content": "I set di proprietà sono gruppi di proprietà correlate in IFC. Esempi: • Pset_WallCommon - Proprietà generali del muro • Pset_DoorCommon - Proprietà generali della porta • Pset_SpaceFireSafetyRequirements - Requisiti di protezione antincendio per spazi Puoi: • Selezionare set di proprietà esistenti dal catalogo • Creare nuovi set di proprietà con il pulsante ➕ • Selezionare più proprietà per un set di proprietà L'URI viene generato automaticamente e fa riferimento alla definizione nel catalogo."
+    },
+    "property_values": {
+      "title": "Valori delle proprietà - Aiuto",
+      "content": "Qui puoi definire valori specifici per la proprietà selezionata. 🎯 Utilizzo: • Definisci valori consentiti per questa proprietà • Selezione multipla possibile per valori alternativi • Esempi: REI30, REI60, REI90 per classi di protezione antincendio 📋 Enumerazione valori: • Tutti i valori selezionati vengono definiti come opzioni consentite nell'IDS • L'oggetto deve avere uno di questi valori per essere valido • Selezione vuota significa: qualsiasi valore è consentito (solo la proprietà deve essere presente)"
+    },
+    "requirements": {
+      "title": "Requisiti - Aiuto",
+      "content": "I requisiti definiscono quali proprietà devono avere gli oggetti selezionati. 🏷️ Classificazione: • Verifica valori di classificazione (es. gruppi di costi, classi funzionali) • Seleziona il sistema di classificazione e opzionalmente classi specifiche 📝 Attributi: • Verifica attributi IFC degli oggetti • Esempio: nome, descrizione o altre proprietà dirette dell'oggetto 🔧 Proprietà: • Verifica set di proprietà e le loro proprietà • Esempio: classe di resistenza al fuoco, valore U, tipo di materiale • Puoi definire più proprietà e i loro valori consentiti Ogni requisito può essere contrassegnato come 'required' (richiesto), 'optional' (opzionale) o 'prohibited' (proibito)."
+    },
+    "specification_name": {
+      "title": "Nome specifica - Aiuto",
+      "content": "Il nome della singola specifica all'interno del tuo file IDS. Un file IDS può contenere più specifiche. Ogni specifica verifica determinati aspetti dei tuoi modelli BIM. Esempi: • 'Verifica proprietà del muro' • 'Controllo classi di protezione antincendio' • 'Validazione elementi strutturali' Il nome dovrebbe descrivere chiaramente cosa verifica questa specifica."
+    }
+  },
+  "metadata": {
+    "defaultDescription": "Specifica IDS generata per la validazione delle informazioni dell'edificio",
+    "defaultMilestone": "Pianificazione",
+    "defaultPurpose": "Validazione della progettazione",
+    "defaultTitle": "Nuova specifica IDS",
+    "untitledSpecification": "Specifiche senza titolo"
   }
 }

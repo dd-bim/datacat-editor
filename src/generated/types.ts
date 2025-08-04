@@ -4012,6 +4012,97 @@ export type FindSubjectsWithPropsAndListsQueryHookResult = ReturnType<typeof use
 export type FindSubjectsWithPropsAndListsLazyQueryHookResult = ReturnType<typeof useFindSubjectsWithPropsAndListsLazyQuery>;
 export type FindSubjectsWithPropsAndListsQueryResult = Apollo.QueryResult<FindSubjectsQuery, FindSubjectsQueryVariables>;
 
+export const FindSubjectsWithDictAndThemesQueryDocument = gql`
+    query FindSubjectsWithDictAndThemesQuery($input: FilterInput!) {
+  findSubjects(input: $input) {
+    nodes {
+      id
+      name
+      dictionary {
+        id
+        name {
+          ...TranslationProps
+        }
+      }
+      connectingSubjects {
+        connectingSubject {
+          name
+          tags {
+            ...TagProps
+          }
+        }
+  
+    }
+    }
+  }
+}
+  ${TranslationPropsFragmentDoc}
+    ${TagPropsFragmentDoc}`;
+
+/** * __useFindSubjectsWithDictAndThemesQuery__
+ *
+ * To run a query within a React component, call `useFindSubjectsWithDictAndThemesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindSubjectsWithDictAndThemesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @example
+ * const { data, loading, error } = useFindSubjectsWithDictAndThemesQuery({
+ *  variables: {
+ *    input: // value for 'input'
+ *  },
+ * });
+ */
+
+export function useFindSubjectsWithDictAndThemesQuery(baseOptions: Apollo.QueryHookOptions<FindSubjectsQuery, FindSubjectsQueryVariables>) {
+  return Apollo.useQuery<FindSubjectsQuery, FindSubjectsQueryVariables>(FindSubjectsWithDictAndThemesQueryDocument, baseOptions);
+}
+export function useFindSubjectsWithDictAndThemesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindSubjectsQuery, FindSubjectsQueryVariables>) {
+  return Apollo.useLazyQuery<FindSubjectsQuery, FindSubjectsQueryVariables>(FindSubjectsWithDictAndThemesQueryDocument, baseOptions);
+}
+export type FindSubjectsWithDictAndThemesQueryHookResult = ReturnType<typeof useFindSubjectsWithDictAndThemesQuery>;
+export type FindSubjectsWithDictAndThemesLazyQueryHookResult = ReturnType<typeof useFindSubjectsWithDictAndThemesLazyQuery>;
+export type FindSubjectsWithDictAndThemesQueryResult = Apollo.QueryResult<FindSubjectsQuery, FindSubjectsQueryVariables>;
+
+export const FindPropertyGroupsQueryDocument = gql`
+    query FindPropertyGroupsQuery($input: FilterInput!) {
+  findSubjects(input: $input) {
+    totalElements
+    nodes {
+      id
+      name
+      tags {
+        ...TagProps
+      }
+    }
+  }
+}
+    ${TagPropsFragmentDoc}`;
+
+/**
+ * __useFindPropertyGroupsQuery__
+ *
+ * To run a query within a React component, call `useFindPropertyGroupsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindPropertyGroupsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindPropertyGroupsQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useFindPropertyGroupsQuery(baseOptions: Apollo.QueryHookOptions<FindSubjectsQuery, FindSubjectsQueryVariables>) {
+  return Apollo.useQuery<FindSubjectsQuery, FindSubjectsQueryVariables>(FindPropertyGroupsQueryDocument, baseOptions);
+}
+export function useFindPropertyGroupsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindSubjectsQuery, FindSubjectsQueryVariables>) {
+  return Apollo.useLazyQuery<FindSubjectsQuery, FindSubjectsQueryVariables>(FindPropertyGroupsQueryDocument, baseOptions);
+}
+export type FindPropertyGroupsQueryHookResult = ReturnType<typeof useFindPropertyGroupsQuery>;
+export type FindPropertyGroupsLazyQueryHookResult = ReturnType<typeof useFindPropertyGroupsLazyQuery>;
+export type FindPropertyGroupsQueryResult = Apollo.QueryResult<FindSubjectsQuery, FindSubjectsQueryVariables>;
 
 export const FindUnitsQueryDocument = gql`
     query FindUnitsQuery($input: FilterInput!) {

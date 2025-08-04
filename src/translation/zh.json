@@ -234,6 +234,7 @@
   },
   "grid_view": {
     "loading": "正在加载表格内容",
+    "loading_table_contents": "表格内容 正在加载",
     "tag_filter_title": "标签筛选",
     "tag_filter_placeholder": "选择标签",
     "select_tag": "选择标签",
@@ -262,7 +263,36 @@
     "tags_added_with_existing": "标签已添加到{added}条。{existing}条已存在该标签。",
     "tags_added_count": "标签已添加到{count}条。",
     "no_tags_to_add": "无需添加标签。",
-    "tags_adding_failed": "添加标签失败。"
+    "tags_adding_failed": "添加标签失败。",
+    "loading_hierarchy_data": "层次数据 正在加载...",
+    "show_only_documents_tooltip": "仅显示 列 用于 参考文档 在",
+    "show_only_models_tooltip": "仅显示 列 用于 专业模型 在",
+    "show_only_themes_tooltip": "仅显示主题列",
+    "show_only_classes_tooltip": "仅显示 列 用于 类 在",
+    "show_only_properties_tooltip": "仅显示 列 用于 特征 在",
+    "show_only_property_groups_tooltip": "仅显示 列 用于 特征sgruppen 在",
+    "show_all_columns_tooltip": "显示所有 列 重新",
+    "refresh": "更新",
+    "refresh_data_tooltip": "数据 手动重新加载",
+    "refreshing_data": "数据 正在更新...",
+    "data_refreshed": "数据 更新成功.",
+    "refresh_failed": "Aktuali它们rung 失败.",
+    "error_fetching_latest_tags": "获取最新内容时出错 标签.",
+    "tags_adding_failed_count": "错误 beim 添加 的 {count} 标签.",
+    "search_placeholder": "在表格中搜索...",
+    "total_entries": "条目总数",
+    "selected": "已选择",
+    "export_csv": "CSV 导出",
+    "export_csv_tooltip": "将表格数据下载为 CSV 文件",
+    "export_success": "CSV 导出下载成功",
+    "table_density": "Tabellendichte",
+    "density_large": "大",
+    "density_medium": "中",
+    "density_small": "小",
+    "rows_per_page": "每页行数:",
+    "of": "的",
+    "more_than": "超过",
+    "multiselect_help": "多选: Ctrl + 点击"
   },
   "error":{
     "error": "发生错误..."
@@ -463,5 +493,313 @@
     "assignement": "分配",
     "close": "完成编辑",
     "edit": "编辑分配"
+  },
+    "ids_export": {
+    "tag_filter": {
+      "classes": "类别标签筛选：",
+      "properties": "属性标签筛选："
+    },
+    "actions": {
+      "add_all": "添加全部",
+      "add_all_with_tag": "添加所有带标签\"{tag}\"的项目",
+      "select_all": "选择全部"
+    },
+    "success_messages": {
+      "auto_save_found": "发现自动保存的数据。通过'保存和加载'可以恢复它们。",
+      "auto_saved": "数据已自动保存。",
+      "ids_data_loaded": "IDS数据加载成功。",
+      "ids_downloaded": "IDS文件下载成功。",
+      "ids_generated": "IDS文件生成成功，现在可以下载。",
+      "property_set_created": "IFC属性集\"{name}\"创建成功，现在可以使用。",
+      "specification_loaded": "规范加载成功。"
+    },
+    "notifications": {
+      "classes_with_tag_added": "已添加{count}个带标签'{tag}'的类别。",
+      "no_classes_with_tag": "未找到带标签'{tag}'的类别。",
+      "no_properties_with_tag": "未找到带标签'{tag}'的属性。",
+      "properties_with_tag_added": "已添加{count}个带标签'{tag}'的属性。"
+    },
+    "validation": {
+      "and_more": "等更多",
+      "errors_found": "发现验证错误",
+      "ready_for_export": "所有验证通过 - 准备导出！",
+      "warnings": "警告"
+    },
+    "requirements": {
+      "specifications": "已添加规范",
+      "title": "已输入IDS标题",
+      "version": "已输入IDS版本"
+    },
+    "labels": {
+      "specification_name": "规范名称",
+      "cardinality": "基数",
+      "instructions": "说明",
+      "applicability": "适用性",
+      "applicability_type": "适用性",
+      "class_select": "选择类别",
+      "classification": "分类",
+      "classification_auto_ifcclassification": "分类将自动使用IFCCLASSIFICATION",
+      "classification_system_select": "选择分类系统",
+      "create_new_property_set": "创建新的IFC属性集（属性组）",
+      "datatype_optional": "数据类型",
+      "edit_specification": "编辑规范",
+      "entity_type": "实体类型",
+      "entity_type_select": "选择IFC实体类型",
+      "ids_name": "IDS名称",
+      "ids_version": "IDS版本",
+      "ids_version_description": "输入您的IDS文件版本（例如1.0、2.1）。这不是模式版本。",
+      "ifc_class": "IFC类别",
+      "ifc_class_placeholder": "输入IFC类别（例如IFCWALL）",
+      "ifc_classes": "IFC类别（多选）",
+      "ifc_versions": "IFC版本（多选）",
+      "instructions_optional": "说明（可选）",
+      "loading_property_groups": "正在加载属性组...",
+      "local_created": "本地创建",
+      "material_category": "材料类别",
+      "material_properties_optional": "材料属性（可选）",
+      "material_select": "选择材料",
+      "materials": "材料",
+      "mechanical_properties": "机械属性",
+      "model_class_select": "选择专业模型/参考文档",
+      "no_property_groups_found": "未找到属性组",
+      "none": "无",
+      "optical_properties": "光学属性",
+      "predefined_type": "预定义类型",
+      "predefined_type_optional": "预定义类型（可选）",
+      "property_group_select": "属性组（属性集）",
+      "requirements": "要求",
+      "search_classes": "搜索类别...",
+      "search_properties": "搜索属性...",
+      "search_values": "搜索值...",
+      "select_all_properties": "选择全部",
+      "select_classes_optional": "选择类别（可选）",
+      "select_datatype": "选择数据类型",
+      "select_model_from_datacat": "选择datacat专业模型",
+      "select_properties": "选择属性",
+      "select_property_group": "选择属性组",
+      "thermal_properties": "热学属性",
+      "type_ifc_class": "类型（IFC类别）",
+      "uri_automatic": "URI（自动）"
+    },
+    "placeholders": {
+      "attribute_class_search": "搜索并选择类别...",
+      "attribute_model_search": "搜索并选择专业模型...",
+      "classification_system_search": "搜索并选择分类系统...",
+      "datatype_search": "搜索并选择数据类型...",
+      "entity_type_search": "搜索并选择实体类型...",
+      "ids_name_example": "例如：要求-消防安全-2024",
+      "ids_version_example": "1.0",
+      "ifc_classes_search": "搜索并选择IFC类别...",
+      "ifc_versions_select": "选择IFC版本...",
+      "instructions": "附加说明或注释...",
+      "material_search": "搜索并选择材料...",
+      "mechanical_properties": "例如：弹性模量、抗拉强度...",
+      "optical_properties": "例如：透明度、反射率...",
+      "predefined_type": "例如：WALL、COLUMN、BEAM...",
+      "property_set_search": "搜索并选择属性组...",
+      "specification_name_example": "例如：消防等级验证",
+      "thermal_properties": "例如：导热系数、比热容...",
+      "unnamed_ids": "未命名IDS",
+      "unnamed_specification": "未命名规范"
+    },
+    "buttons": {
+      "add_by_tag": "按标签添加",
+      "add_requirement": "添加要求",
+      "create_pset": "创建新的IFC属性集",
+      "add_specification": "添加规范",
+      "applicability_summary": "适用性摘要",
+      "attribute": "属性",
+      "cancel": "取消",
+      "classes": "类别",
+      "classification": "分类",
+      "classification_system": "分类系统",
+      "download_ids": "下载IDS文件",
+      "entity": "实体",
+      "export_actions": "导出操作",
+      "export_requirements": "导出要求",
+      "exporting": "正在导出...",
+      "facet": "方面",
+      "generate_ids": "生成IDS文件",
+      "ifc_versions": "IFC版本",
+      "last_export": "最后导出",
+      "material": "材料",
+      "preview_xml": "XML预览",
+      "property": "属性",
+      "requirement": "要求",
+      "save": "保存",
+      "save_and_load": "保存和加载",
+      "save_spec": "保存规范",
+      "select_all_properties": "选择全部",
+      "select_all_values": "选择全部",
+      "select_facet": "选择方面",
+      "type": "类型",
+      "update": "更新"
+    },
+    "errors": {
+      "unknown_facet": "未知方面"
+    },
+    "error_messages": {
+      "login_required": "需要登录才能创建IDS文件。"
+    },
+    "messages": {
+      "no_requirements": "尚未添加要求。点击上方按钮之一以添加要求。"
+    },
+    "tooltips": {
+      "export_disabled": "无法导出：需要标题、版本和至少一个规范"
+    },
+    "tips": {
+      "title": "导出提示",
+      "filename_based_on_title": "文件名基于IDS标题",
+      "xml_validated_before_download": "下载前XML已验证",
+      "save_project_before_export": "导出前保存项目"
+    },
+    "value_labels": {
+      "values_for": "值用于"
+    },
+    "cardinality": {
+      "required": "必需",
+      "optional": "可选",
+      "prohibited": "禁止"
+    },
+    "material_category": {
+      "none": "无类别",
+      "concrete": "混凝土",
+      "steel": "钢材",
+      "wood": "木材",
+      "glass": "玻璃",
+      "insulation": "保温材料",
+      "other": "其他"
+    }
+  },
+  "create_property_set": {
+    "title": "创建属性集",
+    "actions": {
+      "add_all_with_tag": "添加所有带标签\"{tag}\"的项目",
+      "cancel": "取消",
+      "create": "创建IFC属性集",
+      "creating": "正在创建..."
+    },
+    "help": {
+      "custom_values_format": "用逗号分隔多个值"
+    },
+    "info": {
+      "selection_help": "选择datacat中应属于此新IFC属性集的相应属性。此属性集仅在本地用于IDS创建，不会保存在datacat属性服务器中。",
+      "values_help": "您可以选择为每个属性定义值。如果不需要值限制，请将字段留空。"
+    },
+    "labels": {
+      "property_set_name": "IFC属性集名称",
+      "description_optional": "描述（可选）",
+      "assign_properties": "分配属性",
+      "select_properties": "选择属性",
+      "property_values_optional": "属性值（可选）",
+      "values_from_datacat": "选择DataCat值：",
+      "custom_values": "或输入自定义值："
+    },
+    "notifications": {
+      "properties_with_tag_added": "已添加{count}个带标签\"{tag}\"的属性",
+      "no_properties_with_tag": "未找到带标签\"{tag}\"的属性",
+      "name_required": "请为新的IFC属性集输入名称。",
+      "created_successfully": "属性集\"{name}\"已在本地成功创建。",
+      "creation_error": "创建时出错：{error}"
+    },
+    "placeholders": {
+      "property_set_example": "例如：几何属性",
+      "description_text": "IFC属性集描述...",
+      "search_and_select": "搜索并选择属性...",
+      "select_values_from_datacat": "选择值...",
+      "enter_custom_values": "输入用逗号分隔的值..."
+    },
+    "status": {
+      "properties_selected": "已选择{count}个属性"
+    },
+    "tag_filter": {
+      "properties": "属性标签筛选：",
+      "all": "全部"
+    }
+  },
+  "save_load_dialog": {
+    "title": "保存/加载会话",
+    "buttons": {
+      "close": "关闭"
+    },
+    "auto_save": {
+      "found_message": "发现{timestamp}的自动保存数据",
+      "restore": "恢复",
+      "discard": "放弃"
+    },
+    "load_section": {
+      "title": "加载",
+      "empty_message": "未找到保存的文件"
+    },
+    "save_section": {
+      "title": "保存",
+      "name_placeholder": "输入名称...",
+      "save_button": "保存"
+    },
+    "tabs": {
+      "ids_files": "IDS文件",
+      "specifications": "规范"
+    }
+  },
+  "common": {
+    "close": "关闭",
+    "info": "信息"
+  },
+  "info_dialogs": {
+    "applicability": {
+      "title": "适用性 - 帮助",
+      "content": "适用性定义此规范适用于哪些BIM对象。🏗️ 类型（IFC类别）：• 指特定的IFC对象类型（例如墙、门、窗）• 您可以选择多个IFC类别 • 示例：IFCWALL、IFCDOOR、IFCWINDOW 🏷️ 分类：• 指分类对象（例如根据DIN 276、OMNICLASS）• 使用IFCCLASSIFICATION作为IFC类别 • 示例：具有特定成本组或功能类别的对象"
+    },
+    "cardinality": {
+      "title": "基数 - 帮助",
+      "content": "基数确定属性是否必须存在。✅ 必需：• 属性必须存在 • 没有此属性的对象无效 • 大多数要求的标准设置 ❓ 可选：• 属性可以存在 • 如果存在，必须符合定义的值 • 如果不存在，对象仍然有效 ❌ 禁止：• 属性不得存在 • 具有此属性的对象无效 • 对排除规则有用"
+    },
+    "classification_system": {
+      "title": "分类系统 - 帮助",
+      "content": "选择定义分类的专业模型或参考文档。这可以是：• 成本分配系统（例如DIN 276）• 功能分类系统 • 制造商特定的分类系统 • 项目特定的参考文档。所选系统在IDS分类中用作'System'。"
+    },
+    "datatype": {
+      "title": "数据类型 - 帮助",
+      "content": "数据类型定义此属性期望的值类型。常见数据类型：• IFCLABEL - 短文本（例如材料名称）• IFCTEXT - 长文本（例如描述）• IFCBOOLEAN - 是/否值（例如承重）• IFCREAL - 十进制数（例如U值：0.24）• IFCINTEGER - 整数（例如数量：5）• IFCLENGTHMEASURE - 长度测量（例如2.5m）• IFCAREAMEASURE - 面积测量（例如25.5m²）数据类型是可选的，但建议用于精确验证。"
+    },
+    "ids_name": {
+      "title": "IDS名称 - 帮助",
+      "content": "IDS名称是您的信息交付规范的主标题。此名称用于：• 作为生成的IDS-XML文件中的标题 • 作为下载中的文件名（特殊字符将被删除）• 用于保存和加载中的标识。提示：选择描述性名称，如'验证-结构-2024'或'要求-消防安全'。"
+    },
+    "ids_version": {
+      "title": "IDS版本 - 帮助",
+      "content": "IDS版本是您特定IDS文件的版本号（不是模式版本）。示例：• '1.0' 表示第一个版本 • '2.1' 表示改进版本 • '3.0-beta' 表示测试版本。此版本保存在XML文件的<ids:version>元素中，有助于管理IDS规范的版本。"
+    },
+    "ifc_classes": {
+      "title": "IFC类别 - 帮助",
+      "content": "选择此规范适用的IFC实体类型。常用类别：• IFCWALL - 墙 • IFCDOOR - 门 • IFCWINDOW - 窗 • IFCSLAB - 楼板/平板 • IFCBEAM - 梁 • IFCCOLUMN - 柱 • IFCSPACE - 空间。如果相同要求适用于不同对象类型，您可以选择多个类别。提示：使用搜索功能快速找到所需的IFC类别。"
+    },
+    "ifc_versions": {
+      "title": "IFC版本 - 帮助",
+      "content": "选择此IDS规范应有效的IFC版本。可用版本：• IFC2X3：较旧版本，仍广泛使用 • IFC4：当前标准版本 • IFC4X3：具有扩展功能的最新版本 如果您的规范与不同IFC版本兼容，您可以选择多个版本。"
+    },
+    "property_group": {
+      "title": "属性组（属性集）- 帮助",
+      "content": "属性集是IFC中相关属性的组。示例：• Pset_WallCommon - 通用墙属性 • Pset_DoorCommon - 通用门属性 • Pset_SpaceFireSafetyRequirements - 空间消防安全要求 您可以：• 从目录中选择现有属性集 • 使用➕按钮创建新属性集 • 为属性集选择多个属性 URI自动生成并引用目录中的定义。"
+    },
+    "property_values": {
+      "title": "属性值 - 帮助",
+      "content": "在这里您可以为选定属性定义特定值。🎯 用途：• 为此属性定义允许的值 • 可多选替代值 • 示例：消防等级REI30、REI60、REI90 📋 值枚举：• 所有选定值在IDS中定义为允许选项 • 对象必须具有这些值之一才有效 • 空选择意味着：允许任何值（只需属性存在）"
+    },
+    "requirements": {
+      "title": "需求 - 帮助",
+      "content": "需求定义选中对象必须具有的属性。🏷️ 分类：• 验证分类值（例如成本组、功能类别）• 选择分类系统，可选择特定类别 📝 属性：• 验证对象的IFC属性 • 示例：名称、描述或对象的其他直接属性 🔧 属性：• 验证属性集及其属性 • 示例：防火等级、U值、材料类型 • 您可以定义多个属性及其允许值 每个需求可标记为'required'（必需）、'optional'（可选）或'prohibited'（禁止）。"
+    },
+    "specification_name": {
+      "title": "规范名称 - 帮助",
+      "content": "这是您的IDS文件中单个规范的名称。一个IDS文件可以包含多个规范。每个规范验证您的BIM模型的特定方面。示例：• '墙属性验证' • '防火等级检查' • '结构元素验证' 名称应清楚描述此规范验证的内容。"
+    }
+  },
+  "metadata": {
+    "defaultDescription": "为建筑信息验证生成的IDS规范",
+    "defaultMilestone": "规划",
+    "defaultPurpose": "设计验证",
+    "defaultTitle": "新建IDS规范",
+    "untitledSpecification": "无标题规范"
   }
 }
