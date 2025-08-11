@@ -83,7 +83,7 @@ export const ClassEntity: Entity = {
 };
 
 export const PropertyGroupEntity: Entity = {
-  tags: ["a27c8e3c-5fd1-47c9-806a-6ded070efae8"],
+  tags: ["7c9ffe6e-3c8b-4cd2-b57b-4cd102325603"],
   get title() { return tolgee.t("propertyGroup.title"); },
   get titlePlural() { return tolgee.t("propertyGroup.titlePlural"); },
   recordType: CatalogRecordType.Subject,

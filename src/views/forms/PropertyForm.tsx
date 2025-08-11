@@ -385,7 +385,7 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
                 title={<span><b><T keyName="propertyGroup.titlePlural" /></b><T keyName="property.assigning_property_groups" /></span>}
                 emptyMessage={<T keyName="property.no_assigning_property_groups" />}
                 relatingRecords={entry.subjects ?? []}
-                tagged="a27c8e3c-5fd1-47c9-806a-6ded070efae8"
+                tagged="7c9ffe6e-3c8b-4cd2-b57b-4cd102325603"
             />
 
             <RelatingRecordsFormSet
