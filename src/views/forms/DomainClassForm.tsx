@@ -91,7 +91,7 @@ export default function DomainClassForm(
   const relatedPropertyGroups = {
     relId: relatedRelations[0]?.id ?? null,
     targetSubjects: allTargetSubjects,
-    relationshipType: RelationshipKindEnum.XTD_SCHEMA_LEVEL
+    relationshipType: RelationshipKindEnum.XTD_INSTANCE_LEVEL
   };
 
   const relatingRelations = entry.connectingSubjects ?? [];
