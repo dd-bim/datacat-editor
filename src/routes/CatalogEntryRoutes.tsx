@@ -1,32 +1,24 @@
-import React from "react";
 import CompositeCatalogEntryView from "../views/CompositeCatalogEntryView";
 import DocumentForm from "../views/forms/DocumentForm";
-import DomainModelForm from "../views/forms/DomainModelForm";
-import DomainGroupForm from "../views/forms/DomainGroupForm";
+import ThemeForm from "../views/forms/ThemeForm";
 import DomainClassForm from "../views/forms/DomainClassForm";
 import PropertyGroupForm from "../views/forms/PropertyGroupForm";
 import PropertyForm from "../views/forms/PropertyForm";
-import MeasureForm from "../views/forms/MeasureForm";
+import ValueListForm from "../views/forms/ValueListForm";
 import UnitForm from "../views/forms/UnitForm";
 import ValueForm from "../views/forms/ValueForm";
-
+import DictionaryForm from "../views/forms/DictionaryForm";
 import {
   ClassEntity,
   DocumentEntity,
-  GroupEntity,
-  MeasureEntity,
-  ModelEntity,
+  ThemeEntity,
+  ValueListEntity,
+  DictionaryEntity,
   PropertyEntity,
   PropertyGroupEntity,
   UnitEntity,
   ValueEntity
 } from "../domain";
-
-// Dummy-Funktion für den onDelete-Handler. 
-
-const dummyOnDelete = () => {
-  console.warn("onDelete wurde aufgerufen – implementieren Sie die Navigation in der Komponente oder per Context.");
-};
 
 export const catalogEntryRoutes = [
   {
@@ -35,29 +27,29 @@ export const catalogEntryRoutes = [
       <CompositeCatalogEntryView
         entryType={DocumentEntity}
         renderForm={(id) => (
-          <DocumentForm id={id} onDelete={dummyOnDelete} />
+          <DocumentForm id={id}/>
         )}
       />
     ),
   },
   {
-    path: `/${ModelEntity.path}/:id?`,
+    path: `/${DictionaryEntity.path}/:id?`,
     element: (
       <CompositeCatalogEntryView
-        entryType={ModelEntity}
+        entryType={DictionaryEntity}
         renderForm={(id) => (
-          <DomainModelForm id={id} onDelete={dummyOnDelete} />
+          <DictionaryForm id={id}/>
         )}
       />
     ),
   },
   {
-    path: `/${GroupEntity.path}/:id?`,
+    path: `/${ThemeEntity.path}/:id?`,
     element: (
       <CompositeCatalogEntryView
-        entryType={GroupEntity}
+        entryType={ThemeEntity}
         renderForm={(id) => (
-          <DomainGroupForm id={id} onDelete={dummyOnDelete} />
+          <ThemeForm id={id}/>
         )}
       />
     ),
@@ -68,7 +60,7 @@ export const catalogEntryRoutes = [
       <CompositeCatalogEntryView
         entryType={ClassEntity}
         renderForm={(id) => (
-          <DomainClassForm id={id} onDelete={dummyOnDelete} />
+          <DomainClassForm id={id}/>
         )}
       />
     ),
@@ -79,7 +71,7 @@ export const catalogEntryRoutes = [
       <CompositeCatalogEntryView
         entryType={PropertyGroupEntity}
         renderForm={(id) => (
-          <PropertyGroupForm id={id} onDelete={dummyOnDelete} />
+          <PropertyGroupForm id={id}/>
         )}
       />
     ),
@@ -90,18 +82,18 @@ export const catalogEntryRoutes = [
       <CompositeCatalogEntryView
         entryType={PropertyEntity}
         renderForm={(id) => (
-          <PropertyForm id={id} onDelete={dummyOnDelete} />
+          <PropertyForm id={id}/>
         )}
       />
     ),
   },
   {
-    path: `/${MeasureEntity.path}/:id?`,
+    path: `/${ValueListEntity.path}/:id?`,
     element: (
       <CompositeCatalogEntryView
-        entryType={MeasureEntity}
+        entryType={ValueListEntity}
         renderForm={(id) => (
-          <MeasureForm id={id} onDelete={dummyOnDelete} />
+          <ValueListForm id={id}/>
         )}
       />
     ),
@@ -112,7 +104,7 @@ export const catalogEntryRoutes = [
       <CompositeCatalogEntryView
         entryType={UnitEntity}
         renderForm={(id) => (
-          <UnitForm id={id} onDelete={dummyOnDelete} />
+          <UnitForm id={id}/>
         )}
       />
     ),
@@ -123,11 +115,9 @@ export const catalogEntryRoutes = [
       <CompositeCatalogEntryView
         entryType={ValueEntity}
         renderForm={(id) => (
-          <ValueForm id={id} onDelete={dummyOnDelete} />
+          <ValueForm id={id}/>
         )}
       />
     ),
   },
 ];
-
-export default catalogEntryRoutes;

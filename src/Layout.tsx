@@ -6,12 +6,11 @@ import BoardingView from "./views/BoardingView";
 import { AppBar } from "./components/AppBar";
 import { useRoutes } from "react-router-dom";
 import useAuthContext from "./hooks/useAuthContext";
-import { Toolbar, Container, Paper, Box } from "@mui/material";
+import { Toolbar, Container, Paper } from "@mui/material";
 import Footer from "./components/Footer";
 import ConfirmationView from "./views/ConfirmationView";
 import ProfileFormView from "./views/forms/ProfileFormView";
 import HierarchyView from "./views/HierarchyView";
-import useGridStyles from "./hooks/useGridStyle";
 import { HomePanel } from "./components/HomePanel";
 import { VerificationView } from "./views/VerificationView";
 import { ExportView } from "./views/ExportView";
@@ -23,6 +22,7 @@ import TagView from "./views/TagView";
 import GraphiQLEditor from "./GraphiQLEditor";
 import IDSExportView from "./views/IDSExportView"; // Import the new IDSExportView
 import { catalogEntryRoutes } from "./routes/CatalogEntryRoutes";
+import { OntologyExportView } from "./views/OntologyExportView";
 
 const drawerWidth = 250;
 
@@ -45,7 +45,6 @@ const GraphiQLPaper = styled(Paper)(({ theme }) => ({
 }));
 
 export default function Layout() {
-  const gridStyles = useGridStyles();
   const { token } = useAuthContext();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -71,7 +70,7 @@ export default function Layout() {
       path: "/",
       element: (
         <Container maxWidth="md">
-          <Paper className={gridStyles.paper} variant="outlined">
+          <Paper  variant="outlined">
             <HomePanel />
           </Paper>
         </Container>
@@ -90,7 +89,7 @@ export default function Layout() {
         </>
       ),
     },
-    { path: "/export", element: <ExportView /> },
+    { path: "/export", element: <><ExportView /><OntologyExportView/></> },
     { path: "/ids-export", element: <IDSExportView /> }, // Add route for IDS Export View
     {
       path: "/graphiql",

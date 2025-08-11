@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   FindTagsResultFragment,
   RelationshipRecordType,
-  SimpleRecordType,
+  CatalogRecordType,
   useCreateEntryMutation,
   useCreateRelationshipMutation,
   useCreateTagMutation,
@@ -24,13 +24,15 @@ type entity = {
   typ: string;
   tags: string;
   name: string;
-  description: string;
-  versionId: string;
+  name_en?: string;
+  description?: string;
+  majorVersion?: number;
+  minorVersion?: number;
+  status?: string;
 };
 type relation = {
   entity1: string;
-  relationId: string;
-  relationshipType: string;
+  relationship: string;
   entity2: string;
 };
 
@@ -45,8 +47,8 @@ const StyledTable = styled('table')(({ theme }) => ({
     padding: theme.spacing(0.75, 1),
   },
   '& th': {
-    backgroundColor: theme.palette.mode === 'dark' 
-      ? theme.palette.grey[800] 
+    backgroundColor: theme.palette.mode === 'dark'
+      ? theme.palette.grey[800]
       : theme.palette.grey[100],
     fontWeight: 'bold',
   }
@@ -74,8 +76,6 @@ const ActionButton = styled(Button)<ButtonProps>(({ theme }) => ({
 export function ImportView() {
   const [entitiesFile, setEntitiesFile] = useState(null);
   const [relationsFile, setRelationsFile] = useState(null);
-  const entities: entity[] = [];
-  const relations: relation[] = [];
   const [createTag] = useCreateTagMutation();
   const [tags, setTags] = useState<FindTagsResultFragment[]>([]);
   const [loaded, setLoaded] = useState(false);
@@ -124,7 +124,7 @@ export function ImportView() {
         hierarchy: (value, { DELETE }) => DELETE,
       },
     });
-  const [createRelationship] = useCreateRelationshipMutation({ update });
+  const [createRelationship, error] = useCreateRelationshipMutation({ update });
 
   // handle file selection and update tag list
   const handleFileChange = (event: any) => {
@@ -145,97 +145,86 @@ export function ImportView() {
 
   // enable import button, if all files are selected
   useEffect(() => {
-    if (entitiesFile != null && relationsFile == null) {
+    if (entitiesFile && !relationsFile) {
       setLoaded(true);
-      setOutput(
-        <T keyName="import.note_entities_only">
-          HINWEIS: Es werden nur Entitäten, keine Relationen zwischen diesen importiert!
-        </T>
-      );
-    } else if (entitiesFile == null && relationsFile != null) {
+      setOutput(<T keyName="import.note_entities_only" />);
+    } else if (!entitiesFile && relationsFile) {
       setLoaded(true);
-      setOutput(
-        <T keyName="import.note_relations_only">
-          HINWEIS: Es werden nur Relationen importiert. Die Entitäten müssen bereits im Merkmalserver enthalten sein!
-        </T>
-      );
-    } else if (entitiesFile != null && relationsFile != null) {
+      setOutput(<T keyName="import.note_relations_only" />);
+    } else if (entitiesFile && relationsFile) {
       setLoaded(true);
       setOutput("");
     } else {
       setLoaded(false);
+      setOutput("");
     }
   }, [entitiesFile, relationsFile]);
 
   // handle upload and file reading on import button click
+  const parseEntitiesFile = (text: string): entity[] | null => {
+    const lines = text.split("\n");
+    const header = [
+      "id",
+      "typ",
+      "tags",
+      "name",
+      "name_en",
+      "description",
+      "majorVersion",
+      "minorVersion",
+      "status"
+    ];
+
+    for (let index = 0; index < lines.length; index++) {
+      const line = lines[index];
+      if (index === 0) {
+        const content = line.replaceAll('"', "").replace(/\s/g, "").split(";");
+        if (
+          content.length !== header.length ||
+          !content.every((val, i) => val === header[i])
+        ) {
+          setOutput(<T keyName="import.error_columns_mismatch" />);
+          return null;
+        }
+      }
+    }
+
+    return lines
+      .slice(1)
+      .filter((line) => line && line.trim() !== "")
+      .map((line) => {
+        const content = line.replaceAll('"', "").replace(/\s/g, "").split(";");
+        return {
+          id: content[0] || uuidv4(),
+          typ: content[1],
+          tags: content[2],
+          name: content[3],
+          name_en: content[4] || "",
+          description: content[5] || "",
+          majorVersion: parseInt(content[6]) || 1,
+          minorVersion: parseInt(content[7]) || 0,
+          status: content[8] || "XTD_ACTIVE"
+        };
+      });
+  };
+
   const handleUpload = async () => {
     if (entitiesFile) {
       const entitiesReader = new FileReader();
-      entitiesReader.readAsText(entitiesFile);
+      entitiesReader.readAsText(entitiesFile, "UTF-8");
 
       entitiesReader.onload = async () => {
         const text = entitiesReader.result as string;
-        const lines = text.split("\n");
-        for (let index = 0; index < lines.length; index++) {
-          const line = lines[index];
-          const content = line
-            .replaceAll('"', "")
-            .replace(/\s/g, "")
-            .split(";");
-          if (index === 0) {
-            const header = [
-              "id",
-              "typ",
-              "tags",
-              "name",
-              "name_en",
-              "description",
-              "version",
-              "createdBy",
-              "created",
-              "lastModified",
-              "lastModifiedBy",
-            ];
-            let result = true;
-            if (content.length === header.length) {
-              for (let i = 0; i < content.length; i++) {
-                if (content[i] !== header[i]) {
-                  result = false;
+        const parsedEntities = parseEntitiesFile(text);
+        if (!parsedEntities) return;
 
-                  return;
-                }
-              }
-            } else {
-              result = false;
-            }
-            if (!result) {
-              setOutput(
-                <T keyName="import.error_columns_mismatch">
-                  Die Spaltennamen stimmen nicht mit der Vorgabe überein.
-                </T>
-              );
-              return;
-            }
-          } else if (line === "" || line === undefined || line === null) {
-            break;
-          } else {
-            entities.push({
-              id: content[0],
-              typ: content[1],
-              tags: content[2],
-              name: content[3],
-              description: content[5],
-              versionId: content[6],
-            });
-          }
-        }
+        const tagToUse =
+          importTag === "" || importTag === undefined || importTag === null
+            ? IMPORT_TAG_ID
+            : importTag;
 
-        if (importTag === "" || importTag === undefined || importTag === null) {
-          handleOnCreateTag(IMPORT_TAG_ID, IMPORT_TAG_ID);
-        } else {
-          handleOnCreateTag(importTag, importTag);
-        }
-        await importEntities(entities, tags);
+        await handleOnCreateTag(tagToUse, tagToUse);
+        await importEntities(parsedEntities, tags);
         setInit(true);
       };
     } else {
@@ -245,70 +234,55 @@ export function ImportView() {
 
   // read relations if file exists and entities are imported completely, if file is existing on upload
   useEffect(() => {
-    if (relationsFile && init) {
+    const importRelationsFile = async () => {
+      if (!relationsFile || !init) return;
+
       const relationsReader = new FileReader();
-      relationsReader.readAsText(relationsFile);
+      relationsReader.readAsText(relationsFile, "UTF-8");
 
       relationsReader.onload = async () => {
         const text = relationsReader.result as string;
         const lines = text.split("\n");
+        const parsedRelations: relation[] = [];
+
         for (let index = 0; index < lines.length; index++) {
           const line = lines[index];
-          const content = line
-            .replaceAll('"', "")
-            .replace(/\s/g, "")
-            .split(";");
+          if (!line) break;
+          const content = line.replaceAll('"', "").replace(/\s/g, "").split(";");
+
           if (index === 0) {
             const header = [
               "entity1",
-              "entity1Type",
-              "relationId",
-              "relationshipType",
-              "entity2",
-              "entity2Type",
+              "relationship",
+              "entity2"
             ];
-            let result = true;
-            if (content.length === header.length) {
-              for (let i = 0; i < content.length; i++) {
-                if (content[i] !== header[i]) {
-                  result = false;
-
-                  return;
-                }
-              }
-            } else {
-              result = false;
-            }
-            if (!result) {
-              setOutput(
-                <T keyName="import.error_columns_mismatch">
-                  Die Spaltennamen stimmen nicht mit der Vorgabe überein.
-                </T>
-              );
+            const isHeaderValid = content.length === header.length && content.every((val, i) => val === header[i]);
+            if (!isHeaderValid) {
+              setOutput(<T keyName="import.error_columns_mismatch" />);
               return;
             }
-          } else if (line === "" || line === undefined || line === null) {
-            break;
           } else {
-            relations.push({
+            parsedRelations.push({
               entity1: content[0],
-              relationId: content[2],
-              relationshipType: content[3],
-              entity2: content[4],
+              relationship: content[1],
+              entity2: content[2],
             });
           }
         }
 
-        await importRelations(relations);
-      };
-    }
+        await importRelations(parsedRelations);
 
-    setLoaded(false);
-    setEntitiesFile(null);
-    setRelationsFile(null);
-    reload();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [init]);
+        // Nach dem Import zurücksetzen
+        setLoaded(false);
+        setEntitiesFile(null);
+        setRelationsFile(null);
+        reload();
+      };
+    };
+
+    importRelationsFile();
+  }, [init, relationsFile]);
+
 
   // creates new tag in database
   const handleOnCreateTag = async (tagId: string, name: string) => {
@@ -324,28 +298,20 @@ export function ImportView() {
   };
 
   const handleDownloadTemplate = () => {
-    let zip = new JSZip();
+    const zip = new JSZip();
 
-    const csvEntity =
-      "id;typ;tags;name;name_en;description;version;createdBy;created;lastModified;lastModifiedBy";
-    var entityBlob = new Blob([csvEntity], { type: "text/csv;charset=utf-8" });
-    zip.file(`Entities.csv`, entityBlob);
+    zip.file(
+      "Entities.csv",
+      "id;typ;tags;name;name_en;description;majorVersion;minorVersion;status"
+    );
+    zip.file(
+      "Relationships.csv",
+      "entity1;relationship;entity2"
+    );
 
-    const csvRelation =
-      "entity1;entity1Type;relationId;relationshipType;entity2;entity2Type";
-    var relationBlob = new Blob([csvRelation], {
-      type: "text/csv;charset=utf-8",
+    zip.generateAsync({ type: "blob" }).then((content) => {
+      FileSaver.saveAs(content, "datacat_import_templates.zip");
     });
-    zip.file(`Relationships.csv`, relationBlob);
-
-    zip.generateAsync({ type: "blob" }).then(function (content) {
-      FileSaver.saveAs(content, `datacat_import_templates.zip`);
-    });
-  };
-
-  // searches in tag list, if tag is already there
-  const nameInTags = (nodes: FindTagsResultFragment[], searchName: string) => {
-    return nodes.some(({ name }) => name === searchName);
   };
 
   // gives id of existing tag in tag list
@@ -358,70 +324,50 @@ export function ImportView() {
     entities: entity[],
     tagArr: FindTagsResultFragment[]
   ) => {
-    const tArr = [...tagArr];
+    let tArr = [...tagArr];
 
-    // create entity object from each row and push to database
-    for (const { id, typ, tags, name, description, versionId } of entities) {
-      const tagIds = [];
-      if (importTag === "" || importTag === undefined || importTag === null) {
-        tagIds.push(IMPORT_TAG_ID);
-      } else {
-        tagIds.push(importTag);
-      }
-      const tagList = tags.split(",");
+    for (const { id, typ, tags, name, name_en, description, majorVersion, minorVersion, status } of entities) {
+      // Import-Tag bestimmen
+      const tagIds = [
+        importTag === "" || importTag == null ? IMPORT_TAG_ID : importTag,
+      ];
+
+      // Zusätzliche Tags verarbeiten
+      const tagList = tags.split(",").map((t) => t.trim()).filter(Boolean);
 
       for (const tag of tagList) {
-        if (!nameInTags(tArr, tag)) {
-          const tagId = uuidv4();
+        let tagId = idOfTag(tArr, tag);
+        if (!tagId) {
+          tagId = uuidv4();
           try {
-            handleOnCreateTag(tagId, tag);
+            await handleOnCreateTag(tagId, tag);
             tArr.push({ id: tagId, name: tag });
             enqueueSnackbar(<T keyName="import.new_tag_created" params={{ tag }} />);
           } catch (e) {
             setOutput(<T keyName="import.create_tag_failed" params={{ tag, error: e instanceof Error ? e.message : String(e) }} />);
+            continue;
           }
         }
-        tagIds.push(idOfTag(tArr, tag));
-      }
-
-      const descriptionString = [];
-      if (description) {
-        descriptionString.push({
-          languageTag: "de-DE",
-          value: description,
-        });
-      }
-
-      let versionString = null;
-      if (versionId) {
-        versionString = versionId;
-      }
-
-      let idString = id;
-      if (!id) {
-        idString = uuidv4();
+        tagIds.push(tagId);
       }
 
       try {
+        let names = [{ languageTag: "de", value: name }];
+        if (name_en) {
+          names.push({ languageTag: "en", value: name_en });
+        }
         await create({
           variables: {
             input: {
-              catalogEntryType: typ
-                .replace("Xtd", "")
-                .replace("WithUnit", "")! as unknown as SimpleRecordType,
+              catalogEntryType: typ.replace("Xtd", "") as CatalogRecordType,
               tags: tagIds,
               properties: {
-                id: idString,
-                version: {
-                  versionId: versionString,
-                },
-                names: [
-                  {
-                    languageTag: "de",
-                    value: name,
-                  },
-                ],
-                descriptions: descriptionString,
+                id: id,
+                names: names,
+                descriptions: description ? [{ languageTag: "de", value: description }] : [],
+                majorVersion: majorVersion,
+                minorVersion: minorVersion,
+                status: status as any,
               },
             },
           },
@@ -434,44 +380,62 @@ export function ImportView() {
     setTags(tArr);
   };
 
+  function toRelType(input: string): RelationshipRecordType {
+    input = input
+      .replace(/[_\- ]+/g, " ")
+      .split(" ")
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join("");
+
+    if (input === "Groups") {
+      input = "RelationshipToSubject";
+    }
+    return input as RelationshipRecordType;
+  }
+
   // imports the relationships between the entities into database
-  const importRelations = async (relationship: relation[]) => {
-    // create relationship from each row and push to database
-    for (const {
-      entity1,
-      relationId,
-      relationshipType,
-      entity2,
-    } of relationship) {
+  const importRelations = async (relations: relation[]) => {
+    for (const rel of relations) {
+      const relType = toRelType(rel.relationship);
+      // Explicitly type properties as any to allow dynamic assignment
+      const properties: any = {};
+      if (relType === "RelationshipToSubject") {
+        properties.relationshipToSubjectProperties = {
+          relationshipType: "XTD_SCHEMA_LEVEL"
+        };
+      }
+      console.log("Importing relationship", relType, rel.entity1, rel.entity2, properties);
       try {
         await createRelationship({
           variables: {
             input: {
-              relationshipType: relationshipType.replace(
-                "XtdRel",
-                ""
-              )! as unknown as RelationshipRecordType,
-              properties: {
-                id: relationId,
-                names: [],
-              },
-              fromId: entity1,
-              toIds: [entity2],
+              relationshipType: relType,
+              properties: properties,
+              fromId: rel.entity1,
+              toIds: [rel.entity2],
             },
           },
         });
-
         enqueueSnackbar(
-          <T 
+          <T
             keyName="import.created_relationship"
-            params={{ relationshipType, entity1, entity2 }}
+            params={{
+              relationshipType: rel.relationship,
+              entity1: rel.entity1,
+              entity2: rel.entity2,
+            }}
           />
         );
       } catch (e) {
         setOutput(
-          <T 
+          <T
             keyName="import.error_creating_relationship"
-            params={{ relationshipType, entity1, entity2, error: e instanceof Error ? e.message : String(e) }}
+            params={{
+              relationshipType: rel.relationship,
+              entity1: rel.entity1,
+              entity2: rel.entity2,
+              error: e instanceof Error ? e.message : String(e),
+            }}
           />
         );
       }
@@ -479,113 +443,68 @@ export function ImportView() {
   };
 
   return (
-    <View heading={<T keyName="import.heading">Katalog Importieren (CSV)</T>}>
+    <View heading={<T keyName="import.heading" />}>
       <Typography variant={"body1"} component="div">
-        <T keyName="import.description">
-          Über diese Seite lassen sich Entitäten und deren Relationen importieren. Analog zum Export können hier zwei
-          CSV-Dateien importiert werden. Die eine Datei enthält die Entitäten in folgendem Schema:
-        </T>
-        
+        <T keyName="import.description" />
+
         {/* Reduced spacing before first table */}
         <Box sx={{ my: 1.5 }}></Box>
-        
+
         <Box component="div">
           <StyledTable>
             <thead>
               <tr>
-                <th>
-                  id<sup>o</sup>
-                </th>
-                <th>
-                  typ<sup>r</sup>
-                </th>
-                <th>
-                  tags<sup>r</sup>
-                </th>
-                <th>
-                  name<sup>r</sup>
-                </th>
-                <th>name_en</th>
-                <th>
-                  description<sup>o</sup>
-                </th>
-                <th>
-                  version<sup>o</sup>
-                </th>
-                <th>createdBy</th>
-                <th>created</th>
-                <th>lastModified</th>
-                <th>lastModifiedBy</th>
+                <th>id<sup>o</sup></th>
+                <th>typ</th>
+                <th>tags</th>
+                <th>name</th>
+                <th>name_en<sup>o</sup></th>
+                <th>description<sup>o</sup></th>
+                <th>majorVersion<sup>o</sup></th>
+                <th>minorVersion<sup>o</sup></th>
+                <th>status<sup>o</sup></th>
               </tr>
             </thead>
           </StyledTable>
         </Box>
 
         <Box sx={{ my: 1 }}></Box> {/* Consistent small spacing */}
-        
-        <T keyName="import.entity_columns_note">
-          Mit r gekennzeichnete Spalten müssen für jede Entität ausgefüllt sein, mit o gekennzeichnete Spalten können
-          optional Werte enthalten. Die restlichen Spalten werden beim Import nicht berücksichtigt und können daher leer
-          bleiben.
-        </T>
+
+        <T keyName="import.entity_columns_note" />
         <br />
-        <T keyName="import.tags_note">
-          Damit die entitäten in der datacatEditor Oberfläche sichtbar sind, müssen ihnen Tags der dort gewählten
-          Taxonomie gegeben werden. (Referenzdokument, Fachmodell, Gruppe, Klasse, Merkmalsgruppe, Merkmal, Größe, Wert,
-          Maßeinheit)
-        </T>
+        <T keyName="import.tags_note" />
         <br />
-        <T keyName="import.relation_columns_note">
-          Die andere Datei enthält optional die Relationen zwischen Entitäten mit den folgenden Spalten:
-        </T>
-        
+        <T keyName="import.relation_columns_note" />
+
         {/* Reduced spacing before second table */}
         <Box sx={{ my: 1.5 }}></Box>
-        
+
         <Box component="div">
           <StyledTable>
             <thead>
               <tr>
-                <th>
-                  entity1<sup>r</sup>
-                </th>
-                <th>
-                  entity1Type
-                </th>
-                <th>
-                  relationId<sup>r</sup>
-                </th>
-                <th>
-                  relationshipType<sup>r</sup>
-                </th>
-                <th>
-                  entity2<sup>r</sup>
-                </th>
-                <th>
-                  entity2Type
-                </th>
+                <th>entity1</th>
+                <th>relationship</th>
+                <th>entity2</th>
               </tr>
             </thead>
           </StyledTable>
         </Box>
 
-        <Box sx={{ my: 1 }}></Box> {/* Consistent small spacing */}
-        
-        <T keyName="import.relation_columns_note_2">Die Entitätstypen können hier leer gelassen werden.</T>
+        <Box sx={{ my: 1 }}></Box>
+
       </Typography>
-      
-      {/* Add consistent spacing before buttons */}
+
       <Box sx={{ my: 2 }}></Box>
-      
+
       <ButtonsContainer>
-        {/* ...existing button wrappers... */}
         <ButtonWrapper>
           <ActionButton
             variant="contained"
             component="label"
-            color="primary" // Farbe anpassen
+            color="primary"
           >
-            <T keyName="import.entities_file_button">Entitäten Datei auswählen</T>
+            <T keyName="import.entities_file_button" />
             <input
               type="file"
               name="entitiesFile"
@@ -596,7 +515,7 @@ export function ImportView() {
             />
           </ActionButton>
           <Typography color="textSecondary">
-            {entitiesFile === null ? <T keyName="import.no_file_selected">Keine Datei ausgewählt</T> : ""}
+            {entitiesFile === null ? <T keyName="import.no_file_selected" /> : ""}
           </Typography>
         </ButtonWrapper>
 
@@ -604,9 +523,9 @@ export function ImportView() {
           <ActionButton
             variant="contained"
             component="label"
-            color="primary" // Farbe anpassen
+            color="primary"
           >
-            <T keyName="import.relations_file_button">Relationen Datei auswählen</T>
+            <T keyName="import.relations_file_button" />
             <input
               type="file"
               name="relationsFile"
@@ -617,25 +536,25 @@ export function ImportView() {
             />
           </ActionButton>
           <Typography color="textSecondary">
-            {relationsFile === null ? <T keyName="import.no_file_selected">Keine Datei ausgewählt</T> : ""}
+            {relationsFile === null ? <T keyName="import.no_file_selected" /> : ""}
           </Typography>
         </ButtonWrapper>
 
         <ButtonWrapper>
           <ActionButton
             variant="contained"
-            color="primary" // Farbe anpassen
+            color="primary"
             onClick={handleUpload}
             disabled={!loaded}
           >
-            <T keyName="import.import_button">Importieren</T>
+            <T keyName="import.import_button" />
           </ActionButton>
         </ButtonWrapper>
 
         <ButtonWrapper>
           <TextField
             id="importTag"
-            label={<T keyName="import.import_tag_label">Import Tag (optional)</T>}
+            label={<T keyName="import.import_tag_label" />}
             name="importTag"
             variant="outlined"
             size="small"
@@ -652,7 +571,7 @@ export function ImportView() {
             color="inherit"
             sx={{ width: "200px" }}
           >
-            <T keyName="import.csv_templates_button">CSV Templates</T>
+            <T keyName="import.csv_templates_button" />
           </ActionButton>
         </ButtonWrapper>
       </ButtonsContainer>

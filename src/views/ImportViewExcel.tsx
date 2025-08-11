@@ -25,7 +25,7 @@ import {
 import { useSnackbar } from "notistack";
 import View from "./View";
 import {
-  SimpleRecordType,
+  CatalogRecordType,
   RelationshipRecordType,
   FindTagsResultFragment,
   useFindTagsQuery,
@@ -33,31 +33,12 @@ import {
   useCreateRelationshipMutation,
   useCreateTagMutation,
 } from "../generated/types";
-import { ApolloCache } from "@apollo/client";
-import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 import { v4 as uuidv4 } from "uuid";
 import { T, useTranslate } from '@tolgee/react';
 
 
 export const IMPORT_TAG_ID = "KATALOG-IMPORT";
-
-// Define types
-type Entity = {
-  id: string;
-  typ: string;
-  tags: string;
-  name: string;
-  description: string;
-  versionId: string;
-};
-
-type relation = {
-  entity1: string;
-  relationId: string;
-  relationshipType: string;
-  entity2: string;
-  tabellenblatt: string;
-};
 
 // Define the structure for entity data
 interface EntityData {
@@ -145,23 +126,13 @@ const ActionButton = styled(Button)<ButtonProps>(({ theme }) => ({
 
 export function ImportViewExcel() {
   const [entitiesFile, setEntitiesFile] = useState<File | null>(null);
-  const [init, setInit] = useState(false);
   const [importTag, setImportTag] = useState(""); // Changed from IMPORT_TAG_ID to empty string
-  const [control, setControl] = useState(1);
   const [textFieldValues, setTextFieldValues] = useState<{
     [key: string]: string;
   }>({});
   const { enqueueSnackbar } = useSnackbar();
   const [valid, setValid] = useState<boolean | null>(null); // Use null for uninitialized state
-  const [isImportButtonDisabled, setImportButtonDisabled] = useState(true);
-  const [validationError, setValidationError] = useState<boolean | null>(null); // State to store validation result
-  const fileInputRef = useRef<HTMLInputElement>(null); // Referenz auf das Datei-Input-Element
-  const [entityExcelData, setEntityExcelData] = useState<{
-    [key: string]: EntityData[];
-  }>({});
-  const [relationExcelData, setRelationExcelData] = useState<{
-    [key: string]: RelationData[];
-  }>({});
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [createTag] = useCreateTagMutation();
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState("");
@@ -171,8 +142,8 @@ export function ImportViewExcel() {
     const hasErrors = handleValidation();
     enqueueSnackbar(
       hasErrors
-        ? "Validierung fehlgeschlagen. Bitte prüfen Sie die Fehlermeldungen."
-        : "Validierung erfolgreich. Sie können jetzt die Excel-Datei importieren.",
+        ? <T keyName="import_excel.validation_error" />
+        : <T keyName="import_excel.validation_success" />,
       { variant: hasErrors ? "error" : "success" }
     );
   };
@@ -185,10 +156,10 @@ export function ImportViewExcel() {
     {}
   );
   const [checkedRows, setCheckedRows] = useState<CheckedRowsTable>({
-    entities: Array(8)
+    entities: Array(9)
       .fill(false)
       .reduce((acc, _, index) => ({ ...acc, [index]: false }), {}),
-    relations: Array(7)
+    relations: Array(10)
       .fill(false)
       .reduce((acc, _, index) => ({ ...acc, [index]: false }), {}),
   });
@@ -201,37 +172,8 @@ export function ImportViewExcel() {
     },
   });
 
-  const reload = () => {
-    setControl(Math.random());
-  };
-
-  // create new entity records by query
-  const [create] = useCreateEntryMutation({
-    update: (cache) => {
-      cache.modify({
-        id: "ROOT_QUERY",
-        fields: {
-          hierarchy: (value, { DELETE }) => DELETE,
-        },
-      });
-      cache.modify({
-        id: "ROOT_QUERY",
-        fields: {
-          search: (value, { DELETE }) => DELETE,
-        },
-      });
-    },
-  });
-
-  // create new relationship records by query
-  const update = (cache: ApolloCache<any>) =>
-    cache.modify({
-      id: "ROOT_QUERY",
-      fields: {
-        hierarchy: (value, { DELETE }) => DELETE,
-      },
-    });
-  const [createRelationship] = useCreateRelationshipMutation({ update });
+  const [create] = useCreateEntryMutation();
+  const [createRelationship] = useCreateRelationshipMutation();
 
   // File change handler
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -240,7 +182,6 @@ export function ImportViewExcel() {
       setEntitiesFile(selectedFile);
       refetch({ pageSize: 100 });
     }
-    setInit(false);
   };
 
   const handleImportTagChange = (event: any) => {
@@ -258,9 +199,7 @@ export function ImportViewExcel() {
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     handleImportEntities(); // Erste Funktion aufrufen
-    importExcelData(); // Danach die Excel-Daten importieren
-    await importEntities(entityExcelData); // Pass the argument to the function
-    importRelations(relationExcelData); // Pass the argument to the function
+    await importExcelData(); // Danach die Excel-Daten importieren
   };
 
   const isIdRequired = (entityIndex: number): boolean => {
@@ -358,17 +297,11 @@ export function ImportViewExcel() {
 
     // Update validation state and show messages
     setValid(!hasErrors);
-    setImportButtonDisabled(hasErrors);
 
     if (hasErrors) {
       errorMessages.forEach((error) => {
         enqueueSnackbar(error, { variant: "error" });
       });
-    } else {
-      enqueueSnackbar(
-        "Validierung erfolgreich. Sie können jetzt die Excel-Datei importieren.",
-        { variant: "success" }
-      );
     }
     return hasErrors;
   };
@@ -377,14 +310,13 @@ export function ImportViewExcel() {
     setTextFieldValues({});
     setSelectedLetters({});
     setCheckedRows({
-      entities: Array(8)
+      entities: Array(9)
         .fill(false)
         .reduce((acc, _, index) => ({ ...acc, [index]: false }), {}),
-      relations: Array(7)
+      relations: Array(10)
         .fill(false)
         .reduce((acc, _, index) => ({ ...acc, [index]: false }), {}),
     });
-    setImportButtonDisabled(true);
     setValid(null); // Reset validation state
     setSelectAllEntities(false); // Reset "Select All" checkbox
 
@@ -434,7 +366,7 @@ export function ImportViewExcel() {
     setCheckedRows((prev) => {
       const allChecked = Object.values(prev[table]).every(Boolean);
       const newCheckedRows: CheckedRows = {};
-      for (let i = 0; i < (table === "entities" ? 8 : 7); i++) {
+      for (let i = 0; i < (table === "entities" ? 9 : 10); i++) {
         newCheckedRows[i] = !allChecked;
       }
       return { ...prev, [table]: newCheckedRows };
@@ -462,16 +394,6 @@ export function ImportViewExcel() {
     String.fromCharCode(i + 65)
   ); // ['A', 'B', ..., 'Z']
 
-  const handleImportTableChange = (
-    event: React.ChangeEvent<{ value: unknown }>,
-    key: string
-  ) => {
-    setTextFieldValues((prev) => ({
-      ...prev,
-      [key]: event.target.value as string,
-    }));
-  };
-
   const handleImportEntities = () => {
     const entityData: {
       [key: string]: { sheet: string; name: string; id: string }[];
@@ -482,14 +404,15 @@ export function ImportViewExcel() {
     } = {};
 
     [
-      "Referenzdokumente",
-      "Fachmodell",
-      "Gruppe",
+      "Referenzdokument",
+      "Dictionary",
+      "Thema",
       "Klasse",
       "Merkmal",
-      "Größen (Enums)",
-      "Maßeinheiten",
-      "Werte",
+      "Merkmalsgruppe",
+      "Werteliste",
+      "Maßeinheit",
+      "Wert",
     ].forEach((entityLabel, index) => {
       if (checkedRows.entities[index]) {
         const sheetName = textFieldValues[`sheetField${index}`] || "";
@@ -497,9 +420,9 @@ export function ImportViewExcel() {
 
         // Determine whether to use the dropdown value or text field value for name
         const name =
-          entityLabel === "Referenzdokumente" ||
-          entityLabel === "Fachmodell" ||
-          entityLabel === "Gruppe"
+          entityLabel === "Referenzdokument" ||
+            entityLabel === "Dictionary" ||
+            entityLabel === "Thema"
             ? useTextField[`name${index}`]
               ? textFieldValues[`name${index}`] || ""
               : `${selectedLetters[`selectName${index}`]}`
@@ -533,13 +456,16 @@ export function ImportViewExcel() {
 
     // Relationen durchgehen und Daten speichern
     [
-      "Rel_Referenzdokument_Fachmodell",
-      "Rel_Fachmodell_Gruppe",
-      "Rel_Gruppe_Klasse",
+      "Rel_Concept_Referenzdokument",
+      "Rel_Concept_Dictionary",
+      "Rel_Thema_Klasse",
       "Rel_Klasse_Merkmal",
-      "Rel_Merkmal_Enum",
-      "Rel_Enum_Maßeinheit",
-      "Rel_Enum_Wert",
+      "Rel_Merkmal_Maßeinheit",
+      "Rel_Merkmal_Werteliste",
+      "Rel_Werteliste_Maßeinheit",
+      "Rel_Werteliste_Wert",
+      "Rel_Klasse_Merkmalsgruppe",
+      "Rel_Merkmalsgruppe_Merkmal"
     ].forEach((relationLabel, index) => {
       if (checkedRows.relations[index]) {
         const id1 = selectedLetters[`relationID1${index}`] || "";
@@ -570,11 +496,11 @@ export function ImportViewExcel() {
 
   const importExcelData = async () => {
     const entityExcelDataTemp: {
-      [key: string]: { name: string; id: string }[];
+      [key: string]: EntityData[];
     } = {};
 
     const relationExcelDataTemp: {
-      [key: string]: { id1: string; id2: string }[];
+      [key: string]: RelationData[];
     } = {};
 
     const file = entitiesFile;
@@ -583,8 +509,10 @@ export function ImportViewExcel() {
       return;
     }
 
+    // ExcelJS Workbook laden
     const data = await file.arrayBuffer();
-    const workbook = XLSX.read(data);
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.load(data);
 
     // Hilfsfunktion zum Überprüfen von Duplikaten
     const isDuplicate = (
@@ -609,14 +537,15 @@ export function ImportViewExcel() {
     };
 
     [
-      "Referenzdokumente",
-      "Fachmodell",
-      "Gruppe",
+      "Referenzdokument",
+      "Dictionary",
+      "Thema",
       "Klasse",
       "Merkmal",
-      "Größen (Enums)",
-      "Maßeinheiten",
-      "Werte",
+      "Merkmalsgruppe",
+      "Werteliste",
+      "Maßeinheit",
+      "Wert",
     ].forEach((entityLabel, index) => {
       if (checkedRows.entities[index]) {
         const sheetName = textFieldValues[`sheetField${index}`] || "";
@@ -629,8 +558,8 @@ export function ImportViewExcel() {
           idColumnLetter = uuidv4();
         }
 
-        if (!entityExcelData[`${entityLabel}_Excel`]) {
-          entityExcelData[`${entityLabel}_Excel`] = [];
+        if (!entityExcelDataTemp[entityLabel]) {
+          entityExcelDataTemp[entityLabel] = [];
         }
 
         if (useNameTextField) {
@@ -645,9 +574,9 @@ export function ImportViewExcel() {
           if (name) {
             // Duplikatprüfung beim Hinzufügen
             if (
-              !isDuplicate(entityExcelData[`${entityLabel}_Excel`], name, id)
+              !isDuplicate(entityExcelDataTemp[entityLabel], name, id)
             ) {
-              entityExcelData[`${entityLabel}_Excel`].push({ name, id });
+              entityExcelDataTemp[entityLabel].push({ name, id });
             }
           } else {
             console.warn(`Kein gültiger Name für ${entityLabel} gefunden.`);
@@ -663,63 +592,57 @@ export function ImportViewExcel() {
             }
           }
 
-          const sheet = workbook.Sheets[sheetName];
+          const sheet = workbook.getWorksheet(sheetName);
           if (!sheet) {
             console.error(`Tabellenblatt ${sheetName} nicht gefunden.`);
             return;
           }
 
-          const nameColumnIndex = columnLetterToIndex(nameColumnLetter);
-          const idColumnIndex = columnLetterToIndex(idColumnLetter);
-
-          const jsonData = XLSX.utils.sheet_to_json<{ [key: string]: string }>(
-            sheet,
-            { header: 1 }
-          );
+          const nameColumnIndex = columnLetterToIndex(nameColumnLetter) + 1; // ExcelJS ist 1-basiert
+          const idColumnIndex = columnLetterToIndex(idColumnLetter) + 1;
 
           // Überspringe die Kopfzeile und verarbeite die Daten ab Zeile 2
-          jsonData.slice(1).forEach((row, rowIndex) => {
-            const name = row[nameColumnIndex];
-            let id = row[idColumnIndex];
+          sheet.eachRow({ includeEmpty: false }, (row: ExcelJS.Row, rowNumber: number) => {
+            if (rowNumber === 1) return; // Kopfzeile überspringen
+            const name = row.getCell(nameColumnIndex).value as string;
+            let id = row.getCell(idColumnIndex).value as string;
 
             if (!id && index <= 2) {
               id = uuidv4();
             }
 
             if (name) {
-              // Duplikatprüfung beim Hinzufügen
-              if (
-                !isDuplicate(entityExcelData[`${entityLabel}_Excel`], name, id)
-              ) {
-                entityExcelData[`${entityLabel}_Excel`].push({ name, id });
+              if (!isDuplicate(entityExcelDataTemp[entityLabel], name, id)) {
+                entityExcelDataTemp[entityLabel].push({ name, id });
               }
             } else {
               console.warn(
-                `Zeile ${
-                  rowIndex + 2
-                } in ${sheetName} enthält keine gültigen Werte für Name:`,
-                row
+                `Zeile ${rowNumber} in ${sheetName} enthält keine gültigen Werte für Name:`,
+                row.values
               );
             }
           });
         }
 
         console.log(
-          `Excel-Daten für ${entityLabel}_Excel:`,
-          entityExcelData[`${entityLabel}_Excel`]
+          `Excel-Daten für ${entityLabel}:`,
+          entityExcelDataTemp[entityLabel]
         );
       }
     });
 
     // Relationen durchgehen und Daten speichern
     [
-      "Rel_Referenzdokument_Fachmodell",
-      "Rel_Fachmodell_Gruppe",
-      "Rel_Gruppe_Klasse",
+      "Rel_Concept_Referenzdokument",
+      "Rel_Concept_Dictionary",
+      "Rel_Thema_Klasse",
       "Rel_Klasse_Merkmal",
-      "Rel_Merkmal_Enum",
-      "Rel_Enum_Maßeinheit",
-      "Rel_Enum_Wert",
+      "Rel_Merkmal_Maßeinheit",
+      "Rel_Merkmal_Werteliste",
+      "Rel_Werteliste_Maßeinheit",
+      "Rel_Werteliste_Wert",
+      "Rel_Klasse_Merkmalsgruppe",
+      "Rel_Merkmalsgruppe_Merkmal"
     ].forEach((relationLabel, index) => {
       if (checkedRows.relations[index]) {
         const sheetName = textFieldValues[`sheetFieldRelation${index}`] || "";
@@ -737,70 +660,62 @@ export function ImportViewExcel() {
           return;
         }
 
-        const sheet = workbook.Sheets[sheetName];
+        const sheet = workbook.getWorksheet(sheetName);
         if (!sheet) {
           console.error(`Tabellenblatt ${sheetName} nicht gefunden.`);
           return;
         }
 
-        if (!relationExcelData[`${relationLabel}_Excel`]) {
-          relationExcelData[`${relationLabel}_Excel`] = [];
+        if (!relationExcelDataTemp[relationLabel]) {
+          relationExcelDataTemp[relationLabel] = [];
         }
 
         // Convert column letters to indices
-        const id1ColumnIndex = columnLetterToIndex(id1ColumnLetter);
-        const id2ColumnIndex = columnLetterToIndex(id2ColumnLetter);
+        const id1ColumnIndex = columnLetterToIndex(id1ColumnLetter) + 1;
+        const id2ColumnIndex = columnLetterToIndex(id2ColumnLetter) + 1;
 
-        // Auslesen der Excel-Daten
-        const jsonData = XLSX.utils.sheet_to_json<{ [key: string]: string }>(
-          sheet,
-          { header: 1 }
-        ); // Read as 2D array
-
-        // Start from the second row (index 1) to skip the header row
-        for (let rowIndex = 1; rowIndex < jsonData.length; rowIndex++) {
-          const id1 = jsonData[rowIndex][id1ColumnIndex];
-          const id2 = jsonData[rowIndex][id2ColumnIndex];
+        // Start from the second row (index 2) to skip the header row
+        sheet.eachRow({ includeEmpty: false }, (row: ExcelJS.Row, rowNumber: number) => {
+          if (rowNumber === 1) return;
+          const id1 = row.getCell(id1ColumnIndex).value as string;
+          const id2 = row.getCell(id2ColumnIndex).value as string;
 
           if (id1 && id2) {
-            // Prüfe auf Duplikate vor dem Hinzufügen
             if (
               !isRelationDuplicate(
-                relationExcelData[`${relationLabel}_Excel`],
+                relationExcelDataTemp[relationLabel],
                 id1,
                 id2
               )
             ) {
-              relationExcelData[`${relationLabel}_Excel`].push({ id1, id2 });
+              relationExcelDataTemp[relationLabel].push({ id1, id2 });
             }
           } else {
             console.warn(
-              `Zeile ${
-                rowIndex + 1
-              } in ${sheetName} enthält keine gültigen Werte für ID1 oder ID2:`,
-              jsonData[rowIndex]
+              `Zeile ${rowNumber} in ${sheetName} enthält keine gültigen Werte für ID1 oder ID2:`,
+              row.values
             );
           }
-        }
+        });
 
         console.log(
-          `Excel data for ${relationLabel}_Excel:`,
-          relationExcelData[`${relationLabel}_Excel`]
+          `Excel data for ${relationLabel}:`,
+          relationExcelDataTemp[relationLabel]
         );
       }
     });
 
     // Ausgabe der gesammelten Daten
-    Object.entries(entityExcelData).forEach(([entityLabel, data]) => {
+    Object.entries(entityExcelDataTemp).forEach(([entityLabel, data]) => {
       console.log(`${entityLabel} Data:`, data);
     });
 
-    Object.entries(relationExcelData).forEach(([relationLabel, data]) => {
+    Object.entries(relationExcelDataTemp).forEach(([relationLabel, data]) => {
       console.log(`${relationLabel} Data:`, data);
     });
 
-    setEntityExcelData(entityExcelDataTemp);
-    setRelationExcelData(relationExcelDataTemp);
+    await importEntities(entityExcelDataTemp); // Pass the argument to the function
+    await importRelations(relationExcelDataTemp); // Pass the argument to the function
   };
 
   // Hilfsfunktionen
@@ -829,38 +744,42 @@ export function ImportViewExcel() {
   }) => {
     // Definiere Entitätstypen und deren zugehörige Tags
     const entityTypes: {
-      [key: string]: { recordType: SimpleRecordType; tag: string };
+      [key: string]: { recordType: CatalogRecordType; tag: string };
     } = {
-      Referenzdokumente_Excel: {
-        recordType: "ExternalDocument" as unknown as SimpleRecordType,
+      Referenzdokument: {
+        recordType: CatalogRecordType.ExternalDocument,
         tag: "Referenzdokument",
       },
-      Fachmodell_Excel: {
-        recordType: "Bag" as unknown as SimpleRecordType,
-        tag: "Fachmodell",
+      Dictionary: {
+        recordType: CatalogRecordType.Dictionary,
+        tag: "Dictionary",
       },
-      Gruppe_Excel: {
-        recordType: "Bag" as unknown as SimpleRecordType,
-        tag: "Gruppe",
+      Thema: {
+        recordType: CatalogRecordType.Subject,
+        tag: "Thema",
       },
-      Klasse_Excel: {
-        recordType: "Subject" as unknown as SimpleRecordType,
+      Klasse: {
+        recordType: CatalogRecordType.Subject,
         tag: "Klasse",
       },
-      Merkmal_Excel: {
-        recordType: "Property" as unknown as SimpleRecordType,
+      Merkmal: {
+        recordType: CatalogRecordType.Property,
         tag: "Merkmal",
       },
-      "Größen (Enums)_Excel": {
-        recordType: "Measure" as unknown as SimpleRecordType,
-        tag: "Größe",
+      Merkmalsgruppe: {
+        recordType: CatalogRecordType.Subject,
+        tag: "Merkmalsgruppe",
       },
-      Maßeinheiten_Excel: {
-        recordType: "Measure" as unknown as SimpleRecordType,
+      Werteliste: {
+        recordType: CatalogRecordType.ValueList,
+        tag: "Werteliste",
+      },
+      Maßeinheit: {
+        recordType: CatalogRecordType.Unit,
         tag: "Maßeinheit",
       },
-      Werte_Excel: {
-        recordType: "Value" as unknown as SimpleRecordType,
+      Wert: {
+        recordType: CatalogRecordType.Value,
         tag: "Wert",
       },
     };
@@ -887,6 +806,7 @@ export function ImportViewExcel() {
 
     // Entitäten importieren
     for (const [entityKey, entities] of Object.entries(entityExcelData)) {
+      console.log(`Processing entityKey: "${entityKey}"`);
       const { recordType, tag } = entityTypes[entityKey];
       const tagIds = [];
       if (!importTag) {
@@ -919,6 +839,7 @@ export function ImportViewExcel() {
 
         try {
           setStatus(`Importing ${recordType}: ${name}`);
+          console.log(`Creating record "${recordType}" with name: ${name}`);
           await create({
             variables: {
               input: {
@@ -962,13 +883,17 @@ export function ImportViewExcel() {
   }) => {
     // Define relationship types mapping directly to RelationshipRecordType
     const relTypes: { [key: string]: RelationshipRecordType } = {
-      Rel_Referenzdokument_Fachmodell: "Documents" as RelationshipRecordType,
-      Rel_Fachmodell_Gruppe: "Collects" as RelationshipRecordType,
-      Rel_Gruppe_Klasse: "Collects" as RelationshipRecordType,
-      Rel_Klasse_Merkmal: "AssignsProperties" as RelationshipRecordType,
-      Rel_Merkmal_Enum: "AssignsMeasures" as RelationshipRecordType,
-      Rel_Enum_Maßeinheit: "AssignsValues" as RelationshipRecordType,
-      Rel_Enum_Wert: "AssignsUnits" as RelationshipRecordType,
+      Rel_Concept_Referenzdokument: RelationshipRecordType.ReferenceDocuments,
+      Rel_Concept_Dictionary: RelationshipRecordType.Dictionary,
+      Rel_Thema_Klasse: RelationshipRecordType.RelationshipToSubject,
+      Rel_Klasse_Merkmal: RelationshipRecordType.Properties,
+      Rel_Merkmal_Maßeinheit: RelationshipRecordType.Units,
+      Rel_Merkmal_Werteliste: RelationshipRecordType.PossibleValues,
+      Rel_Werteliste_Maßeinheit: RelationshipRecordType.Unit,
+      Rel_Werteliste_Wert: RelationshipRecordType.Values,
+      Rel_Klasse_Merkmalsgruppe: RelationshipRecordType.RelationshipToSubject,
+      Rel_Merkmalsgruppe_Merkmal: RelationshipRecordType.Properties
+      // Rel_Thema_Thema: RelationshipRecordType.RelationshipToSubject 
     };
 
     // Import status
@@ -981,18 +906,13 @@ export function ImportViewExcel() {
     );
     let processedRelations = 0;
 
-    // Map, um eine RelationId für eine fromId zu speichern
-    const relationIdMap: { [fromId: string]: string } = {};
-
     // Iterate over each relation type and create relationships
     for (const [relationKey, relations] of Object.entries(relationExcelData)) {
-      // Remove any "_Excel" suffix from the relationKey
-      const normalizedKey = relationKey.replace(/_Excel$/, "");
-      const relationshipType = relTypes[normalizedKey];
+
+      const relationshipType = relTypes[relationKey];
 
       // Statusanzeige: Welche Relation wird aktuell importiert
       console.log(`Processing relationKey: "${relationKey}"`);
-      console.log(`Normalized relationKey: "${normalizedKey}"`);
       console.log(`Mapped relationshipType: "${relationshipType}"`);
 
       if (!relationshipType) {
@@ -1002,44 +922,46 @@ export function ImportViewExcel() {
 
       setStatus(`Importing ${relationKey}...`);
 
-      for (const relation of relations) {
-        const { id1, id2 } = relation;
+      const grouped: { [fromId: string]: string[] } = {};
+      for (const { id1, id2 } of relations) {
+        if (!id1 || !id2) continue;
+        if (!grouped[id1]) grouped[id1] = [];
+        grouped[id1].push(id2);
+      }
 
-        if (!id1 || !id2) {
-          console.warn(`Skipping relation with missing IDs: ${relationKey}`);
-          continue;
-        }
+      for (const [fromId, toIds] of Object.entries(grouped)) {
 
-        // Überprüfe, ob für diese fromId bereits eine relationId existiert
-        let relationId = relationIdMap[id1];
-
-        // Wenn nicht, erstelle eine neue relationId und speichere sie
-        if (!relationId) {
-          relationId = uuidv4(); // Generate a new UUID for each fromId
-          relationIdMap[id1] = relationId; // Map fromId to relationId
-        }
 
         try {
+          let properties: any = {};
+          if (relationshipType === RelationshipRecordType.RelationshipToSubject) {
+            properties = {
+              relationshipToSubjectProperties: {
+                relationshipType: "XTD_SCHEMA_LEVEL"
+              }
+            }
+          }
+
+          console.log(
+            `Creating relationship "${relationshipType}" from ${fromId} to ${toIds.join(", ")}`
+          );
           await createRelationship({
             variables: {
               input: {
                 relationshipType: relationshipType,
-                properties: {
-                  id: relationId,
-                  names: [],
-                },
-                fromId: id1,
-                toIds: [id2],
+                properties: properties,
+                fromId,
+                toIds,
               },
             },
           });
 
           // Fortschritt aktualisieren
-          processedRelations += 1;
+          processedRelations += toIds.length;
           setProgress((processedRelations / totalRelations) * 100); // Fortschritt als Prozentsatz
         } catch (error) {
           console.error(
-            `Error creating relationship "${relationshipType}" from ${id1} to ${id2}`
+            `Error creating relationship "${relationshipType}" from ${fromId} to ${toIds.join(", ")}`
           );
           allImportsSuccessful = false;
         }
@@ -1086,14 +1008,15 @@ export function ImportViewExcel() {
         </TableHead>
         <TableBody>
           {[
-            { label: <T keyName="import_excel.document" />, toggle: true },
-            { label: <T keyName="import_excel.model" />, toggle: true },
-            { label: <T keyName="import_excel.group" />, toggle: true },
-            { label: <T keyName="import_excel.class" />, toggle: true },
-            { label: <T keyName="import_excel.property" />, toggle: false },
-            { label: <T keyName="import_excel.measure" />, toggle: false },
-            { label: <T keyName="import_excel.unit" />, toggle: false },
-            { label: <T keyName="import_excel.value" />, toggle: false },
+            { label: <T keyName="document.titlePlural" />, toggle: true },
+            { label: <T keyName="dictionary.titlePlural" />, toggle: true },
+            { label: <T keyName="theme.titlePlural" />, toggle: true },
+            { label: <T keyName="class.titlePlural" />, toggle: true },
+            { label: <T keyName="property.titlePlural" />, toggle: false },
+            { label: <T keyName="propertyGroup.titlePlural" />, toggle: false },
+            { label: <T keyName="valuelist.titlePlural" />, toggle: false },
+            { label: <T keyName="unit.titlePlural" />, toggle: false },
+            { label: <T keyName="value.titlePlural" />, toggle: false },
           ].map((entity, index) => (
             <TableRow key={index}>
               <StyledTableCell>
@@ -1139,7 +1062,7 @@ export function ImportViewExcel() {
                       ))}
                     </FullWidthSelect>
                   )}
-                  {entity.toggle && index <= 2 && (
+                  {entity.toggle && index <= 3 && (
                     <Button
                       size="small"
                       onClick={() => handleUseTextFieldToggle(`name${index}`)}
@@ -1206,24 +1129,27 @@ export function ImportViewExcel() {
                     onChange={() => handleSelectAll("relations")}
                   />
                 }
-                label={t('import_excel.select_all')}
+                label={<T keyName='import_excel.select_all' />}
               />
             </StyledHeaderCell>
-            <StyledHeaderCell>{t('import_excel.relations')}</StyledHeaderCell>
-            <StyledHeaderCell>{t('import_excel.sheetName')}</StyledHeaderCell>
+            <StyledHeaderCell>{<T keyName='import_excel.relations' />}</StyledHeaderCell>
+            <StyledHeaderCell>{<T keyName='import_excel.sheetName' />}</StyledHeaderCell>
             <StyledHeaderCell>ID 1</StyledHeaderCell>
             <StyledHeaderCell>ID 2</StyledHeaderCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {[
-            <T keyName="import_excel.rel_doc_model" />,
-            <T keyName="import_excel.rel_model_group" />,
-            <T keyName="import_excel.rel_group_class" />,
+            <T keyName="import_excel.rel_concept_doc" />,
+            <T keyName="import_excel.rel_concept_dictionary" />,
+            <T keyName="import_excel.rel_theme_class" />,
             <T keyName="import_excel.rel_class_property" />,
-            <T keyName="import_excel.rel_property_measure" />,
-            <T keyName="import_excel.rel_measure_unit" />,
-            <T keyName="import_excel.rel_measure_value" />,
+            <T keyName="import_excel.rel_property_unit" />,
+            <T keyName="import_excel.rel_property_valuelist" />,
+            <T keyName="import_excel.rel_valuelist_unit" />,
+            <T keyName="import_excel.rel_valuelist_value" />,
+            <T keyName="import_excel.rel_class_propertygroup" />,
+            <T keyName="import_excel.rel_propertygroup_property" />
           ].map((relation, index) => (
             <TableRow key={index}>
               <StyledTableCell>
@@ -1312,7 +1238,7 @@ export function ImportViewExcel() {
           <T keyName="import_excel.check_inputs_button" />
         </ActionButton>
       </ButtonWrapper>
-      
+
       <ButtonWrapper>
         <TextField
           id="importTag"
@@ -1325,7 +1251,7 @@ export function ImportViewExcel() {
           sx={{ mb: 0.5, width: "200px" }}
         />
       </ButtonWrapper>
-      
+
       <ButtonWrapper>
         <ActionButton
           variant="contained"
@@ -1336,7 +1262,7 @@ export function ImportViewExcel() {
           <T keyName="import_excel.import_button" />
         </ActionButton>
       </ButtonWrapper>
-      
+
       <ButtonWrapper>
         <ActionButton
           variant="contained"
@@ -1369,12 +1295,6 @@ export function ImportViewExcel() {
         {renderEntityTable()}
         {renderRelationTable()}
         {renderActionArea()}
-
-        {validationError === false && (
-          <Alert severity="error" sx={{ mt: 2 }}>
-            <T keyName="import_excel.validation_failed" />
-          </Alert>
-        )}
 
         {progress > 0 && renderProgressArea()}
       </Box>

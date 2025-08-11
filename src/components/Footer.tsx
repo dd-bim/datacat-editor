@@ -1,47 +1,52 @@
-import Paper, { PaperProps } from "@mui/material/Paper";
 import React from "react";
-import { styled } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
-import { Link } from "@mui/material";
 import { T } from "@tolgee/react";
 
-// Replace makeStyles with styled components
-const FooterContainer = styled('div')(({ theme }) => ({
-  display: "flex",
-  justifyContent: "end",
-  marginTop: theme.spacing(3),
-}));
+// Floating Footer Styles wie im GraphiQLEditor
+const footerStyles: React.CSSProperties = {
+  position: "fixed",
+  bottom: 8,
+  right: 8,
+  backgroundColor: "rgba(255, 255, 255, 0.9)",
+  padding: "6px 10px",
+  borderRadius: "4px",
+  boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+  fontSize: "11px",
+  zIndex: 999,
+  minWidth: 220,
+  maxWidth: 350,
+};
 
-const StyledPaper = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(1),
-}));
+const linkStyles: React.CSSProperties = {
+  marginRight: "12px",
+  textDecoration: "none",
+  color: "#666",
+  fontSize: "inherit",
+};
 
-export default function Footer(props: PaperProps) {
+export default function Footer() {
   return (
-    <FooterContainer>
-      <StyledPaper variant="outlined">
-        <Typography variant="body2">
-          <Link
-            target="_blank"
-            rel="noopener"
-            href="https://www.htw-dresden.de/hochschule/fakultaeten/geoinformation/ueber-uns/personen/professoren/prof-dr-ing-christian-clemen"
-          >
-            <T keyName="footer.contact">Fragen & Kontakt</T>
-          </Link>
-        </Typography>
-        <Typography variant="body2">
-          <Link
-            target="_blank"
-            rel="noopener"
-            href="https://github.com/dd-bim/datacat/issues"
-          >
-            <T keyName="footer.report_issue">Problem melden</T>
-          </Link>
-        </Typography>
-        <Typography variant="caption">
-          datacat editor {import.meta.env.VITE_APP_VERSION}
-        </Typography>
-      </StyledPaper>
-    </FooterContainer>
+    <div style={footerStyles}>
+      <div style={{ marginBottom: "3px" }}>
+        <a
+          href="https://www.htw-dresden.de/hochschule/fakultaeten/geoinformation/ueber-uns/personen/professoren/prof-dr-ing-christian-clemen"
+          target="_blank"
+          rel="noopener"
+          style={linkStyles}
+        >
+          <T keyName="footer.contact">Fragen & Kontakt</T>
+        </a>
+        <a
+          href="https://github.com/dd-bim/datacat/issues"
+          target="_blank"
+          rel="noopener"
+          style={{ ...linkStyles, marginRight: 0 }}
+        >
+          <T keyName="footer.report_issue">Problem melden</T>
+        </a>
+      </div>
+      <div style={{ color: "#888" }}>
+        datacat editor {import.meta.env.VITE_APP_VERSION}
+      </div>
+    </div>
   );
 }

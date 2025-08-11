@@ -68,7 +68,7 @@ const CompositeCatalogEntryView = (props: CompositeCatalogEntryViewProps) => {
     entityTypeIn: [recordType],
     tagged: tags,
   };
-
+ 
   const navigate = useNavigate();
   const { id } = useParams<{ id?: string }>();
 

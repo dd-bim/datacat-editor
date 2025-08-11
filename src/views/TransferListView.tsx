@@ -1,12 +1,11 @@
 import {
-    ItemPropsFragment,
+    ObjectPropsFragment,
     RelationshipRecordType,
     SearchInput,
     useCreateRelationshipMutation,
-    useDeleteRelationshipMutation,
-    useSetRelatedEntriesMutation
+    useDeleteRelationshipMutation
 } from "../generated/types";
-import React, {useState} from "react";
+import React, {JSX, useState} from "react";
 import TransferList from "../components/list/TransferList";
 import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
@@ -17,18 +16,14 @@ import {ApolloCache} from "@apollo/client";
 import {CatalogRecord} from "../types";
 import {useNavigate} from "react-router-dom";
 import {getEntityType} from "../domain";
-
-export type RelationshipProperties = {
-    relationshipId: string;
-    relatedItems: CatalogRecord[];
-}
+import { T } from "@tolgee/react";
 
 export type TransferListViewProps = {
     title: React.ReactNode;
     description?: string;
     relatingItemId: string;
     relationshipType: RelationshipRecordType
-    relationships: RelationshipProperties[];
+    relationships: CatalogRecord[];
     searchInput: SearchInput;
     onCreate?(): void;
     onUpdate?(): void;
@@ -62,7 +57,6 @@ export default function TransferListView(props: TransferListViewProps) {
         relationships,
         searchInput,
         onCreate,
-        onUpdate,
         onDelete,
     } = props;
 
@@ -77,7 +71,6 @@ export default function TransferListView(props: TransferListViewProps) {
     });
     const [createRelationship] = useCreateRelationshipMutation({update});
     const [deleteRelationship] = useDeleteRelationshipMutation({update});
-    const [setRelatedEntries] = useSetRelatedEntriesMutation({update});
 
     const handleOnCreateRelationship = async (toIds: string[]) => {
         await createRelationship({
@@ -92,50 +85,57 @@ export default function TransferListView(props: TransferListViewProps) {
         onCreate?.();
     };
 
-    const handleOnChangeRelationship = async (id: string, related: string[]) => {
-        await setRelatedEntries({
-            variables: {
-                input: {
-                    relationshipId: id,
-                    toIds: related
-                }
-            }
-        });
-        onUpdate?.();
-    };
-
-    const handleOnDeleteRelationship = async (relationshipId: string) => {
+    const handleOnDeleteRelationship = async (toId: string) => {
         await deleteRelationship({
             variables: {
-                input: {relationshipId}
+                input: {
+                    relationshipType,
+                    fromId: relatingItemId,
+                    toId
+                }
             }
         });
         onDelete?.();
     };
 
-    let content = relationships.map(({relationshipId, relatedItems}) => {
-        const items = [...relatedItems].sort(sortItems);
+    let content: JSX.Element;
 
-        const handleOnAdd = async (item: ItemPropsFragment) => {
-            const relatedIds = relatedItems.map(x => x.id);
-            relatedIds.push(item.id);
-            await handleOnChangeRelationship(relationshipId, relatedIds);
-        };
+    const items = [...relationships].sort(sortItems);
 
-        const handleOnRemove = async (item: ItemPropsFragment) => {
-            const relatedIds = relatedItems
-                .map(x => x.id)
-                .filter(id => id !== item.id);
-            if (relatedIds.length) {
-                await handleOnChangeRelationship(relationshipId, relatedIds);
-            } else {
-                await handleOnDeleteRelationship(relationshipId);
-            }
-        };
+    const handleOnAdd = async (item: ObjectPropsFragment) => {
+        const relatedIds = items.map(x => x.id);
+        relatedIds.push(item.id);
+        await handleOnCreateRelationship(relatedIds);
+    };
 
-        return (
-            <React.Fragment key={relationshipId}>
-                <Typography variant="caption">{relationshipType}-Zuordnung ({relationshipId})</Typography>
+    const handleOnRemove = async (item: ObjectPropsFragment) => {
+        await handleOnDeleteRelationship(item.id);
+    };
+
+    if (items.length === 0) {
+        if (editState) {
+            content = (
+                <React.Fragment key="new-relationship">
+                    <Typography variant="caption"><T keyName="transfer_list.new"/></Typography>
+                    <TransferList
+                        enabled={true}
+                        searchInput={searchInput}
+                        items={[]}
+                        onAdd={async item => {
+                            await handleOnCreateRelationship([item.id]);
+                        }}
+                    />
+                </React.Fragment>
+            );
+        } else {
+            content = (
+                <FormSetNotice key="no-relationship"><T keyName="transfer_list.no_assignement"/></FormSetNotice>
+            );
+        }
+    } else {
+        content = (
+            <React.Fragment key={relationshipType}>
+                <Typography variant="caption">{relationshipType}-<T keyName="transfer_list.assignement"/></Typography>
                 <TransferList
                     enabled={editState}
                     searchInput={searchInput}
@@ -149,28 +149,6 @@ export default function TransferListView(props: TransferListViewProps) {
                 />
             </React.Fragment>
         );
-    });
-
-    if (!content.length) {
-        if (editState) {
-            content = [
-                <React.Fragment key="new-relationship">
-                    <Typography variant="caption">Neue Zuordnung</Typography>
-                    <TransferList
-                        enabled={true}
-                        searchInput={searchInput}
-                        items={[]}
-                        onAdd={async item => {
-                            await handleOnCreateRelationship([item.id]);
-                        }}
-                    />
-                </React.Fragment>
-            ];
-        } else {
-            content = [
-                <FormSetNotice key="no-relationship">Keine Zuordnung getroffen.</FormSetNotice>
-            ];
-        }
     }
 
     return (
@@ -186,7 +164,7 @@ export default function TransferListView(props: TransferListViewProps) {
                         onClick={() => setEditState(false)}
                         startIcon={<CheckIcon/>}
                     >
-                        Bearbeitung abschließen
+                        <T keyName="transfer_list.close"/>
                     </Button>
                 ) : (
                     <Button
@@ -195,7 +173,7 @@ export default function TransferListView(props: TransferListViewProps) {
                         onClick={() => setEditState(true)}
                         startIcon={<EditIcon/>}
                     >
-                        Zuordnung bearbeiten
+                        <T keyName="transfer_list.edit"/>
                     </Button>
 
                 )}

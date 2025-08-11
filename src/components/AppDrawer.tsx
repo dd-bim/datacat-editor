@@ -23,15 +23,14 @@ import PublishIcon from "@mui/icons-material/Publish";
 import DescriptionIcon from "@mui/icons-material/Description";
 import {
   ClassEntity,
-  DataTemplateEntity,
   DocumentEntity,
-  GroupEntity,
-  MeasureEntity,
-  ModelEntity,
+  ThemeEntity,
+  ValueListEntity,
   PropertyEntity,
   PropertyGroupEntity,
   UnitEntity,
   ValueEntity,
+  DictionaryEntity
 } from "../domain";
 import AppTitle from "./AppTitle";
 import { useAdminAccess } from "../hooks/useAuthContext";
@@ -72,7 +71,7 @@ export const AppDrawerItem: FunctionComponent<
   
   const location = useLocation();
   const isActive = location.pathname === to || 
-                  (to !== '/' && location.pathname.startsWith(to));
+                  (to !== '/' && location.pathname.startsWith(to + '/'));
   
   return (
     <Tooltip title={tooltip} aria-label={tooltip} arrow enterDelay={500}>
@@ -239,71 +238,63 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
 
           <AppDrawerItem
             icon={<DocumentEntity.Icon />}
-            primary={<T keyName="app_drawer.documents">Referenzdokumente</T>}
+            primary={<T keyName="document.titlePlural">Referenzdokumente</T>}
             to={`/${DocumentEntity.path}`}
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
-            icon={<ModelEntity.Icon />}
-            primary={<T keyName="app_drawer.models">Fachmodelle</T>}
-            to={`/${ModelEntity.path}`}
+            icon={<DictionaryEntity.Icon />}
+            primary={<T keyName="dictionary.titlePlural">Dictionary</T>}
+            to={`/${DictionaryEntity.path}`}
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
-            icon={<GroupEntity.Icon />}
-            primary={<T keyName="app_drawer.groups">Gruppen</T>}
-            to={`/${GroupEntity.path}`}
+            icon={<ThemeEntity.Icon />}
+            primary={<T keyName="theme.titlePlural">Themen</T>}
+            to={`/${ThemeEntity.path}`}
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
             icon={<ClassEntity.Icon />}
-            primary={<T keyName="app_drawer.classes">Klassen</T>}
+            primary={<T keyName="class.titlePlural">Klassen</T>}
             to={`/${ClassEntity.path}`}
             onClick={handleItemClick}
           />
 
-          {/* <AppDrawerItem
-            icon={<DataTemplateEntity.Icon />}
-            primary={<T keyName="app_drawer.data_templates">Datenvorlagen</T>}
-            to={`/${DataTemplateEntity.path}`}
-            disabled
-            onClick={handleItemClick}
-          /> */}
-
           <AppDrawerItem
             icon={<PropertyGroupEntity.Icon />}
-            primary={<T keyName="app_drawer.property_groups">Merkmalsgruppen</T>}
+            primary={<T keyName="propertyGroup.titlePlural">Merkmalsgruppen</T>}
             to={`/${PropertyGroupEntity.path}`}
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
             icon={<PropertyEntity.Icon />}
-            primary={<T keyName="app_drawer.properties">Merkmale</T>}
+            primary={<T keyName="property.titlePlural">Merkmale</T>}
             to={`/${PropertyEntity.path}`}
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
-            icon={<MeasureEntity.Icon />}
-            primary={<T keyName="app_drawer.measures">Größen</T>}
-            to={`/${MeasureEntity.path}`}
+            icon={<ValueListEntity.Icon />}
+            primary={<T keyName="valuelist.titlePlural">Wertelisten</T>}
+            to={`/${ValueListEntity.path}`}
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
             icon={<UnitEntity.Icon />}
-            primary={<T keyName="app_drawer.units">Maßeinheiten</T>}
+            primary={<T keyName="unit.titlePlural">Maßeinheiten</T>}
             to={`/${UnitEntity.path}`}
             onClick={handleItemClick}
           />
 
           <AppDrawerItem
             icon={<BookmarksIcon />}
-            primary={<T keyName="app_drawer.values">Werte</T>}
+            primary={<T keyName="value.titlePlural">Werte</T>}
             to={`/${ValueEntity.path}`}
             onClick={handleItemClick}
           />

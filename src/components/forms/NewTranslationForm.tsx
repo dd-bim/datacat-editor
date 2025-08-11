@@ -1,12 +1,11 @@
 import { Controller, useForm } from "react-hook-form";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { defaultFormFieldOptions } from "../../hooks/useFormStyles";
-import LanguageSelectField from "./LanugageSelectField";
+import LanguageSelectField from "./LanguageSelectField";
 import InlineButtonGroup from "./InlineButtonGroup";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import {
-  LanguageFilterInput,
-  LanguagePropsFragment,
+  LanguagePropsFragment
 } from "../../generated/types";
 import { styled } from "@mui/material/styles";
 import { T } from "@tolgee/react";
@@ -27,7 +26,7 @@ type NewTranslationFormValues = {
 };
 
 type NewTranslationFormProps = {
-  languageFilter?: LanguageFilterInput;
+  languageFilter?: string[];
   onCancel(): void;
   onSubmit(values: NewTranslationFormValues): void;
   TextFieldProps: Partial<
@@ -60,7 +59,7 @@ const NewTranslationForm = (props: NewTranslationFormProps) => {
 
   const onChange = (value: LanguagePropsFragment) => {
     if (value) {
-      setValue("languageTag", value.languageTag, {
+      setValue("languageTag", value.code, {
         shouldValidate: true,
         shouldDirty: true,
       });

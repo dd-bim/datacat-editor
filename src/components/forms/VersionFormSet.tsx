@@ -3,8 +3,10 @@ import FormSet, { FormSetDescription, FormSetTitle } from "./FormSet";
 import React, { FC } from "react";
 import {
   Maybe,
-  useSetVersionMutation,
-  VersionInput,
+  useUpdateMajorVersionMutation,
+  useUpdateMinorVersionMutation,
+  UpdateMajorVersionInput,
+  UpdateMinorVersionInput
 } from "../../generated/types";
 import { useSnackbar } from "notistack";
 import { styled } from "@mui/material/styles";
@@ -12,8 +14,8 @@ import { T } from "@tolgee/react";
 
 type VersionFormSetProps = {
   id: string;
-  versionId?: Maybe<string>;
-  versionDate?: Maybe<string>;
+  majorVersion?: Maybe<number>;
+  minorVersion?: Maybe<number>;
 };
 
 // Replace makeStyles with styled component
@@ -22,20 +24,26 @@ const StyledFormSetDescription = styled(FormSetDescription)(({ theme }) => ({
 }));
 
 const VersionFormSet: FC<VersionFormSetProps> = (props) => {
-  const { id, versionId, versionDate } = props;
+  const { id, majorVersion, minorVersion } = props;
   const { enqueueSnackbar } = useSnackbar();
 
   const defaultValues = {
-    versionId: versionId ?? "",
-    versionDate: versionDate ?? "",
+    majorVersion: majorVersion ?? 1,
+    minorVersion: minorVersion ?? 0,
   };
 
-  const [setVersion] = useSetVersionMutation();
+  const [setMajorVersion] = useUpdateMajorVersionMutation();
+  const [setMinorVersion] = useUpdateMinorVersionMutation();
 
-  const onSubmit = async (values: VersionInput) => {
-    await setVersion({
+  const onSubmit = async (values: UpdateMajorVersionInput & UpdateMinorVersionInput) => {
+    await setMajorVersion({
       variables: {
-        input: { catalogEntryId: id, version: values },
+        input: { catalogEntryId: id, majorVersion: values.majorVersion },
+      },
+    });
+        await setMinorVersion({
+      variables: {
+        input: { catalogEntryId: id, minorVersion: values.minorVersion },
       },
     });
     enqueueSnackbar("Version aktualisiert.");

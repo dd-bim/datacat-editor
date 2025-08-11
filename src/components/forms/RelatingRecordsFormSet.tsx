@@ -1,8 +1,8 @@
-import FormSet, {FormSetProps, FormSetTitle} from "./FormSet";
+import FormSet, { FormSetProps, FormSetTitle } from "./FormSet";
 import React from "react";
 import CatalogEntryChip from "../CatalogEntryChip";
-import {Typography} from "@mui/material";
-import {CatalogRecord} from "../../types";
+import { Typography, Box } from "@mui/material";
+import { CatalogRecord } from "../../types";
 import { styled } from "@mui/material/styles";
 
 // Replace makeStyles with styled component
@@ -12,9 +12,10 @@ const StyledFormSetTitle = styled(FormSetTitle)(({ theme }) => ({
 
 export type MemberFormSetProps = {
     title: React.ReactNode;
-    emptyMessage: string;
+    emptyMessage: React.ReactNode;
     relatingRecords: CatalogRecord[];
     FormSetProps?: FormSetProps;
+    tagged?: string;
 };
 
 export const sortEntries = (left: CatalogRecord, right: CatalogRecord) => {
@@ -28,11 +29,18 @@ export default function RelatingRecordsFormSet(props: MemberFormSetProps) {
         title,
         emptyMessage,
         relatingRecords,
-        FormSetProps
+        FormSetProps,
+        tagged
     } = props;
 
     const chips = Array.from(relatingRecords)
         .sort(sortEntries)
+        .filter(record => {
+            if (tagged) {
+                return record.tags?.some(tag => tag.id === tagged);
+            }
+            return true; // Wenn kein Tag-Filter gesetzt ist, alle durchlassen
+        })
         .map(record => (
             <CatalogEntryChip
                 key={record.id}
@@ -43,10 +51,13 @@ export default function RelatingRecordsFormSet(props: MemberFormSetProps) {
     return (
         <FormSet {...FormSetProps}>
             <StyledFormSetTitle>{title}</StyledFormSetTitle>
-            {chips.length
-                ? chips
-                : <Typography variant="body2" color="textSecondary">{emptyMessage}</Typography>
-            }
+            {chips.length ? (
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 0 }}>
+                    {chips}
+                </Box>
+            ) : (
+                <Typography variant="body2" color="textSecondary">{emptyMessage}</Typography>
+            )}
         </FormSet>
     );
 }

@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from "react";
+import {useState, useEffect} from "react";
 import {Controller, useForm} from "react-hook-form";
 import TextField, {TextFieldProps} from "@mui/material/TextField";
 import {defaultFormFieldOptions} from "../../hooks/useFormStyles";
 import { styled } from "@mui/material/styles";
 import InlineButtonGroup from "./InlineButtonGroup";
 import {ClickAwayListener} from "@mui/material";
-import {TranslationPropsFragment} from "../../generated/types";
+import {TextPropsFragment} from "../../generated/types";
 
 // Verbesserte Formular-Container-Styles
 const FormContainer = styled('form')({
@@ -33,11 +33,11 @@ const ButtonContainer = styled('div')({
 });
 
 export type TranslationFormValues = {
-    value: string;
+    text: string;
 };
 
 export type TranslationFormProps = {
-    translation: TranslationPropsFragment;
+    translation: TextPropsFragment;
     onSubmit(values: TranslationFormValues): void;
     onDelete?(): void;
     TextFieldProps?: Partial<Omit<TextFieldProps, "name" | "onFocus">>;
@@ -91,11 +91,11 @@ const TranslationForm = (props: TranslationFormProps) => {
     };
 
     const textFieldProps = {
-        id: `${translation.id}-value`,
-        label: `${translation.language.displayLanguage} / ${translation.language.displayCountry}`,
+        id: `${translation.id}-text`,
+        label: `${translation.language.nativeName} / ${translation.language.code}`,
         required: true,
         InputProps: {
-            lang: translation.language.languageTag,
+            lang: translation.language.code,
             readOnly: !isEditMode,
             onFocus: !isEditMode ? onEdit : undefined
         }
@@ -111,7 +111,7 @@ const TranslationForm = (props: TranslationFormProps) => {
         <ClickAwayListener onClickAway={onClickAway}>
             <FormContainer onSubmit={handleSubmit(onSave)}>
                 <Controller
-                    name="value"
+                    name="text"
                     control={control}
                     rules={{required: true}}
                     render={({ field }) => (
@@ -120,7 +120,7 @@ const TranslationForm = (props: TranslationFormProps) => {
                             {...defaultFormFieldOptions}
                             {...TextFieldProps}
                             {...textFieldProps}
-                            error={!!errors.value}
+                            error={!!errors.text}
                         />
                     )}
                 />

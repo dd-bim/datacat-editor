@@ -1,9 +1,8 @@
-import React from "react";
 import FormSet, {FormSetDescription, FormSetTitle} from "./FormSet";
 import {
     TranslationInput,
-    TranslationPropsFragment,
-    TranslationUpdateInput,
+    TextPropsFragment,
+    UpdateTextInput,
     useAddCommentMutation,
     useDeleteCommentMutation,
     useUpdateCommentMutation
@@ -20,41 +19,44 @@ const StyledFormSetDescription = styled(FormSetDescription)(({ theme }) => ({
 
 type CommentFormSetProps = {
     catalogEntryId: string,
-    comments: TranslationPropsFragment[]
+    comments: TextPropsFragment[]
+    refetch: () => Promise<any>;
 }
 
 const CommentFormSet = (props: CommentFormSetProps) => {
-    const {catalogEntryId, comments} = props;
+    const {catalogEntryId, comments, refetch } = props;
     const {enqueueSnackbar} = useSnackbar();
     const [addComment] = useAddCommentMutation();
     const [updateComment] = useUpdateCommentMutation();
     const [deleteComment] = useDeleteCommentMutation();
 
-    const handleOnAdd = async (comment: TranslationInput) => {
+    const handleOnAdd = async (text: TranslationInput) => {
         await addComment({
             variables: {
-                input: {catalogEntryId, comment}
+                input: {catalogEntryId, text}
             }
         });
         enqueueSnackbar("Kommentar hinzugefügt.");
+        await refetch();
     };
 
-    const handleOnUpdate = async (comment: TranslationUpdateInput) => {
+    const handleOnUpdate = async (comment: UpdateTextInput) => {
         await updateComment({
             variables: {
-                input: {catalogEntryId, comment}
+                input: comment
             }
         });
         enqueueSnackbar("Kommentar aktualisiert.");
     };
 
-    const handleOnDelete = async (commentId: string) => {
+    const handleOnDelete = async (textId: string) => {
         await deleteComment({
             variables: {
-                input: {catalogEntryId, commentId}
+                input: { textId }
             }
         });
         enqueueSnackbar("Kommentar gelöscht.")
+        await refetch();
     };
 
     return (

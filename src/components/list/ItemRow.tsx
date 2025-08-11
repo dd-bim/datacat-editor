@@ -1,7 +1,6 @@
 import { ListChildComponentProps } from "react-window";
 import {
   ListItem,
-  ListItemSecondaryAction,
   ListItemText,
   ListItemIcon,
   IconButton,
@@ -9,7 +8,6 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/AddBox";
 import ClearIcon from "@mui/icons-material/Eject";
-import React from "react";
 import { getEntityType } from "../../domain";
 import { styled } from "@mui/material/styles";
 import { CatalogRecord } from "../../types";
@@ -87,7 +85,10 @@ export default function ItemRow(props: ListChildComponentProps) {
                   size="small"
                   edge="end"
                   aria-label="Entfernen"
-                  onClick={() => onRemove(item)}
+                  onClick={e => {
+                    e.stopPropagation();
+                    onRemove(item);
+                  }}
                 >
                   <ClearIcon fontSize="small" />
                 </IconButton>
@@ -101,11 +102,11 @@ export default function ItemRow(props: ListChildComponentProps) {
             <entityType.Icon />
           </ListItemIcon>
         )}
-        <Tooltip title={item.description ?? ""} arrow>
+        <Tooltip title={item.name ?? ""} arrow>
           <StyledListItemText
             primary={item.name}
             primaryTypographyProps={{
-              style: { fontStyle: item.description ? "italic" : undefined },
+              style: { fontStyle: item.name ? "italic" : undefined },
             }}
           />
         </Tooltip>

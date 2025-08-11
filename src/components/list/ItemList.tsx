@@ -16,7 +16,7 @@ export type ItemListProps = {
     disabledItems?: string[];
     height?: number;
     showRecordIcons?: boolean;
-    searchLabel?: string;
+    searchLabel?: React.ReactNode;
     searchTerm?: string;
     onSelect?(item: CatalogRecord): void;
     onSearch?(searchTerm: string): void;

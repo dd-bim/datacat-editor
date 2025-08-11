@@ -1,68 +1,64 @@
 {
   "verification": {
     "title": "Verification Criterion",
+    "error": "Error when calling the verification routine.",
+    "no_data": "No data found.",
     "category_title": "Category",
+    "total_count": "Total count",
     "criteria": {
       "integrity": "Integrity",
       "uniqueness": "Uniqueness",
       "language": "Language"
     },
     "category": {
-      "no_model_group": "Domain models without a group",
-      "no_group_class": "Groups without a class",
-      "no_class_properties": "Classes without properties/property groups",
+      "no_theme_class": "Themes without class",
+      "no_class_properties": "Classes without properties and property groups",
       "no_property_group": "Property groups without properties",
-      "no_property": "Properties without a class or property group",
-      "no_measure": "Measures without properties",
-      "no_unit": "Units without a measure",
-      "no_value": "Values without a measure",
+      "no_property": "Properties without class or property group",
+      "no_valuelist": "Value lists without property",
+      "no_unit": "Units without value list or property",
+      "no_value": "Values without value list",
       "duplicate_id": "ID duplicates",
       "duplicate_name_type": "Name duplicates (within a type)",
       "duplicate_name_all": "Name duplicates (entire dataset)",
       "missing_description": "Missing description",
       "missing_description_en": "Missing description (English)",
-      "missing_translation_en": "Missing name translation (English)"
+      "missing_translation_en": "Missing name translation (English)",
+      "no_dictionary": "Concepts without dictionary",
+      "no_document": "Concepts without reference document",
+      "inactive_concepts": "Inactive concepts"
     },
     "result": {
-      "select_criteria": "Select a criterion and category.",
-      "select_entry": "Select a result from the list view to display properties."
-    },
-    "edit": {
-      "group": "Edit group",
-      "class": "Edit class",
-      "property": "Edit property",
-      "measure": "Edit measure",
-      "unit": "Edit unit",
-      "value": "Edit value",
-      "model": "Edit domain model"
+      "select_criteria": "Select verification criterion and category.",
+      "select_entry": "Select result in the list view to display properties."
     }
   },
   "home": {
     "title": "Welcome to datacat",
     "about.title": "About the Project",
-    "about.description": "The datacat platform is a cross-project research effort by the Department of 'Geodesy and BIM' at the Faculty of Geoinformation at the University of Applied Sciences Dresden (HTW Dresden). The platform aims to provide user- and developer-friendly components for creating and publishing classification systems, object catalogs, and property databases in the context of the BIM methodology.",
+    "about.description": "The datacat platform is a cross-project research effort by the Department of 'Geodesy and BIM' at the Faculty of Geoinformation at the University of Applied Sciences Dresden (HTW Dresden). The platform aims to provide user- and developer-friendly components for the creation and publication of classification systems, object catalogs, and property databases in the context of the BIM methodology.",
     "components.title": "The Components",
-    "components.description": "The platform is currently divided into the core components: datacat API, a developer-friendly, self-documenting GraphQL interface for complex queries on the data catalog, and the datacat editor, a browser-based user tool for navigating and editing the data.",
+    "components.description": "The platform is currently divided into the core components datacat API, a developer-friendly, self-documenting GraphQL interface for complex queries on the data catalog, and the datacat editor, a browser-based user tool for navigating and editing the data.",
     "methodology.title": "The Methodology",
-    "methodology.description": "The core of the development is a data schema closely aligned with established standards such as DIN EN ISO 12006-3 and DIN EN ISO 23387, making it possible to maintain even complex classification systems in the catalog. The API is entirely agnostic regarding the application-specific structure to be implemented in the data catalog.",
+    "methodology.description": "The core of the development is a data schema closely aligned with established standards DIN EN ISO 12006-3 and DIN EN ISO 23387, which should make it possible to maintain even complex classification systems in the catalog. The API is completely agnostic regarding the application-specific structure to be implemented in the data catalog.",
     "opensource.title": "Open Source",
     "opensource.description": "datacat is developed as free and open-source software under the GPLv3 license and can be freely used and distributed, including commercially. The source code is hosted on GitHub. Any form of support for the project is welcome."
   },
   "intro": {
     "description1": "datacat editor is a web-based, open-source tool for collaboratively developing data catalogs for the construction industry. The source code is available under the GPL v3 license.",
-    "description2": "In a data catalog, you can name, describe, and categorize concepts such as actors, activities, building elements, and properties according to function and form. By creating relationships between these concepts, the built environment can be described more precisely.",
-    "description3": "The developed dataset is available for retrieval via an API for developers of import/export tools and CAD/BIM plugins. In the future, validation routines will be developed to identify inconsistencies such as unused concepts, potential duplicates, and missing translations in the catalog.",
-    "description4": "datacat is developed at the University of Applied Sciences Dresden (HTW Dresden). If you are interested in the project or have questions about the application, please feel free to contact us directly through the details provided below.",
-    "call_to_action": "This is a software preview. Your direct involvement as an open-source developer or indirect support through feedback is highly appreciated."
+    "description2": "In a data catalog, you can name, describe, and categorize concepts such as actors, activities, building elements, and properties in multiple languages according to their function and form. By creating relationships between these concepts, the built environment can ultimately be described in more detail.",
+    "description3": "The developed dataset is available for retrieval via an API for developers of import/export tools and CAD/BIM plugins. In the future, validation routines will be developed to identify inconsistencies such as unused concepts, possible duplicates, and missing translations in the catalog.",
+    "description4": "datacat is developed at the University of Applied Sciences Dresden (HTW Dresden). If you are interested in the project or have questions about the application, please feel free to contact us directly using the details provided below.",
+    "call_to_action": "Your direct involvement as an open-source developer or indirect support through feedback is highly appreciated."
   },
   "profile": {
-    "heading": "Edit Profile",
-    "update_success": "Profile updated!",
-    "error": "An error occurred while fetching the profile.",
+    "heading": "Edit user profile",
+    "update_success": "User profile updated!",
+    "error": "An error occurred while fetching the user profile.",
     "form": {
-      "first_name": "First Name",
+      "first_name": "First name",
       "first_name_helper": "Providing your first name is mandatory. It will be displayed to other catalog users to attribute entries and changes and facilitate collaboration.",
-      "last_name": "Last Name",
+      "last_name": "Last name",
       "last_name_helper": "Providing your last name is mandatory. It will be displayed to other catalog users to attribute entries and changes and facilitate collaboration.",
       "email": "Email",
       "email_helper": "Providing a valid email address is mandatory. It will be used to validate your user account and inform you about changes in the catalog.",
@@ -73,241 +69,125 @@
   "boarding": {
     "welcome": "Welcome to the datacat editor",
     "login_tab": "Login",
-    "signup_tab": "Sign Up",
+    "signup_tab": "Sign up",
     "login_message": "Please use your username and password to log in to the editor.",
-    "signup_message": "You can register to gain read access to the catalog. If you want to contribute to the catalog, please inform the administrator.",
-    "signup_success": "You will receive a confirmation code via email in the next few minutes to activate your account.",
+    "signup_message": "You can register to get read access to the catalog. If you want to participate in editing the catalog, please inform the administrator.",
+    "signup_success": "You will receive a confirmation code by email within the next few minutes to activate your account.",
     "login_success": "Welcome back!"
   },
-  "import": {
-    "heading": "Import Catalog (CSV)",
-    "description": "This page allows you to import entities and their relationships. Similar to the export, two CSV files can be imported here. One file contains the entities in the following schema:",
-    "entity_columns": "id;type;tags;name;name_en;description;version;createdBy;created;lastModified;lastModifiedBy",
-    "entity_columns_note": "Columns marked with r must be filled in for each entity, columns marked with o can optionally contain values. The remaining columns are not considered during import and can therefore remain empty.",
-    "tags_note": "To make the entities visible in the datacatEditor interface, they must be given tags of the chosen taxonomy there. (Reference document, domain model, group, class, property group, property, measure, value, unit of measure)",
-    "relation_columns_note": "The other file optionally contains the relationships between entities with the following columns:",
-    "relation_columns": "entity1;entity1Type;relationId;relationshipType;entity2;entity2Type",
-    "relation_columns_note_2": "The entity types can be left blank here.",
-    "entities_file_button": "Select Entities File",
-    "relations_file_button": "Select Relations File",
-    "import_button": "Import",
-    "import_tag_label": "Import Tag (optional)",
-    "csv_templates_button": "CSV Templates",
-    "no_file_selected": "No file selected",
-    "note_entities_only": "NOTE: Only entities will be imported, no relationships between them!",
-    "note_relations_only": "NOTE: Only relationships will be imported. The entities must already be present in the feature server!",
-    "error_columns_mismatch": "The column names do not match the specification.",
-    "error_creating_record": "Error creating record",
-    "error_creating_relationship": "Error creating relationship",
-    "new_tag_created": "New tag created",
-    "create_tag_failed": "Failed to create new tag",
-    "created_record": "Created new record",
-    "created_relationship": "Created new relationship"
-  },
-  "import_excel": {
-    "heading": "Import Catalog (Excel Table)",
-    "description": "This page also allows you to import entities and their relationships. Unlike the CSV import, an external Excel table can be used. For the import to work, the columns must be correctly specified in which the respective entities are listed: External Document, Domain model, group, class, property, measure (enum), unit of measure, and value.",
-    "select_all": "Select/Deselect All",
-    "label": "Label:",
-    "sheet": "Sheet",
-    "name": "Name",
-    "id": "ID",
-    "document": "External Documents",
-    "model": "Domain Models",
-    "group": "Groups",
-    "class": "Klasses",
-    "property": "Properties",
-    "measure": "Measures",
-    "unit": "Units",
-    "value": "Values",
-    "sheetName": "Sheet Name",
-    "relations": "Relations:",
-    "rel_doc_model": "External Document to Domain Model",
-    "rel_model_group": "Domain Model to Group",
-    "rel_group_class": "Group to Class",
-    "rel_class_property": "Class to Property",
-    "rel_property_measure": "Property to Measure",
-    "rel_measure_unit": "Measure to Unit",
-    "rel_measure_value": "Measure to Value",
-    "validation_failed": "Validation failed. Please check the error messages.",
-    "validation_success": "Validation successful. You can now import the Excel file.",
-    "no_file_selected": "No file selected",
-    "select_file_button": "Select Excel Table",
-    "check_inputs_button": "Check Inputs",
-    "import_tag_label": "Import Tag (optional)",
-    "import_button": "Import Excel Table",
-    "reset_button": "Reset Inputs",
-    "progress": "{progress}% completed"
-  },
-  "app_drawer": {
-    "general": "General",
-    "home": "Home",
-    "edit_profile": "Edit Profile",
-    "search_catalog": "Search Catalog",
-    "audit": "Check/Verify",
-    "import": "Import",
-    "export": "Export",
-    "ids_export": "IDS Export",
-    "graphiql": "GraphiQL Interface",
-    "new_tags": "Create New Tags",
-    "grid_view": "Grid View",
-    "catalog": "Catalog",
-    "documents": "External Documents",
-    "models": "Domain Models",
-    "groups": "Groups",
-    "classes": "Classes",
-    "data_templates": "Data Templates",
-    "property_groups": "Property Groups",
-    "properties": "Properties",
-    "measures": "Measures",
-    "units": "Units",
-    "values": "Values"
-  },
   "signup": {
-    "username_helper": "A username is required. No whitespace. Must start with a letter and have a minimum length of 3.",
+    "username_helper": "A username is required. No spaces. Must start with a letter and have a minimum length of 3.",
     "password_helper": "A password is required and must have a minimum length of 8.",
     "username_label": "Username",
     "username_error": "The username cannot be changed after registration.",
     "password_label": "Password",
-    "password_repeat_label": "Repeat Password",
+    "password_repeat_label": "Repeat password",
     "password_repeat_error": "The input does not match the password.",
-    "first_name_label": "First Name",
-    "last_name_label": "Last Name",
+    "first_name_label": "First name",
+    "last_name_label": "Last name",
     "email_label": "Email",
-    "email_error": "Please provide a valid email address.",
-    "organization_label": "Organization",
-    "signup_button": "Sign Up"
+    "email_error": "Please enter a valid email address.",
+    "organization_label": "Company / Institute",
+    "signup_button": "Sign up"
   },
   "login": {
     "username_label": "Username",
     "password_label": "Password",
     "login_button": "Login"
   },
+  "import": {
+    "heading": "Import catalog (CSV)",
+    "description": "On this page, entities and their relationships can be imported. As with export, two CSV files can be imported here. One file contains the entities in the following schema:",
+    "entity_columns_note": "Columns marked with o can optionally contain values.",
+    "tags_note": "To make the entities visible in the datacat editor interface, they must be given tags from the taxonomy chosen there. (Reference document, Dictionary, Theme, Class, Property group, Property, Value list, Value, Unit of measurement)",
+    "relation_columns_note": "The other file optionally contains the relationships between entities with the following columns:",
+    "entities_file_button": "Select entities file",
+    "relations_file_button": "Select relationships file",
+    "import_button": "Import",
+    "import_tag_label": "Import tag (optional)",
+    "csv_templates_button": "CSV templates",
+    "no_file_selected": "No file selected",
+    "note_entities_only": "NOTE: Only entities, not relationships between them, will be imported!",
+    "note_relations_only": "NOTE: Only relationships will be imported. The entities must already exist in the property server!",
+    "error_columns_mismatch": "The column names do not match the specification.",
+    "error_creating_record": "Error creating record",
+    "error_creating_relationship": "Error creating relationship",
+    "new_tag_created": "New tag created",
+    "create_tag_failed": "Failed to create new tag",
+    "created_record": "New record created",
+    "created_relationship": "New relationship created"
+  },
+  "import_excel": {
+    "heading": "Import catalog (Excel table)",
+    "description": "On this page, entities and their relationships can also be imported. Unlike the CSV import, an external Excel table can be used. For the import to work, the columns must be specified correctly in which the respective entities are listed: Reference document, Dictionary, Theme, Class, Property, Value list, Unit of measurement, and Value.",
+    "select_all": "Select/deselect all",
+    "label": "Label",
+    "sheet": "Sheet",
+    "name": "Name",
+    "id": "ID",
+    "sheetName": "Sheet",
+    "relations": "Relations:",
+    "rel_concept_doc": "Concept - Reference document",
+    "rel_concept_dictionary": "Concept - Dictionary",
+    "rel_theme_class": "Theme - Class",
+    "rel_class_property": "Class - Property",
+    "rel_property_valuelist": "Property - Value list",
+    "rel_valuelist_unit": "Value list - Unit",
+    "rel_valuelist_value": "Value list - Value",
+    "rel_property_unit": "Property - Unit",
+    "rel_class_propertygroup": "Class - Property group",
+    "rel_propertygroup_property": "Property group - Property",
+    "validation_failed": "Validation failed. Please check the error messages.",
+    "validation_success": "Validation successful. You can now import the Excel file.",
+    "no_file_selected": "No file selected",
+    "select_file_button": "Select Excel file",
+    "check_inputs_button": "Check inputs",
+    "import_tag_label": "Import tag (optional)",
+    "import_button": "Import Excel file",
+    "reset_button": "Reset inputs",
+    "progress": "{progress}% completed"
+  },
+  "app_drawer": {
+    "general": "General",
+    "home": "Home",
+    "edit_profile": "Edit profile",
+    "search_catalog": "Search catalog",
+    "audit": "Audit",
+    "import": "Import",
+    "export": "Export",
+    "ids_export": "IDS Export",
+    "graphiql": "GraphiQL Interface",
+    "new_tags": "Create new tags",
+    "grid_view": "Table view",
+    "catalog": "Catalog"
+  },
   "create_entry_form": {
-    "name_label": "Name (de)",
-    "name_helper": "Name the concept in the professional context and as precisely as possible. Separate synonyms with a semicolon.",
-    "description_label": "Description (de)",
-    "description_helper": "Describe the concept in its meaning. Use the description in particular to distinguish it from possibly similarly named but professionally different concepts.",
-    "comment_label": "Comment (de)",
+    "name_label": "Name (en)",
+    "name_helper": "Name the concept in the technical context and as precisely as possible. Separate synonyms with a semicolon.",
+    "description_label": "Description (en)",
+    "description_helper": "Describe the concept in its meaning. Use the description especially to distinguish it from possibly similarly named but technically different concepts.",
+    "comment_label": "Comment (en)",
     "comment_helper": "Leave a comment on this concept. Additional information can be exchanged between editors here.",
+    "languageOfCreator": "Language of creator",
+    "languageOfCreator_helper": "The language in which the concept was created.",
+    "countryOfOrigin": "Country of origin",
+    "countryOfOrigin_helper": "The country in which the concept was created.",
     "id_label": "ID",
-    "id_helper": "The ID is usually generated automatically. An ID can be specified if it has already been assigned to the concept in a higher context.",
-    "version_id_label": "Version ID",
-    "version_date_label": "Version date",
-    "save_button": "Save"
+    "id_helper": "The ID is usually generated automatically. An ID can be specified if it has already been assigned to the concept in a higher-level context.",
+    "save_button": "Save",
+    "dictionary": "Dictionary",
+    "dictionary_helper": "The dictionary in which the concept is created. A concept can only be created in one dictionary.",
+    "name_duplicate_hint": "Note: This name is already taken. You can still save the concept."
   },
   "create_entry_split_button": {
-    "add_entry": "Add Entry",
+    "add_entry": "Add entry",
     "show_more_options": "Show more options",
     "create_entry": "Create {title}"
   },
   "composite_catalog_entry_view": {
-    "more_results": "More Results",
+    "more_results": "More results",
     "edit_entry": "Edit {title}",
     "select_entry": "Select {title} in the list view to display properties."
-  },
-  "document_form": {
-    "loading": "Loading external document...",
-    "error": "An error occurred...",
-    "update_success": "Update successful.",
-    "delete_success": "External document deleted.",
-    "described_concepts": "Concepts described by the external document",
-    "delete_button": "Delete"
-  },
-  "domain_class_form": {
-    "loading": "Loading class...",
-    "error": "An error occurred...",
-    "update_success": "Update successful.",
-    "delete_success": "Class deleted.",
-    "assigned_property_groups": "Property groups assigned to the class {name}",
-    "assigned_properties": "Properties directly assigned to the class {name}",
-    "reference_documents": "describing this class",
-    "no_reference_documents": "Not described by any external document in the data catalog",
-    "groups_using_class": "using this class",
-    "no_groups_using_class": "The class is not used by any group",
-    "delete_button": "Delete"
-  },
-  "domain_group_form": {
-    "loading": "Loading group...",
-    "error": "An error occurred...",
-    "update_success": "Update successful.",
-    "delete_success": "Group deleted.",
-    "grouped_classes": "Grouped classes",
-    "grouped_classes_description": "Classes assigned to this group.",
-    "reference_documents": " describing this group",
-    "no_reference_documents": "Not described by any external document in the data catalog",
-    "domain_models_using_group": "using this group",
-    "no_domain_models_using_group": "The group is not used by any domain model",
-    "delete_button": "Delete"
-  },
-  "domain_model_form": {
-    "loading": "Loading Domain Model...",
-    "error": "An error occurred...",
-    "update_success": "Update successful.",
-    "delete_success": "Domain Model deleted.",
-    "reference_documents": "describing this domain model",
-    "no_reference_documents": "Not described by any external document in the data catalog",
-    "delete_button": "Delete"
-  },
-  "property_group_form": {
-    "loading": "Loading property group...",
-    "error": "An error occurred...",
-    "update_success": "Update successful.",
-    "delete_success": "Property group deleted.",
-    "grouped_properties": "grouped in this property group",
-    "reference_documents": "describing this property group",
-    "no_reference_documents": "Not described by any external document in the data catalog",
-    "assigned_classes": "to which this property group is assigned",
-    "no_assigned_classes": "This property group is not assigned to any class",
-    "delete_button": "Delete"
-  },
-  "property_form": {
-    "loading": "Loading property...",
-    "error": "An error occurred...",
-    "update_success": "Update successful.",
-    "delete_success": "Property deleted.",
-    "property_measure": "of the property",
-    "reference_documents": "describing this property",
-    "no_reference_documents": "Not described by any external document in the data catalog",
-    "aggregating_property_groups": "that aggregate this property",
-    "no_aggregating_property_groups": "This property is not used in any property group",
-    "assigned_classes": "to which this property is directly assigned",
-    "no_assigned_classes": "This property is not directly assigned to any class",
-    "delete_button": "Delete"
-  },
-  "measure_form": {
-    "loading": "Loading measure...",
-    "error": "An error occurred...",
-    "update_success": "Update successful.",
-    "delete_success": "Measure deleted.",
-    "applicable_units": "applicable to this measure",
-    "value_range": "Value range of the",
-    "reference_documents": " describing this measure",
-    "no_reference_documents": "Not described by any external document in the data catalog",
-    "quantified_properties": "quantified by this measure",
-    "no_quantified_properties": "This measure is not used by any property",
-    "delete_button": "Delete"
-  },
-  "unit_form": {
-    "loading": "Loading unit...",
-    "error": "An error occurred...",
-    "delete_success": "Unit deleted.",
-    "reference_documents": "describing this unit",
-    "no_reference_documents": "Not described by any external document in the data catalog",
-    "assigned_measures": "to which this unit is assigned",
-    "no_assigned_measures": "This unit is not used by any measure",
-    "delete_button": "Delete"
-  },
-  "value_form": {
-    "loading": "Loading value...",
-    "error": "An error occurred...",
-    "update_success": "Update successful.",
-    "delete_success": "Value deleted.",
-    "reference_documents": "describing this value",
-    "no_reference_documents": "Not described by any external document in the data catalog",
-    "assigned_measures": "to which this value is assigned",
-    "no_assigned_measures": "This value is not used by any measure",
-    "delete_button": "Delete"
   },
   "delete_import_view": {
     "heading": "Delete catalog entries with a specific tag",
@@ -315,29 +195,31 @@
     "tag_label": "Tag",
     "search_button": "Search catalog entries with tag",
     "delete_button": "Delete catalog entries",
-    "no_entries_found": "No catalog entries found with the tag '{{tag}}'.",
-    "tag_not_exist": "The tag {tag} does not exist!",
-    "delete_success": "Deleted catalog record {name}",
-    "error_occurred": "An error has occurred...",
-    "delete_summary": "Successfully deleted catalog entries with tag '{{tag}}'.",
-    "delete_error_summary": "Failed to delete catalog entries with tag '{{tag}}'..",
-    "entries_to_delete": "Found catalog entries to delete:",
-    "confirm_delete_title": "Confirm Deletion",
-    "confirm_delete_message": "Are you sure you want to delete all catalog entries with the tag '{{tag}}'? This action cannot be undone.",
+    "no_entries_found": "No catalog entries found with the tag.",
+    "delete_success": "Catalog entry deleted",
+    "error_occurred": "An error occurred...",
+    "search_error": "An error occurred during the search.",
+    "delete_summary": "Catalog entries successfully deleted.",
+    "delete_error_summary": "Catalog entries could not be deleted.",
+    "entries_to_delete": "Catalog entries found for deletion:",
+    "confirm_delete_title": "Confirm deletion",
+    "confirm_delete_message": "Are you sure you want to delete all catalog entries with the tag {tag}? This action cannot be undone.",
     "cancel": "Cancel",
-    "confirm_delete": "Yes, delete",
-    "search_error": "An error occurred during the search."
+    "confirm_delete": "Yes, delete"
   },
   "export_view": {
-    "heading": "Export catalog",
-    "description": "The following button starts the download of a ZIP file containing two CSV files inside.\nThe file 'Entities.csv' contains all catalog entries with their metadata.\nThe file 'Relationships.csv' stores the relationships between the catalog entries.\nThe result file is encoded in UTF-8, uses commas (,) as delimiters, and double quotes (\") as text qualifiers.\nThe data is ready for export as soon as the button is no longer grayed out.",
-    "export_button": "Export CSV"
-  },
+      "heading": "Export catalog as CSV",
+      "description": "The following button starts the download of a ZIP file containing two CSV files.\nThe file 'Entities.csv' contains all catalog entries with their metadata.\nThe file 'Relationships.csv' stores the relationships between the catalog entries.\nThe resulting file is encoded in UTF-8, uses comma (,) as a separator, and double quotes (\") as text qualifier.\nThe data is ready for export as soon as the button is no longer grayed out.",
+      "export_button": "Export CSV",
+      "export_ontology_button": "Export ontology",
+      "heading_ontology": "Export catalog as ontology (.ttl)",
+      "description_ontology": "The ontology export currently includes all classes, properties, value lists, and values. It is important for the ontology export that the names of the concepts are unique to avoid errors. To ensure this, the verification tools can be used.\nThe ontology can be exported using either German or English names as identifiers."
+    },
   "tag_view": {
-    "heading": "Existing Tags",
-    "explanation": "This page is used to add new tags to the database. The tags can then be used in the grid view to add new tags to the existing entries.",
+    "heading": "Existing tags",
+    "explanation": "This page is used to add new tags to the database. The tags can then be used in the table view to add new tags to the existing entries.",
     "new_tag_label": "Create new tags",
-    "add_tag_button": "Add Tag",
+    "add_tag_button": "Add tag",
     "loading": "Loading...",
     "error_loading": "Error loading tags: {error}",
     "enter_tag_name": "Please enter a tag name.",
@@ -346,130 +228,223 @@
     "tag_added_error": "Error adding tag \"{tag}\"."
   },
   "hierarchy": {
-    "error": "An error occurred while fetching the property tree.",
-    "select_concept": "Select a concept in the tree view to display properties.",
-    "edit_group": "Edit group",
-    "edit_class": "Edit class",
-    "edit_property": "Edit property",
-    "edit_measure": "Edit measure",
-    "edit_unit": "Edit unit",
-    "edit_value": "Edit value",
-    "edit_model": "Edit domain model",
+    "error": "An error occurred while loading the property tree.",
+    "select_concept": "Select concept in the tree view to display properties.",
     "search_catalog": "Search catalog"
   },
   "grid_view": {
-    "loading": "Loading table contents",
+    "loading": "Table contents are loading",
+    "loading_table_contents": "Loading table contents",
     "tag_filter_title": "Filter by tags",
-    "select_tag": "Select a tag",
-    "add_tag": "Add Tag",
-    "show_only_documents": "Show only external documents",
-    "show_only_models": "Show only domain models",
-    "show_only_groups": "Show only groups",
-    "show_only_classes": "Show only classes",
-    "show_only_property_groups": "Show only property groups",
-    "show_only_properties": "Show only properties",
+    "tag_filter_placeholder": "Select tag",
+    "select_tag": "Select tag",
+    "add_tag": "Add tag",
     "show_all": "Show all",
-    "reference_documents": "External documents",
-    "domain_models": "Domain models",
-    "groups": "Groups",
-    "classes": "Classes",
-    "property_groups": "Property groups",
-    "properties": "Properties",
-    "tag_filter_placeholder": "Select a tag",
     "please_select_tag": "Please select a tag.",
     "adding_tags": "Adding tags...",
     "tags_added_success": "Tags added successfully.",
     "no_tags_added": "No tags were added.",
     "error_updating_tags": "Error updating tags.",
-    "adding_tags_please_wait": "Adding tags, please wait...",
+    "adding_tags_please_wait": "Tags are being added, please wait...",
+    "show_only_documents": "Show only reference documents",
+    "show_only_dictionaries": "Show only dictionaries",
+    "show_only_themes": "Show only themes",
+    "show_only_classes": "Show only classes",
+    "show_only_property_groups": "Show only property groups",
+    "show_only_properties": "Show only properties",
     "selection_help": "Selection help:",
     "for_range": "for range selection",
     "for_multiple": "for multiple selection",
     "drag_to_select": "Drag to select multiple rows",
     "please_select_rows": "Please select at least one row",
     "tag_id_not_found": "Tag ID not found",
-    "tags_added_with_skips": "Tags added successfully. {count} entries were skipped because they already have the tag",
-    "all_entries_already_tagged": "All {count} selected entries already have this tag",
-    "tags_added_with_existing": "Added tag to {added} entries. {existing} entries already had this tag.",
-    "tags_added_count": "Added tag to {count} entries.",
-    "no_tags_to_add": "No tags needed to be added.",
-    "tags_adding_failed": "Failed to add tags."
+    "tags_added_with_skips": "Tags added. {count} entries were skipped because they already have the tag",
+    "all_entries_already_tagged": "All {count} selected entries already have the tag",
+    "tags_added_with_existing": "Tag added to {added} entries. {existing} entries already had this tag.",
+    "tags_added_count": "Tag added to {count} entries.",
+    "no_tags_to_add": "No tags need to be added.",
+    "tags_adding_failed": "Adding tags failed.",
+    "loading_hierarchy_data": "Loading hierarchy data...",
+    "show_only_documents_tooltip": "Shows only the external documents column",
+    "show_only_models_tooltip": "Shows only the domain models column",
+    "show_only_themes_tooltip": "Shows only the themes column",
+    "show_only_classes_tooltip": "Shows only the classes column",
+    "show_only_properties_tooltip": "Shows only the properties column",
+    "show_only_property_groups_tooltip": "Shows only the property groups column",
+    "show_all_columns_tooltip": "Shows all columns again",
+    "refresh": "Refresh",
+    "refresh_data_tooltip": "Manually reload data",
+    "refreshing_data": "Refreshing data...",
+    "data_refreshed": "Data refreshed successfully.",
+    "refresh_failed": "Refresh failed.",
+    "error_fetching_latest_tags": "Error fetching latest tags.",
+    "tags_adding_failed_count": "Failed to add {count} tags.",
+    "search_placeholder": "Search in table...",
+    "total_entries": "total entries",
+    "selected": "selected",
+    "export_csv": "CSV Export",
+    "export_csv_tooltip": "Download table data as CSV file",
+    "export_success": "CSV export downloaded successfully",
+    "table_density": "Table density",
+    "density_large": "Large",
+    "density_medium": "Medium",
+    "density_small": "Small",
+    "rows_per_page": "Rows per page:",
+    "of": "of",
+    "more_than": "more than",
+    "multiselect_help": "Multi-select: Ctrl + Click"
   },
-  "error":{
-    "error": "An error occurred..."
+  "error": {
+    "error": "An error has occurred..."
   },
   "document": {
-    "title": "External Document",
-    "titlePlural": "External Documents",
-    "description": "An entry of the type external document is used to map external documents, books or other written information.",
-    "loading": "Loading external document...",
-    "TransferList": "By the external document described ",
-    "TransferList2": "concepts"
+    "title": "Reference document",
+    "titlePlural": "Reference documents",
+    "edit": "Edit reference document",
+    "description": "An entry of type reference document is used to represent external documents, books, or other written information.",
+    "loading": "Loading reference document...",
+    "more_infos": "More information",
+    "references": ", described by this reference document",
+    "no_references": "Does not describe any concepts in the data catalog.",
+    "uri": "URI",
+    "uri_helper": "The URI of the reference document. It is used to reference the document.",
+    "author": "Author",
+    "author_helper": "The author of the reference document. Can be a person or an organization.",
+    "isbn": "ISBN",
+    "isbn_helper": "The ISBN of the reference document. Used to uniquely identify books.",
+    "publisher": "Publisher",
+    "publisher_helper": "The publisher of the reference document. Can be a person or an organization.",
+    "dateOfPublication": "Date of publication",
+    "dateOfPublication_helper": "The date the reference document was published.",
+    "languageTag": "Language",
+    "languageTag_helper": "The language in which the document is written."
   },
-  "model": {
-    "title": "Domain Model",
-    "titlePlural": "Domain Models",
-    "loading": "Loading Domain model...", 
-    "TransferList": "By the domain model described ",
-    "TransferList2": "Groups"
+  "dictionary": {
+    "title": "Dictionary",
+    "titlePlural": "Dictionaries",
+    "edit": "Edit dictionary",
+    "loading": "Loading dictionary...",
+    "delete_success": "Dictionary deleted.",
+    "related_concepts": ", contained in the dictionary",
+    "no_related_concepts": "The dictionary contains no concepts."
   },
-  "group": {
-    "title": "Group",
-    "titlePlural": "Groups",
-    "loading": "Loading group...",
-    "TransferList": "Grouped ",
-    "TransferList2": "classes"
+  "theme": {
+    "title": "Theme",
+    "titlePlural": "Themes",
+    "edit": "Edit theme",
+    "loading": "Loading theme...",
+    "delete_success": "Theme deleted.",
+    "assigned_classes": ", assigned to this theme",
+    "child_themes": "Subthemes",
+    "parent_theme": "Parent theme",
+    "assigning_theme": ", to which this theme is assigned",
+    "no_assigning_theme": "The theme is not subordinate to any other theme."
   },
   "class": {
     "title": "Class",
     "titlePlural": "Classes",
+    "edit": "Edit class",
     "loading": "Loading class...",
-    "TransferList": "Property groups ",
-    "TransferList2": " assigned to the ",
-    "TransferList3": "class"
-  },
-  "dataTemplate": {
-    "title": "Data Template",
-    "titlePlural": "Data Templates"
+    "delete_success": "Class deleted.",
+    "assigned_concepts": ", assigned to the class",
+    "themes_using_class": ", containing this class",
+    "no_themes_using_class": "The class is not used by any theme."
   },
   "propertyGroup": {
-    "title": "Property Group",
-    "titlePlural": "Property Groups"
+    "title": "Property group",
+    "titlePlural": "Property groups",
+    "edit": "Edit property group",
+    "loading": "Loading property group...",
+    "delete_success": "Property group deleted.",
+    "grouped_properties": ", contained in the property group",
+    "assigned_classes": ", assigned to these classes",
+    "no_assigned_classes": "This property group has not been assigned to any class"
   },
   "property": {
     "title": "Property",
-    "titlePlural": "Properties"
+    "titlePlural": "Properties",
+    "edit": "Edit property",
+    "dataType": "Data type",
+    "dataType_helper": "The data type of the property. This can be a simple data type such as string, integer, or boolean.",
+    "dataFormat": "Data format",
+    "dataFormat_helper": "The data format of the property.",
+    "loading": "Loading property...",
+    "delete_success": "Property deleted.",
+    "assigned_concepts": ", assigned to this property",
+    "assigning_property_groups": ", in which this property is contained",
+    "no_assigning_property_groups": "The property is not used in any property group.",
+    "assigned_classes": ", assigned to these classes",
+    "no_assigned_classes": "The property has not been directly assigned to any class"
   },
-  "measure": {
-    "title": "Measure",
-    "titlePlural": "Measures"
+  "valuelist": {
+    "title": "Value list",
+    "titlePlural": "Value lists",
+    "edit": "Edit value list",
+    "language": "Language",
+    "language_helper": "Language of the value list",
+    "loading": "Loading value list...",
+    "delete_success": "Value list deleted.",
+    "applicable_units": ", which use the value list",
+    "value_range": ", assigned to this value list",
+    "assigned_properties": "to which this value list is assigned",
+    "no_assigned_properties": "The value list has not been assigned to any property"
   },
   "unit": {
     "title": "Unit",
-    "titlePlural": "Units"
+    "titlePlural": "Units",
+    "edit": "Edit unit",
+    "scale": "Scale",
+    "scale_helper": "The scale of the unit. This can be a linear or logarithmic scale.",
+    "base": "Base",
+    "base_helper": "The base of the unit. This is the quantity to which the unit refers.",
+    "loading": "Loading unit...",
+    "delete_success": "Unit deleted.",
+    "assigned_to_properties": "to which this unit is assigned",
+    "no_assigned_to_properties": "The unit is not used by any property",
+    "no_assigned_to_valueLists": "The unit is not used by any value list",
+    "offset": "Offset",
+    "coefficient": "Coefficient",
+    "dimension": "Dimension"
   },
   "value": {
     "title": "Value",
-    "titlePlural": "Values"
+    "titlePlural": "Values",
+    "edit": "Edit value",
+    "nominalValue": "Nominal value",
+    "nominalValue_helper": "The nominal value of the value. This is the value that is usually measured or specified.",
+    "loading": "Loading value...",
+    "delete_success": "Value deleted.",
+    "assigned_valuelists": "to which this value is assigned",
+    "no_assigned_valuelists": "The value is not used by any value list"
   },
-  "tolerance": {
-    "description": "The tolerance of a value can be specified in absolute and percentage terms."
+  "concept": {
+    "title": "Concept",
+    "titlePlural": "Concepts",
+    "reference_documents": ", described by this concept",
+    "similar_concepts": "Similar concepts"
   },
   "translation_form": {
-    "no_translations": "No translations available yet.",
+    "no_translations": "No translation available yet.",
     "add_translation": "Add translation",
     "add_translation_title": "Add translation",
-        "language": "Language",
+    "language": "Language",
     "language_helper": "Language in which the translation is created."
   },
   "version": {
     "title": "Version",
-    "description": "The version can be freely defined and formatted for the application domain.",
-    "date": "Date"
+    "description": "The version can be freely determined and formatted for the application domain.",
+    "majorVersion_label": "Major version",
+    "minorVersion_label": "Minor version"
+  },
+  "status": {
+    "title": "Status",
+    "description": "The concept can be set to active or inactive.",
+    "active": "Active",
+    "inactive": "Inactive"
   },
   "meta": {
-    "title": "Meta information",
-    "description": "Technical information on the concept",
+    "title": "Metadata",
+    "description": "Technical information about the concept",
     "keyword": "Keywords",
     "created": "Created",
     "created_by": "Created by",
@@ -480,40 +455,351 @@
     "title": "Name",
     "description": "Identifies the concept in the respective language."
   },
+  "example": {
+    "title": "Example",
+    "description": "Example use of the concept."
+  },
+  "definition": {
+    "title": "Definition",
+    "description": "Defines the concept in the respective language."
+  },
   "comment": {
     "title": "Comment",
-    "description": "Enables editors to exchange additional information, e.g. on the processing status of the concept."
+    "description": "Allows editors to exchange additional information, e.g. about the editing status of the concept."
   },
   "description": {
     "title": "Description",
-    "description": "Characterizes the concept in more detail in terms of its form and application concept."
+    "description": "Characterizes the concept in terms of its characteristics and application concept."
   },
-  "search":{
+  "search": {
     "search": "Search",
     "search_placeholder": "Search catalog",
-    "search_results": "Search Results"
+    "search_results": "Search results"
   },
   "footer": {
     "contact": "Questions & Contact",
-    "report_issue": "Report Issue",
+    "report_issue": "Report issue",
     "version": "datacat editor {version}"
   },
-  "nominal_value_form": {
-    "title": "Nominal Value",
-    "role_label": "Role",
-    "type_label": "Data Type",
-    "value_label": "Value",
-    "updated": "Nominal value updated.",
-    "removed": "Nominal value removed."
+  "update": {
+    "update_success": "Update successful."
   },
-  "tolerance_form": {
-    "title": "Tolerance",
-    "type_label": "Type",
-    "lower_tolerance_label": "Lower Tolerance",
-    "upper_tolerance_label": "Upper Tolerance",
-    "save_button": "Save",
-    "delete_button": "Delete",
-    "reset_button": "Reset",
-    "description": "The tolerance of a value can be specified in absolute and percentage terms."
+  "delete": {
+    "delete_button": "Delete"
+  },
+  "transfer_list": {
+    "new": "New assignment",
+    "no_assignement": "No assignment made.",
+    "assignement": "Assignment",
+    "close": "Finish editing",
+    "edit": "Edit assignment"
+  },
+  "ids_export": {
+    "tag_filter": {
+      "classes": "Tag filter for classes:",
+      "properties": "Tag filter for properties:"
+    },
+    "actions": {
+      "add_all_with_tag": "Add all with tag \"{tag}\"",
+      "add_all": "All",
+      "select_all": "Select all"
+    },
+    "success_messages": {
+      "auto_save_found": "Auto-saved data found. You can restore it via 'Save & Load'.",
+      "property_set_created": "IFC Propertyset \"{name}\" was successfully created and is immediately available.",
+      "specification_loaded": "Specification was successfully loaded.",
+      "ids_generated": "IDS file was successfully generated and can now be downloaded.",
+      "ids_downloaded": "IDS file was successfully downloaded.",
+      "ids_data_loaded": "IDS data was successfully loaded.",
+      "auto_saved": "Data was automatically saved."
+    },
+    "error_messages": {
+      "login_required": "Please log in to create an IDS file."
+    },
+    "notifications": {
+      "classes_with_tag_added": "{count} classes with tag '{tag}' were added.",
+      "no_classes_with_tag": "No classes with tag '{tag}' found.",
+      "properties_with_tag_added": "{count} properties with tag '{tag}' were added.",
+      "no_properties_with_tag": "No properties with tag '{tag}' found."
+    },
+    "messages": {
+      "no_requirements": "No requirements added yet. Click one of the buttons above to add a requirement."
+    },
+    "validation": {
+      "ready_for_export": "All validations passed - ready for export!",
+      "errors_found": "Validation errors found",
+      "warnings": "Warnings",
+      "and_more": "and more"
+    },
+    "requirements": {
+      "title": "IDS title entered",
+      "version": "IDS version entered",
+      "specifications": "Specifications added"
+    },
+    "tooltips": {
+      "export_disabled": "Export not possible: title, version, and at least one specification required"
+    },
+    "tips": {
+      "title": "Export Tips",
+      "filename_based_on_title": "Filename is based on the IDS title",
+      "xml_validated_before_download": "XML is validated before download",
+      "save_project_before_export": "Save your project before export"
+    },
+    "errors": {
+      "unknown_facet": "Unknown facet"
+    },
+    "labels": {
+      "local_created": "Locally created",
+      "classification_system_select": "Select classification system",
+      "select_model_from_datacat": "Select model from datacat",
+      "select_classes_optional": "Select classes (optional)",
+      "search_classes": "Search classes...",
+      "property_group_select": "Property Group (PropertySet)",
+      "select_property_group": "Select property group",
+      "loading_property_groups": "Loading property groups...",
+      "no_property_groups_found": "No property groups found",
+      "create_new_property_set": "Create new IFC Propertyset (Property Group)",
+      "uri_automatic": "URI (automatic)",
+      "select_properties": "Select properties",
+      "search_properties": "Search properties...",
+      "select_all_properties": "Select all",
+      "model_class_select": "Select model/reference document",
+      "class_select": "Select class",
+      "ifc_class_placeholder": "Please enter IFC class (e.g. IFCWALL)",
+      "ifc_classes": "IFC Classes (Multiple Selection)",
+      "ifc_versions": "IFC Versions (Multiple Selection)",
+      "search_values": "Search values...",
+      "ids_name": "IDS Name",
+      "ids_version": "IDS Version",
+      "ids_version_description": "Enter the version of your IDS file (e.g., 1.0, 2.1). This is not the schema version.",
+      "specification_name": "Specification Name",
+      "edit_specification": "Edit Specification",
+      "applicability": "Applicability",
+      "applicability_type": "Applicability",
+      "type_ifc_class": "Type (IFC Class)",
+      "classification": "Classification",
+      "ifc_class": "IFC Class",
+      "classification_auto_ifcclassification": "For classification, IFCCLASSIFICATION is used automatically",
+      "requirements": "Requirements",
+      "datatype_optional": "dataType",
+      "select_datatype": "Select dataType",
+      "cardinality": "Cardinality",
+      "none": "None",
+      "entity_type_select": "Select IFC Entity Type",
+      "entity_type": "Entity Type",
+      "predefined_type_optional": "Predefined Type (optional)",
+      "predefined_type": "Predefined Type",
+      "instructions_optional": "Instructions (optional)",
+      "instructions": "Instructions",
+      "material_select": "Select Material",
+      "materials": "Materials",
+      "material_properties_optional": "Material Properties (optional)",
+      "thermal_properties": "Thermal Properties",
+      "mechanical_properties": "Mechanical Properties",
+      "optical_properties": "Optical Properties",
+      "material_category": "Material Category"
+    },
+    "placeholders": {
+      "ids_name_example": "e.g. Fire-Safety-Requirements-2024",
+      "ids_version_example": "1.0",
+      "ifc_versions_select": "Select IFC versions...",
+      "specification_name_example": "e.g. Check fire protection classes",
+      "ifc_classes_search": "Search and select IFC classes...",
+      "classification_system_search": "Search and select classification system...",
+      "datatype_search": "Search and select data type...",
+      "property_set_search": "Search and select Property Group...",
+      "attribute_model_search": "Search and select model...",
+      "attribute_class_search": "Search and select class...",
+      "entity_type_search": "Search and select entity type...",
+      "predefined_type": "e.g. WALL, COLUMN, BEAM...",
+      "instructions": "Additional instructions or notes...",
+      "material_search": "Search and select material...",
+      "thermal_properties": "e.g. thermal conductivity, specific heat...",
+      "mechanical_properties": "e.g. elastic modulus, tensile strength...",
+      "optical_properties": "e.g. transparency, reflectivity...",
+      "unnamed_ids": "Unnamed IDS",
+      "unnamed_specification": "Unnamed Specification"
+    },
+    "buttons": {
+      "select_facet": "Please select facet",
+      "add_by_tag": "Add",
+      "property": "Property",
+      "classification": "Classification",
+      "attribute": "Attribute",
+      "select_all_properties": "Select all",
+      "select_all_values": "Select all",
+      "add_requirement": "Add Requirement",
+      "create_pset": "create new IFC PropertySet",
+      "entity": "Entity",
+      "material": "Material",
+      "facet": "Facet",
+      "requirement": "Requirement",
+      "export_actions": "Export Actions",
+      "export_requirements": "Export Requirements",
+      "applicability_summary": "Applicability Summary",
+      "last_export": "Last Export",
+      "classes": "Classes",
+      "ifc_versions": "IFC Versions",
+      "classification_system": "Classification System",
+      "type": "Type",
+      "exporting": "Exporting...",
+      "preview_xml": "Preview XML",
+      "add_specification": "Add Specification",
+      "save_and_load": "Save & Load",
+      "generate_ids": "Generate IDS File",
+      "download_ids": "Download IDS File",
+      "cancel": "Cancel",
+      "save_spec": "Save Spec",
+      "save": "Save",
+      "update": "Update"
+    },
+    "value_labels": {
+      "values_for": "Values for"
+    },
+    "cardinality": {
+      "required": "required",
+      "optional": "optional",
+      "prohibited": "prohibited"
+    },
+    "material_category": {
+      "none": "No Category",
+      "concrete": "Concrete",
+      "steel": "Steel",
+      "wood": "Wood",
+      "glass": "Glass",
+      "insulation": "Insulation",
+      "other": "Other"
+    }
+  },
+  "create_property_set": {
+    "title": "Create new IFC Propertyset (Property Group)",
+    "labels": {
+      "property_set_name": "IFC Propertyset name",
+      "description_optional": "Description (optional)",
+      "assign_properties": "Assign properties",
+      "select_properties": "Select properties",
+      "property_values_optional": "Property Values (optional)",
+      "values_from_datacat": "Select values from DataCat:",
+      "custom_values": "Or enter custom values:"
+    },
+    "placeholders": {
+      "property_set_example": "e.g. Geometric Properties",
+      "description_text": "Description of the IFC Propertyset...",
+      "search_and_select": "Search and select properties...",
+      "select_values_from_datacat": "Select values...",
+      "enter_custom_values": "Enter values separated by commas..."
+    },
+    "info": {
+      "selection_help": "Select from the existing properties in datacat those that should belong to this new IFC Propertyset. This Propertyset will only be used locally for IDS creation and will not be saved in the datacat property server.",
+      "values_help": "You can optionally define values for each property. Leave fields empty if no value constraint is desired."
+    },
+    "tag_filter": {
+      "properties": "Tag filter for properties:",
+      "all": "All"
+    },
+    "actions": {
+      "add_all_with_tag": "Add all with tag \"{tag}\"",
+      "cancel": "Cancel",
+      "create": "Create IFC Propertyset",
+      "creating": "Creating..."
+    },
+    "help": {
+      "custom_values_format": "Separate multiple values with commas"
+    },
+    "notifications": {
+      "properties_with_tag_added": "{count} properties with tag \"{tag}\" added",
+      "no_properties_with_tag": "No properties with tag \"{tag}\" found",
+      "name_required": "Please enter a name for the new IFC Propertyset.",
+      "created_successfully": "Propertyset \"{name}\" was successfully created locally.",
+      "creation_error": "Creation error: {error}"
+    },
+    "status": {
+      "properties_selected": "{count} propert{plural} selected"
+    }
+  },
+  "save_load_dialog": {
+    "title": "Save & Load",
+    "tabs": {
+      "ids_files": "IDS Files",
+      "specifications": "Specifications"
+    },
+    "auto_save": {
+      "found_message": "Auto-saved data found from {timestamp}",
+      "restore": "Restore",
+      "discard": "Discard"
+    },
+    "save_section": {
+      "title": "Save",
+      "name_placeholder": "Enter name...",
+      "save_button": "Save"
+    },
+    "load_section": {
+      "title": "Load",
+      "empty_message": "No saved files found"
+    },
+    "buttons": {
+      "close": "Close"
+    }
+  },
+  "common": {
+    "close": "Close",
+    "info": "Information"
+  },
+  "info_dialogs": {
+    "ids_name": {
+      "title": "IDS Name - Help",
+      "content": "The IDS Name is the main title of your Information Delivery Specification.\n\nThis name will be:\n• Used as the title in the generated IDS XML file\n• Used as filename when downloading (special characters will be removed)\n• Used for identification when saving and loading\n\nTip: Choose a meaningful name like 'Structural-Check-2024' or 'Fire-Safety-Requirements'."
+    },
+    "ids_version": {
+      "title": "IDS Version - Help",
+      "content": "The IDS Version is the version number of your specific IDS file (not the schema version).\n\nExamples:\n• '1.0' for the first version\n• '2.1' for a revised version\n• '3.0-beta' for a beta version\n\nThis version is stored in the <ids:version> element of the XML file and helps with version control of your IDS specifications."
+    },
+    "ifc_versions": {
+      "title": "IFC Versions - Help",
+      "content": "Select the IFC versions for which this IDS specification should apply.\n\nAvailable versions:\n• IFC2X3: Older version, still widely used\n• IFC4: Current standard version\n• IFC4X3: Latest version with extended features\n\nYou can select multiple versions if your specification is compatible with different IFC versions."
+    },
+    "specification_name": {
+      "title": "Specification Name - Help",
+      "content": "The name of the individual specification within your IDS file.\n\nAn IDS file can contain multiple specifications. Each specification checks specific aspects of your BIM models.\n\nExamples:\n• 'Check wall properties'\n• 'Validate fire protection classes'\n• 'Verify structural elements'\n\nThe name should clearly describe what this specification validates."
+    },
+    "applicability": {
+      "title": "Applicability - Help",
+      "content": "Applicability defines which BIM objects this specification applies to.\n\n🏗️ Type (IFC Class):\n• Refers to specific IFC object types (e.g. walls, doors, windows)\n• You can select multiple IFC classes\n• Example: IFCWALL, IFCDOOR, IFCWINDOW\n\n🏷️ Classification:\n• Refers to classified objects (e.g. according to DIN 276, OMNICLASS)\n• Uses IFCCLASSIFICATION as IFC class\n• Example: Objects with specific cost groups or functional classes"
+    },
+    "ifc_classes": {
+      "title": "IFC Classes - Help",
+      "content": "Select the IFC entity types this specification applies to.\n\nCommonly used classes:\n• IFCWALL - Walls\n• IFCDOOR - Doors\n• IFCWINDOW - Windows\n• IFCSLAB - Slabs/Floor plates\n• IFCBEAM - Beams\n• IFCCOLUMN - Columns\n• IFCSPACE - Spaces\n\nYou can select multiple classes if the same requirements apply to different object types.\n\nTip: Use the search function to quickly find the desired IFC classes."
+    },
+    "requirements": {
+      "title": "Requirements - Help",
+      "content": "Requirements define what properties the selected objects must have.\n\n🏷️ Classification:\n• Checks classification values (e.g. cost groups, functional classes)\n• Select the classification system and optionally specific classes\n\n📝 Attribute:\n• Checks IFC attributes of objects\n• Example: Name, Description, or other direct object properties\n\n🔧 Property:\n• Checks PropertySets and their properties\n• Example: Fire resistance class, U-value, material type\n• You can define multiple properties and their allowed values\n\nEach requirement can be marked as 'required', 'optional', or 'prohibited'."
+    },
+    "classification_system": {
+      "title": "Classification System - Help",
+      "content": "Select the model or reference document that defines the classification.\n\nThis can be:\n• A cost breakdown system (e.g. DIN 276)\n• A functional classification system\n• A manufacturer-specific classification system\n• A project-specific reference document\n\nThe selected system is used as 'System' in the IDS classification."
+    },
+    "property_group": {
+      "title": "Property Group (PropertySet) - Help",
+      "content": "PropertySets are groups of related properties in IFC.\n\nExamples:\n• Pset_WallCommon - Common wall properties\n• Pset_DoorCommon - Common door properties\n• Pset_SpaceFireSafetyRequirements - Fire safety requirements for spaces\n\nYou can:\n• Select existing PropertySets from the catalog\n• Create new PropertySets with the ➕ button\n• Select multiple properties from one PropertySet\n\nThe URI is automatically generated and references the definition in the catalog."
+    },
+    "datatype": {
+      "title": "Data Type - Help",
+      "content": "The data type defines what kind of values are expected for this property.\n\nCommon data types:\n• IFCLABEL - Short text (e.g. material name)\n• IFCTEXT - Longer text (e.g. description)\n• IFCBOOLEAN - Yes/No values (e.g. load bearing)\n• IFCREAL - Decimal numbers (e.g. U-value: 0.24)\n• IFCINTEGER - Whole numbers (e.g. count: 5)\n• IFCLENGTHMEASURE - Length measures (e.g. 2.5m)\n• IFCAREAMEASURE - Area measures (e.g. 25.5m²)\n\nThe data type is optional but recommended for precise validation."
+    },
+    "cardinality": {
+      "title": "Cardinality - Help",
+      "content": "Cardinality determines whether a property must be present.\n\n✅ Required:\n• The property MUST be present\n• Objects without this property are invalid\n• Default setting for most requirements\n\n❓ Optional:\n• The property CAN be present\n• If present, it must match the defined values\n• If not present, the object is still valid\n\n❌ Prohibited:\n• The property MUST NOT be present\n• Objects with this property are invalid\n• Useful for exclusion rules"
+    },
+    "property_values": {
+      "title": "Property Values - Help",
+      "content": "Here you can define specific values for the selected property.\n\n🎯 Usage:\n• Define allowed values for this property\n• Multiple selection possible for alternative values\n• Examples: REI30, REI60, REI90 for fire resistance classes\n\n📋 Value Enumeration:\n• All selected values are defined as allowed options in the IDS\n• The object must have one of these values to be valid\n• Empty selection means: Any value is allowed (only property must be present)"
+    }
+  },
+  "metadata": {
+    "defaultTitle": "New IDS Specification",
+    "defaultDescription": "Generated IDS specification for building information validation",
+    "defaultPurpose": "Design validation",
+    "defaultMilestone": "Planning",
+    "untitledSpecification": "Untitled Specification"
   }
 }

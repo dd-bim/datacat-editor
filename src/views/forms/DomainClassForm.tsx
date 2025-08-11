@@ -1,11 +1,11 @@
-import React from "react";
 import {
+  RelationshipKindEnum,
   RelationshipRecordType,
   SubjectDetailPropsFragment,
   useDeleteEntryMutation,
   useGetSubjectEntryQuery,
 } from "../../generated/types";
-import { Typography, Button } from "@mui/material";
+import { Typography, Button, Box } from "@mui/material";
 import { useSnackbar } from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
@@ -13,39 +13,46 @@ import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import CommentFormSet from "../../components/forms/CommentFormSet";
 import VersionFormSet from "../../components/forms/VersionFormSet";
-import { PropertyEntity, PropertyGroupEntity } from "../../domain";
+import { PropertyEntity, DocumentEntity, PropertyGroupEntity, ClassEntity, ValueListEntity, UnitEntity } from "../../domain";
 import FormView, { FormProps } from "./FormView";
 import TransferListView from "../TransferListView";
+import TransferListViewRelationshipToSubject from "../TransferListViewRelationshipToSubject";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
-import AssignsPropertyWithValuesFormset from "./AssignsPropertyWithValuesFormset";
-import { T, useTranslate } from "@tolgee/react";
+import { T } from "@tolgee/react";
+import StatusFormSet from "../../components/forms/StatusFormSet";
+import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
+import ExampleFormSet from "../../components/forms/ExampleFormSet";
+import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
+import { useNavigate } from "react-router-dom";
+import DictionaryFormSet from "../../components/forms/DictionaryFormSet";
 
 export default function DomainClassForm(
   props: FormProps<SubjectDetailPropsFragment>
 ) {
-  const { id, onDelete } = props;
+  const { id } = props;
   const { enqueueSnackbar } = useSnackbar();
-  const { t } = useTranslate(); // Moved to top level
+  const navigate = useNavigate();
 
-  // fetch domain model
+  // fetch subjects
   const { loading, error, data, refetch } = useGetSubjectEntryQuery({
     fetchPolicy: "network-only",
     variables: { id },
   });
+
   let entry = data?.node as SubjectDetailPropsFragment | undefined;
   const [deleteEntry] = useDeleteEntryMutation({
-    update: (cache) => {
+    update: (cache: any) => {
       cache.evict({ id: `XtdSubject:${id}` });
       cache.modify({
         id: "ROOT_QUERY",
         fields: {
-          hierarchy: (value, { DELETE }) => DELETE,
+          hierarchy: (_value: any, { DELETE }: any) => DELETE,
         },
       });
       cache.modify({
         id: "ROOT_QUERY",
         fields: {
-          search: (value, { DELETE }) => DELETE,
+          search: (_value: any, { DELETE }: any) => DELETE,
         },
       });
     },
@@ -67,66 +74,106 @@ export default function DomainClassForm(
   const handleOnDelete = async () => {
     await deleteEntry({ variables: { id } });
     enqueueSnackbar(
-      <T keyName="domain_class_form.delete_success">Klasse gelöscht.</T>
+      <T keyName="class.delete_success">Klasse gelöscht.</T>
     );
-    onDelete?.();
+    navigate(`/${ClassEntity.path}`, { replace: true });
   };
 
   const handleOnUpdate = async () => {
     await refetch();
     enqueueSnackbar(
-      <T keyName="domain_class_form.update_success">Update erfolgreich.</T>
+      <T keyName="update.update_success">Update erfolgreich.</T>
     );
   };
 
-  const assignsCollectionsRelationships = entry.assignedCollections.nodes.map(
-    ({ id, relatedCollections }) => ({
-      relationshipId: id,
-      relatedItems: relatedCollections,
-    })
-  );
+  const relatedRelations = entry.connectedSubjects ?? [];
+  const allTargetSubjects = relatedRelations.flatMap(rel => rel.targetSubjects ?? []);
+  const relatedPropertyGroups = {
+    relId: relatedRelations[0]?.id ?? null,
+    targetSubjects: allTargetSubjects,
+    relationshipType: RelationshipKindEnum.XTD_INSTANCE_LEVEL
+  };
 
-  const assignsPropertiesRelationships = entry.assignedProperties.nodes.map(
-    ({ id, relatedProperties }) => ({
-      relationshipId: id,
-      relatedItems: relatedProperties,
-    })
-  );
+  const relatingRelations = entry.connectingSubjects ?? [];
+  const allRelatingSubjects = relatingRelations.flatMap(rel => rel.connectingSubject ?? []);
+
+
+  const relatedProperties = entry.properties ?? [];
+  const relatedDocuments = entry.referenceDocuments ?? [];
 
   return (
     <FormView>
-      <NameFormSet catalogEntryId={id} names={entry.names} />
+      <Box display="flex" gap={2}>
+        <StatusFormSet
+          catalogEntryId={id}
+          status={entry.status}
+        />
+        <DictionaryFormSet
+          catalogEntryId={id}
+          dictionaryId={entry.dictionary?.id ?? ""}
+        />
+      </Box>
+
+      <NameFormSet
+        catalogEntryId={id}
+        names={entry.names[0].texts}
+        refetch={refetch}
+      />
 
       <DescriptionFormSet
         catalogEntryId={id}
-        descriptions={entry.descriptions}
+        descriptions={entry.descriptions?.[0]?.texts ?? []}
+        refetch={refetch}
       />
 
-      <CommentFormSet catalogEntryId={id} comments={entry.comments} />
+      <CommentFormSet
+        catalogEntryId={id}
+        comments={entry.comments?.[0]?.texts ?? []}
+        refetch={refetch}
+      />
 
       <VersionFormSet
         id={id}
-        versionId={entry.versionId}
-        versionDate={entry.versionDate}
+        majorVersion={entry.majorVersion}
+        minorVersion={entry.minorVersion}
       />
 
-      <TransferListView
-        title={
-          <span>
-            <T keyName={"class.TransferList"} />
-            <b>{entry?.name}</b>
-            <T keyName={"class.TransferList2"} />
-            <b>
-              <T keyName={"class.TransferList3"} />
-            </b>
-          </span>
-        }
+      <DefinitionFormSet
+        catalogEntryId={id}
+        definitions={entry.definition?.texts ?? []}
+        refetch={refetch}
+      />
+
+      <ExampleFormSet
+        catalogEntryId={id}
+        examples={entry.examples?.[0]?.texts ?? []}
+        refetch={refetch}
+      />
+
+      <FormSet>
+        <FormSetTitle>
+          <b>
+            <T keyName="document.more_infos" />
+          </b>
+        </FormSetTitle>
+        <Typography sx={{ mt: 2 }}>
+          <T keyName="create_entry_form.languageOfCreator"/>: {entry.languageOfCreator ? entry.languageOfCreator.code : "-"}
+        </Typography>
+        <Typography sx={{ mt: 1 }}>
+          <T keyName="create_entry_form.countryOfOrigin"/>: {entry.countryOfOrigin ? entry.countryOfOrigin.name + " (" + entry.countryOfOrigin.code + ")" : "-"}
+        </Typography>
+      </FormSet>
+
+      {/* Merkmalsgruppen */}
+
+      <TransferListViewRelationshipToSubject
+        title={<span><b><T keyName="propertyGroup.titlePlural" /></b><T keyName={"class.assigned_concepts"} /></span>}
         relatingItemId={id}
-        relationshipType={RelationshipRecordType.AssignsCollections}
-        relationships={assignsCollectionsRelationships}
+        relationshipType={RelationshipRecordType.RelationshipToSubject}
+        relationships={relatedPropertyGroups}
         searchInput={{
           entityTypeIn: [PropertyGroupEntity.recordType],
-          tagged: PropertyGroupEntity.tags,
+          tagged: PropertyGroupEntity.tags
         }}
         onCreate={handleOnUpdate}
         onUpdate={handleOnUpdate}
@@ -134,14 +181,10 @@ export default function DomainClassForm(
       />
 
       <TransferListView
-        title={
-          <span>
-            {t('domain_class_form.assigned_properties', { name: entry.name })}
-          </span>
-        }
+        title={<span><b><T keyName="property.titlePlural" /></b><T keyName={"class.assigned_concepts"} /></span>}
         relatingItemId={id}
-        relationshipType={RelationshipRecordType.AssignsProperties}
-        relationships={assignsPropertiesRelationships}
+        relationshipType={RelationshipRecordType.Properties}
+        relationships={relatedProperties}
         searchInput={{
           entityTypeIn: [PropertyEntity.recordType],
           tagged: PropertyEntity.tags,
@@ -151,49 +194,44 @@ export default function DomainClassForm(
         onDelete={handleOnUpdate}
       />
 
-      <AssignsPropertyWithValuesFormset
-        subject={entry}
-        onChange={handleOnUpdate}
+      <TransferListView
+        title={<span><b><T keyName="document.titlePlural" /></b><T keyName={"concept.reference_documents"} /></span>}
+        relatingItemId={id}
+        relationshipType={RelationshipRecordType.ReferenceDocuments}
+        relationships={relatedDocuments}
+        searchInput={{
+          entityTypeIn: [DocumentEntity.recordType],
+          tagged: DocumentEntity.tags
+        }}
+        onCreate={handleOnUpdate}
+        onUpdate={handleOnUpdate}
+        onDelete={handleOnUpdate}
+      />
+
+      <TransferListView
+        title={<span><b><T keyName={"concept.similar_concepts"} /></b></span>}
+        relatingItemId={id}
+        relationshipType={RelationshipRecordType.SimilarTo}
+        relationships={entry.similarTo ?? []}
+        searchInput={{
+          entityTypeIn: [DocumentEntity.recordType, PropertyEntity.recordType, ValueListEntity.recordType, UnitEntity.recordType, ClassEntity.recordType],
+          tagged: [
+            ...(DocumentEntity.tags ?? []),
+            ...(PropertyEntity.tags ?? []),
+            ...(ValueListEntity.tags ?? []),
+            ...(UnitEntity.tags ?? []),
+            ...(ClassEntity.tags ?? [])
+          ]
+        }}
+        onCreate={handleOnUpdate}
+        onUpdate={handleOnUpdate}
+        onDelete={handleOnUpdate}
       />
 
       <RelatingRecordsFormSet
-        title={
-          <span>
-            <b>
-              <T keyName="document.titlePlural" />
-            </b>
-            ,{" "}
-            <T keyName="domain_class_form.reference_documents">
-              die diese Klasse beschreiben
-            </T>
-          </span>
-        }
-        emptyMessage={
-            t('domain_class_form.no_reference_documents')
-        }
-        relatingRecords={
-          entry?.documentedBy.nodes.map((node) => node.relatingDocument) ?? []
-        }
-      />
-
-      <RelatingRecordsFormSet
-        title={
-          <span>
-            <b>
-              <T keyName="group.titlePlural" />
-            </b>
-            ,{" "}
-            <T keyName="domain_class_form.groups_using_class">
-              die diese Klasse anwenden
-            </T>
-          </span>
-        }
-        emptyMessage={
-            t('domain_class_form.no_groups_using_class')
-        }
-        relatingRecords={
-          entry?.collectedBy.nodes.map((node) => node.relatingCollection) ?? []
-        }
+        title={<span><b><T keyName="theme.titlePlural" /></b><T keyName="class.themes_using_class"></T></span>}
+        emptyMessage={<T keyName="class.no_themes_using_class" />}
+        relatingRecords={allRelatingSubjects}
       />
 
       <MetaFormSet entry={entry} />
@@ -204,7 +242,7 @@ export default function DomainClassForm(
         startIcon={<DeleteForeverIcon />}
         onClick={handleOnDelete}
       >
-        <T keyName="domain_class_form.delete_button">Löschen</T>
+        <T keyName="delete.delete_button">Löschen</T>
       </Button>
     </FormView>
   );

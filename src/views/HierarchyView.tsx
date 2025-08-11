@@ -3,30 +3,30 @@ import { Paper, Typography, Stack, Box, Skeleton, Alert } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 import { styled } from "@mui/material/styles";
 import { Hierarchy } from "../components/Hierarchy";
-import { ConceptPropsFragment, usePropertyTreeQuery } from "../generated/types";
-import DomainModelForm from "./forms/DomainModelForm";
-import DomainGroupForm from "./forms/DomainGroupForm";
+import { ObjectPropsFragment, usePropertyTreeQuery } from "../generated/types";
+import ThemeForm from "./forms/ThemeForm";
 import DomainClassForm from "./forms/DomainClassForm";
 import PropertyGroupForm from "./forms/PropertyGroupForm";
 import PropertyForm from "./forms/PropertyForm";
-import MeasureForm from "./forms/MeasureForm";
+import ValueListForm from "./forms/ValueListForm";
 import UnitForm from "./forms/UnitForm";
 import ValueForm from "./forms/ValueForm";
 import {
-  DomainModelIcon,
-  DomainGroupIcon,
+  ThemeIcon,
   DomainClassIcon,
   PropertyGroupIcon,
+  DictionaryIcon,
   PropertyIcon,
   MeasureIcon,
   UnitIcon,
   ValueIcon,
-  GroupEntity,
+  ThemeEntity,
   ClassEntity,
   PropertyEntity,
-  MeasureEntity,
+  ValueListEntity,
   UnitEntity,
   ValueEntity,
+  PropertyGroupEntity,
   getEntityType,
 } from "../domain";
 import { T } from "@tolgee/react";
@@ -78,10 +78,10 @@ const HierarchyView = () => {
   });
   
   // State for the currently selected concept:
-  const [selectedConcept, setSelectedConcept] = useState<ConceptPropsFragment | null>(null);
+  const [selectedConcept, setSelectedConcept] = useState<ObjectPropsFragment | null>(null);
 
   // Memoize the callback to prevent unnecessary re-renders
-  const handleOnSelect = useCallback((concept: ConceptPropsFragment) => {
+  const handleOnSelect = useCallback((concept: ObjectPropsFragment) => {
     setSelectedConcept(concept);
   }, []);
 
@@ -140,20 +140,20 @@ const HierarchyView = () => {
     const entityType = getEntityType(recordType, tags.map(x => x.id));
     
     switch(entityType?.path) {
-      case GroupEntity.path:
+      case ThemeEntity.path:
         return (
           <>
             <Typography variant="h5">
-              <DomainGroupIcon /> <T keyName="hierarchy.edit_group">Gruppe bearbeiten</T>
+              <ThemeIcon /> <T keyName="theme.edit"/>
             </Typography>
-            <DomainGroupForm id={id} onDelete={handleDelete} />
+            <ThemeForm id={id} onDelete={handleDelete} />
           </>
         );
       case ClassEntity.path:
         return (
           <>
             <Typography variant="h5">
-              <DomainClassIcon /> <T keyName="hierarchy.edit_class">Klasse bearbeiten</T>
+              <DomainClassIcon /> <T keyName="class.edit"/>
             </Typography>
             <DomainClassForm id={id} onDelete={handleDelete} />
           </>
@@ -162,25 +162,25 @@ const HierarchyView = () => {
         return (
           <>
             <Typography variant="h5">
-              <PropertyIcon /> <T keyName="hierarchy.edit_property">Merkmal bearbeiten</T>
+              <PropertyIcon /> <T keyName="property.edit"/>
             </Typography>
             <PropertyForm id={id} onDelete={handleDelete} />
           </>
         );
-      case MeasureEntity.path:
+      case ValueListEntity.path:
         return (
           <>
             <Typography variant="h5">
-              <MeasureIcon /> <T keyName="hierarchy.edit_measure">Größe bearbeiten</T>
+              <MeasureIcon /> <T keyName="valuelist.edit"/>
             </Typography>
-            <MeasureForm id={id} onDelete={handleDelete} />
+            <ValueListForm id={id} onDelete={handleDelete} />
           </>
         );
       case UnitEntity.path:
         return (
           <>
             <Typography variant="h5">
-              <UnitIcon /> <T keyName="hierarchy.edit_unit">Einheit bearbeiten</T>
+              <UnitIcon /> <T keyName="unit.edit"/>
             </Typography>
             <UnitForm id={id} onDelete={handleDelete} />
           </>
@@ -189,18 +189,27 @@ const HierarchyView = () => {
         return (
           <>
             <Typography variant="h5">
-              <ValueIcon /> <T keyName="hierarchy.edit_value">Wert bearbeiten</T>
+              <ValueIcon /> <T keyName="value.edit"/>
             </Typography>
             <ValueForm id={id} onDelete={handleDelete} />
+          </>
+        );
+      case PropertyGroupEntity.path:
+        return (
+          <>
+            <Typography variant="h5">
+              <PropertyGroupIcon /> <T keyName="propertyGroup.edit"/>
+            </Typography>
+            <PropertyGroupForm id={id} onDelete={handleDelete} />
           </>
         );
       default:
         return (
           <>
             <Typography variant="h5">
-              <DomainModelIcon /> <T keyName="hierarchy.edit_model">Fachmodell bearbeiten</T>
+              <DomainClassIcon /> <T keyName="class.edit"/>
             </Typography>
-            <DomainModelForm id={id} onDelete={handleDelete} />
+            <DomainClassForm id={id} onDelete={handleDelete} />
           </>
         );
     }

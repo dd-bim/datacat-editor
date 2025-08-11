@@ -1,8 +1,7 @@
-import { tolgee } from './providers/tolgee'; // Importiere deine global initialisierte Tolgee-Instanz
-import DomainModelIcon from "@mui/icons-material/Category";
+import { tolgee } from './providers/tolgee';
+import ThemeIcon from "@mui/icons-material/Category";
 import DomainClassIcon from "@mui/icons-material/Class";
 import ReferenceDocumentIcon from "@mui/icons-material/Gavel";
-import DomainGroupIcon from "@mui/icons-material/FolderSpecial";
 import PropertyGroupIcon from "@mui/icons-material/AccountTree";
 import { SvgIconComponent } from "@mui/icons-material";
 import PropertyIcon from "@mui/icons-material/Palette";
@@ -10,14 +9,16 @@ import ValueIcon from "@mui/icons-material/LocalOffer";
 import RelationshipIcon from '@mui/icons-material/SettingsEthernet';
 import DataTemplateIcon from '@mui/icons-material/DynamicFeed';
 import { CatalogRecordType } from "./generated/types";
-import MeasureIcon from '@mui/icons-material/Speed';
 import UnitIcon from '@mui/icons-material/AcUnit';
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import DictionaryIcon from '@mui/icons-material/ImportContacts';
+import MeasureIcon from '@mui/icons-material/FormatListNumbered';
+
 
 export {
   DataTemplateIcon,
   DomainClassIcon,
-  DomainGroupIcon,
-  DomainModelIcon,
+  ThemeIcon,
   MeasureIcon,
   PropertyGroupIcon,
   PropertyIcon,
@@ -25,6 +26,8 @@ export {
   RelationshipIcon,
   UnitIcon,
   ValueIcon,
+  HelpOutlineIcon,
+  DictionaryIcon
 };
 
 export type Entity = {
@@ -49,23 +52,23 @@ export const DocumentEntity: Entity = {
   export: true
 };
 
-export const ModelEntity: Entity = {
-  tags: ["6f96aaa7-e08f-49bb-ac63-93061d4c5db2"],
-  get title() { return tolgee.t("model.title"); },
-  get titlePlural() { return tolgee.t("model.titlePlural"); },
-  recordType: CatalogRecordType.Bag,
-  path: "model",
-  Icon: DomainModelIcon,
+export const DictionaryEntity: Entity = {
+  tags: ["c1c7016b-f85c-43c7-a696-71e75555062b"],
+  get title() { return tolgee.t("dictionary.title"); },
+  get titlePlural() { return tolgee.t("dictionary.titlePlural"); },
+  recordType: CatalogRecordType.Dictionary,
+  path: "dictionary",
+  Icon: DictionaryIcon,
   export: true
 };
 
-export const GroupEntity: Entity = {
+export const ThemeEntity: Entity = {
   tags: ["5997da9b-a716-45ae-84a9-e2a7d186bcf9"],
-  get title() { return tolgee.t("group.title"); },
-  get titlePlural() { return tolgee.t("group.titlePlural"); },
-  recordType: CatalogRecordType.Bag,
-  path: "group",
-  Icon: DomainGroupIcon,
+  get title() { return tolgee.t("theme.title"); },
+  get titlePlural() { return tolgee.t("theme.titlePlural"); },
+  recordType: CatalogRecordType.Subject,
+  path: "theme",
+  Icon: ThemeIcon,
   export: true
 };
 
@@ -79,20 +82,11 @@ export const ClassEntity: Entity = {
   export: true
 };
 
-export const DataTemplateEntity: Entity = {
-  tags: ["576db5b0-9cbb-4da5-9132-3eda2b2c579b"],
-  get title() { return tolgee.t("dataTemplate.title"); },
-  get titlePlural() { return tolgee.t("dataTemplate.titlePlural"); },
-  recordType: CatalogRecordType.Bag,
-  path: "data-template",
-  Icon: DataTemplateIcon
-};
-
 export const PropertyGroupEntity: Entity = {
-  tags: ["a27c8e3c-5fd1-47c9-806a-6ded070efae8"],
+  tags: ["7c9ffe6e-3c8b-4cd2-b57b-4cd102325603"],
   get title() { return tolgee.t("propertyGroup.title"); },
   get titlePlural() { return tolgee.t("propertyGroup.titlePlural"); },
-  recordType: CatalogRecordType.Nest,
+  recordType: CatalogRecordType.Subject,
   path: "property-group",
   Icon: PropertyGroupIcon,
   export: true
@@ -108,12 +102,12 @@ export const PropertyEntity: Entity = {
   export: true
 };
 
-export const MeasureEntity: Entity = {
+export const ValueListEntity: Entity = {
   tags: ["57172977-a42f-4e05-8109-cd906ec7f43c"],
-  get title() { return tolgee.t("measure.title"); },
-  get titlePlural() { return tolgee.t("measure.titlePlural"); },
-  recordType: CatalogRecordType.Measure,
-  path: "measure",
+  get title() { return tolgee.t("valuelist.title"); },
+  get titlePlural() { return tolgee.t("valuelist.titlePlural"); },
+  recordType: CatalogRecordType.ValueList,
+  path: "valuelist",
   Icon: MeasureIcon,
   export: true
 };
@@ -140,19 +134,18 @@ export const ValueEntity: Entity = {
 
 export const Domain = [
   DocumentEntity,
-  ModelEntity,
-  GroupEntity,
+  DictionaryEntity,
+  ThemeEntity,
   ClassEntity,
-  DataTemplateEntity,
   PropertyGroupEntity,
   PropertyEntity,
-  MeasureEntity,
+  ValueListEntity,
   UnitEntity,
   ValueEntity
 ];
 
 export function getEntityType(recordType: string, tags?: string[]): Entity {
-  for (const id of tags ?? []) {
+  for (const id of tags || []) {
     for (const entityType of Domain) {
       if (entityType.tags?.includes(id)) {
         return entityType;

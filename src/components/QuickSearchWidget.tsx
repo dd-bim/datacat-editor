@@ -1,13 +1,13 @@
 import {useNavigate} from "react-router-dom";
 import { styled } from "@mui/material/styles";
-import React, {useRef, useState} from "react";
+import {useRef, useState} from "react";
 import {Popper} from "@mui/material";
 import Fade from "@mui/material/Fade";
 import Paper from "@mui/material/Paper";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
-import {useFindItemQuery} from "../generated/types";
+import {SearchResultPropsFragment, useFindItemQuery} from "../generated/types";
 import SearchField from "./SearchField";
 import {Domain, getEntityType} from "../domain";
 import useDebounce from "../hooks/useDebounce";
@@ -41,9 +41,9 @@ export function QuickSearchWidget(props: QuickSearchWidgetProps) {
 
     const debouncedSearchTerm = useDebounce(searchTerm, 500);
     const input = {
-        query: debouncedSearchTerm,
-        entityTypeIn: Domain.map(x => x.recordType)
+        query: debouncedSearchTerm
     };
+
     const {error, loading, data, fetchMore} = useFindItemQuery({
         skip: !debouncedSearchTerm,
         variables: {
@@ -52,7 +52,16 @@ export function QuickSearchWidget(props: QuickSearchWidgetProps) {
             pageNumber: 0
         }
     });
-    const items = data?.search.nodes ?? [];
+    // const items = data?.search.nodes ?? [];
+    const items: SearchResultPropsFragment[] = (data?.search.nodes || []).map((record: any) => {
+        if (record.recordType === "Dictionary" && record.dname?.texts?.length > 0) {
+          return {
+            ...record,
+            name: record.dname.texts[0].text,
+          };
+        }
+        return record;
+      });
     const pageInfo = data?.search.pageInfo;
 
     const handleOnScroll = async (props: ListOnItemsRenderedProps) => {

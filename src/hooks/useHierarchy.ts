@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { ItemPropsFragment } from "../generated/types";
+import { ObjectPropsFragment } from "../generated/types";
 
 export type PropertyTreeRootNode = {
     children: PropertyTreeNode[]
@@ -8,12 +8,12 @@ export type PropertyTreeRootNode = {
 export type PropertyTreeNode = {
     id: string;
     nodeId: string;
-    data: ItemPropsFragment;
+    data: ObjectPropsFragment;
     children: PropertyTreeNode[];
 };
 
 type UsePropertyTreeOptions = {
-    leaves: ItemPropsFragment[],
+    leaves: ObjectPropsFragment[],
     paths: string[][]
 }
 
@@ -27,7 +27,7 @@ const useHierarchy = (options: UsePropertyTreeOptions) => {
         return leaves.reduce((agg, cur) => {
             agg[cur.id] = cur;
             return agg;
-        }, {} as { [key: string]: ItemPropsFragment });
+        }, {} as { [key: string]: ObjectPropsFragment });
     }, [leaves]);
 
     // generate tree structure

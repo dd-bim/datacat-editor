@@ -1,5 +1,5 @@
 query FindLanguages($input: LanguageFilterInput!) {
-    languages(input: $input) {
+    findLanguages(input: $input) {
         nodes {
             ...LanguageProps
         }
@@ -22,7 +22,7 @@ query FindItem($input: SearchInput!, $pageSize: Int, $pageNumber: Int) {
 query PropertyTree {
     hierarchy(input: {
         rootNodeFilter: {
-            catalogEntryTypeIn: [Bag]
+            entityTypeIn: [Subject]
             tagged: ["6f96aaa7-e08f-49bb-ac63-93061d4c5db2"]
         }
     }) {
@@ -57,9 +57,9 @@ query GetPropertyEntry($id: ID!) {
     }
 }
 
-query GetMeasureEntry($id: ID!) {
-    node: getMeasure(id: $id) {
-        ...MeasureDetailProps
+query GetValueListEntry($id: ID!) {
+    node: getValueList(id: $id) {
+        ...ValueListDetailProps
     }
 }
 
@@ -72,11 +72,5 @@ query GetUnitEntry($id: ID!) {
 query GetValueEntry($id: ID!) {
     node: getValue(id: $id) {
         ...ValueDetailProps
-    }
-}
-
-query GetCollectionEntry($id: ID!) {
-    node(id: $id) {
-        ...CollectionDetailProps
     }
 }
