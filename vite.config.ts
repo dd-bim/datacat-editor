@@ -1,61 +1,46 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { VitePWA } from 'vite-plugin-pwa';
-import pkg from './package.json';
+import { resolve } from 'path';
 
 export default defineConfig({
+  plugins: [react()],
   define: {
-    'import.meta.env.VITE_APP_VERSION': JSON.stringify(pkg.version),
-    'import.meta.env.VITE_APP_NAME': JSON.stringify(pkg.name),
+    'import.meta.env.VITE_APP_VERSION': JSON.stringify(process.env.npm_package_version || '0.1.0'),
   },
-  plugins: [
-    react(),
-    VitePWA({
-      registerType: 'autoUpdate',
-      devOptions: {
-        enabled: true
-      },
-      manifest: {
-        name: 'datacat editor',
-        short_name: 'datacat',
-        start_url: '/',
-        display: 'standalone',
-        background_color: '#ffffff',
-        theme_color: '#000000',
-        icons: [
-          {
-            src: '/logo192.png',
-            sizes: '192x192',
-            type: 'image/png'
-          },
-          {
-            src: '/logo512.png',
-            sizes: '512x512',
-            type: 'image/png'
-          }
-        ]
-      },
-      workbox: {
-        globDirectory: 'dev-dist',
-        globPatterns: ['**/*.{js,css,html,png,ico,svg}'],
-        globIgnores: ['**/node_modules/**/*', 'sw.js', 'workbox-*.js']
-      }
-    })
-  ],
   server: {
+    host: '0.0.0.0',
     port: 3000,
-    strictPort: true,
-    open: true,
-    proxy: {
-      '/api/graphql': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/graphql/, '/graphql')
-      }
-    }
+    open: false,
   },
   build: {
-    outDir: 'dist',
+    outDir: 'build',
+    sourcemap: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          mui: ['@mui/material', '@mui/icons-material'],
+          apollo: ['@apollo/client', 'graphql'],
+          router: ['react-router-dom'],
+          forms: ['react-hook-form'],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 1000,
   },
-  base: '/',
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src'),
+    },
+  },
+  optimizeDeps: {
+    include: [
+      'react',
+      'react-dom',
+      '@mui/material',
+      '@mui/icons-material',
+      '@apollo/client',
+      'react-router-dom',
+    ],
+  },
 });
