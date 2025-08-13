@@ -472,7 +472,8 @@
   "search":{
     "search": "Suchen",
     "search_placeholder": "Katalog durchsuchen",
-    "search_results": "Ergebnisse der Suche"
+    "search_results": "Ergebnisse der Suche",
+    "filter_list": "Liste filtern ({count}/{total})"
   },
   "footer": {
     "contact": "Fragen & Kontakt",

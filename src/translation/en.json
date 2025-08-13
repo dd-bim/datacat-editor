@@ -474,7 +474,8 @@
   "search": {
     "search": "Search",
     "search_placeholder": "Search catalog",
-    "search_results": "Search results"
+    "search_results": "Search results",
+    "filter_list": "Filter list ({count}/{total})"
   },
   "footer": {
     "contact": "Questions & Contact",

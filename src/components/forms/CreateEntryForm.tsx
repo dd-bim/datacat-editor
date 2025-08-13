@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import TextField from "@mui/material/TextField";
+import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { defaultFormFieldOptions } from "../../hooks/useFormStyles";
 import { Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -10,7 +10,7 @@ import LanguageSelectField from "./LanguageSelectField";
 import CountrySelectField from "./CountrySelectField";
 import Autocomplete from "@mui/material/Autocomplete";
 import DictionarySelectField from "./DictionarySelectField";
-import { useFindItemLazyQuery } from "../../generated/types";
+import { useFindItemLazyQuery, LanguagePropsFragment, useFindLanguagesQuery } from "../../generated/types";
 
 
 const FormContainer = styled('form')(({ theme }) => ({
@@ -84,6 +84,11 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
   });
   const [checkName, { data }] = useFindItemLazyQuery();
   const [nameExists, setNameExists] = useState(false);
+
+  // Helper Funktion um String-Code in LanguagePropsFragment zu konvertieren
+  const getLanguageFromCode = (code: string, options: LanguagePropsFragment[]): LanguagePropsFragment | null => {
+    return options.find(lang => lang.code === code) || null;
+  };
 
   return (
     <FormContainer onSubmit={handleSubmit(onSubmit)}>
@@ -254,11 +259,12 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
             control={control}
             render={({ field }) => (
               <LanguageSelectField
+                autoSelectGerman={true}
                 onChange={value => {
-                  const codes = Array.isArray(value)
-                    ? value.map(lang => lang.code)
-                    : value?.code ? value.code : [];
-                  field.onChange(codes);
+                  const code = Array.isArray(value)
+                    ? value.map(lang => lang.code)[0] // Nimm nur den ersten für Single-Select
+                    : value?.code || "";
+                  field.onChange(code);
                 }}
                 TextFieldProps={{
                   focused: true,
@@ -543,11 +549,12 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
           control={control}
           render={({ field }) => (
             <LanguageSelectField
+              autoSelectGerman={true}
               onChange={value => {
-                const codes = Array.isArray(value)
-                  ? value.map(lang => lang.code)
-                  : value?.code ? value.code : [];
-                field.onChange(codes);
+                const code = Array.isArray(value)
+                  ? value.map(lang => lang.code)[0] // Nimm nur den ersten für Single-Select
+                  : value?.code || "";
+                field.onChange(code);
               }}
               TextFieldProps={{
                 focused: true,
