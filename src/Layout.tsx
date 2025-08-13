@@ -40,8 +40,8 @@ const Content = styled('main')(({ theme }) => ({
 }));
 
 const GraphiQLPaper = styled(Paper)(({ theme }) => ({
-  minHeight: "100vh",
-  height: "100%",
+  height: "100vh",
+  overflow: "hidden",
 }));
 
 export default function Layout() {

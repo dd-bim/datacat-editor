@@ -105,10 +105,13 @@ export const AttributeRequirement: React.FC<AttributeRequirementProps> = ({
           options={DATA_TYPE_OPTIONS}
           value={req.dataType || null}
           onChange={(event, newValue) => {
-            handleRequirementChange(idx, {
+            // Für Attribute: dataType separat setzen
+            const updatedReq = {
               ...req,
               dataType: newValue || "",
-            });
+            };
+            // Komplettes req-Objekt übergeben
+            handleRequirementChange(idx, updatedReq);
           }}
           renderInput={(params) => (
             <TextField
@@ -128,12 +131,15 @@ export const AttributeRequirement: React.FC<AttributeRequirementProps> = ({
           labelId={`cardinality-attribute-label-${idx}`}
           value={req.cardinality || "required"}
           label={<T keyName="ids_export.labels.cardinality" />}
-          onChange={(e) =>
-            handleRequirementChange(idx, {
+          onChange={(e) => {
+            // Für Attribute: cardinality separat setzen
+            const updatedReq = {
               ...req,
               cardinality: e.target.value,
-            })
-          }
+            };
+            // Komplettes req-Objekt übergeben
+            handleRequirementChange(idx, updatedReq);
+          }}
         >
           <MenuItem value="required"><T keyName="ids_export.cardinality.required" /></MenuItem>
           <MenuItem value="optional"><T keyName="ids_export.cardinality.optional" /></MenuItem>

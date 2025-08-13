@@ -68,7 +68,7 @@
   "release-it": {
     "publish": false
   },
-"devDependencies": {
+  "devDependencies": {
     "@types/file-saver": "^2.0.7",
     "@types/i18next": "^13.0.0",
     "@types/node": "^24.2.1",

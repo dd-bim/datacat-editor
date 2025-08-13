@@ -340,7 +340,30 @@ export const IDSExportView: React.FC = () => {
         }
         // Für classification/attribute
         if (r.type === "classification") {
-          // Bei Classification: Wenn value (Modell) geändert wird, selectedClasses zurücksetzen
+          // Wenn ein komplettes Objekt übergeben wird (z.B. bei dataType/cardinality Änderungen)
+          if (typeof value === "object" && value !== null && !Array.isArray(value)) {
+            // Bei Classification: Wenn value (Modell) geändert wird, selectedClasses zurücksetzen
+            if (value.value && value.value !== r.value) {
+              return {
+                ...r,
+                ...value,
+                selectedClasses: [],
+                classNames: [],
+              };
+            }
+            // Wenn selectedClasses geändert wird
+            if (value.selectedClasses) {
+              const classNames = value.selectedClasses.map((classId: string) => getClassNameById(classId));
+              return {
+                ...r,
+                ...value,
+                classNames,
+              };
+            }
+            // Für andere Eigenschaften wie dataType, cardinality
+            return { ...r, ...value };
+          }
+          // String-Wert (Model-ID) - für Modell-Auswahl
           if (typeof value === "string" && value !== r.value) {
             return {
               ...r,
@@ -349,7 +372,7 @@ export const IDSExportView: React.FC = () => {
               classNames: [],
             };
           }
-          // Wenn selectedClasses geändert wird
+          // Wenn selectedClasses als separates Objekt geändert wird
           if (value.selectedClasses) {
             const classNames = value.selectedClasses.map((classId: string) => getClassNameById(classId));
             return {
@@ -358,12 +381,22 @@ export const IDSExportView: React.FC = () => {
               classNames,
             };
           }
-          return { ...r, value };
+          // Fallback für String-Werte
+          if (typeof value === "string") {
+            return { ...r, value };
+          }
+          // Fallback für Objekte - nur die bekannten Properties übernehmen
+          return { ...r, ...value };
         }
-        return {
-          ...r,
-          value,
-        };
+        // Für andere Requirement-Typen
+        if (typeof value === "string") {
+          return {
+            ...r,
+            value,
+          };
+        }
+        // Für Objekt-Updates bei anderen Typen
+        return { ...r, ...value };
       })
     );
   };
@@ -436,6 +469,24 @@ export const IDSExportView: React.FC = () => {
           dataType: req.dataType,
           uri: req.uri,
           cardinality: req.cardinality,
+        };
+      } else if (req.type === "classification") {
+        // Classification-Requirements zurück-konvertieren
+        return {
+          type: "classification",
+          value: req.value, // Model-ID
+          selectedClasses: req.selectedClasses || [], // Falls vorhanden
+          classNames: req.classNames || [], // Falls vorhanden
+          dataType: req.dataType || "",
+          cardinality: req.cardinality || "required",
+        };
+      } else if (req.type === "attribute") {
+        // Attribute-Requirements zurück-konvertieren
+        return {
+          type: "attribute",
+          value: req.value, // Model-ID oder Class-ID
+          dataType: req.dataType || "",
+          cardinality: req.cardinality || "required",
         };
       }
       return req;
@@ -822,15 +873,23 @@ export const IDSExportView: React.FC = () => {
           enrichedRequirements.push({
             type: "classification",
             value: req.value,
+            selectedClasses: req.selectedClasses, // Für späteres Laden speichern
+            classNames: req.classNames || [], // Für späteres Laden speichern
             modelName: modelName, // Als Pattern für System
             valueNames: req.classNames || [], // Als Enumeration für Value
+            dataType: req.dataType || "",
+            cardinality: req.cardinality || "required",
           });
         } else {
           // Nur Modell gewählt: Nur System als Pattern
           enrichedRequirements.push({
             type: "classification",
             value: req.value,
+            selectedClasses: [], // Leeres Array für Konsistenz
+            classNames: [], // Leeres Array für Konsistenz
             modelName: modelName, // Als Pattern für System
+            dataType: req.dataType || "",
+            cardinality: req.cardinality || "required",
             // Keine valueNames = kein Value-Element in XML
           });
         }
@@ -843,6 +902,8 @@ export const IDSExportView: React.FC = () => {
             type: "attribute",
             value: req.value,
             valueNames: modelName, // Als Pattern für Name Attribut
+            dataType: req.dataType || "",
+            cardinality: req.cardinality || "required",
           });
         } else {
           // Bei Type Applicability: Klassenname als Pattern
@@ -851,6 +912,8 @@ export const IDSExportView: React.FC = () => {
             type: "attribute",
             value: req.value,
             valueNames: className, // Als Pattern für Name Attribut
+            dataType: req.dataType || "",
+            cardinality: req.cardinality || "required",
           });
         }
       }
@@ -1055,15 +1118,29 @@ export const IDSExportView: React.FC = () => {
             <Typography variant="body2" sx={{ mb: 1 }}>
               <T keyName="ids_export.labels.requirements" />:
               {row.requirements.length === 0 && <em> <T keyName="ids_export.labels.none" /></em>}
-              {row.requirements.map((req: any, idx: number) => (
-                <span key={idx} style={{ marginLeft: 8 }}>
-                  [{req.type.charAt(0).toUpperCase() + req.type.slice(1)}]{" "}
-                  {Array.isArray((req as any).valueNames)
-                    ? (req as any).valueNames.join(", ")
-                    : (req as any).valueNames || ""}
-                  {idx < row.requirements.length - 1 ? "," : ""}
-                </span>
-              ))}
+              {row.requirements.map((req: any, idx: number) => {
+                // Sichere Behandlung der valueNames
+                let displayValue = "";
+                if (req.type === "property" && req.propertySet) {
+                  displayValue = req.propertySet;
+                } else if (req.type === "classification" && req.modelName) {
+                  displayValue = req.modelName;
+                } else if (req.type === "attribute") {
+                  displayValue = typeof req.valueNames === "string" ? req.valueNames : "";
+                } else if (Array.isArray(req.valueNames)) {
+                  displayValue = req.valueNames.join(", ");
+                } else if (typeof req.valueNames === "string") {
+                  displayValue = req.valueNames;
+                }
+                
+                return (
+                  <span key={idx} style={{ marginLeft: 8 }}>
+                    [{req.type.charAt(0).toUpperCase() + req.type.slice(1)}]{" "}
+                    {displayValue}
+                    {idx < row.requirements.length - 1 ? "," : ""}
+                  </span>
+                );
+              })}
             </Typography>
           </Paper>
         ))}
