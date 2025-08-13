@@ -1,41 +1,16 @@
-import {GraphiQL} from "graphiql";
-import "graphiql/graphiql.css";
+import React from "react";
+import { GraphiQL } from "graphiql";
 import useGraphiQLFetcher from "./hooks/useGraphiQLFetcher";
-import { useEffect } from "react";
 
-if (typeof window !== "undefined") {
-    window.MonacoEnvironment = {
-        getWorker: function () {
-            // Erstelle einen leeren Worker aus einem leeren Blob
-            const blob = new Blob([""], { type: "application/javascript" });
-            const url = URL.createObjectURL(blob);
-            return new Worker(url);
-        }
-    };
-}
+// Import GraphiQL CSS directly
+import "graphiql/style.css";
 
 export default function GraphiQLEditor() {
-    const graphiqlFetcher = useGraphiQLFetcher();
-    
-    useEffect(() => {
-        // Force window resize to make GraphiQL adjust to its container
-        const resizeEvent = window.setTimeout(() => {
-            window.dispatchEvent(new Event('resize'));
-        }, 100);
-        
-        return () => {
-            clearTimeout(resizeEvent);
-        };
-    }, []);
+    const fetcher = useGraphiQLFetcher();
     
     return (
-        <div style={{ height: '100vh', width: '100%' }}>
-            <GraphiQL 
-                fetcher={graphiqlFetcher}
-                defaultEditorToolsVisibility={true}
-                isHeadersEditorEnabled={true}
-                shouldPersistHeaders={true}
-            />
+        <div style={{ height: "100%", width: "100%" }}>
+            <GraphiQL fetcher={fetcher} />
         </div>
     );
 }

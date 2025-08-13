@@ -15,8 +15,6 @@ export default function App() {
   return (
     <AppProvider>
       <LanguageProvider>
-        {" "}
-        {/* TolgeeProvider wird hier eingebunden */}
         <Router>
           <AuthProvider>
             <ApiProvider>

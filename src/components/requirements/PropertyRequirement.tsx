@@ -85,23 +85,26 @@ export const PropertyRequirement: React.FC<PropertyRequirementProps> = ({
                 placeholder={t("ids_export.placeholders.property_set_search")}
               />
             )}
-            renderOption={(props, option) => (
-              <Box component="li" {...props}>
-                <Box>
-                  <Typography variant="body2">
-                    {option.name}
-                  </Typography>
-                  <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                    {option.isLocal 
-                      ? t("ids_export.labels.local_created")
-                      : option.tags && Array.isArray(option.tags)
-                      ? option.tags.map((t: any) => t.name).join(", ")
-                      : ""
-                    }
-                  </Typography>
+            renderOption={(props, option) => {
+              const { key, ...otherProps } = props;
+              return (
+                <Box component="li" key={key} {...otherProps}>
+                  <Box>
+                    <Typography variant="body2">
+                      {option.name}
+                    </Typography>
+                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                      {option.isLocal 
+                        ? t("ids_export.labels.local_created")
+                        : option.tags && Array.isArray(option.tags)
+                        ? option.tags.map((t: any) => t.name).join(", ")
+                        : ""
+                      }
+                    </Typography>
+                  </Box>
                 </Box>
-              </Box>
-            )}
+              );
+            }}
             clearOnEscape
             clearIcon={req.propertySet ? undefined : null}
           />

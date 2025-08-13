@@ -21,6 +21,7 @@ export default defineConfig({
           vendor: ['react', 'react-dom'],
           mui: ['@mui/material', '@mui/icons-material'],
           apollo: ['@apollo/client', 'graphql'],
+          graphiql: ['graphiql'],
           router: ['react-router-dom'],
           forms: ['react-hook-form'],
         },
@@ -41,6 +42,7 @@ export default defineConfig({
       '@mui/icons-material',
       '@apollo/client',
       'react-router-dom',
+      'graphiql',
     ],
   },
 });
