@@ -37,6 +37,13 @@ export default function ApiProvider(props: ApiProviderProps) {
                                     totalElements: incoming.totalElements
                                 };
                             }
+                        },
+                        // Enhanced caching for countries
+                        findCountries: {
+                            keyArgs: ["input", ["query"]],
+                            merge(existing, incoming) {
+                                return incoming;
+                            }
                         }
                     }
                 },
@@ -45,6 +52,18 @@ export default function ApiProvider(props: ApiProviderProps) {
                 },
                 'Profile': {
                     keyFields: ['username']
+                },
+                // Better caching for country data
+                'Country': {
+                    keyFields: ['id'],
+                    fields: {
+                        name: {
+                            merge: false
+                        },
+                        code: {
+                            merge: false
+                        }
+                    }
                 }
             },
             possibleTypes

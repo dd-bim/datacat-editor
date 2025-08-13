@@ -474,7 +474,8 @@
   "search": {
     "search": "Zoeken",
     "search_placeholder": "Catalogus doorzoeken",
-    "search_results": "Zoekresultaten"
+    "search_results": "Zoekresultaten",
+    "filter_list": "Lijst filteren ({count}/{total})"
   },
   "footer": {
     "contact": "Vragen & contact",
