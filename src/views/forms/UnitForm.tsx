@@ -1,4 +1,5 @@
-import { UnitDetailPropsFragment, useDeleteEntryMutation, useGetUnitEntryQuery } from "../../generated/types";
+import { UnitDetailPropsFragment, useGetUnitEntryQuery } from "../../generated/types";
+import { useDeleteEntry } from "../../hooks/useDeleteEntry";
 import { Typography, Button, Box } from "@mui/material";
 import { useSnackbar } from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
@@ -45,18 +46,9 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
     console.log("Unit Error", error);
 
     let entry = data?.node as UnitDetailPropsFragment | undefined;
-    const [deleteEntry] = useDeleteEntryMutation({
-        update: cache => {
-            cache.evict({ id: `XtdUnit:${id}` });
-            ["hierarchy", "search"].forEach(field =>
-                cache.modify({
-                    id: "ROOT_QUERY",
-                    fields: {
-                        [field]: (value, { DELETE }) => DELETE
-                    }
-                })
-            );
-        }
+    const [deleteEntry] = useDeleteEntry({
+        cacheTypename: 'XtdUnit',
+        id
     });
 
     if (loading) return <Typography><T keyName="unit.loading">Lade Maßeinheit..</T></Typography>;

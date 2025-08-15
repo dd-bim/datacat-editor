@@ -1,5 +1,6 @@
 import React, { FC } from "react";
-import { ValueDetailPropsFragment, useDeleteEntryMutation, useGetValueEntryQuery } from "../../generated/types";
+import { ValueDetailPropsFragment, useGetValueEntryQuery } from "../../generated/types";
+import { useDeleteEntry } from "../../hooks/useDeleteEntry";
 import { Box, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
@@ -32,22 +33,9 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
     console.log("ValueForm error", error);
 
     let entry = data?.node as ValueDetailPropsFragment | undefined;
-    const [deleteEntry] = useDeleteEntryMutation({
-        update: cache => {
-            cache.evict({ id: `XtdValue:${id}` });
-            cache.modify({
-                id: "ROOT_QUERY",
-                fields: {
-                    hierarchy: (value, { DELETE }) => DELETE
-                }
-            });
-            cache.modify({
-                id: "ROOT_QUERY",
-                fields: {
-                    search: (value, { DELETE }) => DELETE
-                }
-            });
-        }
+    const [deleteEntry] = useDeleteEntry({
+        cacheTypename: 'XtdValue',
+        id
     });
 
     if (loading) return <Typography><T keyName="value.loading">Lade Wert..</T></Typography>;

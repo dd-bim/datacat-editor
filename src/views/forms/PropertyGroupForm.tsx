@@ -1,9 +1,9 @@
 import {
     SubjectDetailPropsFragment,
     useGetSubjectEntryQuery,
-    RelationshipRecordType,
-    useDeleteEntryMutation
+    RelationshipRecordType
 } from "../../generated/types";
+import { useDeleteEntry } from "../../hooks/useDeleteEntry";
 import { Box, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
@@ -36,22 +36,9 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
         variables: { id }
     });
     let entry = data?.node as SubjectDetailPropsFragment | undefined;
-    const [deleteEntry] = useDeleteEntryMutation({
-        update: cache => {
-            cache.evict({ id: `XtdSubject:${id}` });
-            cache.modify({
-                id: "ROOT_QUERY",
-                fields: {
-                    hierarchy: (value, { DELETE }) => DELETE
-                }
-            });
-            cache.modify({
-                id: "ROOT_QUERY",
-                fields: {
-                    search: (value, { DELETE }) => DELETE
-                }
-            });
-        }
+    const [deleteEntry] = useDeleteEntry({
+        cacheTypename: 'XtdSubject',
+        id
     });
 
     if (loading) return <Typography><T keyName="propertyGroup.loading"></T></Typography>;

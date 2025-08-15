@@ -4,7 +4,6 @@ import { styled } from "@mui/material/styles";
 import {
     usePropertyTreeQuery,
     useAddTagMutation,
-    useGetSubjectEntryLazyQuery,
     useFindTagsQuery,
     useFindItemQuery
 } from "../generated/types";
@@ -376,7 +375,6 @@ const GridViewView = () => {
         data: propertyTreeData,
         refetch: refetchPropertyTree,
     } = usePropertyTreeQuery({});
-    const [getSubject, { error: subjectError }] = useGetSubjectEntryLazyQuery();
     const [addTag] = useAddTagMutation();
 
     // Neue Query für alle Merkmalsgruppen
@@ -1298,7 +1296,6 @@ const GridViewView = () => {
 
     if (propertyTreeError)
         return <Typography>Error: {propertyTreeError.message}</Typography>;
-    if (subjectError) return <Typography>Error: {subjectError.message}</Typography>;
 
 
     return (

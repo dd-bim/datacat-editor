@@ -1,9 +1,9 @@
 import {
     ValueListDetailPropsFragment,
     RelationshipRecordType,
-    useDeleteEntryMutation,
     useGetValueListEntryQuery
 } from "../../generated/types";
+import { useDeleteEntry } from "../../hooks/useDeleteEntry";
 import { Typography, Button, Box } from "@mui/material";
 import { useSnackbar } from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
@@ -33,27 +33,14 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
 
     // fetch value lists
     const { loading, error, data, refetch } = useGetValueListEntryQuery({
-        fetchPolicy: "network-only",
+        fetchPolicy: "cache-and-network",
         variables: { id }
     });
 
     let entry = data?.node as ValueListDetailPropsFragment | undefined;
-    const [deleteEntry] = useDeleteEntryMutation({
-        update: cache => {
-            cache.evict({ id: `XtdValueList:${id}` });
-            cache.modify({
-                id: "ROOT_QUERY",
-                fields: {
-                    hierarchy: (value, { DELETE }) => DELETE
-                }
-            });
-            cache.modify({
-                id: "ROOT_QUERY",
-                fields: {
-                    search: (value, { DELETE }) => DELETE
-                }
-            });
-        }
+    const [deleteEntry] = useDeleteEntry({
+        cacheTypename: 'XtdValueList',
+        id
     });
 
     if (loading) return <Typography><T keyName="valuelist.loading">Lade Werteliste..</T></Typography>;
@@ -73,6 +60,7 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
     const relatedUnits = entry.unit ? [entry.unit] : [];
 
     const relatedValues = entry.values ?? [];
+    console.log(relatedValues);
     const values = relatedValues.map(rel => ({
         order: rel.order,
         orderedValue: rel.orderedValue

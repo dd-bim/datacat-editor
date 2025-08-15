@@ -3,9 +3,9 @@ import {
     RelationshipKindEnum,
     RelationshipRecordType,
     SubjectDetailPropsFragment,
-    useDeleteEntryMutation,
     useGetSubjectEntryQuery,
 } from "../../generated/types";
+import { useDeleteEntry } from "../../hooks/useDeleteEntry";
 import { Button, Typography, Box } from "@mui/material";
 import { useSnackbar } from "notistack";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -37,22 +37,9 @@ const ThemeForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
         variables: { id }
     });
     let entry = data?.node as SubjectDetailPropsFragment | undefined;
-    const [deleteEntry] = useDeleteEntryMutation({
-        update: (cache: any) => {
-            cache.evict({ id: `XtdSubject:${id}` });
-            cache.modify({
-                id: "ROOT_QUERY",
-                fields: {
-                    hierarchy: (_value: any, { DELETE }: any) => DELETE,
-                },
-            });
-            cache.modify({
-                id: "ROOT_QUERY",
-                fields: {
-                    search: (_value: any, { DELETE }: any) => DELETE,
-                },
-            });
-        },
+    const [deleteEntry] = useDeleteEntry({
+        cacheTypename: 'XtdSubject',
+        id
     });
 
     if (loading) return <Typography><T keyName={"theme.loading"} /></Typography>;
