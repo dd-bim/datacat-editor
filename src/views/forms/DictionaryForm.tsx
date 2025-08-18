@@ -1,8 +1,8 @@
 import {
-    useDeleteEntryMutation,
     useGetDictionaryEntryQuery,
     DictionaryPropsFragment
 } from "../../generated/types";
+import { useDeleteEntry } from "../../hooks/useDeleteEntry";
 import { Typography, Button } from "@mui/material";
 import { useSnackbar } from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
@@ -26,22 +26,9 @@ function DictionaryForm(props: FormProps<DictionaryPropsFragment>) {
     });
     let entry = data?.node as DictionaryPropsFragment | undefined;
 
-    const [deleteEntry] = useDeleteEntryMutation({
-        update: (cache: any) => {
-            cache.evict({ id: `XtdDictionary:${id}` });
-            cache.modify({
-                id: "ROOT_QUERY",
-                fields: {
-                    hierarchy: (_value: any, { DELETE }: any) => DELETE,
-                },
-            });
-            cache.modify({
-                id: "ROOT_QUERY",
-                fields: {
-                    search: (_value: any, { DELETE }: any) => DELETE,
-                },
-            });
-        },
+    const [deleteEntry] = useDeleteEntry({
+        cacheTypename: 'XtdDictionary',
+        id
     });
 
     if (loading) return <Typography><T keyName={"dictionary.loading"} /></Typography>;

@@ -1501,7 +1501,7 @@ fragment ConceptProps on XtdConcept {
         ...LanguageProps
     }
     referenceDocuments {
-        ...ExternalDocumentProps
+        ...RelationsProps
     }
     similarTo {
         ...RelationsProps
@@ -1513,7 +1513,6 @@ fragment ConceptProps on XtdConcept {
 }
     ${ObjectPropsFragmentDoc}
 ${TranslationPropsFragmentDoc}
-${ExternalDocumentPropsFragmentDoc}
 ${TagPropsFragmentDoc}
 ${RelationsPropsFragmentDoc}
 ${LanguagePropsFragmentDoc}`;
@@ -3943,12 +3942,39 @@ export const FindSubjectsQueryDocument = gql`
     query FindSubjectsQuery($input: FilterInput!) {
   findSubjects(input: $input) {
     nodes {
-      ...SubjectDetailProps
+    ...ConceptDetailProps
+    properties {
+        ...RelationsProps
+        # possibleValues {
+        #     id
+        #     name(input: {languageTags: ["de", "en"]})
+        #     values {
+        #         id
+        #         order
+        #         orderedValue {
+        #             ...ValueProps
+        #         }
+        #     }
+        # }
+    }
+    connectedSubjects {
+        ...RelationsProps
+        targetSubjects {
+          ...RelationsProps
+        }
+    }
+    connectingSubjects {
+        ...RelationsProps
+        connectingSubject {
+            ...RelationsProps 
+        }
+    }
     }
     totalElements
   }
 }
-    ${SubjectDetailPropsFragmentDoc}`;
+    ${ConceptDetailPropsFragmentDoc}
+    ${RelationsPropsFragmentDoc}`;
 /**
  * __useFindSubjectsQuery__
  * 
@@ -4871,10 +4897,37 @@ export type GetObjectEntryQueryResult = Apollo.QueryResult<GetObjectEntryQuery, 
 export const GetSubjectEntryDocument = gql`
     query GetSubjectEntry($id: ID!) {
   node: getSubject(id: $id) {
-    ...SubjectDetailProps
+        ...ConceptDetailProps
+    properties {
+        ...RelationsProps
+        # possibleValues {
+        #     id
+        #     name(input: {languageTags: ["de", "en"]})
+        #     values {
+        #         id
+        #         order
+        #         orderedValue {
+        #             ...ValueProps
+        #         }
+        #     }
+        # }
+    }
+    connectedSubjects {
+        ...RelationsProps
+        targetSubjects {
+          ...RelationsProps
+        }
+    }
+    connectingSubjects {
+        ...RelationsProps
+        connectingSubject {
+            ...RelationsProps 
+        }
+    }
   }
-}
-    ${SubjectDetailPropsFragmentDoc}`;
+    }
+    ${ConceptDetailPropsFragmentDoc}
+    ${RelationsPropsFragmentDoc}`;
 
 /**
  * __useGetSubjectEntryQuery__
@@ -4904,10 +4957,39 @@ export type GetSubjectEntryQueryResult = Apollo.QueryResult<GetSubjectEntryQuery
 export const GetPropertyEntryDocument = gql`
     query GetPropertyEntry($id: ID!) {
   node: getProperty(id: $id) {
-    ...PropertyDetailProps
+      ...PropertyProps
+      connectedProperties {
+          ...RelationshipToPropertyProps
+      }
+      # symbols {
+      #     ...SymbolProps
+      # }
+      boundaryValues {
+          ...IntervalProps
+      }
+      dimension {
+          ...DimensionProps
+      }
+      quantityKinds {
+          ...QuantityKindProps
+      }
+      units {
+          ...RelationsProps  
+      }
+      possibleValues {
+          ...RelationsProps
+      }
+      subjects {
+          ...RelationsProps
+      }
   }
 }
-    ${PropertyDetailPropsFragmentDoc}`;
+${IntervalPropsFragmentDoc}
+${DimensionPropsFragmentDoc}
+${QuantityKindPropsFragmentDoc}
+${PropertyPropsFragmentDoc}
+${RelationsPropsFragmentDoc}
+    ${RelationshipToPropertyPropsFragmentDoc}`;
 
 /**
  * __useGetPropertyEntryQuery__
@@ -4937,10 +5019,27 @@ export type GetPropertyEntryQueryResult = Apollo.QueryResult<GetPropertyEntryQue
 export const GetValueListEntryDocument = gql`
     query GetValueListEntry($id: ID!) {
   node: getValueList(id: $id) {
-    ...ValueListDetailProps
+      ...ConceptProps
+      properties {
+          ...RelationsProps
+      }
+      unit {
+          ...RelationsProps
+      }
+      values {
+          order
+          orderedValue {
+              ...RelationsProps
+          }
+      }
+      language {
+          ...LanguageProps
+      }
   }
 }
-    ${ValueListDetailPropsFragmentDoc}`;
+    ${ConceptPropsFragmentDoc}
+    ${LanguagePropsFragmentDoc}
+    ${RelationsPropsFragmentDoc}`;
 
 /**
  * __useGetValueListEntryQuery__
@@ -5072,13 +5171,9 @@ export const GetOrderedValueEntryDocument = gql`
     orderedValue {
       ...ValueProps
     }
-    valueLists {
-      ...RelationsProps
-    }
   }
 }
-    ${ValuePropsFragmentDoc}
-    ${RelationsPropsFragmentDoc}`;
+    ${ValuePropsFragmentDoc}`;
 /**
  * __useGetOrderedValueEntryQuery__
  * 

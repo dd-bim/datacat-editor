@@ -1,9 +1,9 @@
 import {
     PropertyDetailPropsFragment,
     RelationshipRecordType,
-    useDeleteEntryMutation,
     useGetPropertyEntryQuery
 } from "../../generated/types";
+import { useDeleteEntry } from "../../hooks/useDeleteEntry";
 import { Typography, Box, Button } from "@mui/material";
 import { useSnackbar } from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
@@ -38,22 +38,9 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
     });
 
     let entry = data?.node as PropertyDetailPropsFragment | undefined;
-    const [deleteEntry] = useDeleteEntryMutation({
-        update: cache => {
-            cache.evict({ id: `XtdProperty:${id}` });
-            cache.modify({
-                id: "ROOT_QUERY",
-                fields: {
-                    hierarchy: (value, { DELETE }) => DELETE
-                }
-            });
-            cache.modify({
-                id: "ROOT_QUERY",
-                fields: {
-                    search: (value, { DELETE }) => DELETE
-                }
-            });
-        }
+    const [deleteEntry] = useDeleteEntry({
+        cacheTypename: 'XtdProperty',
+        id
     });
 
     if (loading) return <Typography><T keyName="property.loading">Lade Merkmal..</T></Typography>;

@@ -1,9 +1,9 @@
 import {
     ExternalDocumentDetailPropsFragment,
     RelationshipRecordType,
-    useDeleteEntryMutation,
     useGetDocumentEntryQuery
 } from "../../generated/types";
+import { useDeleteEntry } from "../../hooks/useDeleteEntry";
 import { Typography, Button, Box } from "@mui/material";
 import { useSnackbar } from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
@@ -35,22 +35,9 @@ const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => 
         variables: { id }
     });
     let entry = data?.node as ExternalDocumentDetailPropsFragment | undefined;
-    const [deleteEntry] = useDeleteEntryMutation({
-        update: (cache: any) => {
-            cache.evict({ id: `XtdExternalDocument:${id}` });
-            cache.modify({
-                id: "ROOT_QUERY",
-                fields: {
-                    hierarchy: (_value: any, { DELETE }: any) => DELETE,
-                },
-            });
-            cache.modify({
-                id: "ROOT_QUERY",
-                fields: {
-                    search: (_value: any, { DELETE }: any) => DELETE,
-                },
-            });
-        },
+    const [deleteEntry] = useDeleteEntry({
+        cacheTypename: 'XtdExternalDocument',
+        id
     });
 
     if (loading) return <Typography><T keyName={"document.loading"} /></Typography>;
