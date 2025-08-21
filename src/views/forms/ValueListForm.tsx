@@ -1,7 +1,8 @@
 import {
     ValueListDetailPropsFragment,
     RelationshipRecordType,
-    useGetValueListEntryQuery
+    useGetValueListEntryQuery,
+    useGetValuesOfListEntryQuery
 } from "../../generated/types";
 import { useDeleteEntry } from "../../hooks/useDeleteEntry";
 import { Typography, Button, Box } from "@mui/material";
@@ -37,17 +38,26 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
         variables: { id }
     });
 
+    // fetch ordered values
+    const { loading: valLoading, error: valError, data: valData, refetch: valRefetch } = useGetValuesOfListEntryQuery({
+        fetchPolicy: "cache-and-network",
+        variables: { id }
+    });
+
     let entry = data?.node as ValueListDetailPropsFragment | undefined;
+    const relatedValues = valData?.node?.values ?? [];
     const [deleteEntry] = useDeleteEntry({
         cacheTypename: 'XtdValueList',
         id
     });
 
-    if (loading) return <Typography><T keyName="valuelist.loading">Lade Werteliste..</T></Typography>;
+    if (loading || valLoading) return <Typography><T keyName="valuelist.loading">Lade Werteliste..</T></Typography>;
     if (error || !entry) return <Typography><T keyName="error.error">Es ist ein Fehler aufgetreten..</T></Typography>;
+    if (valError || !relatedValues) return <Typography><T keyName="error.error">Es ist ein Fehler aufgetreten..</T></Typography>;
 
     const handleOnUpdate = async () => {
         await refetch();
+        await valRefetch();
         enqueueSnackbar(<T keyName="update.update_success">Update erfolgreich.</T>);
     };
 
@@ -59,7 +69,7 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
 
     const relatedUnits = entry.unit ? [entry.unit] : [];
 
-    const relatedValues = entry.values ?? [];
+    // const relatedValues = entry.values ?? [];
     console.log(relatedValues);
     const values = relatedValues.map(rel => ({
         order: rel.order,

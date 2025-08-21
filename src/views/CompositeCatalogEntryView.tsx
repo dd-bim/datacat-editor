@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback, useMemo } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import { Paper, Typography, Button, Stack, Box } from "@mui/material";
@@ -56,28 +56,48 @@ const CompositeCatalogEntryView = (props: CompositeCatalogEntryViewProps) => {
   
   const [height, setHeight] = useState(500);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedDictionaryId, setSelectedDictionaryId] = useState<string | null>(null);
+  const [totalCount, setTotalCount] = useState<number>(0);
   const location = useLocation();
   
   // Reset height and search term when changing entity types
   useEffect(() => {
     setHeight(500);
     setSearchTerm("");
+    setSelectedDictionaryId(null);
+    setTotalCount(0);
   }, [path, recordType, refreshCounter]); // Add refreshCounter here
 
-  const searchInput = {
+  const searchInput = useMemo(() => ({
     entityTypeIn: [recordType],
     tagged: tags,
-  };
+  }), [recordType, tags]);
+
+  // Bestimme ob Dictionary-Filter angezeigt werden soll
+  // (für alle Entity-Typen außer Dictionary und Unit)
+  const showDictionaryFilter = recordType !== "Dictionary" && recordType !== "Unit";
  
   const navigate = useNavigate();
   const { id } = useParams<{ id?: string }>();
 
-  const handleOnSelect = (value: CatalogRecord) => {
+  const handleOnSelect = useCallback((value: CatalogRecord) => {
     navigate(`/${path}/${value.id}`);
-  };
+  }, [navigate, path]);
 
   // Use the entryType directly instead of trying to compare translated titles
   const entryTypeName = props.entryType;
+
+  const handleDictionaryFilterChange = useCallback((dictionaryId: string | null) => {
+    setSelectedDictionaryId(dictionaryId);
+  }, []);
+
+  const handleSearchTermChange = useCallback((term: string) => {
+    setSearchTerm(term);
+  }, []);
+
+  const handleTotalCountChange = useCallback((count: number) => {
+    setTotalCount(count);
+  }, []);
 
   return (
     <Stack 
@@ -99,7 +119,9 @@ const CompositeCatalogEntryView = (props: CompositeCatalogEntryViewProps) => {
         overflow: 'visible' // Changed from auto to visible
       }}>
         <SearchListPaper>
-          <Typography variant="h5" sx={{ mb: 2 }}>{currentTitlePlural}</Typography>
+          <Typography variant="h5" sx={{ mb: 2 }}>
+            {currentTitlePlural} ({totalCount})
+          </Typography>
           <Box sx={{ 
             width: '100%',
             display: 'flex', 
@@ -110,10 +132,14 @@ const CompositeCatalogEntryView = (props: CompositeCatalogEntryViewProps) => {
               showRecordIcons={false}
               height={height}
               searchTerm={searchTerm}
-              onSearch={setSearchTerm}
+              onSearch={handleSearchTermChange}
               searchInput={searchInput}
               disabledItems={id ? [id] : undefined}
               onSelect={handleOnSelect}
+              showDictionaryFilter={showDictionaryFilter}
+              selectedDictionaryId={selectedDictionaryId}
+              onDictionaryFilterChange={handleDictionaryFilterChange}
+              onTotalCountChange={handleTotalCountChange}
             />
           </Box>
           <Box sx={{ mt: 2 }}>

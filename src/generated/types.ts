@@ -5026,12 +5026,12 @@ export const GetValueListEntryDocument = gql`
       unit {
           ...RelationsProps
       }
-      values {
-          order
-          orderedValue {
-              ...RelationsProps
-          }
-      }
+      # values {
+      #     order
+      #     orderedValue {
+      #         ...RelationsProps
+      #     }
+      # }
       language {
           ...LanguageProps
       }
@@ -5066,6 +5066,45 @@ export function useGetValueListEntryLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetValueListEntryQueryHookResult = ReturnType<typeof useGetValueListEntryQuery>;
 export type GetValueListEntryLazyQueryHookResult = ReturnType<typeof useGetValueListEntryLazyQuery>;
 export type GetValueListEntryQueryResult = Apollo.QueryResult<GetValueListEntryQuery, GetValueListEntryQueryVariables>;
+
+export const GetValuesOfListEntryDocument = gql`
+    query GetValuesOfListEntry($id: ID!) {
+  node: getValueList(id: $id) {
+      values {
+          order
+          orderedValue {
+              ...RelationsProps
+          }
+      }
+  }
+    }
+    ${RelationsPropsFragmentDoc}`;
+
+/**
+ * __useGetValuesOfListEntryQuery__
+ *
+ * To run a query within a React component, call `useGetValuesOfListEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetValuesOfListEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetValuesOfListEntryQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetValuesOfListEntryQuery(baseOptions: Apollo.QueryHookOptions<GetValueListEntryQuery, GetValueListEntryQueryVariables>) {
+  return Apollo.useQuery<GetValueListEntryQuery, GetValueListEntryQueryVariables>(GetValuesOfListEntryDocument, baseOptions);
+}
+export function useGetValuesOfListEntryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetValueListEntryQuery, GetValueListEntryQueryVariables>) {
+  return Apollo.useLazyQuery<GetValueListEntryQuery, GetValueListEntryQueryVariables>(GetValuesOfListEntryDocument, baseOptions);
+}
+export type GetValuesOfListEntryQueryHookResult = ReturnType<typeof useGetValuesOfListEntryQuery>;
+export type GetValuesOfListEntryLazyQueryHookResult = ReturnType<typeof useGetValuesOfListEntryLazyQuery>;
+export type GetValuesOfListEntryQueryResult = Apollo.QueryResult<GetValueListEntryQuery, GetValueListEntryQueryVariables>;
 export const GetUnitEntryDocument = gql`
     query GetUnitEntry($id: ID!) {
   node: getUnit(id: $id) {
