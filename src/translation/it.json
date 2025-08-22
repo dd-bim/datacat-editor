@@ -326,7 +326,8 @@
     "loading": "Caricamento dizionario...", 
     "delete_success": "Dizionario eliminato.",
     "related_concepts": ", contenuti nel dizionario",
-    "no_related_concepts": "Il dizionario non contiene concetti."
+    "no_related_concepts": "Il dizionario non contiene concetti.",
+    "not_found": "Dizionario non trovato"
   },
   "theme": {
     "title": "Tema",
@@ -475,7 +476,10 @@
     "search": "Cerca",
     "search_placeholder": "Cerca nel catalogo",
     "search_results": "Risultati della ricerca",
-    "filter_list": "Filtra lista ({count}/{total})"
+    "filter_list": "Filtra lista ({count}/{total})",
+    "filter_by_dictionary": "Filtra per dizionario",
+    "all_dictionaries": "Tutti i dizionari",
+    "no_dictionary": "Nessun dizionario"
   },
   "footer": {
     "contact": "Domande & Contatti",
@@ -802,5 +806,15 @@
     "defaultPurpose": "Validazione della progettazione",
     "defaultTitle": "Nuova specifica IDS",
     "untitledSpecification": "Specifiche senza titolo"
+  },
+  "pagination": {
+    "entries": "Voci",
+    "loading": "Caricamento...",
+    "no_data": "Nessun dato disponibile",
+    "error_loading": "Errore durante il caricamento dei concetti",
+    "error_rendering": "Errore durante il rendering dell'elenco dei concetti",
+    "reload_page": "Ricarica pagina",
+    "error_conversion": "Errore durante la conversione dei dati",
+    "loading_concepts": "Caricamento concetti..."
   }
 }

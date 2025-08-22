@@ -105,12 +105,8 @@ export function ImportView() {
         id: "ROOT_QUERY",
         fields: {
           hierarchy: (value, { DELETE }) => DELETE,
-        },
-      });
-      cache.modify({
-        id: "ROOT_QUERY",
-        fields: {
           search: (value, { DELETE }) => DELETE,
+          findDictionaries: (value, { DELETE }) => DELETE,
         },
       });
     },

@@ -49,15 +49,18 @@ const CreateEntryButton = (props: CreateEntryProps) => {
     const { enqueueSnackbar } = useSnackbar();
 
     const [create] = useCreateEntryMutation({
-        update: cache => {
-            cache.modify({
-                id: "ROOT_QUERY",
-                fields: {
-                    hierarchy: (value, { DELETE }) => DELETE,
-                    search: (value, { DELETE }) => DELETE
-                }
-            });
-        }
+        update: (cache, { data }) => {
+            // Optimized cache updates - only invalidate specific fields
+            const newEntry = data?.createCatalogEntry?.catalogEntry;
+            if (newEntry) {
+                // Instead of invalidating all, just evict specific cached queries
+                cache.evict({ fieldName: 'search' });
+                cache.evict({ fieldName: 'hierarchy' });
+                cache.evict({ fieldName: 'findDictionaries' });
+                cache.gc(); // Garbage collect to free memory
+            }
+        },
+        errorPolicy: 'all' // Continue execution even if there are errors
     });
     const [createRelationship] = useCreateRelationshipMutation();
 
@@ -107,95 +110,109 @@ const CreateEntryButton = (props: CreateEntryProps) => {
     };
 
     const onSubmit = async (formValues: CreateEntryFormValues) => {
-
-        const catalogRecordType = (input?.recordType! as unknown as CatalogRecordType);
-        const names = [
-            { languageTag: "de", value: formValues.name }
-        ];
-        const properties: any = {
-            id: formValues.id,
-            names: names
-        };
-        if (input !== DictionaryEntity) {
-            const descriptions = formValues.description
-                ? [{ languageTag: "de", value: formValues.description }]
-                : [];
-            const comments = formValues.comment
-                ? [{ languageTag: "de", value: formValues.comment }]
-                : [];
-
-            properties.descriptions = descriptions;
-            properties.comments = comments;
-            properties.majorVersion = Number(formValues.majorVersion);
-            properties.minorVersion = Number(formValues.minorVersion);
-        }
-
-        if (input !== ValueEntity && input !== DictionaryEntity) {
-            properties.languageOfCreator = formValues.languageOfCreator;
-            properties.countryOfOrigin = formValues.countryOfOrigin;
-        }
-
-        if (input === DocumentEntity) {
-            properties.externalDocumentProperties = {
-                languageTag: formValues.languageTag,
-                documentUri: formValues.uri,
-                author: formValues.author,
-                isbn: formValues.isbn,
-                publisher: formValues.publisher,
-                dateOfPublication: formValues.dateOfPublication
+        // Dialog sofort schließen für bessere UX
+        setDialogOpen(false);
+        
+        try {
+            const catalogRecordType = (input?.recordType! as unknown as CatalogRecordType);
+            const names = [
+                { languageTag: "de", value: formValues.name }
+            ];
+            const properties: any = {
+                id: formValues.id,
+                names: names
             };
-        }
-        else if (input === ValueEntity) {
-            properties.valueProperties = {
-                nominalValue: formValues.nominalValue
+            if (input !== DictionaryEntity) {
+                const descriptions = formValues.description
+                    ? [{ languageTag: "de", value: formValues.description }]
+                    : [];
+                const comments = formValues.comment
+                    ? [{ languageTag: "de", value: formValues.comment }]
+                    : [];
+
+                properties.descriptions = descriptions;
+                properties.comments = comments;
+                properties.majorVersion = Number(formValues.majorVersion);
+                properties.minorVersion = Number(formValues.minorVersion);
             }
-        }
-        else if (input === PropertyEntity) {
-            properties.propertyProperties = {
-                dataType: formValues.dataType,
-                dataFormat: formValues.dataFormat
-            };
-        }
-        else if (input === UnitEntity) {
-            properties.unitProperties = {
-                scale: formValues.scale,
-                base: formValues.base
-            };
-        }
-        else if (input === ValueListEntity) {
-            properties.valueListProperties = {
-                languageTag: formValues.valueListLanguage
-            };
-        }
 
+            if (input !== ValueEntity && input !== DictionaryEntity) {
+                properties.languageOfCreator = formValues.languageOfCreator;
+                properties.countryOfOrigin = formValues.countryOfOrigin;
+            }
 
-        const result = await create({
-            variables: {
-                input: {
-                    catalogEntryType: catalogRecordType,
-                    properties: properties,
-                    tags: input?.tags
+            if (input === DocumentEntity) {
+                properties.externalDocumentProperties = {
+                    languageTag: formValues.languageTag,
+                    documentUri: formValues.uri,
+                    author: formValues.author,
+                    isbn: formValues.isbn,
+                    publisher: formValues.publisher,
+                    dateOfPublication: formValues.dateOfPublication
+                };
+            }
+            else if (input === ValueEntity) {
+                properties.valueProperties = {
+                    nominalValue: formValues.nominalValue
                 }
-            },
-            refetchQueries: ["FindDictionariesQuery", "FindItemsQuery"]
-        });
+            }
+            else if (input === PropertyEntity) {
+                properties.propertyProperties = {
+                    dataType: formValues.dataType,
+                    dataFormat: formValues.dataFormat
+                };
+            }
+            else if (input === UnitEntity) {
+                properties.unitProperties = {
+                    scale: formValues.scale,
+                    base: formValues.base
+                };
+            }
+            else if (input === ValueListEntity) {
+                properties.valueListProperties = {
+                    languageTag: formValues.valueListLanguage
+                };
+            }
 
-        const newConceptId = result.data?.createCatalogEntry?.catalogEntry?.id;
-        if (formValues.dictionary && newConceptId) {
-            await createRelationship({
+            // Zeige sofort eine "wird erstellt" Nachricht
+            enqueueSnackbar(`${input!.title} wird erstellt...`, { variant: 'info' });
+
+            // Create entry
+            const result = await create({
                 variables: {
                     input: {
-                        fromId: newConceptId,
-                        toIds: [formValues.dictionary], 
-                        relationshipType: RelationshipRecordType.Dictionary
+                        catalogEntryType: catalogRecordType,
+                        properties: properties,
+                        tags: input?.tags
                     }
                 }
             });
+
+            const newConceptId = result.data?.createCatalogEntry?.catalogEntry?.id;
+            
+            // Create relationship asynchronously if dictionary is specified
+            if (formValues.dictionary && newConceptId) {
+                // Relationship im Hintergrund erstellen, ohne darauf zu warten
+                createRelationship({
+                    variables: {
+                        input: {
+                            fromId: newConceptId,
+                            toIds: [formValues.dictionary], 
+                            relationshipType: RelationshipRecordType.Dictionary
+                        }
+                    }
+                }).catch(error => {
+                    console.error('Error creating relationship:', error);
+                    enqueueSnackbar('Warnung: Dictionary-Zuordnung konnte nicht erstellt werden', { variant: 'warning' });
+                });
+            }
+
+            // Erfolgs-Nachricht nach der Erstellung
+            enqueueSnackbar(`${input!.title} erfolgreich erstellt!`, { variant: 'success' });
+        } catch (error) {
+            console.error('Error creating entry:', error);
+            enqueueSnackbar('Fehler beim Erstellen des Eintrags', { variant: 'error' });
         }
-
-        setDialogOpen(false);
-        enqueueSnackbar(`${input!.title} erstellt.`);
-
     };
 
     return (

@@ -326,7 +326,8 @@
     "loading": "Loading dictionary...",
     "delete_success": "Dictionary deleted.",
     "related_concepts": ", contained in the dictionary",
-    "no_related_concepts": "The dictionary contains no concepts."
+    "no_related_concepts": "The dictionary contains no concepts.",
+    "not_found": "Dictionary not found"
   },
   "theme": {
     "title": "Theme",
@@ -475,7 +476,10 @@
     "search": "Search",
     "search_placeholder": "Search catalog",
     "search_results": "Search results",
-    "filter_list": "Filter list ({count}/{total})"
+    "filter_list": "Filter list ({count}/{total})",
+    "filter_by_dictionary": "Filter by dictionary",
+    "all_dictionaries": "All dictionaries",
+    "no_dictionary": "No dictionary"
   },
   "footer": {
     "contact": "Questions & Contact",
@@ -802,5 +806,15 @@
     "defaultPurpose": "Design validation",
     "defaultMilestone": "Planning",
     "untitledSpecification": "Untitled Specification"
+  },
+  "pagination": {
+    "entries": "Entries",
+    "loading": "Loading...",
+    "no_data": "No data available",
+    "error_loading": "Error loading concepts",
+    "error_rendering": "Error rendering concept list",
+    "reload_page": "Reload page",
+    "error_conversion": "Error during data conversion",
+    "loading_concepts": "Loading concepts..."
   }
 }

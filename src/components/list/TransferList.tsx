@@ -35,6 +35,9 @@ type TransferListProps = {
     enabled: boolean;
     searchInput: SearchInput;
     height?: number;
+    showDictionaryFilter?: boolean;
+    selectedDictionaryId?: string | null;
+    onDictionaryFilterChange?: (dictionaryId: string | null) => void;
     onSelect?(item: CatalogRecord): void;
     onAdd?(item: CatalogRecord): void;
     onRemove?(item: CatalogRecord): void;
@@ -47,6 +50,9 @@ export default function TransferList(props: TransferListProps) {
         enabled,
         searchInput,
         height,
+        showDictionaryFilter = false,
+        selectedDictionaryId = null,
+        onDictionaryFilterChange,
         onSelect,
         onAdd,
         onRemove,
@@ -92,6 +98,9 @@ export default function TransferList(props: TransferListProps) {
                             searchInput={searchInput}
                             onSearch={setSearchTerm}
                             onAdd={onAdd}
+                            showDictionaryFilter={showDictionaryFilter}
+                            selectedDictionaryId={selectedDictionaryId}
+                            onDictionaryFilterChange={onDictionaryFilterChange}
                         />
                     </SearchBox>
                 </Box>

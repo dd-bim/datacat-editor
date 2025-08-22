@@ -25,6 +25,7 @@ export type TransferListViewProps = {
     relationshipType: RelationshipRecordType
     relationships: CatalogRecord[];
     searchInput: SearchInput;
+    showDictionaryFilter?: boolean;
     onCreate?(): void;
     onUpdate?(): void;
     onDelete?(): void;
@@ -56,12 +57,14 @@ export default function TransferListView(props: TransferListViewProps) {
         relationshipType,
         relationships,
         searchInput,
+        showDictionaryFilter = false,
         onCreate,
         onDelete,
     } = props;
 
     const navigate = useNavigate();
     const [editState, setEditState] = useState(false);
+    const [selectedDictionaryId, setSelectedDictionaryId] = useState<string | null>(null);
 
     const update = (cache: ApolloCache<any>) => cache.modify({
         id: "ROOT_QUERY",
@@ -121,6 +124,9 @@ export default function TransferListView(props: TransferListViewProps) {
                         enabled={true}
                         searchInput={searchInput}
                         items={[]}
+                        showDictionaryFilter={showDictionaryFilter}
+                        selectedDictionaryId={selectedDictionaryId}
+                        onDictionaryFilterChange={setSelectedDictionaryId}
                         onAdd={async item => {
                             await handleOnCreateRelationship([item.id]);
                         }}
@@ -140,6 +146,9 @@ export default function TransferListView(props: TransferListViewProps) {
                     enabled={editState}
                     searchInput={searchInput}
                     items={items}
+                    showDictionaryFilter={showDictionaryFilter}
+                    selectedDictionaryId={selectedDictionaryId}
+                    onDictionaryFilterChange={setSelectedDictionaryId}
                     onAdd={handleOnAdd}
                     onSelect={item => {
                         const definition = getEntityType(item.recordType, item.tags.map(x => x.id));
