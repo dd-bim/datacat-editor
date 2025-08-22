@@ -326,7 +326,8 @@
     "loading": "Woordenboek laden...",
     "delete_success": "Woordenboek verwijderd.",
     "related_concepts": ", die in het woordenboek zijn opgenomen",
-    "no_related_concepts": "Het woordenboek bevat geen concepten."
+    "no_related_concepts": "Het woordenboek bevat geen concepten.",
+    "not_found": "Woordenboek niet gevonden"
   },
   "theme": {
     "title": "Thema",
@@ -475,7 +476,10 @@
     "search": "Zoeken",
     "search_placeholder": "Catalogus doorzoeken",
     "search_results": "Zoekresultaten",
-    "filter_list": "Lijst filteren ({count}/{total})"
+    "filter_list": "Lijst filteren ({count}/{total})",
+    "filter_by_dictionary": "Filteren op woordenboek",
+    "all_dictionaries": "Alle woordenboeken",
+    "no_dictionary": "Geen woordenboek"
   },
   "footer": {
     "contact": "Vragen & contact",
@@ -802,5 +806,15 @@
     "defaultPurpose": "Ontwerp validatie",
     "defaultTitle": "Nieuwe IDS-specificatie",
     "untitledSpecification": "Specificaties zonder titel"
+  },
+  "pagination": {
+    "entries": "Items",
+    "loading": "Laden...",
+    "no_data": "Geen gegevens beschikbaar",
+    "error_loading": "Fout bij het laden van concepten",
+    "error_rendering": "Fout bij het renderen van conceptenlijst",
+    "reload_page": "Pagina herladen",
+    "error_conversion": "Fout tijdens gegevensconversie",
+    "loading_concepts": "Concepten laden..."
   }
 }

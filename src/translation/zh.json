@@ -326,7 +326,8 @@
     "loading": "正在加载字典...",
     "delete_success": "字典已删除。",
     "related_concepts": "，包含在字典中",
-    "no_related_concepts": "字典中没有概念。"
+    "no_related_concepts": "字典中没有概念。",
+    "not_found": "找不到字典"
   },
   "theme": {
     "title": "主题",
@@ -475,7 +476,10 @@
     "search": "搜索",
     "search_placeholder": "搜索目录",
     "search_results": "搜索结果",
-    "filter_list": "过滤列表 ({count}/{total})"
+    "filter_list": "过滤列表 ({count}/{total})",
+    "filter_by_dictionary": "按字典过滤",
+    "all_dictionaries": "所有字典",
+    "no_dictionary": "无字典"
   },
   "footer": {
     "contact": "问题与联系",
@@ -802,5 +806,15 @@
     "defaultPurpose": "设计验证",
     "defaultTitle": "新建IDS规范",
     "untitledSpecification": "无标题规范"
+  },
+  "pagination": {
+    "entries": "条目",
+    "loading": "加载中...",
+    "no_data": "无可用数据",
+    "error_loading": "加载概念时出错",
+    "error_rendering": "渲染概念列表时出错",
+    "reload_page": "重新加载页面",
+    "error_conversion": "数据转换时出错",
+    "loading_concepts": "正在加载概念..."
   }
 }

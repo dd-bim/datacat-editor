@@ -1301,6 +1301,25 @@ export type GetDictionaryEntryQueryVariables = Exact<{
 
 export type GetDictionaryEntryQuery = { node?: Maybe<DictionaryDetailPropsFragment> };
 
+export type GetDictionaryEntryWithPaginationQueryVariables = Exact<{
+  id: Scalars['ID'];
+  pageSize?: Maybe<Scalars['Int']>;
+  pageNumber?: Maybe<Scalars['Int']>;
+}>;
+
+export type GetDictionaryEntryWithPaginationQuery = { 
+  node?: Maybe<{
+    id: string;
+    name: MultiLanguageTextPropsFragment;
+    tags: Array<TagPropsFragment>;
+    concepts: {
+      nodes: Array<ObjectPropsFragment>;
+      pageInfo: PagePropsFragment;
+      totalElements: number;
+    };
+  } & MetaProps_Fragment>
+};
+
 export type GetCountryEntryQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -5573,14 +5592,14 @@ export const GetDictionaryEntryDocument = gql`
       id
       name
     }
-    concepts {
-      ...RelationsProps
-    }
+    # concepts {
+    #   ...RelationsProps
+    # }
   }
 }
     ${MetaPropsFragmentDoc}
-    ${TranslationPropsFragmentDoc}
-    ${RelationsPropsFragmentDoc}`;
+    ${TranslationPropsFragmentDoc}`;
+    // ${RelationsPropsFragmentDoc}
 /**
  * __useGetDictionaryEntryQuery__
  * 
@@ -5606,6 +5625,62 @@ export function useGetDictionaryEntryLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type GetDictionaryEntryQueryHookResult = ReturnType<typeof useGetDictionaryEntryQuery>;
 export type GetDictionaryEntryLazyQueryHookResult = ReturnType<typeof useGetDictionaryEntryLazyQuery>;
 export type GetDictionaryEntryQueryResult = Apollo.QueryResult<GetDictionaryEntryQuery, GetDictionaryEntryQueryVariables>;
+
+export const GetDictionaryEntryWithPaginationDocument = gql`
+    query GetDictionaryEntryWithPagination($id: ID!, $pageSize: Int = 20, $pageNumber: Int = 0) {
+  node: getDictionary(id: $id) {
+    ...MetaProps
+    id
+    name {
+      ...TranslationProps
+    }
+    tags {
+      id
+      name
+    }
+    concepts(pageSize: $pageSize, pageNumber: $pageNumber) {
+      nodes {
+        ...RelationsProps
+      }
+      pageInfo {
+        ...PageProps
+      }
+      totalElements
+    }
+  }
+}
+    ${MetaPropsFragmentDoc}
+    ${TranslationPropsFragmentDoc}
+    ${RelationsPropsFragmentDoc}
+    ${PagePropsFragmentDoc}`;
+
+/**
+ * __useGetDictionaryEntryWithPaginationQuery__
+ * 
+ * To run a query within a React component, call `useGetDictionaryEntryWithPaginationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetDictionaryEntryWithPaginationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ * 
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useGetDictionaryEntryWithPaginationQuery({
+ *  variables: {
+ *   id: // value for 'id'
+ *   pageSize: // value for 'pageSize'
+ *   pageNumber: // value for 'pageNumber'
+ *  },
+ * });
+  */
+export function useGetDictionaryEntryWithPaginationQuery(baseOptions: Apollo.QueryHookOptions<GetDictionaryEntryWithPaginationQuery, GetDictionaryEntryWithPaginationQueryVariables>) {
+  return Apollo.useQuery<GetDictionaryEntryWithPaginationQuery, GetDictionaryEntryWithPaginationQueryVariables>(GetDictionaryEntryWithPaginationDocument, baseOptions);
+}
+export function useGetDictionaryEntryWithPaginationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetDictionaryEntryWithPaginationQuery, GetDictionaryEntryWithPaginationQueryVariables>) {
+  return Apollo.useLazyQuery<GetDictionaryEntryWithPaginationQuery, GetDictionaryEntryWithPaginationQueryVariables>(GetDictionaryEntryWithPaginationDocument, baseOptions);
+}
+export type GetDictionaryEntryWithPaginationQueryHookResult = ReturnType<typeof useGetDictionaryEntryWithPaginationQuery>;
+export type GetDictionaryEntryWithPaginationLazyQueryHookResult = ReturnType<typeof useGetDictionaryEntryWithPaginationLazyQuery>;
+export type GetDictionaryEntryWithPaginationQueryResult = Apollo.QueryResult<GetDictionaryEntryWithPaginationQuery, GetDictionaryEntryWithPaginationQueryVariables>;
 export const GetSubdivisionEntryDocument = gql`
     query GetSubdivisionEntry($id: ID!) {
   node: getSubdivision(id: $id) {

@@ -22,6 +22,7 @@ const DictionarySelectField: FC<DictionarySelectFieldProps> = (props) => {
     const [open, setOpen] = React.useState(false);
     const [query, setQuery] = useState('');
     const { loading, data, error } = useFindDictionariesQuery({
+        fetchPolicy: "cache-and-network",
         variables: {
             input: { query, pageSize: 500 }
         }

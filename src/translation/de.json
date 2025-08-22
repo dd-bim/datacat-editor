@@ -324,7 +324,8 @@
     "loading": "Lade Dictionary...", 
     "delete_success": "Dictionary gelöscht.",
     "related_concepts": ", die im Dictionary enthalten sind",
-    "no_related_concepts": "Das Dictionary enthält keine Konzepte."
+    "no_related_concepts": "Das Dictionary enthält keine Konzepte.",
+    "not_found": "Dictionary nicht gefunden"
   },
   "theme": {
     "title": "Thema",
@@ -473,7 +474,10 @@
     "search": "Suchen",
     "search_placeholder": "Katalog durchsuchen",
     "search_results": "Ergebnisse der Suche",
-    "filter_list": "Liste filtern ({count}/{total})"
+    "filter_list": "Liste filtern ({count}/{total})",
+    "filter_by_dictionary": "Nach Dictionary filtern",
+    "all_dictionaries": "Alle Dictionaries",
+    "no_dictionary": "Ohne Dictionary"
   },
   "footer": {
     "contact": "Fragen & Kontakt",
@@ -800,5 +804,15 @@
     "defaultPurpose": "Entwurfsvalidierung",
     "defaultMilestone": "Planung",
     "untitledSpecification": "Unbenannte Spezifikation"
+  },
+  "pagination": {
+    "entries": "Einträge",
+    "loading": "Lade...",
+    "no_data": "Keine Daten verfügbar",
+    "error_loading": "Fehler beim Laden der Konzepte",
+    "error_rendering": "Fehler beim Rendern der Konzeptliste",
+    "reload_page": "Seite neu laden",
+    "error_conversion": "Fehler bei der Datenkonvertierung",
+    "loading_concepts": "Lade Konzepte..."
   }
 }
