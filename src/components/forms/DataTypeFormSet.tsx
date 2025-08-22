@@ -13,11 +13,11 @@ import { Controller, useForm } from "react-hook-form";
 
 type DataTypeFormSetProps = {
   catalogEntryId: string;
-  dataType: DataTypeEnum;
+  dataType: DataTypeEnum | null | undefined;
 };
 
 type DataTypeFormValues = {
-  selectedDataType: DataTypeEnum;
+  selectedDataType: DataTypeEnum | "";
 };
 
 
@@ -50,24 +50,28 @@ const DataTypeFormSet: FC<DataTypeFormSetProps> = (props) => {
     reset
   } = useForm<DataTypeFormValues>({
     mode: "onChange",
-    defaultValues: { selectedDataType: dataType },
+    defaultValues: { selectedDataType: dataType || "" },
   });
 
   useEffect(() => {
-    reset({ selectedDataType: dataType });
-  }, [status, reset]);
+    reset({ selectedDataType: dataType || "" });
+  }, [dataType, reset]);
 
   const handleChange = async (
-    e: SelectChangeEvent<DataTypeEnum>,
+    e: SelectChangeEvent<string>,
     field: { onChange: (value: any) => void }
   ) => {
     field.onChange(e);
-    await setDataType({
-      variables: {
-        input: { catalogEntryId, dataType: e.target.value },
-      },
-    });
-    enqueueSnackbar("Datentyp aktualisiert.");
+    // Nur aktualisieren wenn ein gültiger Wert gewählt wurde
+    const value = e.target.value;
+    if (value && value !== "" && dataTypeOptions.some(opt => opt.value === value)) {
+      await setDataType({
+        variables: {
+          input: { catalogEntryId, dataType: value as DataTypeEnum },
+        },
+      });
+      enqueueSnackbar("Datentyp aktualisiert.");
+    }
   };
 
   return (
@@ -84,11 +88,15 @@ const DataTypeFormSet: FC<DataTypeFormSetProps> = (props) => {
           render={({ field }) => (
             <Select
               {...field}
-              value={field.value}
+              value={field.value || ""}
               onChange={e => handleChange(e, field)}
               size="small"
               sx={{ minWidth: 120 }}
+              displayEmpty
             >
+              <MenuItem value="">
+                <em><T keyName="property.no_data_type" /></em>
+              </MenuItem>
               {dataTypeOptions.map(opt => (
                 <MenuItem key={opt.value} value={opt.value}>
                   {opt.label}

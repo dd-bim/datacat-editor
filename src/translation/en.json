@@ -142,10 +142,41 @@
     "no_file_selected": "No file selected",
     "select_file_button": "Select Excel file",
     "check_inputs_button": "Check inputs",
-    "import_tag_label": "Import tag (optional)",
+    "import_tag_label": "Import tag (required)",
+    "import_tag_required": "Import tag is required",
     "import_button": "Import Excel file",
     "reset_button": "Reset inputs",
-    "progress": "{progress}% completed"
+    "progress": "{progress}% completed",
+    "help": {
+      "file_select": {
+        "title": "Select Excel File",
+        "content": "Choose an Excel file (.xlsx or .xls) containing your catalog data.\n\nThe file should contain structured data with headers. Each worksheet can contain different entity types (e.g., classes, properties, values) or relations.\n\nAfter selection, you can map the columns for name and ID."
+      },
+      "validation": {
+        "title": "Validate Inputs",
+        "content": "Checks all your settings before import:\n\n• Whether a file has been selected\n• Whether at least one entity is marked for import\n• Whether all name and ID columns are correctly mapped\n• Whether no duplicate columns are used in a worksheet\n\nFor missing ID columns, UUIDs will be generated automatically."
+      },
+      "preview": {
+        "title": "Import Preview",
+        "content": "Shows a detailed overview of the planned import:\n\n• Number of entities and relations to be imported\n• List of all automatically generated UUIDs\n• Breakdown by entity types\n\nThis allows you to verify that everything is correctly configured before the actual import."
+      },
+      "import_tag": {
+        "title": "Import Tag",
+        "content": "An optional tag assigned to all imported entities.\n\nThe tag helps to:\n• Identify imported data\n• Distinguish different import processes\n• Filter or delete data later\n\nIf no tag is specified, 'KATALOG-IMPORT' is used automatically."
+      },
+      "import": {
+        "title": "Start Import",
+        "content": "Starts the actual import process:\n\n• Reads the Excel file\n• Creates entities with configured mappings\n• Generates UUIDs automatically where needed\n• Creates relations between entities\n• Shows progress in real-time\n\nThe import can be aborted at any time."
+      },
+      "abort": {
+        "title": "Abort Import",
+        "content": "Aborts the running import process.\n\nAlready imported data remains, but further import is stopped.\n\nThis is useful if you notice an error in the configuration or the import takes longer than expected."
+      },
+      "reset": {
+        "title": "Reset Inputs",
+        "content": "Resets all settings and configurations:\n\n• Removes the selected file\n• Clears all column mappings\n• Deactivates all entity checkboxes\n• Deletes generated UUIDs\n• Resets import status\n\nThis is helpful to start fresh with a clean configuration."
+      }
+    }
   },
   "app_drawer": {
     "general": "General",
@@ -365,6 +396,7 @@
     "titlePlural": "Properties",
     "edit": "Edit property",
     "dataType": "Data type",
+    "no_data_type": "No data type",
     "dataType_helper": "The data type of the property. This can be a simple data type such as string, integer, or boolean.",
     "dataFormat": "Data format",
     "dataFormat_helper": "The data format of the property.",
@@ -552,6 +584,8 @@
     "labels": {
       "local_created": "Locally created",
       "classification_system_select": "Select classification system",
+      "themes_select": "Select themes (optional)",
+      "subthemes_select": "Select subthemes (optional)",
       "select_model_from_datacat": "Select model from datacat",
       "select_classes_optional": "Select classes (optional)",
       "search_classes": "Search classes...",
@@ -607,6 +641,9 @@
       "specification_name_example": "e.g. Check fire protection classes",
       "ifc_classes_search": "Search and select IFC classes...",
       "classification_system_search": "Search and select classification system...",
+      "themes_select": "Select themes...",
+      "subthemes_select": "Select subthemes...",
+      "tag_select": "Select tag...",
       "datatype_search": "Search and select data type...",
       "property_set_search": "Search and select Property Group...",
       "attribute_model_search": "Search and select model...",
@@ -620,6 +657,12 @@
       "optical_properties": "e.g. transparency, reflectivity...",
       "unnamed_ids": "Unnamed IDS",
       "unnamed_specification": "Unnamed Specification"
+    },
+    "hints": {
+      "select_classification_to_see_uri": "Select classification system to see URI",
+      "select_themes_for_filtering": "Select themes to filter matching classes",
+      "subthemes_only_if_available": "Subthemes are only shown if the selected theme has any",
+      "classes_filtered_by_selection": "Classes are filtered based on theme/subtheme selection"
     },
     "buttons": {
       "select_facet": "Please select facet",
@@ -802,5 +845,26 @@
     "defaultPurpose": "Design validation",
     "defaultMilestone": "Planning",
     "untitledSpecification": "Untitled Specification"
+  },
+  "classification_hints": {
+    "selected_themes_have_subthemes": "The selected themes have subthemes. Please select subthemes first to see the corresponding classes.",
+    "no_classes_available": "No classes available for the current selection.",
+    "unknown_theme": "Unknown theme",
+    "unknown_subtheme": "Unknown subtheme"
+  },
+  "confirmation": {
+    "token_label": "Confirmation token",
+    "token_helper_text": "The confirmation token is necessary to confirm your email address and will be sent to your mailbox."
+  },
+  "delete_import": {
+    "no_entries_selected": "No entries selected for deletion."
+  },
+  "import_validation": {
+    "select_file_error": "Please select an Excel file to import.",
+    "select_rows_error": "Please select at least one row to import.",
+    "duplicate_columns_error": "In a worksheet, the same columns must not be used for different entities/IDs.",
+    "unit_label": "Unit",
+    "relation_property_unit": "Rel_Property_Unit",
+    "relation_valuelist_unit": "Rel_Valuelist_Unit"
   }
 }

@@ -142,10 +142,41 @@
     "no_file_selected": "未选择文件",
     "select_file_button": "选择Excel文件",
     "check_inputs_button": "检查输入",
-    "import_tag_label": "导入标签（可选）",
+    "import_tag_label": "导入标签（必需）",
+    "import_tag_required": "导入标签是必需的",
     "import_button": "导入Excel文件",
     "reset_button": "重置输入",
-    "progress": "{progress}% 已完成"
+    "progress": "{progress}% 已完成",
+    "help": {
+      "file_select": {
+        "title": "选择Excel文件",
+        "content": "选择包含目录数据的Excel文件（.xlsx或.xls）。\n\n文件应包含带标题的结构化数据。每个工作表可以包含不同的实体类型（如类别、属性、值）或关系。\n\n选择后，您可以映射名称和ID列。"
+      },
+      "validation": {
+        "title": "验证输入",
+        "content": "导入前检查所有设置：\n\n• 是否已选择文件\n• 是否至少标记一个实体进行导入\n• 是否正确映射所有名称和ID列\n• 是否在工作表中使用重复列\n\n对于缺失的ID列，将自动生成UUID。"
+      },
+      "preview": {
+        "title": "导入预览",
+        "content": "显示计划导入的详细概览：\n\n• 要导入的实体和关系数量\n• 所有自动生成UUID的列表\n• 按实体类型分解\n\n这让您可以在实际导入前验证一切配置正确。"
+      },
+      "import_tag": {
+        "title": "导入标签",
+        "content": "分配给所有导入实体的可选标签。\n\n标签有助于：\n• 识别导入的数据\n• 区分不同的导入过程\n• 稍后过滤或删除数据\n\n如果未指定标签，将自动使用'KATALOG-IMPORT'。"
+      },
+      "import": {
+        "title": "开始导入",
+        "content": "启动实际导入过程：\n\n• 读取Excel文件\n• 使用配置的映射创建实体\n• 必要时自动生成UUID\n• 创建实体间关系\n• 实时显示进度\n\n导入可随时中止。"
+      },
+      "abort": {
+        "title": "中止导入",
+        "content": "中止正在运行的导入过程。\n\n已导入的数据将保留，但进一步的导入将停止。\n\n当您发现配置错误或导入时间超出预期时，这很有用。"
+      },
+      "reset": {
+        "title": "重置输入",
+        "content": "重置所有设置和配置：\n\n• 移除选定的文件\n• 清除所有列映射\n• 取消选中所有实体复选框\n• 删除生成的UUID\n• 重置导入状态\n\n这有助于以干净的配置重新开始。"
+      }
+    }
   },
   "app_drawer": {
     "general": "通用",
@@ -541,6 +572,8 @@
       "classification": "分类",
       "classification_auto_ifcclassification": "分类将自动使用IFCCLASSIFICATION",
       "classification_system_select": "选择分类系统",
+      "themes_select": "选择主题（可选）",
+      "subthemes_select": "选择子主题（可选）",
       "create_new_property_set": "创建新的IFC属性集（属性组）",
       "datatype_optional": "数据类型",
       "edit_specification": "编辑规范",
@@ -586,6 +619,9 @@
       "attribute_class_search": "搜索并选择类别...",
       "attribute_model_search": "搜索并选择专业模型...",
       "classification_system_search": "搜索并选择分类系统...",
+      "themes_select": "选择主题...",
+      "subthemes_select": "选择子主题...",
+      "tag_select": "选择标签...",
       "datatype_search": "搜索并选择数据类型...",
       "entity_type_search": "搜索并选择实体类型...",
       "ids_name_example": "例如：要求-消防安全-2024",
@@ -602,6 +638,12 @@
       "thermal_properties": "例如：导热系数、比热容...",
       "unnamed_ids": "未命名IDS",
       "unnamed_specification": "未命名规范"
+    },
+    "hints": {
+      "select_classification_to_see_uri": "选择分类系统以查看URI",
+      "select_themes_for_filtering": "选择主题以过滤匹配的类",
+      "subthemes_only_if_available": "只有在所选主题有子主题时才显示子主题",
+      "classes_filtered_by_selection": "类根据主题/子主题选择进行过滤"
     },
     "buttons": {
       "add_by_tag": "按标签添加",
@@ -802,5 +844,26 @@
     "defaultPurpose": "设计验证",
     "defaultTitle": "新建IDS规范",
     "untitledSpecification": "无标题规范"
+  },
+  "classification_hints": {
+    "selected_themes_have_subthemes": "所选主题有子主题。请先选择子主题以查看相应的类别。",
+    "no_classes_available": "当前选择没有可用的类别。",
+    "unknown_theme": "未知主题",
+    "unknown_subtheme": "未知子主题"
+  },
+  "confirmation": {
+    "token_label": "确认令牌",
+    "token_helper_text": "确认令牌是确认您的电子邮件地址所必需的，将发送到您的邮箱。"
+  },
+  "delete_import": {
+    "no_entries_selected": "没有选择要删除的条目。"
+  },
+  "import_validation": {
+    "select_file_error": "请选择要导入的Excel文件。",
+    "select_rows_error": "请至少选择一行进行导入。",
+    "duplicate_columns_error": "在工作表中，不能为不同的实体/ID使用相同的列。",
+    "unit_label": "单位",
+    "relation_property_unit": "关系_属性_单位",
+    "relation_valuelist_unit": "关系_值列表_单位"
   }
 }

@@ -35,15 +35,14 @@ import { SaveLoadDialog } from "../components/SaveLoadDialog";
 import { autoSaveIDSData, getAutoSavedIDSData } from "../utils/idsStorage";
 import { CreatePropertySetDialog } from "../components/CreatePropertySetDialog";
 import { InfoButton } from "../components/InfoButton";
-
-// Import new modular components
+import { ClassEntity, PropertyGroupEntity, ThemeEntity } from "../domain";
 import { PropertyRequirement } from "../components/requirements/PropertyRequirement";
 import { AttributeRequirement } from "../components/requirements/AttributeRequirement";
 import { ClassificationRequirement } from "../components/requirements/ClassificationRequirement";
 import { useIDSData } from "../hooks/useIDSData";
 import { useIDSUtilities } from "../hooks/useIDSUtilities";
 import { DATA_TYPE_OPTIONS } from "../constants/idsConstants";
-import { ClassEntity, PropertyGroupEntity } from "../domain";
+
 
 const Container = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -91,6 +90,8 @@ export const IDSExportView: React.FC = () => {
         type: "classification";
         value: string; // ModelId
         modelName?: string;
+        selectedThemes?: string[]; // IDs der gewählten Themen
+        selectedSubThemes?: string[]; // IDs der gewählten Unterthemen
         selectedClasses?: string[]; // Optional: IDs der gewählten Klassen
         classNames?: string[]; // Optional: Namen der gewählten Klassen für die XML-Ausgabe
         valueNames?: string[]; // Für die XML-Ausgabe
@@ -201,6 +202,21 @@ export const IDSExportView: React.FC = () => {
     fetchPolicy: "cache-first",
   });
 
+  // Query: Alle Subjects (Themen und Unterthemen) - werden clientseitig gefiltert
+  const { 
+    data: allSubjectsData, 
+    loading: allSubjectsLoading,
+    refetch: refetchAllSubjects 
+  } = useFindSubjectsQuery({
+    variables: {
+      input: {
+        tagged: ThemeEntity.tags, // Thema-Tag
+        pageSize: 1000,
+      },
+    },
+    fetchPolicy: "cache-first",
+  });
+
   // Error Handling für alle Queries
   useEffect(() => {
     if (allItemsError) {
@@ -215,7 +231,7 @@ export const IDSExportView: React.FC = () => {
     if (error) {
       console.error('Error loading property tree:', error);
     }
-  }, [allItemsError, dictionariesError, error]);
+  }, [allItemsError, dictionariesError, classesError, error]);
 
   // Custom Hooks für Datenverarbeitung
   const { propertyGroupOptions, dictionaryOptions, classOptions } = useIDSData(
@@ -224,6 +240,86 @@ export const IDSExportView: React.FC = () => {
     classesData?.findSubjects?.nodes || [],
     newlyCreatedPropertySets
   );
+
+  // Helper-Funktionen für hierarchische Themen-/Klassen-Auswahl
+  const getThemesForDictionary = useCallback((dictionaryId: string) => {
+    if (!allSubjectsData?.findSubjects?.nodes || !dictionaryId) return [];
+    
+    return allSubjectsData.findSubjects.nodes
+      .filter((subject: any) => {
+        // Filtere nach Dictionary
+        if (subject.dictionary?.id !== dictionaryId) return false;
+        
+        // Nur Hauptthemen (keine Parent-Beziehung zu anderen Themen)
+        const hasThemeTag = subject.tags?.some((tag: any) => ThemeEntity.tags?.includes(tag.id));
+        const hasParentTheme = subject.connectingSubjects?.some((rel: any) => {
+          const connectingSubject = rel.connectingSubject;
+          return connectingSubject?.tags?.some((tag: any) => ThemeEntity.tags?.includes(tag.id));
+        });
+        
+        return hasThemeTag && !hasParentTheme;
+      })
+      .map((subject: any) => ({
+        id: subject.id,
+        name: subject.name?.texts?.[0]?.text || subject.name || subject.id,
+        dictionaryId: subject.dictionary?.id,
+      }))
+      .sort((a: any, b: any) => a.name.localeCompare(b.name));
+  }, [allSubjectsData]);
+
+  const getSubThemesForTheme = useCallback((parentThemeId: string) => {
+    if (!allSubjectsData?.findSubjects?.nodes || !parentThemeId) return [];
+    
+    const matchingSubThemes = allSubjectsData.findSubjects.nodes
+      .filter((subject: any) => {
+        // Muss Thema-Tag haben UND Parent-Beziehung zum gewählten Thema
+        const hasThemeTag = subject.tags?.some((tag: any) => ThemeEntity.tags?.includes(tag.id));
+        const hasParentRelation = subject.connectingSubjects?.some((rel: any) => {
+          return rel.connectingSubject?.id === parentThemeId;
+        });
+        
+        return hasThemeTag && hasParentRelation;
+      })
+      .map((subject: any) => ({
+        id: subject.id,
+        name: subject.name?.texts?.[0]?.text || subject.name || subject.id,
+        parentThemeId,
+      }))
+      .sort((a: any, b: any) => a.name.localeCompare(b.name));
+    
+    return matchingSubThemes;
+  }, [allSubjectsData]);
+
+  // Hole alle Klassen für ein ausgewähltes Thema oder Unterthema (vereinheitlicht)
+  const getClassesForThemeOrSubTheme = useCallback((themeId: string) => {
+    if (!classesData?.findSubjects?.nodes || !themeId) return [];
+    
+    // Finde das Theme/Subtheme-Objekt anhand der ID
+    const themeSubject = allSubjectsData?.findSubjects?.nodes?.find((s: any) => s.id === themeId);
+    const themeName = typeof themeSubject?.name === 'string' 
+      ? themeSubject.name 
+      : (themeSubject?.name as any)?.texts?.[0]?.text;
+    
+    return classesData.findSubjects.nodes
+      .filter((classNode: any) => {
+        return classNode.connectingSubjects?.some((rel: any) => {
+          // Da connectingSubject.id nicht verfügbar ist, verwende den Namen zum Vergleich
+          const subjectName = rel.connectingSubject?.name;
+          return subjectName && themeName && subjectName === themeName;
+        });
+      })
+      .map((classNode: any) => ({
+        id: classNode.id,
+        name: classNode.name?.texts?.[0]?.text || classNode.name || classNode.id,
+        themeId,
+      }))
+      .sort((a: any, b: any) => a.name.localeCompare(b.name));
+  }, [classesData, allSubjectsData]);
+
+  // Neue Funktion: Prüfe ob ein Thema Unterthemen hat
+  const hasSubThemes = useCallback((themeId: string) => {
+    return getSubThemesForTheme(themeId).length > 0;
+  }, [getSubThemesForTheme]);
 
   const {
     getPropertySetUri,
@@ -342,11 +438,32 @@ export const IDSExportView: React.FC = () => {
         if (r.type === "classification") {
           // Wenn ein komplettes Objekt übergeben wird (z.B. bei dataType/cardinality Änderungen)
           if (typeof value === "object" && value !== null && !Array.isArray(value)) {
-            // Bei Classification: Wenn value (Modell) geändert wird, selectedClasses zurücksetzen
+            // Bei Classification: Wenn value (Dictionary/Modell) geändert wird, alles zurücksetzen
             if (value.value && value.value !== r.value) {
               return {
                 ...r,
                 ...value,
+                selectedThemes: [],
+                selectedSubThemes: [],
+                selectedClasses: [],
+                classNames: [],
+              };
+            }
+            // Wenn selectedThemes geändert wird, SubThemes und Classes zurücksetzen
+            if (value.selectedThemes && JSON.stringify(value.selectedThemes) !== JSON.stringify(r.selectedThemes)) {
+              return {
+                ...r,
+                selectedThemes: value.selectedThemes,
+                selectedSubThemes: [],
+                selectedClasses: [],
+                classNames: [],
+              };
+            }
+            // Wenn selectedSubThemes geändert wird, Classes zurücksetzen
+            if (value.selectedSubThemes && JSON.stringify(value.selectedSubThemes) !== JSON.stringify(r.selectedSubThemes)) {
+              return {
+                ...r,
+                selectedSubThemes: value.selectedSubThemes,
                 selectedClasses: [],
                 classNames: [],
               };
@@ -368,6 +485,8 @@ export const IDSExportView: React.FC = () => {
             return {
               ...r,
               value,
+              selectedThemes: [],
+              selectedSubThemes: [],
               selectedClasses: [],
               classNames: [],
             };
@@ -423,6 +542,8 @@ export const IDSExportView: React.FC = () => {
           return {
             type: "classification",
             value: "",
+            selectedThemes: [],
+            selectedSubThemes: [],
             selectedClasses: [],
             classNames: [],
             dataType: "",
@@ -475,6 +596,8 @@ export const IDSExportView: React.FC = () => {
         return {
           type: "classification",
           value: req.value, // Model-ID
+          selectedThemes: req.selectedThemes || [], // Falls vorhanden
+          selectedSubThemes: req.selectedSubThemes || [], // Falls vorhanden
           selectedClasses: req.selectedClasses || [], // Falls vorhanden
           classNames: req.classNames || [], // Falls vorhanden
           dataType: req.dataType || "",
@@ -510,7 +633,7 @@ export const IDSExportView: React.FC = () => {
   // Tag handling for available tags
   useEffect(() => {
     if (tagsData) {
-      const availableTags = tagsData.findTags.nodes.map((tag) => tag.name);
+      const availableTags = tagsData.findTags.nodes.map((tag: any) => tag.name);
       setAllTags(filterTags(availableTags).sort());
     }
   }, [tagsData, filterTags]);
@@ -696,7 +819,10 @@ export const IDSExportView: React.FC = () => {
   // IDS Datei erzeugen
   const handleGenerateIds = () => {
     if (specRows.length === 0) {
-      enqueueSnackbar("Bitte fügen Sie mindestens eine Specification hinzu.", { variant: "warning" });
+      enqueueSnackbar(
+        <T keyName="ids_export.error_messages.no_specifications" />, 
+        { variant: "warning" }
+      );
       return;
     }
     setIsIdsGenerated(true);
@@ -865,32 +991,36 @@ export const IDSExportView: React.FC = () => {
           cardinality: req.cardinality,
         } as any);
       } else if (req.type === "classification") {
-        // Classification: System Name verwenden
-        const modelName = getModelNameById(req.value as string);
+        // Classification: Dictionary Name als System verwenden
+        const dictionaryName = getModelNameById(req.value as string);
         
         if (req.selectedClasses && req.selectedClasses.length > 0) {
-          // Mit gewählten Klassen: Value als Enumeration, System als Pattern
+          // Mit gewählten Klassen: Nur Dictionary und Klassen in IDS
           enrichedRequirements.push({
             type: "classification",
-            value: req.value,
-            selectedClasses: req.selectedClasses, // Für späteres Laden speichern
-            classNames: req.classNames || [], // Für späteres Laden speichern
-            modelName: modelName, // Als Pattern für System
-            valueNames: req.classNames || [], // Als Enumeration für Value
+            value: req.value, // Dictionary ID (für interne Verwendung)
+            selectedThemes: req.selectedThemes || [], // Nur für UI-State beim Laden
+            selectedSubThemes: req.selectedSubThemes || [], // Nur für UI-State beim Laden
+            selectedClasses: req.selectedClasses, // Nur für UI-State beim Laden
+            classNames: req.classNames || [], // Klassennamen für IDS Value
+            modelName: dictionaryName, // Dictionary-Name für IDS System
+            valueNames: req.classNames || [], // Klassennamen als Enumeration für Value
             dataType: req.dataType || "",
             cardinality: req.cardinality || "required",
           });
         } else {
-          // Nur Modell gewählt: Nur System als Pattern
+          // Nur Dictionary gewählt: Nur Dictionary-System in IDS
           enrichedRequirements.push({
             type: "classification",
-            value: req.value,
+            value: req.value, // Dictionary ID (für interne Verwendung)
+            selectedThemes: req.selectedThemes || [], // Nur für UI-State beim Laden
+            selectedSubThemes: req.selectedSubThemes || [], // Nur für UI-State beim Laden
             selectedClasses: [], // Leeres Array für Konsistenz
             classNames: [], // Leeres Array für Konsistenz
-            modelName: modelName, // Als Pattern für System
+            modelName: dictionaryName, // Dictionary-Name für IDS System
             dataType: req.dataType || "",
             cardinality: req.cardinality || "required",
-            // Keine valueNames = kein Value-Element in XML
+            // Keine valueNames = kein Value-Element in XML (alle Klassen des Dictionarys erlaubt)
           });
         }
       } else if (req.type === "attribute") {
@@ -1339,6 +1469,11 @@ export const IDSExportView: React.FC = () => {
                       getPropertySetUri={getPropertySetUri}
                       getClassificationUri={getClassificationUri}
                       getClassesForModel={getClassesForModel}
+                      // Hierarchische Props für Themen/Unterthemen/Klassen
+                      getThemesForDictionary={getThemesForDictionary}
+                      getSubThemesForTheme={getSubThemesForTheme}
+                      getClassesForThemeOrSubTheme={getClassesForThemeOrSubTheme}
+                      hasSubThemes={hasSubThemes}
                       DATA_TYPE_OPTIONS={DATA_TYPE_OPTIONS}
                     />
                   ) : req.type === "attribute" ? (

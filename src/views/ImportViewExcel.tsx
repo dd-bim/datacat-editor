@@ -20,7 +20,12 @@ import {
   TableRow,
   Paper,
   Stack,
-  ButtonProps
+  ButtonProps,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  ListSubheader,
 } from "@mui/material";
 import { useSnackbar } from "notistack";
 import View from "./View";
@@ -35,6 +40,7 @@ import {
 } from "../generated/types";
 import ExcelJS from "exceljs";
 import { v4 as uuidv4 } from "uuid";
+import { InfoButton } from "../components/InfoButton";
 import { T, useTranslate } from '@tolgee/react';
 
 
@@ -118,10 +124,12 @@ const ButtonWrapper = styled(Box)(({ theme }) => ({
   flexDirection: "column",
   alignItems: "center",
   textAlign: "center",
+  position: "relative",
 }));
 
 const ActionButton = styled(Button)<ButtonProps>(({ theme }) => ({
   marginBottom: theme.spacing(0.5),
+  // Entferne die explizite Höhe, damit sie der Standard Material-UI Höhe entspricht
 }));
 
 export function ImportViewExcel() {
@@ -138,11 +146,358 @@ export function ImportViewExcel() {
   const [status, setStatus] = useState("");
   const { t } = useTranslate();
 
+  // Enhanced Import Management
+  const [isImporting, setIsImporting] = useState(false);
+  const [importAborted, setImportAborted] = useState(false);
+  const [importedEntities, setImportedEntities] = useState<string[]>([]);
+  const [currentAction, setCurrentAction] = useState("");
+  const [importStartTime, setImportStartTime] = useState<Date | null>(null);
+  const [previewData, setPreviewData] = useState<any>(null);
+  const [showPreview, setShowPreview] = useState(false);
+
+  // Ref for abort controller
+  const abortControllerRef = useRef<AbortController | null>(null);
+
+  // UUID Management for automatic ID generation
+  const [generatedUUIDs, setGeneratedUUIDs] = useState<{
+    [entityType: string]: { [name: string]: string }
+  }>({});
+
+  // Sequential UUIDs for ordered entities (preserves Excel row order)
+  const [sequentialUUIDs, setSequentialUUIDs] = useState<{
+    [entityType: string]: Array<{ name: string; uuid: string; order: number }>
+  }>({});
+  
+  // State for managing UUID generation
+  const [uuidGenerationNeeded, setUuidGenerationNeeded] = useState<{
+    [entityType: string]: boolean
+  }>({});
+  
+  // Function to get or create UUID for a name in a specific entity type
+  const getOrCreateUUID = (entityType: string, name: string): string => {
+    if (!name || name.trim() === '') return '';
+    
+    const trimmedName = name.trim();
+    
+    // Initialize entity type if not exists
+    if (!generatedUUIDs[entityType]) {
+      const newUUID = uuidv4();
+      setGeneratedUUIDs(prev => ({
+        ...prev,
+        [entityType]: { [trimmedName]: newUUID }
+      }));
+      return newUUID;
+    }
+    
+    // Return existing UUID if name already has one
+    if (generatedUUIDs[entityType][trimmedName]) {
+      return generatedUUIDs[entityType][trimmedName];
+    }
+    
+    // Generate new UUID for new name
+    const newUUID = uuidv4();
+    setGeneratedUUIDs(prev => ({
+      ...prev,
+      [entityType]: {
+        ...prev[entityType],
+        [trimmedName]: newUUID
+      }
+    }));
+    
+    return newUUID;
+  };
+
+  // Function to get all generated UUIDs for an entity type (for dropdowns in relations)
+  const getGeneratedUUIDsForEntityType = (entityType: string): Array<{id: string, name: string}> => {
+    if (!generatedUUIDs[entityType]) return [];
+    
+    return Object.entries(generatedUUIDs[entityType]).map(([name, id]) => ({
+      id,
+      name
+    }));
+  };
+
+  // Function to clear generated UUIDs (useful when starting a new import)
+  const clearGeneratedUUIDs = () => {
+    setGeneratedUUIDs({});
+    setSequentialUUIDs({});
+    setUuidGenerationNeeded({});
+  };
+
+  // Function to generate UUIDs for a specific entity type from Excel data
+  const generateUUIDsForEntity = async (entityIndex: number) => {
+    if (!entitiesFile) {
+      enqueueSnackbar("Bitte wählen Sie zuerst eine Datei aus", { variant: "warning" });
+      return;
+    }
+
+    const entityTypes = [
+      "Referenzdokument", "Dictionary", "Thema", "Klasse", "Merkmal", 
+      "Merkmalsgruppe", "Werteliste", "Maßeinheit", "Wert"
+    ];
+    const entityType = entityTypes[entityIndex];
+    const sheetName = textFieldValues[`sheetField${entityIndex}`] || "";
+    const nameColumnLetter = selectedLetters[`selectName${entityIndex}`] || "";
+    const useNameTextField = useTextField[`name${entityIndex}`];
+
+    if (useNameTextField) {
+      // Single entry from text field
+      const name = textFieldValues[`name${entityIndex}`] || "";
+      if (name.trim()) {
+        const uuid = uuidv4();
+        setSequentialUUIDs(prev => ({
+          ...prev,
+          [entityType]: [{ name: name.trim(), uuid, order: 0 }]
+        }));
+        // UUID-Generation visuell über Interface ersichtlich, keine Snackbar nötig
+      }
+      return;
+    }
+
+    if (!sheetName || !nameColumnLetter) {
+      enqueueSnackbar(`Bitte Tabellenblatt und Namensspalte für ${entityType} auswählen`, { variant: "warning" });
+      return;
+    }
+
+    try {
+      // Load Excel data
+      const data = await entitiesFile.arrayBuffer();
+      const workbook = new ExcelJS.Workbook();
+      await workbook.xlsx.load(data);
+
+      const sheet = workbook.getWorksheet(sheetName);
+      if (!sheet) {
+        enqueueSnackbar(`Tabellenblatt "${sheetName}" nicht gefunden`, { variant: "error" });
+        return;
+      }
+
+      const columnLetterToIndex = (letter: string): number => {
+        return letter.charCodeAt(0) - 65;
+      };
+
+      const nameColumnIndex = columnLetterToIndex(nameColumnLetter) + 1;
+      const uniqueNames = new Map<string, number>(); // name -> first occurrence order
+      const generatedEntries: Array<{ name: string; uuid: string; order: number }> = [];
+
+      // First pass: collect unique names and their first occurrence order
+      sheet.eachRow({ includeEmpty: false }, (row: ExcelJS.Row, rowNumber: number) => {
+        if (rowNumber === 1) return; // Skip header
+
+        const name = String(row.getCell(nameColumnIndex).value || '').trim();
+        if (name && !uniqueNames.has(name)) {
+          uniqueNames.set(name, rowNumber - 1); // Store first occurrence order
+        }
+      });
+
+      // Second pass: generate UUIDs only for unique names
+      uniqueNames.forEach((order, name) => {
+        const uuid = uuidv4();
+        generatedEntries.push({
+          name,
+          uuid,
+          order
+        });
+      });
+
+      // Sort by order to maintain Excel sequence
+      generatedEntries.sort((a, b) => a.order - b.order);
+
+      if (generatedEntries.length > 0) {
+        setSequentialUUIDs(prev => ({
+          ...prev,
+          [entityType]: generatedEntries
+        }));
+        
+        setUuidGenerationNeeded(prev => ({
+          ...prev,
+          [entityType]: false
+        }));
+
+        const totalRows = Array.from(uniqueNames.keys()).length;
+        const duplicateCount = (function() {
+          let totalEntries = 0;
+          sheet.eachRow({ includeEmpty: false }, (row: ExcelJS.Row, rowNumber: number) => {
+            if (rowNumber === 1) return;
+            const name = String(row.getCell(nameColumnIndex).value || '').trim();
+            if (name) totalEntries++;
+          });
+          return totalEntries;
+        })() - totalRows;
+
+        enqueueSnackbar(
+          `${generatedEntries.length} eindeutige UUIDs für ${entityType} generiert` + 
+          (duplicateCount > 0 ? ` (${duplicateCount} Duplikate erkannt)` : ""), 
+          { variant: "success", autoHideDuration: 6000 }
+        );
+      } else {
+        enqueueSnackbar(`Keine gültigen Namen in Spalte ${nameColumnLetter} gefunden`, { variant: "warning" });
+      }
+
+    } catch (error) {
+      enqueueSnackbar(`Fehler beim Generieren der UUIDs: ${error}`, { variant: "error" });
+    }
+  };
+
+  // Function to download generated UUIDs as CSV
+  const downloadGeneratedUUIDs = () => {
+    const allEntries: Array<{ name: string; type: string; uuid: string; order: number }> = [];
+    
+    Object.entries(sequentialUUIDs).forEach(([entityType, entries]) => {
+      entries.forEach(entry => {
+        allEntries.push({
+          name: entry.name,
+          type: entityType,
+          uuid: entry.uuid,
+          order: entry.order
+        });
+      });
+    });
+
+    if (allEntries.length === 0) {
+      enqueueSnackbar("Keine generierten UUIDs zum Download verfügbar", { variant: "warning" });
+      return;
+    }
+
+    // Sort by type and order
+    allEntries.sort((a, b) => {
+      if (a.type !== b.type) return a.type.localeCompare(b.type);
+      return a.order - b.order;
+    });
+
+    // Create CSV content
+    const csvHeader = "Name,Typ,UUID,Reihenfolge\n";
+    const csvContent = allEntries
+      .map(entry => `"${entry.name}","${entry.type}","${entry.uuid}",${entry.order}`)
+      .join("\n");
+
+    const csvData = csvHeader + csvContent;
+    
+    // Create and download file
+    const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `generierte-uuids-${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    // Download erfolgt, Benutzer sieht es direkt - keine Snackbar nötig
+  };
+
+  // Function to find UUID by name in sequential UUIDs
+  const findSequentialUUIDByName = (entityType: string, name: string): string | null => {
+    if (!name || name.trim() === '') return null;
+    
+    const trimmedName = name.trim();
+    const sequences = sequentialUUIDs[entityType];
+    
+    if (!sequences) return null;
+    
+    const found = sequences.find(entry => entry.name === trimmedName);
+    return found ? found.uuid : null;
+  };
+
+  // Function to find UUID by name across all entity types
+  const findUUIDByName = (name: string): string | null => {
+    if (!name || name.trim() === '') return null;
+    
+    const trimmedName = name.trim();
+    
+    // First check sequential UUIDs
+    for (const [entityType, sequences] of Object.entries(sequentialUUIDs)) {
+      const found = sequences.find(entry => entry.name === trimmedName);
+      if (found) return found.uuid;
+    }
+    
+    // Then check old generated UUIDs as fallback
+    for (const [entityType, nameToUuidMap] of Object.entries(generatedUUIDs)) {
+      if (nameToUuidMap[trimmedName]) {
+        return nameToUuidMap[trimmedName];
+      }
+    }
+    
+    return null;
+  };
+
+  // Import Control Functions
+  const startImport = () => {
+    setIsImporting(true);
+    setImportAborted(false);
+    setImportedEntities([]);
+    setProgress(0);
+    setImportStartTime(new Date());
+    abortControllerRef.current = new AbortController();
+  };
+
+  const abortImport = () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    setImportAborted(true);
+    setIsImporting(false);
+    setProgress(0); // Reset progress bar
+    setCurrentAction("Import abgebrochen");
+    enqueueSnackbar("❌ Import wurde abgebrochen", { variant: "warning" });
+  };
+
+  const finishImport = () => {
+    setIsImporting(false);
+    setProgress(100);
+    const duration = importStartTime ? Date.now() - importStartTime.getTime() : 0;
+    setCurrentAction(`Import abgeschlossen in ${(duration / 1000).toFixed(1)}s`);
+    abortControllerRef.current = null;
+  };
+
+  // Check if operation should be aborted
+  const checkAborted = (): boolean => {
+    return abortControllerRef.current?.signal.aborted || importAborted;
+  };
+
+  // Preview function - shows what will be imported
+  const generatePreview = async () => {
+    if (!entitiesFile) {
+      enqueueSnackbar("Bitte wählen Sie zuerst eine Datei aus", { variant: "warning" });
+      return;
+    }
+
+    try {
+      setCurrentAction("Generiere Vorschau...");
+      
+      // Use the existing logic but don't actually create entities
+      const preview = {
+        entities: {},
+        relations: {},
+        generatedUUIDs: { ...generatedUUIDs },
+        totalItems: 0
+      };
+
+      // Simulate the import process to generate preview data
+      handleImportEntities(); // This populates our data structures
+      
+      // Count total items
+      Object.values(checkedRows.entities).forEach(checked => {
+        if (checked) preview.totalItems++;
+      });
+      Object.values(checkedRows.relations).forEach(checked => {
+        if (checked) preview.totalItems++;
+      });
+
+      setPreviewData(preview);
+      setShowPreview(true);
+      setCurrentAction("Vorschau erstellt");
+      
+    } catch (error) {
+      enqueueSnackbar(`Fehler bei Vorschau-Generierung: ${error}`, { variant: "error" });
+    }
+  };
+
   const handleValidationClick = () => {
     const hasErrors = handleValidation();
     enqueueSnackbar(
       hasErrors
-        ? <T keyName="import_excel.validation_error" />
+        ? <T keyName="import_excel.validation_failed" />
         : <T keyName="import_excel.validation_success" />,
       { variant: hasErrors ? "error" : "success" }
     );
@@ -181,6 +536,8 @@ export function ImportViewExcel() {
     if (selectedFile) {
       setEntitiesFile(selectedFile);
       refetch({ pageSize: 100 });
+      // Clear generated UUIDs when a new file is selected
+      clearGeneratedUUIDs();
     }
   };
 
@@ -198,8 +555,28 @@ export function ImportViewExcel() {
   const handleimportExcel = async (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
-    handleImportEntities(); // Erste Funktion aufrufen
-    await importExcelData(); // Danach die Excel-Daten importieren
+    try {
+      startImport();
+      setCurrentAction("Starte Import...");
+      
+      handleImportEntities(); // Erste Funktion aufrufen
+      
+      if (checkAborted()) {
+        return;
+      }
+      
+      setCurrentAction("Analysiere Excel-Daten...");
+      await importExcelData(); // Danach die Excel-Daten importieren
+      
+      if (!checkAborted()) {
+        finishImport();
+        // Erfolg wird über Progress-Bar und Status angezeigt, keine Snackbar nötig
+      }
+    } catch (error) {
+      setIsImporting(false);
+      setCurrentAction("Import fehlgeschlagen");
+      enqueueSnackbar(`❌ Import-Fehler: ${error}`, { variant: "error" });
+    }
   };
 
   const isIdRequired = (entityIndex: number): boolean => {
@@ -214,7 +591,7 @@ export function ImportViewExcel() {
     if (!entitiesFile) {
       hasErrors = true;
       errorMessages.push(
-        "Bitte wählen Sie eine Excel-Datei zum Importieren aus."
+        t("import_validation.select_file_error")
       );
     }
 
@@ -225,21 +602,37 @@ export function ImportViewExcel() {
     if (!hasSelectedRows) {
       hasErrors = true;
       errorMessages.push(
-        "Bitte wählen Sie mindestens eine Zeile zum Importieren aus."
+        t("import_validation.select_rows_error")
       );
     }
 
     // Check if all selected rows are completely filled
+    const autoUuidInfoMessages: string[] = [];
     Object.entries(checkedRows.entities).forEach(([rowIndex, isChecked]) => {
       if (isChecked) {
         const rowNumber = parseInt(rowIndex, 10) + 1;
         const rowName = `Tabelle 1, Zeile ${rowNumber}`; // Assume table 1 for entities
         const nameValue = textFieldValues[`name${rowIndex}`];
         const idValue = textFieldValues[`id${rowIndex}`];
-        const selectedName = selectedLetters[`selectName${rowIndex}`];
-        const selectedId = selectedLetters[`selectID${rowIndex}`];
         const useNameTextField = useTextField[`name${rowIndex}`];
         const useIdTextField = useTextField[`id${rowIndex}`];
+        const selectedName = selectedLetters[`selectName${rowIndex}`];
+        const selectedId = selectedLetters[`selectID${rowIndex}`];
+
+        // Check if we have a name but no ID - this triggers auto UUID generation
+        const hasName = useNameTextField ? nameValue : selectedName;
+        const hasId = useIdTextField ? idValue : selectedId;
+        
+        if (hasName && !hasId) {
+          const entityTypes = [
+            "Referenzdokument", "Dictionary", "Thema", "Klasse", "Merkmal", 
+            "Merkmalsgruppe", "Werteliste", "Maßeinheit", "Wert"
+          ];
+          const entityType = entityTypes[parseInt(rowIndex, 10)];
+          autoUuidInfoMessages.push(
+            `ℹ️ ${entityType}: UUIDs werden automatisch für Namen generiert (keine ID-Spalte gewählt)`
+          );
+        }
 
         // Check if name field is filled or selected
         if (useNameTextField && !nameValue) {
@@ -254,21 +647,35 @@ export function ImportViewExcel() {
           );
         }
 
-        // Check if id field is filled or selected
-        if (isIdRequired(parseInt(rowIndex)) && useIdTextField && !idValue) {
-          hasErrors = true;
-          errorMessages.push(
-            `${rowName}: Das Textfeld "ID" muss ausgefüllt werden.`
-          );
-        } else if (
-          isIdRequired(parseInt(rowIndex)) &&
-          !useIdTextField &&
-          !selectedId
-        ) {
-          hasErrors = true;
-          errorMessages.push(
-            `${rowName}: Das Dropdown "ID" muss ausgewählt werden.`
-          );
+        // Check if id field is filled or selected - BUT allow auto-generation
+        // For entities that require an ID, but only if auto-generation is not possible
+        if (isIdRequired(parseInt(rowIndex))) {
+          // If we have a name but no ID, that's OK because we can auto-generate
+          if (hasName && !hasId) {
+            // This is fine - UUID will be auto-generated (already handled above)
+          } else if (!hasName && hasId) {
+            // We have an ID but no name - this is an error
+            hasErrors = true;
+            errorMessages.push(
+              `${rowName}: Ein Name ist erforderlich, auch wenn eine ID-Spalte gewählt ist.`
+            );
+          } else if (!hasName && !hasId) {
+            // Neither name nor ID - this is an error
+            hasErrors = true;
+            errorMessages.push(
+              `${rowName}: Entweder eine Namens-Spalte oder ein Textfeld-Name muss ausgefüllt werden.`
+            );
+          }
+          // If both hasName && hasId, that's also fine - use both
+        } else {
+          // For the first three entities (index 0,1,2), ID is not required
+          // But if we're using textfields and ID field is filled, it should be valid
+          if (useIdTextField && idValue && !idValue.trim()) {
+            hasErrors = true;
+            errorMessages.push(
+              `${rowName}: Das ID-Textfeld darf nicht leer sein, wenn es ausgefüllt wird.`
+            );
+          }
         }
       }
     });
@@ -286,7 +693,7 @@ export function ImportViewExcel() {
           if (value && sheetNames[sheetName].has(value)) {
             hasErrors = true;
             errorMessages.push(
-              "In einem Tabellenblatt dürfen keine gleichen Spalten für unterschiedliche Entitäten/ IDs verwendet werden."
+              t("import_validation.duplicate_columns_error")
             );
           } else {
             sheetNames[sheetName].add(value);
@@ -303,6 +710,14 @@ export function ImportViewExcel() {
         enqueueSnackbar(error, { variant: "error" });
       });
     }
+    
+    // Show info messages for auto UUID generation
+    if (autoUuidInfoMessages.length > 0) {
+      autoUuidInfoMessages.forEach((info) => {
+        enqueueSnackbar(info, { variant: "info", autoHideDuration: 6000 });
+      });
+    }
+    
     return hasErrors;
   };
 
@@ -326,6 +741,18 @@ export function ImportViewExcel() {
     }
     setEntitiesFile(null); // Clear file state
     setProgress(0); // Reset progressBar
+    
+    // Clear generated UUIDs
+    clearGeneratedUUIDs();
+    
+    // Reset import states
+    setIsImporting(false);
+    setImportAborted(false);
+    setImportedEntities([]);
+    setCurrentAction("");
+    setImportStartTime(null);
+    setPreviewData(null);
+    setShowPreview(false);
     setStatus(""); // Reset status message
     window.location.reload(); // Reload the page
   };
@@ -438,11 +865,24 @@ export function ImportViewExcel() {
           entityData[entityLabel] = [];
         }
 
-        if (name && id && sheetName) {
-          console.log(
-            `Adding to entityData: ${entityLabel}, Name: ${name}, ID: ${id}, Sheet: ${sheetName}`
-          ); // Debug-Log
-          entityData[entityLabel].push({ sheet: sheetName, name, id });
+        // Check if we have a name column but no ID column selected
+        const hasNameColumn = name && name !== "";
+        const hasIdColumn = id && id !== "";
+        
+        if (hasNameColumn && sheetName) {
+          if (hasIdColumn) {
+            // Normal case: both name and ID are provided
+            console.log(
+              `Adding to entityData: ${entityLabel}, Name: ${name}, ID: ${id}, Sheet: ${sheetName}`
+            ); // Debug-Log
+            entityData[entityLabel].push({ sheet: sheetName, name, id });
+          } else {
+            // Auto-generate UUID case: name provided but no ID column
+            console.log(
+              `Adding to entityData with auto-UUID: ${entityLabel}, Name: ${name}, Sheet: ${sheetName}`
+            ); // Debug-Log
+            entityData[entityLabel].push({ sheet: sheetName, name, id: 'AUTO_UUID' });
+          }
         } else {
           console.log(`Skipping ${entityLabel} due to missing data`); // Debug-Log
         }
@@ -567,11 +1007,24 @@ export function ImportViewExcel() {
           const name = textFieldValues[`name${index}`] || "";
           let id = textFieldValues[`id${index}`] || "";
 
-          if (!id && index <= 2) {
-            id = uuidv4();
+          // Check if we have sequential UUIDs for this entity type
+          const hasSequentialUUIDs = sequentialUUIDs[entityLabel] && sequentialUUIDs[entityLabel].length > 0;
+          
+          // Auto-generate UUID if no ID provided
+          if (!id) {
+            if (hasSequentialUUIDs) {
+              // Use the first sequential UUID for single text field entries
+              id = sequentialUUIDs[entityLabel][0].uuid;
+            } else if (index <= 2) {
+              // Legacy fallback for first 3 entity types
+              id = uuidv4();
+            } else {
+              // Use smart UUID generation based on name
+              id = getOrCreateUUID(entityLabel, name);
+            }
           }
 
-          if (name) {
+          if (name && id) {
             // Duplikatprüfung beim Hinzufügen
             if (
               !isDuplicate(entityExcelDataTemp[entityLabel], name, id)
@@ -582,46 +1035,69 @@ export function ImportViewExcel() {
             console.warn(`Kein gültiger Name für ${entityLabel} gefunden.`);
           }
         } else {
-          // Falls Dropdown verwendet wird, müssen ein Tabellenname und Spaltenbuchstaben angegeben sein
-          if (!sheetName || !nameColumnLetter) {
-            if (index > 2) {
-              console.error(
-                `Fehlende Informationen für ${entityLabel}: Tabellenblatt oder Namensspalte nicht definiert.`
-              );
+          // Check if we have sequential UUIDs for this entity type
+          const hasSequentialUUIDs = sequentialUUIDs[entityLabel] && sequentialUUIDs[entityLabel].length > 0;
+          
+          if (hasSequentialUUIDs) {
+            // Use sequential UUIDs in order
+            console.log(`Using sequential UUIDs for ${entityLabel}:`, sequentialUUIDs[entityLabel]);
+            sequentialUUIDs[entityLabel].forEach(entry => {
+              if (!isDuplicate(entityExcelDataTemp[entityLabel], entry.name, entry.uuid)) {
+                entityExcelDataTemp[entityLabel].push({ name: entry.name, id: entry.uuid });
+              }
+            });
+          } else {
+            // Falls Dropdown verwendet wird, müssen ein Tabellenname und Spaltenbuchstaben angegeben sein
+            if (!sheetName || !nameColumnLetter) {
+              if (index > 2) {
+                console.error(
+                  `Fehlende Informationen für ${entityLabel}: Tabellenblatt oder Namensspalte nicht definiert.`
+                );
+                return;
+              }
+            }
+
+            const sheet = workbook.getWorksheet(sheetName);
+            if (!sheet) {
+              console.error(`Tabellenblatt ${sheetName} nicht gefunden.`);
               return;
             }
-          }
 
-          const sheet = workbook.getWorksheet(sheetName);
-          if (!sheet) {
-            console.error(`Tabellenblatt ${sheetName} nicht gefunden.`);
-            return;
-          }
+            const nameColumnIndex = columnLetterToIndex(nameColumnLetter) + 1; // ExcelJS ist 1-basiert
+            const idColumnIndex = columnLetterToIndex(idColumnLetter) + 1;
 
-          const nameColumnIndex = columnLetterToIndex(nameColumnLetter) + 1; // ExcelJS ist 1-basiert
-          const idColumnIndex = columnLetterToIndex(idColumnLetter) + 1;
+            // Überspringe die Kopfzeile und verarbeite die Daten ab Zeile 2
+            sheet.eachRow({ includeEmpty: false }, (row: ExcelJS.Row, rowNumber: number) => {
+              if (rowNumber === 1) return; // Kopfzeile überspringen
+              const name = row.getCell(nameColumnIndex).value as string;
+              let id: string;
 
-          // Überspringe die Kopfzeile und verarbeite die Daten ab Zeile 2
-          sheet.eachRow({ includeEmpty: false }, (row: ExcelJS.Row, rowNumber: number) => {
-            if (rowNumber === 1) return; // Kopfzeile überspringen
-            const name = row.getCell(nameColumnIndex).value as string;
-            let id = row.getCell(idColumnIndex).value as string;
-
-            if (!id && index <= 2) {
-              id = uuidv4();
-            }
-
-            if (name) {
-              if (!isDuplicate(entityExcelDataTemp[entityLabel], name, id)) {
-                entityExcelDataTemp[entityLabel].push({ name, id });
+              // Check if ID column is provided
+              if (idColumnLetter && idColumnLetter !== "") {
+                // Use provided ID column
+                id = row.getCell(idColumnIndex).value as string;
+              } else {
+                // Auto-generate UUID based on name
+                id = getOrCreateUUID(entityLabel, name);
               }
-            } else {
-              console.warn(
-                `Zeile ${rowNumber} in ${sheetName} enthält keine gültigen Werte für Name:`,
-                row.values
-              );
-            }
-          });
+
+              // Fallback for legacy logic (first 3 entity types)
+              if (!id && index <= 2) {
+                id = uuidv4();
+              }
+
+              if (name && id) {
+                if (!isDuplicate(entityExcelDataTemp[entityLabel], name, id)) {
+                  entityExcelDataTemp[entityLabel].push({ name, id });
+                }
+              } else {
+                console.warn(
+                  `Zeile ${rowNumber} in ${sheetName} enthält keine gültigen Werte für Name:`,
+                  row.values
+                );
+              }
+            });
+          }
         }
 
         console.log(
@@ -646,57 +1122,200 @@ export function ImportViewExcel() {
     ].forEach((relationLabel, index) => {
       if (checkedRows.relations[index]) {
         const sheetName = textFieldValues[`sheetFieldRelation${index}`] || "";
-        const id1ColumnLetter = selectedLetters[`relationID1${index}`] || "";
-        const id2ColumnLetter = selectedLetters[`relationID2${index}`] || "";
+        const id1Selection = selectedLetters[`relationID1${index}`] || "";
+        const id2Selection = selectedLetters[`relationID2${index}`] || "";
 
         console.log(
-          `Relation: ${relationLabel}, Sheet Name: ${sheetName}, ID1 Column: ${id1ColumnLetter}, ID2 Column: ${id2ColumnLetter}`
+          `Relation: ${relationLabel}, Sheet Name: ${sheetName}, ID1 Selection: ${id1Selection}, ID2 Selection: ${id2Selection}`
         ); // Debug-Log
-
-        if (!sheetName || !id1ColumnLetter || !id2ColumnLetter) {
-          console.error(
-            `Fehlende Informationen für ${relationLabel}: Tabellenblatt oder Spalten nicht definiert.`
-          );
-          return;
-        }
-
-        const sheet = workbook.getWorksheet(sheetName);
-        if (!sheet) {
-          console.error(`Tabellenblatt ${sheetName} nicht gefunden.`);
-          return;
-        }
 
         if (!relationExcelDataTemp[relationLabel]) {
           relationExcelDataTemp[relationLabel] = [];
         }
 
-        // Convert column letters to indices
-        const id1ColumnIndex = columnLetterToIndex(id1ColumnLetter) + 1;
-        const id2ColumnIndex = columnLetterToIndex(id2ColumnLetter) + 1;
+        // Check if the selections are UUIDs (contain dashes), sequences (start with SEQUENCE:), or column letters
+        const isId1UUID = id1Selection.includes('-');
+        const isId2UUID = id2Selection.includes('-');
+        const isId1Sequence = id1Selection.startsWith('SEQUENCE:');
+        const isId2Sequence = id2Selection.startsWith('SEQUENCE:');
 
-        // Start from the second row (index 2) to skip the header row
-        sheet.eachRow({ includeEmpty: false }, (row: ExcelJS.Row, rowNumber: number) => {
-          if (rowNumber === 1) return;
-          const id1 = row.getCell(id1ColumnIndex).value as string;
-          const id2 = row.getCell(id2ColumnIndex).value as string;
-
-          if (id1 && id2) {
-            if (
-              !isRelationDuplicate(
-                relationExcelDataTemp[relationLabel],
-                id1,
-                id2
-              )
-            ) {
+        if (isId1Sequence && isId2Sequence) {
+          // Both are sequences - create relations based on order
+          const entityType1 = id1Selection.replace('SEQUENCE:', '');
+          const entityType2 = id2Selection.replace('SEQUENCE:', '');
+          const sequence1 = sequentialUUIDs[entityType1] || [];
+          const sequence2 = sequentialUUIDs[entityType2] || [];
+          
+          // Create relations based on order (1st with 1st, 2nd with 2nd, etc.)
+          const minLength = Math.min(sequence1.length, sequence2.length);
+          for (let i = 0; i < minLength; i++) {
+            const id1 = sequence1[i].uuid;
+            const id2 = sequence2[i].uuid;
+            if (!isRelationDuplicate(relationExcelDataTemp[relationLabel], id1, id2)) {
               relationExcelDataTemp[relationLabel].push({ id1, id2 });
             }
-          } else {
-            console.warn(
-              `Zeile ${rowNumber} in ${sheetName} enthält keine gültigen Werte für ID1 oder ID2:`,
-              row.values
-            );
           }
-        });
+          console.log(`Sequential relation created: ${entityType1}[${sequence1.length}] -> ${entityType2}[${sequence2.length}], ${minLength} relations`);
+          
+        } else if (isId1Sequence || isId2Sequence) {
+          // One sequence, one column - use sequence in order with column values
+          const isSequenceFirst = isId1Sequence;
+          const sequenceType = isSequenceFirst ? id1Selection.replace('SEQUENCE:', '') : id2Selection.replace('SEQUENCE:', '');
+          const columnLetter = isSequenceFirst ? id2Selection : id1Selection;
+          const sequence = sequentialUUIDs[sequenceType] || [];
+          
+          if (!sheetName) {
+            console.error(`Sheet name required for sequence/column relation: ${relationLabel}`);
+            return;
+          }
+
+          const sheet = workbook.getWorksheet(sheetName);
+          if (!sheet) {
+            console.error(`Tabellenblatt ${sheetName} nicht gefunden.`);
+            return;
+          }
+
+          const columnIndex = columnLetterToIndex(columnLetter) + 1;
+          const columnValues: string[] = [];
+          
+          // Read all values from the column first
+          sheet.eachRow({ includeEmpty: false }, (row: ExcelJS.Row, rowNumber: number) => {
+            if (rowNumber === 1) return;
+            let cellValue = String(row.getCell(columnIndex).value || '').trim();
+            
+            // Try to resolve name to UUID if it's not already a UUID
+            if (cellValue && !cellValue.includes('-')) {
+              const foundUUID = findUUIDByName(cellValue);
+              if (foundUUID) {
+                cellValue = foundUUID;
+              }
+            }
+            
+            if (cellValue) {
+              columnValues.push(cellValue);
+            }
+          });
+
+          // Create relations in order: sequence[0] with columnValues[0], etc.
+          const minLength = Math.min(sequence.length, columnValues.length);
+          for (let i = 0; i < minLength; i++) {
+            const sequenceUUID = sequence[i].uuid;
+            const columnValue = columnValues[i];
+            const id1 = isSequenceFirst ? sequenceUUID : columnValue;
+            const id2 = isSequenceFirst ? columnValue : sequenceUUID;
+            
+            if (!isRelationDuplicate(relationExcelDataTemp[relationLabel], id1, id2)) {
+              relationExcelDataTemp[relationLabel].push({ id1, id2 });
+            }
+          }
+          console.log(`Sequential/Column relation created: ${sequence.length} sequence entries with ${columnValues.length} column values, ${minLength} relations`);
+          
+        } else if (isId1UUID && isId2UUID) {
+          // Both are direct UUIDs - create relation directly
+          if (id1Selection && id2Selection) {
+            if (!isRelationDuplicate(relationExcelDataTemp[relationLabel], id1Selection, id2Selection)) {
+              relationExcelDataTemp[relationLabel].push({ id1: id1Selection, id2: id2Selection });
+              console.log(`Direct UUID relation: ${id1Selection} -> ${id2Selection}`);
+            }
+          }
+        } else if (isId1UUID || isId2UUID) {
+          // Mixed: one UUID, one column - need to process Excel data
+          if (!sheetName) {
+            console.error(`Sheet name required for mixed UUID/column relation: ${relationLabel}`);
+            return;
+          }
+
+          const sheet = workbook.getWorksheet(sheetName);
+          if (!sheet) {
+            console.error(`Tabellenblatt ${sheetName} nicht gefunden.`);
+            return;
+          }
+
+          let columnIndex = 0;
+          let fixedUUID = "";
+          
+          if (isId1UUID) {
+            fixedUUID = id1Selection;
+            columnIndex = columnLetterToIndex(id2Selection) + 1;
+          } else {
+            fixedUUID = id2Selection;
+            columnIndex = columnLetterToIndex(id1Selection) + 1;
+          }
+
+          sheet.eachRow({ includeEmpty: false }, (row: ExcelJS.Row, rowNumber: number) => {
+            if (rowNumber === 1) return;
+            let cellValue = String(row.getCell(columnIndex).value || '').trim();
+
+            // Try to resolve name to UUID if it's not already a UUID
+            if (cellValue && !cellValue.includes('-')) {
+              const foundUUID = findUUIDByName(cellValue);
+              if (foundUUID) {
+                cellValue = foundUUID;
+              }
+            }
+
+            if (cellValue) {
+              const id1 = isId1UUID ? fixedUUID : cellValue;
+              const id2 = isId1UUID ? cellValue : fixedUUID;
+              
+              if (!isRelationDuplicate(relationExcelDataTemp[relationLabel], id1, id2)) {
+                relationExcelDataTemp[relationLabel].push({ id1, id2 });
+              }
+            }
+          });
+        } else {
+          // Both are column letters - process as before
+          if (!sheetName) {
+            console.error(`Sheet name required for column-based relation: ${relationLabel}`);
+            return;
+          }
+
+          const sheet = workbook.getWorksheet(sheetName);
+          if (!sheet) {
+            console.error(`Tabellenblatt ${sheetName} nicht gefunden.`);
+            return;
+          }
+
+          // Convert column letters to indices
+          const id1ColumnIndex = columnLetterToIndex(id1Selection) + 1;
+          const id2ColumnIndex = columnLetterToIndex(id2Selection) + 1;
+
+          // Start from the second row (index 2) to skip the header row
+          sheet.eachRow({ includeEmpty: false }, (row: ExcelJS.Row, rowNumber: number) => {
+            if (rowNumber === 1) return;
+            let id1 = String(row.getCell(id1ColumnIndex).value || '').trim();
+            let id2 = String(row.getCell(id2ColumnIndex).value || '').trim();
+
+            // Try to resolve names to UUIDs if the values are not UUIDs
+            // This helps when relations reference entity names instead of IDs
+            if (id1 && typeof id1 === 'string' && !id1.includes('-')) {
+              // Looks like a name, try to find corresponding UUID
+              const foundUUID = findUUIDByName(id1);
+              if (foundUUID) {
+                id1 = foundUUID;
+              }
+            }
+
+            if (id2 && typeof id2 === 'string' && !id2.includes('-')) {
+              // Looks like a name, try to find corresponding UUID
+              const foundUUID = findUUIDByName(id2);
+              if (foundUUID) {
+                id2 = foundUUID;
+              }
+            }
+
+            if (id1 && id2) {
+              if (!isRelationDuplicate(relationExcelDataTemp[relationLabel], id1, id2)) {
+                relationExcelDataTemp[relationLabel].push({ id1, id2 });
+              }
+            } else {
+              console.warn(
+                `Zeile ${rowNumber} in ${sheetName} enthält keine gültigen Werte für ID1 oder ID2:`,
+                row.values
+              );
+            }
+          });
+        }
 
         console.log(
           `Excel data for ${relationLabel}:`,
@@ -784,11 +1403,8 @@ export function ImportViewExcel() {
       },
     };
 
-    if (!importTag) {
-      createTagIfNotExists(IMPORT_TAG_ID, IMPORT_TAG_ID);
-    } else {
-      createTagIfNotExists(importTag, importTag);
-    }
+    // Import Tag ist jetzt verpflichtend, kein Fallback mehr nötig
+    createTagIfNotExists(importTag, importTag);
 
     // Vorhandene Tags abrufen
     const tagsResponse = await refetch();
@@ -806,14 +1422,18 @@ export function ImportViewExcel() {
 
     // Entitäten importieren
     for (const [entityKey, entities] of Object.entries(entityExcelData)) {
+      // Check for abort before processing each entity type
+      if (checkAborted()) {
+        console.log("Import aborted during entity processing");
+        return;
+      }
+      
+      setCurrentAction(`Importiere ${entityKey} (${entities.length} Einträge)...`);
       console.log(`Processing entityKey: "${entityKey}"`);
       const { recordType, tag } = entityTypes[entityKey];
       const tagIds = [];
-      if (!importTag) {
-        tagIds.push(IMPORT_TAG_ID);
-      } else {
-        tagIds.push(importTag);
-      }
+      // Import Tag ist jetzt verpflichtend
+      tagIds.push(importTag);
 
       if (!nameInTags(existingTags, tag)) {
         const tagId = uuidv4();
@@ -821,15 +1441,30 @@ export function ImportViewExcel() {
           await createTagIfNotExists(tagId, tag);
           existingTags.push({ id: tagId, name: tag });
         } catch (e) {
-          enqueueSnackbar(`Create new tag ${tag} failed: ` + e, {
-            variant: "error",
-          });
-          allImportsSuccessful = false;
+          const errorMessage = e?.toString() || '';
+          if (errorMessage.includes('already exists') || errorMessage.includes('duplicate') || errorMessage.includes('conflict')) {
+            console.warn(`Tag already exists: ${tag}`);
+            enqueueSnackbar(`⚠️ Tag "${tag}" bereits vorhanden`, { 
+              variant: "warning",
+              autoHideDuration: 3000 
+            });
+          } else {
+            enqueueSnackbar(`❌ Tag "${tag}" konnte nicht erstellt werden: ` + e, {
+              variant: "error",
+            });
+            allImportsSuccessful = false;
+          }
         }
       }
       tagIds.push(idOfTag(existingTags, tag));
 
       for (const entity of entities) {
+        // Check for abort before processing each entity
+        if (checkAborted()) {
+          console.log("Import aborted during entity creation");
+          return;
+        }
+        
         const { name, id } = entity;
 
         if (!name) {
@@ -839,7 +1474,9 @@ export function ImportViewExcel() {
 
         try {
           setStatus(`Importing ${recordType}: ${name}`);
+          setCurrentAction(`Erstelle ${entityKey}: ${name}`);
           console.log(`Creating record "${recordType}" with name: ${name}`);
+          
           await create({
             variables: {
               input: {
@@ -853,22 +1490,35 @@ export function ImportViewExcel() {
             },
           });
 
+          // Track imported entities for potential rollback
+          setImportedEntities(prev => [...prev, `${recordType}: ${name}`]);
+
           // Fortschritt aktualisieren
           processedEntities += 1;
-          setProgress((processedEntities / totalEntities) * 100); // Fortschritt als Prozentsatz
+          if (!checkAborted()) {
+            setProgress((processedEntities / totalEntities) * 100); // Fortschritt als Prozentsatz
+          }
         } catch (error) {
-          console.error(`Error creating record "${recordType}"... ${name}`);
-          allImportsSuccessful = false;
+          console.error(`Error creating record "${recordType}"... ${name}`, error);
+          
+          // Check if it's a duplicate error
+          const errorMessage = error?.toString() || '';
+          if (errorMessage.includes('already exists') || errorMessage.includes('duplicate') || errorMessage.includes('conflict')) {
+            enqueueSnackbar(`⚠️ Entität "${name}" mit ID "${id}" ist bereits in DataCat vorhanden`, { 
+              variant: "warning",
+              autoHideDuration: 4000 
+            });
+            console.warn(`Duplicate entity skipped: ${name} (ID: ${id})`);
+          } else {
+            enqueueSnackbar(`❌ Fehler beim Erstellen: ${name}`, { variant: "error" });
+            allImportsSuccessful = false;
+          }
         }
       }
     }
 
-    // Snackbar nur nach dem gesamten Import ausführen
-    if (allImportsSuccessful) {
-      enqueueSnackbar("Alle Entitäten wurden erfolgreich importiert.", {
-        variant: "success",
-      });
-    } else {
+    // Snackbar nur bei Fehlern ausführen
+    if (!allImportsSuccessful) {
       enqueueSnackbar(
         "Es gab Fehler beim Importieren einiger Entitäten. Bitte prüfen.",
         { variant: "error" }
@@ -908,6 +1558,11 @@ export function ImportViewExcel() {
 
     // Iterate over each relation type and create relationships
     for (const [relationKey, relations] of Object.entries(relationExcelData)) {
+      // Check for abort before processing each relation type
+      if (checkAborted()) {
+        console.log("Import aborted during relation processing");
+        return;
+      }
 
       const relationshipType = relTypes[relationKey];
 
@@ -930,7 +1585,11 @@ export function ImportViewExcel() {
       }
 
       for (const [fromId, toIds] of Object.entries(grouped)) {
-
+        // Check for abort before processing each relation group
+        if (checkAborted()) {
+          console.log("Import aborted during relation creation");
+          return;
+        }
 
         try {
           let properties: any = {};
@@ -958,24 +1617,35 @@ export function ImportViewExcel() {
 
           // Fortschritt aktualisieren
           processedRelations += toIds.length;
-          setProgress((processedRelations / totalRelations) * 100); // Fortschritt als Prozentsatz
+          if (!checkAborted()) {
+            setProgress((processedRelations / totalRelations) * 100); // Fortschritt als Prozentsatz
+          }
         } catch (error) {
           console.error(
-            `Error creating relationship "${relationshipType}" from ${fromId} to ${toIds.join(", ")}`
+            `Error creating relationship "${relationshipType}" from ${fromId} to ${toIds.join(", ")}`,
+            error
           );
-          allImportsSuccessful = false;
+          
+          // Check if it's a duplicate or already exists error
+          const errorMessage = error?.toString() || '';
+          if (errorMessage.includes('already exists') || errorMessage.includes('duplicate') || errorMessage.includes('conflict')) {
+            console.warn(`Duplicate relationship skipped: ${relationshipType} from ${fromId} to ${toIds.join(", ")}`);
+            enqueueSnackbar(`⚠️ Relation bereits vorhanden: ${relationshipType}`, { 
+              variant: "warning",
+              autoHideDuration: 3000 
+            });
+          } else {
+            enqueueSnackbar(`❌ Fehler beim Erstellen der Relation: ${relationshipType}`, { variant: "error" });
+            allImportsSuccessful = false;
+          }
         }
       }
     }
 
-    // Snackbar for import status
-    if (allImportsSuccessful) {
-      enqueueSnackbar("All relationships were successfully imported.", {
-        variant: "success",
-      });
-    } else {
+    // Snackbar nur bei Fehlern anzeigen
+    if (!allImportsSuccessful) {
       enqueueSnackbar(
-        "There were errors importing some relationships. Please check.",
+        "Es gab Fehler beim Importieren einiger Relationen. Bitte prüfen.",
         {
           variant: "error",
         }
@@ -1004,6 +1674,7 @@ export function ImportViewExcel() {
             <StyledHeaderCell><T keyName="import_excel.sheet" /></StyledHeaderCell>
             <StyledHeaderCell><T keyName="import_excel.name" /></StyledHeaderCell>
             <StyledHeaderCell><T keyName="import_excel.id" /></StyledHeaderCell>
+            <StyledHeaderCell>UUID Generation</StyledHeaderCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -1109,6 +1780,51 @@ export function ImportViewExcel() {
                   )}
                 </SelectContainer>
               </StyledTableCell>
+              <StyledTableCell>
+                {(() => {
+                  const entityTypes = [
+                    "Referenzdokument", "Dictionary", "Thema", "Klasse", "Merkmal", 
+                    "Merkmalsgruppe", "Werteliste", "Maßeinheit", "Wert"
+                  ];
+                  const entityType = entityTypes[index];
+                  const hasName = useTextField[`name${index}`] ? 
+                    textFieldValues[`name${index}`] : 
+                    selectedLetters[`selectName${index}`];
+                  const hasId = useTextField[`id${index}`] ? 
+                    textFieldValues[`id${index}`] : 
+                    selectedLetters[`selectID${index}`];
+                  const needsUUIDs = checkedRows.entities[index] && hasName && !hasId;
+                  const hasGeneratedUUIDs = sequentialUUIDs[entityType]?.length > 0;
+
+                  if (!checkedRows.entities[index]) {
+                    return <Typography variant="body2" color="text.disabled">-</Typography>;
+                  }
+
+                  if (!needsUUIDs) {
+                    return <Typography variant="body2" color="text.secondary">Nicht benötigt</Typography>;
+                  }
+
+                  return (
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                      <Button
+                        size="small"
+                        variant={hasGeneratedUUIDs ? "outlined" : "contained"}
+                        color={hasGeneratedUUIDs ? "secondary" : "primary"}
+                        onClick={() => generateUUIDsForEntity(index)}
+                        disabled={!hasName}
+                        sx={{ minWidth: '120px' }}
+                      >
+                        {hasGeneratedUUIDs ? "🔄 Neu generieren" : "🆔 IDs generieren"}
+                      </Button>
+                      {hasGeneratedUUIDs && (
+                        <Typography variant="caption" color="success.main" sx={{ textAlign: 'center' }}>
+                          ✅ {sequentialUUIDs[entityType].length} IDs
+                        </Typography>
+                      )}
+                    </Box>
+                  );
+                })()}
+              </StyledTableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -1177,11 +1893,29 @@ export function ImportViewExcel() {
                   disabled={!checkedRows.relations[index]}
                   size="small"
                 >
+                  <MenuItem value="">
+                    <em>Auswählen...</em>
+                  </MenuItem>
+                  
+                  <ListSubheader sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+                    Excel-Spalten
+                  </ListSubheader>
                   {alphabet.map((letter) => (
                     <MenuItem key={letter} value={letter}>
-                      {letter}
+                      Spalte {letter}
                     </MenuItem>
                   ))}
+                  
+                  {Object.keys(sequentialUUIDs).length > 0 && [
+                      <ListSubheader key="seq-header-1" sx={{ fontWeight: 'bold', color: 'secondary.main' }}>
+                        Sequenzielle ID-Listen
+                      </ListSubheader>,
+                      ...Object.entries(sequentialUUIDs).map(([entityType, entries]) => (
+                        <MenuItem key={`${entityType}-sequence`} value={`SEQUENCE:${entityType}`} sx={{ pl: 3 }}>
+                          📋 {entityType} Liste ({entries.length} Einträge)
+                        </MenuItem>
+                      ))
+                  ]}
                 </FullWidthSelect>
               </StyledTableCell>
               <StyledTableCell>
@@ -1192,11 +1926,29 @@ export function ImportViewExcel() {
                   disabled={!checkedRows.relations[index]}
                   size="small"
                 >
+                  <MenuItem value="">
+                    <em>Auswählen...</em>
+                  </MenuItem>
+                  
+                  <ListSubheader sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+                    Excel-Spalten
+                  </ListSubheader>
                   {alphabet.map((letter) => (
                     <MenuItem key={letter} value={letter}>
-                      {letter}
+                      Spalte {letter}
                     </MenuItem>
                   ))}
+                  
+                  {Object.keys(sequentialUUIDs).length > 0 && [
+                      <ListSubheader key="seq-header-2" sx={{ fontWeight: 'bold', color: 'secondary.main' }}>
+                        Sequenzielle ID-Listen
+                      </ListSubheader>,
+                      ...Object.entries(sequentialUUIDs).map(([entityType, entries]) => (
+                        <MenuItem key={`${entityType}-sequence-2`} value={`SEQUENCE:${entityType}`} sx={{ pl: 3 }}>
+                          📋 {entityType} Liste ({entries.length} Einträge)
+                        </MenuItem>
+                      ))
+                  ]}
                 </FullWidthSelect>
               </StyledTableCell>
             </TableRow>
@@ -1206,83 +1958,398 @@ export function ImportViewExcel() {
     </StyledTableContainer>
   );
 
+  // Render function for generated UUIDs display
+  const renderGeneratedUUIDs = () => {
+    const hasGeneratedUUIDs = Object.keys(generatedUUIDs).length > 0;
+    
+    if (!hasGeneratedUUIDs) return null;
+
+    return (
+      <Box sx={{ mt: 3, p: 2, bgcolor: 'info.light', borderRadius: 1 }}>
+        <Typography variant="h6" gutterBottom>
+          🆔 Generierte UUIDs
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+          Automatisch generierte IDs für Einträge ohne ID-Spalte. Diese können in Relationen verwendet werden:
+        </Typography>
+        
+        {Object.entries(generatedUUIDs).map(([entityType, nameToUuidMap]) => {
+          const entries = Object.entries(nameToUuidMap);
+          if (entries.length === 0) return null;
+          
+          return (
+            <Box key={entityType} sx={{ mb: 2 }}>
+              <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mb: 1 }}>
+                {entityType} ({entries.length} {entries.length === 1 ? 'Eintrag' : 'Einträge'})
+              </Typography>
+              <Box sx={{ pl: 2 }}>
+                {entries.map(([name, uuid]) => (
+                  <Typography key={name} variant="body2" sx={{ fontFamily: 'monospace', fontSize: '0.8rem' }}>
+                    <strong>{name}</strong> → {uuid}
+                  </Typography>
+                ))}
+              </Box>
+            </Box>
+          );
+        })}
+        
+        <Box sx={{ mt: 2, p: 1.5, bgcolor: 'success.light', borderRadius: 1 }}>
+          <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
+            💡 Tipp: Diese generierten IDs erscheinen automatisch in den Dropdown-Listen für Relationen. 
+            So können Sie Beziehungen zwischen automatisch erstellten Einträgen definieren.
+          </Typography>
+        </Box>
+        
+        <Box sx={{ mt: 2 }}>
+          <Button 
+            size="small" 
+            variant="outlined" 
+            onClick={clearGeneratedUUIDs}
+            startIcon={<span>🗑️</span>}
+          >
+            UUIDs zurücksetzen
+          </Button>
+        </Box>
+      </Box>
+    );
+  };
+
   const renderActionArea = () => (
     <ButtonsContainer sx={{ mt: 2 }}>
       <ButtonWrapper>
-        <ActionButton
-          variant="contained"
-          component="label"
-          color="primary"
-        >
-          <T keyName="import_excel.select_file_button" />
-          <input
-            type="file"
-            accept=".xlsx,.xls"
-            onChange={handleFileChange}
-            name="entitiesFile"
-            hidden
-            ref={fileInputRef}
-          />
-        </ActionButton>
+        <Box sx={{ position: 'relative', display: 'inline-block' }}>
+          <ActionButton
+            variant="contained"
+            component="label"
+            color="primary"
+            sx={{ 
+              minWidth: '220px',
+              paddingRight: '40px'
+            }}
+          >
+            <T keyName="import_excel.select_file_button" />
+            <input
+              type="file"
+              accept=".xlsx,.xls"
+              onChange={handleFileChange}
+              name="entitiesFile"
+              hidden
+              ref={fileInputRef}
+            />
+          </ActionButton>
+          <Box sx={{ 
+            position: 'absolute',
+            top: 4,
+            right: 4,
+            zIndex: 1
+          }}>
+            <InfoButton 
+              titleKey="import_excel.help.file_select.title" 
+              contentKey="import_excel.help.file_select.content"
+              size="small"
+            />
+          </Box>
+        </Box>
         <Typography color="textSecondary">
           {entitiesFile === null ? <T keyName="import_excel.no_file_selected" /> : entitiesFile.name}
         </Typography>
       </ButtonWrapper>
 
       <ButtonWrapper>
-        <ActionButton
-          variant="contained"
-          color="secondary"
-          onClick={handleValidationClick}
-        >
-          <T keyName="import_excel.check_inputs_button" />
-        </ActionButton>
+        <Box sx={{ position: 'relative', display: 'inline-block' }}>
+          <ActionButton
+            variant="contained"
+            color="secondary"
+            onClick={handleValidationClick}
+            disabled={isImporting}
+            sx={{ 
+              minWidth: '180px',
+              paddingRight: '40px'
+            }}
+          >
+            <T keyName="import_excel.check_inputs_button" />
+          </ActionButton>
+          <Box sx={{ 
+            position: 'absolute',
+            top: 4,
+            right: 4,
+            zIndex: 1
+          }}>
+            <InfoButton 
+              titleKey="import_excel.help.validation.title" 
+              contentKey="import_excel.help.validation.content"
+              size="small"
+            />
+          </Box>
+        </Box>
       </ButtonWrapper>
 
       <ButtonWrapper>
-        <TextField
-          id="importTag"
-          label={<T keyName="import_excel.import_tag_label" />}
-          name="importTag"
-          variant="outlined"
-          size="small"
-          onChange={handleImportTagChange}
-          value={importTag}
-          sx={{ mb: 0.5, width: "200px" }}
-        />
+        <Box sx={{ position: 'relative', display: 'inline-block' }}>
+          <ActionButton
+            variant="outlined"
+            color="info"
+            onClick={generatePreview}
+            disabled={!entitiesFile || !valid || !importTag.trim() || isImporting}
+            sx={{ 
+              minWidth: '190px',
+              paddingRight: '40px'
+            }}
+          >
+            Vorschau anzeigen
+          </ActionButton>
+          <Box sx={{ 
+            position: 'absolute',
+            top: 4,
+            right: 4,
+            zIndex: 1
+          }}>
+            <InfoButton 
+              titleKey="import_excel.help.preview.title" 
+              contentKey="import_excel.help.preview.content"
+              size="small"
+            />
+          </Box>
+        </Box>
       </ButtonWrapper>
 
       <ButtonWrapper>
-        <ActionButton
-          variant="contained"
-          color="primary"
-          disabled={!entitiesFile || !valid}
-          onClick={handleimportExcel}
-        >
-          <T keyName="import_excel.import_button" />
-        </ActionButton>
+        <Box sx={{ position: 'relative', display: 'inline-block' }}>
+          <TextField
+            id="importTag"
+            label={<T keyName="import_excel.import_tag_label" />}
+            name="importTag"
+            variant="outlined"
+            size="small"
+            onChange={handleImportTagChange}
+            value={importTag}
+            sx={{ mb: 0.5, width: "240px", paddingRight: '32px' }}
+            disabled={isImporting}
+            required
+            error={!importTag.trim()}
+          />
+          <Box sx={{ 
+            position: 'absolute',
+            top: 8,
+            right: 4,
+            zIndex: 1
+          }}>
+            <InfoButton 
+              titleKey="import_excel.help.import_tag.title" 
+              contentKey="import_excel.help.import_tag.content"
+              size="small"
+            />
+          </Box>
+        </Box>
       </ButtonWrapper>
 
       <ButtonWrapper>
-        <ActionButton
-          variant="contained"
-          color="inherit"
-          onClick={handleClearTable}
-        >
-          <T keyName="import_excel.reset_button" />
-        </ActionButton>
+        <Box sx={{ position: 'relative', display: 'inline-block' }}>
+          <ActionButton
+            variant="contained"
+            color="primary"
+            disabled={!entitiesFile || !valid || !importTag.trim() || isImporting}
+            onClick={handleimportExcel}
+            sx={{ 
+              minWidth: '240px',
+              paddingRight: '40px'
+            }}
+          >
+            {isImporting ? "Importiere..." : <T keyName="import_excel.import_button" />}
+          </ActionButton>
+          <Box sx={{ 
+            position: 'absolute',
+            top: 4,
+            right: 4,
+            zIndex: 1
+          }}>
+            <InfoButton 
+              titleKey="import_excel.help.import.title" 
+              contentKey="import_excel.help.import.content"
+              size="small"
+            />
+          </Box>
+        </Box>
+      </ButtonWrapper>
+
+      {isImporting && (
+        <ButtonWrapper>
+          <Box sx={{ position: 'relative', display: 'inline-block' }}>
+            <ActionButton
+              variant="contained"
+              color="error"
+              onClick={abortImport}
+              sx={{ 
+                minWidth: '190px',
+                paddingRight: '40px'
+              }}
+            >
+              Import abbrechen
+            </ActionButton>
+            <Box sx={{ 
+              position: 'absolute',
+              top: 4,
+              right: 4,
+              zIndex: 1
+            }}>
+              <InfoButton 
+                titleKey="import_excel.help.abort.title" 
+                contentKey="import_excel.help.abort.content"
+                size="small"
+              />
+            </Box>
+          </Box>
+        </ButtonWrapper>
+      )}
+
+      <ButtonWrapper>
+        <Box sx={{ position: 'relative', display: 'inline-block' }}>
+          <ActionButton
+            variant="outlined"
+            color="success"
+            onClick={downloadGeneratedUUIDs}
+            disabled={Object.keys(sequentialUUIDs).length === 0}
+            sx={{ 
+              minWidth: '200px',
+              paddingRight: '40px'
+            }}
+          >
+            📥 UUIDs herunterladen
+          </ActionButton>
+          <Box sx={{ 
+            position: 'absolute',
+            top: 4,
+            right: 4,
+            zIndex: 1
+          }}>
+            <InfoButton 
+              titleKey="import_excel.help.download_uuids.title" 
+              contentKey="import_excel.help.download_uuids.content"
+              size="small"
+            />
+          </Box>
+        </Box>
+      </ButtonWrapper>
+
+      <ButtonWrapper>
+        <Box sx={{ position: 'relative', display: 'inline-block' }}>
+          <ActionButton
+            variant="contained"
+            color="inherit"
+            onClick={handleClearTable}
+            disabled={isImporting}
+            sx={{ 
+              minWidth: '210px',
+              paddingRight: '40px'
+            }}
+          >
+            <T keyName="import_excel.reset_button" />
+          </ActionButton>
+          <Box sx={{ 
+            position: 'absolute',
+            top: 4,
+            right: 4,
+            zIndex: 1
+          }}>
+            <InfoButton 
+              titleKey="import_excel.help.reset.title" 
+              contentKey="import_excel.help.reset.content"
+              size="small"
+            />
+          </Box>
+        </Box>
       </ButtonWrapper>
     </ButtonsContainer>
   );
 
   const renderProgressArea = () => (
     <ProgressContainer>
-      <LinearProgress variant="determinate" value={progress} />
+      <LinearProgress 
+        variant="determinate" 
+        value={progress} 
+        color={importAborted ? "error" : "primary"}
+      />
       <Stack direction="row" justifyContent="space-between" sx={{ mt: 1 }}>
-        <Typography variant="body2">{status}</Typography>
+        <Typography variant="body2" color={importAborted ? "error" : "inherit"}>
+          {currentAction || status}
+        </Typography>
         <Typography variant="body2">{progress.toFixed(1)}%</Typography>
       </Stack>
+      
+      {isImporting && (
+        <Stack direction="row" spacing={2} sx={{ mt: 2 }} alignItems="center">
+          <Typography variant="caption" color="text.secondary">
+            ⏱️ Gestartet: {importStartTime?.toLocaleTimeString()}
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            📦 Importierte Einträge: {importedEntities.length}
+          </Typography>
+        </Stack>
+      )}
+      
+      {importAborted && (
+        <Typography variant="body2" color="error" sx={{ mt: 1 }}>
+          ⚠️ Import wurde abgebrochen. Bereits erstellte Einträge bleiben bestehen.
+        </Typography>
+      )}
     </ProgressContainer>
+  );
+
+  const renderPreviewDialog = () => (
+    <Dialog open={showPreview} onClose={() => setShowPreview(false)} maxWidth="md" fullWidth>
+      <DialogTitle>
+        📋 Import-Vorschau
+      </DialogTitle>
+      <DialogContent>
+        {previewData && (
+          <Box>
+            <Typography variant="h6" gutterBottom>
+              Zusammenfassung
+            </Typography>
+            <Typography variant="body2" paragraph>
+              Gesamtanzahl zu importierender Elemente: <strong>{previewData.totalItems}</strong>
+            </Typography>
+            
+            {Object.keys(generatedUUIDs).length > 0 && (
+              <Box sx={{ mt: 2, p: 2, bgcolor: 'info.light', borderRadius: 1 }}>
+                <Typography variant="subtitle2" gutterBottom>
+                  🆔 Automatisch generierte UUIDs
+                </Typography>
+                {Object.entries(generatedUUIDs).map(([entityType, uuids]) => (
+                  <Typography key={entityType} variant="body2">
+                    • {entityType}: {Object.keys(uuids).length} neue UUIDs
+                  </Typography>
+                ))}
+              </Box>
+            )}
+            
+            <Box sx={{ mt: 2, p: 2, bgcolor: 'success.light', borderRadius: 1 }}>
+              <Typography variant="subtitle2" gutterBottom>
+                ✅ Bereit zum Import
+              </Typography>
+              <Typography variant="body2">
+                Alle Validierungen bestanden. Der Import kann gestartet werden.
+              </Typography>
+            </Box>
+          </Box>
+        )}
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => setShowPreview(false)}>
+          Schließen
+        </Button>
+        <Button 
+          variant="contained" 
+          onClick={() => {
+            setShowPreview(false);
+            handleimportExcel({} as React.MouseEvent<HTMLButtonElement>);
+          }}
+          disabled={!entitiesFile || !valid}
+        >
+          Import starten
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 
   return (
@@ -1296,7 +2363,8 @@ export function ImportViewExcel() {
         {renderRelationTable()}
         {renderActionArea()}
 
-        {progress > 0 && renderProgressArea()}
+        {(progress > 0 || isImporting) && renderProgressArea()}
+        {renderPreviewDialog()}
       </Box>
     </View>
   );

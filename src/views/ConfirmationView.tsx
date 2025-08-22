@@ -8,6 +8,7 @@ import useLocationQueryParam from "../hooks/useLocationQueryParam";
 import { Navigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { styled } from "@mui/material/styles";
+import { T, useTranslate } from "@tolgee/react";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(2),
@@ -27,12 +28,13 @@ const StyledForm = styled('form')(({ theme }) => ({
 
 export default function ConfirmationView() {
     const token = useLocationQueryParam('token', '');
+    const { t } = useTranslate();
     const { register, handleSubmit, formState: { errors } } = useForm<ConfirmEmailMutationVariables>();
     const [success, setSuccess] = useState(false);
     const { enqueueSnackbar } = useSnackbar();
     const [confirm, { error }] = useConfirmEmailMutation({
         errorPolicy: "all",
-        onCompleted: (result) => {
+        onCompleted: (result: any) => {
             if (result.success) {
                 enqueueSnackbar('Ihre Email-Adresse wurde bestätigt. Bitte nutzen Sie Ihren gewählten Benutzernamen und Ihr Password um sich anzumelden.');
                 setSuccess(true);
@@ -66,11 +68,11 @@ export default function ConfirmationView() {
                         <div style={{ display: "flex", alignItems: "center" }}>
                             <TextField
                                 name="token"
-                                label="Bestätigungstoken"
+                                label={<T keyName="confirmation.token_label" />}
                                 defaultValue={token}
                                 required
                                 error={!!errors.token}
-                                helperText={errors.token ? 'Der Bestätigungstoken ist notwendig um Ihre Email-Adresse zu bestätigen und wird Ihrem Postfach zugestellt.' : ''}
+                                helperText={errors.token ? <T keyName="confirmation.token_helper_text" /> : ''}
                                 inputRef={register("token", { required: true }).ref}
                                 size="small"
                                 sx={{ width: 'fit-content', minWidth: 180 }}

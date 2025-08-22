@@ -142,10 +142,41 @@
     "no_file_selected": "Nessun file selezionato",
     "select_file_button": "Seleziona file Excel",
     "check_inputs_button": "Verifica input",
-    "import_tag_label": "Tag di importazione (opzionale)",
+    "import_tag_label": "Tag di importazione (richiesto)",
+    "import_tag_required": "Il tag di importazione è richiesto",
     "import_button": "Importa file Excel",
     "reset_button": "Reimposta input",
-    "progress": "{progress}% completato"
+    "progress": "{progress}% completato",
+    "help": {
+      "file_select": {
+        "title": "Seleziona file Excel",
+        "content": "Scegli un file Excel (.xlsx o .xls) contenente i dati del catalogo.\n\nIl file dovrebbe contenere dati strutturati con intestazioni. Ogni foglio di lavoro può contenere diversi tipi di entità (ad es. classi, proprietà, valori) o relazioni.\n\nDopo la selezione, puoi mappare le colonne per nome e ID."
+      },
+      "validation": {
+        "title": "Valida input",
+        "content": "Controlla tutte le impostazioni prima dell'importazione:\n\n• Se è stato selezionato un file\n• Se almeno un'entità è contrassegnata per l'importazione\n• Se tutte le colonne nome e ID sono mappate correttamente\n• Se non vengono utilizzate colonne duplicate in un foglio di lavoro\n\nPer le colonne ID mancanti, gli UUID verranno generati automaticamente."
+      },
+      "preview": {
+        "title": "Anteprima importazione",
+        "content": "Mostra una panoramica dettagliata dell'importazione pianificata:\n\n• Numero di entità e relazioni da importare\n• Elenco di tutti gli UUID generati automaticamente\n• Suddivisione per tipi di entità\n\nQuesto ti permette di verificare che tutto sia configurato correttamente prima dell'importazione effettiva."
+      },
+      "import_tag": {
+        "title": "Tag di importazione",
+        "content": "Un tag opzionale assegnato a tutte le entità importate.\n\nIl tag aiuta a:\n• Identificare i dati importati\n• Distinguere diversi processi di importazione\n• Filtrare o eliminare i dati in seguito\n\nSe non viene specificato alcun tag, viene utilizzato automaticamente 'KATALOG-IMPORT'."
+      },
+      "import": {
+        "title": "Avvia importazione",
+        "content": "Avvia il processo di importazione effettivo:\n\n• Legge il file Excel\n• Crea entità con mappature configurate\n• Genera UUID automaticamente dove necessario\n• Crea relazioni tra entità\n• Mostra il progresso in tempo reale\n\nL'importazione può essere interrotta in qualsiasi momento."
+      },
+      "abort": {
+        "title": "Interrompi importazione",
+        "content": "Interrompe il processo di importazione in corso.\n\nI dati già importati rimangono, ma l'ulteriore importazione viene fermata.\n\nQuesto è utile se noti un errore nella configurazione o l'importazione richiede più tempo del previsto."
+      },
+      "reset": {
+        "title": "Reimposta input",
+        "content": "Reimposta tutte le impostazioni e configurazioni:\n\n• Rimuove il file selezionato\n• Cancella tutte le mappature delle colonne\n• Disattiva tutte le caselle di controllo delle entità\n• Elimina gli UUID generati\n• Reimposta lo stato di importazione\n\nQuesto è utile per ricominciare con una configurazione pulita."
+      }
+    }
   },
   "app_drawer": {
     "general": "Generale",
@@ -541,6 +572,8 @@
       "classification": "Classificazione",
       "classification_auto_ifcclassification": "Per la classificazione viene utilizzato automaticamente IFCCLASSIFICATION",
       "classification_system_select": "Seleziona sistema di classificazione",
+      "themes_select": "Seleziona temi (opzionale)",
+      "subthemes_select": "Seleziona sottotemi (opzionale)",
       "create_new_property_set": "Crea nuovo set di proprietà IFC (gruppo di proprietà)",
       "datatype_optional": "tipo di dati",
       "edit_specification": "Modifica specifica",
@@ -586,6 +619,9 @@
       "attribute_class_search": "Cerca e seleziona classe...",
       "attribute_model_search": "Cerca e seleziona modello specialistico...",
       "classification_system_search": "Cerca e seleziona sistema di classificazione...",
+      "themes_select": "Seleziona temi...",
+      "subthemes_select": "Seleziona sottotemi...",
+      "tag_select": "Seleziona tag...",
       "datatype_search": "Cerca e seleziona tipo di dati...",
       "entity_type_search": "Cerca e seleziona tipo di entità...",
       "ids_name_example": "es. Requisiti-Protezione-Incendi-2024",
@@ -602,6 +638,12 @@
       "thermal_properties": "es. Conduttività termica, calore specifico...",
       "unnamed_ids": "IDS senza nome",
       "unnamed_specification": "Specifica senza nome"
+    },
+    "hints": {
+      "select_classification_to_see_uri": "Seleziona sistema di classificazione per vedere URI",
+      "select_themes_for_filtering": "Seleziona temi per filtrare classi corrispondenti",
+      "subthemes_only_if_available": "I sottotemi vengono mostrati solo se il tema selezionato ne ha",
+      "classes_filtered_by_selection": "Le classi vengono filtrate in base alla selezione tema/sottotema"
     },
     "buttons": {
       "add_by_tag": "Aggiungi per tag",
@@ -802,5 +844,26 @@
     "defaultPurpose": "Validazione della progettazione",
     "defaultTitle": "Nuova specifica IDS",
     "untitledSpecification": "Specifiche senza titolo"
+  },
+  "classification_hints": {
+    "selected_themes_have_subthemes": "I temi selezionati hanno sottotemi. Seleziona prima i sottotemi per vedere le classi corrispondenti.",
+    "no_classes_available": "Nessuna classe disponibile per la selezione corrente.",
+    "unknown_theme": "Tema sconosciuto",
+    "unknown_subtheme": "Sottotema sconosciuto"
+  },
+  "confirmation": {
+    "token_label": "Token di conferma",
+    "token_helper_text": "Il token di conferma è necessario per confermare il tuo indirizzo email e sarà inviato alla tua casella di posta."
+  },
+  "delete_import": {
+    "no_entries_selected": "Nessuna voce selezionata per l'eliminazione."
+  },
+  "import_validation": {
+    "select_file_error": "Seleziona un file Excel da importare.",
+    "select_rows_error": "Seleziona almeno una riga da importare.",
+    "duplicate_columns_error": "In un foglio di lavoro non è possibile utilizzare le stesse colonne per entità/ID diversi.",
+    "unit_label": "Unità",
+    "relation_property_unit": "Rel_Proprietà_Unità",
+    "relation_valuelist_unit": "Rel_Lista_Valori_Unità"
   }
 }

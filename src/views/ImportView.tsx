@@ -98,33 +98,20 @@ export function ImportView() {
     setControl(Math.random());
   };
 
+  // Cache update functions
+  const updateCache = () => {
+    // Cache will be updated automatically by Apollo
+  };
+
   // create new entity records by query
   const [create] = useCreateEntryMutation({
-    update: (cache) => {
-      cache.modify({
-        id: "ROOT_QUERY",
-        fields: {
-          hierarchy: (value, { DELETE }) => DELETE,
-        },
-      });
-      cache.modify({
-        id: "ROOT_QUERY",
-        fields: {
-          search: (value, { DELETE }) => DELETE,
-        },
-      });
-    },
+    refetchQueries: ['FindTags', 'PropertyTree'],
   });
 
-  // create new relationship records by query
-  const update = (cache: ApolloCache<any>) =>
-    cache.modify({
-      id: "ROOT_QUERY",
-      fields: {
-        hierarchy: (value, { DELETE }) => DELETE,
-      },
-    });
-  const [createRelationship, error] = useCreateRelationshipMutation({ update });
+  // create new relationship records by query  
+  const [createRelationship, error] = useCreateRelationshipMutation({
+    refetchQueries: ['FindTags', 'PropertyTree'],
+  });
 
   // handle file selection and update tag list
   const handleFileChange = (event: any) => {
@@ -132,7 +119,7 @@ export function ImportView() {
     if (selectedFile) {
       if (event.target.name === "entitiesFile") setEntitiesFile(selectedFile);
       if (event.target.name === "relationsFile") setRelationsFile(selectedFile);
-      refetch({ pageSize: 100 }).then((response) => {
+      refetch({ pageSize: 100 }).then((response: any) => {
         setTags(response.data?.findTags.nodes ?? []);
       });
     }
