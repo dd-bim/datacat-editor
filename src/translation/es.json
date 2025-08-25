@@ -357,7 +357,8 @@
     "loading": "Cargando diccionario...",
     "delete_success": "Diccionario eliminado.",
     "related_concepts": ", que están contenidos en el diccionario",
-    "no_related_concepts": "El diccionario no contiene conceptos."
+    "no_related_concepts": "El diccionario no contiene conceptos.",
+    "not_found": "Diccionario no encontrado"
   },
   "theme": {
     "title": "Tema",
@@ -506,7 +507,10 @@
     "search": "Buscar",
     "search_placeholder": "Buscar en el catálogo",
     "search_results": "Resultados de la búsqueda",
-    "filter_list": "Filtrar lista ({count}/{total})"
+    "filter_list": "Filtrar lista ({count}/{total})",
+    "filter_by_dictionary": "Filtrar por diccionario",
+    "all_dictionaries": "Todos los diccionarios",
+    "no_dictionary": "Sin diccionario"
   },
   "footer": {
     "contact": "Preguntas & Contacto",
@@ -865,5 +869,15 @@
     "unit_label": "Unidad",
     "relation_property_unit": "Rel_Propiedad_Unidad",
     "relation_valuelist_unit": "Rel_Lista_Valores_Unidad"
+  },
+  "pagination": {
+    "entries": "Entradas",
+    "loading": "Cargando...",
+    "no_data": "No hay datos disponibles",
+    "error_loading": "Error al cargar conceptos",
+    "error_rendering": "Error al renderizar la lista de conceptos",
+    "reload_page": "Recargar página",
+    "error_conversion": "Error durante la conversión de datos",
+    "loading_concepts": "Cargando conceptos..."
   }
 }

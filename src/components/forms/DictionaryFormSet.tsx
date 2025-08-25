@@ -36,12 +36,30 @@ const DictionaryFormSet: FC<DictionaryFormSetProps> = (props) => {
   const { catalogEntryId, dictionaryId: initialDictionaryId } = props;
   const { enqueueSnackbar } = useSnackbar();
 
-  const [setDictionary] = useCreateRelationshipMutation();
-  const [deleteDictionary] = useDeleteRelationshipMutation();
+  const [setDictionary] = useCreateRelationshipMutation({
+    errorPolicy: 'all',
+    update: (cache) => {
+      // Optimierte Cache-Updates
+      cache.evict({ fieldName: 'findDictionaries' });
+      cache.gc();
+    }
+  });
+  const [deleteDictionary] = useDeleteRelationshipMutation({
+    errorPolicy: 'all',
+    update: (cache) => {
+      // Optimierte Cache-Updates
+      cache.evict({ fieldName: 'findDictionaries' });
+      cache.gc();
+    }
+  });
   const [currentDictionaryId, setCurrentDictionaryId] = useState(initialDictionaryId);
 
-  // Alle Dictionaries laden
-  const { data, loading } = useFindDictionariesQuery({ variables: { input: {} } });
+  // Alle Dictionaries laden mit optimierter Caching-Strategie
+  const { data, loading } = useFindDictionariesQuery({ 
+    variables: { input: {} },
+    fetchPolicy: 'cache-first', // Verwende Cache wenn möglich
+    errorPolicy: 'all'
+  });
   const dictionaries = data?.findDictionaries?.nodes ?? [];
 
   const {
@@ -62,25 +80,41 @@ const DictionaryFormSet: FC<DictionaryFormSetProps> = (props) => {
   ) => {
     const newDictionaryId = e.target.value;
     field.onChange(newDictionaryId);
+    
+    // Sofort den lokalen State aktualisieren für bessere UX
+    setCurrentDictionaryId(newDictionaryId);
+    
+    // Sofortige Bestätigung anzeigen
+    enqueueSnackbar(<T keyName="update.updating">Aktualisiere Dictionary...</T>, { variant: 'info' });
 
-    // Alte Beziehung löschen
-    if (currentDictionaryId) {
-      await deleteDictionary({
+    try {
+      // Operationen parallel ausführen statt sequenziell
+      const deletePromise = currentDictionaryId 
+        ? deleteDictionary({
+            variables: {
+              input: { fromId: catalogEntryId, toId: currentDictionaryId, relationshipType: RelationshipRecordType.Dictionary }
+            }
+          })
+        : Promise.resolve();
+
+      const createPromise = setDictionary({
         variables: {
-          input: { fromId: catalogEntryId, toId: currentDictionaryId, relationshipType: RelationshipRecordType.Dictionary }
+          input: { fromId: catalogEntryId, toIds: [newDictionaryId], relationshipType: RelationshipRecordType.Dictionary }
         }
       });
+
+      // Auf beide Operationen parallel warten
+      await Promise.all([deletePromise, createPromise]);
+      
+      // Erfolgs-Nachricht nach Abschluss
+      enqueueSnackbar(<T keyName="update.update_success"/>, { variant: 'success' });
+    } catch (error) {
+      console.error('Error updating dictionary relationship:', error);
+      // Bei Fehler zurücksetzen
+      setCurrentDictionaryId(currentDictionaryId);
+      field.onChange(currentDictionaryId);
+      enqueueSnackbar('Fehler beim Aktualisieren der Dictionary-Zuordnung', { variant: 'error' });
     }
-
-    // Neue Beziehung anlegen
-    await setDictionary({
-      variables: {
-        input: { fromId: catalogEntryId, toIds: [newDictionaryId], relationshipType: RelationshipRecordType.Dictionary }
-      }
-    });
-
-    setCurrentDictionaryId(newDictionaryId);
-    enqueueSnackbar(<T keyName="update.update_success"/>);
   };
 
   return (

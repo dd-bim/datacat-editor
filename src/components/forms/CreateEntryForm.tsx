@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useCallback, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { defaultFormFieldOptions } from "../../hooks/useFormStyles";
@@ -84,6 +84,49 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
   });
   const [checkName, { data }] = useFindItemLazyQuery();
   const [nameExists, setNameExists] = useState(false);
+  const [isCheckingName, setIsCheckingName] = useState(false);
+  const debounceTimeout = useRef<NodeJS.Timeout>();
+
+  // Debounced name validation
+  const debouncedNameCheck = useCallback(async (value: string) => {
+    if (!value) {
+      setNameExists(false);
+      setIsCheckingName(false);
+      return true;
+    }
+
+    // Clear existing timeout
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
+    }
+
+    return new Promise<boolean>((resolve) => {
+      debounceTimeout.current = setTimeout(async () => {
+        setIsCheckingName(true);
+        try {
+          const { data } = await checkName({
+            variables: {
+              input: { query: value },
+              pageSize: 1,
+              pageNumber: 0,
+            },
+            fetchPolicy: "cache-first", // Use cache first for better performance
+          });
+          const exists = data?.search?.nodes?.some(
+            (node) =>
+              typeof node.name === "string" &&
+              node.name.toLowerCase() === value.toLowerCase()
+          );
+          setNameExists(!!exists);
+          setIsCheckingName(false);
+          resolve(true);
+        } catch (error) {
+          setIsCheckingName(false);
+          resolve(true);
+        }
+      }, 500); // 500ms debounce
+    });
+  }, [checkName]);
 
   // Helper Funktion um String-Code in LanguagePropsFragment zu konvertieren
   const getLanguageFromCode = (code: string, options: LanguagePropsFragment[]): LanguagePropsFragment | null => {
@@ -99,27 +142,7 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
         control={control}
         rules={{
           required: true,
-          validate: async (value) => {
-            if (!value) {
-              setNameExists(false);
-              return true;
-            }
-            const { data } = await checkName({
-              variables: {
-                input: { query: value },
-                pageSize: 1,
-                pageNumber: 0,
-              },
-              fetchPolicy: "network-only",
-            });
-            const exists = data?.search?.nodes?.some(
-              (node) =>
-                typeof node.name === "string" &&
-                node.name.toLowerCase() === value.toLowerCase()
-            );
-            setNameExists(!!exists);
-            return true;
-          }
+          validate: debouncedNameCheck
         }}
         render={({ field }) => (
           <TextField
@@ -129,15 +152,21 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
             helperText={
               errors.name
                 ? errors.name.message
-                : nameExists
+                : isCheckingName
                   ? (
-                    <span style={{ color: "#e69138" }}>
-                      <T keyName="create_entry_form.name_duplicate_hint"/>
+                    <span style={{ color: "#1976d2" }}>
+                      <T keyName="create_entry_form.name_checking">Überprüfe Name...</T>
                     </span>
                   )
-                  : (
-                    <T keyName="create_entry_form.name_helper"/>
-                  )
+                  : nameExists
+                    ? (
+                      <span style={{ color: "#e69138" }}>
+                        <T keyName="create_entry_form.name_duplicate_hint"/>
+                      </span>
+                    )
+                    : (
+                      <T keyName="create_entry_form.name_helper"/>
+                    )
             }
             error={!!errors.name}
             required

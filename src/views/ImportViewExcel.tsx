@@ -527,7 +527,18 @@ export function ImportViewExcel() {
     },
   });
 
-  const [create] = useCreateEntryMutation();
+  const [create] = useCreateEntryMutation({
+    update: (cache) => {
+      cache.modify({
+        id: "ROOT_QUERY",
+        fields: {
+          hierarchy: (value, { DELETE }) => DELETE,
+          search: (value, { DELETE }) => DELETE,
+          findDictionaries: (value, { DELETE }) => DELETE,
+        },
+      });
+    },
+  });
   const [createRelationship] = useCreateRelationshipMutation();
 
   // File change handler

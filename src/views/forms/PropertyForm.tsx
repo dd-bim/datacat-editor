@@ -315,6 +315,7 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
                 searchInput={{
                     entityTypeIn: [ValueListEntity.recordType]
                 }}
+                showDictionaryFilter={true}
                 onCreate={handleOnUpdate}
                 onUpdate={handleOnUpdate}
                 onDelete={handleOnUpdate}
@@ -363,6 +364,7 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
                         ...(ClassEntity.tags ?? [])
                     ]
                 }}
+                showDictionaryFilter={true}
                 onCreate={handleOnUpdate}
                 onUpdate={handleOnUpdate}
                 onDelete={handleOnUpdate}
