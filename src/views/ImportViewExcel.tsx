@@ -38,6 +38,7 @@ import {
   useCreateRelationshipMutation,
   useCreateTagMutation,
 } from "../generated/types";
+import { ApolloCache } from "@apollo/client";
 import ExcelJS from "exceljs";
 import { v4 as uuidv4 } from "uuid";
 import { InfoButton } from "../components/InfoButton";
@@ -528,13 +529,13 @@ export function ImportViewExcel() {
   });
 
   const [create] = useCreateEntryMutation({
-    update: (cache) => {
+    update: (cache: ApolloCache) => {
       cache.modify({
         id: "ROOT_QUERY",
         fields: {
-          hierarchy: (value, { DELETE }) => DELETE,
-          search: (value, { DELETE }) => DELETE,
-          findDictionaries: (value, { DELETE }) => DELETE,
+          hierarchy: (value: any, { DELETE }: any) => DELETE,
+          search: (value: any, { DELETE }: any) => DELETE,
+          findDictionaries: (value: any, { DELETE }: any) => DELETE,
         },
       });
     },

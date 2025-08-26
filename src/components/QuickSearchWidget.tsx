@@ -39,18 +39,21 @@ export function QuickSearchWidget(props: QuickSearchWidgetProps) {
     const searchInput = useRef(null);
     const [searchTerm, setSearchTerm] = useState("");
 
-    const debouncedSearchTerm = useDebounce(searchTerm, 500);
+    const debouncedSearchTerm = useDebounce(searchTerm, 800); // Längere Verzögerung
     const input = {
         query: debouncedSearchTerm
     };
 
     const {error, loading, data, fetchMore} = useFindItemQuery({
-        skip: !debouncedSearchTerm,
+        skip: !debouncedSearchTerm || debouncedSearchTerm.length < 2, // Erst ab 2 Zeichen suchen
         variables: {
             input,
             pageSize: 10,
             pageNumber: 0
-        }
+        },
+        errorPolicy: 'all',
+        notifyOnNetworkStatusChange: false, // Verhindert unnötige Loading-Updates
+        fetchPolicy: 'cache-first' // Cache first für bessere Performance
     });
     // const items = data?.search.nodes ?? [];
     const items: SearchResultPropsFragment[] = (data?.search.nodes || []).map((record: any) => {
@@ -78,7 +81,7 @@ export function QuickSearchWidget(props: QuickSearchWidgetProps) {
         }
     }
 
-    const open = Boolean(!error && !loading && debouncedSearchTerm);
+    const open = Boolean(!error && debouncedSearchTerm && debouncedSearchTerm.length >= 2 && (data?.search?.nodes?.length || 0) > 0);
     const id = open ? 'transitions-popper' : undefined;
 
     const listItems: ItemRowProps = {

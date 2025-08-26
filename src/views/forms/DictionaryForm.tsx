@@ -1,8 +1,7 @@
 import {
-    useGetDictionaryEntryWithPaginationQuery,
     useGetDictionaryEntryQuery,
-    DictionaryPropsFragment,
-    ObjectPropsFragment
+    DictionaryDetailPropsFragment,
+    ConceptPropsFragment
 } from "../../generated/types";
 import { useDeleteEntry } from "../../hooks/useDeleteEntry";
 import { Typography, Button } from "@mui/material";
@@ -15,24 +14,19 @@ import FormView, { FormProps } from "./FormView";
 import PagedRelatingRecordsFormSet from "../../components/forms/PagedRelatingRecordsFormSet";
 import { T } from "@tolgee/react";
 import { useNavigate } from "react-router-dom";
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 
 
-function DictionaryForm(props: FormProps<DictionaryPropsFragment>) {
+function DictionaryForm(props: FormProps<DictionaryDetailPropsFragment>) {
     const { id } = props;
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
     
-    // Seitenweise Navigation State
+    // Pagination State
     const [currentPage, setCurrentPage] = useState(0);
-    const [lastSuccessfulConcepts, setLastSuccessfulConcepts] = useState<ObjectPropsFragment[]>([]);
-    const [lastSuccessfulPageInfo, setLastSuccessfulPageInfo] = useState<{
-        totalElements: number;
-        totalPages: number;
-    }>({ totalElements: 0, totalPages: 0 });
-    const pageSize = 50; // Pro Seite
+    const pageSize = 20; // Performance-optimierte Seitengröße
     
-    // 1. Dictionary-Grunddaten (Name, Meta) - lädt nur EINMAL
+    // Dictionary mit allen Konzepten laden - einmalig
     const { 
         data: dictionaryData, 
         loading: dictionaryLoading, 
@@ -43,45 +37,38 @@ function DictionaryForm(props: FormProps<DictionaryPropsFragment>) {
         errorPolicy: 'all'
     });
 
-    // 2. Nur Konzepte mit Pagination - lädt bei jedem Seitenwechsel
-    const { 
-        data: conceptsData, 
-        loading: conceptsLoading, 
-        error: conceptsError 
-    } = useGetDictionaryEntryWithPaginationQuery({
-        variables: {
-            id,
-            pageSize,
-            pageNumber: currentPage
-        },
-        errorPolicy: 'all',
-        notifyOnNetworkStatusChange: true,
-        // Keine Cache-Policy - immer frische Konzepte laden
-        fetchPolicy: 'network-only',
-        onCompleted: (data) => {
-            // Speichere erfolgreiche Konzepte und Pagination-Info um Flackern zu vermeiden
-            if (data?.node?.concepts?.nodes) {
-                // Filtere nur wirklich korrupte Daten heraus (ohne ID)
-                const validConcepts = data.node.concepts.nodes.filter(concept => 
-                    concept?.id // Nur ID ist wirklich erforderlich
-                );
-                
-                setLastSuccessfulConcepts(validConcepts);
-            }
-            if (data?.node?.concepts?.totalElements !== undefined) {
-                setLastSuccessfulPageInfo({
-                    totalElements: data.node.concepts.totalElements,
-                    totalPages: Math.ceil(data.node.concepts.totalElements / pageSize)
-                });
-            }
-        },
-        onError: (error) => {
-            // Bei Fehler verwende alte Daten weiter
-        }
-    });
+    // Dictionary-Grunddaten
+    const entry = dictionaryData?.node as DictionaryDetailPropsFragment | undefined;
+    
+    // Alle Konzepte aus der Response
+    const allConcepts = useMemo(() => {
+        return entry?.concepts || [];
+    }, [entry?.concepts]);
+    
+    // Client-seitige Pagination der Konzepte
+    const paginatedConcepts = useMemo(() => {
+        const startIndex = currentPage * pageSize;
+        const endIndex = startIndex + pageSize;
+        const concepts = allConcepts.slice(startIndex, endIndex);
+        
+        return {
+            nodes: concepts,
+            pageInfo: {
+                pageNumber: currentPage,
+                pageSize: pageSize,
+                totalPages: Math.ceil(allConcepts.length / pageSize),
+                hasNext: endIndex < allConcepts.length,
+                hasPrevious: currentPage > 0
+            },
+            totalElements: allConcepts.length
+        };
+    }, [allConcepts, currentPage, pageSize]);
 
-    // Dictionary-Daten kommen aus der ersten Query
-    const entry = dictionaryData?.node as DictionaryPropsFragment | undefined;
+    // Pagination Handler
+    const handlePageChange = useCallback((newPage: number) => {
+        setCurrentPage(newPage);
+        // Konzepte werden automatisch neu geladen durch die Query
+    }, []);
 
     const [deleteEntry] = useDeleteEntry({
         cacheTypename: 'XtdDictionary',
@@ -98,17 +85,12 @@ function DictionaryForm(props: FormProps<DictionaryPropsFragment>) {
         }
     }, [deleteEntry, id, enqueueSnackbar, navigate]);
 
-    // Seitenwechsel Handler - lädt NUR die Konzepte neu!
-    const handlePageChange = useCallback((newPage: number) => {
-        setCurrentPage(newPage);
-        // Nur conceptsData Query wird neu ausgeführt, Dictionary-Daten bleiben unverändert!
-    }, []);
-
-    // Error handling
-    const error = dictionaryError || conceptsError;
-    if (error) {
-        enqueueSnackbar("Fehler beim Laden des Dictionary", { variant: "error" });
-    }
+    // Error handling mit useEffect
+    React.useEffect(() => {
+        if (dictionaryError && !dictionaryData) {
+            enqueueSnackbar("Fehler beim Laden des Dictionary", { variant: "error" });
+        }
+    }, [dictionaryError, dictionaryData, enqueueSnackbar]);
 
     // Loading fallback - nur wenn Dictionary-Grunddaten fehlen
     if (dictionaryLoading && !dictionaryData) {
@@ -127,56 +109,26 @@ function DictionaryForm(props: FormProps<DictionaryPropsFragment>) {
         );
     }
 
-    // Format der Konzepte für PagedRelatingRecordsFormSet
-    // Verwende erfolgreiche Daten beim Loading um Flackern zu vermeiden
-    const currentConcepts = conceptsLoading ? lastSuccessfulConcepts : (conceptsData?.node?.concepts?.nodes || []);
-    const hasValidConceptsData = conceptsData?.node?.concepts !== undefined;
-    
-    // Verwende stabile Pagination-Daten beim Loading
-    const currentTotalElements = conceptsLoading ? 
-        lastSuccessfulPageInfo.totalElements : 
-        (conceptsData?.node?.concepts?.totalElements || 0);
-    const currentTotalPages = conceptsLoading ?
-        lastSuccessfulPageInfo.totalPages :
-        Math.ceil((conceptsData?.node?.concepts?.totalElements || 0) / pageSize);
-    
-    const conceptsForDisplay = {
-        nodes: currentConcepts,
-        pageInfo: {
-            pageNumber: currentPage,
-            pageSize: pageSize,
-            totalPages: currentTotalPages,
-            hasNext: (currentPage + 1) * pageSize < currentTotalElements,
-            hasPrevious: currentPage > 0
-        },
-        totalElements: currentTotalElements
-    };
-
     return (
         <FormView>
-            {/* Name lädt nur einmal aus dictionaryData */}
+            {/* Name */}
             <NameFormSet
                 catalogEntryId={id}
                 names={entry?.name?.texts || []}
                 refetch={refetchDictionary}
             />
 
-            {/* Konzepte mit besserer Loading-Behandlung */}
+            {/* Konzepte mit automatischem Lazy Loading */}
             <PagedRelatingRecordsFormSet
-                title={<Typography><b><T keyName="concept.titlePlural" /></b><T keyName="dictionary.related_concepts"/></Typography>}
-                emptyMessage={
-                    // Zeige "keine Konzepte" nur wenn wir sicher sind, dass es keine gibt
-                    conceptsLoading && !hasValidConceptsData ? 
-                        <Typography variant="body2" color="textSecondary"><T keyName="pagination.loading_concepts" /></Typography> :
-                        <T keyName="dictionary.no_related_concepts"/>
-                }
-                concepts={conceptsForDisplay}
+                title={<Typography component="div"><b><T keyName="concept.titlePlural" /></b> <T keyName="dictionary.related_concepts"/></Typography>}
+                emptyMessage={<T keyName="dictionary.no_related_concepts"/>}
+                concepts={paginatedConcepts}
                 currentPage={currentPage}
                 onPageChange={handlePageChange}
-                isLoading={conceptsLoading}
+                isLoading={dictionaryLoading}
             />
 
-            {/* Meta lädt nur einmal aus dictionaryData */}
+            {/* Meta */}
             <MetaFormSet entry={entry} />
 
             <Button

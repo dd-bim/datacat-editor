@@ -5,7 +5,7 @@ import ItemList, { ItemListProps } from "./ItemList";
 import { T } from "@tolgee/react";
 import { Box, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from "@mui/material";
 import { useMemo, useEffect, useState, useCallback } from "react";
-import { useApolloClient } from "@apollo/client";
+import { useApolloClient } from "@apollo/client/react";
 import { GetDictionaryEntryDocument } from "../../generated/types";
 
 type SearchListProps = Omit<ItemListProps, "items"> & {
@@ -110,27 +110,44 @@ export default function SearchList(props: SearchListProps) {
         }
         
         const loadAllDictionaryConcepts = async () => {
+            // Performance-Optimierung: Limitiere die Anzahl der parallelen Queries
+            const maxConcurrentQueries = 5;
             const allConceptIds = new Set<string>();
             
             try {
-                // Load all dictionaries in parallel using Apollo Client
-                const dictionaryPromises = availableDictionaries.map(dict =>
-                    apolloClient.query({
-                        query: GetDictionaryEntryDocument,
-                        variables: { id: dict.id }
-                    })
-                );
+                // Lade nur die ersten paar Dictionaries und verwende Caching
+                const limitedDictionaries = availableDictionaries.slice(0, 20); // Maximal 20 Dictionaries
                 
-                const results = await Promise.all(dictionaryPromises);
-                
-                results.forEach(({ data }) => {
-                    const dictionary = data?.node;
-                    if (dictionary?.concepts) {
-                        dictionary.concepts.forEach((concept: { id: string; }) => {
-                            allConceptIds.add(concept.id);
-                        });
+                // Lade in kleinen Batches um Server-Überlastung zu vermeiden
+                for (let i = 0; i < limitedDictionaries.length; i += maxConcurrentQueries) {
+                    const batch = limitedDictionaries.slice(i, i + maxConcurrentQueries);
+                    
+                    const batchPromises = batch.map(dict =>
+                        apolloClient.query({
+                            query: GetDictionaryEntryDocument,
+                            variables: { id: dict.id },
+                            fetchPolicy: 'cache-first' // Verwende Cache wenn möglich
+                        })
+                    );
+                    
+                    const batchResults = await Promise.all(batchPromises);
+                    
+                    batchResults.forEach(({ data }) => {
+                        const dictionary = (data as any)?.node;
+                        if (dictionary?.concepts) {
+                            // Limitiere auch die Konzepte pro Dictionary
+                            const limitedConcepts = dictionary.concepts.slice(0, 100);
+                            limitedConcepts.forEach((concept: { id: string; }) => {
+                                allConceptIds.add(concept.id);
+                            });
+                        }
+                    });
+                    
+                    // Kleine Pause zwischen Batches für bessere Performance
+                    if (i + maxConcurrentQueries < limitedDictionaries.length) {
+                        await new Promise(resolve => setTimeout(resolve, 50));
                     }
-                });
+                }
                 
                 setAllDictionaryConceptIds(prevIds => {
                     // Only update if the sets are actually different
@@ -196,7 +213,9 @@ export default function SearchList(props: SearchListProps) {
         ({ loading, data, error, fetchMore } = useFindDictionariesQuery({
             variables: {
                 input: restInput
-            }
+            },
+            fetchPolicy: 'cache-first', // Cache first für bessere Performance
+            errorPolicy: 'all'
         }));
         items = data?.findDictionaries?.nodes ?? [];
         pageInfo = data?.findDictionaries?.pageInfo;
@@ -207,7 +226,9 @@ export default function SearchList(props: SearchListProps) {
                 input,
                 pageSize,
                 pageNumber: 0
-            }
+            },
+            fetchPolicy: 'cache-first', // Cache first für bessere Performance
+            errorPolicy: 'all'
         }));
         items = data?.search.nodes ?? [];
         pageInfo = data?.search.pageInfo;
@@ -315,6 +336,9 @@ export default function SearchList(props: SearchListProps) {
         !searchInput?.entityTypeIn?.includes(CatalogRecordType.Dictionary) &&
         !searchInput?.entityTypeIn?.includes(CatalogRecordType.Unit);
 
+    // Debug loading state
+    const actuallyLoading = loading && !data;
+    
     return (
         <Box sx={{
             display: 'flex',
@@ -356,7 +380,7 @@ export default function SearchList(props: SearchListProps) {
                 </Box>
             )}
             <ItemList
-                loading={loading}
+                loading={actuallyLoading} // Nur zeigen wenn wirklich lädt und keine Daten da sind
                 items={mappedItems}
                 searchLabel={searchLabel || <T keyName="search.search_placeholder"/>}
                 searchTerm={searchTerm}

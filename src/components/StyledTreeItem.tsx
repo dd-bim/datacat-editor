@@ -3,7 +3,7 @@ import { TreeItem, TreeItemProps, treeItemClasses } from "@mui/x-tree-view";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
-import { ObjectPropsFragment } from "../generated/types";
+import { ItemPropsFragment } from "../generated/types";
 import { getEntityType } from "../domain";
 
 // Replace makeStyles with styled components
@@ -51,9 +51,9 @@ const LabelText = styled(Typography)({
 
 type StyleTreeItemProps = {
   itemId: string;
-  data: ObjectPropsFragment;
+  data: ItemPropsFragment;
   children?: React.ReactNode;
-  onSelect?: (item: ObjectPropsFragment) => void;
+  onSelect?: (item: ItemPropsFragment) => void;
 };
 
 const StyledTreeItemComponent = (props: StyleTreeItemProps & TreeItemProps) => {

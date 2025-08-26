@@ -58,10 +58,10 @@ export default function TransferListView(props: TransferListViewProps) {
     const navigate = useNavigate();
     const [editState, setEditState] = useState(false);
 
-    const update = (cache: ApolloCache<any>) => cache.modify({
+    const update = (cache: ApolloCache) => cache.modify({
         id: "ROOT_QUERY",
         fields: {
-            hierarchy: (value, { DELETE }) => DELETE
+            hierarchy: (value: any, { DELETE }: any) => DELETE
         }
     });
     const [createRelationship] = useCreateRelationshipMutation({ update });

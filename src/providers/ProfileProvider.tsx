@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import {useProfileQuery, UserProfileFragment} from "../generated/types";
 import useAuthContext from "../hooks/useAuthContext";
-import {ApolloError} from "@apollo/client";
+import { ApolloError } from "@apollo/client/v4-migration";
 
 type ProfileContextState = {
     loading: boolean,

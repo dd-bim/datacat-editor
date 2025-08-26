@@ -196,7 +196,7 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
       }
 
       // Zeige sofort eine "wird erstellt" Nachricht
-      enqueueSnackbar(<T keyName="create_entry_split_button.creating_entry" params={{ title: input!.title }}>Erstelle {input!.title}...</T>, { variant: 'info' });
+      enqueueSnackbar(`Erstelle ${input!.title}...`, { variant: 'info' });
 
       // Create entry
       const result = await create({

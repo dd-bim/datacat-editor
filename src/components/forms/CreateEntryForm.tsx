@@ -85,7 +85,7 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
   const [checkName, { data }] = useFindItemLazyQuery();
   const [nameExists, setNameExists] = useState(false);
   const [isCheckingName, setIsCheckingName] = useState(false);
-  const debounceTimeout = useRef<NodeJS.Timeout>();
+  const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
   // Debounced name validation
   const debouncedNameCheck = useCallback(async (value: string) => {
@@ -109,8 +109,7 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
               input: { query: value },
               pageSize: 1,
               pageNumber: 0,
-            },
-            fetchPolicy: "cache-first", // Use cache first for better performance
+            }
           });
           const exists = data?.search?.nodes?.some(
             (node) =>

@@ -100,24 +100,24 @@ export function ImportView() {
 
   // create new entity records by query
   const [create] = useCreateEntryMutation({
-    update: (cache) => {
+    update: (cache: ApolloCache) => {
       cache.modify({
         id: "ROOT_QUERY",
         fields: {
-          hierarchy: (value, { DELETE }) => DELETE,
-          search: (value, { DELETE }) => DELETE,
-          findDictionaries: (value, { DELETE }) => DELETE,
+          hierarchy: (value: any, { DELETE }: any) => DELETE,
+          search: (value: any, { DELETE }: any) => DELETE,
+          findDictionaries: (value: any, { DELETE }: any) => DELETE,
         },
       });
     },
   });
 
   // create new relationship records by query
-  const update = (cache: ApolloCache<any>) =>
+  const update = (cache: ApolloCache) =>
     cache.modify({
       id: "ROOT_QUERY",
       fields: {
-        hierarchy: (value, { DELETE }) => DELETE,
+        hierarchy: (value: any, { DELETE }: any) => DELETE,
       },
     });
   const [createRelationship, error] = useCreateRelationshipMutation({ update });

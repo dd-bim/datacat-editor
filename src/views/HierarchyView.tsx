@@ -73,8 +73,11 @@ const FormSkeleton = () => (
 );
 
 const HierarchyView = () => {
-  const { loading, error, data } = usePropertyTreeQuery({
-    fetchPolicy: "cache-and-network" // Improve performance with caching
+  const { loading, error, data, refetch } = usePropertyTreeQuery({
+    fetchPolicy: "cache-first", // Apollo Client 4.0 optimiert für Cache-Performance
+    errorPolicy: "all", // Zeige partielle Daten auch bei Fehlern
+    notifyOnNetworkStatusChange: false, // Verhindert unnötige Re-renders
+    returnPartialData: true // Zeige partielle Daten wenn verfügbar
   });
   
   // State for the currently selected concept:
@@ -90,7 +93,8 @@ const HierarchyView = () => {
 
   // Memoize the left content to prevent re-renders
   const leftContent = useMemo(() => {
-    if (loading && !data) {
+    // Nur Loading zeigen wenn wirklich keine Daten da sind
+    if (loading && !data?.hierarchy?.nodes) {
       return (
         <>
           <LinearProgress />
@@ -103,7 +107,7 @@ const HierarchyView = () => {
       );
     } 
     
-    if (error) {
+    if (error && !data?.hierarchy?.nodes) {
       return (
         <Alert severity="error" sx={{ mt: 2 }}>
           <T keyName="hierarchy.error">Beim Aufrufen des Merkmalsbaums ist ein Fehler aufgetreten.</T>
@@ -111,7 +115,7 @@ const HierarchyView = () => {
       );
     } 
     
-    return data && (
+    return data?.hierarchy && (
       <Hierarchy
         leaves={data.hierarchy.nodes}
         paths={data.hierarchy.paths}
@@ -119,7 +123,7 @@ const HierarchyView = () => {
         defaultCollapsed={true} // Ensure tree is collapsed by default
       />
     );
-  }, [loading, error, data, handleOnSelect]);
+  }, [loading, error, data?.hierarchy, handleOnSelect]);
 
   // Memoize the right content to prevent re-renders
   const rightContent = useMemo(() => {
@@ -131,9 +135,10 @@ const HierarchyView = () => {
       );
     }
 
-    if (loading && !data) {
-      return <FormSkeleton />;
-    }
+    // Kein Loading-Skeleton für Forms - data ist bereits verfügbar
+    // if (loading && !data) {
+    //   return <FormSkeleton />;
+    // }
 
     // Determine the entity type based on recordType and tags:
     const { id, recordType, tags } = selectedConcept;
@@ -233,9 +238,27 @@ const HierarchyView = () => {
         height: 'fit-content'
       }}>
         <StyledPaper>
-          <Typography variant="h5" sx={{ mb: 2 }}>
-            <T keyName="hierarchy.search_catalog">Katalog durchsuchen</T>
-          </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+            <Typography variant="h5">
+              <T keyName="hierarchy.search_catalog">Katalog durchsuchen</T>
+            </Typography>
+            {/* Refresh Button falls Cache Probleme macht */}
+            {error && (
+              <button 
+                onClick={() => refetch()} 
+                style={{ 
+                  padding: '4px 8px', 
+                  fontSize: '12px',
+                  border: '1px solid #ccc',
+                  borderRadius: '4px',
+                  background: '#f5f5f5',
+                  cursor: 'pointer'
+                }}
+              >
+                ↻ Neu laden
+              </button>
+            )}
+          </Box>
           <ScrollableTreeContainer>
             {leftContent}
           </ScrollableTreeContainer>

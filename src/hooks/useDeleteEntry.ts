@@ -1,4 +1,5 @@
 import { useDeleteEntryMutation } from '../generated/types';
+import { ApolloCache } from '@apollo/client';
 
 interface UseDeleteEntryOptions {
   /** The GraphQL typename and ID for the cache entry to evict (e.g., 'XtdSubject', 'XtdProperty') */
@@ -15,7 +16,7 @@ interface UseDeleteEntryOptions {
  */
 export const useDeleteEntry = ({ cacheTypename, id, additionalFields = [] }: UseDeleteEntryOptions) => {
   const [deleteEntryMutation, mutationResult] = useDeleteEntryMutation({
-    update: (cache) => {
+    update: (cache: ApolloCache) => {
       // Evict the specific entry from the cache
       cache.evict({ id: `${cacheTypename}:${id}` });
       

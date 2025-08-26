@@ -8,9 +8,11 @@ import CatalogEntryChip from "../CatalogEntryChip";
 import { styled } from "@mui/material/styles";
 import { T } from "@tolgee/react";
 
-const StyledFormSetTitle = styled(Typography)(({ theme }) => ({
+const StyledFormSetTitle = styled('div')(({ theme }) => ({
     fontWeight: "bold",
     marginBottom: theme.spacing(1),
+    fontSize: '1rem', // Typography body1 size
+    lineHeight: 1.5
 }));
 
 // Error Boundary Class Component für Chip-Rendering
@@ -69,13 +71,13 @@ const MemoizedChip = React.memo(function MemoizedChip({ record }: { record: Cata
 // Konvertiert ObjectPropsFragment zu CatalogRecord für die Chips
 const convertToCatalogRecord = (obj: ObjectPropsFragment): CatalogRecord | null => {
     // Prüfe nur auf absolut notwendige Felder
-    if (!obj.id) {
-        return null; // Überspringe nur Einträge ohne ID
+    if (!obj.id || !obj.recordType) {
+        return null; // Überspringe Einträge ohne ID oder recordType
     }
     
     return {
         id: obj.id,
-        recordType: obj.recordType || 'Unknown', // Fallback für undefined recordType
+        recordType: obj.recordType,
         name: obj.name || undefined,
         comment: obj.comment || undefined,
         tags: obj.tags
@@ -171,6 +173,7 @@ export default function PagedRelatingRecordsFormSet(props: PagedRelatingRecordsF
                 <>
                     {/* Gesamtanzahl Info */}
                     <Typography 
+                        component="div"
                         variant="caption" 
                         color="textSecondary"
                         sx={{ mb: 2, display: 'block' }}
