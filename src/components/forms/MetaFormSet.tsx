@@ -1,7 +1,7 @@
 import { toLLL } from "../../dateUtil";
 import FormSet, { FormSetDescription, FormSetTitle } from "./FormSet";
 import React from "react";
-import { MetaPropsFragment } from "../../generated/types";
+import { ItemPropsFragment, MetaPropsFragment } from "../../generated/types";
 import { WithChildren } from "../../views/forms/FormView";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,11 +9,6 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import { T } from "@tolgee/react";
 
-type ItemPropsFragment = {
-  id: string;
-  __typename?: string;
-  tags: Array<{ name: string }>;
-};
 
 type MetaFormSetProps = WithChildren<{
   entry: ItemPropsFragment & MetaPropsFragment;

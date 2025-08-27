@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useCallback } from "react";
 import { Typography, Box, Pagination, Stack } from "@mui/material";
 import { CatalogRecord } from "../../types";
-import { ObjectPropsFragment } from "../../generated/types";
+import { ObjectPropsFragment, CatalogRecordType } from "../../generated/types";
 import { sortEntries } from "./RelatingRecordsFormSet";
 import FormSet, { FormSetProps } from "./FormSet";
 import CatalogEntryChip from "../CatalogEntryChip";
@@ -11,8 +11,8 @@ import { T } from "@tolgee/react";
 const StyledFormSetTitle = styled('div')(({ theme }) => ({
     fontWeight: "bold",
     marginBottom: theme.spacing(1),
-    fontSize: '1rem', // Typography body1 size
-    lineHeight: 1.5
+    fontSize: '1rem',
+    color: theme.palette.text.primary,
 }));
 
 // Error Boundary Class Component für Chip-Rendering
@@ -70,9 +70,9 @@ const MemoizedChip = React.memo(function MemoizedChip({ record }: { record: Cata
 
 // Konvertiert ObjectPropsFragment zu CatalogRecord für die Chips
 const convertToCatalogRecord = (obj: ObjectPropsFragment): CatalogRecord | null => {
-    // Prüfe nur auf absolut notwendige Felder
-    if (!obj.id || !obj.recordType) {
-        return null; // Überspringe Einträge ohne ID oder recordType
+    // Prüfe auf ID
+    if (!obj.id) {
+        return null;
     }
     
     return {
@@ -132,10 +132,11 @@ export default function PagedRelatingRecordsFormSet(props: PagedRelatingRecordsF
         
         // Konvertiere zu CatalogRecord Format und filtere ungültige Einträge heraus
         const converted = concepts.nodes
-            .map((node, index) => {
+            .map((node) => {
                 try {
                     return convertToCatalogRecord(node);
                 } catch (conversionError) {
+                    console.error('❌ [PagedRelatingRecordsFormSet] Conversion error for node:', node, conversionError);
                     return null;
                 }
             })
@@ -173,9 +174,9 @@ export default function PagedRelatingRecordsFormSet(props: PagedRelatingRecordsF
                 <>
                     {/* Gesamtanzahl Info */}
                     <Typography 
-                        component="div"
                         variant="caption" 
                         color="textSecondary"
+                        component="div"
                         sx={{ mb: 2, display: 'block' }}
                     >
                         {totalElements} <T keyName="pagination.entries" />
@@ -228,7 +229,7 @@ export default function PagedRelatingRecordsFormSet(props: PagedRelatingRecordsF
                     )}
                 </>
             ) : (
-                <Typography variant="body2" color="textSecondary">{emptyMessage}</Typography>
+                <Typography variant="body2" color="textSecondary" component="div">{emptyMessage}</Typography>
             )}
         </FormSet>
     );

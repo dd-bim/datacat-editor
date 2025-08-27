@@ -86,13 +86,10 @@ query GetDictionaryEntry($id: ID!) {
             id
             name
         }
-        concepts {
-            ...ConceptProps
-        }
     }
 }
 
-query GetDictionaryEntryWithPagination($id: ID!) {
+query GetDictionaryEntryWithPagination($id: ID!, $pageSize: Int = 20, $pageNumber: Int = 0) {
     node: getDictionary(id: $id) {
         ...MetaProps
         id
@@ -103,25 +100,14 @@ query GetDictionaryEntryWithPagination($id: ID!) {
             id
             name
         }
-        concepts {
-            ...ConceptProps
-        }
-    }
-}
-
-query GetDictionaryEntryWithPagination($id: ID!) {
-    node: getDictionary(id: $id) {
-        ...MetaProps
-        id
-        name {
-            ...TranslationProps
-        }
-        tags {
-            id
-            name
-        }
-        concepts {
-            ...ConceptProps
+        concepts(pageSize: $pageSize, pageNumber: $pageNumber) {
+            nodes {
+                ...RelationsProps
+            }
+            pageInfo {
+                ...PageProps
+            }
+            totalElements
         }
     }
 }

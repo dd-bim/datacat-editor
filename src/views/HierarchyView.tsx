@@ -74,10 +74,12 @@ const FormSkeleton = () => (
 
 const HierarchyView = () => {
   const { loading, error, data, refetch } = usePropertyTreeQuery({
-    fetchPolicy: "cache-first", // Apollo Client 4.0 optimiert für Cache-Performance
-    errorPolicy: "all", // Zeige partielle Daten auch bei Fehlern
-    notifyOnNetworkStatusChange: false, // Verhindert unnötige Re-renders
-    returnPartialData: true // Zeige partielle Daten wenn verfügbar
+    fetchPolicy: "cache-first",
+    errorPolicy: "all",
+    notifyOnNetworkStatusChange: false,
+    returnPartialData: true,
+    // Performance-Optimierungen
+    pollInterval: 0, // Kein automatisches Polling
   });
   
   // State for the currently selected concept:
@@ -93,21 +95,24 @@ const HierarchyView = () => {
 
   // Memoize the left content to prevent re-renders
   const leftContent = useMemo(() => {
-    // Nur Loading zeigen wenn wirklich keine Daten da sind
-    if (loading && !data?.hierarchy?.nodes) {
+    // Progressive Loading: Zeige erste Daten sofort
+    if (loading && !data?.hierarchy?.nodes?.length) {
       return (
         <>
           <LinearProgress />
           <Box sx={{ mt: 2 }}>
-            {[...Array(5)].map((_, i) => (
-              <Skeleton key={i} variant="rectangular" height={30} sx={{ my: 1 }} />
+            {[...Array(8)].map((_, i) => (
+              <Box key={i} sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                <Skeleton variant="circular" width={20} height={20} sx={{ mr: 1 }} />
+                <Skeleton variant="text" width={`${50 + Math.random() * 30}%`} />
+              </Box>
             ))}
           </Box>
         </>
       );
     } 
     
-    if (error && !data?.hierarchy?.nodes) {
+    if (error && !data?.hierarchy?.nodes?.length) {
       return (
         <Alert severity="error" sx={{ mt: 2 }}>
           <T keyName="hierarchy.error">Beim Aufrufen des Merkmalsbaums ist ein Fehler aufgetreten.</T>
@@ -115,14 +120,19 @@ const HierarchyView = () => {
       );
     } 
     
-    return data?.hierarchy && (
-      <Hierarchy
-        leaves={data.hierarchy.nodes}
-        paths={data.hierarchy.paths}
-        onSelect={handleOnSelect}
-        defaultCollapsed={true} // Ensure tree is collapsed by default
-      />
-    );
+    // Render mit partiellen Daten falls verfügbar
+    if (data?.hierarchy?.nodes?.length) {
+      return (
+        <Hierarchy
+          leaves={data.hierarchy.nodes}
+          paths={data.hierarchy.paths}
+          onSelect={handleOnSelect}
+          defaultCollapsed={true} // Bessere Performance durch collapsed state
+        />
+      );
+    }
+    
+    return null;
   }, [loading, error, data?.hierarchy, handleOnSelect]);
 
   // Memoize the right content to prevent re-renders

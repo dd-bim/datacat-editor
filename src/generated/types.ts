@@ -1307,6 +1307,8 @@ export type GetDictionaryEntryQuery = { node?: Maybe<DictionaryDetailPropsFragme
 
 export type GetDictionaryEntryWithPaginationQueryVariables = Exact<{
   id: Scalars['ID'];
+  pageSize?: Maybe<Scalars['Int']>;
+  pageNumber?: Maybe<Scalars['Int']>;
 }>;
 
 export type GetDictionaryEntryWithPaginationQuery = { 
@@ -1314,25 +1316,12 @@ export type GetDictionaryEntryWithPaginationQuery = {
     id: string;
     name: MultiLanguageTextPropsFragment;
     tags: Array<TagPropsFragment>;
-    concepts: Array<ConceptPropsFragment>;
+    concepts: {
+      nodes: Array<ObjectPropsFragment>;
+      pageInfo: PagePropsFragment;
+      totalElements: number;
+    };
   } & MetaPropsFragment>
-};
-
-export type GetDictionaryConceptsPaginatedQueryVariables = Exact<{
-  dictionaryId: Scalars['ID'];
-  pageSize?: Maybe<Scalars['Int']>;
-  pageNumber?: Maybe<Scalars['Int']>;
-}>;
-
-export type GetDictionaryConceptsPaginatedQuery = { 
-  getDictionary?: {
-    id: string;
-    conceptsPaginated?: {
-      nodes?: Array<ConceptPropsFragment>;
-      pageInfo?: PagePropsFragment;
-      totalElements?: number | null;
-    } | null;
-  } | null;
 };
 
 export type GetCountryEntryQueryVariables = Exact<{
@@ -5532,14 +5521,14 @@ export const GetDictionaryEntryDocument = gql`
       id
       name
     }
-    concepts {
-      ...ConceptProps
-    }
+    # concepts {
+    #   ...RelationsProps
+    # }
   }
 }
     ${MetaPropsFragmentDoc}
-    ${TranslationPropsFragmentDoc}
-    ${ConceptPropsFragmentDoc}`;
+    ${TranslationPropsFragmentDoc}`;
+    // ${RelationsPropsFragmentDoc}
 /**
  * __useGetDictionaryEntryQuery__
  * 
@@ -5567,7 +5556,7 @@ export type GetDictionaryEntryLazyQueryHookResult = ReturnType<typeof useGetDict
 export type GetDictionaryEntryQueryResult = QueryResult<GetDictionaryEntryQuery, GetDictionaryEntryQueryVariables>;
 
 export const GetDictionaryEntryWithPaginationDocument = gql`
-    query GetDictionaryEntryWithPagination($id: ID!) {
+    query GetDictionaryEntryWithPagination($id: ID!, $pageSize: Int = 20, $pageNumber: Int = 0) {
   node: getDictionary(id: $id) {
     ...MetaProps
     id
@@ -5578,60 +5567,21 @@ export const GetDictionaryEntryWithPaginationDocument = gql`
       id
       name
     }
-    concepts {
-      ...ConceptProps
+    concepts(pageSize: $pageSize, pageNumber: $pageNumber) {
+      nodes {
+        ...RelationsProps
+      }
+      pageInfo {
+        ...PageProps
+      }
+      totalElements
     }
   }
 }
     ${MetaPropsFragmentDoc}
     ${TranslationPropsFragmentDoc}
-    ${ConceptPropsFragmentDoc}`;
-
-export const GetDictionaryConceptsPaginatedDocument = gql`
-    query GetDictionaryConceptsPaginated($dictionaryId: ID!, $pageSize: Int = 20, $pageNumber: Int = 0) {
-  search(input: {
-    dictionaryId: $dictionaryId,
-    entityTypeIn: [Concept]
-  }, pageSize: $pageSize, pageNumber: $pageNumber) {
-    nodes {
-      ...ConceptProps
-    }
-    pageInfo {
-      ...PageProps
-    }
-    totalElements
-  }
-}
-    ${ConceptPropsFragmentDoc}
+    ${RelationsPropsFragmentDoc}
     ${PagePropsFragmentDoc}`;
-
-/**
- * __useGetDictionaryConceptsPaginatedQuery__
- *
- * To run a query within a React component, call `useGetDictionaryConceptsPaginatedQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetDictionaryConceptsPaginatedQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetDictionaryConceptsPaginatedQuery({
- *   variables: {
- *      dictionaryId: // value for 'dictionaryId'
- *      pageSize: // value for 'pageSize'
- *      pageNumber: // value for 'pageNumber'
- *   },
- * });
- */
-export function useGetDictionaryConceptsPaginatedQuery(baseOptions: QueryHookOptions<GetDictionaryConceptsPaginatedQuery, GetDictionaryConceptsPaginatedQueryVariables>) {
-  return useQuery<GetDictionaryConceptsPaginatedQuery, GetDictionaryConceptsPaginatedQueryVariables>(GetDictionaryConceptsPaginatedDocument, baseOptions);
-}
-export function useGetDictionaryConceptsPaginatedLazyQuery(baseOptions?: LazyQueryHookOptions<GetDictionaryConceptsPaginatedQuery, GetDictionaryConceptsPaginatedQueryVariables>) {
-  return useLazyQuery<GetDictionaryConceptsPaginatedQuery, GetDictionaryConceptsPaginatedQueryVariables>(GetDictionaryConceptsPaginatedDocument, baseOptions);
-}
-export type GetDictionaryConceptsPaginatedQueryHookResult = ReturnType<typeof useGetDictionaryConceptsPaginatedQuery>;
-export type GetDictionaryConceptsPaginatedLazyQueryHookResult = ReturnType<typeof useGetDictionaryConceptsPaginatedLazyQuery>;
-export type GetDictionaryConceptsPaginatedQueryResult = QueryResult<GetDictionaryConceptsPaginatedQuery, GetDictionaryConceptsPaginatedQueryVariables>;
 
 /**
  * __useGetDictionaryEntryWithPaginationQuery__
