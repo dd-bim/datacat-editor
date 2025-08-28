@@ -80,15 +80,69 @@ const HierarchyView = () => {
     returnPartialData: true,
     // Performance-Optimierungen
     pollInterval: 0, // Kein automatisches Polling
+    // Aggressive Caching - Daten 10 Minuten im Cache behalten
+    nextFetchPolicy: "cache-first",
   });
   
   // State for the currently selected concept:
   const [selectedConcept, setSelectedConcept] = useState<ObjectPropsFragment | null>(null);
 
+  // Filter redundant theme root paths while keeping all nodes
+  const { allNodes, filteredPaths } = useMemo(() => {
+    if (!data?.hierarchy?.nodes || !data?.hierarchy?.paths) {
+      return { allNodes: [], filteredPaths: [] };
+    }
+    
+    const nodes = data.hierarchy.nodes;
+    const paths = data.hierarchy.paths;
+    
+    // 1. Find all theme nodes (tagged with theme tag)
+    const themeTag = "5997da9b-a716-45ae-84a9-e2a7d186bcf9";
+    const themeNodeIds = new Set(
+      nodes
+        .filter(node => node.tags?.some(tag => tag.id === themeTag))
+        .map(node => node.id)
+    );
+    
+    // 2. Identify child themes (themes that appear in position > 0 in any path)
+    const childThemeIds = new Set<string>();
+    paths.forEach(path => {
+      path.slice(1).forEach(nodeId => {
+        if (themeNodeIds.has(nodeId)) {
+          childThemeIds.add(nodeId); // This is a sub-theme
+        }
+      });
+    });
+    
+    // 3. Filter paths: Remove paths that start with child themes
+    const validPaths = paths.filter(path => {
+      const rootNodeId = path[0];
+      // Keep path if root is NOT a child theme
+      return !childThemeIds.has(rootNodeId);
+    });
+    
+    return { 
+      allNodes: nodes,        // Keep ALL nodes for lookup
+      filteredPaths: validPaths  // Only filter paths to remove redundant roots
+    };
+  }, [data?.hierarchy?.nodes, data?.hierarchy?.paths]);
+
+  // Debounced selection handling to prevent rapid re-renders
+  const debouncedSetSelection = useMemo(() => {
+    const debounce = (func: Function, wait: number) => {
+      let timeout: NodeJS.Timeout;
+      return function(this: any, ...args: any[]) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+      };
+    };
+    return debounce((concept: ObjectPropsFragment) => setSelectedConcept(concept), 150);
+  }, []);
+
   // Memoize the callback to prevent unnecessary re-renders
   const handleOnSelect = useCallback((concept: ObjectPropsFragment) => {
-    setSelectedConcept(concept);
-  }, []);
+    debouncedSetSelection(concept);
+  }, [debouncedSetSelection]);
 
   // Memoize the handler for clearing selected concept
   const handleDelete = useCallback(() => setSelectedConcept(null), []);
@@ -96,7 +150,7 @@ const HierarchyView = () => {
   // Memoize the left content to prevent re-renders
   const leftContent = useMemo(() => {
     // Progressive Loading: Zeige erste Daten sofort
-    if (loading && !data?.hierarchy?.nodes?.length) {
+    if (loading && !allNodes.length) {
       return (
         <>
           <LinearProgress />
@@ -112,7 +166,7 @@ const HierarchyView = () => {
       );
     } 
     
-    if (error && !data?.hierarchy?.nodes?.length) {
+    if (error && !allNodes.length) {
       return (
         <Alert severity="error" sx={{ mt: 2 }}>
           <T keyName="hierarchy.error">Beim Aufrufen des Merkmalsbaums ist ein Fehler aufgetreten.</T>
@@ -120,12 +174,12 @@ const HierarchyView = () => {
       );
     } 
     
-    // Render mit partiellen Daten falls verfügbar
-    if (data?.hierarchy?.nodes?.length) {
+    // Render with filtered data - removes redundant theme roots
+    if (allNodes.length) {
       return (
         <Hierarchy
-          leaves={data.hierarchy.nodes}
-          paths={data.hierarchy.paths}
+          leaves={allNodes}
+          paths={filteredPaths}
           onSelect={handleOnSelect}
           defaultCollapsed={true} // Bessere Performance durch collapsed state
         />
@@ -133,7 +187,7 @@ const HierarchyView = () => {
     }
     
     return null;
-  }, [loading, error, data?.hierarchy, handleOnSelect]);
+  }, [loading, error, allNodes, filteredPaths, handleOnSelect]);
 
   // Memoize the right content to prevent re-renders
   const rightContent = useMemo(() => {
@@ -145,90 +199,67 @@ const HierarchyView = () => {
       );
     }
 
-    // Kein Loading-Skeleton für Forms - data ist bereits verfügbar
-    // if (loading && !data) {
-    //   return <FormSkeleton />;
-    // }
-
     // Determine the entity type based on recordType and tags:
     const { id, recordType, tags } = selectedConcept;
     const entityType = getEntityType(recordType, tags.map(x => x.id));
     
-    switch(entityType?.path) {
-      case ThemeEntity.path:
-        return (
-          <>
-            <Typography variant="h5">
-              <ThemeIcon /> <T keyName="theme.edit"/>
-            </Typography>
-            <ThemeForm id={id} onDelete={handleDelete} />
-          </>
-        );
-      case ClassEntity.path:
-        return (
-          <>
-            <Typography variant="h5">
-              <DomainClassIcon /> <T keyName="class.edit"/>
-            </Typography>
-            <DomainClassForm id={id} onDelete={handleDelete} />
-          </>
-        );
-      case PropertyEntity.path:
-        return (
-          <>
-            <Typography variant="h5">
-              <PropertyIcon /> <T keyName="property.edit"/>
-            </Typography>
-            <PropertyForm id={id} onDelete={handleDelete} />
-          </>
-        );
-      case ValueListEntity.path:
-        return (
-          <>
-            <Typography variant="h5">
-              <MeasureIcon /> <T keyName="valuelist.edit"/>
-            </Typography>
-            <ValueListForm id={id} onDelete={handleDelete} />
-          </>
-        );
-      case UnitEntity.path:
-        return (
-          <>
-            <Typography variant="h5">
-              <UnitIcon /> <T keyName="unit.edit"/>
-            </Typography>
-            <UnitForm id={id} onDelete={handleDelete} />
-          </>
-        );
-      case ValueEntity.path:
-        return (
-          <>
-            <Typography variant="h5">
-              <ValueIcon /> <T keyName="value.edit"/>
-            </Typography>
-            <ValueForm id={id} onDelete={handleDelete} />
-          </>
-        );
-      case PropertyGroupEntity.path:
-        return (
-          <>
-            <Typography variant="h5">
-              <PropertyGroupIcon /> <T keyName="propertyGroup.edit"/>
-            </Typography>
-            <PropertyGroupForm id={id} onDelete={handleDelete} />
-          </>
-        );
-      default:
-        return (
-          <>
-            <Typography variant="h5">
-              <DomainClassIcon /> <T keyName="class.edit"/>
-            </Typography>
-            <DomainClassForm id={id} onDelete={handleDelete} />
-          </>
-        );
-    }
-  }, [selectedConcept, loading, data, handleDelete]);
+    // Lazy loading für Forms - rendern erst bei Bedarf
+    const FormComponent = React.lazy(() => {
+      switch(entityType?.path) {
+        case ThemeEntity.path:
+          return import("./forms/ThemeForm").then(module => ({ default: module.default }));
+        case ClassEntity.path:
+          return import("./forms/DomainClassForm").then(module => ({ default: module.default }));
+        case PropertyEntity.path:
+          return import("./forms/PropertyForm").then(module => ({ default: module.default }));
+        case ValueListEntity.path:
+          return import("./forms/ValueListForm").then(module => ({ default: module.default }));
+        case UnitEntity.path:
+          return import("./forms/UnitForm").then(module => ({ default: module.default }));
+        case ValueEntity.path:
+          return import("./forms/ValueForm").then(module => ({ default: module.default }));
+        case PropertyGroupEntity.path:
+          return import("./forms/PropertyGroupForm").then(module => ({ default: module.default }));
+        default:
+          return import("./forms/DomainClassForm").then(module => ({ default: module.default }));
+      }
+    });
+    
+    const getIcon = () => {
+      switch(entityType?.path) {
+        case ThemeEntity.path: return <ThemeIcon />;
+        case ClassEntity.path: return <DomainClassIcon />;
+        case PropertyEntity.path: return <PropertyIcon />;
+        case ValueListEntity.path: return <MeasureIcon />;
+        case UnitEntity.path: return <UnitIcon />;
+        case ValueEntity.path: return <ValueIcon />;
+        case PropertyGroupEntity.path: return <PropertyGroupIcon />;
+        default: return <DomainClassIcon />;
+      }
+    };
+    
+    const getTitle = () => {
+      switch(entityType?.path) {
+        case ThemeEntity.path: return <T keyName="theme.edit"/>;
+        case ClassEntity.path: return <T keyName="class.edit"/>;
+        case PropertyEntity.path: return <T keyName="property.edit"/>;
+        case ValueListEntity.path: return <T keyName="valuelist.edit"/>;
+        case UnitEntity.path: return <T keyName="unit.edit"/>;
+        case ValueEntity.path: return <T keyName="value.edit"/>;
+        case PropertyGroupEntity.path: return <T keyName="propertyGroup.edit"/>;
+        default: return <T keyName="class.edit"/>;
+      }
+    };
+
+    return (
+      <React.Suspense fallback={<FormSkeleton />}>
+        <Typography variant="h5">
+          {getIcon()} {getTitle()}
+        </Typography>
+        <FormComponent id={id} onDelete={handleDelete} />
+      </React.Suspense>
+    );
+  }, [selectedConcept, handleDelete]);
 
   return (
     <Stack 

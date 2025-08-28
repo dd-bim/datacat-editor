@@ -25,12 +25,18 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
 
-    // fetch value
+    // fetch value mit besserer Error-Behandlung
     const { loading, error, data, refetch } = useGetValueEntryQuery({
-        fetchPolicy: "network-only",
-        variables: { id }
+        fetchPolicy: "cache-first", // Bessere Performance
+        variables: { id },
+        errorPolicy: "all", // Zeige partielle Daten auch bei Fehlern
+        notifyOnNetworkStatusChange: false
     });
-    console.log("ValueForm error", error);
+    
+    // Nur loggen wenn tatsächlich ein Fehler vorliegt
+    if (error && error.message && error.message !== "undefined") {
+        console.log("ValueForm error", error);
+    }
 
     let entry = data?.node as ValueDetailPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntry({
