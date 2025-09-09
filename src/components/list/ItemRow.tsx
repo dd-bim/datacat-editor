@@ -1,4 +1,4 @@
-import { ListChildComponentProps } from "react-window";
+import { CSSProperties } from "react";
 import {
   ListItem,
   ListItemText,
@@ -30,11 +30,39 @@ export type ItemRowProps = {
   onRemove?(item: CatalogRecord): void;
 };
 
-export default function ItemRow(props: ListChildComponentProps) {
+// Type für react-window v2.x row component props (was als rowProps übergeben wird)
+export interface ItemRowDataProps {
+  items: CatalogRecord[];
+  disabledItems: string[];
+  showRecordIcons: boolean;
+  onSelect?(item: CatalogRecord): void;
+  onAdd?(item: CatalogRecord): void;
+  onRemove?(item: CatalogRecord): void;
+}
+
+// Type für die komplette row component (inklusive automatischer Props von react-window)
+interface ItemRowComponentProps {
+  ariaAttributes: {
+    "aria-posinset": number;
+    "aria-setsize": number;
+    role: "listitem";
+  };
+  index: number;
+  style: CSSProperties;
+  items: CatalogRecord[];
+  disabledItems: string[];
+  showRecordIcons: boolean;
+  onSelect?(item: CatalogRecord): void;
+  onAdd?(item: CatalogRecord): void;
+  onRemove?(item: CatalogRecord): void;
+}
+
+export default function ItemRow(props: ItemRowComponentProps) {
   const {
-    data: { items, disabledItems, showRecordIcons, onSelect, onAdd, onRemove },
+    items, disabledItems, showRecordIcons, onSelect, onAdd, onRemove,
     index,
     style,
+    ariaAttributes,
   } = props;
 
   const item = (items as CatalogRecord[])[index];
@@ -52,6 +80,8 @@ export default function ItemRow(props: ListChildComponentProps) {
         role="button"
         tabIndex={isDisabled ? -1 : 0}
         aria-disabled={isDisabled}
+        aria-posinset={ariaAttributes["aria-posinset"]}
+        aria-setsize={ariaAttributes["aria-setsize"]}
         dense
         divider={!lastItem}
         onClick={!isDisabled && onSelect ? () => onSelect(item) : undefined}

@@ -1,12 +1,23 @@
 import { CatalogRecordType, SearchInput, useFindItemQuery, useFindDictionariesQuery, useGetDictionaryEntryQuery } from "../../generated/types";
 import useDebounce from "../../hooks/useDebounce";
-import { ListOnItemsRenderedProps } from "react-window";
 import ItemList, { ItemListProps } from "./ItemList";
 import { T } from "@tolgee/react";
 import { Box, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from "@mui/material";
 import { useMemo, useEffect, useState, useCallback } from "react";
 import { useApolloClient } from "@apollo/client/react";
 import { GetDictionaryEntryDocument } from "../../generated/types";
+
+// Type für react-window v2.x onRowsRendered callback
+interface OnRowsRenderedProps {
+    visibleRows: {
+        startIndex: number;
+        stopIndex: number;
+    };
+    allRows: {
+        startIndex: number;
+        stopIndex: number;
+    };
+}
 
 type SearchListProps = Omit<ItemListProps, "items"> & {
     searchTerm: string;
@@ -234,10 +245,10 @@ export default function SearchList(props: SearchListProps) {
         pageInfo = data?.search.pageInfo;
     }
 
-    const handleOnScroll = async (props: ListOnItemsRenderedProps) => {
-        const { visibleStopIndex } = props;
+    const handleOnScroll = async (visibleRows: OnRowsRenderedProps['visibleRows'], allRows: OnRowsRenderedProps['allRows']) => {
+        const { stopIndex } = visibleRows;
 
-        if (pageInfo?.hasNext && visibleStopIndex >= items.length - 5) {
+        if (pageInfo?.hasNext && stopIndex >= items.length - 5) {
             if (isDictionary) {
                 const {entityTypeIn, ...restInput} = input;
                 restInput.pageNumber = pageInfo.pageNumber + 1;

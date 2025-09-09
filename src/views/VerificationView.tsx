@@ -53,8 +53,19 @@ import {
 import { T } from "@tolgee/react";
 import DocumentForm from "./forms/DocumentForm";
 import DictionaryForm from "./forms/DictionaryForm";
-import { ListOnItemsRenderedProps } from "react-window";
 import ItemList from "../components/list/ItemList";
+
+// Type für react-window v2.x onRowsRendered callback
+interface OnRowsRenderedProps {
+    visibleRows: {
+        startIndex: number;
+        stopIndex: number;
+    };
+    allRows: {
+        startIndex: number;
+        stopIndex: number;
+    };
+}
 
 // Replace makeStyles with styled components
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -372,9 +383,9 @@ export function VerificationView() {
       }
     }, [data]);
 
-    const handleScroll = async (props: ListOnItemsRenderedProps) => {
-      const { visibleStopIndex } = props;
-      if (pageInfo?.hasNext && visibleStopIndex >= allItems.length - 5) {
+    const handleScroll = async (visibleRows: OnRowsRenderedProps['visibleRows'], allRows: OnRowsRenderedProps['allRows']) => {
+      const { stopIndex } = visibleRows;
+      if (pageInfo?.hasNext && stopIndex >= allItems.length - 5) {
         await fetchMore({
           variables: {
             pageSize,
