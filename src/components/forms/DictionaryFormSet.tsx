@@ -38,19 +38,13 @@ const DictionaryFormSet: FC<DictionaryFormSetProps> = (props) => {
 
   const [setDictionary] = useCreateRelationshipMutation({
     errorPolicy: 'all',
-    update: (cache) => {
-      // Optimierte Cache-Updates
-      cache.evict({ fieldName: 'findDictionaries' });
-      cache.gc();
-    }
+    // Remove aggressive cache updates that can cause loops
+    // Let Apollo handle cache updates automatically
   });
   const [deleteDictionary] = useDeleteRelationshipMutation({
     errorPolicy: 'all',
-    update: (cache) => {
-      // Optimierte Cache-Updates
-      cache.evict({ fieldName: 'findDictionaries' });
-      cache.gc();
-    }
+    // Remove aggressive cache updates that can cause loops
+    // Let Apollo handle cache updates automatically
   });
   const [currentDictionaryId, setCurrentDictionaryId] = useState(initialDictionaryId);
 

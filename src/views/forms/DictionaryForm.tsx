@@ -59,11 +59,11 @@ function DictionaryForm(props: FormProps<DictionaryPropsFragment>) {
         },
         errorPolicy: 'all',
         notifyOnNetworkStatusChange: true,
-        // Keine Cache-Policy - immer frische Konzepte laden
-        fetchPolicy: 'network-only'
+        // Use cache-first for better performance and to prevent infinite loops
+        fetchPolicy: 'cache-first'
     });
 
-    // Ersetzt onCompleted Callback
+    // Ersetzt onCompleted Callback - stabilized with proper dependencies
     useEffect(() => {
         if (conceptsData?.node?.concepts?.nodes) {
             // Filtere nur wirklich korrupte Daten heraus (ohne ID)
@@ -71,17 +71,33 @@ function DictionaryForm(props: FormProps<DictionaryPropsFragment>) {
                 concept?.id // Nur ID ist wirklich erforderlich
             );
             
-            setLastSuccessfulConcepts(validConcepts);
+            setLastSuccessfulConcepts(prevConcepts => {
+                // Only update if actually different
+                if (prevConcepts.length !== validConcepts.length ||
+                    !prevConcepts.every((concept, index) => concept.id === validConcepts[index]?.id)) {
+                    return validConcepts;
+                }
+                return prevConcepts;
+            });
         }
-        if (conceptsData?.node?.concepts?.totalElements !== undefined) {
-            const pageInfo = {
-                totalElements: conceptsData.node.concepts.totalElements,
-                totalPages: Math.ceil(conceptsData.node.concepts.totalElements / pageSize)
+        
+        const totalElements = conceptsData?.node?.concepts?.totalElements;
+        if (totalElements !== undefined) {
+            const newPageInfo = {
+                totalElements,
+                totalPages: Math.ceil(totalElements / pageSize)
             };
             
-            setLastSuccessfulPageInfo(pageInfo);
+            setLastSuccessfulPageInfo(prevPageInfo => {
+                // Only update if actually different
+                if (prevPageInfo.totalElements !== newPageInfo.totalElements ||
+                    prevPageInfo.totalPages !== newPageInfo.totalPages) {
+                    return newPageInfo;
+                }
+                return prevPageInfo;
+            });
         }
-    }, [conceptsData, pageSize]);
+    }, [conceptsData?.node?.concepts?.nodes?.length, conceptsData?.node?.concepts?.totalElements, pageSize]);
 
     // Ersetzt onError Callback
     useEffect(() => {

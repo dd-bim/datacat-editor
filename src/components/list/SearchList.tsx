@@ -1,11 +1,10 @@
-import { CatalogRecordType, SearchInput, useFindItemQuery, useFindDictionariesQuery, useGetDictionaryEntryQuery } from "../../generated/types";
+import { CatalogRecordType, SearchInput, useFindItemQuery, useFindDictionariesQuery } from "../../generated/types";
 import useDebounce from "../../hooks/useDebounce";
 import ItemList, { ItemListProps } from "./ItemList";
 import { T } from "@tolgee/react";
 import { Box, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from "@mui/material";
-import { useMemo, useEffect, useState, useCallback } from "react";
-import { useApolloClient } from "@apollo/client/react";
-import { GetDictionaryEntryDocument } from "../../generated/types";
+import { useMemo, useEffect, useCallback } from "react";
+import React from "react";
 
 // Type für react-window v2.x onRowsRendered callback
 interface OnRowsRenderedProps {
@@ -30,46 +29,8 @@ type SearchListProps = Omit<ItemListProps, "items"> & {
     onTotalCountChange?: (totalCount: number) => void;
 };
 
-// Hook to get total elements from search data
-export function useSearchTotalElements(searchInput?: SearchInput, searchTerm: string = "") {
-    const debouncedSearchTerm = useDebounce(searchTerm, 500);
-    
-    const isDictionary = searchInput?.entityTypeIn?.includes(CatalogRecordType.Dictionary);
-    
-    const input: SearchInput = {
-        ...searchInput,
-        query: debouncedSearchTerm,
-    };
-    
-    const { data } = isDictionary 
-        ? useFindDictionariesQuery({
-            variables: {
-                input: { ...input, pageSize: 1, pageNumber: 0 }
-            }
-        })
-        : useFindItemQuery({
-            variables: {
-                input,
-                pageSize: 1,
-                pageNumber: 0
-            }
-        });
-    
-    const totalElements = isDictionary 
-        ? (data as any)?.findDictionaries?.totalElements ?? 0
-        : (data as any)?.search?.totalElements ?? 0;
-    
-    return totalElements;
-}
-
-type SearchListReturn = {
-    totalElements: number;
-    component: React.ReactElement;
-};
-
 /**
- * SearchList component with Dictionary relation-based filtering.
- * Uses the Dictionary's concepts collection to filter items that belong to a specific Dictionary.
+ * Minimal SearchList component - simplified to avoid infinite queries
  */
 export default function SearchList(props: SearchListProps) {
     const {
@@ -85,148 +46,51 @@ export default function SearchList(props: SearchListProps) {
         onSearch,
         ...otherProps
     } = props;
+    
     const debouncedSearchTerm = useDebounce(searchTerm, 500);
-    const apolloClient = useApolloClient();
     
     // Stabilize the search callback to prevent endless re-renders
     const stableOnSearch = useCallback((term: string) => {
         onSearch?.(term);
     }, [onSearch]);
     
-    // Load available Dictionaries for filter dropdown
+    // Build basic search input
+    const input: SearchInput = useMemo(() => ({
+        ...searchInput,
+        query: debouncedSearchTerm,
+    }), [searchInput, debouncedSearchTerm]);
+
+    const isDictionary = searchInput?.entityTypeIn?.includes(CatalogRecordType.Dictionary);
+    
+    // Load available Dictionaries for filter dropdown ONLY when needed
     const { data: dictionariesData } = useFindDictionariesQuery({
         variables: {
-            input: { query: "", pageSize: 100 }
+            input: { query: "", pageSize: 100, pageNumber: 0 }
         },
-        skip: !showDictionaryFilter
+        skip: !showDictionaryFilter,
+        fetchPolicy: 'cache-first',
     });
     
     const availableDictionaries = dictionariesData?.findDictionaries?.nodes ?? [];
     
-    // For "NO_DICTIONARY" option, we need to collect ALL concept IDs from ALL dictionaries
-    // We'll load each dictionary's details to get their concept IDs
-    const [allDictionaryConceptIds, setAllDictionaryConceptIds] = useState<Set<string>>(new Set());
-    
-    // Load concepts from all dictionaries when "NO_DICTIONARY" is selected
-    useEffect(() => {
-        if (selectedDictionaryId !== "NO_DICTIONARY" || availableDictionaries.length === 0) {
-            setAllDictionaryConceptIds(prevIds => {
-                // Only update if the set is not already empty
-                if (prevIds.size > 0) {
-                    return new Set();
-                }
-                return prevIds;
-            });
-            return;
-        }
-        
-        const loadAllDictionaryConcepts = async () => {
-            // Performance-Optimierung: Limitiere die Anzahl der parallelen Queries
-            const maxConcurrentQueries = 5;
-            const allConceptIds = new Set<string>();
-            
-            try {
-                // Lade nur die ersten paar Dictionaries und verwende Caching
-                const limitedDictionaries = availableDictionaries.slice(0, 20); // Maximal 20 Dictionaries
-                
-                // Lade in kleinen Batches um Server-Überlastung zu vermeiden
-                for (let i = 0; i < limitedDictionaries.length; i += maxConcurrentQueries) {
-                    const batch = limitedDictionaries.slice(i, i + maxConcurrentQueries);
-                    
-                    const batchPromises = batch.map(dict =>
-                        apolloClient.query({
-                            query: GetDictionaryEntryDocument,
-                            variables: { id: dict.id },
-                            fetchPolicy: 'cache-first' // Verwende Cache wenn möglich
-                        })
-                    );
-                    
-                    const batchResults = await Promise.all(batchPromises);
-                    
-                    batchResults.forEach(({ data }) => {
-                        const dictionary = (data as any)?.node;
-                        if (dictionary?.concepts) {
-                            // Limitiere auch die Konzepte pro Dictionary
-                            const limitedConcepts = dictionary.concepts.slice(0, 100);
-                            limitedConcepts.forEach((concept: { id: string; }) => {
-                                allConceptIds.add(concept.id);
-                            });
-                        }
-                    });
-                    
-                    // Kleine Pause zwischen Batches für bessere Performance
-                    if (i + maxConcurrentQueries < limitedDictionaries.length) {
-                        await new Promise(resolve => setTimeout(resolve, 50));
-                    }
-                }
-                
-                setAllDictionaryConceptIds(prevIds => {
-                    // Only update if the sets are actually different
-                    if (prevIds.size !== allConceptIds.size || 
-                        !Array.from(allConceptIds).every(id => prevIds.has(id))) {
-                        return allConceptIds;
-                    }
-                    return prevIds;
-                });
-            } catch (error) {
-                console.error('Error loading dictionary concepts:', error);
-                setAllDictionaryConceptIds(prevIds => {
-                    if (prevIds.size > 0) {
-                        return new Set();
-                    }
-                    return prevIds;
-                });
-            }
-        };
-        
-        loadAllDictionaryConcepts();
-    }, [selectedDictionaryId, availableDictionaries, apolloClient]);
-    
-    // Load detailed Dictionary data including concepts when a Dictionary is selected
-    const { data: selectedDictionaryDetailData } = useGetDictionaryEntryQuery({
-        variables: {
-            id: selectedDictionaryId || ""
-        },
-        skip: !selectedDictionaryId || selectedDictionaryId === "NO_DICTIONARY"
-    });
-    
-    const selectedDictionaryDetail = selectedDictionaryDetailData?.node;
-    const dictionaryConceptIds = useMemo(() => 
-        selectedDictionaryDetail?.concepts?.map(concept => concept.id) || [], 
-        [selectedDictionaryDetail?.concepts]
-    );
-    
-    // Build search input with Dictionary relation filtering - stabilized with useMemo
-    const input: SearchInput = useMemo(() => ({
-        ...searchInput,
-        query: debouncedSearchTerm,
-        // Only apply server-side filtering for specific dictionaries (not for "NO_DICTIONARY")
-        ...(selectedDictionaryId && 
-            selectedDictionaryId !== "NO_DICTIONARY" &&
-            dictionaryConceptIds.length > 0 &&
-            !searchInput?.entityTypeIn?.includes(CatalogRecordType.Dictionary) &&
-            !searchInput?.entityTypeIn?.includes(CatalogRecordType.Unit) && {
-            idIn: dictionaryConceptIds
-        })
-    }), [searchInput, debouncedSearchTerm, selectedDictionaryId, dictionaryConceptIds]);
-
-    const isDictionary = searchInput?.entityTypeIn?.includes(CatalogRecordType.Dictionary);
-    
+    // Main search query
     let loading, data, error, fetchMore;
     let items;
     let pageInfo;
     
     if (isDictionary) {
-        const {entityTypeIn, ...restInput} = input;
-        restInput.pageSize = pageSize;
-        restInput.pageNumber = 0;
-
+        // For dictionaries, use the correct structure
+        const { entityTypeIn, ...searchParams } = input;
+        
         ({ loading, data, error, fetchMore } = useFindDictionariesQuery({
             variables: {
-                input: restInput
+                input: {
+                    ...searchParams,
+                    pageSize,
+                    pageNumber: 0
+                }
             },
-            fetchPolicy: 'cache-first', // Cache first für bessere Performance
-            errorPolicy: 'all'
+            fetchPolicy: 'cache-first',
         }));
         items = data?.findDictionaries?.nodes ?? [];
         pageInfo = data?.findDictionaries?.pageInfo;
@@ -238,23 +102,26 @@ export default function SearchList(props: SearchListProps) {
                 pageSize,
                 pageNumber: 0
             },
-            fetchPolicy: 'cache-first', // Cache first für bessere Performance
-            errorPolicy: 'all'
+            fetchPolicy: 'cache-first',
         }));
         items = data?.search.nodes ?? [];
         pageInfo = data?.search.pageInfo;
     }
 
-    const handleOnScroll = async (visibleRows: OnRowsRenderedProps['visibleRows'], allRows: OnRowsRenderedProps['allRows']) => {
+    // Handle scrolling for pagination
+    const handleOnScroll = useCallback(async (visibleRows: OnRowsRenderedProps['visibleRows'], allRows: OnRowsRenderedProps['allRows']) => {
         const { stopIndex } = visibleRows;
 
         if (pageInfo?.hasNext && stopIndex >= items.length - 5) {
             if (isDictionary) {
-                const {entityTypeIn, ...restInput} = input;
-                restInput.pageNumber = pageInfo.pageNumber + 1;
+                const { entityTypeIn, ...searchParams } = input;
                 await fetchMore({
                     variables: {
-                        input: restInput
+                        input: {
+                            ...searchParams,
+                            pageSize,
+                            pageNumber: pageInfo.pageNumber + 1
+                        }
                     }
                 });
             } else {
@@ -267,87 +134,47 @@ export default function SearchList(props: SearchListProps) {
                 });
             }
         }
-    }
+    }, [pageInfo, items.length, fetchMore, input, isDictionary, pageSize]);
 
+    // Map items with proper name formatting
     const mappedItems = useMemo(() => {
-        let filteredItems = items.map(item => ({
+        if (!items || items.length === 0) return [];
+        
+        return items.map(item => ({
             ...item,
             name: typeof item.name === "object" && item.name !== null && "texts" in item.name
                 ? (item.name.texts?.[0]?.text ?? "")
                 : (typeof item.name === "string" ? item.name : "")
         }));
-        
-        // Client-side filtering for "NO_DICTIONARY" option
-        if (selectedDictionaryId === "NO_DICTIONARY") {
-            // Filter out items that are concepts in any dictionary
-            // This gives us the true difference: All items - Dictionary concepts
-            filteredItems = filteredItems.filter(item => {
-                return !allDictionaryConceptIds.has(item.id);
-            });
-        }
-        
-        return filteredItems;
-    }, [items, selectedDictionaryId, allDictionaryConceptIds]);
+    }, [items]);
 
-    // Call onTotalCountChange when the total count changes
-    // Use a separate, unfiltered query to get the absolute total count
-    const absoluteSearchInput = useMemo(() => {
-        if (isDictionary) {
-            // For dictionaries, we need a simpler structure
-            return {
-                query: "",
-                pageSize: 1,
-                pageNumber: 0
-            };
-        } else {
-            // For other entity types, use the normal searchInput structure
-            return {
-                ...searchInput,
-                query: "" // No search term for absolute count
-                // No idIn filter for absolute count
-            };
-        }
-    }, [searchInput, isDictionary]);
-
-    const { data: absoluteCountData } = isDictionary 
-        ? useFindDictionariesQuery({
-            variables: {
-                input: absoluteSearchInput
-            }
-        })
-        : useFindItemQuery({
-            variables: {
-                input: absoluteSearchInput,
-                pageSize: 1,
-                pageNumber: 0
-            }
-        });
-
+    // Update counts when data changes
     useEffect(() => {
-        if (!onTotalCountChange || !absoluteCountData) return;
-        
-        let totalCount = 0;
-        
-        if (isDictionary) {
-            totalCount = (absoluteCountData as any)?.findDictionaries?.totalElements ?? 0;
-        } else {
-            totalCount = (absoluteCountData as any)?.search?.totalElements ?? 0;
+        if (onItemCountChange) {
+            onItemCountChange(mappedItems.length);
         }
-        
-        onTotalCountChange(totalCount);
-    }, [absoluteCountData, isDictionary, onTotalCountChange]);
+    }, [mappedItems.length, onItemCountChange]);
+    
+    useEffect(() => {
+        if (onTotalCountChange && data) {
+            const totalCount = isDictionary 
+                ? data.findDictionaries?.totalElements ?? 0
+                : data.search?.totalElements ?? 0;
+            onTotalCountChange(totalCount);
+        }
+    }, [data, isDictionary, onTotalCountChange]);
 
-    const handleDictionaryFilterChange = (event: SelectChangeEvent<string>) => {
+    // Dictionary filter handlers
+    const handleDictionaryFilterChange = useCallback((event: SelectChangeEvent<string>) => {
         const value = event.target.value;
         const dictionaryId = value === "" ? null : value;
         onDictionaryFilterChange?.(dictionaryId);
-    };
+    }, [onDictionaryFilterChange]);
 
     const shouldShowDictionaryFilter = showDictionaryFilter && 
         !searchInput?.entityTypeIn?.includes(CatalogRecordType.Dictionary) &&
         !searchInput?.entityTypeIn?.includes(CatalogRecordType.Unit);
 
-    // Debug loading state
     const actuallyLoading = loading && !data;
     
     return (
@@ -360,38 +187,32 @@ export default function SearchList(props: SearchListProps) {
         }}>
             {shouldShowDictionaryFilter && (
                 <Box sx={{ mb: 2 }}>
-                    <FormControl size="small" fullWidth>
-                        <InputLabel id="dictionary-filter-label">
-                            <T keyName="search.filter_by_dictionary" defaultValue="Nach Dictionary filtern" />
-                        </InputLabel>
+                    <FormControl size="small" sx={{ minWidth: 200 }}>
+                        <InputLabel><T keyName="dictionary.filter_label">Filter by Dictionary</T></InputLabel>
                         <Select
-                            labelId="dictionary-filter-label"
                             value={selectedDictionaryId || ""}
                             onChange={handleDictionaryFilterChange}
-                            label="Nach Dictionary filtern"
+                            label={<T keyName="dictionary.filter_label">Filter by Dictionary</T>}
                         >
                             <MenuItem value="">
-                                <T keyName="search.all_dictionaries" defaultValue="Alle Dictionaries" />
+                                <em><T keyName="dictionary.all_items">All Items</T></em>
                             </MenuItem>
                             <MenuItem value="NO_DICTIONARY">
-                                <T keyName="search.no_dictionary" defaultValue="Ohne Dictionary" />
+                                <em><T keyName="dictionary.no_dictionary_items">Items without Dictionary</T></em>
                             </MenuItem>
-                            {availableDictionaries.map((dictionary) => {
-                                const name = dictionary.name.texts?.find(t => t.language.code === "de")?.text || 
-                                           dictionary.name.texts?.[0]?.text || 
-                                           dictionary.id;
-                                return (
-                                    <MenuItem key={dictionary.id} value={dictionary.id}>
-                                        {name}
-                                    </MenuItem>
-                                );
-                            })}
+                            {availableDictionaries.map(dict => (
+                                <MenuItem key={dict.id} value={dict.id}>
+                                    {typeof dict.name === "string"
+                                        ? dict.name
+                                        : dict.name?.texts?.[0]?.text ?? dict.id}
+                                </MenuItem>
+                            ))}
                         </Select>
                     </FormControl>
                 </Box>
             )}
             <ItemList
-                loading={actuallyLoading} // Nur zeigen wenn wirklich lädt und keine Daten da sind
+                loading={actuallyLoading}
                 items={mappedItems}
                 searchLabel={searchLabel || <T keyName="search.search_placeholder"/>}
                 searchTerm={searchTerm}
