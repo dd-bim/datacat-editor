@@ -15,7 +15,20 @@ export default defineConfig(({ mode }) => ({
     VitePWA({
       registerType: 'autoUpdate',
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}']
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        // Erhöhe das Limit für große Dateien wie Monaco Editor
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MB
+        // Monaco Editor vom Precaching ausschließen (große Datei)
+        dontCacheBustURLsMatching: /assets\/monaco-editor-.*\.js$/,
+        // Große Dateien vom Precaching ausschließen
+        manifestTransforms: [
+          (manifestEntries) => ({
+            manifest: manifestEntries.filter(
+              entry => !entry.url.includes('monaco-editor') || entry.size <= 2 * 1024 * 1024
+            )
+          })
+        ],
+        navigateFallback: null, // Verhindert Probleme mit SPA Routing
       },
       includeAssets: ['datacat_icon.ico', 'logo192.png', 'logo512.png'],
       manifest: {
