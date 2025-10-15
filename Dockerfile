@@ -1,8 +1,12 @@
 FROM node:lts-alpine
 WORKDIR /app
 
-COPY package.json package-lock.json ./
+# Alpine Linux Fix für Rollup
+RUN apk add --no-cache libc6-compat
+
+COPY package.json ./
 RUN npm install
+COPY package-lock.json ./
 
 COPY .env ./
 COPY tsconfig.json ./
