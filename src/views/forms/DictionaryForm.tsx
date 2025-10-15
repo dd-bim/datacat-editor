@@ -2,7 +2,9 @@ import {
     useGetDictionaryEntryWithPaginationQuery,
     useGetDictionaryEntryQuery,
     DictionaryPropsFragment,
-    ObjectPropsFragment
+    ObjectPropsFragment,
+    ItemPropsFragment,
+    MetaPropsFragment
 } from "../../generated/types";
 import { useDeleteEntry } from "../../hooks/useDeleteEntry";
 import { Typography, Button } from "@mui/material";
@@ -15,7 +17,7 @@ import FormView, { FormProps } from "./FormView";
 import PagedRelatingRecordsFormSet from "../../components/forms/PagedRelatingRecordsFormSet";
 import { T } from "@tolgee/react";
 import { useNavigate } from "react-router-dom";
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 
 
 function DictionaryForm(props: FormProps<DictionaryPropsFragment>) {
@@ -47,7 +49,8 @@ function DictionaryForm(props: FormProps<DictionaryPropsFragment>) {
     const { 
         data: conceptsData, 
         loading: conceptsLoading, 
-        error: conceptsError 
+        error: conceptsError,
+        networkStatus
     } = useGetDictionaryEntryWithPaginationQuery({
         variables: {
             id,
@@ -56,29 +59,54 @@ function DictionaryForm(props: FormProps<DictionaryPropsFragment>) {
         },
         errorPolicy: 'all',
         notifyOnNetworkStatusChange: true,
-        // Keine Cache-Policy - immer frische Konzepte laden
-        fetchPolicy: 'network-only',
-        onCompleted: (data) => {
-            // Speichere erfolgreiche Konzepte und Pagination-Info um Flackern zu vermeiden
-            if (data?.node?.concepts?.nodes) {
-                // Filtere nur wirklich korrupte Daten heraus (ohne ID)
-                const validConcepts = data.node.concepts.nodes.filter(concept => 
-                    concept?.id // Nur ID ist wirklich erforderlich
-                );
-                
-                setLastSuccessfulConcepts(validConcepts);
-            }
-            if (data?.node?.concepts?.totalElements !== undefined) {
-                setLastSuccessfulPageInfo({
-                    totalElements: data.node.concepts.totalElements,
-                    totalPages: Math.ceil(data.node.concepts.totalElements / pageSize)
-                });
-            }
-        },
-        onError: (error) => {
-            // Bei Fehler verwende alte Daten weiter
-        }
+        // Use cache-first for better performance and to prevent infinite loops
+        fetchPolicy: 'cache-first'
     });
+
+    // Ersetzt onCompleted Callback - stabilized with proper dependencies
+    useEffect(() => {
+        if (conceptsData?.node?.concepts?.nodes) {
+            // Filtere nur wirklich korrupte Daten heraus (ohne ID)
+            const validConcepts = conceptsData.node.concepts.nodes.filter(concept => 
+                concept?.id // Nur ID ist wirklich erforderlich
+            );
+            
+            setLastSuccessfulConcepts(prevConcepts => {
+                // Only update if actually different
+                if (prevConcepts.length !== validConcepts.length ||
+                    !prevConcepts.every((concept, index) => concept.id === validConcepts[index]?.id)) {
+                    return validConcepts;
+                }
+                return prevConcepts;
+            });
+        }
+        
+        const totalElements = conceptsData?.node?.concepts?.totalElements;
+        if (totalElements !== undefined) {
+            const newPageInfo = {
+                totalElements,
+                totalPages: Math.ceil(totalElements / pageSize)
+            };
+            
+            setLastSuccessfulPageInfo(prevPageInfo => {
+                // Only update if actually different
+                if (prevPageInfo.totalElements !== newPageInfo.totalElements ||
+                    prevPageInfo.totalPages !== newPageInfo.totalPages) {
+                    return newPageInfo;
+                }
+                return prevPageInfo;
+            });
+        }
+    }, [conceptsData?.node?.concepts?.nodes?.length, conceptsData?.node?.concepts?.totalElements, pageSize]);
+
+    // Ersetzt onError Callback
+    useEffect(() => {
+        if (conceptsError) {
+            console.error('❌ [DictionaryForm] Concepts error:', conceptsError);
+            // Bei Fehler verwende alte Daten weiter
+            // Hier könntest du auch einen Snackbar zeigen falls gewünscht
+        }
+    }, [conceptsError]);
 
     // Dictionary-Daten kommen aus der ersten Query
     const entry = dictionaryData?.node as DictionaryPropsFragment | undefined;
@@ -114,7 +142,7 @@ function DictionaryForm(props: FormProps<DictionaryPropsFragment>) {
     if (dictionaryLoading && !dictionaryData) {
         return (
             <FormView>
-                <Typography><T keyName="dictionary.loading" /></Typography>
+                <Typography component="div"><T keyName="dictionary.loading" /></Typography>
             </FormView>
         );
     }
@@ -122,7 +150,7 @@ function DictionaryForm(props: FormProps<DictionaryPropsFragment>) {
     if (!entry) {
         return (
             <FormView>
-                <Typography><T keyName="dictionary.not_found" /></Typography>
+                <Typography component="div"><T keyName="dictionary.not_found" /></Typography>
             </FormView>
         );
     }
@@ -163,11 +191,18 @@ function DictionaryForm(props: FormProps<DictionaryPropsFragment>) {
 
             {/* Konzepte mit besserer Loading-Behandlung */}
             <PagedRelatingRecordsFormSet
-                title={<Typography><b><T keyName="concept.titlePlural" /></b><T keyName="dictionary.related_concepts"/></Typography>}
+                title={
+                    <Typography component="div">
+                        <b><T keyName="concept.titlePlural" /></b>
+                        <T keyName="dictionary.related_concepts"/>
+                    </Typography>
+                }
                 emptyMessage={
                     // Zeige "keine Konzepte" nur wenn wir sicher sind, dass es keine gibt
                     conceptsLoading && !hasValidConceptsData ? 
-                        <Typography variant="body2" color="textSecondary"><T keyName="pagination.loading_concepts" /></Typography> :
+                        <Typography variant="body2" color="textSecondary" component="div">
+                            <T keyName="pagination.loading_concepts" />
+                        </Typography> :
                         <T keyName="dictionary.no_related_concepts"/>
                 }
                 concepts={conceptsForDisplay}
@@ -177,7 +212,7 @@ function DictionaryForm(props: FormProps<DictionaryPropsFragment>) {
             />
 
             {/* Meta lädt nur einmal aus dictionaryData */}
-            <MetaFormSet entry={entry} />
+            <MetaFormSet entry={entry as unknown as ItemPropsFragment & MetaPropsFragment} />
 
             <Button
                 variant="contained"

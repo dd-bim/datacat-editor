@@ -9,6 +9,7 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import { T } from "@tolgee/react";
 
+
 type MetaFormSetProps = WithChildren<{
   entry: ItemPropsFragment & MetaPropsFragment;
 }>;

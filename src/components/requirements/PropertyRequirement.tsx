@@ -157,7 +157,7 @@ export const PropertyRequirement: React.FC<PropertyRequirementProps> = ({
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    placeholder="Tag auswählen..."
+                    placeholder={t("ids_export.placeholders.tag_select")}
                     size="small"
                   />
                 )}

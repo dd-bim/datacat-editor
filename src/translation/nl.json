@@ -142,10 +142,41 @@
     "no_file_selected": "Geen bestand geselecteerd",
     "select_file_button": "Excel-tabel selecteren",
     "check_inputs_button": "Invoer controleren",
-    "import_tag_label": "Importtag (optioneel)",
+    "import_tag_label": "Importtag (vereist)",
+    "import_tag_required": "Importtag is vereist",
     "import_button": "Excel-tabel importeren",
     "reset_button": "Invoer resetten",
-    "progress": "{progress}% voltooid"
+    "progress": "{progress}% voltooid",
+    "help": {
+      "file_select": {
+        "title": "Excel-bestand selecteren",
+        "content": "Kies een Excel-bestand (.xlsx of .xls) met uw catalogusgegevens.\n\nHet bestand moet gestructureerde gegevens met kopteksten bevatten. Elk werkblad kan verschillende entiteitstypen (bijv. klassen, kenmerken, waarden) of relaties bevatten.\n\nNa selectie kunt u de kolommen voor naam en ID toewijzen."
+      },
+      "validation": {
+        "title": "Invoer valideren",
+        "content": "Controleert al uw instellingen voor de import:\n\n• Of een bestand is geselecteerd\n• Of ten minste één entiteit is gemarkeerd voor import\n• Of alle naam- en ID-kolommen correct zijn toegewezen\n• Of geen dubbele kolommen worden gebruikt in een werkblad\n\nVoor ontbrekende ID-kolommen worden automatisch UUID's gegenereerd."
+      },
+      "preview": {
+        "title": "Import voorvertoning",
+        "content": "Toont een gedetailleerd overzicht van de geplande import:\n\n• Aantal te importeren entiteiten en relaties\n• Lijst van alle automatisch gegenereerde UUID's\n• Uitsplitsing naar entiteitstypen\n\nDit stelt u in staat om te verifiëren dat alles correct is geconfigureerd voor de werkelijke import."
+      },
+      "import_tag": {
+        "title": "Import-tag",
+        "content": "Een optionele tag toegewezen aan alle geïmporteerde entiteiten.\n\nDe tag helpt om:\n• Geïmporteerde gegevens te identificeren\n• Verschillende importprocessen te onderscheiden\n• Gegevens later te filteren of verwijderen\n\nAls geen tag wordt opgegeven, wordt automatisch 'KATALOG-IMPORT' gebruikt."
+      },
+      "import": {
+        "title": "Import starten",
+        "content": "Start het werkelijke importproces:\n\n• Leest het Excel-bestand\n• Maakt entiteiten met geconfigureerde toewijzingen\n• Genereert automatisch UUID's waar nodig\n• Maakt relaties tussen entiteiten\n• Toont voortgang in real-time\n\nDe import kan op elk moment worden afgebroken."
+      },
+      "abort": {
+        "title": "Import afbreken",
+        "content": "Breekt het lopende importproces af.\n\nReeds geïmporteerde gegevens blijven behouden, maar verdere import wordt gestopt.\n\nDit is handig als u een fout in de configuratie opmerkt of de import langer duurt dan verwacht."
+      },
+      "reset": {
+        "title": "Invoer resetten",
+        "content": "Reset alle instellingen en configuraties:\n\n• Verwijdert het geselecteerde bestand\n• Wist alle kolomtoewijzingen\n• Deactiveert alle entiteit-checkboxen\n• Verwijdert gegenereerde UUID's\n• Reset importstatus\n\nDit is handig om opnieuw te beginnen met een schone configuratie."
+      }
+    }
   },
   "app_drawer": {
     "general": "Algemeen",
@@ -545,6 +576,8 @@
       "classification": "Classificatie",
       "classification_auto_ifcclassification": "Voor classificatie wordt automatisch IFCCLASSIFICATION gebruikt",
       "classification_system_select": "Classificatiesysteem selecteren",
+      "themes_select": "Thema's selecteren (optioneel)",
+      "subthemes_select": "Subthema's selecteren (optioneel)",
       "create_new_property_set": "Nieuwe IFC-eigenschappenset aanmaken (eigenschappengroep)",
       "datatype_optional": "gegevenstype",
       "edit_specification": "Specificatie bewerken",
@@ -589,7 +622,10 @@
     "placeholders": {
       "attribute_class_search": "Zoek en selecteer klasse...",
       "attribute_model_search": "Zoek en selecteer vakmodel...",
-      "classification_system_search": "Zoek en selecteer classificatiesysteem...",
+      "classification_system_search": "Classificatiesysteem zoeken en selecteren...",
+      "themes_select": "Thema's selecteren...",
+      "subthemes_select": "Subthema's selecteren...",
+      "tag_select": "Tag selecteren...",
       "datatype_search": "Zoek en selecteer gegevenstype...",
       "entity_type_search": "Zoek en selecteer entiteitstype...",
       "ids_name_example": "bijv. Vereisten-Brandbeveiliging-2024",
@@ -606,6 +642,12 @@
       "thermal_properties": "bijv. Warmtegeleiding, specifieke warmte...",
       "unnamed_ids": "IDS zonder naam",
       "unnamed_specification": "Specificatie zonder naam"
+    },
+    "hints": {
+      "select_classification_to_see_uri": "Selecteer classificatiesysteem om URI te zien",
+      "select_themes_for_filtering": "Selecteer thema's om passende klassen te filteren",
+      "subthemes_only_if_available": "Subthema's worden alleen getoond als het geselecteerde thema deze heeft",
+      "classes_filtered_by_selection": "Klassen worden gefilterd op basis van thema/subthema selectie"
     },
     "buttons": {
       "add_by_tag": "Toevoegen op tag",
@@ -806,6 +848,27 @@
     "defaultPurpose": "Ontwerp validatie",
     "defaultTitle": "Nieuwe IDS-specificatie",
     "untitledSpecification": "Specificaties zonder titel"
+  },
+  "classification_hints": {
+    "selected_themes_have_subthemes": "De geselecteerde thema's hebben subthema's. Selecteer eerst subthema's om de bijbehorende klassen te zien.",
+    "no_classes_available": "Geen klassen beschikbaar voor de huidige selectie.",
+    "unknown_theme": "Onbekend thema",
+    "unknown_subtheme": "Onbekend subthema"
+  },
+  "confirmation": {
+    "token_label": "Bevestigingstoken",
+    "token_helper_text": "Het bevestigingstoken is nodig om uw e-mailadres te bevestigen en wordt naar uw postvak gestuurd."
+  },
+  "delete_import": {
+    "no_entries_selected": "Geen items geselecteerd voor verwijdering."
+  },
+  "import_validation": {
+    "select_file_error": "Selecteer een Excel-bestand om te importeren.",
+    "select_rows_error": "Selecteer ten minste één rij om te importeren.",
+    "duplicate_columns_error": "In een werkblad mogen dezelfde kolommen niet worden gebruikt voor verschillende entiteiten/ID's.",
+    "unit_label": "Eenheid",
+    "relation_property_unit": "Rel_Eigenschap_Eenheid",
+    "relation_valuelist_unit": "Rel_Waardelijst_Eenheid"
   },
   "pagination": {
     "entries": "Items",

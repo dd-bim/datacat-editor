@@ -44,7 +44,7 @@ import ViewComfyIcon from "@mui/icons-material/ViewComfy";
 import ViewHeadlineIcon from "@mui/icons-material/ViewHeadline";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { DictionaryEntity, DocumentEntity, ClassEntity, PropertyEntity, PropertyGroupEntity, ValueEntity, ValueListEntity, ThemeEntity } from "../domain";
-import { useApolloClient } from "@apollo/client";
+import { useApolloClient } from "@apollo/client/react";
 
 // Memoized constants außerhalb der Komponente
 const EXCLUDED_TAGS = [

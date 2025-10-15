@@ -11,7 +11,6 @@ export const useIDSData = (
 ) => {
   // Merkmalsgruppen extrahieren - Backend PropertySets
   const backendPropertyGroupOptions = useMemo(() => {
-    console.log("Property Groups:", propertyGroups);
     if (!propertyGroups) return [];
     return propertyGroups.map((n: any) => ({
       id: n.id,
@@ -47,7 +46,6 @@ export const useIDSData = (
 
   // Alle Klassen aller Modelle (für Requirements)
   const classOptions = useMemo(() => {
-    console.log("Classes:", classes);
     if (!classes) return [];
 
     const result: {

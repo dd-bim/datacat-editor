@@ -27,7 +27,7 @@ import {
 } from "../generated/types";
 import { Domain } from "../domain";
 import { useSnackbar } from "notistack";
-import { T } from "@tolgee/react";
+import { T, useTranslate } from "@tolgee/react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import WarningIcon from "@mui/icons-material/Warning";
 import {
@@ -40,6 +40,7 @@ import { useNavigate } from "react-router-dom";
 
 export function DeleteImportView() {
   const navigate = useNavigate();
+  const { t } = useTranslate();
   const [tag, setTag] = useState<string>("");
   const [tagId, setTagId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -100,7 +101,7 @@ export function DeleteImportView() {
 
       setSelectedRows({
         type: "include",
-        ids: new Set(foundRecords.map((record) => record.id)),
+        ids: new Set(foundRecords.map((record: SearchResultPropsFragment) => record.id)),
       });
 
       if (foundRecords.length === 0) {
@@ -134,7 +135,7 @@ export function DeleteImportView() {
     setIsDeleteDialogOpen(false);
 
     if (selectedRows.ids.size === 0) {
-      enqueueSnackbar("Keine Einträge zum Löschen ausgewählt.", {
+      enqueueSnackbar(t("delete_import.no_entries_selected"), {
         variant: "info",
       });
       return;
@@ -296,11 +297,11 @@ export function DeleteImportView() {
                   const selectedTagName = e.target.value;
                   setTag(selectedTagName);
                   setOutput("");
-                  const tagObj = tagList.find((t) => t.name === selectedTagName);
+                  const tagObj = tagList.find((t: any) => t.name === selectedTagName);
                   setTagId(tagObj ? tagObj.id : "");
                 }}
               >
-                {tagList.map((tagObj) => (
+                {tagList.map((tagObj: any) => (
                   <MenuItem key={tagObj.id} value={tagObj.name}>
                     {tagObj.name}
                   </MenuItem>

@@ -38,19 +38,13 @@ const DictionaryFormSet: FC<DictionaryFormSetProps> = (props) => {
 
   const [setDictionary] = useCreateRelationshipMutation({
     errorPolicy: 'all',
-    update: (cache) => {
-      // Optimierte Cache-Updates
-      cache.evict({ fieldName: 'findDictionaries' });
-      cache.gc();
-    }
+    // Remove aggressive cache updates that can cause loops
+    // Let Apollo handle cache updates automatically
   });
   const [deleteDictionary] = useDeleteRelationshipMutation({
     errorPolicy: 'all',
-    update: (cache) => {
-      // Optimierte Cache-Updates
-      cache.evict({ fieldName: 'findDictionaries' });
-      cache.gc();
-    }
+    // Remove aggressive cache updates that can cause loops
+    // Let Apollo handle cache updates automatically
   });
   const [currentDictionaryId, setCurrentDictionaryId] = useState(initialDictionaryId);
 
@@ -62,17 +56,35 @@ const DictionaryFormSet: FC<DictionaryFormSetProps> = (props) => {
   });
   const dictionaries = data?.findDictionaries?.nodes ?? [];
 
+  // Validiere ob die aktuelle Dictionary-ID noch verfügbar ist
+  const validDictionaryId = React.useMemo(() => {
+    // Während des Ladens immer leeren Wert zurückgeben
+    if (loading) return "";
+    
+    if (!currentDictionaryId) return "";
+    
+    // Prüfe ob die ID in den verfügbaren Dictionaries existiert
+    const isValid = dictionaries.some(dict => dict.id === currentDictionaryId);
+    
+    if (!isValid && dictionaries.length > 0) {
+      console.warn(`Dictionary ID ${currentDictionaryId} nicht gefunden, fallback auf leeren Wert`);
+      return "";
+    }
+    
+    return currentDictionaryId;
+  }, [currentDictionaryId, dictionaries, loading]);
+
   const {
     control,
     reset
   } = useForm<DictionaryFormValues>({
     mode: "onChange",
-    defaultValues: { selectedDictionary: currentDictionaryId },
+    defaultValues: { selectedDictionary: validDictionaryId },
   });
 
   useEffect(() => {
-    reset({ selectedDictionary: currentDictionaryId });
-  }, [currentDictionaryId, reset]);
+    reset({ selectedDictionary: validDictionaryId });
+  }, [validDictionaryId, reset]);
 
   const handleChange = async (
     e: SelectChangeEvent<string>,
@@ -84,24 +96,26 @@ const DictionaryFormSet: FC<DictionaryFormSetProps> = (props) => {
     // Sofort den lokalen State aktualisieren für bessere UX
     setCurrentDictionaryId(newDictionaryId);
     
-    // Sofortige Bestätigung anzeigen
-    enqueueSnackbar(<T keyName="update.updating">Aktualisiere Dictionary...</T>, { variant: 'info' });
+    // Nur zeigen wenn wirklich eine Änderung stattfindet
+    if (newDictionaryId !== validDictionaryId) {
+      enqueueSnackbar(<T keyName="update.updating">Aktualisiere Dictionary...</T>, { variant: 'info' });
+    }
 
     try {
       // Operationen parallel ausführen statt sequenziell
-      const deletePromise = currentDictionaryId 
+      const deletePromise = validDictionaryId 
         ? deleteDictionary({
             variables: {
-              input: { fromId: catalogEntryId, toId: currentDictionaryId, relationshipType: RelationshipRecordType.Dictionary }
+              input: { fromId: catalogEntryId, toId: validDictionaryId, relationshipType: RelationshipRecordType.Dictionary }
             }
           })
         : Promise.resolve();
 
-      const createPromise = setDictionary({
+      const createPromise = newDictionaryId ? setDictionary({
         variables: {
           input: { fromId: catalogEntryId, toIds: [newDictionaryId], relationshipType: RelationshipRecordType.Dictionary }
         }
-      });
+      }) : Promise.resolve();
 
       // Auf beide Operationen parallel warten
       await Promise.all([deletePromise, createPromise]);
@@ -131,12 +145,16 @@ const DictionaryFormSet: FC<DictionaryFormSetProps> = (props) => {
           render={({ field }) => (
             <Select
               {...field}
-              value={field.value}
+              value={validDictionaryId} // Verwende validierte ID statt field.value
               onChange={e => handleChange(e, field)}
               size="small"
               sx={{ minWidth: 180 }}
               disabled={loading}
             >
+              {/* Leere Option für "kein Dictionary" */}
+              <MenuItem value="">
+                <em><T keyName="dictionary.no_dictionary" defaultValue="Kein Dictionary" /></em>
+              </MenuItem>
               {dictionaries.map(dict => (
                 <MenuItem key={dict.id} value={dict.id}>
                   {typeof dict.name === "string"

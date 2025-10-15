@@ -54,6 +54,17 @@ fragment MetaProps on XtdRoot {
     lastModifiedBy
 }
 
+fragment ItemProps on XtdObject {
+    __typename
+    id
+    recordType
+    name(input: { languageTags: ["de-DE", "en-US"] })
+    tags {
+        id
+        name
+    }
+}
+
 fragment ObjectProps on XtdObject {
     __typename
     id

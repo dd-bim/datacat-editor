@@ -142,10 +142,41 @@
     "no_file_selected": "Keine Datei ausgewählt",
     "select_file_button": "Excel-Tabelle auswählen",
     "check_inputs_button": "Eingaben Prüfen",
-    "import_tag_label": "Import Tag (optional)",
+    "import_tag_label": "Import Tag (erforderlich)",
+    "import_tag_required": "Import Tag ist erforderlich",
     "import_button": "Excel-Tabelle importieren",
     "reset_button": "Eingaben Zurücksetzen",
-    "progress": "{progress}% abgeschlossen"
+    "progress": "{progress}% abgeschlossen",
+    "help": {
+      "file_select": {
+        "title": "Excel-Datei auswählen",
+        "content": "Wählen Sie eine Excel-Datei (.xlsx oder .xls) aus, die Ihre Katalogdaten enthält.\n\nDie Datei sollte strukturierte Daten mit Kopfzeilen enthalten. Jedes Tabellenblatt kann verschiedene Entitätstypen (z.B. Klassen, Merkmale, Werte) oder Relationen enthalten.\n\nNach der Auswahl können Sie die Spalten für Name und ID zuordnen."
+      },
+      "validation": {
+        "title": "Eingaben validieren",
+        "content": "Überprüft alle Ihre Einstellungen vor dem Import:\n\n• Ob eine Datei ausgewählt wurde\n• Ob mindestens eine Entität zum Import markiert ist\n• Ob alle Name- und ID-Spalten korrekt zugeordnet sind\n• Ob keine doppelten Spalten in einem Tabellenblatt verwendet werden\n\nBei fehlenden ID-Spalten werden automatisch UUIDs generiert."
+      },
+      "preview": {
+        "title": "Import-Vorschau",
+        "content": "Zeigt eine detaillierte Übersicht über den geplanten Import:\n\n• Anzahl der zu importierenden Entitäten und Relationen\n• Liste aller automatisch generierten UUIDs\n• Aufschlüsselung nach Entitätstypen\n\nSo können Sie vor dem eigentlichen Import überprüfen, ob alles korrekt konfiguriert ist."
+      },
+      "import_tag": {
+        "title": "Import-Tag",
+        "content": "Ein optionales Tag, das allen importierten Entitäten zugewiesen wird.\n\nDas Tag hilft dabei:\n• Importierte Daten zu identifizieren\n• Verschiedene Import-Vorgänge zu unterscheiden\n• Daten später zu filtern oder zu löschen\n\nWird kein Tag angegeben, wird automatisch 'KATALOG-IMPORT' verwendet."
+      },
+      "import": {
+        "title": "Import starten",
+        "content": "Startet den eigentlichen Import-Prozess:\n\n• Liest die Excel-Datei ein\n• Erstellt Entitäten mit den konfigurierten Zuordnungen\n• Generiert automatisch UUIDs wo nötig\n• Erstellt Relationen zwischen den Entitäten\n• Zeigt den Fortschritt in Echtzeit an\n\nDer Import kann jederzeit abgebrochen werden."
+      },
+      "abort": {
+        "title": "Import abbrechen",
+        "content": "Bricht den laufenden Import-Vorgang ab.\n\nBereits importierte Daten bleiben erhalten, aber der weitere Import wird gestoppt.\n\nDies ist nützlich, wenn Sie einen Fehler in der Konfiguration bemerken oder der Import länger dauert als erwartet."
+      },
+      "reset": {
+        "title": "Eingaben zurücksetzen",
+        "content": "Setzt alle Einstellungen und Konfigurationen zurück:\n\n• Entfernt die ausgewählte Datei\n• Löscht alle Spalten-Zuordnungen\n• Deaktiviert alle Entitäts-Checkboxen\n• Löscht generierte UUIDs\n• Setzt den Import-Status zurück\n\nDies ist hilfreich, um mit einer sauberen Konfiguration neu zu beginnen."
+      }
+    }
   },
   "app_drawer": {
     "general": "Allgemein",
@@ -364,6 +395,7 @@
     "titlePlural": "Merkmale",
     "edit": "Merkmal bearbeiten",
     "dataType": "Datentyp",
+    "no_data_type": "Kein Datentyp",
     "dataType_helper": "Der Datentyp des Merkmals. Dies kann ein einfacher Datentyp wie String, Integer oder Boolean sein.",
     "dataFormat": "Datenformat",
     "dataFormat_helper": "Das Datenformat des Merkmals.",
@@ -554,6 +586,8 @@
     "labels": {
       "local_created": "Lokal erstellt",
       "classification_system_select": "Klassifikationssystem auswählen",
+      "themes_select": "Themen auswählen (optional)",
+      "subthemes_select": "Unterthemen auswählen (optional)",
       "select_model_from_datacat": "Fachmodell aus datacat auswählen",
       "select_classes_optional": "Klassen auswählen (optional)",
       "search_classes": "Klassen suchen...",
@@ -609,6 +643,9 @@
       "specification_name_example": "z.B. Brandschutzklassen kontrollieren",
       "ifc_classes_search": "IFC Klassen suchen und auswählen...",
       "classification_system_search": "Klassifikationssystem suchen und auswählen...",
+      "themes_select": "Themen auswählen...",
+      "subthemes_select": "Unterthemen auswählen...",
+      "tag_select": "Tag auswählen...",
       "datatype_search": "Datentyp suchen und auswählen...",
       "property_set_search": "Merkmalsgruppe suchen und auswählen...",
       "attribute_model_search": "Fachmodell suchen und auswählen...",
@@ -622,6 +659,12 @@
       "optical_properties": "z.B. Transparenz, Reflektivität...",
       "unnamed_ids": "Unbenannte IDS",
       "unnamed_specification": "Unbenannte Spezifikation"
+    },
+    "hints": {
+      "select_classification_to_see_uri": "Klassifikationssystem auswählen um URI zu sehen",
+      "select_themes_for_filtering": "Themen auswählen, um passende Klassen zu filtern",
+      "subthemes_only_if_available": "Unterthemen werden nur angezeigt, wenn das gewählte Thema welche hat",
+      "classes_filtered_by_selection": "Klassen werden basierend auf der Themen-/Unterthema-Auswahl gefiltert"
     },
     "buttons": {
       "select_facet": "Bitte Facette wählen",
@@ -781,6 +824,14 @@
       "title": "Klassifikationssystem - Hilfe",
       "content": "Wählen Sie das Fachmodell oder Referenzdokument aus, das die Klassifikation definiert.\n\nDies kann sein:\n• Ein Kostengliederungssystem (z.B. DIN 276)\n• Ein Funktionsklassifikationssystem\n• Ein herstellerspezifisches Klassifikationssystem\n• Ein projektspezifisches Referenzdokument\n\nDas ausgewählte System wird als 'System' in der IDS-Klassifikation verwendet."
     },
+    "themes": {
+      "title": "Themen - Hilfe",
+      "content": "Themen sind die Hauptkategorien innerhalb eines Klassifikationssystems.\n\nBeispiele:\n• Bei DIN 276: Bauwerk, Herrichten und Erschließen, Baugrundstück\n• Bei OMNICLASS: Gebäudeelementen, Räume, Gebäudetypen\n• Bei projektspezifischen Systemen: Eigene Hauptkategorien\n\nDurch die Auswahl von Themen wird die Klassenauswahl auf die entsprechenden Bereiche eingegrenzt. Sie können mehrere Themen auswählen."
+    },
+    "subthemes": {
+      "title": "Unterthemen - Hilfe",
+      "content": "Unterthemen sind Unterkategorien der ausgewählten Themen und bieten eine feinere Klassifikation.\n\nBeispiele:\n• Unter 'Bauwerk': Gründung, Außenwände, Innenwände\n• Unter 'Erschließung': Verkehrsflächen, Versorgung, Entsorgung\n• Unter 'Gebäudeelemente': Tragende Elemente, Nicht-tragende Elemente\n\nDie Auswahl von Unterthemen grenzt die verfügbaren Klassen weiter ein und ermöglicht eine präzisere Klassifikation."
+    },
     "property_group": {
       "title": "Merkmalsgruppe (PropertySet) - Hilfe",
       "content": "PropertySets sind Gruppen von zusammengehörigen Eigenschaften in IFC.\n\nBeispiele:\n• Pset_WallCommon - Allgemeine Wandeigenschaften\n• Pset_DoorCommon - Allgemeine Türeigenschaften\n• Pset_SpaceFireSafetyRequirements - Brandschutzanforderungen für Räume\n\nSie können:\n• Bestehende PropertySets aus dem Katalog auswählen\n• Neue PropertySets mit dem ➕ Button erstellen\n• Mehrere Eigenschaften aus einem PropertySet auswählen\n\nDie URI wird automatisch generiert und verweist auf die Definition im Katalog."
@@ -804,6 +855,27 @@
     "defaultPurpose": "Entwurfsvalidierung",
     "defaultMilestone": "Planung",
     "untitledSpecification": "Unbenannte Spezifikation"
+  },
+  "classification_hints": {
+    "selected_themes_have_subthemes": "Die gewählten Themen haben Unterthemen. Bitte wählen Sie zuerst Unterthemen aus, um die entsprechenden Klassen zu sehen.",
+    "no_classes_available": "Keine Klassen für die aktuelle Auswahl verfügbar.",
+    "unknown_theme": "Unbekanntes Thema",
+    "unknown_subtheme": "Unbekanntes Unterthema"
+  },
+  "confirmation": {
+    "token_label": "Bestätigungstoken",
+    "token_helper_text": "Der Bestätigungstoken ist notwendig um Ihre Email-Adresse zu bestätigen und wird Ihrem Postfach zugestellt."
+  },
+  "delete_import": {
+    "no_entries_selected": "Keine Einträge zum Löschen ausgewählt."
+  },
+  "import_validation": {
+    "select_file_error": "Bitte wählen Sie eine Excel-Datei zum Importieren aus.",
+    "select_rows_error": "Bitte wählen Sie mindestens eine Zeile zum Importieren aus.",
+    "duplicate_columns_error": "In einem Tabellenblatt dürfen keine gleichen Spalten für unterschiedliche Entitäten/ IDs verwendet werden.",
+    "unit_label": "Maßeinheit",
+    "relation_property_unit": "Rel_Merkmal_Maßeinheit",
+    "relation_valuelist_unit": "Rel_Werteliste_Maßeinheit"
   },
   "pagination": {
     "entries": "Einträge",

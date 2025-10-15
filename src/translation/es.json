@@ -142,10 +142,41 @@
     "no_file_selected": "Ningún archivo seleccionado",
     "select_file_button": "Seleccionar tabla Excel",
     "check_inputs_button": "Verificar entradas",
-    "import_tag_label": "Etiqueta de importación (opcional)",
+    "import_tag_label": "Etiqueta de importación (requerida)",
+    "import_tag_required": "La etiqueta de importación es requerida",
     "import_button": "Importar tabla Excel",
     "reset_button": "Restablecer entradas",
-    "progress": "{progress}% completado"
+    "progress": "{progress}% completado",
+    "help": {
+      "file_select": {
+        "title": "Seleccionar archivo Excel",
+        "content": "Elija un archivo Excel (.xlsx o .xls) que contenga sus datos de catálogo.\n\nEl archivo debe contener datos estructurados con encabezados. Cada hoja de trabajo puede contener diferentes tipos de entidades (p. ej., clases, propiedades, valores) o relaciones.\n\nDespués de la selección, puede mapear las columnas para nombre e ID."
+      },
+      "validation": {
+        "title": "Validar entradas",
+        "content": "Verifica todas sus configuraciones antes de la importación:\n\n• Si se ha seleccionado un archivo\n• Si al menos una entidad está marcada para importación\n• Si todas las columnas de nombre e ID están mapeadas correctamente\n• Si no se usan columnas duplicadas en una hoja de trabajo\n\nPara columnas de ID faltantes, se generarán UUIDs automáticamente."
+      },
+      "preview": {
+        "title": "Vista previa de importación",
+        "content": "Muestra una descripción detallada de la importación planificada:\n\n• Número de entidades y relaciones a importar\n• Lista de todos los UUIDs generados automáticamente\n• Desglose por tipos de entidades\n\nEsto le permite verificar que todo esté configurado correctamente antes de la importación real."
+      },
+      "import_tag": {
+        "title": "Etiqueta de importación",
+        "content": "Una etiqueta opcional asignada a todas las entidades importadas.\n\nLa etiqueta ayuda a:\n• Identificar datos importados\n• Distinguir diferentes procesos de importación\n• Filtrar o eliminar datos más tarde\n\nSi no se especifica etiqueta, se usa automáticamente 'KATALOG-IMPORT'."
+      },
+      "import": {
+        "title": "Iniciar importación",
+        "content": "Inicia el proceso de importación real:\n\n• Lee el archivo Excel\n• Crea entidades con mapeos configurados\n• Genera UUIDs automáticamente donde sea necesario\n• Crea relaciones entre entidades\n• Muestra el progreso en tiempo real\n\nLa importación puede ser abortada en cualquier momento."
+      },
+      "abort": {
+        "title": "Abortar importación",
+        "content": "Aborta el proceso de importación en ejecución.\n\nLos datos ya importados permanecen, pero se detiene la importación adicional.\n\nEsto es útil si nota un error en la configuración o la importación tarda más de lo esperado."
+      },
+      "reset": {
+        "title": "Restablecer entradas",
+        "content": "Restablece todas las configuraciones:\n\n• Elimina el archivo seleccionado\n• Borra todos los mapeos de columnas\n• Desactiva todas las casillas de entidades\n• Elimina UUIDs generados\n• Restablece el estado de importación\n\nEsto es útil para comenzar de nuevo con una configuración limpia."
+      }
+    }
   },
   "app_drawer": {
     "general": "General",
@@ -544,7 +575,9 @@
       "class_select": "Seleccionar clase",
       "classification": "clasificación (Classification)",
       "classification_auto_ifcclassification": "Para clasificación se utiliza automáticamente IFCCLASSIFICATION",
-      "classification_system_select": "Seleccionar sestáema de clasificación",
+      "classification_system_select": "Seleccionar sistema de clasificación",
+      "themes_select": "Seleccionar temas (opcional)",
+      "subthemes_select": "Seleccionar subtemas (opcional)",
       "create_new_property_set": "Neues Conjunto de propiedades IFC (Característicasgruppe) erstellen",
       "datatype_optional": "tipo de datos",
       "edit_specification": "Especificación bearenten",
@@ -589,7 +622,10 @@
     "placeholders": {
       "attribute_class_search": "clase buscar y seleccionar...",
       "attribute_model_search": "Modelo especializado buscar y seleccionar...",
-      "classification_system_search": "Sestáema de clasificación buscar y seleccionar...",
+      "classification_system_search": "Buscar y seleccionar sistema de clasificación...",
+      "themes_select": "Seleccionar temas...",
+      "subthemes_select": "Seleccionar subtemas...",
+      "tag_select": "Seleccionar etiqueta...",
       "datatype_search": "datostyp buscar y seleccionar...",
       "entity_type_search": "Entity Typ buscar y seleccionar...",
       "ids_name_example": "z.B. Brendschutz-Requisitos-2024",
@@ -604,8 +640,14 @@
       "property_set_search": "Buscar y seleccionar grupo de propiedades...",
       "specification_name_example": "z.B. clases de protección contra incendios kontrollieren",
       "thermal_properties": "z.B. Wärmeleitfähigkeit, spezifische Wärme...",
-      "unnamed_ids": "Unbenennte IDS",
-      "unnamed_specification": "Unbenennte Especificación"
+      "unnamed_ids": "IDS sin nombre",
+      "unnamed_specification": "Especificación sin nombre"
+    },
+    "hints": {
+      "select_classification_to_see_uri": "Seleccionar sistema de clasificación para ver URI",
+      "select_themes_for_filtering": "Seleccionar temas para filtrar clases coincidentes",
+      "subthemes_only_if_available": "Los subtemas solo se muestran si el tema seleccionado los tiene",
+      "classes_filtered_by_selection": "Las clases se filtran según la selección de tema/subtema"
     },
     "buttons": {
       "add_by_tag": "Agregar por etiqueta",
@@ -806,6 +848,27 @@
     "defaultPurpose": "Entwurfsvalidierung",
     "defaultTitle": "Neue IDS Especificación",
     "untitledSpecification": "Unbenennte Especificación"
+  },
+  "classification_hints": {
+    "selected_themes_have_subthemes": "Los temas seleccionados tienen subtemas. Por favor, selecciona primero los subtemas para ver las clases correspondientes.",
+    "no_classes_available": "No hay clases disponibles para la selección actual.",
+    "unknown_theme": "Tema desconocido",
+    "unknown_subtheme": "Subtema desconocido"
+  },
+  "confirmation": {
+    "token_label": "Token de confirmación",
+    "token_helper_text": "El token de confirmación es necesario para confirmar su dirección de correo electrónico y será enviado a su buzón."
+  },
+  "delete_import": {
+    "no_entries_selected": "No se han seleccionado entradas para eliminar."
+  },
+  "import_validation": {
+    "select_file_error": "Por favor seleccione un archivo Excel para importar.",
+    "select_rows_error": "Por favor seleccione al menos una fila para importar.",
+    "duplicate_columns_error": "En una hoja de cálculo no se pueden usar las mismas columnas para diferentes entidades/IDs.",
+    "unit_label": "Unidad",
+    "relation_property_unit": "Rel_Propiedad_Unidad",
+    "relation_valuelist_unit": "Rel_Lista_Valores_Unidad"
   },
   "pagination": {
     "entries": "Entradas",

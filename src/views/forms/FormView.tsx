@@ -1,12 +1,12 @@
-import React, {ReactNode} from "react";
-import makeStyles from "@mui/styles/makeStyles";
+import React, { ReactNode } from "react";
+import { styled } from "@mui/material/styles";
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        // "& > :not(:last-child)": {
-        //     marginBottom: theme.spacing(1)
-        // }
-    }
+// Replace makeStyles with styled component
+const StyledFormContainer = styled('div')(({ theme }) => ({
+    // Uncomment and modify spacing if needed
+    // "& > :not(:last-child)": {
+    //     marginBottom: theme.spacing(1)
+    // }
 }));
 
 export type FormProps<T> = {
@@ -15,16 +15,15 @@ export type FormProps<T> = {
 };
 
 export type WithChildren<T> = T & {
-    children?: ReactNode
-}
+    children?: ReactNode;
+};
 
 export default function FormView(props: WithChildren<{}>) {
-    const {children} = props;
-    const classes = useStyles();
+    const { children } = props;
 
     return (
-        <div className={classes.root}>
+        <StyledFormContainer>
             {children}
-        </div>
+        </StyledFormContainer>
     );
 }

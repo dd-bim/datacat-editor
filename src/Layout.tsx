@@ -10,19 +10,22 @@ import { Toolbar, Container, Paper } from "@mui/material";
 import Footer from "./components/Footer";
 import ConfirmationView from "./views/ConfirmationView";
 import ProfileFormView from "./views/forms/ProfileFormView";
-import HierarchyView from "./views/HierarchyView";
 import { HomePanel } from "./components/HomePanel";
 import { VerificationView } from "./views/VerificationView";
 import { ExportView } from "./views/ExportView";
 import { ImportView } from "./views/ImportView";
 import { DeleteImportView } from "./views/DeleteImportView";
 import { ImportViewExcel } from "./views/ImportViewExcel";
-import GridViewView from "./views/GridViewView";
 import TagView from "./views/TagView";
-import GraphiQLEditor from "./GraphiQLEditor";
-import IDSExportView from "./views/IDSExportView"; // Import the new IDSExportView
 import { catalogEntryRoutes } from "./routes/CatalogEntryRoutes";
-import { OntologyExportView } from "./views/OntologyExportView";
+import LoadingSpinner from "./components/LoadingSpinner";
+
+// Lazy load heavy components to improve initial load performance
+const GraphiQLEditor = React.lazy(() => import("./GraphiQLEditor"));
+const GridViewView = React.lazy(() => import("./views/GridViewView"));
+const HierarchyView = React.lazy(() => import("./views/HierarchyView"));
+const IDSExportView = React.lazy(() => import("./views/IDSExportView"));
+const OntologyExportView = React.lazy(() => import("./views/OntologyExportView").then(module => ({ default: module.OntologyExportView })));
 
 const drawerWidth = 250;
 
@@ -77,7 +80,14 @@ export default function Layout() {
       ),
     },
     { path: "/profile", element: <ProfileFormView /> },
-    { path: "/search", element: <HierarchyView /> },
+    { 
+      path: "/search", 
+      element: (
+        <React.Suspense fallback={<LoadingSpinner />}>
+          <HierarchyView />
+        </React.Suspense>
+      )
+    },
     { path: "/audit", element: <VerificationView /> },
     {
       path: "/import",
@@ -89,18 +99,42 @@ export default function Layout() {
         </>
       ),
     },
-    { path: "/export", element: <><ExportView /><OntologyExportView/></> },
-    { path: "/ids-export", element: <IDSExportView /> }, // Add route for IDS Export View
+    { 
+      path: "/export", 
+      element: (
+        <React.Suspense fallback={<LoadingSpinner />}>
+          <ExportView />
+          <OntologyExportView/>
+        </React.Suspense>
+      )
+    },
+    { 
+      path: "/ids-export", 
+      element: (
+        <React.Suspense fallback={<LoadingSpinner />}>
+          <IDSExportView />
+        </React.Suspense>
+      )
+    },
     {
       path: "/graphiql",
       element: (
         <GraphiQLPaper variant="outlined">
-          <GraphiQLEditor />
+          <React.Suspense fallback={<LoadingSpinner />}>
+            <GraphiQLEditor />
+          </React.Suspense>
         </GraphiQLPaper>
       ),
     },
     { path: "/tagview", element: <TagView /> },
-    { path: "/gridview", element: <GridViewView /> },
+    { 
+      path: "/gridview", 
+      element: (
+        <React.Suspense fallback={<LoadingSpinner />}>
+          <GridViewView />
+        </React.Suspense>
+      )
+    },
     // Integration of catalog entry routes
     ...catalogEntryRoutes,
     // Optional: Fallback route

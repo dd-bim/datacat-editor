@@ -293,7 +293,7 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
           />
 
           <AppDrawerItem
-            icon={<BookmarksIcon />}
+            icon={<ValueEntity.Icon />}
             primary={<T keyName="value.titlePlural">Werte</T>}
             to={`/${ValueEntity.path}`}
             onClick={handleItemClick}

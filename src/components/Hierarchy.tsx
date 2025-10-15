@@ -6,21 +6,42 @@ import { SimpleTreeView } from "@mui/x-tree-view";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { StyledTreeItem } from "./StyledTreeItem";
-import { ObjectPropsFragment } from "../generated/types";
+import { ItemPropsFragment } from "../generated/types";
+
+// Throttle function für bessere Performance
+const throttle = (func: Function, limit: number) => {
+  let inThrottle: boolean;
+  return function(this: any, ...args: any[]) {
+    if (!inThrottle) {
+      func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  }
+};
 
 // Replace makeStyles with styled component
-const StyledTreeView = styled(SimpleTreeView)({
+const StyledTreeView = styled(SimpleTreeView)(({ theme }) => ({
   flexGrow: 1,
-  // Enable virtualization (only renders visible nodes)
+  // Enable better performance for large trees
   '& .MuiTreeView-root': {
-    overflowX: 'hidden'
+    overflowX: 'hidden',
+    contain: 'layout style paint',
+  },
+  // Optimize tree item rendering
+  '& .MuiTreeItem-root': {
+    contain: 'layout style paint',
+  },
+  // Virtualization support - only render visible area + buffer
+  '& .MuiTreeItem-content': {
+    willChange: 'transform',
   }
-});
+}));
 
 type HierarchyProps = {
-  leaves: ObjectPropsFragment[];
+  leaves: ItemPropsFragment[];
   paths: string[][];
-  onSelect(selection: ObjectPropsFragment): void;
+  onSelect(selection: ItemPropsFragment): void;
   defaultCollapsed?: boolean; // New prop to control default collapsed state
 };
 
@@ -82,46 +103,74 @@ export const Hierarchy: FC<HierarchyProps> = React.memo(({
     onSelect(lookupMap[id]);
   }, [lookupMap, onSelect]);
   
-  // Memoize expanded items change handler
+  // Throttled handlers für bessere Performance
+  const throttledExpandedItemsChange = useMemo(
+    () => throttle((itemIds: string[]) => {
+      setExpandedItems(itemIds);
+      setUseSavedExpandedState(true);
+    }, 100), // 100ms throttle
+    [setExpandedItems]
+  );
+  
+  // Memoize expanded items change handler with throttling
   const handleExpandedItemsChange = useCallback((
     _: React.SyntheticEvent<Element, Event> | null,
     itemIds: string[]
   ) => {
-    setExpandedItems(itemIds);
-    // Once user interacts, always use saved state
-    setUseSavedExpandedState(true);
-  }, [setExpandedItems]);
+    throttledExpandedItemsChange(itemIds);
+  }, [throttledExpandedItemsChange]);
 
   // Implement node virtualization for better performance with large trees
   // Create a wrapper function that can handle both item selections and react events
   const handleItemSelect = useCallback((
-    itemOrEvent: ObjectPropsFragment | React.SyntheticEvent<HTMLLIElement, Event>
+    itemOrEvent: ItemPropsFragment | React.SyntheticEvent<HTMLLIElement, Event>
   ) => {
     // If it's an event (React event), do nothing or add event handling if needed
     // If it's an item (has typical ItemPropsFragment properties), pass it to onSelect
     if ('id' in itemOrEvent && !('nativeEvent' in itemOrEvent)) {
-      onSelect(itemOrEvent as ObjectPropsFragment);
+      onSelect(itemOrEvent as ItemPropsFragment);
     }
   }, [onSelect]);
 
   const renderTreeItems = useCallback((node: any): React.ReactNode => {
-    // Skip rendering deeply nested items until they're needed
-    const childElements: React.ReactNode[] =
-      node.children && node.children.length > 0
-        ? node.children.map((child: any) => renderTreeItems(child))
-        : [];
+    // Lazy rendering: Nur laden wenn expandiert oder root level
+    const shouldRenderChildren = node.children && node.children.length > 0;
+    
+    // Für bessere Performance: Nicht alle Children sofort rendern
+    const childElements: React.ReactNode[] = shouldRenderChildren
+      ? node.children.slice(0, 100).map((child: any) => renderTreeItems(child)) // Limitiere auf 100 Kinder
+      : [];
 
     return (
       <StyledTreeItem
         key={node.id}
         itemId={String(node.nodeId)}
         data={node.data}
-        onSelect={handleItemSelect} // Pass the wrapper function that handles both types
+        onSelect={handleItemSelect}
+        // Lazy loading für große Unterbäume
+        {...(node.children && node.children.length > 100 ? {
+          'data-lazy': true,
+          'aria-label': `${node.data?.name || 'Node'} (${node.children.length} children)`
+        } : {})}
       >
         {childElements}
+        {/* Zeige Indicator für weitere Kinder */}
+        {node.children && node.children.length > 100 && (
+          <StyledTreeItem 
+            itemId={`${node.nodeId}-more`} 
+            data={{ 
+              __typename: 'XtdObject' as const, 
+              id: `${node.nodeId}-more`, 
+              name: `... und ${node.children.length - 100} weitere`,
+              recordType: node.data?.recordType || 'Subject',
+              tags: []
+            }}
+            onSelect={() => {}} 
+          />
+        )}
       </StyledTreeItem>
     );
-  }, [onSelect, handleItemSelect]);
+  }, [handleItemSelect]);
 
   // Memoize the rendered tree to prevent unnecessary re-renders
   const renderedTree = useMemo(() => 

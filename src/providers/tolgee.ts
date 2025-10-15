@@ -8,12 +8,13 @@ import it from "../translation/it.json";
 import nl from "../translation/nl.json";
 import zh from "../translation/zh.json";
 
+// Tolgee-Konfiguration für statische Übersetzungen
 export const tolgee = Tolgee()
   .use(FormatSimple())
-  .use(DevTools())
+  // DevTools komplett deaktivieren um API-Calls zu vermeiden
+  // .use(DevTools()) // Auskommentiert
   .init({
-    apiUrl: "http://localhost:3000",
-    apiKey: "dummy",
+    // Keine API-Konfiguration für statische Daten
     availableLanguages: ["de", "en", "es", "it", "nl", "zh"],
     defaultLanguage: localStorage.getItem("language") || "de",
     fallbackLanguage: "en",
