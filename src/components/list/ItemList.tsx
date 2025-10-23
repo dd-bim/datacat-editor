@@ -30,6 +30,7 @@ export type ItemListProps = {
     showRecordIcons?: boolean;
     searchLabel?: React.ReactNode;
     searchTerm?: string;
+    fixedHeight?: boolean; // NEU: Wenn true, wird eine feste Höhe mit Scroll verwendet (für TransferList)
     onSelect?(item: CatalogRecord): void;
     onSearch?(searchTerm: string): void;
     onAdd?(item: CatalogRecord): void;
@@ -46,6 +47,7 @@ export default function ItemList(props: ItemListProps) {
         showRecordIcons = true,
         searchLabel = "Suchen",
         searchTerm,
+        fixedHeight = false, // NEU: Standard ist false (normales Verhalten)
         onSearch,
         onSelect,
         onAdd,
@@ -78,6 +80,72 @@ export default function ItemList(props: ItemListProps) {
         onRemove,
     };
 
+    // Berechne die tatsächliche Höhe für die Liste basierend auf vorhandenen Elementen
+    const textFieldHeight = onSearch ? 56 : 0; // ca. 56px mit Margin
+    const progressHeight = loading ? 4 : 0;
+    const listHeight = height - textFieldHeight - progressHeight;
+
+    // Wenn fixedHeight=true, verwende feste Höhe mit Scroll (für TransferList)
+    if (fixedHeight) {
+        return (
+            <div style={{ 
+                display: 'flex', 
+                flexDirection: 'column',
+                width: '100%'
+            }}>
+                {onSearch && (
+                    <TextField
+                        size="small"
+                        fullWidth
+                        label={searchLabel}
+                        value={searchTerm}
+                        onChange={(e) => onSearch(e.target.value)}
+                        sx={{ mb: 1, flexShrink: 0 }}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <SearchIcon/>
+                                </InputAdornment>
+                            ),
+                            endAdornment: searchTerm && (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        size="small"
+                                        aria-label="Zurücksetzen"
+                                        onClick={() => onSearch("")}
+                                    >
+                                        <ClearIcon fontSize="small"/>
+                                    </IconButton>
+                                </InputAdornment>
+                            )
+                        }}
+                    />
+                )}
+                {loading && <LinearProgress sx={{ flexShrink: 0 }} />}
+                <div style={{
+                    minHeight: 0,
+                    overflow: 'hidden',
+                    height: `${listHeight}px`,
+                    maxHeight: `${listHeight}px`
+                }}>
+                    <VirtualizedList<ItemRowDataProps>
+                        defaultHeight={listHeight}
+                        rowHeight={ITEM_ROW_SIZE}
+                        rowCount={items.length}
+                        rowProps={data}
+                        onRowsRendered={onItemsRendered}
+                        rowComponent={RowComponent}
+                        style={{
+                            width: "100%",
+                            height: "100%"
+                        }}
+                    />
+                </div>
+            </div>
+        );
+    }
+
+    // Standard-Verhalten (für SearchList): Normale Höhe ohne Container-Einschränkungen
     return (
         <div>
             {onSearch && (
@@ -87,6 +155,7 @@ export default function ItemList(props: ItemListProps) {
                     label={searchLabel}
                     value={searchTerm}
                     onChange={(e) => onSearch(e.target.value)}
+                    sx={{ mb: 1 }} // Margin unten für besseres Layout
                     InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">

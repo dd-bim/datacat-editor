@@ -26,6 +26,7 @@ const GridViewView = React.lazy(() => import("./views/GridViewView"));
 const HierarchyView = React.lazy(() => import("./views/HierarchyView"));
 const IDSExportView = React.lazy(() => import("./views/IDSExportView"));
 const OntologyExportView = React.lazy(() => import("./views/OntologyExportView").then(module => ({ default: module.OntologyExportView })));
+const CatalogInformationView = React.lazy(() => import("./views/CatalogInformationView"));
 
 const drawerWidth = 250;
 
@@ -80,6 +81,14 @@ export default function Layout() {
       ),
     },
     { path: "/profile", element: <ProfileFormView /> },
+    { 
+      path: "/catalog-info", 
+      element: (
+        <React.Suspense fallback={<LoadingSpinner />}>
+          <CatalogInformationView />
+        </React.Suspense>
+      )
+    },
     { 
       path: "/search", 
       element: (

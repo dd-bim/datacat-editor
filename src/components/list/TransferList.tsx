@@ -6,27 +6,28 @@ import Paper from "@mui/material/Paper";
 import FilterableList from "./FilterableList";
 import SearchList from "./SearchList";
 import {CatalogRecord} from "../../types";
+import { ITEM_ROW_SIZE } from "./ItemRow";
 
 // Modified styled components to fit content exactly
 const ListPaper = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(1),
-    height: 'auto',
     display: 'flex',
     flexDirection: 'column',
     flex: 1,
     alignSelf: 'flex-start', // Prevent stretching beyond content
-    width: '100%'
+    width: '100%',
+    overflow: 'hidden' // Wichtig: Verhindert, dass Inhalt überläuft
 }));
 
 const SearchBox = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(1),
     backgroundColor: theme.palette.grey[100],
-    height: 'auto',
     display: 'flex',
     flexDirection: 'column',
     flex: 1,
     alignSelf: 'flex-start', // Prevent stretching beyond content
-    width: '100%'
+    width: '100%',
+    overflow: 'hidden' // Wichtig: Verhindert, dass Inhalt überläuft
 }));
 
 type TransferListProps = {
@@ -35,6 +36,7 @@ type TransferListProps = {
     enabled: boolean;
     searchInput: SearchInput;
     height?: number;
+    maxVisibleItems?: number; // Maximale Anzahl sichtbarer Items in der Relationen-Liste
     showDictionaryFilter?: boolean;
     selectedDictionaryId?: string | null;
     onDictionaryFilterChange?: (dictionaryId: string | null) => void;
@@ -50,6 +52,7 @@ export default function TransferList(props: TransferListProps) {
         enabled,
         searchInput,
         height,
+        maxVisibleItems = 8, // Standard: Zeige maximal 8 Items, dann Scroll
         showDictionaryFilter = false,
         selectedDictionaryId = null,
         onDictionaryFilterChange,
@@ -59,6 +62,11 @@ export default function TransferList(props: TransferListProps) {
     } = props;
 
     const [searchTerm, setSearchTerm] = useState("");
+
+    // Berechne die Höhe für die Relationen-Liste basierend auf maxVisibleItems
+    // Höhe = (Anzahl sichtbarer Items * Zeilenhöhe) + TextField-Höhe (ca. 56px)
+    const calculatedHeight = (maxVisibleItems * ITEM_ROW_SIZE) + 56;
+    const relationListHeight = height ?? calculatedHeight;
 
     return (
         <Stack 
@@ -75,7 +83,8 @@ export default function TransferList(props: TransferListProps) {
             }}>
                 <ListPaper variant="outlined">
                     <FilterableList
-                        height={height}
+                        height={relationListHeight}
+                        fixedHeight={true}
                         loading={loading}
                         items={[...items].sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "") || a.id.localeCompare(b.id))}
                         onSelect={onSelect}

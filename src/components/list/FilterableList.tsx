@@ -13,6 +13,7 @@ export default function FilterableList(props: FilterableListProps) {
         items,
         searchTerm: initialSearchTerm = "",
         searchDelay = 300,
+        fixedHeight = false, // NEU: Weitergabe des fixedHeight Props
         ...otherProps
     } = props;
     const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
@@ -28,6 +29,7 @@ export default function FilterableList(props: FilterableListProps) {
             searchLabel={searchLabel}
             searchTerm={searchTerm}
             onSearch={setSearchTerm}
+            fixedHeight={fixedHeight}
             {...otherProps}
         />
     );

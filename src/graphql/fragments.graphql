@@ -45,6 +45,12 @@ fragment SearchResultProps on XtdObject {
     tags {
         ...TagProps
     }
+    dictionary {
+        id
+        name {
+            ...TranslationProps
+        }
+    }
 }
 
 fragment MetaProps on XtdRoot {
