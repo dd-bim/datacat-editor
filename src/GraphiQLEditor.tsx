@@ -6,15 +6,18 @@ import useGraphiQLFetcher from "./hooks/useGraphiQLFetcher";
 import "graphiql/style.css";
 
 /**
- * GraphiQL Editor with CodeMirror only
- * Monaco and monaco-graphql have been completely removed
+ * GraphiQL Editor with Monaco support
+ * GraphiQL 5.x uses Monaco by default when available
  */
 export default function GraphiQLEditor() {
     const fetcher = useGraphiQLFetcher();
     
     return (
         <div style={{ height: "100%", width: "100%" }}>
-            <GraphiQL fetcher={fetcher} />
+            <GraphiQL 
+                fetcher={fetcher}
+                // Let GraphiQL use Monaco (configured in index.tsx)
+            />
         </div>
     );
 }

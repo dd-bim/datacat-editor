@@ -8,17 +8,15 @@ import monacoEditorPlugin from 'vite-plugin-monaco-editor';
 export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
+    // Monaco is REQUIRED by GraphiQL 5.x - cannot be removed
     monacoEditorPlugin({
       languageWorkers: ['editorWorkerService', 'json'],
       customWorkers: [
         {
           label: 'graphql',
-          entry: 'monaco-graphql/esm/graphql.worker'
-        }
+          entry: 'monaco-graphql/esm/graphql.worker',
+        },
       ],
-      customDistPath: (root: string, buildOutDir: string) => {
-        return `${root}/${buildOutDir}/monacoeditorwork`
-      }
     }),
     // Bundle analyzer nur für Analyse-Mode
     ...(mode === 'analyze' ? [analyzer({ 
@@ -29,18 +27,7 @@ export default defineConfig(({ mode }) => ({
       registerType: 'autoUpdate',
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
-        // Erhöhe das Limit für große Dateien wie Monaco Editor
-        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MB
-        // Monaco Editor vom Precaching ausschließen (große Datei)
-        dontCacheBustURLsMatching: /assets\/monaco-editor-.*\.js$/,
-        // Große Dateien vom Precaching ausschließen
-        manifestTransforms: [
-          (manifestEntries) => ({
-            manifest: manifestEntries.filter(
-              entry => !entry.url.includes('monaco-editor') || entry.size <= 2 * 1024 * 1024
-            )
-          })
-        ],
+        maximumFileSizeToCacheInBytes: 3 * 1024 * 1024, // 3 MB
         navigateFallback: null, // Verhindert Probleme mit SPA Routing
       },
       includeAssets: ['datacat_icon.ico', 'logo192.png', 'logo512.png'],
@@ -79,40 +66,13 @@ export default defineConfig(({ mode }) => ({
     outDir: 'build',
     sourcemap: true,
     rollupOptions: {
-      output: {
-        manualChunks: {
-          // Core React
-          vendor: ['react', 'react-dom'],
-          // UI Framework (aufgeteilt für kleinere Chunks)
-          muiCore: ['@mui/material', '@mui/system'],
-          muiIcons: ['@mui/icons-material'], 
-          muiDataGrid: ['@mui/x-data-grid'],
-          muiTreeView: ['@mui/x-tree-view'],
-          // GraphQL (aufgeteilt)
-          apolloCore: ['@apollo/client'],
-          graphqlLib: ['graphql'],
-          // Monaco Editor - handled by vite-plugin-monaco-editor
-          // GraphiQL with Monaco support
-          graphiqlLib: ['graphiql'],
-          // Document Processing (aufgeteilt)
-          docProcessing: ['docx-preview', 'mammoth'],
-          excelLib: ['exceljs'],
-          // PDF (aufgeteilt)
-          pdfCanvas: ['html2canvas'],
-          pdfLib: ['jspdf'],
-          // Smaller libraries
-          router: ['react-router-dom'],
-          forms: ['react-hook-form'],
-          utils: ['dayjs', 'file-saver', 'uuid', 'react-markdown'],
-        },
-      },
-      // Aggressive Memory-Optimierungen
+      // Let Vite handle chunking automatically to avoid circular dependency issues
       maxParallelFileOps: 1,
       treeshake: {
         preset: 'smallest',
       },
     },
-    chunkSizeWarningLimit: 1000, // Monaco is large, increase limit
+    chunkSizeWarningLimit: 600, // Reduced from Monaco size
     minify: 'esbuild',
     target: 'es2020',
     cssMinify: 'esbuild',
@@ -125,8 +85,10 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
+      // Force all graphql imports to resolve to the same module
+      'graphql': resolve(__dirname, 'node_modules/graphql/index.js'),
     },
-    dedupe: ['graphql'],
+    dedupe: ['graphql', 'react', 'react-dom'],
   },
   optimizeDeps: {
     include: [
@@ -137,9 +99,20 @@ export default defineConfig(({ mode }) => ({
       '@apollo/client',
       'react-router-dom',
       'graphiql',
+      'nullthrows',
+      '@graphiql/react',
+      'graphql',
+    ],
+    exclude: [
+      // Don't pre-bundle Monaco - let plugin handle it
+      'monaco-editor',
+      'monaco-graphql',
     ],
     esbuildOptions: {
       plugins: [],
     },
+  },
+  worker: {
+    format: 'es',
   },
 }));

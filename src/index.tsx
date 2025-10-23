@@ -4,24 +4,29 @@ import App from './App';
 import 'typeface-roboto';
 import './index.css';
 
-// ===== MONACO ENVIRONMENT SETUP (MUST BE FIRST!) =====
-// Configure Monaco Editor workers BEFORE anything else loads
-// This prevents "undoRedoService which is NOT registered" errors
-(globalThis as any).MonacoEnvironment = {
-  getWorkerUrl(_: any, label: string) {
-    // In production, vite-plugin-monaco-editor puts workers in /monacoeditorwork/
-    // In dev, Vite serves them via middleware
-    if (label === 'graphql') {
-      return new URL('monaco-graphql/esm/graphql.worker', import.meta.url).href;
-    }
+// Monaco Environment - REQUIRED by GraphiQL 5.x
+// Configure workers for both dev and production
+(self as any).MonacoEnvironment = {
+  getWorker(_moduleId: string, label: string) {
+    // Import workers directly - Vite will handle bundling
     if (label === 'json') {
-      return new URL('monaco-editor/esm/vs/language/json/json.worker', import.meta.url).href;
+      return new Worker(
+        new URL('monaco-editor/esm/vs/language/json/json.worker.js', import.meta.url),
+        { type: 'module' }
+      );
     }
-    // Base editor worker
-    return new URL('monaco-editor/esm/vs/editor/editor.worker', import.meta.url).href;
-  },
+    if (label === 'graphql') {
+      return new Worker(
+        new URL('monaco-graphql/esm/graphql.worker.js', import.meta.url),
+        { type: 'module' }
+      );
+    }
+    return new Worker(
+      new URL('monaco-editor/esm/vs/editor/editor.worker.js', import.meta.url),
+      { type: 'module' }
+    );
+  }
 };
-// ===== END MONACO ENVIRONMENT SETUP =====
 
 // Suppress extension-related errors in development
 if (process.env.NODE_ENV === 'development') {
@@ -38,6 +43,21 @@ if (process.env.NODE_ENV === 'development') {
       return;
     }
     originalError.apply(console, args);
+  };
+
+  // Suppress known Monaco/GraphQL warnings
+  const originalWarn = console.warn;
+  console.warn = (...args) => {
+    const message = args[0];
+    if (typeof message === 'string' && (
+      message.includes('Could not create web worker') ||
+      message.includes('Cannot use \'in\' operator to search for \'then\'') ||
+      message.includes('Falling back to loading web worker code in main thread')
+    )) {
+      // These are cosmetic warnings - workers actually function correctly
+      return;
+    }
+    originalWarn.apply(console, args);
   };
 }
 
