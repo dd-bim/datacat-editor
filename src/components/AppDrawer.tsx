@@ -21,6 +21,7 @@ import BookmarksIcon from "@mui/icons-material/Bookmarks";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import PublishIcon from "@mui/icons-material/Publish";
 import DescriptionIcon from "@mui/icons-material/Description";
+import InfoIcon from "@mui/icons-material/Info";
 import {
   ClassEntity,
   DocumentEntity,
@@ -34,6 +35,7 @@ import {
 } from "../domain";
 import AppTitle from "./AppTitle";
 import { useAdminAccess } from "../hooks/useAuthContext";
+import { useProfile } from "../providers/ProfileProvider";
 import { T } from "@tolgee/react";
 
 // Replace makeStyles with styled components
@@ -120,6 +122,7 @@ export const AppDrawerItem: FunctionComponent<
 
 const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
   const isAdmin = useAdminAccess();
+  const { profile } = useProfile();
   const { onClose } = props;
 
   const handleItemClick = () => {
@@ -127,6 +130,9 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
       onClose({}, "backdropClick");
     }
   };
+
+  // Check if user is not "student" to show profile edit option
+  const canEditProfile = profile && profile.username !== "student";
 
   return (
     <Drawer {...props}>
@@ -163,10 +169,19 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
             onClick={handleItemClick}
           />
 
+          {canEditProfile && (
+            <AppDrawerItem
+              icon={<AccountCircleIcon />}
+              primary={<T keyName="app_drawer.edit_profile">Profil bearbeiten</T>}
+              to="/profile"
+              onClick={handleItemClick}
+            />
+          )}
+
           <AppDrawerItem
-            icon={<AccountCircleIcon />}
-            primary={<T keyName="app_drawer.edit_profile">Profil bearbeiten</T>}
-            to="/profile"
+            icon={<InfoIcon />}
+            primary={<T keyName="app_drawer.catalog_info">Kataloginformationen</T>}
+            to="/catalog-info"
             onClick={handleItemClick}
           />
 

@@ -1,32 +1,14 @@
-import { createTheme } from '@mui/material/styles';
-import { Theme as MUITheme } from '@mui/material/styles';
+import { Theme } from '@mui/material/styles';
+import { lightTheme } from './themes/lightTheme';
+import { darkTheme } from './themes/darkTheme';
 
-// Create theme with MUI v7 compatible settings
-const theme = createTheme({
-  // In MUI v7, spacing works with a multiplier system (8px by default)
-  spacing: 8,
-  palette: {
-    primary: {
-      main: '#607D8B',
-      light: '#CFD8DC',
-      dark: '#455A64',
-      contrastText: '#FFFFFF'
-    },
-    secondary: {
-      main: '#9E9E9E',
-      contrastText: '#FFFFFF'
-    },
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          textTransform: 'none',
-        },
-      },
-    },
-    // Additional component overrides can be defined here
-  },
-});
+// Function to get theme based on mode
+export const getTheme = (darkMode: boolean): Theme => {
+  return darkMode ? darkTheme : lightTheme;
+};
 
-export default theme;
+// Export individual themes
+export { lightTheme, darkTheme };
+
+// Default export for backward compatibility
+export default lightTheme;
