@@ -4,30 +4,6 @@ import App from './App';
 import 'typeface-roboto';
 import './index.css';
 
-// Monaco Environment - REQUIRED by GraphiQL 5.x
-// Configure workers for both dev and production
-(self as any).MonacoEnvironment = {
-  getWorker(_moduleId: string, label: string) {
-    // Import workers directly - Vite will handle bundling
-    if (label === 'json') {
-      return new Worker(
-        new URL('monaco-editor/esm/vs/language/json/json.worker.js', import.meta.url),
-        { type: 'module' }
-      );
-    }
-    if (label === 'graphql') {
-      return new Worker(
-        new URL('monaco-graphql/esm/graphql.worker.js', import.meta.url),
-        { type: 'module' }
-      );
-    }
-    return new Worker(
-      new URL('monaco-editor/esm/vs/editor/editor.worker.js', import.meta.url),
-      { type: 'module' }
-    );
-  }
-};
-
 // Suppress extension-related errors in development
 if (process.env.NODE_ENV === 'development') {
   // Filter out known browser extension errors

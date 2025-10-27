@@ -10,6 +10,8 @@ export default defineConfig(({ mode }) => ({
     react(),
     // Monaco is REQUIRED by GraphiQL 5.x - cannot be removed
     monacoEditorPlugin({
+      // Expose global monaco and ensure standalone services are wired
+      globalAPI: true,
       languageWorkers: ['editorWorkerService', 'json'],
       customWorkers: [
         {
@@ -26,8 +28,10 @@ export default defineConfig(({ mode }) => ({
     VitePWA({
       registerType: 'autoUpdate',
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
-        maximumFileSizeToCacheInBytes: 3 * 1024 * 1024, // 3 MB
+        // Exclude large JS bundles from precache to avoid size limit errors
+        globPatterns: ['**/*.{css,html,ico,png,svg,woff,woff2,ttf}'],
+        // Still allow reasonably large assets if any slip in
+        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10 MB
         navigateFallback: null, // Verhindert Probleme mit SPA Routing
       },
       includeAssets: ['datacat_icon.ico', 'logo192.png', 'logo512.png'],
@@ -83,11 +87,10 @@ export default defineConfig(({ mode }) => ({
     },
   },
   resolve: {
-    alias: {
-      '@': resolve(__dirname, 'src'),
-      // Force all graphql imports to resolve to the same module
-      'graphql': resolve(__dirname, 'node_modules/graphql/index.js'),
-    },
+    alias: [
+      { find: '@', replacement: resolve(__dirname, 'src') },
+    ],
+    // Ensure single instance of Monaco
     dedupe: ['graphql', 'react', 'react-dom'],
   },
   optimizeDeps: {
