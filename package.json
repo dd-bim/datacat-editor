@@ -21,7 +21,6 @@
     "@tolgee/react": "^6.2.7",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
-    "datacat-editor": "file:",
     "dayjs": "^1.11.18",
     "docx-preview": "^0.3.7",
     "exceljs": "^4.4.0",
