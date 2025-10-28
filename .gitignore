@@ -32,3 +32,6 @@ yarn-error.log*
 
 .idea
 *.iml
+
+# Note: public/catalog-info.md is kept as development template
+# Production content should be managed via volumes/catalog-info.md

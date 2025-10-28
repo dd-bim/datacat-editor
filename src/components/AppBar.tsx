@@ -10,6 +10,8 @@ import { Tooltip, Box, Typography } from "@mui/material";
 import { useProfile } from "../providers/ProfileProvider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from '@mui/icons-material/Menu';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LightModeIcon from '@mui/icons-material/LightMode';
 import CreateEntrySplitButton from "./CreateEntrySplitButton";
 import AppTitle from "./AppTitle";
 import { QuickSearchWidget } from "./QuickSearchWidget";
@@ -19,6 +21,7 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Link from '@mui/material/Link';
 import { useTranslate, T } from "@tolgee/react";
+import { useCustomTheme } from "../context/ThemeContext";
 
 // Replace makeStyles with styled components
 const StyledAppBar = styled(MaterialUIAppBar)(({ theme }) => ({
@@ -118,6 +121,7 @@ export function AppBar(props: AppBarProps) {
   const { profile } = useProfile();
   const { logout } = useAuthContext();
   const verifiedUser = useWriteAccess();
+  const { darkMode, toggleDarkMode } = useCustomTheme();
 
   return (
     <StyledAppBar position="fixed">
@@ -160,6 +164,18 @@ export function AppBar(props: AppBarProps) {
 
             <Spacer>
               <LanguageSwitcher />
+            </Spacer>
+
+            <Spacer>
+              <Tooltip title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}>
+                <IconButton
+                  color="inherit"
+                  onClick={toggleDarkMode}
+                  size="small"
+                >
+                  {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
+                </IconButton>
+              </Tooltip>
             </Spacer>
 
             <Box>

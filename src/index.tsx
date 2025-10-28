@@ -20,6 +20,21 @@ if (process.env.NODE_ENV === 'development') {
     }
     originalError.apply(console, args);
   };
+
+  // Suppress known Monaco/GraphQL warnings
+  const originalWarn = console.warn;
+  console.warn = (...args) => {
+    const message = args[0];
+    if (typeof message === 'string' && (
+      message.includes('Could not create web worker') ||
+      message.includes('Cannot use \'in\' operator to search for \'then\'') ||
+      message.includes('Falling back to loading web worker code in main thread')
+    )) {
+      // These are cosmetic warnings - workers actually function correctly
+      return;
+    }
+    originalWarn.apply(console, args);
+  };
 }
 
 // Simplified service worker registration

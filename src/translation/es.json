@@ -55,7 +55,13 @@
     "heading": "Editar perfil de usuario",
     "update_success": "¡Perfil de usuario actualizado!",
     "error": "Se ha producido un error al acceder al perfil de usuario.",
+    "student_access_denied": "Como estudiante, no puede editar su perfil.",
+    "confirmPassword": "Confirmar contraseña",
+    "confirmPasswordText": "Por favor, introduzca su contraseña para guardar los cambios.",
+    "password": "Contraseña",
     "form": {
+      "username": "Nombre de usuario",
+      "username_helper": "Este valor no se puede cambiar.",
       "first_name": "Nombre",
       "first_name_helper": "Es obligatorio proporcionar su nombre. Se mostrará a otros usuarios del catálogo para atribuir entradas y cambios y facilitar la colaboración.",
       "last_name": "Apellido",
@@ -182,6 +188,7 @@
     "general": "General",
     "home": "Página de inicio",
     "edit_profile": "Editar perfil",
+    "catalog_info": "Información del Catálogo",
     "search_catalog": "Buscar en el catálogo",
     "audit": "Verificar",
     "import": "Importar",
@@ -191,6 +198,21 @@
     "new_tags": "Crear nuevas etiquetas",
     "grid_view": "Vista de tabla",
     "catalog": "Catálogo"
+  },
+  "catalog_info": {
+    "title": "Información del Catálogo",
+    "error_title": "Error al cargar la información del catálogo",
+    "no_content": "No hay información del catálogo disponible.",
+    "download_word": "Descargar como Word",
+    "download_pdf": "Descargar como PDF",
+    "download_md": "Descargar como Markdown",
+    "print": "Imprimir",
+    "share": "Compartir",
+    "font_size": "Tamaño de fuente",
+    "dark_mode": "Modo oscuro",
+    "table_of_contents": "Tabla de contenidos",
+    "search_placeholder": "Buscar en el texto...",
+    "search_results": "resultados"
   },
   "create_entry_form": {
     "name_label": "Nombre (es)",
@@ -790,7 +812,11 @@
   },
   "common": {
     "close": "Cerrar",
-    "info": "Información"
+    "info": "Información",
+    "save": "Guardar",
+    "reset": "Restablecer",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar"
   },
   "info_dialogs": {
     "applicability": {

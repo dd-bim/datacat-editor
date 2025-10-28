@@ -3,10 +3,23 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import { analyzer } from 'vite-bundle-analyzer';
 import { resolve } from 'path';
+import monacoEditorPlugin from 'vite-plugin-monaco-editor';
 
 export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
+    // Monaco is REQUIRED by GraphiQL 5.x - cannot be removed
+    monacoEditorPlugin({
+      // Expose global monaco and ensure standalone services are wired
+      globalAPI: true,
+      languageWorkers: ['editorWorkerService', 'json'],
+      customWorkers: [
+        {
+          label: 'graphql',
+          entry: 'monaco-graphql/esm/graphql.worker',
+        },
+      ],
+    }),
     // Bundle analyzer nur für Analyse-Mode
     ...(mode === 'analyze' ? [analyzer({ 
       analyzerMode: 'server',
@@ -15,19 +28,10 @@ export default defineConfig(({ mode }) => ({
     VitePWA({
       registerType: 'autoUpdate',
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
-        // Erhöhe das Limit für große Dateien wie Monaco Editor
-        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MB
-        // Monaco Editor vom Precaching ausschließen (große Datei)
-        dontCacheBustURLsMatching: /assets\/monaco-editor-.*\.js$/,
-        // Große Dateien vom Precaching ausschließen
-        manifestTransforms: [
-          (manifestEntries) => ({
-            manifest: manifestEntries.filter(
-              entry => !entry.url.includes('monaco-editor') || entry.size <= 2 * 1024 * 1024
-            )
-          })
-        ],
+        // Exclude large JS bundles from precache to avoid size limit errors
+        globPatterns: ['**/*.{css,html,ico,png,svg,woff,woff2,ttf}'],
+        // Still allow reasonably large assets if any slip in
+        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10 MB
         navigateFallback: null, // Verhindert Probleme mit SPA Routing
       },
       includeAssets: ['datacat_icon.ico', 'logo192.png', 'logo512.png'],
@@ -56,35 +60,38 @@ export default defineConfig(({ mode }) => ({
       }
     })
   ],
-  define: {
-    'import.meta.env.VITE_APP_VERSION': JSON.stringify(process.env.npm_package_version || '0.1.0'),
-  },
   server: {
     host: '0.0.0.0',
     port: 3000,
     open: true,
+    middlewareMode: false,
   },
   build: {
     outDir: 'build',
     sourcemap: true,
     rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          mui: ['@mui/material', '@mui/icons-material'],
-          apollo: ['@apollo/client', 'graphql'],
-          graphiql: ['graphiql'],
-          router: ['react-router-dom'],
-          forms: ['react-hook-form'],
-        },
+      // Let Vite handle chunking automatically to avoid circular dependency issues
+      maxParallelFileOps: 1,
+      treeshake: {
+        preset: 'smallest',
       },
     },
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 600, // Reduced from Monaco size
+    minify: 'esbuild',
+    target: 'es2020',
+    cssMinify: 'esbuild',
+    reportCompressedSize: false,
+    assetsInlineLimit: 0,
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
   },
   resolve: {
-    alias: {
-      '@': resolve(__dirname, 'src'),
-    },
+    alias: [
+      { find: '@', replacement: resolve(__dirname, 'src') },
+    ],
+    // Ensure single instance of Monaco
+    dedupe: ['graphql', 'react', 'react-dom'],
   },
   optimizeDeps: {
     include: [
@@ -95,6 +102,20 @@ export default defineConfig(({ mode }) => ({
       '@apollo/client',
       'react-router-dom',
       'graphiql',
+      'nullthrows',
+      '@graphiql/react',
+      'graphql',
     ],
+    exclude: [
+      // Don't pre-bundle Monaco - let plugin handle it
+      'monaco-editor',
+      'monaco-graphql',
+    ],
+    esbuildOptions: {
+      plugins: [],
+    },
+  },
+  worker: {
+    format: 'es',
   },
 }));

@@ -44,7 +44,67 @@ import ViewComfyIcon from "@mui/icons-material/ViewComfy";
 import ViewHeadlineIcon from "@mui/icons-material/ViewHeadline";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { DictionaryEntity, DocumentEntity, ClassEntity, PropertyEntity, PropertyGroupEntity, ValueEntity, ValueListEntity, ThemeEntity } from "../domain";
+import { useCustomTheme } from "../context/ThemeContext";
 import { useApolloClient } from "@apollo/client/react";
+
+// Styled DataGrid Container für dunkles Theme
+const StyledDataGridContainer = styled(Box)(({ theme }) => ({
+    width: '100%',
+    height: 'auto',
+    overflow: 'auto',
+    '& .MuiDataGrid-root': {
+        backgroundColor: theme.palette.mode === 'dark' ? theme.palette.background.paper : 'inherit',
+        border: theme.palette.mode === 'dark' ? `1px solid ${theme.palette.divider}` : 'inherit',
+        '& .MuiDataGrid-cell': {
+            borderBottomColor: theme.palette.mode === 'dark' ? theme.palette.divider : 'inherit',
+        },
+        '& .MuiDataGrid-columnHeaders': {
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.action.hover : 'inherit',
+            borderBottomColor: theme.palette.mode === 'dark' ? theme.palette.divider : 'inherit',
+        },
+        '& .MuiDataGrid-row': {
+            backgroundColor: theme.palette.mode === 'dark' ? 'transparent' : 'inherit',
+            '&:nth-of-type(odd)': {
+                backgroundColor: theme.palette.mode === 'dark' 
+                    ? 'rgba(255, 255, 255, 0.08)' 
+                    : theme.palette.action.hover,
+            },
+            '&:nth-of-type(even)': {
+                backgroundColor: theme.palette.mode === 'dark' 
+                    ? 'rgba(255, 255, 255, 0.04)' 
+                    : 'inherit',
+            },
+            '&:hover': {
+                backgroundColor: theme.palette.mode === 'dark' 
+                    ? 'rgba(255, 255, 255, 0.12)' 
+                    : theme.palette.action.hover,
+            },
+            '&.Mui-selected': {
+                backgroundColor: theme.palette.mode === 'dark' 
+                    ? `${theme.palette.primary.main}40` 
+                    : theme.palette.action.selected,
+                '&:hover': {
+                    backgroundColor: theme.palette.mode === 'dark' 
+                        ? `${theme.palette.primary.main}50` 
+                        : theme.palette.action.selected,
+                },
+            },
+        },
+        '& .MuiDataGrid-footerContainer': {
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.action.hover : 'inherit',
+            borderTopColor: theme.palette.mode === 'dark' ? theme.palette.divider : 'inherit',
+        },
+        '& .MuiDataGrid-virtualScroller': {
+            overflow: 'auto !important',
+        },
+        '& .MuiDataGrid-virtualScrollerContent': {
+            overflow: 'visible',
+        },
+        '& .MuiDataGrid-virtualScrollerRenderZone': {
+            position: 'relative',
+        },
+    }
+}));
 
 // Memoized constants außerhalb der Komponente
 const EXCLUDED_TAGS = [
@@ -137,8 +197,8 @@ const CustomToolbar = styled(Box)(({ theme }) => ({
     alignItems: "center",
     justifyContent: "space-between",
     padding: theme.spacing(1, 2),
-    borderBottom: "1px solid #e0e0e0",
-    backgroundColor: "#fafafa",
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    backgroundColor: theme.palette.mode === 'dark' ? '#2d2d2d' : '#fafafa',
     gap: theme.spacing(1),
 }));
 
@@ -194,11 +254,8 @@ const DataGridToolbar = memo(({
             />
             <Typography variant="body2" color="text.secondary">
                 {totalRows} {t("grid_view.total_entries") || "Einträge gesamt"}
-                {selectedRowsCount > 0 && ` | ${selectedRowsCount} ${t("grid_view.selected") || "ausgewählt"}`}
+                {selectedRowsCount > 0 && ` | ${selectedRowsCount} ${t("grid_view.selected") || "ausgewählt"} - Shift + Klick für Mehrfachauswahl`}
             </Typography>
-            <MultiSelectHelpText>
-                {t("grid_view.multiselect_help") || "Mehrfachauswahl: Strg + Klick"}
-            </MultiSelectHelpText>
         </ToolbarSection>
 
         <ToolbarSection>
@@ -1299,27 +1356,34 @@ const GridViewView = () => {
 
 
     return (
-        <MainContainer>
-            <TableContainer>
-                <FixedContainer>
-                    {/* Use extracted TagFilterSection component */}
-                    <TagFilterSection
-                        allTags={allTags}
-                        selectedTag={selectedTag}
-                        handleTagFilter={handleTagFilter}
-                        newTag={newTag}
-                        handleTagChange={handleTagChange}
-                        handleAddTag={handleAddTag}
-                        handleRefresh={handleRefresh}
-                        propertyTreeLoading={propertyTreeLoading}
-                        t={t}
-                    />
+        <div style={{ 
+            height: '100vh', 
+            display: 'flex', 
+            flexDirection: 'column', 
+            overflow: 'hidden' 
+        }}>
+            <div style={{ 
+                flex: '0 0 auto',
+                padding: '8px'
+            }}>
+                {/* Use extracted TagFilterSection component */}
+                <TagFilterSection
+                    allTags={allTags}
+                    selectedTag={selectedTag}
+                    handleTagFilter={handleTagFilter}
+                    newTag={newTag}
+                    handleTagChange={handleTagChange}
+                    handleAddTag={handleAddTag}
+                    handleRefresh={handleRefresh}
+                    propertyTreeLoading={propertyTreeLoading}
+                    t={t}
+                />
 
-                    <Box
-                        sx={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
                             mb: 2,
                         }}
                     >
@@ -1395,9 +1459,15 @@ const GridViewView = () => {
                             </Box>
                         )}
                     </Box>
-                </FixedContainer>
+            </div>
 
-                {/* Adjust Box to take remaining space without causing overflow */}
+            <div style={{ 
+                flex: '1 1 auto',
+                overflow: 'hidden',
+                padding: '8px',
+                display: 'flex',
+                flexDirection: 'column'
+            }}>
                 <Box
                     sx={{
                         flexGrow: 1,
@@ -1420,7 +1490,8 @@ const GridViewView = () => {
                         t={t}
                     />
 
-                    <DataGrid
+                    <StyledDataGridContainer>
+                        <DataGrid
                         rows={filteredRows}
                         columns={columns}
                         getRowId={(row) => row.uniqueId}
@@ -1562,39 +1633,10 @@ const GridViewView = () => {
                             },
                         }}
                     />
-
-                    {/* Auswahlhilfe außerhalb der DataGrid */}
-                    {selectedRows.length > 0 && (
-                        <Box
-                            sx={{
-                                position: "absolute",
-                                bottom: "8px",
-                                left: "16px",
-                                zIndex: 10,
-                                backgroundColor: "rgba(255, 255, 255, 0.9)",
-                                padding: "4px 8px",
-                                borderRadius: "4px",
-                                border: "1px solid #e0e0e0",
-                                boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                            }}
-                        >
-                            <Typography
-                                variant="caption"
-                                color="text.secondary"
-                                sx={{
-                                    fontStyle: "italic",
-                                    fontSize: "0.75rem",
-                                    whiteSpace: "nowrap",
-                                }}
-                            >
-                                💡 {t("grid_view.selection_help") || "Auswahlhilfe:"}
-                                <strong> Strg + {t("grid_view.for_multiple") || "für Mehrfachauswahl"}</strong>
-                            </Typography>
-                        </Box>
-                    )}
+                    </StyledDataGridContainer>
                 </Box>
-            </TableContainer>
-        </MainContainer>
+            </div>
+        </div>
     );
 };
 

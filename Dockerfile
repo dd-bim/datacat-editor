@@ -16,6 +16,7 @@ COPY public ./public
 COPY index.html ./
 
 ENV VITE_API_URL=/graphql
+ENV NODE_OPTIONS="--max-old-space-size=3072"
 
 RUN npm run build
 

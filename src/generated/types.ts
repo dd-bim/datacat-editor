@@ -584,7 +584,7 @@ export type ExportCatalogRecord_Fragment = { __typename: 'ExportResult', id: str
 
 export type ExportCatalogRecordRelationship_Fragment = { __typename: 'ExportRelationshipResult', entity1: string, relationship: string, entity2: string };
 
-export type SearchResultPropsFragment = { __typename: 'XtdRoot', id: string, recordType: CatalogRecordType, name?: Maybe<string>, names: Array<MultiLanguageTextPropsFragment>, comment?: Maybe<string>, tags: Array<TagPropsFragment>, majorVersion?: Maybe<number>, minorVersion?: Maybe<number> }; // description?: Maybe<string>, 
+export type SearchResultPropsFragment = { __typename: 'XtdRoot', id: string, recordType: CatalogRecordType, name?: Maybe<string>, comment?: Maybe<string>, tags: Array<TagPropsFragment>, dictionary?: Maybe<{ id: string, name?: Maybe<MultiLanguageTextPropsFragment> }> }; // description?: Maybe<string>, 
 export type SearchResultDictionaryPropsFragment = { __typename: 'XtdDictionary', id: string, name: MultiLanguageTextPropsFragment, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
 
 export type FindTagsResultFragment = { id: string, name: string };
@@ -1424,6 +1424,12 @@ export const SearchResultPropsFragmentDoc = gql`
     comment(input: {languageTags: ["de-DE", "en-US"]})
   tags {
     ...TagProps
+  }
+  dictionary {
+    id
+    name {
+      ...TranslationProps
+    }
   }
 }
   ${TranslationPropsFragmentDoc}

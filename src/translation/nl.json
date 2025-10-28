@@ -55,7 +55,13 @@
     "heading": "Gebruikersprofiel bewerken",
     "update_success": "Gebruikersprofiel bijgewerkt!",
     "error": "Er is een fout opgetreden bij het openen van het gebruikersprofiel.",
+    "student_access_denied": "Als student kunt u uw profiel niet bewerken.",
+    "confirmPassword": "Wachtwoord bevestigen",
+    "confirmPasswordText": "Voer uw wachtwoord in om de wijzigingen op te slaan.",
+    "password": "Wachtwoord",
     "form": {
+      "username": "Gebruikersnaam",
+      "username_helper": "Deze waarde kan niet worden gewijzigd.",
       "first_name": "Voornaam",
       "first_name_helper": "Het opgeven van uw voornaam is verplicht. Deze wordt getoond aan andere catalogusgebruikers om items en wijzigingen toe te wijzen en samenwerking te vergemakkelijken.",
       "last_name": "Achternaam",
@@ -182,6 +188,7 @@
     "general": "Algemeen",
     "home": "Startpagina",
     "edit_profile": "Profiel bewerken",
+    "catalog_info": "Catalogusinformatie",
     "search_catalog": "Catalogus doorzoeken",
     "audit": "Controleren",
     "import": "Importeren",
@@ -191,6 +198,21 @@
     "new_tags": "Nieuwe tags aanmaken",
     "grid_view": "Tabelweergave",
     "catalog": "Catalogus"
+  },
+  "catalog_info": {
+    "title": "Catalogusinformatie",
+    "error_title": "Fout bij het laden van catalogusinformatie",
+    "no_content": "Geen catalogusinformatie beschikbaar.",
+    "download_word": "Downloaden als Word",
+    "download_pdf": "Downloaden als PDF",
+    "download_md": "Downloaden als Markdown",
+    "print": "Afdrukken",
+    "share": "Delen",
+    "font_size": "Lettergrootte",
+    "dark_mode": "Donkere modus",
+    "table_of_contents": "Inhoudsopgave",
+    "search_placeholder": "Zoeken in tekst...",
+    "search_results": "resultaten"
   },
   "create_entry_form": {
     "name_label": "Naam (nl)",
@@ -790,7 +812,11 @@
   },
   "common": {
     "close": "Sluiten",
-    "info": "Informatie"
+    "info": "Informatie",
+    "save": "Opslaan",
+    "reset": "Resetten",
+    "cancel": "Annuleren",
+    "confirm": "Bevestigen"
   },
   "info_dialogs": {
     "applicability": {

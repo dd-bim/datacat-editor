@@ -13,12 +13,10 @@ import { AppContext } from "../context/AppContext";
 // Updated styled components to better match list height
 const SearchListPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
-  position: "sticky",
-  top: "88px",
   display: 'flex',
   flexDirection: 'column',
-  height: 'auto',
-  minHeight: 'fit-content'
+  height: '100%',
+  overflow: 'hidden'
 }));
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -26,7 +24,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
-  overflow: 'auto',
+  overflow: 'hidden',
 }));
 
 const HintTypography = styled(Typography)(({ theme }) => ({
@@ -109,7 +107,7 @@ const CompositeCatalogEntryView = (props: CompositeCatalogEntryViewProps) => {
       direction={{ xs: 'column', md: 'row' }}
       spacing={2}
       sx={{ 
-        minHeight: 'calc(100vh - 140px)', // Changed from height to minHeight
+        height: 'calc(100vh - 140px)', // Feste Höhe für den gesamten Container
         width: '100%',
         overflow: 'hidden'
       }}
@@ -117,21 +115,24 @@ const CompositeCatalogEntryView = (props: CompositeCatalogEntryViewProps) => {
     >
       {/* Left panel - Entity List */}
       <Box sx={{ 
-        width: { xs: '100%', md: '450px' },  // Increased from 350px to 450px
-        minWidth: { md: '400px' },           // Increased from 300px to 400px
+        width: { xs: '100%', md: '450px' },
+        minWidth: { md: '400px' },
         flexShrink: 0,
-        height: 'fit-content', // Ensure it fits content exactly
-        overflow: 'visible' // Changed from auto to visible
+        height: '100%', // Nutzt volle Höhe
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden'
       }}>
         <SearchListPaper>
-          <Typography variant="h5" sx={{ mb: 2 }}>
+          <Typography variant="h5" sx={{ mb: 2, flexShrink: 0 }}>
             {currentTitlePlural} ({totalCount})
           </Typography>
           <Box sx={{ 
-            width: '100%',
+            flex: 1, // Nimmt verfügbaren Platz
             display: 'flex', 
             flexDirection: 'column',
-            mb: 0 // No bottom margin
+            minHeight: 0, // Wichtig für flex overflow
+            overflow: 'hidden'
           }}>
             <SearchList
               showRecordIcons={false}
@@ -148,7 +149,7 @@ const CompositeCatalogEntryView = (props: CompositeCatalogEntryViewProps) => {
               onTotalCountChange={handleTotalCountChange}
             />
           </Box>
-          <Box sx={{ mt: 2 }}>
+          <Box sx={{ mt: 2, flexShrink: 0 }}>
             <Stack direction="row" spacing={1}>
               <Button
                 disabled={height >= 1500}
@@ -167,15 +168,17 @@ const CompositeCatalogEntryView = (props: CompositeCatalogEntryViewProps) => {
       {/* Right panel - Form */}
       <Box sx={{ 
         flexGrow: 1,
-        overflow: 'auto',
-        height: { xs: 'auto', md: '100%' }
+        height: '100%',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column'
       }}>
         <StyledPaper>
-          <Typography variant="h5" sx={{ mb: 2 }}>
+          <Typography variant="h5" sx={{ mb: 2, flexShrink: 0 }}>
             <T keyName="composite_catalog_entry_view.edit_entry" params={{ title: currentTitle }} />
           </Typography>
           {id ? (
-            <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
+            <Box sx={{ flexGrow: 1, overflow: 'auto', minHeight: 0 }}>
               {renderForm(id)}
             </Box>
           ) : (

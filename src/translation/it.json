@@ -55,7 +55,13 @@
     "heading": "Modifica profilo utente",
     "update_success": "Profilo utente aggiornato!",
     "error": "Si è verificato un errore durante il caricamento del profilo utente.",
+    "student_access_denied": "Come studente, non puoi modificare il tuo profilo.",
+    "confirmPassword": "Conferma password",
+    "confirmPasswordText": "Inserisci la tua password per salvare le modifiche.",
+    "password": "Password",
     "form": {
+      "username": "Nome utente",
+      "username_helper": "Questo valore non può essere modificato.",
       "first_name": "Nome",
       "first_name_helper": "Il tuo nome è obbligatorio. Verrà mostrato agli altri utenti del catalogo per assegnare voci e modifiche e facilitare la collaborazione.",
       "last_name": "Cognome",
@@ -182,6 +188,7 @@
     "general": "Generale",
     "home": "Home",
     "edit_profile": "Modifica profilo",
+    "catalog_info": "Informazioni del Catalogo",
     "search_catalog": "Cerca nel catalogo",
     "audit": "Verifica",
     "import": "Importa",
@@ -191,6 +198,21 @@
     "new_tags": "Crea nuovi tag",
     "grid_view": "Vista tabella",
     "catalog": "Catalogo"
+  },
+  "catalog_info": {
+    "title": "Informazioni del Catalogo",
+    "error_title": "Errore nel caricamento delle informazioni del catalogo",
+    "no_content": "Nessuna informazione del catalogo disponibile.",
+    "download_word": "Scarica come Word",
+    "download_pdf": "Scarica come PDF",
+    "download_md": "Scarica come Markdown",
+    "print": "Stampa",
+    "share": "Condividi",
+    "font_size": "Dimensione carattere",
+    "dark_mode": "Modalità scura",
+    "table_of_contents": "Indice",
+    "search_placeholder": "Cerca nel testo...",
+    "search_results": "risultati"
   },
   "create_entry_form": {
     "name_label": "Nome (it)",
@@ -790,7 +812,11 @@
   },
   "common": {
     "close": "Chiudi",
-    "info": "Informazione"
+    "info": "Informazioni",
+    "save": "Salva",
+    "reset": "Ripristina",
+    "cancel": "Annulla",
+    "confirm": "Conferma"
   },
   "info_dialogs": {
     "applicability": {
