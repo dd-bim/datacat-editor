@@ -596,6 +596,7 @@
     "edit": "Zuordnung bearbeiten"
   },
   "ids_export": {
+    "loading_data": "Daten werden geladen... Bitte warten Sie, bis alle Dictionaries, Klassen und Themen verfügbar sind.",
     "tag_filter": {
       "classes": "Tag-Filter für Klassen:",
       "properties": "Tag-Filter für Merkmale:"
@@ -624,7 +625,14 @@
       "no_properties_with_tag": "Keine Merkmale mit Tag '{tag}' gefunden."
     },
     "messages": {
-      "no_requirements": "Noch keine Requirements hinzugefügt. Klicken Sie auf einen der Buttons oben, um ein Requirement hinzuzufügen."
+      "no_requirements": "Noch keine Requirements hinzugefügt. Klicken Sie auf einen der Buttons oben, um ein Requirement hinzuzufügen.",
+      "classes_loaded": "{count} Klassen geladen",
+      "error_loading_classes": "Fehler beim Laden der Klassen",
+      "loading_classes": "Lade Klassen...",
+      "filter_active": "Filter aktiv: {themes} Thema(en), {subthemes} Unterthema(en)",
+      "classes_selected": "{count} Klassen ausgewählt",
+      "theme_filter_optional": "🔍 Optionaler Filter: Klassen nach Themen/Unterthemen einschränken",
+      "theme_or_subtheme_select": "Themen oder Unterthemen auswählen (optional)"
     },
     "validation": {
       "ready_for_export": "Alle Validierungen bestanden - bereit für Export!",
@@ -651,6 +659,8 @@
     },
     "labels": {
       "local_created": "Lokal erstellt",
+      "theme": "Thema",
+      "subtheme": "Unterthema",
       "classification_system_select": "Klassifikationssystem auswählen",
       "themes_select": "Themen auswählen (optional)",
       "subthemes_select": "Unterthemen auswählen (optional)",
@@ -792,7 +802,9 @@
       "select_properties": "Merkmale auswählen",
       "property_values_optional": "Werte für Merkmale (optional)",
       "values_from_datacat": "Werte aus DataCat auswählen:",
-      "custom_values": "Oder eigene Werte eingeben:"
+      "custom_values": "Oder eigene Werte eingeben:",
+      "select_dictionary": "Dictionary auswählen",
+      "dictionary_required": "Dictionary (erforderlich)"
     },
     "placeholders": {
       "property_set_example": "z.B. Geometrische Eigenschaften",
@@ -803,7 +815,8 @@
     },
     "info": {
       "selection_help": "Wählen Sie aus den vorhandenen Merkmalen in datacat diejenigen aus, die zu diesem neuen IFC Propertyset gehören sollen. Dieses Propertyset wird nur lokal für die IDS-Erstellung verwendet und nicht im datacat Merkmalsserver gespeichert.",
-      "values_help": "Sie können für jedes Merkmal optional Werte festlegen. Lassen Sie die Felder leer, wenn keine Wertbeschränkung gewünscht ist."
+      "values_help": "Sie können für jedes Merkmal optional Werte festlegen. Lassen Sie die Felder leer, wenn keine Wertbeschränkung gewünscht ist.",
+      "dictionary_selection_required": "Bitte wählen Sie zuerst ein Dictionary aus, um die zugehörigen Merkmale zu laden."
     },
     "tag_filter": {
       "properties": "Tag-Filter für Merkmale:",

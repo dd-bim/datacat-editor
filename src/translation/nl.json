@@ -553,6 +553,7 @@
     "edit": "Toewijzing bewerken"
   },
   "ids_export": {
+    "loading_data": "Gegevens laden... Wacht tot alle woordenboeken, klassen en thema's beschikbaar zijn.",
     "tag_filter": {
       "classes": "Tagfilter voor klassen:",
       "properties": "Tagfilter voor eigenschappen:"
@@ -615,6 +616,8 @@
       "instructions_optional": "Instructies (optioneel)",
       "loading_property_groups": "Eigenschappengroepen laden...",
       "local_created": "Lokaal aangemaakt",
+      "theme": "Thema",
+      "subtheme": "Subthema",
       "material_category": "Materiaalkategorie",
       "material_properties_optional": "Materiaaleigenschappen (optioneel)",
       "material_select": "Materiaal selecteren",
@@ -711,7 +714,14 @@
       "login_required": "Inloggen vereist om een IDS-bestand aan te maken."
     },
     "messages": {
-      "no_requirements": "Er zijn nog geen vereisten toegevoegd. Klik op een van de knoppen hierboven om een vereiste toe te voegen."
+      "no_requirements": "Er zijn nog geen vereisten toegevoegd. Klik op een van de knoppen hierboven om een vereiste toe te voegen.",
+      "classes_loaded": "{count} klassen geladen",
+      "error_loading_classes": "Fout bij het laden van klassen",
+      "loading_classes": "Klassen laden...",
+      "filter_active": "Filter actief: {themes} thema('s), {subthemes} subthema('s)",
+      "classes_selected": "{count} klassen geselecteerd",
+      "theme_filter_optional": "🔍 Optioneel filter: Beperk klassen op thema's/subthema's",
+      "theme_or_subtheme_select": "Selecteer thema's of subthema's (optioneel)"
     },
     "tooltips": {
       "export_disabled": "Kan niet exporteren: titel, versie en minimaal één specificatie zijn vereist"

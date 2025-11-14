@@ -553,6 +553,7 @@
     "edit": "Modifica assegnazione"
   },
   "ids_export": {
+    "loading_data": "Caricamento dati... Attendere fino a quando tutti i dizionari, le classi e i temi sono disponibili.",
     "tag_filter": {
       "classes": "Filtro tag per classi:",
       "properties": "Filtro tag per proprietà:"
@@ -615,6 +616,8 @@
       "instructions_optional": "Istruzioni (opzionale)",
       "loading_property_groups": "Caricamento gruppi di proprietà...",
       "local_created": "Creato localmente",
+      "theme": "Tema",
+      "subtheme": "Sottotema",
       "material_category": "Categoria materiale",
       "material_properties_optional": "Proprietà materiale (opzionale)",
       "material_select": "Seleziona materiale",
@@ -711,7 +714,14 @@
       "login_required": "Effettuare l'accesso per creare un file IDS."
     },
     "messages": {
-      "no_requirements": "Non sono ancora stati aggiunti requisiti. Fare clic su uno dei pulsanti sopra per aggiungere un requisito."
+      "no_requirements": "Non sono ancora stati aggiunti requisiti. Fare clic su uno dei pulsanti sopra per aggiungere un requisito.",
+      "classes_loaded": "{count} classi caricate",
+      "error_loading_classes": "Errore nel caricamento delle classi",
+      "loading_classes": "Caricamento classi...",
+      "filter_active": "Filtro attivo: {themes} tema(i), {subthemes} sottotema(i)",
+      "classes_selected": "{count} classi selezionate",
+      "theme_filter_optional": "🔍 Filtro opzionale: Restringere le classi per temi/sottotemi",
+      "theme_or_subtheme_select": "Seleziona temi o sottotemi (opzionale)"
     },
     "tooltips": {
       "export_disabled": "Impossibile esportare: sono necessari titolo, versione e almeno una specifica"

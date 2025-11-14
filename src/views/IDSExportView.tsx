@@ -233,6 +233,24 @@ export const IDSExportView: React.FC = () => {
     }
   }, [allItemsError, dictionariesError, classesError, error]);
 
+  // Snackbar-Benachrichtigung wenn Klassen erfolgreich geladen wurden
+  useEffect(() => {
+    if (!classesLoading && classesData?.findSubjects?.nodes) {
+      const classesCount = classesData.findSubjects.nodes.length;
+      if (classesCount > 0) {
+        // Nur einmal beim initialen Laden benachrichtigen
+        const hasNotified = sessionStorage.getItem('classesLoadedNotified');
+        if (!hasNotified) {
+          enqueueSnackbar(
+            `${classesCount} Klassen erfolgreich geladen`,
+            { variant: "success", autoHideDuration: 3000 }
+          );
+          sessionStorage.setItem('classesLoadedNotified', 'true');
+        }
+      }
+    }
+  }, [classesLoading, classesData, enqueueSnackbar]);
+
   // Custom Hooks für Datenverarbeitung
   const { propertyGroupOptions, dictionaryOptions, classOptions } = useIDSData(
     allItemsData?.findSubjects?.nodes || [],
@@ -315,6 +333,23 @@ export const IDSExportView: React.FC = () => {
       }))
       .sort((a: any, b: any) => a.name.localeCompare(b.name));
   }, [classesData, allSubjectsData]);
+
+  // NEUE Funktion: Hole ALLE Klassen für ein Dictionary (ohne Themen-Filter)
+  const getAllClassesForDictionary = useCallback((dictionaryId: string) => {
+    if (!classesData?.findSubjects?.nodes || !dictionaryId) return [];
+    
+    return classesData.findSubjects.nodes
+      .filter((classNode: any) => {
+        // Filtere nur nach Dictionary
+        return classNode.dictionary?.id === dictionaryId;
+      })
+      .map((classNode: any) => ({
+        id: classNode.id,
+        name: classNode.name?.texts?.[0]?.text || classNode.name || classNode.id,
+        dictionaryId,
+      }))
+      .sort((a: any, b: any) => a.name.localeCompare(b.name));
+  }, [classesData]);
 
   // Neue Funktion: Prüfe ob ein Thema Unterthemen hat
   const hasSubThemes = useCallback((themeId: string) => {
@@ -1463,6 +1498,7 @@ export const IDSExportView: React.FC = () => {
                       modelOptions={dictionaryOptions}
                       allTags={allTags}
                       selectedTagForClasses={selectedTagForClasses}
+                      classesLoading={classesLoading}
                       onRequirementChange={handleRequirementChange}
                       onTagFilterForClasses={handleTagFilterForClasses}
                       onAddClassesByTag={addClassesByTag}
@@ -1473,6 +1509,7 @@ export const IDSExportView: React.FC = () => {
                       getThemesForDictionary={getThemesForDictionary}
                       getSubThemesForTheme={getSubThemesForTheme}
                       getClassesForThemeOrSubTheme={getClassesForThemeOrSubTheme}
+                      getAllClassesForDictionary={getAllClassesForDictionary}
                       hasSubThemes={hasSubThemes}
                       DATA_TYPE_OPTIONS={DATA_TYPE_OPTIONS}
                     />

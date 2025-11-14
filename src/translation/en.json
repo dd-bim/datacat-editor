@@ -598,6 +598,7 @@
     "edit": "Edit assignment"
   },
   "ids_export": {
+    "loading_data": "Loading data... Please wait until all dictionaries, classes and themes are available.",
     "tag_filter": {
       "classes": "Tag filter for classes:",
       "properties": "Tag filter for properties:"
@@ -626,7 +627,14 @@
       "no_properties_with_tag": "No properties with tag '{tag}' found."
     },
     "messages": {
-      "no_requirements": "No requirements added yet. Click one of the buttons above to add a requirement."
+      "no_requirements": "No requirements added yet. Click one of the buttons above to add a requirement.",
+      "classes_loaded": "{count} classes loaded",
+      "error_loading_classes": "Error loading classes",
+      "loading_classes": "Loading classes...",
+      "filter_active": "Filter active: {themes} theme(s), {subthemes} subtheme(s)",
+      "classes_selected": "{count} classes selected",
+      "theme_filter_optional": "🔍 Optional filter: Restrict classes by themes/subthemes",
+      "theme_or_subtheme_select": "Select themes or subthemes (optional)"
     },
     "validation": {
       "ready_for_export": "All validations passed - ready for export!",
@@ -653,6 +661,8 @@
     },
     "labels": {
       "local_created": "Locally created",
+      "theme": "Theme",
+      "subtheme": "Subtheme",
       "classification_system_select": "Select classification system",
       "themes_select": "Select themes (optional)",
       "subthemes_select": "Select subthemes (optional)",
@@ -794,7 +804,9 @@
       "select_properties": "Select properties",
       "property_values_optional": "Property Values (optional)",
       "values_from_datacat": "Select values from DataCat:",
-      "custom_values": "Or enter custom values:"
+      "custom_values": "Or enter custom values:",
+      "select_dictionary": "Select dictionary",
+      "dictionary_required": "Dictionary (required)"
     },
     "placeholders": {
       "property_set_example": "e.g. Geometric Properties",
@@ -805,7 +817,8 @@
     },
     "info": {
       "selection_help": "Select from the existing properties in datacat those that should belong to this new IFC Propertyset. This Propertyset will only be used locally for IDS creation and will not be saved in the datacat property server.",
-      "values_help": "You can optionally define values for each property. Leave fields empty if no value constraint is desired."
+      "values_help": "You can optionally define values for each property. Leave fields empty if no value constraint is desired.",
+      "dictionary_selection_required": "Please select a dictionary first to load the corresponding properties."
     },
     "tag_filter": {
       "properties": "Tag filter for properties:",
