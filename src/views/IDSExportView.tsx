@@ -26,6 +26,7 @@ import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { IDS_IFC_ENTITIES } from "../components/idsEntities";
 import { convertToIDSXml } from "../components/idsXmlConverter";
 import { useSnackbar } from "notistack";
@@ -33,6 +34,7 @@ import { validateWithXSDLibrary } from "../components/idsValidatorBrowser";
 import { useProfile } from "../providers/ProfileProvider";
 import { SaveLoadDialog } from "../components/SaveLoadDialog";
 import { autoSaveIDSData, getAutoSavedIDSData } from "../utils/idsStorage";
+import { createMinIOUploader } from "../utils/MinIOUploader";
 import { CreatePropertySetDialog } from "../components/CreatePropertySetDialog";
 import { InfoButton } from "../components/InfoButton";
 import { ClassEntity, PropertyGroupEntity, ThemeEntity } from "../domain";
@@ -949,6 +951,80 @@ export const IDSExportView: React.FC = () => {
     }
   };
 
+  // IDS Datei in MinIO speichern (mit Fallback zu normalem Download)
+  const handleSaveToMinIO = async () => {
+    try {
+      const info = {
+        title: idsTitle || "Meine IDS Datei",
+        author: profile.email,
+        version: idsVersion || "1.0",
+        date: new Date().toISOString().split("T")[0],
+      };
+      
+      const convertedSpecs = specRows.map((spec: any) => {
+        const validIfcVersions = (spec.ifcVersions && Array.isArray(spec.ifcVersions) && spec.ifcVersions.length > 0) 
+          ? spec.ifcVersions 
+          : ifcVersions && ifcVersions.length > 0 
+            ? ifcVersions 
+            : ["IFC4"];
+        
+        return {
+          ...spec,
+          applicabilityType: "type" as const,
+          ifcClass: spec.applicabilityType === "classification" 
+            ? "IFCCLASSIFICATION" 
+            : (Array.isArray(spec.ifcClasses) && spec.ifcClasses.length > 0)
+              ? spec.ifcClasses[0]
+              : spec.ifcClass || "",
+          ifcVersions: validIfcVersions,
+          ifcClasses: spec.ifcClasses,
+        };
+      });
+      
+      const xml = convertToIDSXml(convertedSpecs, info);
+
+      // Validation
+      const xsd = await fetchXsd();
+      const result = await validateWithXSDLibrary(xml, xsd);
+
+      if (!result.valid) {
+        const errorMessage = "IDS-Datei ist nicht gültig:\n" + (result.errors?.join("\n") || "Unbekannter Validierungsfehler");
+        enqueueSnackbar(errorMessage, { variant: "error" });
+        return;
+      }
+
+      // Dateiname generieren
+      let filename = idsTitle.trim();
+      if (!filename) {
+        filename = "Meine IDS Datei";
+      }
+      filename = filename.replace(/[^a-zA-Z0-9_\-äöüÄÖÜß ]+/g, "");
+      filename = filename.replace(/\s+/g, "_");
+      if (!filename) filename = "IDS_Datei";
+      filename += ".ids";
+
+      // MinIO Upload
+      try {
+        const uploader = createMinIOUploader();
+        await uploader.uploadIDSFile(filename, xml, info);
+        
+        enqueueSnackbar(`IDS-Datei erfolgreich zu MinIO hochgeladen: ${filename}`, { variant: "success" });
+      } catch (configError) {
+        console.error("❌ MinIO configuration or upload failed:", configError);
+        enqueueSnackbar("MinIO Upload fehlgeschlagen: " + (configError instanceof Error ? configError.message : configError), { 
+          variant: "error",
+          autoHideDuration: 10000 
+        });
+      }
+
+    } catch (e: any) {
+      console.error("Save/Download process error:", e);
+      enqueueSnackbar("Fehler beim Speichern/Herunterladen: " + (e?.message || e), {
+        variant: "error",
+      });
+    }
+  };
+
   // handleSaveSpec: Property-Requirements als Enumeration für mehrere Merkmale
   const handleSaveSpec = () => {
     const enrichedRequirements: Requirement[] = [];
@@ -1613,6 +1689,15 @@ export const IDSExportView: React.FC = () => {
           disabled={!isIdsGenerated}
         >
           <T keyName="ids_export.buttons.download_ids" />
+        </Button>
+        <Button 
+          variant="outlined" 
+          color="primary"
+          startIcon={<CloudUploadIcon />}
+          onClick={handleSaveToMinIO}
+          disabled={!isIdsGenerated}
+        >
+          In MinIO speichern
         </Button>
       </Box>
 

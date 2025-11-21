@@ -1,9 +1,26 @@
-*
-!src
-!public
-!index.html
-!.env
-!nginx.conf
-!package*.json
-!tsconfig.json
-!vite.config.ts
+# Node modules
+node_modules
+
+# Build artifacts (werden im Container erstellt)
+dist
+build
+.vite
+
+# Environment files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Git & IDE
+.git
+.gitignore
+.vscode
+.idea
+*.iml
+
+# Logs & Temp
+*.log
+.eslintcache
+coverage
+tmp
