@@ -53,6 +53,56 @@ export class MinIOUploader {
   }
 
   /**
+   * Prüft ob Bucket existiert und erstellt ihn falls nötig
+   */
+  private async ensureBucketExists(): Promise<boolean> {
+    try {
+      // HEAD Request auf Bucket
+      const bucketPath = `/${this.config.bucketName}`;
+      const bucketUrl = `${this.baseUrl}${bucketPath}`;
+      const headHeaders = await this.createAWSV4Headers('HEAD', bucketPath);
+      
+      const headResponse = await fetch(bucketUrl, {
+        method: 'HEAD',
+        headers: headHeaders,
+        signal: AbortSignal.timeout(3000)
+      });
+
+      if (headResponse.ok) {
+        console.log(`✅ Bucket ${this.config.bucketName} exists`);
+        return true;
+      }
+
+      // Bucket existiert nicht (404) - versuche zu erstellen
+      if (headResponse.status === 404) {
+        console.log(`📦 Creating bucket ${this.config.bucketName}...`);
+        const putHeaders = await this.createAWSV4Headers('PUT', bucketPath);
+        
+        const putResponse = await fetch(bucketUrl, {
+          method: 'PUT',
+          headers: putHeaders,
+          signal: AbortSignal.timeout(3000)
+        });
+
+        if (putResponse.ok) {
+          console.log(`✅ Bucket ${this.config.bucketName} created successfully`);
+          return true;
+        } else {
+          const errorText = await putResponse.text().catch(() => 'Unknown error');
+          console.error(`❌ Failed to create bucket: ${putResponse.status} - ${errorText}`);
+          return false;
+        }
+      }
+
+      console.warn(`⚠️ Unexpected bucket status: ${headResponse.status}`);
+      return false;
+    } catch (error) {
+      console.error(`❌ Bucket check/creation failed:`, error);
+      return false;
+    }
+  }
+
+  /**
    * AWS Signature V4 für MinIO
    */
   private async createAWSV4Headers(method: string, path: string, payload: string = ''): Promise<Record<string, string>> {
@@ -120,6 +170,13 @@ export class MinIOUploader {
 async uploadIDSFile(filename: string, xmlContent: string): Promise<void> {
     // ✅ WICHTIG: XML-Content NIEMALS modifizieren!
     const originalContent = xmlContent;
+    
+    // Stelle sicher, dass der Bucket existiert
+    const bucketReady = await this.ensureBucketExists();
+    if (!bucketReady) {
+      console.warn(`⚠️ Bucket not available - skipping upload for ${filename}`);
+      return;
+    }
     
     const path = `/${this.config.bucketName}/${filename}`;
     const url = `${this.baseUrl}${path}`;
