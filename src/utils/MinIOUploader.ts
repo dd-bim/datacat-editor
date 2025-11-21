@@ -18,7 +18,8 @@ export class MinIOUploader {
   constructor(config: MinIOUploadConfig) {
     this.config = config;
     const protocol = config.useSSL ? 'https' : 'http';
-    this.baseUrl = `${protocol}://${config.endpoint}:${config.port}`;
+    this.baseUrl = config.useSSL ? `${protocol}://${config.endpoint}` : `${protocol}://${config.endpoint}:${config.port}`;
+
     
     console.log(`MinIO Upload configured: ${this.baseUrl}/${config.bucketName}`);
   }
@@ -61,7 +62,9 @@ export class MinIOUploader {
     
     const region = 'us-east-1';
     const service = 's3';
-    const host = `${this.config.endpoint}:${this.config.port}`;
+    const host = this.config.useSSL 
+      ? this.config.endpoint 
+      : `${this.config.endpoint}:${this.config.port}`;
     
     // Headers für Signature
     const headers = {
@@ -114,29 +117,10 @@ export class MinIOUploader {
     };
   }
 
-async uploadIDSFile(filename: string, xmlContent: string, metadata?: any): Promise<void> {
+async uploadIDSFile(filename: string, xmlContent: string): Promise<void> {
     // ✅ WICHTIG: XML-Content NIEMALS modifizieren!
     const originalContent = xmlContent;
     
-    // Verbindungstest mit kurzen Timeout
-    let isConnected = false;
-    try {
-      const testResponse = await fetch(`${this.baseUrl}/`, { 
-        mode: 'no-cors',
-        signal: AbortSignal.timeout(2000) // 2 Sekunden
-      });
-      isConnected = true;
-      console.log(`✅ MinIO connection OK`);
-    } catch (error) {
-      console.warn(`⚠️ MinIO not reachable - skipping upload: ${error}`);
-      return; // Graceful exit - XML bleibt unberührt
-    }
-
-    if (!isConnected) {
-      console.warn(`⚠️ MinIO not available - skipping upload for ${filename}`);
-      return;
-    }
-
     const path = `/${this.config.bucketName}/${filename}`;
     const url = `${this.baseUrl}${path}`;
     
@@ -171,27 +155,43 @@ async uploadIDSFile(filename: string, xmlContent: string, metadata?: any): Promi
 }
 
 /**
+ * Hilfsfunktion um Runtime-Konfiguration zu laden
+ */
+function getRuntimeConfig() {
+  // Fallback auf import.meta.env wenn window.ENV_CONFIG nicht verfügbar ist (Development)
+  const runtimeConfig = window?.ENV_CONFIG;
+  
+  return {
+    endpoint: runtimeConfig?.MINIO_ENDPOINT || import.meta.env.VITE_MINIO_ENDPOINT || 'localhost',
+    port: parseInt(runtimeConfig?.MINIO_PORT || import.meta.env.VITE_MINIO_PORT || '9000'),
+    useSSL: (runtimeConfig?.MINIO_USE_SSL || import.meta.env.VITE_MINIO_USE_SSL) === 'true',
+    bucketName: runtimeConfig?.MINIO_BUCKET_NAME || import.meta.env.VITE_MINIO_BUCKET_NAME,
+    accessKey: runtimeConfig?.MINIO_ACCESS_KEY || import.meta.env.VITE_MINIO_ACCESS_KEY,
+    secretKey: runtimeConfig?.MINIO_SECRET_KEY || import.meta.env.VITE_MINIO_SECRET_KEY,
+  };
+}
+
+/**
  * Factory-Funktion für MinIO Uploader
  */
 export function createMinIOUploader(): MinIOUploader {
-  let endpoint = import.meta.env.VITE_MINIO_ENDPOINT || 'localhost';
-  const port = parseInt(import.meta.env.VITE_MINIO_PORT || '9000');
-  const useSSL = import.meta.env.VITE_MINIO_USE_SSL === 'true';
-  const accessKey = import.meta.env.VITE_MINIO_ACCESS_KEY;
-  const secretKey = import.meta.env.VITE_MINIO_SECRET_KEY;
-  const bucketName = 'ids-files';
+  const runtimeConfig = getRuntimeConfig();
 
-  if (!accessKey || !secretKey) {
+  if (!runtimeConfig.accessKey || !runtimeConfig.secretKey) {
     console.warn('⚠️ MinIO credentials missing - uploads will be skipped');
   }
 
+  // console.log(`🔧 MinIO Config loaded from: ${window?.ENV_CONFIG ? 'Runtime (env-config.js)' : 'Build-time (import.meta.env)'}`);
+  // console.log(`📍 MinIO Endpoint: ${runtimeConfig.endpoint}:${runtimeConfig.port} (SSL: ${runtimeConfig.useSSL})`);
+  // console.log(`🗃️ MinIO Bucket: ${runtimeConfig.bucketName}`);
+
   const config: MinIOUploadConfig = {
-    endpoint,
-    port,
-    useSSL,
-    accessKey: accessKey || 'dummy',
-    secretKey: secretKey || 'dummy',
-    bucketName,
+    endpoint: runtimeConfig.endpoint,
+    port: runtimeConfig.port,
+    useSSL: runtimeConfig.useSSL,
+    bucketName: runtimeConfig.bucketName,
+    accessKey: runtimeConfig.accessKey || 'dummy',
+    secretKey: runtimeConfig.secretKey || 'dummy'
   };
 
   return new MinIOUploader(config);
