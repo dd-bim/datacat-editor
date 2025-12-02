@@ -20,6 +20,8 @@ import { useSnackbar } from "notistack";
 import { T, useTranslate } from "@tolgee/react";
 import { 
   usePropertyTreeQuery,
+  useFindItemQuery,
+  CatalogRecordType,
 } from "../generated/types";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -71,25 +73,37 @@ export const CreatePropertySetDialog: React.FC<CreatePropertySetDialogProps> = (
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const { enqueueSnackbar } = useSnackbar();
 
-  // Lade alle Properties aus DataCat
-  const { data: propertyData, loading: propertyLoading } = usePropertyTreeQuery({
+  // Lade ALLE Properties aus DataCat (SearchResultProps hat kein dictionary-Feld)
+  const { data: allPropertiesData, loading: allPropertiesLoading } = useFindItemQuery({
+    variables: {
+      input: {
+        entityTypeIn: [CatalogRecordType.Property],
+      },
+      pageSize: 10000,
+      pageNumber: 0,
+    },
     fetchPolicy: "cache-first",
   });
 
-  // Extrahiere alle verfügbaren Properties
+  // Lade PropertyTree für Werte-Zuordnung
+  const { data: propertyData } = usePropertyTreeQuery({
+    fetchPolicy: "cache-first",
+  });
+
+  // Extrahiere alle verfügbaren Properties (KEINE Dictionary-Filterung)
   const allProperties = useMemo(() => {
-    if (!propertyData?.hierarchy?.nodes) return [];
+    if (!allPropertiesData?.search?.nodes) return [];
     
-    return propertyData.hierarchy.nodes
-      .filter((node: any) => node.recordType === "Property")
+    return allPropertiesData.search.nodes
+      .filter((node: any) => node.recordType === CatalogRecordType.Property)
       .map((node: any) => ({
         id: node.id,
         name: node.name || `Property ${node.id}`,
         description: node.description || "",
-        tags: node.tags || [], // Tag-Informationen hinzufügen
+        tags: node.tags || [],
       }))
       .sort((a: any, b: any) => a.name.localeCompare(b.name));
-  }, [propertyData?.hierarchy?.nodes]);
+  }, [allPropertiesData?.search?.nodes]);
 
   // Lade verfügbare Werte für eine Property
   const getValuesForProperty = useMemo(() => {
@@ -169,8 +183,8 @@ export const CreatePropertySetDialog: React.FC<CreatePropertySetDialogProps> = (
     if (!open) {
       setPropertySetName("");
       setSelectedProperties([]);
-      setPropertyValues({}); // Reset Property Values
-      setRawTextValues({}); // Reset Raw Text Values
+      setPropertyValues({});
+      setRawTextValues({});
       setIsCreating(false);
       setSelectedTag(null);
     }
@@ -313,43 +327,45 @@ export const CreatePropertySetDialog: React.FC<CreatePropertySetDialogProps> = (
             </TagFilterSection>
           )}
 
+          {/* Merkmal-Auswahl */}
           <Autocomplete
-            multiple
-            options={allProperties}
-            getOptionLabel={(option: any) => option.name}
-            value={selectedProperties}
-            onChange={(event, newValue) => setSelectedProperties(newValue)}
-            loading={propertyLoading}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label={<T keyName="create_property_set.labels.select_properties" />}
-                placeholder={t("create_property_set.placeholders.search_and_select")}
-              />
-            )}
-            renderTags={(value, getTagProps) =>
-              value.map((option: any, index: number) => {
-                const { key, onDelete, ...otherTagProps } = getTagProps({ index });
-                return (
-                  <Chip
-                    key={key}
-                    label={option.name}
-                    {...otherTagProps}
-                    onDelete={() => handleRemoveProperty(option)}
-                    deleteIcon={<CloseIcon />}
-                    color="primary"
-                    variant="outlined"
-                  />
+              multiple
+              options={allProperties}
+              getOptionLabel={(option: any) => option.name}
+              value={selectedProperties}
+              onChange={(event, newValue) => setSelectedProperties(newValue)}
+              loading={allPropertiesLoading}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label={<T keyName="create_property_set.labels.select_properties" />}
+                  placeholder={t("create_property_set.placeholders.search_and_select")}
+                  helperText={allPropertiesLoading ? "Lade Merkmale..." : `${allProperties.length} Merkmale verfügbar`}
+                />
+              )}
+              renderTags={(value, getTagProps) =>
+                value.map((option: any, index: number) => {
+                  const { key, onDelete, ...otherTagProps } = getTagProps({ index });
+                  return (
+                    <Chip
+                      key={key}
+                      label={option.name}
+                      {...otherTagProps}
+                      onDelete={() => handleRemoveProperty(option)}
+                      deleteIcon={<CloseIcon />}
+                      color="primary"
+                      variant="outlined"
+                    />
+                  );
+                })
+              }
+              filterOptions={(options, { inputValue }) => {
+                return options.filter((option: any) =>
+                  option.name.toLowerCase().includes(inputValue.toLowerCase())
                 );
-              })
-            }
-            filterOptions={(options, { inputValue }) => {
-              return options.filter((option: any) =>
-                option.name.toLowerCase().includes(inputValue.toLowerCase())
-              );
-            }}
-            disabled={isCreating}
-          />
+              }}
+              disabled={isCreating || allPropertiesLoading}
+            />
 
           {selectedProperties.length > 0 && (
             <>

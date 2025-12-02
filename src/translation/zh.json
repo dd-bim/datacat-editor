@@ -553,6 +553,7 @@
     "edit": "编辑分配"
   },
     "ids_export": {
+    "loading_data": "正在加载数据...请等待所有字典、类和主题可用。",
     "tag_filter": {
       "classes": "类别标签筛选：",
       "properties": "属性标签筛选："
@@ -615,6 +616,8 @@
       "instructions_optional": "说明（可选）",
       "loading_property_groups": "正在加载属性组...",
       "local_created": "本地创建",
+      "theme": "主题",
+      "subtheme": "子主题",
       "material_category": "材料类别",
       "material_properties_optional": "材料属性（可选）",
       "material_select": "选择材料",
@@ -711,7 +714,14 @@
       "login_required": "需要登录才能创建IDS文件。"
     },
     "messages": {
-      "no_requirements": "尚未添加要求。点击上方按钮之一以添加要求。"
+      "no_requirements": "尚未添加要求。点击上方按钮之一以添加要求。",
+      "classes_loaded": "已加载 {count} 个类别",
+      "error_loading_classes": "加载类别时出错",
+      "loading_classes": "正在加载类别...",
+      "filter_active": "筛选器已激活：{themes} 个主题，{subthemes} 个子主题",
+      "classes_selected": "已选择 {count} 个类别",
+      "theme_filter_optional": "🔍 可选筛选器：按主题/子主题限制类别",
+      "theme_or_subtheme_select": "选择主题或子主题（可选）"
     },
     "tooltips": {
       "export_disabled": "无法导出：需要标题、版本和至少一个规范"
