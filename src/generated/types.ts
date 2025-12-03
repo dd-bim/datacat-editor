@@ -176,6 +176,7 @@ export type DeleteRelationshipInput = {
   relationshipType: RelationshipRecordType;
   fromId: Scalars['ID'];
   toId: Scalars['ID'];
+  name: Scalars['String'];
 };
 
 
@@ -577,8 +578,9 @@ type ObjectProps_XtdSubdivision_Fragment = ObjectProps<'XtdSubdivision'>;
 type ObjectProps_XtdRelationshipToSubject_Fragment = ObjectProps<'XtdRelationshipToSubject'>;
 type ObjectProps_XtdRelationshipToProperty_Fragment = ObjectProps<'XtdRelationshipToProperty'>;
 type ObjectProps_XtdQuantityKind_Fragment = ObjectProps<'XtdQuantityKind'>;
+type ObjectProps_XtdRelationshipType_Fragment = ObjectProps<'XtdRelationshipType'>;
 
-export type ObjectPropsFragment = ObjectProps_XtdExternalDocument_Fragment | ObjectProps_XtdProperty_Fragment | ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment | ObjectProps_XtdOrderedValue_Fragment | ObjectProps_XtdValueList_Fragment | ObjectProps_XtdDimension_Fragment | ObjectProps_XtdCountry_Fragment | ObjectProps_XtdSubdivision_Fragment | ObjectProps_XtdRelationshipToSubject_Fragment | ObjectProps_XtdRelationshipToProperty_Fragment | ObjectProps_XtdQuantityKind_Fragment;
+export type ObjectPropsFragment = ObjectProps_XtdExternalDocument_Fragment | ObjectProps_XtdProperty_Fragment | ObjectProps_XtdSubject_Fragment | ObjectProps_XtdUnit_Fragment | ObjectProps_XtdValue_Fragment | ObjectProps_XtdOrderedValue_Fragment | ObjectProps_XtdValueList_Fragment | ObjectProps_XtdDimension_Fragment | ObjectProps_XtdCountry_Fragment | ObjectProps_XtdSubdivision_Fragment | ObjectProps_XtdRelationshipToSubject_Fragment | ObjectProps_XtdRelationshipToProperty_Fragment | ObjectProps_XtdQuantityKind_Fragment | ObjectProps_XtdRelationshipType_Fragment;
 
 export type ExportCatalogRecord_Fragment = { __typename: 'ExportResult', id: string, type?: Maybe<string>, tags?: Maybe<string>, name?: Maybe<string>, name_en?: Maybe<string>, description?: Maybe<string>, majorVersion?: Maybe<number>, minorVersion?: Maybe<number>, created?: Maybe<string>, createdBy?: Maybe<string>, lastModified?: Maybe<string>, lastModifiedBy?: Maybe<string>, status?: Maybe<StatusOfActivationEnum>, languageOfCreator?: Maybe<string>, countryOfOrigin?: Maybe<string>, deprecationExplanation?: Maybe<string>, languages?: Maybe<string>, examples?: Maybe<string>, dataType?: Maybe<DataTypeEnum>, dataFormat?: Maybe<string>, scale?: Maybe<UnitScaleEnum>, base?: Maybe<UnitBaseEnum>, uri?: Maybe<string>, author?: Maybe<string>, publisher?: Maybe<string>, isbn?: Maybe<string>, dateOfPublication?: Maybe<string> };
 
@@ -611,8 +613,9 @@ type ConceptProps_XtdCountry_Fragment = ConceptProps_Base_Fragment & ObjectProps
 type ConceptProps_XtdSubdivision_Fragment = ConceptProps_Base_Fragment & ObjectProps_XtdSubdivision_Fragment;
 type ConceptProps_XtdRelationshipToProperty_Fragment = ConceptProps_Base_Fragment & ObjectProps_XtdRelationshipToProperty_Fragment;
 type ConceptProps_XtdQuantityKind_Fragment = ConceptProps_Base_Fragment & ObjectProps_XtdQuantityKind_Fragment;
+type ConceptProps_XtdRelationshipType_Fragment = ConceptProps_Base_Fragment & ObjectProps_XtdRelationshipType_Fragment;
 
-export type ConceptPropsFragment = ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValueList_Fragment | ConceptProps_XtdDimension_Fragment | ConceptProps_XtdCountry_Fragment | ConceptProps_XtdSubdivision_Fragment | ConceptProps_XtdRelationshipToProperty_Fragment | ConceptProps_XtdQuantityKind_Fragment;
+export type ConceptPropsFragment = ConceptProps_XtdExternalDocument_Fragment | ConceptProps_XtdProperty_Fragment | ConceptProps_XtdSubject_Fragment | ConceptProps_XtdUnit_Fragment | ConceptProps_XtdValueList_Fragment | ConceptProps_XtdDimension_Fragment | ConceptProps_XtdCountry_Fragment | ConceptProps_XtdSubdivision_Fragment | ConceptProps_XtdRelationshipToProperty_Fragment | ConceptProps_XtdQuantityKind_Fragment | ConceptProps_XtdRelationshipType_Fragment;
 
 export type MetaPropsFragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
 
@@ -629,9 +632,10 @@ type ObjectDetailProps_XtdSubdivision_Fragment = MetaPropsFragment & ConceptProp
 type ObjectDetailProps_XtdRelationshipToProperty_Fragment = MetaPropsFragment & ConceptProps_XtdRelationshipToProperty_Fragment;
 type ObjectDetailProps_XtdRelationshipToSubject_Fragment = MetaPropsFragment & ObjectProps_XtdRelationshipToSubject_Fragment;
 type ObjectDetailProps_XtdQuantityKind_Fragment = MetaPropsFragment & ConceptProps_XtdQuantityKind_Fragment;
+type ObjectDetailProps_XtdRelationshipType_Fragment = MetaPropsFragment & ConceptProps_XtdRelationshipType_Fragment;
 export type DictionaryDetailPropsFragment = MetaPropsFragment & DictionaryPropsFragment;
 
-export type ObjectDetailPropsFragment = ObjectDetailProps_XtdExternalDocument_Fragment | ObjectDetailProps_XtdProperty_Fragment | ObjectDetailProps_XtdSubject_Fragment | ObjectDetailProps_XtdUnit_Fragment | ObjectDetailProps_XtdValue_Fragment | ObjectDetailProps_XtdOrderedValue_Fragment | ObjectDetailProps_XtdValueList_Fragment | ObjectDetailProps_XtdDimension_Fragment | ObjectDetailProps_XtdCountry_Fragment | ObjectDetailProps_XtdSubdivision_Fragment | ObjectDetailProps_XtdRelationshipToProperty_Fragment | ObjectDetailProps_XtdRelationshipToSubject_Fragment | ObjectDetailProps_XtdQuantityKind_Fragment;
+export type ObjectDetailPropsFragment = ObjectDetailProps_XtdExternalDocument_Fragment | ObjectDetailProps_XtdProperty_Fragment | ObjectDetailProps_XtdSubject_Fragment | ObjectDetailProps_XtdUnit_Fragment | ObjectDetailProps_XtdValue_Fragment | ObjectDetailProps_XtdOrderedValue_Fragment | ObjectDetailProps_XtdValueList_Fragment | ObjectDetailProps_XtdDimension_Fragment | ObjectDetailProps_XtdCountry_Fragment | ObjectDetailProps_XtdSubdivision_Fragment | ObjectDetailProps_XtdRelationshipToProperty_Fragment | ObjectDetailProps_XtdRelationshipToSubject_Fragment | ObjectDetailProps_XtdQuantityKind_Fragment | ObjectDetailProps_XtdRelationshipType_Fragment;
 
 export type ExternalDocumentDetailPropsFragment = ObjectDetailProps_XtdExternalDocument_Fragment & {
   documentUri?: Maybe<string>,
@@ -710,13 +714,17 @@ export type SubdivisionDetailPropsFragment = ObjectDetailProps_XtdSubdivision_Fr
   subdivisions: Array<SubdivisionDetailPropsFragment>
 };
 
+export type RelationshipTypeDetailPropsFragment = ObjectDetailProps_XtdRelationshipType_Fragment & {
+  kind: RelationshipKindEnum
+};
+
 export type RelationshipToPropertyDetailPropsFragment = {
   relationshipType: PropertyRelationshipTypeEnum,
   targetProperties: Array<PropertyDetailPropsFragment>
 };
 
 export type RelationshipToSubjectDetailPropsFragment = ObjectDetailProps_XtdRelationshipToSubject_Fragment & {
-  relationshipType: RelationshipRecordType,
+  relationshipType: RelationshipTypeDetailPropsFragment,
   targetSubjects: Array<SubjectDetailPropsFragment>,
   connectingSubject: SubjectDetailPropsFragment
 };
@@ -1089,6 +1097,12 @@ export type FindQuantityKindsQueryVariables = Exact<{
   input: FilterInput;
 }>;
 
+export type FindRelationshipTypesQuery = { findRelationshipTypes?: Maybe<{ totalElements: number, nodes: Array<RelationshipTypeDetailPropsFragment> }> };
+
+export type FindRelationshipTypesQueryVariables = Exact<{
+  input: FilterInput;
+}>;
+
 export type FindQuantityKindsQuery = { findQuantityKinds?: Maybe<{ totalElements: number, nodes: Array<QuantityKindDetailPropsFragment> }> };
 
 export type FindRationalsQueryVariables = Exact<{
@@ -1254,6 +1268,11 @@ export type GetRelationshipToPropertyEntryQuery = { node?: Maybe<RelationshipToP
 export type GetLanguageEntryQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
+
+export type GetRelationshipTypeEntryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+export type GetRelationshipTypeEntryQuery = { node?: Maybe<RelationshipTypeDetailPropsFragment> };
 
 export type GetLanguageEntryQuery = { node?: Maybe<LanguagePropsFragment> };
 
@@ -1697,6 +1716,7 @@ export const RelationshipToSubjectDetailPropsFragmentDoc = gql`
         ...RelationsProps
     }
     relationshipType {
+        name
         kind
     }
     relatingSubject {
@@ -1909,6 +1929,13 @@ export const SignupFormDocument = gql`
   success: signup(input: $profile)
 }
     `;
+
+export const RelationshipTypePropsFragmentDoc = gql`
+  fragment RelationshipTypeProps on XtdRelationshipType {
+    name
+    kind
+  }
+`;
 
 /**
  * __useSignupFormMutation__
@@ -4347,6 +4374,41 @@ export function useFindRelationshipToPropertyLazyQuery(baseOptions?: LazyQueryHo
 export type FindRelationshipToPropertyQueryHookResult = ReturnType<typeof useFindRelationshipToPropertyQuery>;
 export type FindRelationshipToPropertyLazyQueryHookResult = ReturnType<typeof useFindRelationshipToPropertyLazyQuery>;
 export type FindRelationshipToPropertyQueryResult = QueryResult<FindRelationshipToPropertyQuery, FindRelationshipToPropertyQueryVariables>;
+
+export const FindRelationshipTypesQueryDocument = gql`
+    query FindRelationshipTypesQuery($input: FilterInput!) {
+  findRelationshipTypes(input: $input) {
+    nodes {
+      ...RelationshipTypeProps
+    }
+    totalElements
+  }
+}
+    ${RelationshipTypePropsFragmentDoc}`;
+/**
+ * __useFindRelationshipTypesQuery__
+ *
+ * To run a query within a React component, call `useFindRelationshipTypesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindRelationshipTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @example
+ * const { data, loading, error } = useFindRelationshipTypesQuery({
+ * variables: {
+ *   input: // value for 'input'
+ * },
+ * });
+ */
+export function useFindRelationshipTypesQuery(baseOptions: QueryHookOptions<FindRelationshipTypesQuery, FindRelationshipTypesQueryVariables>) {
+  return useQuery<FindRelationshipTypesQuery, FindRelationshipTypesQueryVariables>(FindRelationshipTypesQueryDocument, baseOptions);
+}
+export function useFindRelationshipTypesLazyQuery(baseOptions?: LazyQueryHookOptions<FindRelationshipTypesQuery, FindRelationshipTypesQueryVariables>) {
+  return useLazyQuery<FindRelationshipTypesQuery, FindRelationshipTypesQueryVariables>(FindRelationshipTypesQueryDocument, baseOptions);
+}
+export type FindRelationshipTypesQueryHookResult = ReturnType<typeof useFindRelationshipTypesQuery>;
+export type FindRelationshipTypesLazyQueryHookResult = ReturnType<typeof useFindRelationshipTypesLazyQuery>;
+export type FindRelationshipTypesQueryResult = QueryResult<FindRelationshipTypesQuery, FindRelationshipTypesQueryVariables>;
+
 export const FindDimensionsQueryDocument = gql`
     query FindDimensionsQuery($input: FilterInput!) {
   findDimensions(input: $input) {
@@ -4868,12 +4930,20 @@ export const GetSubjectEntryDocument = gql`
     }
     connectedSubjects {
         ...RelationsProps
+        relationshipType {
+          name
+          kind
+        }
         targetSubjects {
           ...RelationsProps
         }
     }
     connectingSubjects {
         ...RelationsProps
+        relationshipType {
+          name
+          kind
+        }
         connectingSubject {
             ...RelationsProps 
         }
@@ -5256,6 +5326,40 @@ export function useGetRelationshipToPropertyEntryLazyQuery(baseOptions?: LazyQue
 export type GetRelationshipToPropertyEntryQueryHookResult = ReturnType<typeof useGetRelationshipToPropertyEntryQuery>;
 export type GetRelationshipToPropertyEntryLazyQueryHookResult = ReturnType<typeof useGetRelationshipToPropertyEntryLazyQuery>;
 export type GetRelationshipToPropertyEntryQueryResult = QueryResult<GetRelationshipToPropertyEntryQuery, GetRelationshipToPropertyEntryQueryVariables>;
+
+export const GetRelationshipTypeEntryDocument = gql`
+    query GetRelationshipTypeEntry($id: ID!) {
+  node: getRelationshipType(id: $id) {
+    ...RelationshipTypeProps
+  }
+}
+    ${RelationshipTypePropsFragmentDoc}`;
+/**
+ * __useGetRelationshipTypeEntryQuery__
+ *
+ * To run a query within a React component, call `useGetRelationshipTypeEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRelationshipTypeEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *  
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * 
+ * @example
+ * const { data, loading, error } = useGetRelationshipTypeEntryQuery({
+ *  variables: {
+ *   id: // value for 'id'
+ *  },
+ * });
+  */
+export function useGetRelationshipTypeEntryQuery(baseOptions: QueryHookOptions<GetRelationshipTypeEntryQuery, GetRelationshipTypeEntryQueryVariables>) {
+  return useQuery<GetRelationshipTypeEntryQuery, GetRelationshipTypeEntryQueryVariables>(GetRelationshipTypeEntryDocument, baseOptions);
+}
+export function useGetRelationshipTypeEntryLazyQuery(baseOptions?: LazyQueryHookOptions<GetRelationshipTypeEntryQuery, GetRelationshipTypeEntryQueryVariables>) {
+  return useLazyQuery<GetRelationshipTypeEntryQuery, GetRelationshipTypeEntryQueryVariables>(GetRelationshipTypeEntryDocument, baseOptions);
+}
+export type GetRelationshipTypeEntryQueryHookResult = ReturnType<typeof useGetRelationshipTypeEntryQuery>;
+export type GetRelationshipTypeEntryLazyQueryHookResult = ReturnType<typeof useGetRelationshipTypeEntryLazyQuery>;
+export type GetRelationshipTypeEntryQueryResult = QueryResult<GetRelationshipTypeEntryQuery, GetRelationshipTypeEntryQueryVariables>;
+
 export const GetLanguageEntryDocument = gql`
     query GetLanguageEntry($id: ID!) {
   node: getLanguage(id: $id) {

@@ -48,6 +48,15 @@ query GetObjectEntry($id: ID!) {
 query GetSubjectEntry($id: ID!) {
     node: getSubject(id: $id) {
         ...SubjectDetailProps
+        connectedSubjects {
+            ...RelationshipToSubjectDetailProps
+        }
+        connectingSubjects {
+            ...RelationshipToSubjectDetailProps
+            connectingSubject {
+                ...ConceptDetailProps
+            }
+        }
     }
 }
 
@@ -109,5 +118,16 @@ query GetDictionaryEntryWithPagination($id: ID!, $pageSize: Int = 20, $pageNumbe
             }
             totalElements
         }
+    }
+}
+
+query FindRelationshipTypes($input: FilterInput!) {
+    findRelationshipTypes(input: $input) {
+        nodes {
+            id
+            name
+            kind
+        }
+        totalElements
     }
 }

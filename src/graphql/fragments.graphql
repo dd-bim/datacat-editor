@@ -183,7 +183,10 @@ fragment SubjectDetailProps on XtdSubject {
         }
     }
     connectedSubjects {
-        ...RelationshipToSubjectProps
+        ...RelationshipToSubjectDetailProps
+    }
+    connectingSubjects {
+        ...RelationshipToSubjectDetailProps
     }
 }
 
@@ -345,6 +348,8 @@ fragment RelationshipToSubjectDetailProps on XtdRelationshipToSubject {
         ...SubjectDetailProps
     }
     relationshipType {
+        id
+        name(input: { languageTags: ["de-DE", "en-US"] })
         kind
     }
 }

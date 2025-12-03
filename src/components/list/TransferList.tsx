@@ -63,10 +63,15 @@ export default function TransferList(props: TransferListProps) {
 
     const [searchTerm, setSearchTerm] = useState("");
 
-    // Berechne die Höhe für die Relationen-Liste basierend auf maxVisibleItems
-    // Höhe = (Anzahl sichtbarer Items * Zeilenhöhe) + TextField-Höhe (ca. 56px)
-    const calculatedHeight = (maxVisibleItems * ITEM_ROW_SIZE) + 56;
-    const relationListHeight = height ?? calculatedHeight;
+    // Berechne die Höhe dynamisch basierend auf der Anzahl der Items
+    // Mindesthöhe: 1 Item, Maximalhöhe: maxVisibleItems
+    const textFieldHeight = 56; // TextField mit Margin
+    const minItems = 1;
+    const actualItems = Math.max(minItems, Math.min(items.length, maxVisibleItems));
+    const dynamicHeight = (actualItems * ITEM_ROW_SIZE) + textFieldHeight;
+    
+    // Wenn eine feste Höhe übergeben wurde, diese verwenden, sonst dynamische Höhe
+    const relationListHeight = height ?? dynamicHeight;
 
     return (
         <Stack 

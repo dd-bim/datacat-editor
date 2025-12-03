@@ -1,10 +1,3 @@
-/**
- * DomainClassForm - Formular für Domänenklassen
- * 
- * Zeigt die Relationen als kompakte Chips in Kacheln an.
- * Für die Legacy-Version mit TransferList-Ansichten siehe deprecated/DomainClassFormLegacy.tsx
- */
-
 import {
   RelationshipKindEnum,
   RelationshipRecordType,
@@ -24,8 +17,12 @@ import { PropertyEntity, DocumentEntity, PropertyGroupEntity, ClassEntity, Value
 import FormView, { FormProps } from "./FormView";
 import TransferListView from "../TransferListView";
 import TransferListViewRelationshipToSubject from "../TransferListViewRelationshipToSubject";
+import SubClassesTransferListView from "../SubClassesTransferListView";
+import SuperClassesTransferListView from "../SuperClassesTransferListView";
+import PartsTransferListView from "../PartsTransferListView";
+import PartOfTransferListView from "../PartOfTransferListView";
+import OtherRelationsView from "../OtherRelationsView";
 import RelationGraphView from "../RelationGraphView";
-import RelationChipsViewEditable from "../RelationChipsViewEditable";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import { T } from "@tolgee/react";
 import StatusFormSet from "../../components/forms/StatusFormSet";
@@ -82,6 +79,7 @@ export default function DomainClassForm(
     );
   };
 
+  // console.log("DomainClassForm - entry:", entry);
   const relatedRelations = entry.connectedSubjects ?? [];
   const allTargetSubjects = relatedRelations.flatMap(rel => rel.targetSubjects ?? []);
   const relatedPropertyGroups = {
@@ -92,6 +90,7 @@ export default function DomainClassForm(
 
   const relatingRelations = entry.connectingSubjects ?? [];
   const allRelatingSubjects = relatingRelations.flatMap(rel => rel.connectingSubject ?? []);
+
 
   const relatedProperties = entry.properties ?? [];
   const relatedDocuments = entry.referenceDocuments ?? [];
@@ -229,15 +228,81 @@ export default function DomainClassForm(
         relatingRecords={allRelatingSubjects}
       />
 
-      {/* ==================== KOMPAKTE RELATIONS-ANSICHT ==================== */}
-
-      {/* Kompakte editierbare Chip-Ansicht für Klassenbeziehungen */}
-      <RelationChipsViewEditable entry={entry} onUpdate={handleOnUpdate} />
-
       {/* Relationsgraph - Visualisierung aller Relationen */}
       <RelationGraphView entry={entry} />
-      
-      {/* ==================== ENDE KOMPAKTE RELATIONS-ANSICHT ==================== */}
+
+      {/* SubClasses - Spezialisierungen */}
+
+      <SubClassesTransferListView
+        title={<span><b><T keyName="class.subclasses">Subklassen</T></b></span>}
+        relatingItemId={id}
+        connectedSubjects={entry.connectedSubjects}
+        searchInput={{
+          entityTypeIn: [ClassEntity.recordType],
+          tagged: ClassEntity.tags
+        }}
+        onCreate={handleOnUpdate}
+        onUpdate={handleOnUpdate}
+        onDelete={handleOnUpdate}
+      />
+
+      {/* SuperClasses - Generalisierungen */}
+
+      <SuperClassesTransferListView
+        title={<span><b><T keyName="class.superclasses">Superklassen</T></b></span>}
+        relatingItemId={id}
+        connectingSubjects={entry.connectingSubjects}
+        searchInput={{
+          entityTypeIn: [ClassEntity.recordType],
+          tagged: ClassEntity.tags
+        }}
+        onCreate={handleOnUpdate}
+        onUpdate={handleOnUpdate}
+        onDelete={handleOnUpdate}
+      />
+
+      {/* Parts - Hat Teile */}
+
+      <PartsTransferListView
+        title={<span><b><T keyName="class.parts">Hat Teile</T></b></span>}
+        relatingItemId={id}
+        connectingSubjects={entry.connectingSubjects}
+        searchInput={{
+          entityTypeIn: [ClassEntity.recordType],
+          tagged: ClassEntity.tags
+        }}
+        onCreate={handleOnUpdate}
+        onUpdate={handleOnUpdate}
+        onDelete={handleOnUpdate}
+      />
+
+      {/* PartOf - Teil von */}
+
+      <PartOfTransferListView
+        title={<span><b><T keyName="class.partof">Teil von</T></b></span>}
+        relatingItemId={id}
+        connectedSubjects={entry.connectedSubjects}
+        searchInput={{
+          entityTypeIn: [ClassEntity.recordType],
+          tagged: ClassEntity.tags
+        }}
+        onCreate={handleOnUpdate}
+        onUpdate={handleOnUpdate}
+        onDelete={handleOnUpdate}
+      />
+
+      {/* Other Relations - Weitere Relationen */}
+
+      <OtherRelationsView
+        relatingItemId={id}
+        connectedSubjects={entry.connectedSubjects}
+        searchInput={{
+          entityTypeIn: [ClassEntity.recordType],
+          tagged: ClassEntity.tags
+        }}
+        onCreate={handleOnUpdate}
+        onDelete={handleOnUpdate}
+      />
       
       <MetaFormSet entry={entry} />
 

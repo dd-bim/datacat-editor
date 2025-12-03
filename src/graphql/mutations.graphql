@@ -135,3 +135,13 @@ mutation DeleteTag($catalogEntryId: ID!, $tagId: ID!) {
         }
     }
 }
+
+mutation CreateRelationshipType($name: String!, $kind: RelationshipKindEnum!) {
+    createRelationshipType(input: {name: $name, kind: $kind}) {
+        relationshipType {
+            id
+            name
+            kind
+        }
+    }
+}

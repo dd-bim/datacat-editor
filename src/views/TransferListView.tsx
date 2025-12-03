@@ -5,7 +5,7 @@ import {
     useCreateRelationshipMutation,
     useDeleteRelationshipMutation
 } from "../generated/types";
-import React, {JSX, useState} from "react";
+import React, {JSX, useState, useEffect, useCallback} from "react";
 import TransferList from "../components/list/TransferList";
 import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
@@ -65,6 +65,17 @@ export default function TransferListView(props: TransferListViewProps) {
     const navigate = useNavigate();
     const [editState, setEditState] = useState(false);
     const [selectedDictionaryId, setSelectedDictionaryId] = useState<string | null>(null);
+    
+    // Local state for optimistic updates
+    const [localItems, setLocalItems] = useState<CatalogRecord[]>([...relationships].sort(sortItems));
+    const [hasChanges, setHasChanges] = useState(false);
+
+    // Sync local state when relationships prop changes (e.g., after refetch)
+    useEffect(() => {
+        if (!editState) {
+            setLocalItems([...relationships].sort(sortItems));
+        }
+    }, [relationships, editState]);
 
     const update = (cache: ApolloCache) => cache.modify({
         id: "ROOT_QUERY",
@@ -85,7 +96,6 @@ export default function TransferListView(props: TransferListViewProps) {
                 }
             }
         });
-        onCreate?.();
     };
 
     const handleOnDeleteRelationship = async (toId: string) => {
@@ -94,28 +104,52 @@ export default function TransferListView(props: TransferListViewProps) {
                 input: {
                     relationshipType,
                     fromId: relatingItemId,
-                    toId
+                    toId,
+                    name: relationshipType // Use relationshipType as name
                 }
             }
         });
-        onDelete?.();
     };
+
+    // Close edit mode and trigger refetch if there were changes
+    const handleCloseEdit = useCallback(() => {
+        setEditState(false);
+        if (hasChanges) {
+            // Trigger refetch when closing edit mode
+            onCreate?.();
+            setHasChanges(false);
+        }
+    }, [hasChanges, onCreate]);
 
     let content: JSX.Element;
 
-    const items = [...relationships].sort(sortItems);
-
     const handleOnAdd = async (item: ObjectPropsFragment) => {
-        const relatedIds = items.map(x => x.id);
+        // Optimistically update local state
+        const newItem: CatalogRecord = {
+            id: item.id,
+            recordType: item.recordType,
+            name: item.name ?? undefined,
+            tags: item.tags ?? [],
+        };
+        setLocalItems(prev => [...prev, newItem].sort(sortItems));
+        setHasChanges(true);
+        
+        // Send to server
+        const relatedIds = localItems.map(x => x.id);
         relatedIds.push(item.id);
         await handleOnCreateRelationship(relatedIds);
     };
 
     const handleOnRemove = async (item: ObjectPropsFragment) => {
+        // Optimistically update local state
+        setLocalItems(prev => prev.filter(x => x.id !== item.id));
+        setHasChanges(true);
+        
+        // Send to server
         await handleOnDeleteRelationship(item.id);
     };
 
-    if (items.length === 0) {
+    if (localItems.length === 0) {
         if (editState) {
             content = (
                 <React.Fragment key="new-relationship">
@@ -128,6 +162,17 @@ export default function TransferListView(props: TransferListViewProps) {
                         selectedDictionaryId={selectedDictionaryId}
                         onDictionaryFilterChange={setSelectedDictionaryId}
                         onAdd={async item => {
+                            // Optimistically update local state
+                            const newItem: CatalogRecord = {
+                                id: item.id,
+                                recordType: item.recordType,
+                                name: item.name ?? undefined,
+                                tags: item.tags ?? [],
+                            };
+                            setLocalItems([newItem]);
+                            setHasChanges(true);
+                            
+                            // Send to server
                             await handleOnCreateRelationship([item.id]);
                         }}
                     />
@@ -145,7 +190,7 @@ export default function TransferListView(props: TransferListViewProps) {
                 <TransferList
                     enabled={editState}
                     searchInput={searchInput}
-                    items={items}
+                    items={localItems}
                     showDictionaryFilter={showDictionaryFilter}
                     selectedDictionaryId={selectedDictionaryId}
                     onDictionaryFilterChange={setSelectedDictionaryId}
@@ -170,7 +215,7 @@ export default function TransferListView(props: TransferListViewProps) {
                     <Button
                         variant="text"
                         size="small"
-                        onClick={() => setEditState(false)}
+                        onClick={handleCloseEdit}
                         startIcon={<CheckIcon/>}
                     >
                         <T keyName="transfer_list.close"/>
