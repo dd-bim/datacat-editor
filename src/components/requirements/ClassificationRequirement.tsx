@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Box,
   TextField,
@@ -9,10 +9,12 @@ import {
   Select,
   InputLabel,
   MenuItem,
+  CircularProgress,
 } from "@mui/material";
 import { T, useTranslate } from "@tolgee/react";
 import { InfoButton } from "../InfoButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { useSnackbar } from "notistack";
 
 interface ClassificationRequirementProps {
   requirement: any;
@@ -20,6 +22,7 @@ interface ClassificationRequirementProps {
   modelOptions: any[];
   allTags: string[];
   selectedTagForClasses: string | null;
+  classesLoading: boolean;
   onRequirementChange: (idx: number, value: any) => void;
   onTagFilterForClasses: (tag: string | null) => void;
   onAddClassesByTag: (modelId: string, tag: string, idx: number) => void;
@@ -30,6 +33,7 @@ interface ClassificationRequirementProps {
   getThemesForDictionary: (dictionaryId: string) => any[];
   getSubThemesForTheme: (themeId: string) => any[];
   getClassesForThemeOrSubTheme: (themeId: string) => any[];
+  getAllClassesForDictionary: (dictionaryId: string) => any[];
   hasSubThemes: (themeId: string) => boolean;
   DATA_TYPE_OPTIONS: string[];
 }
@@ -40,6 +44,7 @@ export const ClassificationRequirement: React.FC<ClassificationRequirementProps>
   modelOptions,
   allTags,
   selectedTagForClasses,
+  classesLoading,
   onRequirementChange: handleRequirementChange,
   onTagFilterForClasses: handleTagFilterForClasses,
   onAddClassesByTag: addClassesByTag,
@@ -50,10 +55,16 @@ export const ClassificationRequirement: React.FC<ClassificationRequirementProps>
   getThemesForDictionary,
   getSubThemesForTheme,
   getClassesForThemeOrSubTheme,
+  getAllClassesForDictionary,
   hasSubThemes,
   DATA_TYPE_OPTIONS,
 }) => {
   const { t } = useTranslate();
+  const { enqueueSnackbar } = useSnackbar();
+  
+  // Ref um zu tracken ob bereits eine Benachrichtigung gezeigt wurde
+  const hasShownSubThemeHintRef = useRef(false);
+  const hasShownNoClassesHintRef = useRef(false);
 
   // Berechne verfügbare Optionen basierend auf aktueller Auswahl
   const availableThemes = req.value ? getThemesForDictionary(req.value) : [];
@@ -61,12 +72,23 @@ export const ClassificationRequirement: React.FC<ClassificationRequirementProps>
     ? req.selectedThemes.flatMap((themeId: string) => getSubThemesForTheme(themeId))
     : [];
   
+  // NEU: Alle Klassen für das ausgewählte Dictionary (ohne Themen-Filter)
+  const allDictionaryClasses = req.value ? getAllClassesForDictionary(req.value) : [];
+  
   // Prüfe ob eines der gewählten Themen Unterthemen hat
   const selectedThemesHaveSubThemes = req.selectedThemes?.some((themeId: string) => hasSubThemes(themeId)) || false;
   
   // Verbesserte Logik: Zeige Klassen mit Labels für Themen und Unterthemen
   const getFilteredClasses = () => {
     if (!req.value) return [];
+    
+    // NEU: Wenn weder Themen noch Unterthemen gewählt sind, zeige ALLE Dictionary-Klassen
+    if (!req.selectedThemes?.length && !req.selectedSubThemes?.length) {
+      return allDictionaryClasses.map((cls: any) => ({
+        ...cls,
+        displayName: `${cls.name}` // Ohne Label, da alle Klassen angezeigt werden
+      }));
+    }
     
     let allClasses: any[] = [];
     
@@ -106,6 +128,40 @@ export const ClassificationRequirement: React.FC<ClassificationRequirementProps>
   };
 
   const filteredClasses = getFilteredClasses();
+
+  // Zeige Snackbar-Hinweis wenn Themen Unterthemen haben aber keine ausgewählt sind
+  useEffect(() => {
+    if (req.selectedThemes?.length > 0 && selectedThemesHaveSubThemes && !req.selectedSubThemes?.length && !hasShownSubThemeHintRef.current) {
+      enqueueSnackbar(
+        t("classification_hints.selected_themes_have_subthemes"),
+        { variant: "info", autoHideDuration: 5000 }
+      );
+      hasShownSubThemeHintRef.current = true;
+    }
+    
+    // Reset wenn Unterthemen ausgewählt werden
+    if (req.selectedSubThemes?.length > 0) {
+      hasShownSubThemeHintRef.current = false;
+    }
+  }, [req.selectedThemes, selectedThemesHaveSubThemes, req.selectedSubThemes, enqueueSnackbar, t]);
+
+  // Zeige Snackbar-Hinweis wenn Dictionary ausgewählt aber keine Klassen verfügbar
+  useEffect(() => {
+    if (req.value && filteredClasses.length === 0 && 
+        !req.selectedThemes?.length && !req.selectedSubThemes?.length && 
+        !hasShownNoClassesHintRef.current) {
+      enqueueSnackbar(
+        t("classification_hints.no_classes_available"),
+        { variant: "info", autoHideDuration: 5000 }
+      );
+      hasShownNoClassesHintRef.current = true;
+    }
+    
+    // Reset wenn Themen ausgewählt werden
+    if (req.selectedThemes?.length > 0 || req.selectedSubThemes?.length > 0) {
+      hasShownNoClassesHintRef.current = false;
+    }
+  }, [req.value, filteredClasses.length, req.selectedThemes, req.selectedSubThemes, enqueueSnackbar, t]);
 
   return (
     <Box sx={{ flex: 1, display: "flex", flexDirection: "column", gap: 1 }}>
@@ -259,7 +315,14 @@ export const ClassificationRequirement: React.FC<ClassificationRequirementProps>
           </Box>
           
           {/* Klassen-Auswahl */}
-          {filteredClasses.length > 0 ? (
+          {classesLoading ? (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, p: 2 }}>
+              <CircularProgress size={20} />
+              <Typography variant="body2" color="text.secondary">
+                <T keyName="ids_export.loading.classes" defaultValue="Klassen werden geladen..." />
+              </Typography>
+            </Box>
+          ) : filteredClasses.length > 0 ? (
             <Autocomplete
               multiple
               id={`class-autocomplete-req-${idx}`}
@@ -274,11 +337,21 @@ export const ClassificationRequirement: React.FC<ClassificationRequirementProps>
                   selectedClasses: newValue.map((item: any) => item.id)
                 });
               }}
+              loading={classesLoading}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   label={<T keyName="ids_export.labels.select_classes_optional" />}
                   placeholder={t("ids_export.labels.search_classes")}
+                  InputProps={{
+                    ...params.InputProps,
+                    endAdornment: (
+                      <>
+                        {classesLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                        {params.InputProps.endAdornment}
+                      </>
+                    ),
+                  }}
                 />
               )}
               renderTags={(value, getTagProps) =>
@@ -326,18 +399,6 @@ export const ClassificationRequirement: React.FC<ClassificationRequirementProps>
                 );
               }}
             />
-          ) : req.selectedThemes?.length > 0 && selectedThemesHaveSubThemes && !req.selectedSubThemes?.length ? (
-            <Box sx={{ p: 2, bgcolor: 'info.light', borderRadius: 1, color: 'info.dark' }}>
-              <Typography variant="body2">
-                💡 <T keyName="classification_hints.selected_themes_have_subthemes" />
-              </Typography>
-            </Box>
-          ) : req.value ? (
-            <Box sx={{ p: 2, bgcolor: 'grey.100', borderRadius: 1 }}>
-              <Typography variant="body2" color="text.secondary">
-                ℹ️ <T keyName="classification_hints.no_classes_available" />
-              </Typography>
-            </Box>
           ) : null}
           
           {filteredClasses.length > 0 && (
