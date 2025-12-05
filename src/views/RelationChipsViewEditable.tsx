@@ -147,14 +147,14 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
 
         // ConnectedSubjects (outgoing: subClasses via specializes, partOf, others)
         (entry.connectedSubjects ?? []).forEach(rel => {
-            const relationName = rel.relationshipType?.name;
+            const relationName = (rel as any).relationshipType?.name;
             if (!relationName) return;
             
             (rel.targetSubjects ?? []).forEach(target => {
                 const data: RelationData = {
                     id: target.id,
                     name: target.name ?? 'Unknown',
-                    recordType: target.recordType,
+                    recordType: (target as any).recordType,
                     tags: target.tags ?? [],
                     relationName: relationName,
                 };
@@ -171,14 +171,14 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
 
         // ConnectingSubjects (incoming: superClasses via specializes, parts via partOf)
         (entry.connectingSubjects ?? []).forEach(rel => {
-            const relationName = rel.relationshipType?.name;
+            const relationName = (rel as any).relationshipType?.name;
             const connectingSubject = rel.connectingSubject;
             if (!relationName || !connectingSubject) return;
             
             const data: RelationData = {
                 id: connectingSubject.id,
                 name: connectingSubject.name ?? 'Unknown',
-                recordType: connectingSubject.recordType,
+                recordType: (connectingSubject as any).recordType,
                 tags: connectingSubject.tags ?? [],
                 relationName: relationName,
             };
@@ -198,7 +198,7 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
     const getRelationshipId = useCallback((category: RelationCategory): string | undefined => {
         if (category === 'subClass' || category === 'partOf') {
             const relationName = category === 'subClass' ? 'specializes' : 'partOf';
-            const rel = (entry.connectedSubjects ?? []).find(r => r.relationshipType?.name === relationName);
+            const rel = (entry.connectedSubjects ?? []).find(r => (r as any).relationshipType?.name === relationName);
             return rel?.id;
         }
         return undefined;
@@ -405,7 +405,7 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
 
                     {/* Edit Button */}
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
-                        <Tooltip title="Hinzufügen">
+                        <Tooltip title={<T keyName="dialog.add">Hinzufügen</T>}>
                             <IconButton 
                                 size="small" 
                                 onClick={() => setEditingCategory(category)}
@@ -433,13 +433,13 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
     }));
 
     // Get title for dialog based on category
-    const getDialogTitle = (category: RelationCategory | null) => {
+    const getDialogTitle = (category: RelationCategory | null): React.ReactNode => {
         switch (category) {
-            case 'superClass': return 'Superklasse hinzufügen';
-            case 'subClass': return 'Subklasse hinzufügen';
-            case 'part': return 'Teil hinzufügen';
-            case 'partOf': return 'Teil von hinzufügen';
-            case 'other': return 'Andere Beziehungen hinzufügen';
+            case 'superClass': return <T keyName="class.add_superclass">Superklasse hinzufügen</T>;
+            case 'subClass': return <T keyName="class.add_subclass">Subklasse hinzufügen</T>;
+            case 'part': return <T keyName="class.add_part">Teil hinzufügen</T>;
+            case 'partOf': return <T keyName="class.add_partof">Teil von hinzufügen</T>;
+            case 'other': return <T keyName="class.add_other_relation">Andere Beziehungen hinzufügen</T>;
             default: return '';
         }
     };
@@ -458,7 +458,7 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                     <ArrowUpwardIcon fontSize="small" />,
                     superClasses,
                     RELATION_COLORS.superClass,
-                    'Diese Klasse spezialisiert diese Klassen'
+                    'Diese Klasse spezialisiert diese Klassen' // T keyName would break Tooltip
                 )}
 
                 {/* Subklassen */}
@@ -468,7 +468,7 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                     <ArrowDownwardIcon fontSize="small" />,
                     subClasses,
                     RELATION_COLORS.subClass,
-                    'Diese Klassen spezialisieren diese Klasse'
+                    'Diese Klassen spezialisieren diese Klasse' // T keyName would break Tooltip
                 )}
 
                 {/* Hat Teile */}
@@ -478,7 +478,7 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                     <CallSplitIcon fontSize="small" />,
                     parts,
                     RELATION_COLORS.part,
-                    'Diese Klassen sind Teil von dieser Klasse'
+                    'Diese Klassen sind Teil von dieser Klasse' // T keyName would break Tooltip
                 )}
 
                 {/* Teil von */}
@@ -488,7 +488,7 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                     <CallMergeIcon fontSize="small" />,
                     partOf,
                     RELATION_COLORS.partOf,
-                    'Diese Klasse ist Teil von diesen Klassen'
+                    'Diese Klasse ist Teil von diesen Klassen' // T keyName would break Tooltip
                 )}
 
                 {/* Andere Relationen - Volle Breite */}
@@ -548,7 +548,7 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                                         onClick={() => handleChipClick(rel)}
                                         onDelete={() => handleDelete('other', rel.id, rel.relationName)}
                                         deleteIcon={
-                                            <Tooltip title="Entfernen">
+                                            <Tooltip title={<T keyName="dialog.remove">Entfernen</T>}>
                                                 <DeleteIcon fontSize="small" />
                                             </Tooltip>
                                         }
@@ -566,7 +566,7 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
 
                         {/* Edit Button */}
                         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
-                            <Tooltip title="Hinzufügen">
+                            <Tooltip title={<T keyName="dialog.add">Hinzufügen</T>}>
                                 <IconButton 
                                     size="small" 
                                     onClick={() => setEditingCategory('other')}
@@ -619,9 +619,9 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
-                                    label="Relationstyp"
+                                    label={<T keyName="relation.type">Relationstyp</T>}
                                     placeholder="z.B. 'dependsOn', 'pointsTo'..."
-                                    helperText="Wählen Sie einen bestehenden Relationstyp oder geben Sie einen neuen ein"
+                                    helperText={<T keyName="relation.type_helper">Wählen Sie einen bestehenden Relationstyp oder geben Sie einen neuen ein</T>}
                                     InputProps={{
                                         ...params.InputProps,
                                         endAdornment: (
@@ -667,7 +667,7 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                         renderInput={(params) => (
                             <TextField
                                 {...params}
-                                label={<T keyName="search.search">Zielklassen suchen</T>}
+                                label={<T keyName="search.search_classes">Zielklassen suchen</T>}
                                 placeholder={selectedItems.length === 0 ? "Klassen suchen..." : "Weitere suchen..."}
                                 InputProps={{
                                     ...params.InputProps,
@@ -695,7 +695,7 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                                 />
                             ))
                         }
-                        noOptionsText={searchValue.length < 2 ? "Mindestens 2 Zeichen eingeben" : "Keine Ergebnisse"}
+                        noOptionsText={searchValue.length < 2 ? <T keyName="search.min_chars">Mindestens 2 Zeichen eingeben</T> : <T keyName="search.no_results">Keine Ergebnisse</T>}
                     />
                 </DialogContent>
                 <DialogActions>

@@ -400,9 +400,31 @@
     "edit": "Klasse bewerken",
     "loading": "Klasse laden...",
     "delete_success": "Klasse verwijderd.",
-    "assigned_concepts": ", die aan de klasse zijn toegewezen",
+    "assigned_concepts": ", toegewezen aan de klasse",
     "themes_using_class": ", die deze klasse bevatten",
-    "no_themes_using_class": "De klasse wordt door geen enkel thema gebruikt."
+    "no_themes_using_class": "De klasse wordt door geen enkel thema gebruikt.",
+    "relations": "Klassenrelaties",
+    "superclasses": "Superklassen",
+    "subclasses": "Subklassen",
+    "parts": "Heeft Onderdelen",
+    "partof": "Onderdeel Van",
+    "otherRelations": "Andere Relaties",
+    "relation_graph": "Relatiegrafiek",
+    "add_superclass": "Superklasse Toevoegen",
+    "add_subclass": "Subklasse Toevoegen",
+    "add_part": "Deel Toevoegen",
+    "add_partof": "Onderdeel Van Toevoegen",
+    "add_other_relation": "Andere Relaties Toevoegen"
+  },
+  "relation": {
+    "none": "Geen",
+    "type": "Relatietype",
+    "type_helper": "Selecteer een bestaand relatietype of voer een nieuwe in"
+  },
+  "dialog": {
+    "cancel": "Annuleren",
+    "add": "Toevoegen",
+    "remove": "Verwijderen"
   },
   "propertyGroup": {
     "title": "Kenmerkgroep",
@@ -428,7 +450,9 @@
     "assigning_property_groups": ", waarin dit kenmerk is opgenomen",
     "no_assigning_property_groups": "Het kenmerk wordt in geen enkele kenmerkgroep gebruikt.",
     "assigned_classes": ", waaraan dit kenmerk is toegewezen",
-    "no_assigned_classes": "Het kenmerk is aan geen enkele klasse direct toegewezen"
+    "no_assigned_classes": "Het kenmerk is aan geen enkele klasse direct toegewezen",
+    "inferred_properties": "Afgeleide Kenmerken",
+    "inferred_properties_description": "Deze kenmerken worden geërfd van superklassen en kunnen niet direct worden gewijzigd."
   },
   "valuelist": {
     "title": "Waardelijst",

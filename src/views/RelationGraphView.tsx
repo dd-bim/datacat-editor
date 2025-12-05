@@ -239,7 +239,7 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
 
         // ConnectedSubjects (outgoing relations: subClasses, partOf, other)
         (entry.connectedSubjects ?? []).forEach(rel => {
-            const relationName = rel.relationshipType?.name;
+            const relationName = (rel as any).relationshipType?.name;
             
             // Skip relations without a name
             if (!relationName) return;
@@ -256,7 +256,7 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
                 result.push({
                     id: target.id,
                     name: target.name ?? 'Unknown',
-                    recordType: target.recordType,
+                    recordType: (target as any).recordType,
                     tags: target.tags ?? [],
                     relationType,
                     relationName,
@@ -266,7 +266,7 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
 
         // ConnectingSubjects (incoming relations: superClasses, parts)
         (entry.connectingSubjects ?? []).forEach(rel => {
-            const relationName = rel.relationshipType?.name;
+            const relationName = (rel as any).relationshipType?.name;
             const connectingSubject = rel.connectingSubject;
             
             // Skip relations without a name
@@ -284,7 +284,7 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
                 result.push({
                     id: connectingSubject.id,
                     name: connectingSubject.name ?? 'Unknown',
-                    recordType: connectingSubject.recordType,
+                    recordType: (connectingSubject as any).recordType,
                     tags: connectingSubject.tags ?? [],
                     relationType,
                     relationName,
@@ -535,7 +535,7 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         <Chip 
-                            label={`${relationCounts.total} Relationen`} 
+                            label={`${relationCounts.total} <T keyName="class.relations">Relationen</T>`} 
                             size="small" 
                             variant="outlined" 
                         />
@@ -551,24 +551,24 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
                 <Box sx={{ display: 'flex', gap: 2, mb: 1, flexWrap: 'wrap' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                         <Box sx={{ width: 20, height: 3, backgroundColor: RELATION_COLORS.superClass, borderRadius: 1 }} />
-                        <Typography variant="caption">Superklassen ({relationCounts.superClasses})</Typography>
+                        <Typography variant="caption"><T keyName="class.superclasses">Superklassen</T> ({relationCounts.superClasses})</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                         <Box sx={{ width: 20, height: 3, backgroundColor: RELATION_COLORS.subClass, borderRadius: 1 }} />
-                        <Typography variant="caption">Subklassen ({relationCounts.subClasses})</Typography>
+                        <Typography variant="caption"><T keyName="class.subclasses">Subklassen</T> ({relationCounts.subClasses})</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                         <Box sx={{ width: 20, height: 3, backgroundColor: RELATION_COLORS.part, borderRadius: 1 }} />
-                        <Typography variant="caption">Hat Teile ({relationCounts.parts})</Typography>
+                        <Typography variant="caption"><T keyName="class.parts">Hat Teile</T> ({relationCounts.parts})</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                         <Box sx={{ width: 20, height: 3, backgroundColor: RELATION_COLORS.partOf, borderRadius: 1 }} />
-                        <Typography variant="caption">Teil von ({relationCounts.partOf})</Typography>
+                        <Typography variant="caption"><T keyName="class.partof">Teil von</T> ({relationCounts.partOf})</Typography>
                     </Box>
                     {relationCounts.others > 0 && (
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                             <Box sx={{ width: 20, height: 3, backgroundColor: RELATION_COLORS.other, borderRadius: 1 }} />
-                            <Typography variant="caption">Andere ({relationCounts.others})</Typography>
+                            <Typography variant="caption"><T keyName="class.otherRelations">Andere</T> ({relationCounts.others})</Typography>
                         </Box>
                     )}
                 </Box>

@@ -444,7 +444,29 @@
     "delete_success": "Klasse gelöscht.",
     "assigned_concepts": ", die der Klasse zugewiesen sind",
     "themes_using_class": ", die diese Klasse enthalten",
-    "no_themes_using_class": "Die Klasse wird durch kein Thema genutzt."
+    "no_themes_using_class": "Die Klasse wird durch kein Thema genutzt.",
+    "relations": "Klassenbeziehungen",
+    "superclasses": "Superklassen",
+    "subclasses": "Subklassen",
+    "parts": "Hat Teile",
+    "partof": "Teil Von",
+    "otherRelations": "Andere Beziehungen",
+    "relation_graph": "Beziehungsgraph",
+    "add_superclass": "Superklasse hinzufügen",
+    "add_subclass": "Subklasse hinzufügen",
+    "add_part": "Teil hinzufügen",
+    "add_partof": "Teil von hinzufügen",
+    "add_other_relation": "Andere Beziehungen hinzufügen"
+  },
+  "relation": {
+    "none": "Keine",
+    "type": "Relationstyp",
+    "type_helper": "Wählen Sie einen bestehenden Relationstyp oder geben Sie einen neuen ein"
+  },
+  "dialog": {
+    "cancel": "Abbrechen",
+    "add": "Hinzufügen",
+    "remove": "Entfernen"
   },
   "propertyGroup": {
     "title": "Merkmalsgruppe",
@@ -471,7 +493,9 @@
     "assigning_property_groups": ", in denen dieses Merkmal enthalten ist",
     "no_assigning_property_groups": "Das Merkmal wird in keiner Merkmalsgruppe genutzt.",
     "assigned_classes": ", denen dieses Merkmal zugewiesen wurde",
-    "no_assigned_classes": "Das Merkmal wurde keiner Klasse direkt zugewiesen"
+    "no_assigned_classes": "Das Merkmal wurde keiner Klasse direkt zugewiesen",
+    "inferred_properties": "Abgeleitete Merkmale",
+    "inferred_properties_description": "Diese Merkmale werden von Superklassen geerbt und sind nicht direkt änderbar."
   },
   "valuelist": {
     "title": "Werteliste",
@@ -570,6 +594,9 @@
   },
   "search":{
     "search": "Suchen",
+    "search_classes": "Zielklassen suchen",
+    "min_chars": "Mindestens 2 Zeichen eingeben",
+    "no_results": "Keine Ergebnisse",
     "search_placeholder": "Katalog durchsuchen",
     "search_results": "Ergebnisse der Suche",
     "filter_list": "Liste filtern ({count}/{total})",

@@ -35,6 +35,7 @@ import ExampleFormSet from "../../components/forms/ExampleFormSet";
 import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
 import { useNavigate } from "react-router-dom";
 import DictionaryFormSet from "../../components/forms/DictionaryFormSet";
+import InferredPropertiesView from "../InferredPropertiesView";
 
 export default function DomainClassForm(
   props: FormProps<SubjectDetailPropsFragment>
@@ -192,6 +193,9 @@ export default function DomainClassForm(
         onUpdate={handleOnUpdate}
         onDelete={handleOnUpdate}
       />
+
+      {/* Abgeleitete Merkmale von Superklassen */}
+      <InferredPropertiesView entry={entry} />
 
       <TransferListView
         title={<span><b><T keyName="document.titlePlural" /></b><T keyName={"concept.reference_documents"} /></span>}

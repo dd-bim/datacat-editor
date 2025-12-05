@@ -402,7 +402,29 @@
     "delete_success": "Classe eliminata.",
     "assigned_concepts": ", assegnati alla classe",
     "themes_using_class": ", che contengono questa classe",
-    "no_themes_using_class": "La classe non è utilizzata da alcun tema."
+    "no_themes_using_class": "La classe non è utilizzata da nessun tema.",
+    "relations": "Relazioni di Classe",
+    "superclasses": "Superclassi",
+    "subclasses": "Sottoclassi",
+    "parts": "Ha Parti",
+    "partof": "Parte Di",
+    "otherRelations": "Altre Relazioni",
+    "relation_graph": "Grafo delle Relazioni",
+    "add_superclass": "Aggiungi Superclasse",
+    "add_subclass": "Aggiungi Sottoclasse",
+    "add_part": "Aggiungi Parte",
+    "add_partof": "Aggiungi Parte Di",
+    "add_other_relation": "Aggiungi Altre Relazioni"
+  },
+  "relation": {
+    "none": "Nessuna",
+    "type": "Tipo di Relazione",
+    "type_helper": "Seleziona un tipo di relazione esistente o inseriscine uno nuovo"
+  },
+  "dialog": {
+    "cancel": "Annulla",
+    "add": "Aggiungi",
+    "remove": "Rimuovi"
   },
   "propertyGroup": {
     "title": "Gruppo di proprietà",
@@ -419,16 +441,19 @@
     "titlePlural": "Proprietà",
     "edit": "Modifica proprietà",
     "dataType": "Tipo di dato",
-    "dataType_helper": "Il tipo di dato della proprietà. Può essere un tipo semplice come stringa, intero o booleano.",
+    "no_data_type": "Nessun tipo di dato",
+    "dataType_helper": "Il tipo di dato della proprietà. Può essere un tipo di dato semplice come stringa, intero o booleano.",
     "dataFormat": "Formato dati",
     "dataFormat_helper": "Il formato dati della proprietà.",
     "loading": "Caricamento proprietà...",
     "delete_success": "Proprietà eliminata.",
-    "assigned_concepts": ", assegnate a questa proprietà",
-    "assigning_property_groups": ", contenute in questi gruppi di proprietà",
+    "assigned_concepts": ", assegnati a questa proprietà",
+    "assigning_property_groups": ", in cui questa proprietà è contenuta",
     "no_assigning_property_groups": "La proprietà non è utilizzata in nessun gruppo di proprietà.",
-    "assigned_classes": ", assegnate a questa proprietà",
-    "no_assigned_classes": "La proprietà non è stata assegnata direttamente a nessuna classe"
+    "assigned_classes": ", assegnate a queste classi",
+    "no_assigned_classes": "La proprietà non è stata assegnata direttamente a nessuna classe",
+    "inferred_properties": "Proprietà Derivate",
+    "inferred_properties_description": "Queste proprietà sono ereditate dalle superclassi e non possono essere modificate direttamente."
   },
   "valuelist": {
     "title": "Lista di valori",
@@ -438,7 +463,7 @@
     "language_helper": "Lingua della lista di valori",
     "loading": "Caricamento lista di valori...",
     "delete_success": "Lista di valori eliminata.",
-    "applicable_units": ", che applica la lista di valori",
+    "applicable_units": ", che utilizzano la lista di valori",
     "value_range": ", assegnati a questa lista di valori",
     "assigned_properties": "a cui questa lista di valori è assegnata",
     "no_assigned_properties": "La lista di valori non è stata assegnata a nessuna proprietà"

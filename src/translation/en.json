@@ -445,8 +445,30 @@
     "loading": "Loading class...",
     "delete_success": "Class deleted.",
     "assigned_concepts": ", assigned to the class",
-    "themes_using_class": ", containing this class",
-    "no_themes_using_class": "The class is not used by any theme."
+    "themes_using_class": ", which contain this class",
+    "no_themes_using_class": "The class is not used by any theme.",
+    "relations": "Class Relationships",
+    "superclasses": "Superclasses",
+    "subclasses": "Subclasses",
+    "parts": "Has Parts",
+    "partof": "Part Of",
+    "otherRelations": "Other Relationships",
+    "relation_graph": "Relationship Graph",
+    "add_superclass": "Add Superclass",
+    "add_subclass": "Add Subclass",
+    "add_part": "Add Part",
+    "add_partof": "Add Part Of",
+    "add_other_relation": "Add Other Relationship"
+  },
+  "relation": {
+    "none": "None",
+    "type": "Relation Type",
+    "type_helper": "Select an existing relation type or enter a new one"
+  },
+  "dialog": {
+    "cancel": "Cancel",
+    "add": "Add",
+    "remove": "Remove"
   },
   "propertyGroup": {
     "title": "Property group",
@@ -473,7 +495,9 @@
     "assigning_property_groups": ", in which this property is contained",
     "no_assigning_property_groups": "The property is not used in any property group.",
     "assigned_classes": ", assigned to these classes",
-    "no_assigned_classes": "The property has not been directly assigned to any class"
+    "no_assigned_classes": "The property has not been directly assigned to any class",
+    "inferred_properties": "Inferred Properties",
+    "inferred_properties_description": "These properties are inherited from superclasses and cannot be directly modified."
   },
   "valuelist": {
     "title": "Value list",

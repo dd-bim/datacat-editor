@@ -395,14 +395,36 @@
     "no_assigning_theme": "该主题未隶属于其他主题。"
   },
   "class": {
-    "title": "类别",
-    "titlePlural": "类别",
-    "edit": "编辑类别",
-    "loading": "正在加载类别...",
-    "delete_success": "类别已删除。",
-    "assigned_concepts": "，分配给该类别",
-    "themes_using_class": "，包含该类别",
-    "no_themes_using_class": "该类别未被任何主题使用。"
+    "title": "类",
+    "titlePlural": "类",
+    "edit": "编辑类",
+    "loading": "正在加载类...",
+    "delete_success": "类已删除。",
+    "assigned_concepts": "分配给该类的",
+    "themes_using_class": "包含该类的",
+    "no_themes_using_class": "该类未被任何主题使用。",
+    "relations": "类关系",
+    "superclasses": "超类",
+    "subclasses": "子类",
+    "parts": "包含部件",
+    "partof": "部分",
+    "otherRelations": "其他关系",
+    "relation_graph": "关系图",
+    "add_superclass": "添加超类",
+    "add_subclass": "添加子类",
+    "add_part": "添加部分",
+    "add_partof": "添加属于",
+    "add_other_relation": "添加其他关系"
+  },
+  "relation": {
+    "none": "无",
+    "type": "关系类型",
+    "type_helper": "选择现有关系类型或输入新的类型"
+  },
+  "dialog": {
+    "cancel": "取消",
+    "add": "添加",
+    "remove": "删除"
   },
   "propertyGroup": {
     "title": "属性组",
@@ -419,16 +441,19 @@
     "titlePlural": "属性",
     "edit": "编辑属性",
     "dataType": "数据类型",
-    "dataType_helper": "属性的数据类型。可以是字符串、整数或布尔等简单类型。",
+    "no_data_type": "无数据类型",
+    "dataType_helper": "属性的数据类型。可以是字符串、整数或布尔值等简单数据类型。",
     "dataFormat": "数据格式",
     "dataFormat_helper": "属性的数据格式。",
     "loading": "正在加载属性...",
     "delete_success": "属性已删除。",
-    "assigned_concepts": "，分配给该属性",
-    "assigning_property_groups": "，包含在这些属性组中",
-    "no_assigning_property_groups": "该属性未被任何属性组使用。",
-    "assigned_classes": "，分配给该属性",
-    "no_assigned_classes": "该属性未直接分配给任何类别"
+    "assigned_concepts": "分配给此属性的",
+    "assigning_property_groups": "包含此属性的",
+    "no_assigning_property_groups": "此属性未在任何属性组中使用。",
+    "assigned_classes": "分配给这些类的",
+    "no_assigned_classes": "此属性未直接分配给任何类",
+    "inferred_properties": "派生属性",
+    "inferred_properties_description": "这些属性从超类继承而来，无法直接修改。"
   },
   "valuelist": {
     "title": "值列表",
@@ -438,10 +463,10 @@
     "language_helper": "值列表的语言",
     "loading": "正在加载值列表...",
     "delete_success": "值列表已删除。",
-    "applicable_units": "，应用该值列表",
-    "value_range": "，分配给该值列表",
-    "assigned_properties": "分配给该值列表的属性",
-    "no_assigned_properties": "该值列表未分配给任何属性"
+    "applicable_units": "使用此值列表的",
+    "value_range": "分配给此值列表的",
+    "assigned_properties": "分配此值列表的",
+    "no_assigned_properties": "此值列表未分配给任何属性"
   },
   "unit": {
     "title": "单位",
