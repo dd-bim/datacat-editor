@@ -1,8 +1,9 @@
+import { useQuery } from "@apollo/client/react";
 import {
     PropertyDetailPropsFragment,
     RelationshipRecordType,
-    useGetPropertyEntryQuery
-} from "../../generated/types";
+    GetPropertyEntryDocument
+} from "../../generated/graphql";
 import { useDeleteEntry } from "../../hooks/useDeleteEntry";
 import { Typography, Box, Button } from "@mui/material";
 import { useSnackbar } from "notistack";
@@ -32,7 +33,7 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
     const navigate = useNavigate();
 
     // fetch properties
-    const { loading, error, data, refetch } = useGetPropertyEntryQuery({
+    const { loading, error, data, refetch } = useQuery(GetPropertyEntryDocument, {
         fetchPolicy: "network-only",
         variables: { id }
     });
@@ -327,7 +328,7 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
                 relationshipType={RelationshipRecordType.Units}
                 relationships={entry.units ?? []}
                 searchInput={{
-                    entityTypeIn: [DocumentEntity.recordType],
+                    entityTypeIn: [UnitEntity.recordType],
                     tagged: UnitEntity.tags
                 }}
                 onCreate={handleOnUpdate}

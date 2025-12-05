@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useCallback } from 'react';
-import { SubjectDetailPropsFragment } from '../generated/types';
+import { SubjectDetailPropsFragment } from '../generated/graphql';
 import { 
     Box, 
     Paper, 

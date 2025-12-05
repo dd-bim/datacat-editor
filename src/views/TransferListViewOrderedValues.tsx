@@ -1,10 +1,11 @@
+import { useMutation } from "@apollo/client/react";
 import {
     ObjectPropsFragment,
     RelationshipRecordType,
     SearchInput,
-    useCreateRelationshipMutation,
-    useDeleteRelationshipMutation
-} from "../generated/types";
+    CreateRelationshipDocument,
+    DeleteRelationshipDocument
+} from "../generated/graphql";
 import React, { JSX, useState } from "react";
 import TransferList from "../components/list/TransferList";
 import EditIcon from "@mui/icons-material/Edit";
@@ -62,8 +63,8 @@ export default function TransferListView(props: TransferListViewProps) {
             hierarchy: (value: any, { DELETE }: any) => DELETE
         }
     });
-    const [createRelationship] = useCreateRelationshipMutation({ update });
-    const [deleteRelationship] = useDeleteRelationshipMutation({ update });
+    const [createRelationship] = useMutation(CreateRelationshipDocument, { update });
+    const [deleteRelationship] = useMutation(DeleteRelationshipDocument, { update });
 
     const handleOnCreateRelationship = async (toIds: string[]) => {
         await createRelationship({

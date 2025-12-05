@@ -73,9 +73,11 @@ const VersionForm = (props: VersionFormProps) => {
           render={({ field, fieldState }) => (
             <TextField
               {...field}
+              onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
               id="majorVersion" // ✅ Hier setzen
               label={<T keyName="version.majorVersion_label"/>}
               error={!!fieldState.error}
+              type="number"
               fullWidth
               InputProps={{
                 onFocus: !isEditMode ? onEdit : undefined,
@@ -92,9 +94,11 @@ const VersionForm = (props: VersionFormProps) => {
           render={({ field, fieldState }) => (
             <TextField
               {...field}
+              onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
               id="minorVersion" // ✅ Hier setzen
               label={<T keyName="version.minorVersion_label" />}
               error={!!fieldState.error}
+              type="number"
               fullWidth
               InputProps={{
                 readOnly: !isEditMode,

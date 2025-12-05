@@ -1,11 +1,12 @@
+import { useMutation } from "@apollo/client/react";
 import {
   TranslationInput,
   TextPropsFragment,
-  useAddExampleMutation,
-  useDeleteExampleMutation,
-  useUpdateExampleMutation,
+  AddExampleDocument,
+  DeleteExampleDocument,
+  UpdateExampleDocument,
   UpdateTextInput,
-} from "../../generated/types";
+} from "../../generated/graphql";
 import FormSet, { FormSetDescription, FormSetTitle } from "./FormSet";
 import { useSnackbar } from "notistack";
 import TranslationFormSet from "./TranslationFormSet";
@@ -27,9 +28,9 @@ const ExampleFormSet = (props: ExampleFormSetProps) => {
   const { catalogEntryId, examples, refetch } = props;
 
   const { enqueueSnackbar } = useSnackbar();
-  const [addExample] = useAddExampleMutation();
-  const [updateExample] = useUpdateExampleMutation();
-  const [deleteExample] = useDeleteExampleMutation();
+  const [addExample] = useMutation(AddExampleDocument);
+  const [updateExample] = useMutation(UpdateExampleDocument);
+  const [deleteExample] = useMutation(DeleteExampleDocument);
 
   const handleOnAdd = async (text: TranslationInput) => {
     await addExample({

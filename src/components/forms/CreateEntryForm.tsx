@@ -10,7 +10,8 @@ import LanguageSelectField from "./LanguageSelectField";
 import CountrySelectField from "./CountrySelectField";
 import Autocomplete from "@mui/material/Autocomplete";
 import DictionarySelectField from "./DictionarySelectField";
-import { useFindItemLazyQuery, LanguagePropsFragment, useFindLanguagesQuery } from "../../generated/types";
+import { useLazyQuery, useQuery } from "@apollo/client/react";
+import { FindItemDocument, LanguagePropsFragment, FindLanguagesDocument } from "../../generated/graphql";
 
 
 const FormContainer = styled('form')(({ theme }) => ({
@@ -82,7 +83,7 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
     defaultValues,
     mode: "onChange"
   });
-  const [checkName, { data }] = useFindItemLazyQuery();
+  const [checkName, { data }] = useLazyQuery(FindItemDocument);
   const [nameExists, setNameExists] = useState(false);
   const [isCheckingName, setIsCheckingName] = useState(false);
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -112,7 +113,7 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
             }
           });
           const exists = data?.search?.nodes?.some(
-            (node) =>
+            (node: any) =>
               typeof node.name === "string" &&
               node.name.toLowerCase() === value.toLowerCase()
           );

@@ -7,7 +7,8 @@ import Paper from "@mui/material/Paper";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
-import {SearchResultPropsFragment, useFindItemQuery} from "../generated/types";
+import { useQuery } from "@apollo/client/react";
+import { SearchResultPropsFragment, FindItemDocument } from "../generated/graphql";
 import SearchField from "./SearchField";
 import {Domain, getEntityType} from "../domain";
 import useDebounce from "../hooks/useDebounce";
@@ -56,7 +57,7 @@ export function QuickSearchWidget(props: QuickSearchWidgetProps) {
         query: debouncedSearchTerm
     };
 
-    const {error, loading, data, fetchMore} = useFindItemQuery({
+    const {error, loading, data, fetchMore} = useQuery(FindItemDocument, {
         skip: !debouncedSearchTerm || debouncedSearchTerm.length < 2, // Erst ab 2 Zeichen suchen
         variables: {
             input,

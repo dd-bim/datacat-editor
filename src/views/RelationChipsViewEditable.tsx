@@ -1,15 +1,16 @@
 import React, { useMemo, useState, useCallback, useEffect } from 'react';
+import { useQuery, useLazyQuery, useMutation } from '@apollo/client/react';
 import { 
     SubjectDetailPropsFragment,
     SearchInput,
     RelationshipRecordType,
-    RelationshipKindEnum,
-    useCreateRelationshipMutation,
-    useDeleteRelationshipMutation,
-    useFindItemLazyQuery,
-    useFindRelationshipTypesLazyQuery,
+    XtdRelationshipKindEnum,
+    CreateRelationshipDocument,
+    DeleteRelationshipDocument,
+    FindItemDocument,
+    FindRelationshipTypesDocument,
     SearchResultPropsFragment
-} from '../generated/types';
+} from '../generated/graphql';
 import { 
     Box, 
     Paper, 
@@ -82,10 +83,10 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
     const debouncedRelationTypeSearch = useDebounce(relationTypeSearchValue, 300);
 
     // Search query
-    const [findItems, { data: searchData, loading: searchLoading }] = useFindItemLazyQuery();
+    const [findItems, { data: searchData, loading: searchLoading }] = useLazyQuery(FindItemDocument);
     
     // Search query for relationship types
-    const [searchRelationshipTypes, { data: relationshipTypesData, loading: relationshipTypesLoading }] = useFindRelationshipTypesLazyQuery();
+    const [searchRelationshipTypes, { data: relationshipTypesData, loading: relationshipTypesLoading }] = useLazyQuery(FindRelationshipTypesDocument);
 
     // Available relationship types from search
     const availableRelationshipTypes = useMemo(() => {
@@ -133,8 +134,8 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
             hierarchy: (value: unknown, { DELETE }: { DELETE: unknown }) => DELETE
         }
     });
-    const [createRelationship] = useCreateRelationshipMutation({ update });
-    const [deleteRelationship] = useDeleteRelationshipMutation({ update });
+    const [createRelationship] = useMutation(CreateRelationshipDocument, { update });
+    const [deleteRelationship] = useMutation(DeleteRelationshipDocument, { update });
 
     // Extract relations by type
     const { superClasses, subClasses, parts, partOf, otherRelations } = useMemo(() => {
@@ -235,7 +236,7 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                             properties: {
                                 id: editingCategory !== 'other' ? getRelationshipId(editingCategory) : undefined,
                                 relationshipToSubjectProperties: {
-                                    relationshipType: RelationshipKindEnum.XTD_SCHEMA_LEVEL,
+                                    relationshipType: XtdRelationshipKindEnum.XtdSchemaLevel,
                                     name: relationName
                                 }
                             } as any
@@ -252,7 +253,7 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                             toIds: [entry.id],
                             properties: {
                                 relationshipToSubjectProperties: {
-                                    relationshipType: RelationshipKindEnum.XTD_SCHEMA_LEVEL,
+                                    relationshipType: XtdRelationshipKindEnum.XtdSchemaLevel,
                                     name: relationName
                                 }
                             } as any
@@ -423,7 +424,7 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
     };
 
     // Convert search results to CatalogRecord format
-    const searchOptions: CatalogRecord[] = (searchData?.search?.nodes ?? []).map((item) => ({
+    const searchOptions: CatalogRecord[] = (searchData?.search?.nodes ?? []).map((item: any) => ({
         id: item.id,
         recordType: item.recordType,
         name: typeof item.name === 'string' ? item.name : undefined,

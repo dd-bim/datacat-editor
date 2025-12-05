@@ -1,5 +1,6 @@
 import React, { FC } from "react";
-import { ValueDetailPropsFragment, useGetValueEntryQuery } from "../../generated/types";
+import { useQuery } from "@apollo/client/react";
+import { ValueDetailPropsFragment, GetValueEntryDocument } from "../../generated/graphql";
 import { useDeleteEntry } from "../../hooks/useDeleteEntry";
 import { Box, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
@@ -26,7 +27,7 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
     const navigate = useNavigate();
 
     // fetch value mit besserer Error-Behandlung
-    const { loading, error, data, refetch } = useGetValueEntryQuery({
+    const { loading, error, data, refetch } = useQuery(GetValueEntryDocument, {
         fetchPolicy: "cache-first", // Bessere Performance
         variables: { id },
         errorPolicy: "all", // Zeige partielle Daten auch bei Fehlern

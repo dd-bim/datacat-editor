@@ -1,10 +1,11 @@
 import FormSet, { FormSetDescription, FormSetTitle } from "./FormSet";
 import React, { FC, useState } from "react";
 import { useEffect } from "react";
+import { useMutation } from "@apollo/client/react";
 import {
-  useUpdateStatusMutation,
-  StatusOfActivationEnum
-} from "../../generated/types";
+  UpdateStatusDocument,
+  XtdStatusOfActivationEnum
+} from "../../generated/graphql";
 import { useSnackbar } from "notistack";
 import { styled } from "@mui/material/styles";
 import { T, useTranslate } from "@tolgee/react";
@@ -14,11 +15,11 @@ import { Controller, useForm } from "react-hook-form";
 
 type StatusFormSetProps = {
   catalogEntryId: string;
-  status: StatusOfActivationEnum;
+  status: XtdStatusOfActivationEnum;
 };
 
 type StatusFormValues = {
-  selectedStatus: StatusOfActivationEnum;
+  selectedStatus: XtdStatusOfActivationEnum;
 };
 
 // Replace makeStyles with styled component
@@ -39,7 +40,7 @@ const StatusFormSet: FC<StatusFormSetProps> = (props) => {
     { value: "XTD_INACTIVE", label: t("status.inactive") },
   ];
 
-  const [setStatus] = useUpdateStatusMutation();
+  const [setStatus] = useMutation(UpdateStatusDocument);
   const {
     control,
     reset
@@ -53,7 +54,7 @@ const StatusFormSet: FC<StatusFormSetProps> = (props) => {
   }, [status, reset]);
 
   const handleChange = async (
-    e: SelectChangeEvent<StatusOfActivationEnum>,
+    e: SelectChangeEvent<XtdStatusOfActivationEnum>,
     field: { onChange: (value: any) => void }
   ) => {
     field.onChange(e);

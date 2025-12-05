@@ -1,5 +1,6 @@
 import React, { FC, useEffect } from "react";
-import { useProfileQuery, useUpdateProfileMutation, LoginFormDocument, LoginFormMutation, LoginFormMutationVariables } from "../../generated/types";
+import { useQuery, useMutation } from "@apollo/client/react";
+import { ProfileDocument, UpdateProfileDocument, LoginFormDocument, LoginFormMutation, LoginFormMutationVariables } from "../../generated/graphql";
 import LinearProgress from "@mui/material/LinearProgress";
 import { useSnackbar } from "notistack";
 import { ProfileForm, ProfileFormValues } from "../../components/forms/ProfileForm";
@@ -10,8 +11,8 @@ import { useNavigate } from "react-router-dom";
 
 const ProfileFormView: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
-  const { loading, error, data } = useProfileQuery();
-  const [updateMutation] = useUpdateProfileMutation();
+  const { loading, error, data } = useQuery(ProfileDocument);
+  const [updateMutation] = useMutation(UpdateProfileDocument);
   const navigate = useNavigate();
 
   // Redirect to home if user is "student"

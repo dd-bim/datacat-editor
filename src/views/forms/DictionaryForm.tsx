@@ -1,11 +1,12 @@
+import { useQuery } from "@apollo/client/react";
 import {
-    useGetDictionaryEntryWithPaginationQuery,
-    useGetDictionaryEntryQuery,
-    DictionaryPropsFragment,
-    ObjectPropsFragment,
+    GetDictionaryEntryWithPaginationDocument,
+    GetDictionaryEntryDocument,
+    RelationsPropsFragment,
     ItemPropsFragment,
     MetaPropsFragment
-} from "../../generated/types";
+} from "../../generated/graphql";
+import type { GetDictionaryEntryQuery } from "../../generated/graphql";
 import { useDeleteEntry } from "../../hooks/useDeleteEntry";
 import { Typography, Button } from "@mui/material";
 import { useSnackbar } from "notistack";
@@ -20,14 +21,14 @@ import { useNavigate } from "react-router-dom";
 import React, { useState, useCallback, useEffect } from "react";
 
 
-function DictionaryForm(props: FormProps<DictionaryPropsFragment>) {
+function DictionaryForm(props: FormProps<GetDictionaryEntryQuery['node']>) {
     const { id } = props;
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
     
     // Seitenweise Navigation State
     const [currentPage, setCurrentPage] = useState(0);
-    const [lastSuccessfulConcepts, setLastSuccessfulConcepts] = useState<ObjectPropsFragment[]>([]);
+    const [lastSuccessfulConcepts, setLastSuccessfulConcepts] = useState<RelationsPropsFragment[]>([]);
     const [lastSuccessfulPageInfo, setLastSuccessfulPageInfo] = useState<{
         totalElements: number;
         totalPages: number;
@@ -40,7 +41,7 @@ function DictionaryForm(props: FormProps<DictionaryPropsFragment>) {
         loading: dictionaryLoading, 
         error: dictionaryError, 
         refetch: refetchDictionary 
-    } = useGetDictionaryEntryQuery({
+    } = useQuery(GetDictionaryEntryDocument, {
         variables: { id },
         errorPolicy: 'all'
     });
@@ -51,7 +52,7 @@ function DictionaryForm(props: FormProps<DictionaryPropsFragment>) {
         loading: conceptsLoading, 
         error: conceptsError,
         networkStatus
-    } = useGetDictionaryEntryWithPaginationQuery({
+    } = useQuery(GetDictionaryEntryWithPaginationDocument, {
         variables: {
             id,
             pageSize,
@@ -109,7 +110,7 @@ function DictionaryForm(props: FormProps<DictionaryPropsFragment>) {
     }, [conceptsError]);
 
     // Dictionary-Daten kommen aus der ersten Query
-    const entry = dictionaryData?.node as DictionaryPropsFragment | undefined;
+    const entry = dictionaryData?.node;
 
     const [deleteEntry] = useDeleteEntry({
         cacheTypename: 'XtdDictionary',
@@ -205,7 +206,7 @@ function DictionaryForm(props: FormProps<DictionaryPropsFragment>) {
                         </Typography> :
                         <T keyName="dictionary.no_related_concepts"/>
                 }
-                concepts={conceptsForDisplay}
+                concepts={conceptsForDisplay as any}
                 currentPage={currentPage}
                 onPageChange={handlePageChange}
                 isLoading={conceptsLoading}

@@ -6,7 +6,7 @@ import InlineButtonGroup from "./InlineButtonGroup";
 import { useEffect } from "react";
 import {
   LanguagePropsFragment
-} from "../../generated/types";
+} from "../../generated/graphql";
 import { styled } from "@mui/material/styles";
 import { T } from "@tolgee/react";
 

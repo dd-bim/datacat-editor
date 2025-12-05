@@ -1,6 +1,7 @@
 import React, { FC, useState } from "react";
 import { Autocomplete } from "@mui/material";
-import { LanguagePropsFragment, Maybe, useFindLanguagesQuery } from "../../generated/types";
+import { useQuery } from "@apollo/client/react";
+import { LanguagePropsFragment, Maybe, FindLanguagesDocument } from "../../generated/graphql";
 import { TextField, TextFieldProps } from "@mui/material";
 import { defaultFormFieldOptions } from "../../hooks/useFormStyles";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -27,7 +28,7 @@ const LanguageSelectField: FC<LanguageSelectFieldProps> = (props) => {
     } = props;
     const [open, setOpen] = React.useState(false);
     const [query, setQuery] = useState('');
-    const { loading, data, error } = useFindLanguagesQuery({
+    const { loading, data, error } = useQuery(FindLanguagesDocument, {
         variables: {
             input: { query, pageSize: 500 }
         }

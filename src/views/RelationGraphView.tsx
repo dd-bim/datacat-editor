@@ -13,7 +13,7 @@ import {
     Handle,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { SubjectDetailPropsFragment } from '../generated/types';
+import { SubjectDetailPropsFragment } from '../generated/graphql';
 import { Box, Paper, Typography, IconButton, Collapse, Chip, useTheme } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';

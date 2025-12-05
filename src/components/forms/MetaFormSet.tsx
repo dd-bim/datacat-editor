@@ -1,7 +1,7 @@
 import { toLLL } from "../../dateUtil";
 import FormSet, { FormSetDescription, FormSetTitle } from "./FormSet";
 import React from "react";
-import { ItemPropsFragment, MetaPropsFragment } from "../../generated/types";
+import { ItemPropsFragment, MetaPropsFragment } from "../../generated/graphql";
 import { WithChildren } from "../../views/forms/FormView";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";

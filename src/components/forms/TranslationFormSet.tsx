@@ -1,4 +1,4 @@
-import {TranslationInput, UpdateTextInput, TextPropsFragment} from "../../generated/types";
+import {TranslationInput, UpdateTextInput, TextPropsFragment} from "../../generated/graphql";
 import TranslationForm, {TranslationFormValues} from "./TranslationForm";
 import React, {useState} from "react";
 import {Dialog, TextFieldProps, Stack, Box} from "@mui/material";

@@ -1,13 +1,14 @@
 import VersionForm from "./VersionForm";
 import FormSet, { FormSetDescription, FormSetTitle } from "./FormSet";
 import React, { FC } from "react";
+import { useMutation } from "@apollo/client/react";
 import {
   Maybe,
-  useUpdateMajorVersionMutation,
-  useUpdateMinorVersionMutation,
+  UpdateMajorVersionDocument,
+  UpdateMinorVersionDocument,
   UpdateMajorVersionInput,
   UpdateMinorVersionInput
-} from "../../generated/types";
+} from "../../generated/graphql";
 import { useSnackbar } from "notistack";
 import { styled } from "@mui/material/styles";
 import { T } from "@tolgee/react";
@@ -32,8 +33,8 @@ const VersionFormSet: FC<VersionFormSetProps> = (props) => {
     minorVersion: minorVersion ?? 0,
   };
 
-  const [setMajorVersion] = useUpdateMajorVersionMutation();
-  const [setMinorVersion] = useUpdateMinorVersionMutation();
+  const [setMajorVersion] = useMutation(UpdateMajorVersionDocument);
+  const [setMinorVersion] = useMutation(UpdateMinorVersionDocument);
 
   const onSubmit = async (values: UpdateMajorVersionInput & UpdateMinorVersionInput) => {
     await setMajorVersion({

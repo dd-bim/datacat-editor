@@ -1,7 +1,8 @@
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { ConfirmEmailMutationVariables, useConfirmEmailMutation } from "../generated/types";
+import { useMutation } from "@apollo/client/react";
+import { ConfirmEmailMutationVariables, ConfirmEmailDocument } from "../generated/graphql";
 import TextField from "@mui/material/TextField";
 import { Button, Alert, Grid, Paper } from "@mui/material";
 import useLocationQueryParam from "../hooks/useLocationQueryParam";
@@ -32,7 +33,7 @@ export default function ConfirmationView() {
     const { register, handleSubmit, formState: { errors } } = useForm<ConfirmEmailMutationVariables>();
     const [success, setSuccess] = useState(false);
     const { enqueueSnackbar } = useSnackbar();
-    const [confirm, { error }] = useConfirmEmailMutation({
+    const [confirm, { error }] = useMutation(ConfirmEmailDocument, {
         errorPolicy: "all",
         onCompleted: (result: any) => {
             if (result.success) {

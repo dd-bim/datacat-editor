@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { CatalogRecordType, useCreateEntryMutation, useCreateRelationshipMutation, RelationshipRecordType } from "../generated/types";
+import { useMutation } from "@apollo/client/react";
+import { CatalogRecordType, CreateEntryDocument, CreateRelationshipDocument, RelationshipRecordType } from "../generated/graphql";
 import { Dialog } from "@mui/material";
 import Button from "@mui/material/Button";
 import Popper from "@mui/material/Popper";
@@ -48,7 +49,7 @@ const CreateEntryButton = (props: CreateEntryProps) => {
 
     const { enqueueSnackbar } = useSnackbar();
 
-    const [create] = useCreateEntryMutation({
+    const [create] = useMutation(CreateEntryDocument, {
         update: (cache, { data }) => {
             // Optimized cache updates - only invalidate specific fields
             const newEntry = data?.createCatalogEntry?.catalogEntry;
@@ -62,7 +63,7 @@ const CreateEntryButton = (props: CreateEntryProps) => {
         },
         errorPolicy: 'all' // Continue execution even if there are errors
     });
-    const [createRelationship] = useCreateRelationshipMutation();
+    const [createRelationship] = useMutation(CreateRelationshipDocument);
 
     const [lastUsedOption, setLastUsedOption] = React.useState(props.EntryType);
     const [menuOpen, setMenuOpen] = React.useState(false);

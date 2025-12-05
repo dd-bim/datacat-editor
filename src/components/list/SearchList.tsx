@@ -1,4 +1,5 @@
-import { CatalogRecordType, SearchInput, useFindItemQuery, useFindDictionariesQuery } from "../../generated/types";
+import { useQuery } from "@apollo/client/react";
+import { CatalogRecordType, SearchInput, FindItemDocument, FindDictionariesDocument } from "../../generated/graphql";
 import { NetworkStatus } from "@apollo/client";
 import useDebounce from "../../hooks/useDebounce";
 import ItemList, { ItemListProps } from "./ItemList";
@@ -47,6 +48,8 @@ export default function SearchList(props: SearchListProps) {
         onItemCountChange,
         onTotalCountChange,
         onSearch,
+        height,
+        fixedHeight = false,
         ...otherProps
     } = props;
     
@@ -66,7 +69,7 @@ export default function SearchList(props: SearchListProps) {
     const isDictionary = searchInput?.entityTypeIn?.includes(CatalogRecordType.Dictionary);
     
     // Load available Dictionaries for filter dropdown ONLY when needed
-    const { data: dictionariesData } = useFindDictionariesQuery({
+    const { data: dictionariesData } = useQuery(FindDictionariesDocument, {
         variables: {
             input: { query: "", pageSize: 100, pageNumber: 0 }
         },
@@ -86,7 +89,7 @@ export default function SearchList(props: SearchListProps) {
         // For dictionaries, use the correct structure
         const { entityTypeIn, ...searchParams } = input;
         
-        ({ loading, data, error, fetchMore, networkStatus } = useFindDictionariesQuery({
+        ({ loading, data, error, fetchMore, networkStatus } = useQuery(FindDictionariesDocument, {
             variables: {
                 input: {
                     ...searchParams,
@@ -102,7 +105,7 @@ export default function SearchList(props: SearchListProps) {
         isLoadingMore = networkStatus === 3; // NetworkStatus.fetchMore
     }
     else {
-        ({ loading, data, error, fetchMore, networkStatus } = useFindItemQuery({
+        ({ loading, data, error, fetchMore, networkStatus } = useQuery(FindItemDocument, {
             variables: {
                 input,
                 pageSize,
@@ -265,11 +268,16 @@ export default function SearchList(props: SearchListProps) {
 
     const actuallyLoading = loading && !data;
     
+    // Berechne die Höhe für die ItemList: Gesamthöhe minus Filter und SearchField
+    const filterHeight = shouldShowDictionaryFilter ? 56 : 0; // FormControl height
+    const searchFieldHeight = 56; // TextField height
+    const itemListHeight = height ? height - filterHeight - searchFieldHeight - 8 : undefined; // 8px für margins
+    
     return (
         <Box sx={{
             display: 'flex',
             flexDirection: 'column',
-            height: '100%', // Nimmt die Höhe vom Parent-Container
+            height: height ? `${height}px` : '100%',
             width: '100%',
             minHeight: 0 // Wichtig für flex overflow
         }}>
@@ -332,15 +340,18 @@ export default function SearchList(props: SearchListProps) {
             {/* Scrollbarer Container nur für Items */}
             <Box sx={{ 
                 flex: 1,
-                overflow: 'auto',
+                overflow: fixedHeight ? 'hidden' : 'auto',
                 border: '1px solid',
                 borderColor: 'divider',
                 borderRadius: 1,
-                position: 'relative'
+                position: 'relative',
+                minHeight: 0 // Wichtig für flex overflow
             }}>
                 <ItemList
                     loading={actuallyLoading}
                     items={mappedItems}
+                    height={itemListHeight}
+                    fixedHeight={fixedHeight}
                     onSearch={undefined} // SearchField ist jetzt außerhalb
                     {...otherProps}
                 />

@@ -1,12 +1,13 @@
+import { useMutation, useLazyQuery } from "@apollo/client/react";
 import {
     SubjectDetailPropsFragment,
     RelationshipRecordType,
     RelationshipKindEnum,
     SearchInput,
-    useCreateRelationshipMutation,
-    useDeleteRelationshipMutation,
-    useFindRelationshipTypesLazyQuery,
-} from "../generated/types";
+    CreateRelationshipDocument,
+    DeleteRelationshipDocument,
+    FindRelationshipTypesDocument,
+} from "../generated/graphql";
 import { CatalogRecord } from "../types";
 import React, { useMemo, useState } from "react";
 import { 
@@ -73,11 +74,11 @@ export default function OtherRelationsView(props: OtherRelationsViewProps) {
         }
     });
     
-    const [createRelationship] = useCreateRelationshipMutation({ update });
-    const [deleteRelationship] = useDeleteRelationshipMutation({ update });
+    const [createRelationship] = useMutation(CreateRelationshipDocument, { update });
+    const [deleteRelationship] = useMutation(DeleteRelationshipDocument, { update });
 
     // Lazy query for searching existing relationship types
-    const [searchRelationshipTypes, { data: relationshipTypesData, loading: relationshipTypesLoading }] = useFindRelationshipTypesLazyQuery();
+    const [searchRelationshipTypes, { data: relationshipTypesData, loading: relationshipTypesLoading }] = useLazyQuery(FindRelationshipTypesDocument);
 
     // Extract available relationship types from query result
     const availableRelationshipTypes = useMemo(() => {

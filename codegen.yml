@@ -1,16 +1,27 @@
 schema: http://localhost:8080/graphql
 documents: src/**/*.graphql
-config:
-  skipTypename: true
-  onlyOperationTypes: true
-  preResolveTypes: true
-  reactApolloVersion: 3
-  withHooks: true
-  withComponent: false
-  withHOC: false
 generates:
-  src/generated/types.ts:
-    plugins:
-      - typescript
-      - typescript-operations
-      - typescript-react-apollo
+  src/generated/:
+    preset: client
+    presetConfig:
+      # Fragment-Masking deaktivieren für einfachere Typen
+      fragmentMasking: false
+    config:
+      # Grundeinstellungen - __typename nur wenn nötig
+      skipTypename: true
+      # Union-Types kombinieren statt wiederholen
+      inlineFragmentTypes: combine
+      # Doppelte Fragments entfernen
+      dedupeFragments: true
+      # Enum-Stil beibehalten
+      enumsAsTypes: false
+      # WICHTIG: documentNode für Apollo Client (nicht string!)
+      documentMode: documentNode
+      # Kompaktere Typen - keine Wrapper
+      preResolveTypes: true
+      # Nur benötigte Typen generieren
+      onlyOperationTypes: true
+      # Flachere Typen
+      flattenGeneratedTypes: true
+      # Keine unnötigen Felder in Inline-Fragments
+      mergeFragmentTypes: true

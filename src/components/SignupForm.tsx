@@ -3,7 +3,8 @@ import { useForm } from "react-hook-form";
 import { styled } from "@mui/material/styles";
 import { Alert, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
-import { SignupInput, useSignupFormMutation } from "../generated/types";
+import { useMutation } from "@apollo/client/react";
+import { SignupInput, SignupFormDocument } from "../generated/graphql";
 import { T } from "@tolgee/react";
 
 const emailRegex =
@@ -34,7 +35,7 @@ type SignupFormFields = SignupInput & { password2: string };
 export default function SignupForm(props: SignupFormProps) {
   const { onSignup } = props;
   const [cooldownReached, setCooldownReached] = useState(false);
-  const [signup, { loading, error }] = useSignupFormMutation({
+  const [signup, { loading, error }] = useMutation(SignupFormDocument, {
     errorPolicy: "all",
     onCompleted: (result) => result.success && onSignup(),
   });

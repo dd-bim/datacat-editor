@@ -5,12 +5,13 @@
  * Für die Legacy-Version mit TransferList-Ansichten siehe deprecated/DomainClassFormLegacy.tsx
  */
 
+import { useQuery } from "@apollo/client/react";
 import {
-  RelationshipKindEnum,
+  XtdRelationshipKindEnum,
   RelationshipRecordType,
   SubjectDetailPropsFragment,
-  useGetSubjectEntryQuery,
-} from "../../generated/types";
+  GetSubjectEntryDocument,
+} from "../../generated/graphql";
 import { useDeleteEntry } from "../../hooks/useDeleteEntry";
 import { Typography, Button, Box } from "@mui/material";
 import { useSnackbar } from "notistack";
@@ -43,7 +44,7 @@ export default function DomainClassForm(
   const navigate = useNavigate();
 
   // fetch subjects
-  const { loading, error, data, refetch } = useGetSubjectEntryQuery({
+  const { loading, error, data, refetch } = useQuery(GetSubjectEntryDocument, {
     fetchPolicy: "network-only",
     variables: { id },
   });
@@ -60,12 +61,15 @@ export default function DomainClassForm(
         <T keyName={"class.loading"} />
       </Typography>
     );
-  if (error || !entry)
+  if (error || !entry) {
+    console.error("DomainClassForm Error:", error);
+    console.log("DomainClassForm Data:", data);
     return (
       <Typography>
         <T keyName={"error.error"} />
       </Typography>
     );
+  }
 
   const handleOnDelete = async () => {
     await deleteEntry({ variables: { id } });
@@ -87,7 +91,7 @@ export default function DomainClassForm(
   const relatedPropertyGroups = {
     relId: relatedRelations[0]?.id ?? null,
     targetSubjects: allTargetSubjects,
-    relationshipType: RelationshipKindEnum.XTD_INSTANCE_LEVEL
+    relationshipType: XtdRelationshipKindEnum.XtdInstanceLevel
   };
 
   const relatingRelations = entry.connectingSubjects ?? [];

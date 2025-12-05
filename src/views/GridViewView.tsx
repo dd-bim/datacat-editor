@@ -1,12 +1,13 @@
 import { useState, useEffect, useCallback, useMemo, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
+import { useQuery, useMutation } from "@apollo/client/react";
 import {
-    usePropertyTreeQuery,
-    useAddTagMutation,
-    useFindTagsQuery,
-    useFindItemQuery
-} from "../generated/types";
+    PropertyTreeDocument,
+    AddTagDocument,
+    FindTagsDocument,
+    FindItemDocument
+} from "../generated/graphql";
 import {
     Box,
     Chip,
@@ -431,8 +432,8 @@ const GridViewView = () => {
         error: propertyTreeError,
         data: propertyTreeData,
         refetch: refetchPropertyTree,
-    } = usePropertyTreeQuery({});
-    const [addTag] = useAddTagMutation();
+    } = useQuery(PropertyTreeDocument, {});
+    const [addTag] = useMutation(AddTagDocument);
 
     // Neue Query für alle Merkmalsgruppen
     const {
@@ -440,7 +441,7 @@ const GridViewView = () => {
         loading: allNestsLoading,
         error: allNestsError,
         refetch: refetchAllNests,
-    } = useFindItemQuery({
+    } = useQuery(FindItemDocument, {
         variables: {
             input: {
                 tagged: PropertyGroupEntity.tags,
@@ -469,7 +470,7 @@ const GridViewView = () => {
     const [isTagging, setIsTagging] = useState(false);
     const [searchText, setSearchText] = useState("");
     const [density, setDensity] = useState<GridDensity>("compact");
-    const { data, refetch } = useFindTagsQuery({ variables: { pageSize: 100 } });
+    const { data, refetch } = useQuery(FindTagsDocument, { variables: { pageSize: 100 } });
     const { enqueueSnackbar } = useSnackbar();
     const { t } = useTranslate();
 

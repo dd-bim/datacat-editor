@@ -1,4 +1,10 @@
-import { useExportCatalogRecordsQuery, ExportCatalogRecord_Fragment, useExportCatalogRecordsRelationshipsQuery, ExportCatalogRecordRelationship_Fragment } from "../generated/types";
+import { useQuery } from "@apollo/client/react";
+import { 
+  ExportCatalogRecordFragment, 
+  ExportCatalogRecordRelationshipFragment, 
+  ExportCatalogRecordsDocument,
+  ExportCatalogRecordsRelationshipsDocument
+} from "../generated/graphql";
 import Button from "@mui/material/Button";
 import View from "./View";
 import Typography from "@mui/material/Typography";
@@ -8,8 +14,8 @@ import FileSaver from "file-saver";
 import { T } from "@tolgee/react";
 
 export function ExportView() {
-  const { data: entity, loading: entityLoading } = useExportCatalogRecordsQuery();
-  const { data: relation, loading: relationLoading } = useExportCatalogRecordsRelationshipsQuery();
+  const { data: entity, loading: entityLoading } = useQuery(ExportCatalogRecordsDocument);
+  const { data: relation, loading: relationLoading } = useQuery(ExportCatalogRecordsRelationshipsDocument);
   console.log("entity", entity);
   console.log("relation", relation);
   const loaded = !entityLoading && !relationLoading && !!entity && !!relation;
@@ -19,7 +25,7 @@ export function ExportView() {
 
   const handleOnClick = () => {
     const entities: string[][] = [];
-    const writeEntities = (node: ExportCatalogRecord_Fragment) => {
+    const writeEntities = (node: ExportCatalogRecordFragment) => {
       let description;
       if (node.description) {
         description = node.description.replace(/(\r\n|\n|\r)/gm, " ");
@@ -69,7 +75,7 @@ export function ExportView() {
     zip.file(`Entities.csv`, entityBlob);
 
     const relations: string[][] = [];
-    const writeRelations = (node: ExportCatalogRecordRelationship_Fragment) => {
+    const writeRelations = (node: ExportCatalogRecordRelationshipFragment) => {
       relations.push([
         node.entity1,
         node.relationship,

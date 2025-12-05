@@ -1,9 +1,10 @@
+import { useQuery } from "@apollo/client/react";
 import {
   RelationshipKindEnum,
   RelationshipRecordType,
   SubjectDetailPropsFragment,
-  useGetSubjectEntryQuery,
-} from "../../generated/types";
+  GetSubjectEntryDocument,
+} from "../../generated/graphql";
 import { useDeleteEntry } from "../../hooks/useDeleteEntry";
 import { Typography, Button, Box } from "@mui/material";
 import { useSnackbar } from "notistack";
@@ -40,7 +41,7 @@ export default function DomainClassForm(
   const navigate = useNavigate();
 
   // fetch subjects
-  const { loading, error, data, refetch } = useGetSubjectEntryQuery({
+  const { loading, error, data, refetch } = useQuery(GetSubjectEntryDocument, {
     fetchPolicy: "network-only",
     variables: { id },
   });

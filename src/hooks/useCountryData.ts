@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react';
-import { useFindCountriesQuery, CountryDetailPropsFragment } from '../generated/types';
+import { useQuery } from '@apollo/client/react';
+import { FindCountriesDocument, CountryDetailPropsFragment } from '../generated/graphql';
 
 interface UseCountryDataProps {
     preload?: boolean;
@@ -18,7 +19,7 @@ export const useCountryData = (props: UseCountryDataProps = {}) => {
         data: preloadData, 
         loading: preloadLoading,
         error: preloadError 
-    } = useFindCountriesQuery({
+    } = useQuery(FindCountriesDocument, {
         variables: {
             input: { query: '', pageSize: 250 }
         },
@@ -32,7 +33,7 @@ export const useCountryData = (props: UseCountryDataProps = {}) => {
         data: searchData, 
         loading: searchLoading,
         error: searchError 
-    } = useFindCountriesQuery({
+    } = useQuery(FindCountriesDocument, {
         variables: {
             input: { query, pageSize: 250 }
         },

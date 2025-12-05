@@ -1,4 +1,4 @@
-import {SearchInput} from "../../generated/types";
+import {SearchInput} from "../../generated/graphql";
 import { styled } from "@mui/material/styles";
 import React, {useState} from "react";
 import { Box, Stack } from "@mui/material";
@@ -63,15 +63,24 @@ export default function TransferList(props: TransferListProps) {
 
     const [searchTerm, setSearchTerm] = useState("");
 
-    // Berechne die Höhe dynamisch basierend auf der Anzahl der Items
-    // Mindesthöhe: 1 Item, Maximalhöhe: maxVisibleItems
+    // Berechne die feste maximale Höhe für die Liste
     const textFieldHeight = 56; // TextField mit Margin
-    const minItems = 1;
-    const actualItems = Math.max(minItems, Math.min(items.length, maxVisibleItems));
-    const dynamicHeight = (actualItems * ITEM_ROW_SIZE) + textFieldHeight;
+    const maxHeight = (maxVisibleItems * ITEM_ROW_SIZE) + textFieldHeight;
     
-    // Wenn eine feste Höhe übergeben wurde, diese verwenden, sonst dynamische Höhe
-    const relationListHeight = height ?? dynamicHeight;
+    // Im Bearbeitungsmodus: volle Höhe; Im Lesemodus: nur so groß wie nötig
+    let relationListHeight: number | undefined;
+    let useFixedHeight: boolean;
+    
+    if (enabled) {
+        // Bearbeitungsmodus: Verwende feste maximale Höhe
+        relationListHeight = height ?? maxHeight;
+        useFixedHeight = true;
+    } else {
+        // Lesemodus: Passe Höhe an Anzahl der Items an
+        const actualItems = Math.min(items.length, maxVisibleItems);
+        relationListHeight = height ?? ((actualItems * ITEM_ROW_SIZE) + textFieldHeight);
+        useFixedHeight = items.length > maxVisibleItems;
+    }
 
     return (
         <Stack 
@@ -89,7 +98,7 @@ export default function TransferList(props: TransferListProps) {
                 <ListPaper variant="outlined">
                     <FilterableList
                         height={relationListHeight}
-                        fixedHeight={true}
+                        fixedHeight={useFixedHeight}
                         loading={loading}
                         items={[...items].sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "") || a.id.localeCompare(b.id))}
                         onSelect={onSelect}
@@ -106,7 +115,8 @@ export default function TransferList(props: TransferListProps) {
                 }}>
                     <SearchBox variant="outlined">
                         <SearchList
-                            height={height}
+                            height={relationListHeight}
+                            fixedHeight={useFixedHeight}
                             disabledItems={items.map(x => x.id)}
                             searchTerm={searchTerm}
                             searchInput={searchInput}

@@ -1,11 +1,12 @@
+import { useMutation } from "@apollo/client/react";
 import {
     ObjectPropsFragment,
     RelationshipRecordType,
     SearchInput,
-    useCreateRelationshipMutation,
-    useDeleteRelationshipMutation,
-    RelationshipKindEnum
-} from "../generated/types";
+    CreateRelationshipDocument,
+    DeleteRelationshipDocument,
+    XtdRelationshipKindEnum
+} from "../generated/graphql";
 import React, { JSX, useState } from "react";
 import TransferList from "../components/list/TransferList";
 import EditIcon from "@mui/icons-material/Edit";
@@ -22,7 +23,7 @@ import { T } from "@tolgee/react";
 export type RelationshipProps = {
     relId: string;
     targetSubjects: CatalogRecord[];
-    relationshipType: RelationshipKindEnum;
+    relationshipType: XtdRelationshipKindEnum;
 };
 
 export type TransferListViewProps = {
@@ -64,8 +65,8 @@ export default function TransferListView(props: TransferListViewProps) {
             hierarchy: (value: any, { DELETE }: any) => DELETE
         }
     });
-    const [createRelationship] = useCreateRelationshipMutation({ update });
-    const [deleteRelationship] = useDeleteRelationshipMutation({ update });
+    const [createRelationship] = useMutation(CreateRelationshipDocument, { update });
+    const [deleteRelationship] = useMutation(DeleteRelationshipDocument, { update });
 
     const handleOnCreateRelationship = async (toIds: string[]) => {
         console.log("Creating relationship", {

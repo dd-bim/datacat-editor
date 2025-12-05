@@ -1,12 +1,13 @@
+import { useMutation } from "@apollo/client/react";
 import {
     ObjectPropsFragment,
     RelationshipRecordType,
     SearchInput,
-    useCreateRelationshipMutation,
-    useDeleteRelationshipMutation,
+    CreateRelationshipDocument,
+    DeleteRelationshipDocument,
     RelationshipKindEnum,
     SubjectDetailPropsFragment
-} from "../generated/types";
+} from "../generated/graphql";
 import React, { JSX, useState, useMemo } from "react";
 import TransferList from "../components/list/TransferList";
 import EditIcon from "@mui/icons-material/Edit";
@@ -57,8 +58,8 @@ export default function SuperClassesTransferListView(props: SuperClassesTransfer
             hierarchy: (value: any, { DELETE }: any) => DELETE
         }
     });
-    const [createRelationship] = useCreateRelationshipMutation({ update });
-    const [deleteRelationship] = useDeleteRelationshipMutation({ update });
+    const [createRelationship] = useMutation(CreateRelationshipDocument, { update });
+    const [deleteRelationship] = useMutation(DeleteRelationshipDocument, { update });
 
     // Filter connectingSubjects to only include "specializes" relationships (inverse)
     const specializesRelationships = useMemo(() => {

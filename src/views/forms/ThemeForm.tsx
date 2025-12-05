@@ -1,10 +1,11 @@
 import { FC } from "react";
+import { useQuery } from "@apollo/client/react";
 import {
-    RelationshipKindEnum,
+    XtdRelationshipKindEnum,
     RelationshipRecordType,
     SubjectDetailPropsFragment,
-    useGetSubjectEntryQuery,
-} from "../../generated/types";
+    GetSubjectEntryDocument,
+} from "../../generated/graphql";
 import { useDeleteEntry } from "../../hooks/useDeleteEntry";
 import { Button, Typography, Box } from "@mui/material";
 import { useSnackbar } from "notistack";
@@ -32,7 +33,7 @@ const ThemeForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
     const navigate = useNavigate();
 
     // fetch domain themes
-    const { loading, error, data, refetch } = useGetSubjectEntryQuery({
+    const { loading, error, data, refetch } = useQuery(GetSubjectEntryDocument, {
         fetchPolicy: "network-only",
         variables: { id }
     });
@@ -62,7 +63,7 @@ const ThemeForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
     const relatedPropertyGroups = {
         relId: relatedRelations[0]?.id ?? null,
         targetSubjects: allTargetSubjects,
-        relationshipType: RelationshipKindEnum.XTD_SCHEMA_LEVEL
+        relationshipType: XtdRelationshipKindEnum.XtdSchemaLevel
     };
 
     const relatingRelations = entry.connectingSubjects ?? [];

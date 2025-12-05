@@ -1,4 +1,5 @@
-import { UnitDetailPropsFragment, useGetUnitEntryQuery } from "../../generated/types";
+import { useQuery } from "@apollo/client/react";
+import { UnitDetailPropsFragment, GetUnitEntryDocument } from "../../generated/graphql";
 import { useDeleteEntry } from "../../hooks/useDeleteEntry";
 import { Typography, Button, Box } from "@mui/material";
 import { useSnackbar } from "notistack";
@@ -15,7 +16,7 @@ import StatusFormSet from "../../components/forms/StatusFormSet";
 import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
 import TransferListView from "../TransferListView";
 import { PropertyEntity, DocumentEntity, PropertyGroupEntity, ClassEntity, ValueListEntity, UnitEntity } from "../../domain";
-import { RelationshipRecordType } from "../../generated/types";
+import { RelationshipRecordType } from "../../generated/graphql";
 import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
 import ExampleFormSet from "../../components/forms/ExampleFormSet";
 import { useNavigate } from "react-router-dom";
@@ -39,7 +40,7 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
     };
 
     // fetch units
-    const { loading, error, data, refetch } = useGetUnitEntryQuery({
+    const { loading, error, data, refetch } = useQuery(GetUnitEntryDocument, {
         fetchPolicy: "network-only",
         variables: { id }
     });
