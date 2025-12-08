@@ -24,6 +24,7 @@ export type RelationshipProps = {
     relId: string;
     targetSubjects: CatalogRecord[];
     relationshipType: XtdRelationshipKindEnum;
+    name?: string;
 };
 
 export type TransferListViewProps = {
@@ -69,17 +70,17 @@ export default function TransferListView(props: TransferListViewProps) {
     const [deleteRelationship] = useMutation(DeleteRelationshipDocument, { update });
 
     const handleOnCreateRelationship = async (toIds: string[]) => {
-        console.log("Creating relationship", {
-            relationshipType,
-            fromId: relatingItemId,
-            toIds,
-            properties: {
-                id: relationships.relId,
-                relationshipToSubjectProperties: {
-                    relationshipType: relationships.relationshipType
-                }
-            }
-        });
+        // console.log("Creating relationship", {
+        //     relationshipType,
+        //     fromId: relatingItemId,
+        //     toIds,
+        //     properties: {
+        //         id: relationships.relId,
+        //         relationshipToSubjectProperties: {
+        //             relationshipType: relationships.relationshipType
+        //         }
+        //     }
+        // });
         await createRelationship({
             variables: {
                 input: {
@@ -89,7 +90,8 @@ export default function TransferListView(props: TransferListViewProps) {
                     properties: {
                         id: relationships.relId,
                         relationshipToSubjectProperties: {
-                            relationshipType: relationships.relationshipType
+                            relationshipType: relationships.relationshipType,
+                            name: relationships.name
                         }
                     }
                 }

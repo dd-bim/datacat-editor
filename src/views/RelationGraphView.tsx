@@ -19,7 +19,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { useNavigate } from 'react-router-dom';
 import { getEntityType } from '../domain';
-import { T } from '@tolgee/react';
+import { T, useTranslate } from '@tolgee/react';
 import FormSet, { FormSetTitle } from '../components/forms/FormSet';
 
 // Relation type colors (consistent with RelationChipsViewEditable)
@@ -28,7 +28,9 @@ const RELATION_COLORS = {
     subClass: '#42A5F5',     // Light Blue - subclasses (outgoing specializes)
     part: '#2E7D32',         // Dark Green - parts (incoming partOf)
     partOf: '#66BB6A',       // Light Green - partOf (outgoing)
-    other: '#FF9800',        // Orange - other relations
+    other: '#FB8C00',        // Light Orange - outgoing other relations
+    otherIncoming: '#FFB74D', // Lighter Orange - incoming other relations
+    hasPropertyGroup: '#D32F2F', // Red - hasPropertyGroup relations
 };
 
 // Node dimensions (approximate)
@@ -54,14 +56,16 @@ const calculateHorizontalSpacing = (relationName: string, margin: number = 40): 
 type HandleCounts = {
     top: number;       // superclasses coming in
     topSource: number; // (not used, superclasses are incoming)
-    bottom: number;    // (not used, subclasses are outgoing)
-    bottomSource: number; // subclasses going out
-    left: number;      // (not used for center)
+    bottom: number;    // (not used)
+    bottomSource: number; // subclasses going out + hasPropertyGroup
+    left: number;      // incoming other relations
     leftSource: number; // other relations going out
     right: number;     // parts coming in
     rightSource: number; // partOf going out
     // Combined count for right side (parts + partOf)
     rightTotal: number;
+    // Combined count for left side (other outgoing + other incoming)
+    leftTotal: number;
 };
 
 // Custom node component for classes with dynamic handles
@@ -118,6 +122,19 @@ const ClassNode = ({ data }: { data: {
             );
         }
 
+        // Bottom target handles (incoming from other relations)
+        for (let i = 0; i < counts.bottom; i++) {
+            handles.push(
+                <Handle 
+                    key={`bottom-${i}`}
+                    type="target" 
+                    position={Position.Bottom} 
+                    id={`bottom-${i}`} 
+                    style={{ opacity: 0, left: getPositionPercent(i, counts.bottom) }} 
+                />
+            );
+        }
+
         // Bottom source handles (outgoing to subclasses)
         for (let i = 0; i < counts.bottomSource; i++) {
             handles.push(
@@ -162,6 +179,9 @@ const ClassNode = ({ data }: { data: {
             );
         }
 
+        // Left side handles - distribute ALL left handles together (other outgoing + other incoming)
+        const leftTotal = counts.leftTotal;
+        
         // Left source handles (outgoing to other relations)
         for (let i = 0; i < counts.leftSource; i++) {
             handles.push(
@@ -170,7 +190,21 @@ const ClassNode = ({ data }: { data: {
                     type="source" 
                     position={Position.Left} 
                     id={`left-source-${i}`} 
-                    style={{ opacity: 0, top: getPositionPercent(i, counts.leftSource) }} 
+                    style={{ opacity: 0, top: getPositionPercent(i, leftTotal) }} 
+                />
+            );
+        }
+        
+        // Left target handles (incoming from other relations) - continue from where outgoing left off
+        for (let i = 0; i < counts.left; i++) {
+            const combinedIndex = counts.leftSource + i; // Continue after outgoing
+            handles.push(
+                <Handle 
+                    key={`left-${i}`}
+                    type="target" 
+                    position={Position.Left} 
+                    id={`left-${i}`} 
+                    style={{ opacity: 0, top: getPositionPercent(combinedIndex, leftTotal) }} 
                 />
             );
         }
@@ -223,7 +257,7 @@ type RelationData = {
     name: string;
     recordType: string;
     tags: Array<{ id: string; name: string }>;
-    relationType: 'subClass' | 'superClass' | 'part' | 'partOf' | 'other';
+    relationType: 'subClass' | 'superClass' | 'part' | 'partOf' | 'other' | 'otherIncoming' | 'hasPropertyGroup';
     relationName: string;
 };
 
@@ -231,13 +265,14 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
     const { entry } = props;
     const navigate = useNavigate();
     const theme = useTheme();
+    const { t } = useTranslate();
     const [expanded, setExpanded] = useState(true);
 
     // Extract all relations from the entry
     const relations = useMemo((): RelationData[] => {
         const result: RelationData[] = [];
 
-        // ConnectedSubjects (outgoing relations: subClasses, partOf, other)
+        // ConnectedSubjects (outgoing relations: subClasses, partOf, other, hasPropertyGroup)
         (entry.connectedSubjects ?? []).forEach(rel => {
             const relationName = (rel as any).relationshipType?.name;
             
@@ -251,6 +286,8 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
                     relationType = 'subClass';
                 } else if (relationName === 'partOf') {
                     relationType = 'partOf';
+                } else if (relationName === 'hasPropertyGroup') {
+                    relationType = 'hasPropertyGroup';
                 }
 
                 result.push({
@@ -264,7 +301,7 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
             });
         });
 
-        // ConnectingSubjects (incoming relations: superClasses, parts)
+        // ConnectingSubjects (incoming relations: superClasses, parts, otherIncoming)
         (entry.connectingSubjects ?? []).forEach(rel => {
             const relationName = (rel as any).relationshipType?.name;
             const connectingSubject = rel.connectingSubject;
@@ -273,7 +310,7 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
             if (!relationName) return;
             
             if (connectingSubject) {
-                let relationType: RelationData['relationType'] = 'other';
+                let relationType: RelationData['relationType'] = 'otherIncoming';
                 
                 if (relationName === 'specializes') {
                     relationType = 'superClass';
@@ -310,18 +347,21 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
         const parts = relations.filter(r => r.relationType === 'part');
         const partOf = relations.filter(r => r.relationType === 'partOf');
         const others = relations.filter(r => r.relationType === 'other');
+        const othersIncoming = relations.filter(r => r.relationType === 'otherIncoming');
+        const hasPropertyGroups = relations.filter(r => r.relationType === 'hasPropertyGroup');
 
         // Calculate handle counts for center node
         const handleCounts: HandleCounts = {
             top: superClasses.length,
             topSource: 0,
             bottom: 0,
-            bottomSource: subClasses.length,
-            left: 0,
+            bottomSource: subClasses.length + hasPropertyGroups.length,
+            left: othersIncoming.length,
             leftSource: others.length,
             right: parts.length,
             rightSource: partOf.length,
             rightTotal: parts.length + partOf.length, // Combined for right side distribution
+            leftTotal: others.length + othersIncoming.length, // Combined for left side distribution
         };
         
         nodes.push({
@@ -465,7 +505,7 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
             });
         });
 
-        // Position other relations to the left
+        // Position other relations to the left (outgoing)
         others.forEach((rel, index) => {
             const y = centerY + (index - (others.length - 1) / 2) * nodeSpacingVertical;
             
@@ -494,6 +534,64 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
             });
         });
 
+        // Position incoming other relations to the left (incoming)
+        // Arrow: other-in -> this class
+        othersIncoming.forEach((rel, index) => {
+            const y = centerY + (index - (othersIncoming.length - 1) / 2) * nodeSpacingVertical + (others.length * nodeSpacingVertical);
+            nodes.push({
+                id: `other-in-${rel.id}-${index}`,
+                type: 'classNode',
+                position: { x: centerX - leftSpacing, y },
+                data: { 
+                    label: rel.name,
+                    isCenter: false,
+                    recordType: rel.recordType,
+                    tags: rel.tags,
+                },
+            });
+            edges.push({
+                id: `e-${rel.id}-${entry.id}-other-in-${index}`,
+                source: `other-in-${rel.id}-${index}`,
+                target: entry.id,
+                sourceHandle: 'right-source',
+                targetHandle: `left-${index}`,
+                label: rel.relationName,
+                labelStyle: { fontSize: 10, fill: RELATION_COLORS.otherIncoming },
+                labelBgStyle: { fill: theme.palette.background.paper },
+                style: { stroke: RELATION_COLORS.otherIncoming, strokeWidth: 2 },
+                markerEnd: { type: MarkerType.ArrowClosed, color: RELATION_COLORS.otherIncoming },
+            });
+        });
+
+        // Position hasPropertyGroup relations below (arrow points down: this class -> property group)
+        hasPropertyGroups.forEach((rel, index) => {
+            const handleIndex = subClasses.length + index; // Continue after subClasses
+            const x = centerX + (index - (hasPropertyGroups.length - 1) / 2) * 180;
+            nodes.push({
+                id: `prop-group-${rel.id}-${index}`,
+                type: 'classNode',
+                position: { x, y: centerY + verticalSpacing + 80 },
+                data: { 
+                    label: rel.name,
+                    isCenter: false,
+                    recordType: rel.recordType,
+                    tags: rel.tags,
+                },
+            });
+            edges.push({
+                id: `e-${entry.id}-${rel.id}-propgroup-${index}`,
+                source: entry.id,
+                target: `prop-group-${rel.id}-${index}`,
+                sourceHandle: `bottom-source-${handleIndex}`,
+                targetHandle: 'top',
+                label: 'hasPropertyGroup',
+                labelStyle: { fontSize: 10, fill: RELATION_COLORS.hasPropertyGroup },
+                labelBgStyle: { fill: theme.palette.background.paper },
+                style: { stroke: RELATION_COLORS.hasPropertyGroup, strokeWidth: 2 },
+                markerEnd: { type: MarkerType.ArrowClosed, color: RELATION_COLORS.hasPropertyGroup },
+            });
+        });
+
         return { initialNodes: nodes, initialEdges: edges };
     }, [entry, relations, theme]);
 
@@ -504,7 +602,12 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
     const onNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
         if (node.id !== entry.id && node.data) {
             // Find the relation data for this node
-            const relation = relations.find(r => r.id === node.id || `other-${r.id}` === node.id.split('-').slice(0, 2).join('-'));
+            const relation = relations.find(r => 
+                r.id === node.id || 
+                `other-${r.id}` === node.id.split('-').slice(0, 2).join('-') ||
+                `other-in-${r.id}` === node.id.split('-').slice(0, 3).join('-') ||
+                `prop-group-${r.id}` === node.id.split('-').slice(0, 3).join('-')
+            );
             if (relation) {
                 const definition = getEntityType(relation.recordType, relation.tags.map(t => t.id));
                 navigate(`/${definition.path}/${relation.id}`);
@@ -519,6 +622,8 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
         parts: relations.filter(r => r.relationType === 'part').length,
         partOf: relations.filter(r => r.relationType === 'partOf').length,
         others: relations.filter(r => r.relationType === 'other').length,
+        othersIncoming: relations.filter(r => r.relationType === 'otherIncoming').length,
+        hasPropertyGroups: relations.filter(r => r.relationType === 'hasPropertyGroup').length,
         total: relations.length,
     }), [relations]);
 
@@ -535,7 +640,7 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         <Chip 
-                            label={`${relationCounts.total} <T keyName="class.relations">Relationen</T>`} 
+                            label={`${relationCounts.total} ${t('class.relations', 'Relationen')}`} 
                             size="small" 
                             variant="outlined" 
                         />
@@ -569,6 +674,18 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                             <Box sx={{ width: 20, height: 3, backgroundColor: RELATION_COLORS.other, borderRadius: 1 }} />
                             <Typography variant="caption"><T keyName="class.otherRelations">Andere</T> ({relationCounts.others})</Typography>
+                        </Box>
+                    )}
+                    {relationCounts.othersIncoming > 0 && (
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                            <Box sx={{ width: 20, height: 3, backgroundColor: RELATION_COLORS.otherIncoming, borderRadius: 1 }} />
+                            <Typography variant="caption"><T keyName="class.otherRelations">Andere</T> (<T keyName="class.incoming">eingehend</T>: {relationCounts.othersIncoming})</Typography>
+                        </Box>
+                    )}
+                    {relationCounts.hasPropertyGroups > 0 && (
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                            <Box sx={{ width: 20, height: 3, backgroundColor: RELATION_COLORS.hasPropertyGroup, borderRadius: 1 }} />
+                            <Typography variant="caption"><T keyName="class.property_groups">Merkmalsgruppen</T> ({relationCounts.hasPropertyGroups})</Typography>
                         </Box>
                     )}
                 </Box>

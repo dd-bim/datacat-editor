@@ -410,11 +410,13 @@
     "partof": "Parte Di",
     "otherRelations": "Altre Relazioni",
     "relation_graph": "Grafo delle Relazioni",
-    "add_superclass": "Aggiungi Superclasse",
-    "add_subclass": "Aggiungi Sottoclasse",
-    "add_part": "Aggiungi Parte",
-    "add_partof": "Aggiungi Parte Di",
-    "add_other_relation": "Aggiungi Altre Relazioni"
+    "add_superclass": "Aggiungi superclasse",
+    "add_subclass": "Aggiungi sottoclasse",
+    "add_part": "Aggiungi parte",
+    "add_partof": "Aggiungi parte di",
+    "add_other_relation": "Aggiungi altra relazione",
+    "property_groups": "Gruppi di proprietà",
+    "incoming": "in entrata"
   },
   "relation": {
     "none": "Nessuna",

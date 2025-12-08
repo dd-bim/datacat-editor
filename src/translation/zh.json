@@ -413,8 +413,10 @@
     "add_superclass": "添加超类",
     "add_subclass": "添加子类",
     "add_part": "添加部分",
-    "add_partof": "添加属于",
-    "add_other_relation": "添加其他关系"
+    "add_partof": "添加部分",
+    "add_other_relation": "添加其他关系",
+    "property_groups": "属性组",
+    "incoming": "传入"
   },
   "relation": {
     "none": "无",

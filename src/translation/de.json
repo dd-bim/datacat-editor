@@ -456,7 +456,9 @@
     "add_subclass": "Subklasse hinzufügen",
     "add_part": "Teil hinzufügen",
     "add_partof": "Teil von hinzufügen",
-    "add_other_relation": "Andere Beziehungen hinzufügen"
+    "add_other_relation": "Andere Beziehungen hinzufügen",
+    "property_groups": "Merkmalsgruppen",
+    "incoming": "eingehend"
   },
   "relation": {
     "none": "Keine",

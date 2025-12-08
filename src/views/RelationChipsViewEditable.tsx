@@ -150,6 +150,9 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
             const relationName = (rel as any).relationshipType?.name;
             if (!relationName) return;
             
+            // Skip hasPropertyGroup relations
+            if (relationName === 'hasPropertyGroup') return;
+            
             (rel.targetSubjects ?? []).forEach(target => {
                 const data: RelationData = {
                     id: target.id,
@@ -174,6 +177,9 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
             const relationName = (rel as any).relationshipType?.name;
             const connectingSubject = rel.connectingSubject;
             if (!relationName || !connectingSubject) return;
+            
+            // Skip hasPropertyGroup relations
+            if (relationName === 'hasPropertyGroup') return;
             
             const data: RelationData = {
                 id: connectingSubject.id,
@@ -227,6 +233,11 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
         for (const selectedItem of selectedItems) {
             if (editingCategory === 'subClass' || editingCategory === 'partOf' || editingCategory === 'other') {
                 // Outgoing relation: this class -> target
+                // Use XtdInstanceLevel for partOf and other relations, XtdSchemaLevel for subClass
+                const relationshipKind = (editingCategory === 'partOf' || editingCategory === 'other') 
+                    ? XtdRelationshipKindEnum.XtdInstanceLevel 
+                    : XtdRelationshipKindEnum.XtdSchemaLevel;
+                
                 await createRelationship({
                     variables: {
                         input: {
@@ -236,7 +247,7 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                             properties: {
                                 id: editingCategory !== 'other' ? getRelationshipId(editingCategory) : undefined,
                                 relationshipToSubjectProperties: {
-                                    relationshipType: XtdRelationshipKindEnum.XtdSchemaLevel,
+                                    relationshipType: relationshipKind,
                                     name: relationName
                                 }
                             } as any
@@ -245,6 +256,11 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                 });
             } else {
                 // Incoming relation: target -> this class (superClass, part)
+                // superClass uses XtdSchemaLevel, part uses XtdInstanceLevel
+                const relationshipKind = editingCategory === 'part' 
+                    ? XtdRelationshipKindEnum.XtdInstanceLevel 
+                    : XtdRelationshipKindEnum.XtdSchemaLevel;
+                
                 await createRelationship({
                     variables: {
                         input: {
@@ -253,7 +269,7 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                             toIds: [entry.id],
                             properties: {
                                 relationshipToSubjectProperties: {
-                                    relationshipType: XtdRelationshipKindEnum.XtdSchemaLevel,
+                                    relationshipType: relationshipKind,
                                     name: relationName
                                 }
                             } as any

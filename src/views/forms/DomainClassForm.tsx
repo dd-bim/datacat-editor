@@ -88,11 +88,16 @@ export default function DomainClassForm(
   };
 
   const relatedRelations = entry.connectedSubjects ?? [];
-  const allTargetSubjects = relatedRelations.flatMap(rel => rel.targetSubjects ?? []);
+  // Filter nur hasPropertyGroup Relationen
+  const hasPropertyGroupRelation = relatedRelations.find(rel => 
+    (rel as any).relationshipType?.name === "hasPropertyGroup"
+  );
+  const allTargetSubjects = hasPropertyGroupRelation?.targetSubjects ?? [];
   const relatedPropertyGroups = {
-    relId: relatedRelations[0]?.id ?? null,
+    relId: hasPropertyGroupRelation?.id ?? null,
     targetSubjects: allTargetSubjects,
-    relationshipType: XtdRelationshipKindEnum.XtdInstanceLevel
+    relationshipType: XtdRelationshipKindEnum.XtdInstanceLevel,
+    name: "hasPropertyGroup"
   };
 
   const relatingRelations = entry.connectingSubjects ?? [];

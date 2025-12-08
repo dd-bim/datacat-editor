@@ -458,7 +458,9 @@
     "add_subclass": "Add Subclass",
     "add_part": "Add Part",
     "add_partof": "Add Part Of",
-    "add_other_relation": "Add Other Relationship"
+    "add_other_relation": "Add Other Relationship",
+    "property_groups": "Property Groups",
+    "incoming": "incoming"
   },
   "relation": {
     "none": "None",

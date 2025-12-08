@@ -414,7 +414,9 @@
     "add_subclass": "Subklasse Toevoegen",
     "add_part": "Deel Toevoegen",
     "add_partof": "Onderdeel Van Toevoegen",
-    "add_other_relation": "Andere Relaties Toevoegen"
+    "add_other_relation": "Andere Relaties Toevoegen",
+    "property_groups": "Eigenschappengroepen",
+    "incoming": "inkomend"
   },
   "relation": {
     "none": "Geen",
