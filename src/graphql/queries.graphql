@@ -615,7 +615,10 @@ query GetPropertyEntry($id: ID!) {
   node: getProperty(id: $id) {
     ...PropertyProps
     connectedProperties {
-      ...RelationshipToPropertyProps
+      ...RelationshipToPropertyDetailProps
+    }
+    connectingProperties {
+      ...RelationshipToPropertyDetailProps
     }
     # symbols {
     #   ...SymbolProps

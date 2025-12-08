@@ -260,7 +260,10 @@ fragment PropertyProps on XtdProperty {
 fragment PropertyDetailProps on XtdProperty {
   ...PropertyProps
   connectedProperties {
-    ...RelationshipToPropertyProps
+    ...RelationshipToPropertyDetailProps
+  }
+  connectingProperties {
+    ...RelationshipToPropertyDetailProps
   }
   symbols {
     ...SymbolProps
@@ -494,7 +497,30 @@ fragment IntervalProps on XtdInterval {
 # ============================================
 
 fragment RelationshipToSubjectProps on XtdRelationshipToSubject {
-  ...ObjectProps
+  ...MetaProps
+  __typename
+  id
+  majorVersion
+  minorVersion
+  dateOfCreation
+  status
+  name(input: { languageTags: ["de-DE", "en-US"] })
+  names {
+    ...TranslationProps
+  }
+  comment(input: { languageTags: ["de-DE", "en-US"] })
+  comments {
+    ...TranslationProps
+  }
+  tags {
+    ...TagProps
+  }
+  dictionary {
+    id
+    name {
+      ...TranslationProps
+    }
+  }
 }
 
 fragment RelationshipToSubjectDetailProps on XtdRelationshipToSubject {
@@ -515,14 +541,40 @@ fragment RelationshipToSubjectDetailProps on XtdRelationshipToSubject {
 }
 
 fragment RelationshipToPropertyProps on XtdRelationshipToProperty {
-  ...ObjectProps
+  ...MetaProps
+  __typename
+  id
+  majorVersion
+  minorVersion
+  dateOfCreation
+  status
+  name(input: { languageTags: ["de-DE", "en-US"] })
+  names {
+    ...TranslationProps
+  }
+  comment(input: { languageTags: ["de-DE", "en-US"] })
+  comments {
+    ...TranslationProps
+  }
+  tags {
+    ...TagProps
+  }
+  dictionary {
+    id
+    name {
+      ...TranslationProps
+    }
+  }
 }
 
 fragment RelationshipToPropertyDetailProps on XtdRelationshipToProperty {
   ...RelationshipToPropertyProps
   relationshipType
   targetProperties {
-    ...PropertyDetailProps
+    ...PropertyProps
+  }
+  connectingProperty {
+    ...PropertyProps
   }
 }
 

@@ -497,7 +497,18 @@
     "assigned_classes": ", denen dieses Merkmal zugewiesen wurde",
     "no_assigned_classes": "Das Merkmal wurde keiner Klasse direkt zugewiesen",
     "inferred_properties": "Abgeleitete Merkmale",
-    "inferred_properties_description": "Diese Merkmale werden von Superklassen geerbt und sind nicht direkt änderbar."
+    "inferred_properties_description": "Diese Merkmale werden von Superklassen geerbt und sind nicht direkt änderbar.",
+    "relations": "Merkmalbeziehungen",
+    "super_properties": "Supermerkmale",
+    "sub_properties": "Submerkmale",
+    "depends_on": "Hängt ab von",
+    "depended_on_by": "Wird benötigt von",
+    "no_relations": "Keine Beziehungen",
+    "add_super_property": "Supermerkmal hinzufügen",
+    "add_sub_property": "Submerkmal hinzufügen",
+    "add_depends_on": "Abhängigkeit hinzufügen",
+    "add_depended_on_by": "Umgekehrte Abhängigkeit hinzufügen",
+    "relation_graph": "Beziehungsgraph"
   },
   "valuelist": {
     "title": "Werteliste",
@@ -597,6 +608,8 @@
   "search":{
     "search": "Suchen",
     "search_classes": "Zielklassen suchen",
+    "search_properties": "Merkmale suchen",
+    "start_typing": "Beginnen Sie zu tippen...",
     "min_chars": "Mindestens 2 Zeichen eingeben",
     "no_results": "Keine Ergebnisse",
     "search_placeholder": "Katalog durchsuchen",

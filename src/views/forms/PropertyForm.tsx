@@ -25,6 +25,8 @@ import ExampleFormSet from "../../components/forms/ExampleFormSet";
 import { useNavigate, Link } from "react-router-dom";
 import DataTypeFormSet from "../../components/forms/DataTypeFormSet";
 import DictionaryFormSet from "../../components/forms/DictionaryFormSet";
+import PropertyRelationChipsViewEditable from "../PropertyRelationChipsViewEditable";
+import PropertyRelationGraphView from "../PropertyRelationGraphView";
 import React from "react";
 
 const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
@@ -383,6 +385,15 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
                 emptyMessage={<T keyName="property.no_assigned_classes" />}
                 relatingRecords={entry.subjects ?? []}
                 tagged="e9b2cd6d-76f7-4c55-96ab-12d084d21e96"
+            />
+
+            <PropertyRelationChipsViewEditable 
+                entry={entry}
+                onUpdate={handleOnUpdate}
+            />
+
+            <PropertyRelationGraphView 
+                entry={entry}
             />
 
             <MetaFormSet entry={entry} />
