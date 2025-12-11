@@ -3,8 +3,8 @@ import { useQuery } from "@apollo/client/react";
 import {
     XtdRelationshipKindEnum,
     RelationshipRecordType,
-    SubjectDetailPropsFragment,
-    GetSubjectEntryDocument,
+    SubjectRelationsMinimalPropsFragment,
+    GetSubjectEntryMinimalDocument,
 } from "../../generated/graphql";
 import { useDeleteEntry } from "../../hooks/useDeleteEntry";
 import { Button, Typography, Box } from "@mui/material";
@@ -27,17 +27,17 @@ import DictionaryFormSet from "../../components/forms/DictionaryFormSet";
 import TransferListViewRelationshipToSubject from "../TransferListViewRelationshipToSubject";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 
-const ThemeForm: FC<FormProps<SubjectDetailPropsFragment>> = (props) => {
+const ThemeForm: FC<FormProps<SubjectRelationsMinimalPropsFragment>> = (props) => {
     const { id } = props;
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
 
-    // fetch domain themes
-    const { loading, error, data, refetch } = useQuery(GetSubjectEntryDocument, {
+    // fetch domain themes with minimal relations data
+    const { loading, error, data, refetch } = useQuery(GetSubjectEntryMinimalDocument, {
         fetchPolicy: "network-only",
         variables: { id }
     });
-    let entry = data?.node as SubjectDetailPropsFragment | undefined;
+    let entry = data?.node as SubjectRelationsMinimalPropsFragment | undefined;
     const [deleteEntry] = useDeleteEntry({
         cacheTypename: 'XtdSubject',
         id

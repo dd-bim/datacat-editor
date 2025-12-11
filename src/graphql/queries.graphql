@@ -589,25 +589,42 @@ query GetSubjectEntry($id: ID!) {
       ...RelationsProps
     }
     connectedSubjects {
-      ...RelationsProps
+      id
       relationshipType {
         name
         kind
       }
       targetSubjects {
-        ...RelationsProps
+        id
+        name(input: { languageTags: ["de", "en"] })
+        tags {
+          id
+          name
+        }
       }
     }
     connectingSubjects {
-      ...RelationsProps
+      id
       relationshipType {
         name
         kind
       }
       connectingSubject {
-        ...RelationsProps
+        id
+        name(input: { languageTags: ["de", "en"] })
+        tags {
+          id
+          name
+        }
       }
     }
+  }
+}
+
+# Minimale Query für Subjects mit Relations (für TransferListViewRelationshipToSubject)
+query GetSubjectEntryMinimal($id: ID!) {
+  node: getSubject(id: $id) {
+    ...SubjectRelationsMinimalProps
   }
 }
 
@@ -615,10 +632,24 @@ query GetPropertyEntry($id: ID!) {
   node: getProperty(id: $id) {
     ...PropertyProps
     connectedProperties {
-      ...RelationshipToPropertyDetailProps
+      ...RelationsProps
+      relationshipType
+      targetProperties {
+        ...PropertyProps
+      }
+      connectingProperty {
+        ...PropertyProps
+      }
     }
     connectingProperties {
-      ...RelationshipToPropertyDetailProps
+      ...RelationsProps
+      relationshipType
+      targetProperties {
+        ...PropertyProps
+      }
+      connectingProperty {
+        ...PropertyProps
+      }
     }
     # symbols {
     #   ...SymbolProps
@@ -646,17 +677,43 @@ query GetPropertyEntry($id: ID!) {
 
 query GetValueListEntry($id: ID!) {
   node: getValueList(id: $id) {
-    ...ValueListDetailProps
+    ...ValueListProps
+    properties {
+      ...PropertyProps
+    }
+    unit {
+      ...UnitProps
+    }
+    values(pageSize: 10000, pageNumber: 0) {
+      nodes {
+        order
+        orderedValue {
+          id
+          recordType
+          name(input: { languageTags: ["de-DE", "en-US"] })
+          nominalValue
+          status
+          tags {
+            id
+            name
+          }
+        }
+      }
+    }
+    language {
+      ...LanguageProps
+    }
   }
 }
 
 query ValuesOfList($id: ID!) {
   node: getValueList(id: $id) {
     values {
-      ...ObjectProps
-      order
-      orderedValue {
-        ...ValueProps
+      nodes {
+        order
+        orderedValue {
+          ...ValueProps
+        }
       }
     }
   }

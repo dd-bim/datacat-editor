@@ -1,5 +1,3 @@
-import {SearchResultPropsFragment, ValueListDetailPropsFragment} from "./generated/graphql";
-
 // CatalogRecord - Basis-Typ für Katalogeinträge
 // recordType ist optional, da nicht alle Fragments es enthalten
 export type CatalogRecord = {

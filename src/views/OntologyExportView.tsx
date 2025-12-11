@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client/react';
-import { CatalogRecordType, TranslationPropsFragment, SearchResultPropsFragment, SubjectWithPropsAndListsPropsFragment, ValueListDetailPropsFragment, ValueListWithValuesDocument, FindSubjectsWithPropsAndListsDocument, FindConceptsForOntoExportDocument } from '../generated/graphql';
+import { CatalogRecordType, TranslationPropsFragment, SearchResultPropsFragment, SubjectWithPropsAndListsPropsFragment, ValueListWithValuesPropsFragment, ValueListWithValuesDocument, FindSubjectsWithPropsAndListsDocument, FindConceptsForOntoExportDocument } from '../generated/graphql';
 import { Writer } from 'n3';
 import FileSaver from 'file-saver';
 import DataFactory from '@rdfjs/data-model';
@@ -149,12 +149,12 @@ export const OntologyExportView: React.FC = () => {
 
       // create triples for value lists and their ordered values
       if (valueListData && !valueListLoading && !valueListError) {
-        valueListData.findValueLists?.nodes.forEach((valueList: ValueListDetailPropsFragment) => {
+        valueListData.findValueLists?.nodes.forEach((valueList: ValueListWithValuesPropsFragment) => {
           const vNode = createConcept(valueList, "Class", selectedLanguage);
 
           const orderedValues = valueList.values || [];
 
-          const orderedValueNodes = [...orderedValues]
+          const orderedValueNodes = [...(Array.isArray(orderedValues) ? orderedValues : orderedValues.nodes || [])]
             .sort((a, b) => {
               const orderA = typeof a.order === "number" ? a.order : 0;
               const orderB = typeof b.order === "number" ? b.order : 0;
@@ -220,7 +220,7 @@ export const OntologyExportView: React.FC = () => {
   );
 };
 
-export function createConcept(concept: SearchResultPropsFragment | SubjectWithPropsAndListsPropsFragment | ValueListDetailPropsFragment, type: string, lang?: string): [DataFactory.NamedNode] {
+export function createConcept(concept: SearchResultPropsFragment | SubjectWithPropsAndListsPropsFragment | ValueListWithValuesPropsFragment, type: string, lang?: string): [DataFactory.NamedNode] {
   var name = formText(concept.name || "");
   if (lang === "en")
     concept.names.forEach((n) => {

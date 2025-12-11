@@ -282,13 +282,6 @@ fragment PropertyDetailProps on XtdProperty {
   }
   possibleValues {
     ...RelationsProps
-    values {
-      id
-      order
-      orderedValue {
-        ...ValueProps
-      }
-    }
   }
   subjects {
     ...SubjectDetailProps
@@ -306,34 +299,37 @@ fragment SubjectDetailProps on XtdSubject {
     possibleValues {
       id
       name(input: { languageTags: ["de", "en"] })
-      values {
-        id
-        order
-        orderedValue {
-          ...ValueProps
-        }
-      }
     }
   }
   connectedSubjects {
-    ...RelationsProps
-    targetSubjects {
-      ...RelationsProps
+    id
+    relationshipType {
+      name
+      kind
     }
-    # relationshipType {
-    #   name
-    #   kind
-    # }
+    targetSubjects {
+      id
+      name(input: { languageTags: ["de", "en"] })
+      tags {
+        id
+        name
+      }
+    }
   }
   connectingSubjects {
-    ...RelationsProps
-    connectingSubject {
-      ...RelationsProps
+    id
+    relationshipType {
+      name
+      kind
     }
-    # relationshipType {
-    #   name
-    #   kind
-    # }
+    connectingSubject {
+      id
+      name(input: { languageTags: ["de", "en"] })
+      tags {
+        id
+        name
+      }
+    }
   }
 }
 
@@ -351,6 +347,46 @@ fragment SubjectWithPropsAndListsProps on XtdSubject {
       ...RelationsProps
       names {
         ...TranslationProps
+      }
+    }
+  }
+}
+
+# Minimales Fragment für Subject-Relationen (für TransferListViewRelationshipToSubject)
+fragment SubjectRelationsMinimalProps on XtdSubject {
+  ...ConceptProps
+  properties {
+    ...PropertyProps
+    possibleValues {
+      id
+      name(input: { languageTags: ["de", "en"] })
+    }
+  }
+  connectedSubjects {
+    id
+    relationshipType {
+      name
+    }
+    targetSubjects {
+      id
+      name(input: { languageTags: ["de", "en"] })
+      tags {
+        id
+        name
+      }
+    }
+  }
+  connectingSubjects {
+    id
+    relationshipType {
+      name
+    }
+    connectingSubject {
+      id
+      name(input: { languageTags: ["de", "en"] })
+      tags {
+        id
+        name
       }
     }
   }
@@ -404,13 +440,6 @@ fragment ValueListDetailProps on XtdValueList {
   unit {
     ...UnitProps
   }
-  values {
-    ...ObjectProps
-    order
-    orderedValue {
-      ...ValueProps
-    }
-  }
   language {
     ...LanguageProps
   }
@@ -423,13 +452,14 @@ fragment ValueListWithValuesProps on XtdValueList {
     ...TranslationProps
   }
   values {
-    id
-    order
-    orderedValue {
-      id
-      name(input: { languageTags: ["de", "en"] })
-      names {
-        ...TranslationProps
+    nodes {
+      order
+      orderedValue {
+        id
+        name(input: { languageTags: ["de", "en"] })
+        names {
+          ...TranslationProps
+        }
       }
     }
   }

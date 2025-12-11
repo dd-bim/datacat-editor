@@ -1,6 +1,6 @@
 import { useQuery, useLazyQuery, useMutation } from "@apollo/client/react";
 import {
-    ValueListDetailPropsFragment,
+    GetValueListEntryQuery,
     RelationshipRecordType,
     GetValueListEntryDocument,
     FindItemDocument,
@@ -34,7 +34,7 @@ import DictionaryFormSet from "../../components/forms/DictionaryFormSet";
 import { ApolloCache } from "@apollo/client";
 import useDebounce from "../../hooks/useDebounce";
 
-const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
+const ValueListForm: FC<FormProps<GetValueListEntryQuery['node']>> = (props) => {
     const { id } = props;
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
@@ -86,8 +86,8 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
     }, [debouncedUnitSearch, findUnits]);
 
     // Early returns after all hooks
-    let entry = data?.node as ValueListDetailPropsFragment | undefined;
-    const relatedValues = entry?.values ?? [];
+    let entry = data?.node;
+    const relatedValues = entry?.values?.nodes ?? [];
 
     if (loading) return <Typography><T keyName="valuelist.loading">Lade Werteliste..</T></Typography>;
     if (error || !entry) {
@@ -152,11 +152,17 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
     };
 
     // const relatedValues = entry.values ?? [];
-    console.log(relatedValues);
-    const values = relatedValues.map(rel => ({
-        order: rel.order,
-        orderedValue: rel.orderedValue
-    }));
+    // console.log(relatedValues);
+    const values = [...relatedValues]
+        .sort((a, b) => {
+            const orderA = Number(a.order ?? 0);
+            const orderB = Number(b.order ?? 0);
+            return orderA - orderB;
+        })
+        .map(rel => ({
+            order: rel.order,
+            orderedValue: rel.orderedValue
+        }));
 
     return (
         <FormView>

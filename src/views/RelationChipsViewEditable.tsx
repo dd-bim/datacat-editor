@@ -147,13 +147,13 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
 
         // ConnectedSubjects (outgoing: subClasses via specializes, partOf, others)
         (entry.connectedSubjects ?? []).forEach(rel => {
-            const relationName = (rel as any).relationshipType?.name;
+            const relationName = rel.relationshipType?.name;
             if (!relationName) return;
             
             // Skip hasPropertyGroup relations
             if (relationName === 'hasPropertyGroup') return;
             
-            (rel.targetSubjects ?? []).forEach(target => {
+            ((rel as any).targetSubjects ?? []).forEach((target: any) => {
                 const data: RelationData = {
                     id: target.id,
                     name: target.name ?? 'Unknown',
@@ -174,8 +174,8 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
 
         // ConnectingSubjects (incoming: superClasses via specializes, parts via partOf)
         (entry.connectingSubjects ?? []).forEach(rel => {
-            const relationName = (rel as any).relationshipType?.name;
-            const connectingSubject = rel.connectingSubject;
+            const relationName = rel.relationshipType?.name;
+            const connectingSubject = (rel as any).connectingSubject;
             if (!relationName || !connectingSubject) return;
             
             // Skip hasPropertyGroup relations

@@ -39,6 +39,7 @@ type TransferListProps = {
     maxVisibleItems?: number; // Maximale Anzahl sichtbarer Items in der Relationen-Liste
     showDictionaryFilter?: boolean;
     selectedDictionaryId?: string | null;
+    sortAlphabetically?: boolean; // Sortierung nach Name (default: true)
     onDictionaryFilterChange?: (dictionaryId: string | null) => void;
     onSelect?(item: CatalogRecord): void;
     onAdd?(item: CatalogRecord): void;
@@ -48,6 +49,7 @@ type TransferListProps = {
 export default function TransferList(props: TransferListProps) {
     const {
         loading,
+        sortAlphabetically = true,
         items,
         enabled,
         searchInput,
@@ -100,7 +102,7 @@ export default function TransferList(props: TransferListProps) {
                         height={relationListHeight}
                         fixedHeight={useFixedHeight}
                         loading={loading}
-                        items={[...items].sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "") || a.id.localeCompare(b.id))}
+                        items={sortAlphabetically ? [...items].sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "") || a.id.localeCompare(b.id)) : items}
                         onSelect={onSelect}
                         onRemove={enabled && onRemove ? onRemove : undefined}
                     />
