@@ -1,11 +1,11 @@
 import React, {useContext} from "react";
-import {useProfileQuery, UserProfileFragment} from "../generated/types";
+import { useQuery } from "@apollo/client/react";
+import {ProfileDocument, UserProfileFragment} from "../generated/graphql";
 import useAuthContext from "../hooks/useAuthContext";
-import { ApolloError } from "@apollo/client/v4-migration";
 
 type ProfileContextState = {
     loading: boolean,
-    error?: ApolloError,
+    error?: Error,
     profile?: UserProfileFragment
 }
 
@@ -17,7 +17,7 @@ export function useProfile() {
 
 export default function ProfileProvider({children}: { children: React.ReactNode }) {
     const {token} = useAuthContext();
-    const {loading, error, data} = useProfileQuery({
+    const {loading, error, data} = useQuery(ProfileDocument, {
         skip: !token
     });
 

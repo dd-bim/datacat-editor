@@ -3,7 +3,8 @@ import { Paper, Typography, Stack, Box, Skeleton, Alert } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 import { styled } from "@mui/material/styles";
 import { Hierarchy } from "../components/Hierarchy";
-import { ObjectPropsFragment, usePropertyTreeQuery } from "../generated/types";
+import { useQuery } from "@apollo/client/react";
+import { ObjectPropsFragment, ItemPropsFragment, PropertyTreeDocument } from "../generated/graphql";
 import ThemeForm from "./forms/ThemeForm";
 import DomainClassForm from "./forms/DomainClassForm";
 import PropertyGroupForm from "./forms/PropertyGroupForm";
@@ -73,7 +74,7 @@ const FormSkeleton = () => (
 );
 
 const HierarchyView = () => {
-  const { loading, error, data, refetch } = usePropertyTreeQuery({
+  const { loading, error, data, refetch } = useQuery(PropertyTreeDocument, {
     fetchPolicy: "cache-first",
     errorPolicy: "all",
     notifyOnNetworkStatusChange: false,
@@ -178,7 +179,7 @@ const HierarchyView = () => {
     if (allNodes.length) {
       return (
         <Hierarchy
-          leaves={allNodes}
+          leaves={allNodes as ItemPropsFragment[]}
           paths={filteredPaths}
           onSelect={handleOnSelect}
           defaultCollapsed={true} // Bessere Performance durch collapsed state

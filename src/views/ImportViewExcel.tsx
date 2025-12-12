@@ -29,21 +29,23 @@ import {
 } from "@mui/material";
 import { useSnackbar } from "notistack";
 import View from "./View";
+import { useQuery, useMutation } from "@apollo/client/react";
 import {
   CatalogRecordType,
   RelationshipRecordType,
-  FindTagsResultFragment,
-  useFindTagsQuery,
-  useCreateEntryMutation,
-  useCreateRelationshipMutation,
-  useCreateTagMutation,
-} from "../generated/types";
+  FindTagsDocument,
+  CreateEntryDocument,
+  CreateRelationshipDocument,
+  CreateTagDocument,
+} from "../generated/graphql";
 import { ApolloCache } from "@apollo/client";
 import ExcelJS from "exceljs";
 import { v4 as uuidv4 } from "uuid";
 import { InfoButton } from "../components/InfoButton";
 import { T, useTranslate } from '@tolgee/react';
 
+// Typ für Tag-Ergebnisse
+type TagResult = { id: string; name: string };
 
 export const IMPORT_TAG_ID = "KATALOG-IMPORT";
 
@@ -142,7 +144,7 @@ export function ImportViewExcel() {
   const { enqueueSnackbar } = useSnackbar();
   const [valid, setValid] = useState<boolean | null>(null); // Use null for uninitialized state
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [createTag] = useCreateTagMutation();
+  const [createTag] = useMutation(CreateTagDocument);
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState("");
   const { t } = useTranslate();
@@ -522,13 +524,13 @@ export function ImportViewExcel() {
   const [selectAllEntities, setSelectAllEntities] = useState(false); // New state for "Select All" checkbox
 
   // get list of tags
-  const { refetch } = useFindTagsQuery({
+  const { refetch } = useQuery(FindTagsDocument, {
     variables: {
       pageSize: 100,
     },
   });
 
-  const [create] = useCreateEntryMutation({
+  const [create] = useMutation(CreateEntryDocument, {
     update: (cache: ApolloCache) => {
       cache.modify({
         id: "ROOT_QUERY",
@@ -540,7 +542,7 @@ export function ImportViewExcel() {
       });
     },
   });
-  const [createRelationship] = useCreateRelationshipMutation();
+  const [createRelationship] = useMutation(CreateRelationshipDocument);
 
   // File change handler
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -1350,11 +1352,11 @@ export function ImportViewExcel() {
   };
 
   // Hilfsfunktionen
-  const nameInTags = (nodes: FindTagsResultFragment[], searchName: string) => {
+  const nameInTags = (nodes: TagResult[], searchName: string) => {
     return nodes.some(({ name }) => name === searchName);
   };
 
-  const idOfTag = (nodes: FindTagsResultFragment[], searchName: string) => {
+  const idOfTag = (nodes: TagResult[], searchName: string) => {
     return nodes.find((obj) => obj.name === searchName)!.id;
   };
 

@@ -1,4 +1,5 @@
-import { CatalogRecordType, MultiLanguageTextPropsFragment, SearchResultPropsFragment, SubjectDetailPropsFragment, useValueListWithValuesQuery, useFindSubjectsWithPropsAndListsQuery, ValueListDetailPropsFragment, useFindConceptsForOntoExportQuery } from '../generated/types.js';
+import { useQuery } from '@apollo/client/react';
+import { CatalogRecordType, TranslationPropsFragment, SearchResultPropsFragment, SubjectWithPropsAndListsPropsFragment, ValueListWithValuesPropsFragment, ValueListWithValuesDocument, FindSubjectsWithPropsAndListsDocument, FindConceptsForOntoExportDocument } from '../generated/graphql';
 import { Writer } from 'n3';
 import FileSaver from 'file-saver';
 import DataFactory from '@rdfjs/data-model';
@@ -25,7 +26,7 @@ function namespace(base: string) {
 export const OntologyExportView: React.FC = () => {
   const [selectedLanguage, setSelectedLanguage] = useState("de");
 
-  const { data, loading, error } = useFindConceptsForOntoExportQuery({
+  const { data, loading, error } = useQuery(FindConceptsForOntoExportDocument, {
     variables: {
       input: {
         entityTypeIn: [CatalogRecordType.Property, CatalogRecordType.Value],
@@ -45,7 +46,7 @@ export const OntologyExportView: React.FC = () => {
     return record;
   });
 
-  const { data: subData, loading: subLoading, error: subError } = useFindSubjectsWithPropsAndListsQuery({
+  const { data: subData, loading: subLoading, error: subError } = useQuery(FindSubjectsWithPropsAndListsDocument, {
     variables: {
       input: {
         tagged: ["e9b2cd6d-76f7-4c55-96ab-12d084d21e96"], // only classes
@@ -56,7 +57,7 @@ export const OntologyExportView: React.FC = () => {
     fetchPolicy: "cache-first" //"cache-and-network"
   });
 
-  const { data: valueListData, loading: valueListLoading, error: valueListError } = useValueListWithValuesQuery({
+  const { data: valueListData, loading: valueListLoading, error: valueListError } = useQuery(ValueListWithValuesDocument, {
     variables: {
       input: {
         pageSize: 1000,
@@ -79,7 +80,7 @@ export const OntologyExportView: React.FC = () => {
       });
 
       if (subData && !subLoading && !subError) {
-        subData?.findSubjects?.nodes.forEach((subject: SubjectDetailPropsFragment) => {
+        subData?.findSubjects?.nodes.forEach((subject: SubjectWithPropsAndListsPropsFragment) => {
           const node = createConcept(subject, "Class", selectedLanguage);
 
           const relatedProperties = subject.properties ?? [];
@@ -148,12 +149,12 @@ export const OntologyExportView: React.FC = () => {
 
       // create triples for value lists and their ordered values
       if (valueListData && !valueListLoading && !valueListError) {
-        valueListData.findValueLists?.nodes.forEach((valueList: ValueListDetailPropsFragment) => {
+        valueListData.findValueLists?.nodes.forEach((valueList: ValueListWithValuesPropsFragment) => {
           const vNode = createConcept(valueList, "Class", selectedLanguage);
 
           const orderedValues = valueList.values || [];
 
-          const orderedValueNodes = [...orderedValues]
+          const orderedValueNodes = [...(Array.isArray(orderedValues) ? orderedValues : orderedValues.nodes || [])]
             .sort((a, b) => {
               const orderA = typeof a.order === "number" ? a.order : 0;
               const orderB = typeof b.order === "number" ? b.order : 0;
@@ -219,7 +220,7 @@ export const OntologyExportView: React.FC = () => {
   );
 };
 
-export function createConcept(concept: SearchResultPropsFragment | SubjectDetailPropsFragment | ValueListDetailPropsFragment, type: string, lang?: string): [DataFactory.NamedNode] {
+export function createConcept(concept: SearchResultPropsFragment | SubjectWithPropsAndListsPropsFragment | ValueListWithValuesPropsFragment, type: string, lang?: string): [DataFactory.NamedNode] {
   var name = formText(concept.name || "");
   if (lang === "en")
     concept.names.forEach((n) => {
@@ -239,7 +240,7 @@ export function createConcept(concept: SearchResultPropsFragment | SubjectDetail
 
   // make triples for each existing property
   triples.push(DataFactory.quad(cNode, DataFactory.namedNode(rdf("type")), DataFactory.namedNode(owl(type))));
-  concept.names.forEach((n: MultiLanguageTextPropsFragment) => {
+  concept.names.forEach((n: TranslationPropsFragment) => {
     n.texts.forEach((name) => {
       triples.push(
         DataFactory.quad(
@@ -251,12 +252,16 @@ export function createConcept(concept: SearchResultPropsFragment | SubjectDetail
     });
   });
   triples.push(DataFactory.quad(cNode, DataFactory.namedNode(dcterms("identifier")), DataFactory.literal(id)));
-  triples.push(
-    DataFactory.quad(cNode, DataFactory.namedNode(dcterms("type")), DataFactory.literal(concept.__typename))
-  );
+  
+  // __typename nur wenn vorhanden
+  if ('__typename' in concept && concept.__typename) {
+    triples.push(
+      DataFactory.quad(cNode, DataFactory.namedNode(dcterms("type")), DataFactory.literal(concept.__typename))
+    );
+  }
 
   if ("descriptions" in concept && Array.isArray(concept.descriptions)) {
-    concept.descriptions?.forEach((d: MultiLanguageTextPropsFragment) => {
+    concept.descriptions?.forEach((d: TranslationPropsFragment) => {
       d.texts.forEach((description) => {
         triples.push(
           DataFactory.quad(
@@ -269,8 +274,9 @@ export function createConcept(concept: SearchResultPropsFragment | SubjectDetail
     });
   }
 
-  if (concept.majorVersion) triples.push(DataFactory.quad(cNode, DataFactory.namedNode(ex('majorVersion')), DataFactory.literal(concept.majorVersion.toString(), "xsd:integer")));
-  if (concept.minorVersion) triples.push(DataFactory.quad(cNode, DataFactory.namedNode(ex('minorVersion')), DataFactory.literal(concept.minorVersion.toString(), "xsd:integer")));
+  // majorVersion und minorVersion nur wenn vorhanden
+  if ('majorVersion' in concept && concept.majorVersion) triples.push(DataFactory.quad(cNode, DataFactory.namedNode(ex('majorVersion')), DataFactory.literal(concept.majorVersion.toString(), "xsd:integer")));
+  if ('minorVersion' in concept && concept.minorVersion) triples.push(DataFactory.quad(cNode, DataFactory.namedNode(ex('minorVersion')), DataFactory.literal(concept.minorVersion.toString(), "xsd:integer")));
 
   return cNode;
 }

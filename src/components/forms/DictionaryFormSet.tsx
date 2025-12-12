@@ -1,17 +1,18 @@
 import FormSet, { FormSetTitle } from "./FormSet";
 import { FC } from "react";
 import { useEffect } from "react";
+import { useMutation, useQuery } from "@apollo/client/react";
 import {
   RelationshipRecordType,
-  useCreateRelationshipMutation,
-  useDeleteRelationshipMutation
-} from "../../generated/types";
+  CreateRelationshipDocument,
+  DeleteRelationshipDocument,
+  FindDictionariesDocument
+} from "../../generated/graphql";
 import { useSnackbar } from "notistack";
 import { styled } from "@mui/material/styles";
 import { T } from "@tolgee/react";
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import { useFindDictionariesQuery } from "../../generated/types";
 import React, { useState } from "react";
 
 type DictionaryFormSetProps = {
@@ -36,12 +37,12 @@ const DictionaryFormSet: FC<DictionaryFormSetProps> = (props) => {
   const { catalogEntryId, dictionaryId: initialDictionaryId } = props;
   const { enqueueSnackbar } = useSnackbar();
 
-  const [setDictionary] = useCreateRelationshipMutation({
+  const [setDictionary] = useMutation(CreateRelationshipDocument, {
     errorPolicy: 'all',
     // Remove aggressive cache updates that can cause loops
     // Let Apollo handle cache updates automatically
   });
-  const [deleteDictionary] = useDeleteRelationshipMutation({
+  const [deleteDictionary] = useMutation(DeleteRelationshipDocument, {
     errorPolicy: 'all',
     // Remove aggressive cache updates that can cause loops
     // Let Apollo handle cache updates automatically
@@ -49,7 +50,7 @@ const DictionaryFormSet: FC<DictionaryFormSetProps> = (props) => {
   const [currentDictionaryId, setCurrentDictionaryId] = useState(initialDictionaryId);
 
   // Alle Dictionaries laden mit optimierter Caching-Strategie
-  const { data, loading } = useFindDictionariesQuery({ 
+  const { data, loading } = useQuery(FindDictionariesDocument, { 
     variables: { input: {} },
     fetchPolicy: 'cache-first', // Verwende Cache wenn möglich
     errorPolicy: 'all'

@@ -1,13 +1,14 @@
 import { FC } from "react";
 import FormSet, { FormSetDescription, FormSetTitle } from "./FormSet";
+import { useMutation } from "@apollo/client/react";
 import {
   TranslationInput,
   TextPropsFragment,
   UpdateTextInput,
-  useAddDescriptionMutation,
-  useDeleteDescriptionMutation,
-  useUpdateDescriptionMutation,
-} from "../../generated/types";
+  AddDescriptionDocument,
+  DeleteDescriptionDocument,
+  UpdateDescriptionDocument,
+} from "../../generated/graphql";
 import { useSnackbar } from "notistack";
 import TranslationFormSet from "./TranslationFormSet";
 import { styled } from "@mui/material/styles";
@@ -51,9 +52,9 @@ const DescriptionFormSet: FC<DescriptionFormSetProps> = (props) => {
   const { catalogEntryId, descriptions, refetch } = props;
 
   const { enqueueSnackbar } = useSnackbar();
-  const [addDescription] = useAddDescriptionMutation();
-  const [updateDescription] = useUpdateDescriptionMutation();
-  const [deleteDescription] = useDeleteDescriptionMutation();
+  const [addDescription] = useMutation(AddDescriptionDocument);
+  const [updateDescription] = useMutation(UpdateDescriptionDocument);
+  const [deleteDescription] = useMutation(DeleteDescriptionDocument);
 
   const handleOnAdd = async (text: TranslationInput) => {
     await addDescription({

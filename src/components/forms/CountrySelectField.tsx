@@ -1,6 +1,7 @@
 import React, { FC, useState, useMemo, useCallback } from "react";
 import { Autocomplete } from "@mui/material";
-import { CountryDetailPropsFragment, Maybe, useFindCountriesQuery } from "../../generated/types";
+import { useQuery } from "@apollo/client/react";
+import { CountryDetailPropsFragment, Maybe, FindCountriesDocument } from "../../generated/graphql";
 import { TextField, TextFieldProps } from "@mui/material";
 import { defaultFormFieldOptions } from "../../hooks/useFormStyles";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -48,7 +49,7 @@ const CountrySelectField: FC<CountrySelectFieldProps> = (props) => {
     const { 
         data: preloadData_result, 
         loading: preloadLoading 
-    } = useFindCountriesQuery({
+    } = useQuery(FindCountriesDocument, {
         variables: {
             input: { query: '', pageSize: 250 }
         },
@@ -61,7 +62,7 @@ const CountrySelectField: FC<CountrySelectFieldProps> = (props) => {
     const { 
         data: searchData, 
         loading: searchLoading 
-    } = useFindCountriesQuery({
+    } = useQuery(FindCountriesDocument, {
         variables: {
             input: { query: debouncedQuery, pageSize: 250 }
         },

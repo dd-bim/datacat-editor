@@ -1,137 +1,352 @@
+# ============================================
+# Authentication Mutations
+# ============================================
+
 mutation SignupForm($profile: SignupInput!) {
-    success: signup(input: $profile)
+  success: signup(input: $profile)
 }
 
 mutation ConfirmEmail($token: String!) {
-    success: confirm(token: $token)
+  success: confirm(token: $token)
 }
 
 mutation LoginForm($credentials: LoginInput!) {
-    token: login(input: $credentials)
+  token: login(input: $credentials)
 }
+
+# ============================================
+# Profile Mutations
+# ============================================
 
 mutation UpdateProfile($input: ProfileUpdateInput!) {
-    updateProfile(input: $input) {
-        ...UserProfile
-    }
+  updateProfile(input: $input) {
+    ...UserProfile
+  }
 }
 
+# ============================================
+# Catalog Entry Mutations
+# ============================================
+
 mutation CreateEntry($input: CreateCatalogEntryInput!) {
-    createCatalogEntry(input: $input) {
-        catalogEntry {
-            __typename
-        }
+  createCatalogEntry(input: $input) {
+    catalogEntry {
+      ...ObjectProps
     }
+  }
 }
 
 mutation DeleteEntry($id: ID!) {
-    deleteCatalogEntry(input: {catalogEntryId: $id}) {
-        catalogEntry {
-            __typename
-        }
+  deleteCatalogEntry(input: { catalogEntryId: $id }) {
+    catalogEntry {
+      ...ObjectProps
     }
+  }
 }
 
+# ============================================
+# Version Mutations
+# ============================================
+
 mutation UpdateMajorVersion($input: UpdateMajorVersionInput!) {
-    updateMajorVersion(input: $input) {
-        catalogEntry {
-            __typename
-        }
+  updateMajorVersion(input: $input) {
+    catalogEntry {
+      ...ObjectProps
     }
+  }
 }
 
 mutation UpdateMinorVersion($input: UpdateMinorVersionInput!) {
-    updateMinorVersion(input: $input) {
-        catalogEntry {
-            __typename
-        }
+  updateMinorVersion(input: $input) {
+    catalogEntry {
+      ...ObjectProps
     }
+  }
 }
 
-mutation AddName($input: AddNameInput!) {
-    addName(input: $input) {
-        catalogEntry {
-            __typename
-        }
+# ============================================
+# Status Mutations
+# ============================================
+
+mutation UpdateStatus($input: UpdateStatusInput!) {
+  updateStatus(input: $input) {
+    catalogEntry {
+      ...ObjectProps
     }
+  }
 }
 
-mutation UpdateName($input: UpdateNameInput!) {
-    updateName(input: $input) {
-        catalogEntry {
-            __typename
-        }
+# ============================================
+# Data Type Mutations
+# ============================================
+
+mutation UpdateDataType($input: UpdateDataTypeInput!) {
+  updateDataType(input: $input) {
+    catalogEntry {
+      ...PropertyProps
     }
+  }
 }
 
-mutation DeleteName($input: DeleteNameInput!) {
-    deleteName(input: $input) {
-        catalogEntry {
-            __typename
-        }
+mutation UpdateNominalValue($input: UpdateNominalValueInput!) {
+  updateNominalValue(input: $input) {
+    catalogEntry {
+      ...ValueProps
     }
+  }
 }
 
-mutation AddDescription($input: AddDescriptionInput!) {
-    addDescription(input: $input) {
-        catalogEntry {
-            __typename
-        }
+# ============================================
+# Name Mutations
+# ============================================
+
+mutation AddName($input: AddTextInput!) {
+  addName(input: $input) {
+    catalogEntry {
+      ...ObjectProps
     }
+  }
 }
 
-mutation UpdateDescription($input: UpdateDescriptionInput!) {
-    updateDescription(input: $input) {
-        catalogEntry {
-            __typename
-        }
+mutation UpdateName($input: UpdateTextInput!) {
+  updateName(input: $input) {
+    catalogEntry {
+      ...ObjectProps
     }
+  }
 }
 
-mutation DeleteDescription($input: DeleteDescriptionInput!) {
-    deleteDescription(input: $input) {
-        catalogEntry {
-            __typename
-        }
+mutation DeleteName($input: DeleteTextInput!) {
+  deleteName(input: $input) {
+    catalogEntry {
+      ...ObjectProps
     }
+  }
 }
 
-mutation CreateTag($tagId: ID!, $name: String!) {
-    createTag(input: {tagId: $tagId, name: $name}) {
-        tag {
-            ...TagProps
-        }
+# ============================================
+# Description Mutations
+# ============================================
+
+mutation AddDescription($input: AddTextInput!) {
+  addDescription(input: $input) {
+    catalogEntry {
+      ...ObjectProps
     }
+  }
 }
 
-mutation AddTag($catalogEntryId: ID!, $tagId: ID!) {
-    addTag(input: { catalogEntryId: $catalogEntryId, tagId: $tagId}) {
-        catalogEntry {
-            __typename
-        }
+mutation UpdateDescription($input: UpdateTextInput!) {
+  updateDescription(input: $input) {
+    catalogEntry {
+      ...ObjectProps
     }
+  }
 }
 
-mutation UpdateTag($catalogEntryId: ID!, $tagId: ID!) {
-    updateTag(input: { catalogEntryId: $catalogEntryId, tagId: $tagId}) {
-        catalogEntry {
-            __typename
-        }
+mutation DeleteDescription($input: DeleteTextInput!) {
+  deleteDescription(input: $input) {
+    catalogEntry {
+      ...ObjectProps
     }
+  }
 }
 
-mutation RemoveTag($catalogEntryId: ID!, $tagId: ID!) {
-    removeTag(input: { catalogEntryId: $catalogEntryId, tagId: $tagId}) {
-        catalogEntry {
-            __typename
-        }
+# ============================================
+# Comment Mutations
+# ============================================
+
+mutation AddComment($input: AddTextInput!) {
+  addComment(input: $input) {
+    catalogEntry {
+      ...ObjectProps
     }
+  }
 }
 
-mutation DeleteTag($catalogEntryId: ID!, $tagId: ID!) {
-    deleteTag(input: {tagId: $tagId}) {
-        tag {
-            ...TagProps
-        }
+mutation UpdateComment($input: UpdateTextInput!) {
+  updateComment(input: $input) {
+    catalogEntry {
+      ...ObjectProps
     }
+  }
+}
+
+mutation DeleteComment($input: DeleteTextInput!) {
+  deleteComment(input: $input) {
+    catalogEntry {
+      ...ObjectProps
+    }
+  }
+}
+
+# ============================================
+# Deprecation Explanation Mutations
+# ============================================
+
+mutation AddDeprecationExplanation($input: AddTextInput!) {
+  addDeprecationExplanation(input: $input) {
+    catalogEntry {
+      ...ObjectProps
+    }
+  }
+}
+
+mutation UpdateDeprecationExplanation($input: UpdateTextInput!) {
+  updateDeprecationExplanation(input: $input) {
+    catalogEntry {
+      ...ObjectProps
+    }
+  }
+}
+
+mutation DeleteDeprecationExplanation($input: DeleteTextInput!) {
+  deleteDeprecationExplanation(input: $input) {
+    catalogEntry {
+      ...ObjectProps
+    }
+  }
+}
+
+# ============================================
+# Definition Mutations
+# ============================================
+
+mutation AddDefinition($input: AddTextInput!) {
+  addDefinition(input: $input) {
+    catalogEntry {
+      ...ObjectProps
+    }
+  }
+}
+
+mutation UpdateDefinition($input: UpdateTextInput!) {
+  updateDefinition(input: $input) {
+    catalogEntry {
+      ...ObjectProps
+    }
+  }
+}
+
+mutation DeleteDefinition($input: DeleteTextInput!) {
+  deleteDefinition(input: $input) {
+    catalogEntry {
+      ...ObjectProps
+    }
+  }
+}
+
+# ============================================
+# Example Mutations
+# ============================================
+
+mutation AddExample($input: AddTextInput!) {
+  addExample(input: $input) {
+    catalogEntry {
+      ...ObjectProps
+    }
+  }
+}
+
+mutation UpdateExample($input: UpdateTextInput!) {
+  updateExample(input: $input) {
+    catalogEntry {
+      ...ObjectProps
+    }
+  }
+}
+
+mutation DeleteExample($input: DeleteTextInput!) {
+  deleteExample(input: $input) {
+    catalogEntry {
+      ...ObjectProps
+    }
+  }
+}
+
+# ============================================
+# Country of Origin Mutations
+# ============================================
+
+mutation AddCountryOfOrigin($input: AddCountryOfOriginInput!) {
+  addCountryOfOrigin(input: $input) {
+    catalogEntry {
+      ...ObjectProps
+    }
+  }
+}
+
+mutation DeleteCountryOfOrigin($input: DeleteCountryOfOriginInput!) {
+  deleteCountryOfOrigin(input: $input) {
+    catalogEntry {
+      ...ObjectProps
+    }
+  }
+}
+
+# ============================================
+# Tag Mutations
+# ============================================
+
+mutation CreateTag($input: CreateTagInput!) {
+  createTag(input: $input) {
+    tag {
+      id
+      name
+    }
+  }
+}
+
+mutation AddTag($input: AddTagInput!) {
+  addTag(input: $input) {
+    catalogEntry {
+      __typename
+    }
+  }
+}
+
+mutation RemoveTag($input: RemoveTagInput!) {
+  removeTag(input: $input) {
+    catalogEntry {
+      __typename
+    }
+  }
+}
+
+mutation UpdateTag($input: UpdateTagInput!) {
+  updateTag(input: $input) {
+    tag {
+      id
+      name
+    }
+  }
+}
+
+mutation DeleteTag($input: DeleteTagInput!) {
+  deleteTag(input: $input) {
+    tag {
+      id
+      name
+    }
+  }
+}
+
+# ============================================
+# Relationship Mutations
+# ============================================
+
+mutation CreateRelationship($input: CreateRelationshipInput!) {
+  createRelationship(input: $input) {
+    catalogEntry {
+      __typename
+    }
+  }
+}
+
+mutation DeleteRelationship($input: DeleteRelationshipInput!) {
+  deleteRelationship(input: $input) {
+    catalogEntry {
+      __typename
+    }
+  }
 }

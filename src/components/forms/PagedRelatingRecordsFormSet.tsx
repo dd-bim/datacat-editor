@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useCallback } from "react";
 import { Typography, Box, Pagination, Stack } from "@mui/material";
 import { CatalogRecord } from "../../types";
-import { ObjectPropsFragment, CatalogRecordType } from "../../generated/types";
+import { ObjectPropsFragment, CatalogRecordType } from "../../generated/graphql";
 import { sortEntries } from "./RelatingRecordsFormSet";
 import FormSet, { FormSetProps } from "./FormSet";
 import CatalogEntryChip from "../CatalogEntryChip";

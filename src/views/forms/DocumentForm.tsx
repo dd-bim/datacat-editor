@@ -1,8 +1,9 @@
+import { useQuery } from "@apollo/client/react";
 import {
     ExternalDocumentDetailPropsFragment,
     RelationshipRecordType,
-    useGetDocumentEntryQuery
-} from "../../generated/types";
+    GetDocumentEntryDocument
+} from "../../generated/graphql";
 import { useDeleteEntry } from "../../hooks/useDeleteEntry";
 import { Typography, Button, Box } from "@mui/material";
 import { useSnackbar } from "notistack";
@@ -30,7 +31,7 @@ const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => 
     const navigate = useNavigate();
 
     // fetch documents
-    const { loading, error, data, refetch } = useGetDocumentEntryQuery({
+    const { loading, error, data, refetch } = useQuery(GetDocumentEntryDocument, {
         fetchPolicy: "network-only",
         variables: { id }
     });

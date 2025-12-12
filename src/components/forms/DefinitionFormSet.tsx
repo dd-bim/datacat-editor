@@ -1,11 +1,12 @@
+import { useMutation } from "@apollo/client/react";
 import {
   TranslationInput,
   TextPropsFragment,
-  useAddDefinitionMutation,
-  useDeleteDefinitionMutation,
-  useUpdateDefinitionMutation,
+  AddDefinitionDocument,
+  DeleteDefinitionDocument,
+  UpdateDefinitionDocument,
   UpdateTextInput,
-} from "../../generated/types";
+} from "../../generated/graphql";
 import FormSet, { FormSetDescription, FormSetTitle } from "./FormSet";
 import { useSnackbar } from "notistack";
 import TranslationFormSet from "./TranslationFormSet";
@@ -27,9 +28,9 @@ const DefinitionFormSet = (props: DefinitionFormSetProps) => {
   const { catalogEntryId, definitions, refetch } = props;
 
   const { enqueueSnackbar } = useSnackbar();
-  const [addDefinition] = useAddDefinitionMutation();
-  const [updateDefinition] = useUpdateDefinitionMutation();
-  const [deleteDefinition] = useDeleteDefinitionMutation();
+  const [addDefinition] = useMutation(AddDefinitionDocument);
+  const [updateDefinition] = useMutation(UpdateDefinitionDocument);
+  const [deleteDefinition] = useMutation(DeleteDefinitionDocument);
 
   const handleOnAdd = async (text: TranslationInput) => {
     await addDefinition({

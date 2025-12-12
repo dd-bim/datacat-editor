@@ -5,7 +5,7 @@ import {defaultFormFieldOptions} from "../../hooks/useFormStyles";
 import { styled } from "@mui/material/styles";
 import InlineButtonGroup from "./InlineButtonGroup";
 import {ClickAwayListener} from "@mui/material";
-import {TextPropsFragment} from "../../generated/types";
+import {TextPropsFragment} from "../../generated/graphql";
 
 // Verbesserte Formular-Container-Styles
 const FormContainer = styled('form')({

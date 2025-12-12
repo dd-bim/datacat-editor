@@ -1,14 +1,19 @@
+import { useQuery, useLazyQuery, useMutation } from "@apollo/client/react";
 import {
-    ValueListDetailPropsFragment,
+    GetValueListEntryQuery,
     RelationshipRecordType,
-    useGetValueListEntryQuery,
-    useGetValuesOfListEntryQuery
-} from "../../generated/types";
+    GetValueListEntryDocument,
+    FindItemDocument,
+    CreateRelationshipDocument,
+    DeleteRelationshipDocument,
+    SearchInput
+} from "../../generated/graphql";
 import { useDeleteEntry } from "../../hooks/useDeleteEntry";
-import { Typography, Button, Box } from "@mui/material";
+import { Typography, Button, Box, Autocomplete, TextField, IconButton, Chip } from "@mui/material";
 import { useSnackbar } from "notistack";
 import MetaFormSet from "../../components/forms/MetaFormSet";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import DeleteIcon from '@mui/icons-material/Delete';
 import NameFormSet from "../../components/forms/NameFormSet";
 import DescriptionFormSet from "../../components/forms/DescriptionFormSet";
 import CommentFormSet from "../../components/forms/CommentFormSet";
@@ -18,7 +23,7 @@ import TransferListView from "../TransferListView";
 import { ValueEntity, PropertyEntity, DocumentEntity, PropertyGroupEntity, ClassEntity, ValueListEntity, UnitEntity } from "../../domain";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import { T } from "@tolgee/react";
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
 import TransferListViewOrderedValues from "../TransferListViewOrderedValues";
 import StatusFormSet from "../../components/forms/StatusFormSet";
 import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
@@ -26,38 +31,75 @@ import ExampleFormSet from "../../components/forms/ExampleFormSet";
 import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
 import { useNavigate } from "react-router-dom";
 import DictionaryFormSet from "../../components/forms/DictionaryFormSet";
+import { ApolloCache } from "@apollo/client";
+import useDebounce from "../../hooks/useDebounce";
 
-const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
+const ValueListForm: FC<FormProps<GetValueListEntryQuery['node']>> = (props) => {
     const { id } = props;
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
 
-    // fetch value lists
-    const { loading, error, data, refetch } = useGetValueListEntryQuery({
-        fetchPolicy: "cache-and-network",
+    // fetch value lists (including values)
+    const { loading, error, data, refetch } = useQuery(GetValueListEntryDocument, {
+        fetchPolicy: "network-only",
         variables: { id }
     });
 
-    // fetch ordered values
-    const { loading: valLoading, error: valError, data: valData, refetch: valRefetch } = useGetValuesOfListEntryQuery({
-        fetchPolicy: "cache-and-network",
-        variables: { id }
-    });
-
-    let entry = data?.node as ValueListDetailPropsFragment | undefined;
-    const relatedValues = valData?.node?.values ?? [];
     const [deleteEntry] = useDeleteEntry({
         cacheTypename: 'XtdValueList',
         id
     });
 
-    if (loading || valLoading) return <Typography><T keyName="valuelist.loading">Lade Werteliste..</T></Typography>;
-    if (error || !entry) return <Typography><T keyName="error.error">Es ist ein Fehler aufgetreten..</T></Typography>;
-    if (valError || !relatedValues) return <Typography><T keyName="error.error">Es ist ein Fehler aufgetreten..</T></Typography>;
+    // State for Unit selection
+    const [unitSearchValue, setUnitSearchValue] = useState('');
+    const debouncedUnitSearch = useDebounce(unitSearchValue, 300);
+
+    // Search for units
+    const [findUnits, { data: unitsData, loading: unitsLoading }] = useLazyQuery(FindItemDocument);
+
+    // Mutations for Unit relationship
+    const update = (cache: ApolloCache) => cache.modify({
+        id: "ROOT_QUERY",
+        fields: {
+            hierarchy: (value: unknown, { DELETE }: { DELETE: unknown }) => DELETE
+        }
+    });
+    const [createRelationship] = useMutation(CreateRelationshipDocument, { update });
+    const [deleteRelationship] = useMutation(DeleteRelationshipDocument, { update });
+
+    // Search for units when debounced search value changes
+    useEffect(() => {
+        if (debouncedUnitSearch && debouncedUnitSearch.length >= 2) {
+            const searchInput: SearchInput = {
+                entityTypeIn: [UnitEntity.recordType],
+                tagged: UnitEntity.tags,
+                query: debouncedUnitSearch
+            };
+            findUnits({
+                variables: {
+                    input: searchInput,
+                    pageSize: 20,
+                    pageNumber: 0
+                }
+            });
+        }
+    }, [debouncedUnitSearch, findUnits]);
+
+    // Early returns after all hooks
+    let entry = data?.node;
+    const relatedValues = entry?.values?.nodes ?? [];
+
+    if (loading) return <Typography><T keyName="valuelist.loading">Lade Werteliste..</T></Typography>;
+    if (error || !entry) {
+        console.error("ValueListForm Error:", error);
+        console.log("ValueListForm Data:", data);
+        return <Typography><T keyName="error.error">Es ist ein Fehler aufgetreten..</T></Typography>;
+    }
+
+    const availableUnits = (unitsData?.search?.nodes ?? []) as { id: string; name?: string | null; recordType: string; tags: { id: string }[] }[];
 
     const handleOnUpdate = async () => {
         await refetch();
-        await valRefetch();
         enqueueSnackbar(<T keyName="update.update_success">Update erfolgreich.</T>);
     };
 
@@ -67,14 +109,60 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
         navigate(`/${ValueListEntity.path}`, { replace: true });
     };
 
-    const relatedUnits = entry.unit ? [entry.unit] : [];
+    // Unit relationship handlers
+    const handleAddUnit = async (unitId: string) => {
+        if (!unitId) return;
+        
+        try {
+            await createRelationship({
+                variables: {
+                    input: {
+                        relationshipType: RelationshipRecordType.Unit,
+                        fromId: id,
+                        toIds: [unitId]
+                    }
+                }
+            });
+            await handleOnUpdate();
+            setUnitSearchValue('');
+        } catch (error) {
+            console.error("Error creating unit relationship:", error);
+            enqueueSnackbar("Fehler beim Hinzufügen der Maßeinheit", { variant: 'error' });
+        }
+    };
+
+    const handleDeleteUnit = async () => {
+        if (!entry.unit) return;
+        
+        try {
+            await deleteRelationship({
+                variables: {
+                    input: {
+                        relationshipType: RelationshipRecordType.Unit,
+                        fromId: id,
+                        toId: entry.unit.id
+                    }
+                }
+            });
+            await handleOnUpdate();
+        } catch (error) {
+            console.error("Error deleting unit relationship:", error);
+            enqueueSnackbar("Fehler beim Löschen der Maßeinheit", { variant: 'error' });
+        }
+    };
 
     // const relatedValues = entry.values ?? [];
-    console.log(relatedValues);
-    const values = relatedValues.map(rel => ({
-        order: rel.order,
-        orderedValue: rel.orderedValue
-    }));
+    // console.log(relatedValues);
+    const values = [...relatedValues]
+        .sort((a, b) => {
+            const orderA = Number(a.order ?? 0);
+            const orderB = Number(b.order ?? 0);
+            return orderA - orderB;
+        })
+        .map(rel => ({
+            order: rel.order,
+            orderedValue: rel.orderedValue
+        }));
 
     return (
         <FormView>
@@ -142,19 +230,49 @@ const ValueListForm: FC<FormProps<ValueListDetailPropsFragment>> = (props) => {
                 </Typography>
             </FormSet>
 
-            <TransferListView
-                title={<span><b><T keyName="unit.titlePlural" /></b><T keyName="valuelist.applicable_units"></T></span>}
-                relatingItemId={id}
-                relationshipType={RelationshipRecordType.Unit}
-                relationships={relatedUnits}
-                searchInput={{
-                    entityTypeIn: [UnitEntity.recordType]
-                    // tagged: UnitEntity.tags
-                }}
-                onCreate={handleOnUpdate}
-                onUpdate={handleOnUpdate}
-                onDelete={handleOnUpdate}
-            />
+            <FormSet>
+                <FormSetTitle>
+                    <b><T keyName="unit.title" /></b> <T keyName="valuelist.applicable_units"></T>
+                </FormSetTitle>
+                {entry.unit ? (
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1 }}>
+                        <Chip
+                            label={entry.unit.name || entry.unit.id}
+                            onClick={() => navigate(`/${UnitEntity.path}/${entry.unit!.id}`)}
+                            onDelete={handleDeleteUnit}
+                            deleteIcon={
+                                <IconButton size="small">
+                                    <DeleteIcon fontSize="small" />
+                                </IconButton>
+                            }
+                            sx={{ cursor: 'pointer' }}
+                        />
+                    </Box>
+                ) : (
+                    <Autocomplete
+                        sx={{ mt: 1 }}
+                        options={availableUnits}
+                        getOptionLabel={(option) => option.name || option.id}
+                        loading={unitsLoading}
+                        inputValue={unitSearchValue}
+                        onInputChange={(_, newValue) => setUnitSearchValue(newValue)}
+                        onChange={(_, newValue) => {
+                            if (newValue) {
+                                handleAddUnit(newValue.id);
+                            }
+                        }}
+                        filterOptions={(x) => x}
+                        noOptionsText={unitSearchValue.length < 2 ? "Mindestens 2 Zeichen eingeben" : "Keine Ergebnisse"}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label={<T keyName="unit.select">Maßeinheit auswählen</T>}
+                                placeholder="Suchen..."
+                            />
+                        )}
+                    />
+                )}
+            </FormSet>
 
             <TransferListViewOrderedValues
                 title={<span><b><T keyName="value.titlePlural" /></b><T keyName="valuelist.value_range"></T></span>}

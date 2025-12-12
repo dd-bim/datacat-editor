@@ -28,5 +28,8 @@
     "src",
     "vite-env.d.ts",
     "vite.config.ts"
+  ],
+  "exclude": [
+    "src/views/deprecated"
   ]
 }

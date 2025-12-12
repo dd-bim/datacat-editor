@@ -10,25 +10,26 @@ import ValueListForm from "./forms/ValueListForm";
 import UnitForm from "./forms/UnitForm";
 import ValueForm from "./forms/ValueForm";
 import ButtonComponent from "@mui/material/Button";
+import { useQuery } from "@apollo/client/react";
 import {
-  useFindPropGroupWithoutPropTreeQuery,
-  useFindPropWithoutSubjectOrPropGroupTreeQuery,
-  useFindThemeWithoutSubjectTreeQuery,
-  useFindSubjectWithoutPropTreeQuery,
-  useFindValueListWithoutPropTreeQuery,
-  useFindUnitWithoutValueListTreeQuery,
-  useFindValueWithoutValueListTreeQuery,
-  useFindMissingEnglishNameTreeQuery,
-  useFindMultipleIDsTreeQuery,
-  useFindMissingDescriptionTreeQuery,
-  useFindMissingEnglishDescriptionTreeQuery,
-  useFindMultipleNamesTreeQuery,
-  useFindMultipleNamesAcrossClassesTreeQuery,
-  useFindMissingDictionaryTreeQuery,
-  useFindMissingReferenceDocumentTreeQuery,
-  useFindInactiveConceptsTreeQuery,
-  ObjectDetailPropsFragment,
-} from "../generated/types";
+  FindPropGroupWithoutPropTreeDocument,
+  FindPropWithoutSubjectOrPropGroupTreeDocument,
+  FindThemeWithoutSubjectTreeDocument,
+  FindSubjectWithoutPropTreeDocument,
+  FindValueListWithoutPropTreeDocument,
+  FindUnitWithoutValueListTreeDocument,
+  FindValueWithoutValueListTreeDocument,
+  FindMissingEnglishNameTreeDocument,
+  FindMultipleIDsTreeDocument,
+  FindMissingDescriptionTreeDocument,
+  FindMissingEnglishDescriptionTreeDocument,
+  FindMultipleNamesTreeDocument,
+  FindMultipleNamesAcrossClassesTreeDocument,
+  FindMissingDictionaryTreeDocument,
+  FindMissingReferenceDocumentTreeDocument,
+  FindInactiveConceptsTreeDocument,
+  ObjectPropsFragment,
+} from "../generated/graphql";
 import {
   ClassEntity,
   DomainClassIcon,
@@ -93,97 +94,97 @@ const LeftAlignedButton = styled(ButtonComponent)(({ theme }) => ({
 
 const verificationQueries = {
   "Themen ohne Klasse": {
-    useQuery: useFindThemeWithoutSubjectTreeQuery,
+    document: FindThemeWithoutSubjectTreeDocument,
     dataPath: "findThemeWithoutSubject",
     titleKey: "verification.category.no_theme_class",
     buttonGroup: "Integrität",
   },
   "Klassen ohne Merkmale/Merkmalsgruppen": {
-    useQuery: useFindSubjectWithoutPropTreeQuery,
+    document: FindSubjectWithoutPropTreeDocument,
     dataPath: "findSubjectWithoutProp",
     titleKey: "verification.category.no_class_properties",
     buttonGroup: "Integrität",
   },
   "Merkmalsgruppen ohne Merkmale": {
-    useQuery: useFindPropGroupWithoutPropTreeQuery,
+    document: FindPropGroupWithoutPropTreeDocument,
     dataPath: "findPropGroupWithoutProp",
     titleKey: "verification.category.no_property_group",
     buttonGroup: "Integrität",
   },
   "Merkmale ohne Klasse oder Merkmalsgruppe": {
-    useQuery: useFindPropWithoutSubjectOrPropGroupTreeQuery,
+    document: FindPropWithoutSubjectOrPropGroupTreeDocument,
     dataPath: "findPropWithoutSubjectOrPropGroup",
     titleKey: "verification.category.no_property",
     buttonGroup: "Integrität",
   },
   "Wertelisten die keinem Merkmal zugeordnet sind": {
-    useQuery: useFindValueListWithoutPropTreeQuery,
+    document: FindValueListWithoutPropTreeDocument,
     dataPath: "findValueListWithoutProp",
     titleKey: "verification.category.no_valuelist",
     buttonGroup: "Integrität",
   },
   "Einheiten ohne Werteliste": {
-    useQuery: useFindUnitWithoutValueListTreeQuery,
+    document: FindUnitWithoutValueListTreeDocument,
     dataPath: "findUnitWithoutValueList",
     titleKey: "verification.category.no_unit",
     buttonGroup: "Integrität",
   },
   "Werte ohne Werteliste": {
-    useQuery: useFindValueWithoutValueListTreeQuery,
+    document: FindValueWithoutValueListTreeDocument,
     dataPath: "findValueWithoutValueList",
     titleKey: "verification.category.no_value",
     buttonGroup: "Integrität",
   },
   "ID-Duplikate": {
-    useQuery: useFindMultipleIDsTreeQuery,
+    document: FindMultipleIDsTreeDocument,
     dataPath: "findMultipleIDs",
     titleKey: "verification.category.duplicate_id",
     buttonGroup: "Eindeutigkeit",
   },
   "Namen-Duplikate (innerhalb eines Types)": {
-    useQuery: useFindMultipleNamesTreeQuery,
+    document: FindMultipleNamesTreeDocument,
     dataPath: "findMultipleNames",
     titleKey: "verification.category.duplicate_name_type",
     buttonGroup: "Eindeutigkeit",
   },
   "Namen-Duplikate (gesamter Datenbestand)": {
-    useQuery: useFindMultipleNamesAcrossClassesTreeQuery,
+    document: FindMultipleNamesAcrossClassesTreeDocument,
     dataPath: "findMultipleNamesAcrossClasses",
     titleKey: "verification.category.duplicate_name_all",
     buttonGroup: "Eindeutigkeit",
   },
   "Fehlende Beschreibung": {
-    useQuery: useFindMissingDescriptionTreeQuery,
+    document: FindMissingDescriptionTreeDocument,
     dataPath: "findMissingDescription",
     titleKey: "verification.category.missing_description",
     buttonGroup: "Sprache",
   },
   "Fehlende Beschreibung (englisch)": {
-    useQuery: useFindMissingEnglishDescriptionTreeQuery,
+    document: FindMissingEnglishDescriptionTreeDocument,
     dataPath: "findMissingEnglishDescription",
     titleKey: "verification.category.missing_description_en",
     buttonGroup: "Sprache",
   },
   "Fehlende Namens-Übersetzung (englisch)": {
-    useQuery: useFindMissingEnglishNameTreeQuery,
+    document: FindMissingEnglishNameTreeDocument,
     dataPath: "findMissingEnglishName",
     titleKey: "verification.category.missing_translation_en",
     buttonGroup: "Sprache",
   },
   "Fehlende Dictionary-Zuordnung": {
-    useQuery: useFindMissingDictionaryTreeQuery,
+    document: FindMissingDictionaryTreeDocument,
     dataPath: "findMissingDictionary",
     titleKey: "verification.category.no_dictionary",
     buttonGroup: "Integrität",
   },
   "Fehlende Dokumenten-Zuordnung": {
-    useQuery: useFindMissingReferenceDocumentTreeQuery,
+    document: FindMissingReferenceDocumentTreeDocument,
     dataPath: "findMissingReferenceDocument",
     titleKey: "verification.category.no_document",
     buttonGroup: "Integrität",
   },
   "Inaktive Konzepte": {
-    useQuery: useFindInactiveConceptsTreeQuery,
+    document: FindInactiveConceptsTreeDocument,
     dataPath: "findInactiveConcepts",
     titleKey: "verification.category.inactive_concepts",
     buttonGroup: "Integrität",
@@ -193,10 +194,10 @@ const verificationQueries = {
 export function VerificationView() {
   const [selectButton, setSelectButton] = useState("");
   const [selectCategory, setSelectCategory] = useState("");
-  const [selectedConcept, setSelectedConcept] = useState<ObjectDetailPropsFragment | null>(null);
+  const [selectedConcept, setSelectedConcept] = useState<ObjectPropsFragment | null>(null);
   const [title, setTitle] = useState<React.ReactNode>("");
 
-  const handleOnSelect = (concept: ObjectDetailPropsFragment) => {
+  const handleOnSelect = (concept: ObjectPropsFragment) => {
     setSelectedConcept(concept);
   };
 
@@ -253,7 +254,7 @@ export function VerificationView() {
     if (queryConfig) {
       return (
         <GenericVerificationQuery
-          useQuery={queryConfig.useQuery}
+          document={queryConfig.document}
           dataPath={queryConfig.dataPath}
           onSelect={handleOnSelect}
         />
@@ -345,21 +346,21 @@ export function VerificationView() {
   };
 
   type VerificationQueryProps = {
-    useQuery: (options: { variables: { pageNumber: number; pageSize: number } }) => { loading: boolean; error?: any; data?: any; fetchMore: any };
+    document: any;
     dataPath: string;
-    onSelect: (concept: ObjectDetailPropsFragment) => void;
+    onSelect: (concept: ObjectPropsFragment) => void;
   };
 
-  function GenericVerificationQuery({ useQuery, dataPath, onSelect }: VerificationQueryProps) {
+  function GenericVerificationQuery({ document, dataPath, onSelect }: VerificationQueryProps) {
     const pageSize = 20;
-    const { loading, error, data, fetchMore } = useQuery({ variables: { pageNumber: 0, pageSize } });
+    const { loading, error, data, fetchMore } = useQuery(document, { variables: { pageNumber: 0, pageSize } });
 
     // Lokaler State für alle geladenen Items
-    const [allItems, setAllItems] = React.useState<ObjectDetailPropsFragment[]>([]);
+    const [allItems, setAllItems] = React.useState<ObjectPropsFragment[]>([]);
     const [lastPage, setLastPage] = React.useState<number>(-1);
 
     // Items aus aktueller Page holen
-    const items: ObjectDetailPropsFragment[] = (data?.[dataPath]?.nodes ?? []).slice().sort((a: { name: string; }, b: { name: any; }) => {
+    const items: ObjectPropsFragment[] = (data?.[dataPath]?.nodes ?? []).slice().sort((a: { name: string; }, b: { name: any; }) => {
       if (!a.name || !b.name) return 0;
       return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
     });

@@ -1,15 +1,15 @@
 import View from "./View";
 import { Box, Button, TextField, Typography, ButtonProps } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
+import { useQuery, useMutation } from "@apollo/client/react";
 import {
-  FindTagsResultFragment,
   RelationshipRecordType,
   CatalogRecordType,
-  useCreateEntryMutation,
-  useCreateRelationshipMutation,
-  useCreateTagMutation,
-  useFindTagsQuery,
-} from "../generated/types";
+  CreateEntryDocument,
+  CreateRelationshipDocument,
+  CreateTagDocument,
+  FindTagsDocument,
+} from "../generated/graphql";
 import { v4 as uuidv4 } from "uuid";
 import { ApolloCache } from "@apollo/client";
 import { useSnackbar } from "notistack";
@@ -17,6 +17,9 @@ import JSZip from "jszip";
 import FileSaver from "file-saver";
 import { T } from "@tolgee/react";
 import { styled } from "@mui/material/styles";
+
+// Typ für Tag-Ergebnisse
+type TagResult = { id: string; name: string };
 
 export const IMPORT_TAG_ID = "KATALOG-IMPORT";
 type entity = {
@@ -76,8 +79,8 @@ const ActionButton = styled(Button)<ButtonProps>(({ theme }) => ({
 export function ImportView() {
   const [entitiesFile, setEntitiesFile] = useState(null);
   const [relationsFile, setRelationsFile] = useState(null);
-  const [createTag] = useCreateTagMutation();
-  const [tags, setTags] = useState<FindTagsResultFragment[]>([]);
+  const [createTag] = useMutation(CreateTagDocument);
+  const [tags, setTags] = useState<TagResult[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [output, setOutput] = useState<string | React.ReactNode>("");
   const [init, setInit] = useState(false);
@@ -86,7 +89,7 @@ export function ImportView() {
   const [control, setControl] = useState(1);
 
   // get list o tags
-  const { refetch } = useFindTagsQuery({
+  const { refetch } = useQuery(FindTagsDocument, {
     variables: {
       pageSize: 100,
     },
@@ -99,7 +102,7 @@ export function ImportView() {
   };
 
   // create new entity records by query
-  const [create] = useCreateEntryMutation({
+  const [create] = useMutation(CreateEntryDocument, {
     update: (cache: ApolloCache) => {
       cache.modify({
         id: "ROOT_QUERY",
@@ -120,7 +123,7 @@ export function ImportView() {
         hierarchy: (value: any, { DELETE }: any) => DELETE,
       },
     });
-  const [createRelationship, error] = useCreateRelationshipMutation({ update });
+  const [createRelationship, error] = useMutation(CreateRelationshipDocument, { update });
 
   // handle file selection and update tag list
   const handleFileChange = (event: any) => {
@@ -311,14 +314,14 @@ export function ImportView() {
   };
 
   // gives id of existing tag in tag list
-  const idOfTag = (nodes: FindTagsResultFragment[], searchName: string) => {
+  const idOfTag = (nodes: TagResult[], searchName: string) => {
     return nodes.find((obj) => obj.name === searchName)!.id;
   };
 
   // imports the entities into the database
   const importEntities = async (
     entities: entity[],
-    tagArr: FindTagsResultFragment[]
+    tagArr: TagResult[]
   ) => {
     let tArr = [...tagArr];
 

@@ -1,8 +1,9 @@
+import { useQuery } from "@apollo/client/react";
 import {
     SubjectDetailPropsFragment,
-    useGetSubjectEntryQuery,
+    GetSubjectEntryDocument,
     RelationshipRecordType
-} from "../../generated/types";
+} from "../../generated/graphql";
 import { useDeleteEntry } from "../../hooks/useDeleteEntry";
 import { Box, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
@@ -31,7 +32,7 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
     const navigate = useNavigate();
 
     // fetch property groups
-    const { loading, error, data, refetch } = useGetSubjectEntryQuery({
+    const { loading, error, data, refetch } = useQuery(GetSubjectEntryDocument, {
         fetchPolicy: "network-only",
         variables: { id }
     });

@@ -1,113 +1,918 @@
-query FindLanguages($input: LanguageFilterInput!) {
-    findLanguages(input: $input) {
-        nodes {
-            ...LanguageProps
-        }
-        totalElements
+# ============================================
+# Language Queries
+# ============================================
+
+query FindLanguages($input: FilterInput!) {
+  findLanguages(input: $input) {
+    nodes {
+      ...LanguageProps
     }
+    totalElements
+  }
 }
+
+# ============================================
+# Search / Item Queries
+# ============================================
 
 query FindItem($input: SearchInput!, $pageSize: Int, $pageNumber: Int) {
-    search(input: $input, pageSize: $pageSize, pageNumber: $pageNumber) {
-        nodes {
-            ...SearchResultProps
-        }
-        pageInfo {
-            ...PageProps
-        }
-        totalElements
+  search(input: $input, pageSize: $pageSize, pageNumber: $pageNumber) {
+    nodes {
+      ...SearchResultProps
+      ...SearchResultDictionaryProps
     }
+    pageInfo {
+      ...PageProps
+    }
+    totalElements
+  }
 }
+
+query FindConceptsForOntoExport($input: SearchInput!, $pageSize: Int, $pageNumber: Int) {
+  search(input: $input, pageSize: $pageSize, pageNumber: $pageNumber) {
+    nodes {
+      id
+      tags {
+        name
+      }
+      ... on XtdDictionary {
+        dname: name {
+          texts {
+            text
+          }
+        }
+      }
+      ... on XtdObject {
+        name(input: { languageTags: ["de", "en"] })
+        names {
+          ...TranslationProps
+        }
+        majorVersion
+        minorVersion
+      }
+      ... on XtdConcept {
+        descriptions {
+          ...TranslationProps
+        }
+      }
+    }
+  }
+}
+
+# ============================================
+# Tag Queries
+# ============================================
+
+query FindTags($pageSize: Int) {
+  findTags(input: { pageSize: $pageSize }) {
+    nodes {
+      id
+      name
+    }
+    totalElements
+  }
+}
+
+# ============================================
+# Hierarchy / Tree Queries
+# ============================================
 
 query PropertyTree {
-    hierarchy(input: {
-        rootNodeFilter: {
-            entityTypeIn: [Subject]
-            tagged: ["6f96aaa7-e08f-49bb-ac63-93061d4c5db2"]
-        }
-    }) {
-        nodes {
-            ...ItemProps
-        }
-        paths
+  hierarchy(
+    input: {
+      rootNodeFilter: {
+        entityTypeIn: [Subject]
+        tagged: ["5997da9b-a716-45ae-84a9-e2a7d186bcf9"]
+      }
     }
+  ) {
+    nodes {
+      ...ItemProps
+    }
+    paths
+  }
 }
 
-query GetDocumentEntry($id: ID!) {
-    node(id: $id) {
-        ...ExternalDocumentDetailProps
+# ============================================
+# Verification Tree Queries
+# ============================================
+
+query FindPropGroupWithoutPropTree($pageSize: Int!, $pageNumber: Int!) {
+  findPropGroupWithoutProp(pageSize: $pageSize, pageNumber: $pageNumber) {
+    nodes {
+      ...VerificationProps
     }
+    paths
+    pageInfo {
+      ...PageProps
+    }
+    totalElements
+  }
+}
+
+query FindPropWithoutSubjectOrPropGroupTree($pageSize: Int!, $pageNumber: Int!) {
+  findPropWithoutSubjectOrPropGroup(pageSize: $pageSize, pageNumber: $pageNumber) {
+    nodes {
+      ...VerificationProps
+    }
+    paths
+    pageInfo {
+      ...PageProps
+    }
+    totalElements
+  }
+}
+
+query FindThemeWithoutSubjectTree($pageSize: Int!, $pageNumber: Int!) {
+  findThemeWithoutSubject(pageSize: $pageSize, pageNumber: $pageNumber) {
+    nodes {
+      ...VerificationProps
+    }
+    paths
+    pageInfo {
+      ...PageProps
+    }
+    totalElements
+  }
+}
+
+query FindSubjectWithoutPropTree($pageSize: Int!, $pageNumber: Int!) {
+  findSubjectWithoutProp(pageSize: $pageSize, pageNumber: $pageNumber) {
+    nodes {
+      ...VerificationProps
+    }
+    paths
+    pageInfo {
+      ...PageProps
+    }
+    totalElements
+  }
+}
+
+query FindValueListWithoutPropTree($pageSize: Int!, $pageNumber: Int!) {
+  findValueListWithoutProp(pageSize: $pageSize, pageNumber: $pageNumber) {
+    nodes {
+      ...VerificationProps
+    }
+    paths
+    pageInfo {
+      ...PageProps
+    }
+    totalElements
+  }
+}
+
+query FindUnitWithoutValueListTree($pageSize: Int!, $pageNumber: Int!) {
+  findUnitWithoutValueList(pageSize: $pageSize, pageNumber: $pageNumber) {
+    nodes {
+      ...VerificationProps
+    }
+    paths
+    pageInfo {
+      ...PageProps
+    }
+    totalElements
+  }
+}
+
+query FindValueWithoutValueListTree($pageSize: Int!, $pageNumber: Int!) {
+  findValueWithoutValueList(pageSize: $pageSize, pageNumber: $pageNumber) {
+    nodes {
+      ...VerificationProps
+    }
+    paths
+    pageInfo {
+      ...PageProps
+    }
+    totalElements
+  }
+}
+
+query FindMissingTagsTree($pageSize: Int!, $pageNumber: Int!) {
+  findMissingTags(pageSize: $pageSize, pageNumber: $pageNumber) {
+    nodes {
+      ...VerificationProps
+    }
+    paths
+    pageInfo {
+      ...PageProps
+    }
+    totalElements
+  }
+}
+
+query FindMissingEnglishNameTree($pageSize: Int!, $pageNumber: Int!) {
+  findMissingEnglishName(pageSize: $pageSize, pageNumber: $pageNumber) {
+    nodes {
+      ...VerificationProps
+    }
+    paths
+    pageInfo {
+      ...PageProps
+    }
+    totalElements
+  }
+}
+
+query FindMultipleIDsTree($pageSize: Int!, $pageNumber: Int!) {
+  findMultipleIDs(pageSize: $pageSize, pageNumber: $pageNumber) {
+    nodes {
+      ...VerificationProps
+    }
+    paths
+    pageInfo {
+      ...PageProps
+    }
+    totalElements
+  }
+}
+
+query FindMissingDescriptionTree($pageSize: Int!, $pageNumber: Int!) {
+  findMissingDescription(pageSize: $pageSize, pageNumber: $pageNumber) {
+    nodes {
+      ...VerificationProps
+    }
+    paths
+    pageInfo {
+      ...PageProps
+    }
+    totalElements
+  }
+}
+
+query FindMissingEnglishDescriptionTree($pageSize: Int!, $pageNumber: Int!) {
+  findMissingEnglishDescription(pageSize: $pageSize, pageNumber: $pageNumber) {
+    nodes {
+      ...VerificationProps
+    }
+    paths
+    pageInfo {
+      ...PageProps
+    }
+    totalElements
+  }
+}
+
+query FindMultipleNamesTree($pageSize: Int!, $pageNumber: Int!) {
+  findMultipleNames(pageSize: $pageSize, pageNumber: $pageNumber) {
+    nodes {
+      ...VerificationProps
+    }
+    paths
+    pageInfo {
+      ...PageProps
+    }
+    totalElements
+  }
+}
+
+query FindMultipleNamesAcrossClassesTree($pageSize: Int!, $pageNumber: Int!) {
+  findMultipleNamesAcrossClasses(pageSize: $pageSize, pageNumber: $pageNumber) {
+    nodes {
+      ...VerificationProps
+    }
+    paths
+    pageInfo {
+      ...PageProps
+    }
+    totalElements
+  }
+}
+
+query FindMissingDictionaryTree($pageSize: Int!, $pageNumber: Int!) {
+  findMissingDictionary(pageSize: $pageSize, pageNumber: $pageNumber) {
+    nodes {
+      ...VerificationProps
+    }
+    paths
+    pageInfo {
+      ...PageProps
+    }
+    totalElements
+  }
+}
+
+query FindMissingReferenceDocumentTree($pageSize: Int!, $pageNumber: Int!) {
+  findMissingReferenceDocument(pageSize: $pageSize, pageNumber: $pageNumber) {
+    nodes {
+      ...VerificationProps
+    }
+    paths
+    pageInfo {
+      ...PageProps
+    }
+    totalElements
+  }
+}
+
+query FindInactiveConceptsTree($pageSize: Int!, $pageNumber: Int!) {
+  findInactiveConcepts(pageSize: $pageSize, pageNumber: $pageNumber) {
+    nodes {
+      ...VerificationProps
+    }
+    paths
+    pageInfo {
+      ...PageProps
+    }
+    totalElements
+  }
+}
+
+# ============================================
+# Entity Find Queries
+# ============================================
+
+query FindExternalDocuments($input: FilterInput!) {
+  findExternalDocuments(input: $input) {
+    nodes {
+      ...ExternalDocumentProps
+    }
+    totalElements
+  }
+}
+
+query FindProperties($input: FilterInput!) {
+  findProperties(input: $input) {
+    nodes {
+      ...PropertyDetailProps
+    }
+    totalElements
+  }
+}
+
+query FindSubjects($input: FilterInput!) {
+  findSubjects(input: $input) {
+    nodes {
+      ...ConceptProps
+      properties {
+        ...RelationsProps
+      }
+      connectedSubjects {
+        ...RelationsProps
+        targetSubjects {
+          ...RelationsProps
+        }
+      }
+      connectingSubjects {
+        ...RelationsProps
+        connectingSubject {
+          ...RelationsProps
+        }
+      }
+    }
+    totalElements
+  }
+}
+
+query FindSubjectsWithPropsAndLists($input: FilterInput!) {
+  findSubjects(input: $input) {
+    nodes {
+      ...SubjectWithPropsAndListsProps
+    }
+  }
+}
+
+query FindSubjectsWithDictAndThemes($input: FilterInput!) {
+  findSubjects(input: $input) {
+    nodes {
+      id
+      name
+      dictionary {
+        id
+        name {
+          ...TranslationProps
+        }
+      }
+      connectingSubjects {
+        connectingSubject {
+          name
+          tags {
+            ...TagProps
+          }
+        }
+      }
+    }
+  }
+}
+
+query FindPropertyGroups($input: FilterInput!) {
+  findSubjects(input: $input) {
+    totalElements
+    nodes {
+      id
+      name
+      tags {
+        ...TagProps
+      }
+    }
+  }
+}
+
+query FindUnits($input: FilterInput!) {
+  findUnits(input: $input) {
+    nodes {
+      ...UnitDetailProps
+    }
+    totalElements
+  }
+}
+
+query FindValues($input: FilterInput!) {
+  findValues(input: $input) {
+    nodes {
+      ...ValueProps
+    }
+    totalElements
+  }
+}
+
+query FindValueLists($input: FilterInput!) {
+  findValueLists(input: $input) {
+    nodes {
+      ...ValueListDetailProps
+    }
+    totalElements
+  }
+}
+
+query ValueListWithValues($input: FilterInput!) {
+  findValueLists(input: $input) {
+    nodes {
+      ...ValueListWithValuesProps
+    }
+  }
+}
+
+query FindOrderedValues($input: FilterInput!) {
+  findOrderedValues(input: $input) {
+    nodes {
+      order
+      orderedValue {
+        ...ValueProps
+      }
+    }
+    totalElements
+  }
+}
+
+query FindRelationshipToSubject($input: FilterInput!) {
+  findRelationshipToSubjects(input: $input) {
+    nodes {
+      ...ObjectProps
+      connectingSubject {
+        ...SubjectDetailProps
+      }
+      scopeSubjects {
+        ...SubjectDetailProps
+      }
+      targetSubjects {
+        ...SubjectDetailProps
+      }
+    }
+    totalElements
+  }
+}
+
+query FindRelationshipToProperty($input: FilterInput!) {
+  findRelationshipToProperties(input: $input) {
+    nodes {
+      ...ObjectProps
+      connectingProperty {
+        ...PropertyDetailProps
+      }
+      targetProperties {
+        ...PropertyDetailProps
+      }
+    }
+    totalElements
+  }
+}
+
+query FindRelationshipTypes($input: FilterInput!) {
+  findRelationshipTypes(input: $input) {
+    nodes {
+      ...RelationshipTypeProps
+    }
+    totalElements
+  }
+}
+
+query FindDimensions($input: FilterInput!) {
+  findDimensions(input: $input) {
+    nodes {
+      ...DimensionProps
+    }
+    totalElements
+  }
+}
+
+query FindRationals($input: FilterInput!) {
+  findRationals(input: $input) {
+    nodes {
+      ...RationalProps
+    }
+    totalElements
+  }
+}
+
+query FindMultiLanguageTexts($input: FilterInput!) {
+  findMultiLanguageTexts(input: $input) {
+    nodes {
+      ...TranslationProps
+    }
+    totalElements
+  }
+}
+
+query FindDictionaries($input: FilterInput!) {
+  findDictionaries(input: $input) {
+    nodes {
+      ...MetaProps
+      id
+      name {
+        ...TranslationProps
+      }
+      tags {
+        ...TagProps
+      }
+    }
+    pageInfo {
+      ...PageProps
+    }
+    totalElements
+  }
+}
+
+query FindQuantityKinds($input: FilterInput!) {
+  findQuantityKinds(input: $input) {
+    nodes {
+      ...QuantityKindProps
+    }
+    totalElements
+  }
+}
+
+query FindCountries($input: FilterInput!) {
+  findCountries(input: $input) {
+    nodes {
+      ...RelationsProps
+      code
+    }
+    totalElements
+  }
+}
+
+# ============================================
+# Get Entry Queries (by ID)
+# ============================================
+
+query GetDocumentEntry($id: ID!) {
+  node(id: $id) {
+    ... on XtdExternalDocument {
+      ...ExternalDocumentDetailProps
+    }
+  }
 }
 
 query GetObjectEntry($id: ID!) {
-    node(id: $id) {
-        ...ObjectDetailProps
+  node(id: $id) {
+    ... on XtdObject {
+      ...ObjectProps
     }
+  }
 }
 
 query GetSubjectEntry($id: ID!) {
-    node: getSubject(id: $id) {
-        ...SubjectDetailProps
+  node: getSubject(id: $id) {
+    ...ConceptProps
+    properties {
+      ...RelationsProps
     }
+    connectedSubjects {
+      id
+      relationshipType {
+        name
+        kind
+      }
+      targetSubjects {
+        id
+        name(input: { languageTags: ["de", "en"] })
+        tags {
+          id
+          name
+        }
+      }
+    }
+    connectingSubjects {
+      id
+      relationshipType {
+        name
+        kind
+      }
+      connectingSubject {
+        id
+        name(input: { languageTags: ["de", "en"] })
+        tags {
+          id
+          name
+        }
+      }
+    }
+  }
+}
+
+# Minimale Query für Subjects mit Relations (für TransferListViewRelationshipToSubject)
+query GetSubjectEntryMinimal($id: ID!) {
+  node: getSubject(id: $id) {
+    ...SubjectRelationsMinimalProps
+  }
 }
 
 query GetPropertyEntry($id: ID!) {
-    node: getProperty(id: $id) {
-        ...PropertyDetailProps
+  node: getProperty(id: $id) {
+    ...PropertyProps
+    connectedProperties {
+      ...RelationsProps
+      relationshipType
+      targetProperties {
+        ...PropertyProps
+      }
+      connectingProperty {
+        ...PropertyProps
+      }
     }
+    connectingProperties {
+      ...RelationsProps
+      relationshipType
+      targetProperties {
+        ...PropertyProps
+      }
+      connectingProperty {
+        ...PropertyProps
+      }
+    }
+    # symbols {
+    #   ...SymbolProps
+    # }
+    boundaryValues {
+      ...IntervalProps
+    }
+    dimension {
+      ...DimensionProps
+    }
+    quantityKinds {
+      ...QuantityKindProps
+    }
+    units {
+      ...RelationsProps
+    }
+    possibleValues {
+      ...RelationsProps
+    }
+    subjects {
+      ...RelationsProps
+    }
+  }
 }
 
 query GetValueListEntry($id: ID!) {
-    node: getValueList(id: $id) {
-        ...ValueListDetailProps
+  node: getValueList(id: $id) {
+    ...ValueListProps
+    properties {
+      ...PropertyProps
     }
+    unit {
+      ...UnitProps
+    }
+    values(pageSize: 10000, pageNumber: 0) {
+      nodes {
+        order
+        orderedValue {
+          id
+          recordType
+          name(input: { languageTags: ["de-DE", "en-US"] })
+          nominalValue
+          status
+          tags {
+            id
+            name
+          }
+        }
+      }
+    }
+    language {
+      ...LanguageProps
+    }
+  }
+}
+
+query ValuesOfList($id: ID!) {
+  node: getValueList(id: $id) {
+    values {
+      nodes {
+        order
+        orderedValue {
+          ...ValueProps
+        }
+      }
+    }
+  }
 }
 
 query GetUnitEntry($id: ID!) {
-    node: getUnit(id: $id) {
-        ...UnitDetailProps
-    }
+  node: getUnit(id: $id) {
+    ...UnitDetailProps
+  }
 }
 
 query GetValueEntry($id: ID!) {
-    node: getValue(id: $id) {
-        ...ValueDetailProps
+  node: getValue(id: $id) {
+    ...ValueDetailProps
+  }
+}
+
+query GetOrderedValueEntry($id: ID!) {
+  node(id: $id) {
+    ... on XtdOrderedValue {
+      order
+      orderedValue {
+        ...ValueProps
+      }
     }
+  }
+}
+
+query GetRelationshipToSubjectEntry($id: ID!) {
+  node(id: $id) {
+    ... on XtdRelationshipToSubject {
+      ...RelationshipToSubjectDetailProps
+    }
+  }
+}
+
+query GetRelationshipToPropertyEntry($id: ID!) {
+  node(id: $id) {
+    ... on XtdRelationshipToProperty {
+      ...RelationshipToPropertyDetailProps
+    }
+  }
+}
+
+query GetRelationshipTypeEntry($id: ID!) {
+  node(id: $id) {
+    ... on XtdRelationshipType {
+      ...RelationshipTypeProps
+    }
+  }
+}
+
+query GetLanguageEntry($id: ID!) {
+  node(id: $id) {
+    ... on XtdLanguage {
+      ...LanguageProps
+    }
+  }
+}
+
+query GetLanguageByCodeEntry($code: String!) {
+  getLanguageByCode(code: $code) {
+    ...LanguageProps
+  }
+}
+
+query GetDimensionEntry($id: ID!) {
+  node(id: $id) {
+    ... on XtdDimension {
+      ...DimensionProps
+    }
+  }
+}
+
+query GetRationalEntry($id: ID!) {
+  node(id: $id) {
+    ... on XtdRational {
+      ...RationalProps
+    }
+  }
+}
+
+query GetMultiLanguageTextEntry($id: ID!) {
+  node(id: $id) {
+    ... on XtdMultiLanguageText {
+      ...TranslationProps
+    }
+  }
+}
+
+query GetSymbolEntry($id: ID!) {
+  node(id: $id) {
+    ... on XtdSymbol {
+      ...SymbolProps
+    }
+  }
+}
+
+query GetIntervalEntry($id: ID!) {
+  node(id: $id) {
+    ... on XtdInterval {
+      ...IntervalProps
+    }
+  }
 }
 
 query GetDictionaryEntry($id: ID!) {
-    node: getDictionary(id: $id) {
-        ...MetaProps
-        id
-        name {
-            ...TranslationProps
-        }
-        tags {
-            id
-            name
-        }
+  node: getDictionary(id: $id) {
+    ...MetaProps
+    id
+    name {
+      ...TranslationProps
     }
+    tags {
+      id
+      name
+    }
+  }
 }
 
 query GetDictionaryEntryWithPagination($id: ID!, $pageSize: Int = 20, $pageNumber: Int = 0) {
-    node: getDictionary(id: $id) {
-        ...MetaProps
-        id
-        name {
-            ...TranslationProps
-        }
-        tags {
-            id
-            name
-        }
-        concepts(pageSize: $pageSize, pageNumber: $pageNumber) {
-            nodes {
-                ...RelationsProps
-            }
-            pageInfo {
-                ...PageProps
-            }
-            totalElements
-        }
+  node: getDictionary(id: $id) {
+    ...MetaProps
+    id
+    name {
+      ...TranslationProps
     }
+    tags {
+      id
+      name
+    }
+    concepts(pageSize: $pageSize, pageNumber: $pageNumber) {
+      nodes {
+        ...RelationsProps
+      }
+      pageInfo {
+        ...PageProps
+      }
+      totalElements
+    }
+  }
+}
+
+query GetCountryEntry($id: ID!) {
+  node: getCountry(id: $id) {
+    code
+    ...RelationsProps
+  }
+}
+
+query GetSubdivisionEntry($id: ID!) {
+  node: getSubdivision(id: $id) {
+    code
+    ...ConceptProps
+  }
+}
+
+query GetQuantityKindEntry($id: ID!) {
+  node(id: $id) {
+    ... on XtdQuantityKind {
+      ...QuantityKindProps
+    }
+  }
+}
+
+query GetConceptEntry($id: ID!) {
+  node(id: $id) {
+    ... on XtdConcept {
+      ...ConceptProps
+    }
+  }
+}
+
+# ============================================
+# Profile Query
+# ============================================
+
+query Profile {
+  profile {
+    ...UserProfile
+  }
+}
+
+# ============================================
+# Export Queries
+# ============================================
+
+query ExportCatalogRecords {
+  findExportCatalogRecords {
+    nodes {
+      ...ExportCatalogRecord
+    }
+  }
+}
+
+query ExportCatalogRecordsRelationships {
+  findExportCatalogRecordsRelationships {
+    nodes {
+      ...ExportCatalogRecordRelationship
+    }
+  }
 }

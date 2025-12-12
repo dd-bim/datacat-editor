@@ -18,11 +18,12 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { useSnackbar } from "notistack";
 import { T, useTranslate } from "@tolgee/react";
+import { useQuery } from "@apollo/client/react";
 import { 
-  usePropertyTreeQuery,
-  useFindItemQuery,
+  PropertyTreeDocument,
+  FindItemDocument,
   CatalogRecordType,
-} from "../generated/types";
+} from "../generated/graphql";
 import AddIcon from "@mui/icons-material/Add";
 
 // Tag styling components (similar to IDSExportView)
@@ -74,7 +75,7 @@ export const CreatePropertySetDialog: React.FC<CreatePropertySetDialogProps> = (
   const { enqueueSnackbar } = useSnackbar();
 
   // Lade ALLE Properties aus DataCat (SearchResultProps hat kein dictionary-Feld)
-  const { data: allPropertiesData, loading: allPropertiesLoading } = useFindItemQuery({
+  const { data: allPropertiesData, loading: allPropertiesLoading } = useQuery(FindItemDocument, {
     variables: {
       input: {
         entityTypeIn: [CatalogRecordType.Property],
@@ -86,7 +87,7 @@ export const CreatePropertySetDialog: React.FC<CreatePropertySetDialogProps> = (
   });
 
   // Lade PropertyTree für Werte-Zuordnung
-  const { data: propertyData } = usePropertyTreeQuery({
+  const { data: propertyData } = useQuery(PropertyTreeDocument, {
     fetchPolicy: "cache-first",
   });
 

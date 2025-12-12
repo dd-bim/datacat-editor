@@ -19,12 +19,13 @@ import {
 } from "@mui/material";
 import View from "./View";
 import { useState, ChangeEvent, useEffect } from "react";
+import { useQuery, useMutation } from "@apollo/client/react";
 import {
   SearchResultPropsFragment,
-  useDeleteEntryMutation,
-  useFindItemQuery,
-  useFindTagsQuery,
-} from "../generated/types";
+  DeleteEntryDocument,
+  FindItemDocument,
+  FindTagsDocument,
+} from "../generated/graphql";
 import { Domain } from "../domain";
 import { useSnackbar } from "notistack";
 import { T, useTranslate } from "@tolgee/react";
@@ -47,7 +48,7 @@ export function DeleteImportView() {
   const [isFetching, setIsFetching] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [output, setOutput] = useState<React.ReactNode>("");
-  const [deleteEntry] = useDeleteEntryMutation();
+  const [deleteEntry] = useMutation(DeleteEntryDocument);
   const [records, setRecords] = useState<SearchResultPropsFragment[]>([]);
   const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>({
     type: "include",
@@ -58,14 +59,14 @@ export function DeleteImportView() {
   const { enqueueSnackbar } = useSnackbar();
 
   // Get all tags in database
-  const { data: tagsData, loading: tagsLoading } = useFindTagsQuery({
+  const { data: tagsData, loading: tagsLoading } = useQuery(FindTagsDocument, {
     variables: {
       pageSize: 100,
     },
   });
 
   // Search entries with properties
-  const { refetch, loading: searchLoading, error } = useFindItemQuery({
+  const { refetch, loading: searchLoading, error } = useQuery(FindItemDocument, {
     variables: {
       input: {
         tagged: [tagId],

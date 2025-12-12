@@ -20,7 +20,17 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { T, useTranslate } from "@tolgee/react";
-import { usePropertyTreeQuery, useFindItemQuery, CatalogRecordType, useFindTagsQuery, useFindDictionariesQuery, useFindSubjectsQuery, useFindSubjectsWithDictAndThemesQuery, useFindPropertyGroupsQuery } from "../generated/types";
+import { useQuery } from "@apollo/client/react";
+import { 
+  CatalogRecordType, 
+  PropertyTreeDocument, 
+  FindItemDocument, 
+  FindTagsDocument, 
+  FindDictionariesDocument, 
+  FindSubjectsWithDictAndThemesDocument, 
+  FindPropertyGroupsDocument,
+  FindSubjectsDocument
+} from "../generated/graphql";
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
@@ -144,7 +154,7 @@ export const IDSExportView: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   // DataCat
-  const { data, loading, error, refetch: refetchPropertyTree } = usePropertyTreeQuery({
+  const { data, loading, error, refetch: refetchPropertyTree } = useQuery(PropertyTreeDocument, {
     fetchPolicy: "cache-first",
     nextFetchPolicy: "cache-first",
   });
@@ -155,7 +165,7 @@ export const IDSExportView: React.FC = () => {
     loading: dictionariesLoading,
     error: dictionariesError,
     refetch: refetchDictionaries,
-  } = useFindDictionariesQuery({
+  } = useQuery(FindDictionariesDocument, {
     variables: {
       input: {
         pageSize: 1000,
@@ -170,7 +180,7 @@ export const IDSExportView: React.FC = () => {
     loading: classesLoading,
     error: classesError,
     refetch: refetchClasses,
-  } = useFindSubjectsWithDictAndThemesQuery({
+  } = useQuery(FindSubjectsWithDictAndThemesDocument, {
     variables: {
       input: {
         tagged: ClassEntity.tags, // nur Klassen
@@ -186,7 +196,7 @@ export const IDSExportView: React.FC = () => {
     loading: allItemsLoading,
     error: allItemsError,
     refetch: refetchAllItems,
-  } = useFindPropertyGroupsQuery({
+  } = useQuery(FindPropertyGroupsDocument, {
     variables: {
       input: {
         tagged: PropertyGroupEntity.tags, // PropertyGroup Tag verwenden
@@ -199,7 +209,7 @@ export const IDSExportView: React.FC = () => {
   });
 
   // Tags Query für Filterung
-  const { data: tagsData, refetch: refetchTags } = useFindTagsQuery({
+  const { data: tagsData, refetch: refetchTags } = useQuery(FindTagsDocument, {
     variables: { pageSize: 100 },
     fetchPolicy: "cache-first",
   });
@@ -209,7 +219,7 @@ export const IDSExportView: React.FC = () => {
     data: allSubjectsData, 
     loading: allSubjectsLoading,
     refetch: refetchAllSubjects 
-  } = useFindSubjectsQuery({
+  } = useQuery(FindSubjectsDocument, {
     variables: {
       input: {
         tagged: ThemeEntity.tags, // Thema-Tag
@@ -1041,7 +1051,7 @@ export const IDSExportView: React.FC = () => {
       // MinIO Upload
       try {
         const uploader = createMinIOUploader();
-        await uploader.uploadIDSFile(filename, xml, info);
+        await uploader.uploadIDSFile(filename, xml);
         
         enqueueSnackbar(`IDS-Datei erfolgreich zu MinIO hochgeladen: ${filename}`, { variant: "success" });
       } catch (configError) {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useFindTagsQuery, useCreateTagMutation } from "../generated/types";
+import { useQuery, useMutation } from "@apollo/client/react";
+import { FindTagsDocument, CreateTagDocument } from "../generated/graphql";
 import {
   Chip,
   Typography,
@@ -66,10 +67,10 @@ const ButtonContainer = styled('div')(({ theme }) => ({
 
 const TagView: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar();
-  const { data, loading, error, refetch } = useFindTagsQuery({
+  const { data, loading, error, refetch } = useQuery(FindTagsDocument, {
     variables: { pageSize: 100 },
   });
-  const [createTag] = useCreateTagMutation();
+  const [createTag] = useMutation(CreateTagDocument);
   const [newTagName, setNewTagName] = useState("");
   const [tags, setTags] = useState<string[]>([]);
 

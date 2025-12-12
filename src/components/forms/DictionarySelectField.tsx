@@ -1,6 +1,7 @@
 import React, { FC, useState } from "react";
 import { Autocomplete } from "@mui/material";
-import { DictionaryPropsFragment, Maybe, useFindDictionariesQuery } from "../../generated/types";
+import { useQuery } from "@apollo/client/react";
+import { DictionaryPropsFragment, Maybe, FindDictionariesDocument } from "../../generated/graphql";
 import { TextField, TextFieldProps } from "@mui/material";
 import { defaultFormFieldOptions } from "../../hooks/useFormStyles";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -21,7 +22,7 @@ const DictionarySelectField: FC<DictionarySelectFieldProps> = (props) => {
     } = props;
     const [open, setOpen] = React.useState(false);
     const [query, setQuery] = useState('');
-    const { loading, data, error } = useFindDictionariesQuery({
+    const { loading, data, error } = useQuery(FindDictionariesDocument, {
         fetchPolicy: "cache-and-network",
         variables: {
             input: { query, pageSize: 500 }

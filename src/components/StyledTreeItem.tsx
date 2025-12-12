@@ -3,7 +3,7 @@ import { TreeItem, TreeItemProps, treeItemClasses } from "@mui/x-tree-view";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
-import { ItemPropsFragment } from "../generated/types";
+import { ItemPropsFragment } from "../generated/graphql";
 import { getEntityType } from "../domain";
 
 // Replace makeStyles with styled components

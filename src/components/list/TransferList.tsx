@@ -1,4 +1,4 @@
-import {SearchInput} from "../../generated/types";
+import {SearchInput} from "../../generated/graphql";
 import { styled } from "@mui/material/styles";
 import React, {useState} from "react";
 import { Box, Stack } from "@mui/material";
@@ -39,6 +39,7 @@ type TransferListProps = {
     maxVisibleItems?: number; // Maximale Anzahl sichtbarer Items in der Relationen-Liste
     showDictionaryFilter?: boolean;
     selectedDictionaryId?: string | null;
+    sortAlphabetically?: boolean; // Sortierung nach Name (default: true)
     onDictionaryFilterChange?: (dictionaryId: string | null) => void;
     onSelect?(item: CatalogRecord): void;
     onAdd?(item: CatalogRecord): void;
@@ -48,6 +49,7 @@ type TransferListProps = {
 export default function TransferList(props: TransferListProps) {
     const {
         loading,
+        sortAlphabetically = true,
         items,
         enabled,
         searchInput,
@@ -63,10 +65,24 @@ export default function TransferList(props: TransferListProps) {
 
     const [searchTerm, setSearchTerm] = useState("");
 
-    // Berechne die Höhe für die Relationen-Liste basierend auf maxVisibleItems
-    // Höhe = (Anzahl sichtbarer Items * Zeilenhöhe) + TextField-Höhe (ca. 56px)
-    const calculatedHeight = (maxVisibleItems * ITEM_ROW_SIZE) + 56;
-    const relationListHeight = height ?? calculatedHeight;
+    // Berechne die feste maximale Höhe für die Liste
+    const textFieldHeight = 56; // TextField mit Margin
+    const maxHeight = (maxVisibleItems * ITEM_ROW_SIZE) + textFieldHeight;
+    
+    // Im Bearbeitungsmodus: volle Höhe; Im Lesemodus: nur so groß wie nötig
+    let relationListHeight: number | undefined;
+    let useFixedHeight: boolean;
+    
+    if (enabled) {
+        // Bearbeitungsmodus: Verwende feste maximale Höhe
+        relationListHeight = height ?? maxHeight;
+        useFixedHeight = true;
+    } else {
+        // Lesemodus: Passe Höhe an Anzahl der Items an
+        const actualItems = Math.min(items.length, maxVisibleItems);
+        relationListHeight = height ?? ((actualItems * ITEM_ROW_SIZE) + textFieldHeight);
+        useFixedHeight = items.length > maxVisibleItems;
+    }
 
     return (
         <Stack 
@@ -84,9 +100,9 @@ export default function TransferList(props: TransferListProps) {
                 <ListPaper variant="outlined">
                     <FilterableList
                         height={relationListHeight}
-                        fixedHeight={true}
+                        fixedHeight={useFixedHeight}
                         loading={loading}
-                        items={[...items].sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "") || a.id.localeCompare(b.id))}
+                        items={sortAlphabetically ? [...items].sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "") || a.id.localeCompare(b.id)) : items}
                         onSelect={onSelect}
                         onRemove={enabled && onRemove ? onRemove : undefined}
                     />
@@ -101,7 +117,8 @@ export default function TransferList(props: TransferListProps) {
                 }}>
                     <SearchBox variant="outlined">
                         <SearchList
-                            height={height}
+                            height={relationListHeight}
+                            fixedHeight={useFixedHeight}
                             disabledItems={items.map(x => x.id)}
                             searchTerm={searchTerm}
                             searchInput={searchInput}

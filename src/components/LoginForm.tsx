@@ -5,7 +5,8 @@ import TextField from "@mui/material/TextField";
 import { Button, IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Alert } from '@mui/material';
-import { LoginInput, useLoginFormMutation } from "../generated/types";
+import { useMutation } from "@apollo/client/react";
+import { LoginInput, LoginFormDocument } from "../generated/graphql";
 import { JwtToken } from "../providers/AuthProvider";
 import { T } from "@tolgee/react";
 
@@ -31,7 +32,7 @@ const FormContainer = styled('form')(({ theme }) => ({
 export default function LoginForm(props: LoginFormProps) {
   const { onLogin } = props;
   const [showPassword, setShowPassword] = useState(false);
-  const [login, { error }] = useLoginFormMutation({
+  const [login, { error }] = useMutation(LoginFormDocument, {
     errorPolicy: "all",
     onCompleted: (result) => {
       result.token && onLogin(result.token);

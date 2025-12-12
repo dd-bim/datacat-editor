@@ -1,4 +1,5 @@
-import { useDeleteEntryMutation } from '../generated/types';
+import { useMutation } from '@apollo/client/react';
+import { DeleteEntryDocument } from '../generated/graphql';
 import { ApolloCache } from '@apollo/client';
 
 interface UseDeleteEntryOptions {
@@ -15,7 +16,7 @@ interface UseDeleteEntryOptions {
  * This eliminates the repetitive cache.evict and cache.modify logic across all forms.
  */
 export const useDeleteEntry = ({ cacheTypename, id, additionalFields = [] }: UseDeleteEntryOptions) => {
-  const [deleteEntryMutation, mutationResult] = useDeleteEntryMutation({
+  const [deleteEntryMutation, mutationResult] = useMutation(DeleteEntryDocument, {
     update: (cache: ApolloCache) => {
       // Evict the specific entry from the cache
       cache.evict({ id: `${cacheTypename}:${id}` });

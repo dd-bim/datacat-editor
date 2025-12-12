@@ -112,7 +112,7 @@ export default function Layout() {
       path: "/export", 
       element: (
         <React.Suspense fallback={<LoadingSpinner />}>
-          <ExportView />
+          <ExportView/>
           <OntologyExportView/>
         </React.Suspense>
       )

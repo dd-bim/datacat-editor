@@ -1,10 +1,11 @@
 import FormSet, { FormSetTitle } from "./FormSet";
 import { FC } from "react";
 import { useEffect } from "react";
+import { useMutation } from "@apollo/client/react";
 import {
-  useUpdateDataTypeMutation,
-  DataTypeEnum
-} from "../../generated/types";
+  UpdateDataTypeDocument,
+  XtdDataTypeEnum
+} from "../../generated/graphql";
 import { useSnackbar } from "notistack";
 import { styled } from "@mui/material/styles";
 import { T } from "@tolgee/react";
@@ -13,11 +14,11 @@ import { Controller, useForm } from "react-hook-form";
 
 type DataTypeFormSetProps = {
   catalogEntryId: string;
-  dataType: DataTypeEnum | null | undefined;
+  dataType: XtdDataTypeEnum | null | undefined;
 };
 
 type DataTypeFormValues = {
-  selectedDataType: DataTypeEnum | "";
+  selectedDataType: XtdDataTypeEnum | "";
 };
 
 
@@ -44,7 +45,7 @@ const DataTypeFormSet: FC<DataTypeFormSetProps> = (props) => {
   const { catalogEntryId, dataType } = props;
   const { enqueueSnackbar } = useSnackbar();
 
-  const [setDataType] = useUpdateDataTypeMutation();
+  const [setDataType] = useMutation(UpdateDataTypeDocument);
   const {
     control,
     reset
@@ -67,7 +68,7 @@ const DataTypeFormSet: FC<DataTypeFormSetProps> = (props) => {
     if (value && value !== "" && dataTypeOptions.some(opt => opt.value === value)) {
       await setDataType({
         variables: {
-          input: { catalogEntryId, dataType: value as DataTypeEnum },
+          input: { catalogEntryId, dataType: value as XtdDataTypeEnum },
         },
       });
       enqueueSnackbar("Datentyp aktualisiert.");

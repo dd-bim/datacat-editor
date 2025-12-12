@@ -8,7 +8,7 @@ import PropertyIcon from "@mui/icons-material/Palette";
 import ValueIcon from "@mui/icons-material/LocalOffer";
 import RelationshipIcon from '@mui/icons-material/SettingsEthernet';
 import DataTemplateIcon from '@mui/icons-material/DynamicFeed';
-import { CatalogRecordType } from "./generated/types";
+import { CatalogRecordType } from "./generated/graphql";
 import UnitIcon from '@mui/icons-material/AcUnit';
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import DictionaryIcon from '@mui/icons-material/ImportContacts';

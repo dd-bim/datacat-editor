@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { useFindCountriesQuery, useFindLanguagesQuery } from '../generated/types';
+import { useQuery } from '@apollo/client/react';
+import { FindCountriesDocument, FindLanguagesDocument } from '../generated/graphql';
 
 interface DataCacheContextValue {
     countries: {
@@ -37,7 +38,7 @@ export const DataCacheProvider: React.FC<DataCacheProviderProps> = ({
         data: countriesData, 
         loading: countriesLoading, 
         error: countriesError 
-    } = useFindCountriesQuery({
+    } = useQuery(FindCountriesDocument, {
         variables: {
             input: { query: '', pageSize: 250 }
         },
@@ -51,7 +52,7 @@ export const DataCacheProvider: React.FC<DataCacheProviderProps> = ({
         data: languagesData, 
         loading: languagesLoading, 
         error: languagesError 
-    } = useFindLanguagesQuery({
+    } = useQuery(FindLanguagesDocument, {
         variables: {
             input: { query: '', pageSize: 100 }
         },

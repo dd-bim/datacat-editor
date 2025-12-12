@@ -7,9 +7,10 @@ import { styled } from "@mui/material/styles";
 import InlineButtonGroup from "./InlineButtonGroup";
 import { ClickAwayListener } from "@mui/material";
 import { T } from "@tolgee/react";
+import { useMutation } from "@apollo/client/react";
 import {
-  useUpdateNominalValueMutation,
-} from "../../generated/types";
+  UpdateNominalValueDocument,
+} from "../../generated/graphql";
 import {useSnackbar} from "notistack";
 
 // Replace makeStyles with styled component
@@ -55,7 +56,7 @@ const NominalValueForm = (props: NominalValueFormProps) => {
     },
   });
   const { isDirty } = formState;
-  const [updateNominalValue] = useUpdateNominalValueMutation();
+  const [updateNominalValue] = useMutation(UpdateNominalValueDocument);
 
   const onEdit = () => {
     setIsEditMode(true);

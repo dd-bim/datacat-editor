@@ -1,5 +1,6 @@
 import React, { FC, useState, useEffect } from "react";
-import { CatalogRecordType, useCreateEntryMutation, useCreateRelationshipMutation, RelationshipRecordType } from "../generated/types";
+import { useMutation } from "@apollo/client/react";
+import { CatalogRecordType, CreateEntryDocument, CreateRelationshipDocument, RelationshipRecordType } from "../generated/graphql";
 import { ButtonGroup, ButtonGroupProps, Dialog } from "@mui/material";
 import Button from "@mui/material/Button";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -65,7 +66,7 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
     };
   }, [tolgee]);
 
-  const [create] = useCreateEntryMutation({
+  const [create] = useMutation(CreateEntryDocument, {
     update: (cache, { data }) => {
       // Optimized cache updates - only invalidate specific fields
       const newEntry = data?.createCatalogEntry?.catalogEntry;
@@ -80,7 +81,7 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
     errorPolicy: 'all' // Continue execution even if there are errors
   });
 
-  const [createRelationship] = useCreateRelationshipMutation();
+  const [createRelationship] = useMutation(CreateRelationshipDocument);
   const [lastUsedOption, setLastUsedOption] = React.useState(ClassEntity);
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);

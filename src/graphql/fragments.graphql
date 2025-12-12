@@ -1,363 +1,708 @@
+# ============================================
+# Base Fragments
+# ============================================
+
 fragment UserProfile on Profile {
-    username
-    firstName
-    lastName
-    email
-    organization
+  username
+  firstName
+  lastName
+  email
+  organization
 }
 
 fragment PageProps on PageInfo {
-    totalPages
-    pageNumber
-    hasNext
-    hasPrevious
-}
-
-fragment LanguageProps on XtdLanguage {
-    id
-    code
-    englishName
-    nativeName
-}
-
-fragment TranslationProps on XtdMultiLanguageText {
-    id
-    texts {
-        text
-        language {
-            ...LanguageProps
-        }
-    }
+  totalPages
+  pageNumber
+  hasNext
+  hasPrevious
 }
 
 fragment TagProps on Tag {
+  id
+  name
+}
+
+fragment LanguageProps on XtdLanguage {
+  id
+  code
+  englishName
+  nativeName
+}
+
+fragment TranslationProps on XtdMultiLanguageText {
+  id
+  texts {
     id
-    name
-}
-
-fragment SearchResultProps on XtdObject {
-    __typename
-    id
-    recordType
-    name(input: { languageTags: ["de-DE", "en-US"] })
-    # description(input: { languageTags: ["de-DE", "en-US"] })
-    comment(input: { languageTags: ["de-DE", "en-US"] })
-    tags {
-        ...TagProps
+    text
+    language {
+      ...LanguageProps
     }
-    dictionary {
-        id
-        name {
-            ...TranslationProps
-        }
-    }
+  }
 }
 
-fragment MetaProps on XtdRoot {
-    created
-    createdBy
-    lastModified
-    lastModifiedBy
+#
+# Text Props - einzelne Übersetzung innerhalb einer MultiLanguageText
+fragment TextProps on XtdText {
+  id
+  text
+  language {
+    ...LanguageProps
+  }
 }
 
+#
+# Item Props for hierarchy/tree views
 fragment ItemProps on XtdObject {
-    __typename
-    id
-    recordType
-    name(input: { languageTags: ["de-DE", "en-US"] })
-    tags {
-        id
-        name
-    }
+  __typename
+  id
+  recordType
+  name(input: { languageTags: ["de-DE", "en-US"] })
+  tags {
+    ...TagProps
+  }
 }
 
-fragment ObjectProps on XtdObject {
-    __typename
-    id
-    recordType
-    majorVersion
-    minorVersion
-    dateOfCreation
-    status
-    name(input: { languageTags: ["de-DE", "en-US"] })
-    names {
-        ...TranslationProps
-    }
-    comment(input: { languageTags: ["de-DE", "en-US"] })
-    comments {
-        ...TranslationProps
-    }
-    tags {
-        ...TagProps
-    }
-    dictionary {
-        id
-        name(input: { languageTags: ["de-DE", "en-US"] })
-    }
-    replacedObjects {
-        ...ObjectProps
-    }
-    replacingObjects {
-        ...ObjectProps
-    }
-    deprecationExplanation {
-        ...TranslationProps
-    }
+#
+# Country detail fragment
+fragment CountryDetailProps on XtdCountry {
+  id
+  code
+  name(input: { languageTags: ["de-DE", "en-US"] })
+  names {
+    ...TranslationProps
+  }
 }
 
-fragment ObjectDetailProps on XtdObject {
-    ...MetaProps
-    ...ObjectProps
-}
-
-fragment ConceptProps on XtdConcept {
-    ...ObjectProps
-    description(input: { languageTags: ["de-DE", "en-US"] })
-    descriptions {
-        ...TranslationProps
-    }
-    definition {
-        ...TranslationProps
-    }
-    examples {
-        ...TranslationProps
-    }
-    languageOfCreator {
-        ...LanguageProps
-    }
-    referenceDocuments {
-        ...ExternalDocumentProps
-    }
-    similarTo {
-        ...ConceptProps
-    }
-    countryOfOrigin {
-        code
-        ...ObjectProps
-    }
-}
-
-fragment ConceptDetailProps on XtdConcept {
-    ...MetaProps
-    ...ConceptProps
-}
-
-fragment ExternalDocumentProps on XtdExternalDocument {
-    ...ConceptProps
-    uri
-    author
-    isbn
-    publisher
-    dateOfPublication
-    languages {
-        ...LanguageProps
-    }
-}
-
-fragment ValueProps on XtdValue {
-    ...ObjectProps
-    nominalValue
-}
-
-fragment ExternalDocumentDetailProps on XtdExternalDocument {
-    ...MetaProps
-    ...ExternalDocumentProps
-    documents {
-            ...ConceptProps
-    }
-}
-
-fragment SubjectDetailProps on XtdSubject {
-    ...ConceptDetailProps
-    properties {
-        ...ConceptDetailProps
-        possibleValues {
-            ...ConceptDetailProps
-            values {
-                id
-                order
-                orderedValue {
-                    ...ValueProps
-                }
-            }
-        }
-    }
-    connectedSubjects {
-        ...RelationshipToSubjectProps
-    }
-}
-
-fragment PropertyDetailProps on XtdProperty {
-    ...ConceptDetailProps
-    dataType
-    dataFormat
-    connectedProperties {
-        ...RelationshipToPropertyProps
-    }
-    symbols {
-        ...SymbolProps
-    }
-    boundaryValues {
-        ...IntervalProps
-    }
-    dimension {
-        ...DimensionProps
-    }
-    quatityKinds {
-        ...QuantityKindsProps
-    }
-    units {
-        ...UnitDetailProps  
-    }
-    possibleValues {
-        ...ConceptDetailProps
-        values {
-            id
-            order
-            orderedValue {
-                ...ValueProps
-            }
-        }
-    }
-    subjects {
-        ...SubjectDetailProps
-    }
-}
-
-fragment ValueListDetailProps on XtdValueList {
-    ...ObjectDetailProps
-    properties {
-        ...PropertyDetailProps
-    }
-    unit {
-        ...UnitDetailProps
-    }
-    values {
-        id
-        order
-        orderedValue {
-            ...ValueProps
-        }
-    }
-}
-
-fragment UnitDetailProps on XtdUnit {
-    ...ConceptDetailProps
-    scale
-    base
-    symbol {
-        ...TranslationProps
-    }
-    offset {
-        ...RationalProps
-    }
-    coefficient {
-        ...RationalProps
-    }
-    dimension {
-        ...DimensionProps
-    }
-    properties {
-        ...PropertyDetailProps
-    }
-}
-
-fragment ValueDetailProps on XtdValue {
-    ...MetaProps
-    ...ValueProps
-}
-
-fragment SymbolProps on XtdSymbol {
-    subject {
-        ...SubjectDetailProps
-    }
-    symbol {
-        text
-        language {
-            ...LanguageProps
-        }
-    }
-}
-
-fragment DimensionProps on XtdDimension {
-    ...ConceptProps
-    amountOfSubstanceExponent {
-    ...RationalProps
-    }
-    luminousIntensityExponent{
-    ...RationalProps
-    }
-    lengthExponent {
-    ...RationalProps
-    }
-    massExponent {
-    ...RationalProps
-    }
-    timeExponent {
-    ...RationalProps
-    }
-    electricCurrentExponent {
-    ...RationalProps
-    }
-    thermodynamicTemperatureExponent {
-    ...RationalProps
-    }   
+fragment RelationsProps on XtdObject {
+  id
+  name(input: { languageTags: ["de", "en"] })
+  tags {
+    ...TagProps
+  }
 }
 
 fragment RationalProps on XtdRational {
+  id
+  numerator
+  denominator
+}
+
+# ============================================
+# Search Result Fragments
+# ============================================
+
+fragment SearchResultProps on XtdObject {
+  __typename
+  id
+  recordType
+  name(input: { languageTags: ["de-DE", "en-US"] })
+  names {
+    ...TranslationProps
+  }
+  comment(input: { languageTags: ["de-DE", "en-US"] })
+  tags {
+    ...TagProps
+  }
+  # dictionary {
+  #   id
+  #   name {
+  #     ...TranslationProps
+  #   }
+  # }
+}
+
+fragment SearchResultDictionaryProps on XtdDictionary {
+  __typename
+  id
+  recordType
+  dname: name {
+    texts {
+      text
+    }
+  }
+  tags {
+    ...TagProps
+  }
+}
+
+# ============================================
+# Meta and Object Fragments
+# ============================================
+
+fragment MetaProps on XtdRoot {
+  created
+  createdBy
+  lastModified
+  lastModifiedBy
+}
+
+fragment ObjectProps on XtdObject {
+  ...MetaProps
+  __typename
+  id
+  recordType
+  majorVersion
+  minorVersion
+  dateOfCreation
+  status
+  name(input: { languageTags: ["de-DE", "en-US"] })
+  names {
+    ...TranslationProps
+  }
+  comment(input: { languageTags: ["de-DE", "en-US"] })
+  comments {
+    ...TranslationProps
+  }
+  tags {
+    ...TagProps
+  }
+  dictionary {
     id
-    numerator
-    denominator
+    name {
+      ...TranslationProps
+    }
+  }
+  replacedObjects {
+    id
+  }
+  replacingObjects {
+    id
+  }
+  deprecationExplanation {
+    ...TranslationProps
+  }
+}
+
+# ============================================
+# External Document Fragments
+# ============================================
+
+fragment ExternalDocumentProps on XtdExternalDocument {
+  ...ObjectProps
+  documentUri
+  author
+  isbn
+  publisher
+  dateOfPublication
+  languages {
+    ...LanguageProps
+  }
+}
+
+fragment ExternalDocumentDetailProps on XtdExternalDocument {
+  ...ExternalDocumentProps
+  ...ConceptProps
+  documents {
+    ...RelationsProps
+  }
+}
+
+# ============================================
+# Concept Fragments
+# ============================================
+
+fragment ConceptProps on XtdConcept {
+  ...ObjectProps
+  description(input: { languageTags: ["de-DE", "en-US"] })
+  descriptions {
+    ...TranslationProps
+  }
+  definition {
+    ...TranslationProps
+  }
+  examples {
+    ...TranslationProps
+  }
+  languageOfCreator {
+    ...LanguageProps
+  }
+  referenceDocuments {
+    ...RelationsProps
+  }
+  similarTo {
+    ...RelationsProps
+  }
+  countryOfOrigin {
+    code
+    ...RelationsProps
+  }
+}
+
+# ============================================
+# Value Fragments
+# ============================================
+
+fragment ValueProps on XtdValue {
+  ...ObjectProps
+  nominalValue
+}
+
+fragment ValueDetailProps on XtdValue {
+  ...ValueProps
+  orderedValues {
+    ...RelationsProps
+    valueLists {
+      ...RelationsProps
+    }
+  }
+}
+
+# ============================================
+# Property Fragments
+# ============================================
+
+fragment PropertyProps on XtdProperty {
+  ...ConceptProps
+  dataType
+  dataFormat
+}
+
+fragment PropertyDetailProps on XtdProperty {
+  ...PropertyProps
+  connectedProperties {
+    ...RelationshipToPropertyDetailProps
+  }
+  connectingProperties {
+    ...RelationshipToPropertyDetailProps
+  }
+  symbols {
+    ...SymbolProps
+  }
+  boundaryValues {
+    ...IntervalProps
+  }
+  dimension {
+    ...DimensionProps
+  }
+  quantityKinds {
+    ...QuantityKindProps
+  }
+  units {
+    ...RelationsProps
+  }
+  possibleValues {
+    ...RelationsProps
+  }
+  subjects {
+    ...SubjectDetailProps
+  }
+}
+
+# ============================================
+# Subject Fragments
+# ============================================
+
+fragment SubjectDetailProps on XtdSubject {
+  ...ConceptProps
+  properties {
+    ...PropertyProps
+    possibleValues {
+      id
+      name(input: { languageTags: ["de", "en"] })
+    }
+  }
+  connectedSubjects {
+    id
+    relationshipType {
+      name
+      kind
+    }
+    targetSubjects {
+      id
+      name(input: { languageTags: ["de", "en"] })
+      tags {
+        id
+        name
+      }
+    }
+  }
+  connectingSubjects {
+    id
+    relationshipType {
+      name
+      kind
+    }
+    connectingSubject {
+      id
+      name(input: { languageTags: ["de", "en"] })
+      tags {
+        id
+        name
+      }
+    }
+  }
+}
+
+fragment SubjectWithPropsAndListsProps on XtdSubject {
+  ...RelationsProps
+  names {
+    ...TranslationProps
+  }
+  properties {
+    ...RelationsProps
+    names {
+      ...TranslationProps
+    }
+    possibleValues {
+      ...RelationsProps
+      names {
+        ...TranslationProps
+      }
+    }
+  }
+}
+
+# Minimales Fragment für Subject-Relationen (für TransferListViewRelationshipToSubject)
+fragment SubjectRelationsMinimalProps on XtdSubject {
+  ...ConceptProps
+  properties {
+    ...PropertyProps
+    possibleValues {
+      id
+      name(input: { languageTags: ["de", "en"] })
+    }
+  }
+  connectedSubjects {
+    id
+    relationshipType {
+      name
+    }
+    targetSubjects {
+      id
+      name(input: { languageTags: ["de", "en"] })
+      tags {
+        id
+        name
+      }
+    }
+  }
+  connectingSubjects {
+    id
+    relationshipType {
+      name
+    }
+    connectingSubject {
+      id
+      name(input: { languageTags: ["de", "en"] })
+      tags {
+        id
+        name
+      }
+    }
+  }
+}
+
+# ============================================
+# Unit Fragments
+# ============================================
+
+fragment UnitProps on XtdUnit {
+  ...ConceptProps
+  scale
+  base
+}
+
+fragment UnitDetailProps on XtdUnit {
+  ...UnitProps
+  symbol {
+    ...TranslationProps
+  }
+  offset {
+    ...RationalProps
+  }
+  coefficient {
+    ...RationalProps
+  }
+  dimension {
+    ...DimensionProps
+  }
+  properties {
+    ...RelationsProps
+  }
+  valueLists {
+    ...RelationsProps
+  }
+}
+
+# ============================================
+# ValueList Fragments
+# ============================================
+
+fragment ValueListProps on XtdValueList {
+  ...ConceptProps
+}
+
+fragment ValueListDetailProps on XtdValueList {
+  ...ValueListProps
+  properties {
+    ...PropertyProps
+  }
+  unit {
+    ...UnitProps
+  }
+  language {
+    ...LanguageProps
+  }
+}
+
+fragment ValueListWithValuesProps on XtdValueList {
+  id
+  name(input: { languageTags: ["de", "en"] })
+  names {
+    ...TranslationProps
+  }
+  values {
+    nodes {
+      order
+      orderedValue {
+        id
+        name(input: { languageTags: ["de", "en"] })
+        names {
+          ...TranslationProps
+        }
+      }
+    }
+  }
+}
+
+# ============================================
+# Dimension Fragments
+# ============================================
+
+fragment DimensionProps on XtdDimension {
+  ...ConceptProps
+  amountOfSubstanceExponent {
+    ...RationalProps
+  }
+  luminousIntensityExponent {
+    ...RationalProps
+  }
+  lengthExponent {
+    ...RationalProps
+  }
+  massExponent {
+    ...RationalProps
+  }
+  timeExponent {
+    ...RationalProps
+  }
+  electricCurrentExponent {
+    ...RationalProps
+  }
+  thermodynamicTemperatureExponent {
+    ...RationalProps
+  }
+}
+
+# ============================================
+# Symbol and Interval Fragments
+# ============================================
+
+fragment SymbolProps on XtdSymbol {
+  subject {
+    ...RelationsProps
+  }
+  symbol {
+    text
+    language {
+      ...LanguageProps
+    }
+  }
 }
 
 fragment IntervalProps on XtdInterval {
-    id
-    minimumIncluded
-    maximumIncluded
-    minimum {
-        ...ValueListDetailProps
-    }
-    maximum {
-        ...ValueListDetailProps
-    }
+  id
+  minimumIncluded
+  maximumIncluded
+  minimum {
+    ...RelationsProps
+  }
+  maximum {
+    ...RelationsProps
+  }
 }
 
-fragment QuantityKindsProps on XtdQuantityKind {
-    ...ConceptProps
-    units {
-        ...UnitProps
-    }
-    dimension {
-        ...DimensionProps
-    }
-}
+# ============================================
+# Relationship Fragments
+# ============================================
 
 fragment RelationshipToSubjectProps on XtdRelationshipToSubject {
-    ...ObjectProps
+  ...MetaProps
+  __typename
+  id
+  majorVersion
+  minorVersion
+  dateOfCreation
+  status
+  name(input: { languageTags: ["de-DE", "en-US"] })
+  names {
+    ...TranslationProps
+  }
+  comment(input: { languageTags: ["de-DE", "en-US"] })
+  comments {
+    ...TranslationProps
+  }
+  tags {
+    ...TagProps
+  }
+  dictionary {
+    id
+    name {
+      ...TranslationProps
+    }
+  }
 }
 
 fragment RelationshipToSubjectDetailProps on XtdRelationshipToSubject {
-    ...RelationshipToSubjectProps
-    scopeSubjects {
-        ...SubjectDetailProps
-    }
-    targetSubjects {
-        ...SubjectDetailProps
-    }
-    relationshipType {
-        kind
-    }
+  ...RelationshipToSubjectProps
+  scopeSubjects {
+    ...RelationsProps
+  }
+  targetSubjects {
+    ...RelationsProps
+  }
+  relationshipType {
+    name
+    kind
+  }
+  connectingSubject {
+    ...RelationsProps
+  }
 }
 
 fragment RelationshipToPropertyProps on XtdRelationshipToProperty {
-    ...ConceptProps
+  ...MetaProps
+  __typename
+  id
+  majorVersion
+  minorVersion
+  dateOfCreation
+  status
+  name(input: { languageTags: ["de-DE", "en-US"] })
+  names {
+    ...TranslationProps
+  }
+  comment(input: { languageTags: ["de-DE", "en-US"] })
+  comments {
+    ...TranslationProps
+  }
+  tags {
+    ...TagProps
+  }
+  dictionary {
+    id
+    name {
+      ...TranslationProps
+    }
+  }
 }
 
 fragment RelationshipToPropertyDetailProps on XtdRelationshipToProperty {
-    ...RelationshipToPropertyProps
-    relationshipType
-    targetProperties {
-        ...PropertyDetailProps
-    }
+  ...RelationshipToPropertyProps
+  relationshipType
+  targetProperties {
+    ...PropertyProps
+  }
+  connectingProperty {
+    ...PropertyProps
+  }
 }
 
+fragment RelationshipTypeProps on XtdRelationshipType {
+  name
+  kind
+}
+
+# ============================================
+# QuantityKind Fragment
+# ============================================
+
+fragment QuantityKindProps on XtdQuantityKind {
+  ...ConceptProps
+  units {
+    ...RelationsProps
+  }
+  dimension {
+    ...DimensionProps
+  }
+}
+
+# ============================================
+# Verification Fragment
+# ============================================
+
+fragment VerificationProps on XtdObject {
+  __typename
+  id
+  name
+  tags {
+    ...TagProps
+  }
+  recordType
+}
+
+# ============================================
+# Dictionary Fragment
+# ============================================
+
+#
+fragment DictionaryProps on XtdDictionary {
+  id
+  recordType
+  name {
+    ...TranslationProps
+  }
+  tags {
+    ...TagProps
+  }
+}
+
+# ============================================
+# Export Fragments
+# ============================================
+
+fragment ExportCatalogRecord on ExportResult {
+  id
+  type
+  tags
+  name
+  name_en
+  description
+  majorVersion
+  minorVersion
+  created
+  createdBy
+  lastModified
+  lastModifiedBy
+  status
+  languageOfCreator
+  countryOfOrigin
+  deprecationExplanation
+  languages
+  examples
+  dataType
+  dataFormat
+  scale
+  base
+  uri
+  author
+  publisher
+  isbn
+  dateOfPublication
+}
+
+fragment ExportCatalogRecordRelationship on ExportRelationshipResult {
+  entity1
+  relationship
+  entity2
+}
+
+# ============================================
+# Alias Fragments (für Kompatibilität)
+# ============================================
+
+#
+# Alias für MultiLanguageTextPropsFragment -> TranslationPropsFragment
+fragment MultiLanguageTextProps on XtdMultiLanguageText {
+  ...TranslationProps
+}

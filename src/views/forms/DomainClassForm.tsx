@@ -1,9 +1,17 @@
+/**
+ * DomainClassForm - Formular für Domänenklassen
+ * 
+ * Zeigt die Relationen als kompakte Chips in Kacheln an.
+ * Für die Legacy-Version mit TransferList-Ansichten siehe deprecated/DomainClassFormLegacy.tsx
+ */
+
+import { useQuery } from "@apollo/client/react";
 import {
-  RelationshipKindEnum,
+  XtdRelationshipKindEnum,
   RelationshipRecordType,
   SubjectDetailPropsFragment,
-  useGetSubjectEntryQuery,
-} from "../../generated/types";
+  GetSubjectEntryDocument,
+} from "../../generated/graphql";
 import { useDeleteEntry } from "../../hooks/useDeleteEntry";
 import { Typography, Button, Box } from "@mui/material";
 import { useSnackbar } from "notistack";
@@ -17,6 +25,8 @@ import { PropertyEntity, DocumentEntity, PropertyGroupEntity, ClassEntity, Value
 import FormView, { FormProps } from "./FormView";
 import TransferListView from "../TransferListView";
 import TransferListViewRelationshipToSubject from "../TransferListViewRelationshipToSubject";
+import RelationGraphView from "../RelationGraphView";
+import RelationChipsViewEditable from "../RelationChipsViewEditable";
 import RelatingRecordsFormSet from "../../components/forms/RelatingRecordsFormSet";
 import { T } from "@tolgee/react";
 import StatusFormSet from "../../components/forms/StatusFormSet";
@@ -25,6 +35,7 @@ import ExampleFormSet from "../../components/forms/ExampleFormSet";
 import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
 import { useNavigate } from "react-router-dom";
 import DictionaryFormSet from "../../components/forms/DictionaryFormSet";
+import InferredPropertiesView from "../InferredPropertiesView";
 
 export default function DomainClassForm(
   props: FormProps<SubjectDetailPropsFragment>
@@ -34,7 +45,7 @@ export default function DomainClassForm(
   const navigate = useNavigate();
 
   // fetch subjects
-  const { loading, error, data, refetch } = useGetSubjectEntryQuery({
+  const { loading, error, data, refetch } = useQuery(GetSubjectEntryDocument, {
     fetchPolicy: "network-only",
     variables: { id },
   });
@@ -51,12 +62,15 @@ export default function DomainClassForm(
         <T keyName={"class.loading"} />
       </Typography>
     );
-  if (error || !entry)
+  if (error || !entry) {
+    console.error("DomainClassForm Error:", error);
+    console.log("DomainClassForm Data:", data);
     return (
       <Typography>
         <T keyName={"error.error"} />
       </Typography>
     );
+  }
 
   const handleOnDelete = async () => {
     await deleteEntry({ variables: { id } });
@@ -74,16 +88,20 @@ export default function DomainClassForm(
   };
 
   const relatedRelations = entry.connectedSubjects ?? [];
-  const allTargetSubjects = relatedRelations.flatMap(rel => rel.targetSubjects ?? []);
+  // Filter nur hasPropertyGroup Relationen
+  const hasPropertyGroupRelation = relatedRelations.find(rel => 
+    (rel as any).relationshipType?.name === "hasPropertyGroup"
+  );
+  const allTargetSubjects = hasPropertyGroupRelation?.targetSubjects ?? [];
   const relatedPropertyGroups = {
-    relId: relatedRelations[0]?.id ?? null,
+    relId: hasPropertyGroupRelation?.id ?? null,
     targetSubjects: allTargetSubjects,
-    relationshipType: RelationshipKindEnum.XTD_INSTANCE_LEVEL
+    relationshipType: XtdRelationshipKindEnum.XtdInstanceLevel,
+    name: "hasPropertyGroup"
   };
 
   const relatingRelations = entry.connectingSubjects ?? [];
   const allRelatingSubjects = relatingRelations.flatMap(rel => rel.connectingSubject ?? []);
-
 
   const relatedProperties = entry.properties ?? [];
   const relatedDocuments = entry.referenceDocuments ?? [];
@@ -181,6 +199,9 @@ export default function DomainClassForm(
         onDelete={handleOnUpdate}
       />
 
+      {/* Abgeleitete Merkmale von Superklassen */}
+      <InferredPropertiesView entry={entry} />
+
       <TransferListView
         title={<span><b><T keyName="document.titlePlural" /></b><T keyName={"concept.reference_documents"} /></span>}
         relatingItemId={id}
@@ -221,6 +242,16 @@ export default function DomainClassForm(
         relatingRecords={allRelatingSubjects}
       />
 
+      {/* ==================== KOMPAKTE RELATIONS-ANSICHT ==================== */}
+
+      {/* Kompakte editierbare Chip-Ansicht für Klassenbeziehungen */}
+      <RelationChipsViewEditable entry={entry} onUpdate={handleOnUpdate} />
+
+      {/* Relationsgraph - Visualisierung aller Relationen */}
+      <RelationGraphView entry={entry} />
+      
+      {/* ==================== ENDE KOMPAKTE RELATIONS-ANSICHT ==================== */}
+      
       <MetaFormSet entry={entry} />
 
       <Button

@@ -1,5 +1,5 @@
 import React from "react";
-import {Maybe} from "../generated/types";
+import {Maybe} from "../generated/graphql";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 export type JwtToken = string;

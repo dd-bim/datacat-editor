@@ -6,7 +6,7 @@ import { SimpleTreeView } from "@mui/x-tree-view";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { StyledTreeItem } from "./StyledTreeItem";
-import { ItemPropsFragment } from "../generated/types";
+import { ItemPropsFragment } from "../generated/graphql";
 
 // Throttle function für bessere Performance
 const throttle = (func: Function, limit: number) => {
@@ -159,7 +159,7 @@ export const Hierarchy: FC<HierarchyProps> = React.memo(({
           <StyledTreeItem 
             itemId={`${node.nodeId}-more`} 
             data={{ 
-              __typename: 'XtdObject' as const, 
+              __typename: 'XtdSubject' as const, 
               id: `${node.nodeId}-more`, 
               name: `... und ${node.children.length - 100} weitere`,
               recordType: node.data?.recordType || 'Subject',

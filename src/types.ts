@@ -1,7 +1,12 @@
-import {SearchResultPropsFragment, ValueListDetailPropsFragment} from "./generated/types";
-
-export type CatalogRecord = Pick<SearchResultPropsFragment,
-    "id" | "recordType" | "name" |  "comment" | "tags">; // "description" |
+// CatalogRecord - Basis-Typ für Katalogeinträge
+// recordType ist optional, da nicht alle Fragments es enthalten
+export type CatalogRecord = {
+    id: string;
+    recordType?: string;
+    name?: string | null;
+    comment?: string | null;
+    tags?: Array<{ id: string; name: string }>;
+};
 
 // Runtime Environment Configuration Types
 export interface RuntimeEnvironmentConfig {

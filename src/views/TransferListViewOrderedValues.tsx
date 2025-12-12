@@ -1,10 +1,11 @@
+import { useMutation } from "@apollo/client/react";
 import {
     ObjectPropsFragment,
     RelationshipRecordType,
     SearchInput,
-    useCreateRelationshipMutation,
-    useDeleteRelationshipMutation
-} from "../generated/types";
+    CreateRelationshipDocument,
+    DeleteRelationshipDocument
+} from "../generated/graphql";
 import React, { JSX, useState } from "react";
 import TransferList from "../components/list/TransferList";
 import EditIcon from "@mui/icons-material/Edit";
@@ -62,8 +63,8 @@ export default function TransferListView(props: TransferListViewProps) {
             hierarchy: (value: any, { DELETE }: any) => DELETE
         }
     });
-    const [createRelationship] = useCreateRelationshipMutation({ update });
-    const [deleteRelationship] = useDeleteRelationshipMutation({ update });
+    const [createRelationship] = useMutation(CreateRelationshipDocument, { update });
+    const [deleteRelationship] = useMutation(DeleteRelationshipDocument, { update });
 
     const handleOnCreateRelationship = async (toIds: string[]) => {
         await createRelationship({
@@ -94,11 +95,16 @@ export default function TransferListView(props: TransferListViewProps) {
     let content: JSX.Element;
 
     const items = relationships
+        .sort((a, b) => {
+            // Numerische Sortierung nach order
+            const orderA = Number(a.order ?? 0);
+            const orderB = Number(b.order ?? 0);
+            return orderA - orderB;
+        })
         .map(({ order, orderedValue }) => ({
             ...orderedValue,
             name: `${order != null ? order + ". " : ""}${orderedValue.name ?? orderedValue.id}`,
         }));
-
     const handleOnAdd = async (item: ObjectPropsFragment) => {
         const relatedIds = items.map(x => x.id);
         relatedIds.push(item.id);
@@ -118,6 +124,7 @@ export default function TransferListView(props: TransferListViewProps) {
                         enabled={true}
                         searchInput={searchInput}
                         items={[]}
+                        sortAlphabetically={false}
                         onAdd={async item => {
                             await handleOnCreateRelationship([item.id]);
                         }}
@@ -137,6 +144,7 @@ export default function TransferListView(props: TransferListViewProps) {
                     enabled={editState}
                     searchInput={searchInput}
                     items={items}
+                    sortAlphabetically={false}
                     onAdd={handleOnAdd}
                     onSelect={item => {
                         const definition = getEntityType(item.recordType, item.tags.map(x => x.id));

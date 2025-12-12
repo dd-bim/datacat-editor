@@ -1,12 +1,13 @@
 import FormSet, {FormSetDescription, FormSetTitle} from "./FormSet";
+import { useMutation } from "@apollo/client/react";
 import {
     TranslationInput,
     TextPropsFragment,
     UpdateTextInput,
-    useAddCommentMutation,
-    useDeleteCommentMutation,
-    useUpdateCommentMutation
-} from "../../generated/types";
+    AddCommentDocument,
+    DeleteCommentDocument,
+    UpdateCommentDocument
+} from "../../generated/graphql";
 import {useSnackbar} from "notistack";
 import TranslationFormSet from "./TranslationFormSet";
 import { styled } from "@mui/material/styles";
@@ -26,9 +27,9 @@ type CommentFormSetProps = {
 const CommentFormSet = (props: CommentFormSetProps) => {
     const {catalogEntryId, comments, refetch } = props;
     const {enqueueSnackbar} = useSnackbar();
-    const [addComment] = useAddCommentMutation();
-    const [updateComment] = useUpdateCommentMutation();
-    const [deleteComment] = useDeleteCommentMutation();
+    const [addComment] = useMutation(AddCommentDocument);
+    const [updateComment] = useMutation(UpdateCommentDocument);
+    const [deleteComment] = useMutation(DeleteCommentDocument);
 
     const handleOnAdd = async (text: TranslationInput) => {
         await addComment({
