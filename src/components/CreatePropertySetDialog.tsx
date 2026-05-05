@@ -21,7 +21,7 @@ import { T, useTranslate } from "@tolgee/react";
 import { useQuery } from "@apollo/client/react";
 import { 
   PropertyTreeDocument,
-  FindItemDocument,
+  FindPropertiesMinimalDocument,
   CatalogRecordType,
 } from "../generated/graphql";
 import AddIcon from "@mui/icons-material/Add";
@@ -74,21 +74,22 @@ export const CreatePropertySetDialog: React.FC<CreatePropertySetDialogProps> = (
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const { enqueueSnackbar } = useSnackbar();
 
-  // Lade ALLE Properties aus DataCat (SearchResultProps hat kein dictionary-Feld)
-  const { data: allPropertiesData, loading: allPropertiesLoading } = useQuery(FindItemDocument, {
+  // Lade ALLE Properties aus DataCat - Optimierte Query mit minimalen Feldern
+  const { data: allPropertiesData, loading: allPropertiesLoading } = useQuery(FindPropertiesMinimalDocument, {
     variables: {
       input: {
         entityTypeIn: [CatalogRecordType.Property],
       },
-      pageSize: 10000,
+      pageSize: 1000, // Reduziert von 10000 wegen Backend Connection Pool Limits
       pageNumber: 0,
     },
     fetchPolicy: "cache-first",
   });
 
-  // Lade PropertyTree für Werte-Zuordnung
+  // Lade PropertyTree für Werte-Zuordnung - zeitlich gestaffelt
   const { data: propertyData } = useQuery(PropertyTreeDocument, {
     fetchPolicy: "cache-first",
+    skip: allPropertiesLoading, // Warte bis Properties geladen sind
   });
 
   // Extrahiere alle verfügbaren Properties (KEINE Dictionary-Filterung)
@@ -100,7 +101,6 @@ export const CreatePropertySetDialog: React.FC<CreatePropertySetDialogProps> = (
       .map((node: any) => ({
         id: node.id,
         name: node.name || `Property ${node.id}`,
-        description: node.description || "",
         tags: node.tags || [],
       }))
       .sort((a: any, b: any) => a.name.localeCompare(b.name));

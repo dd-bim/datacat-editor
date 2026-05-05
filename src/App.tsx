@@ -5,6 +5,9 @@ import { getTheme } from "./theme";
 import { BrowserRouter as Router } from "react-router-dom";
 import Layout from "./Layout";
 import AuthProvider from "./providers/AuthProvider";
+import { KeycloakProvider } from "./providers/KeycloakProvider";
+import { KeycloakAuthSync } from "./components/KeycloakAuthSync";
+import { getKeycloakConfig } from "./config/keycloak.config";
 import ApiProvider from "./providers/ApiProvider";
 import ProfileProvider from "./providers/ProfileProvider";
 import LanguageProvider from "./providers/LanguageProvider"; // LanguageProvider importieren
@@ -30,6 +33,7 @@ function ThemedApp() {
           }}
         >
           <ProfileProvider>
+            <KeycloakAuthSync />
             <Layout />
           </ProfileProvider>
         </SnackbarProvider>
@@ -39,16 +43,20 @@ function ThemedApp() {
 }
 
 export default function App() {
+  const keycloakConfig = getKeycloakConfig();
+  
   return (
     <AppProvider>
       <CustomThemeProvider>
         <LanguageProvider>
           <Router>
-            <AuthProvider>
-              <ApiProvider>
-                <ThemedApp />
-              </ApiProvider>
-            </AuthProvider>
+            <KeycloakProvider config={keycloakConfig}>
+              <AuthProvider>
+                <ApiProvider>
+                  <ThemedApp />
+                </ApiProvider>
+              </AuthProvider>
+            </KeycloakProvider>
           </Router>
         </LanguageProvider>
       </CustomThemeProvider>

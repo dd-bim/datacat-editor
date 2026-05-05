@@ -42,10 +42,10 @@
     "methodology.title": "The Methodology",
     "methodology.description": "The core of the development is a data schema closely aligned with established standards DIN EN ISO 12006-3 and DIN EN ISO 23387, which should make it possible to maintain even complex classification systems in the catalog. The API is completely agnostic regarding the application-specific structure to be implemented in the data catalog.",
     "opensource.title": "Open Source",
-    "opensource.description": "datacat is developed as free and open-source software under the GPLv3 license and can be freely used and distributed, including commercially. The source code is hosted on GitHub. Any form of support for the project is welcome."
+    "opensource.description": "datacat is developed as free and open-source software under the MIT license and can be freely used and distributed, including commercially. The source code is hosted on GitHub. Any form of support for the project is welcome."
   },
   "intro": {
-    "description1": "datacat editor is a web-based, open-source tool for collaboratively developing data catalogs for the construction industry. The source code is available under the GPL v3 license.",
+    "description1": "datacat editor is a web-based, open-source tool for collaboratively developing data catalogs for the construction industry. The source code is available under the MIT license.",
     "description2": "In a data catalog, you can name, describe, and categorize concepts such as actors, activities, building elements, and properties in multiple languages according to their function and form. By creating relationships between these concepts, the built environment can ultimately be described in more detail.",
     "description3": "The developed dataset is available for retrieval via an API for developers of import/export tools and CAD/BIM plugins. In the future, validation routines will be developed to identify inconsistencies such as unused concepts, possible duplicates, and missing translations in the catalog.",
     "description4": "datacat is developed at the University of Applied Sciences Dresden (HTW Dresden). If you are interested in the project or have questions about the application, please feel free to contact us directly using the details provided below.",
@@ -99,7 +99,9 @@
   "login": {
     "username_label": "Username",
     "password_label": "Password",
-    "login_button": "Login"
+    "login_button": "Login",
+    "or": "or",
+    "keycloak_button": "Login with Keycloak"
   },
   "import": {
     "heading": "Import catalog (CSV)",
@@ -510,14 +512,6 @@
     "add_sub_property": "Add Sub Property",
     "add_depends_on": "Add Dependency",
     "add_depended_on_by": "Add Reverse Dependency",
-    "relation_graph": "Relation Graph",
-    "depends_on": "Depends On",
-    "depended_on_by": "Depended On By",
-    "no_relations": "No relations",
-    "add_super_property": "Add super property",
-    "add_sub_property": "Add sub property",
-    "add_depends_on": "Add dependency",
-    "add_depended_on_by": "Add reverse dependency",
     "relation_graph": "Relation Graph"
   },
   "valuelist": {

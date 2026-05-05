@@ -42,10 +42,10 @@
     "methodology.title": "La metodología",
     "methodology.description": "El centro del desarrollo es un esquema de datos estrechamente alineado con los estándares establecidos DIN EN ISO 12006-3 y DIN EN ISO 23387, que permitirá mantener incluso sistemas de clasificación complejos en el catálogo. La API es completamente agnóstica con respecto a la estructura específica del caso de uso que se implementará en el propio catálogo de datos.",
     "opensource.title": "Código abierto",
-    "opensource.description": "datacat se desarrolla como software libre y de código abierto bajo la licencia GPLv3 y puede ser utilizado y reproducido por cualquier persona, incluso comercialmente. El código fuente está alojado en GitHub. Cualquier tipo de apoyo al proyecto es bienvenido."
+    "opensource.description": "datacat se desarrolla como software libre y de código abierto bajo la licencia MIT y puede ser utilizado y reproducido por cualquier persona, incluso comercialmente. El código fuente está alojado en GitHub. Cualquier tipo de apoyo al proyecto es bienvenido."
   },
   "intro": {
-    "description1": "datacat editor es una herramienta web de código abierto para el desarrollo colaborativo de catálogos de datos para la industria de la construcción. El código fuente se proporciona bajo la licencia GPL v3.",
+    "description1": "datacat editor es una herramienta web de código abierto para el desarrollo colaborativo de catálogos de datos para la industria de la construcción. El código fuente se proporciona bajo la licencia MIT.",
     "description2": "En un catálogo de datos, puede nombrar, describir y categorizar conceptos como actores, actividades, componentes de construcción y propiedades en varios idiomas según su función y forma, de conformidad con los estándares. Al formar relaciones entre estos conceptos, el entorno construido puede describirse con más detalle.",
     "description3": "La base de datos desarrollada está disponible para su recuperación a través de una API para desarrolladores de herramientas de importación/exportación y complementos CAD/BIM. En el futuro, se desarrollarán rutinas de verificación que permitirán identificar inconsistencias como conceptos no utilizados, posibles duplicados y traducciones faltantes en el catálogo.",
     "description4": "datacat se desarrolla en la Universidad de Ciencias Aplicadas de Dresde (HTW Dresden). Si está interesado en el proyecto o tiene preguntas sobre la aplicación, no dude en contactarnos directamente a través de los datos indicados a continuación.",
@@ -99,7 +99,9 @@
   "login": {
     "username_label": "Nombre de usuario",
     "password_label": "Contraseña",
-    "login_button": "Iniciar sesión"
+    "login_button": "Iniciar sesión",
+    "or": "o",
+    "keycloak_button": "Iniciar sesión con Keycloak"
   },
   "import": {
     "heading": "Importar catálogo (CSV)",

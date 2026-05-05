@@ -56,7 +56,7 @@ export function HomePanel() {
       </Typography>
       <Typography variant="body1" component="p">
         <T keyName="home.opensource.description">
-          datacat wird als freie, quelloffene Software unter der GPLv3 Lizenz entwickelt und kann durch jeden, auch
+          datacat wird als freie, quelloffene Software unter der MIT Lizenz entwickelt und kann durch jeden, auch
           kommerziell genutzt und vervielfältigt werden. Der Quellcode wird auf GitHub gehostet. Jeder Art der
           Unterstützung des Projekts ist willkommen.
         </T>

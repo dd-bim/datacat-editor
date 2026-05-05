@@ -42,10 +42,10 @@
     "methodology.title": "De methodologie",
     "methodology.description": "Centraal in de ontwikkeling staat een dataschema dat nauw aansluit bij de gevestigde standaarden DIN EN ISO 12006-3 en DIN EN ISO 23387, waarmee ook complexe classificatiesystemen in de catalogus kunnen worden onderhouden. De API is volledig agnostisch ten opzichte van de toepassingsspecifieke structuur die in de eigen datacatalogus moet worden geïmplementeerd.",
     "opensource.title": "Open Source",
-    "opensource.description": "datacat wordt ontwikkeld als vrije, open-source software onder de GPLv3-licentie en kan door iedereen, ook commercieel, worden gebruikt en vermenigvuldigd. De broncode wordt gehost op GitHub. Elke vorm van ondersteuning voor het project is welkom."
+    "opensource.description": "datacat wordt ontwikkeld als vrije, open-source software onder de MIT-licentie en kan door iedereen, ook commercieel, worden gebruikt en vermenigvuldigd. De broncode wordt gehost op GitHub. Elke vorm van ondersteuning voor het project is welkom."
   },
   "intro": {
-    "description1": "datacat editor is een webgebaseerd open-source hulpmiddel voor het gezamenlijk ontwikkelen van datacatalogi voor de bouwsector. De broncode wordt beschikbaar gesteld onder de GPL v3-licentie.",
+    "description1": "datacat editor is een webgebaseerd open-source hulpmiddel voor het gezamenlijk ontwikkelen van datacatalogi voor de bouwsector. De broncode wordt beschikbaar gesteld onder de MIT-licentie.",
     "description2": "In een datacatalogus kunt u concepten zoals actoren, activiteiten, bouwcomponenten en kenmerken in meerdere talen benoemen, beschrijven en categoriseren volgens hun functie en vorm in overeenstemming met de standaarden. Door relaties tussen deze concepten te leggen, kan de gebouwde omgeving nader worden beschreven.",
     "description3": "De ontwikkelde database is beschikbaar via een API voor ontwikkelaars van import/export-tools en CAD/BIM-plugins. In de toekomst zullen verificatieroutines worden ontwikkeld waarmee inconsistenties zoals ongebruikte concepten, mogelijke duplicaten en ontbrekende vertalingen in de catalogus kunnen worden opgespoord.",
     "description4": "datacat wordt ontwikkeld aan de Hogeschool voor Techniek en Economie Dresden (HTW Dresden). Als u meer interesse heeft in het project of vragen heeft over de toepassing, neem dan gerust direct contact met ons op via de onderstaande gegevens.",
@@ -99,7 +99,9 @@
   "login": {
     "username_label": "Gebruikersnaam",
     "password_label": "Wachtwoord",
-    "login_button": "Inloggen"
+    "login_button": "Inloggen",
+    "or": "of",
+    "keycloak_button": "Inloggen met Keycloak"
   },
   "import": {
     "heading": "Catalogus importeren (CSV)",

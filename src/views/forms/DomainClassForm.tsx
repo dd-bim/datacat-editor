@@ -101,7 +101,9 @@ export default function DomainClassForm(
   };
 
   const relatingRelations = entry.connectingSubjects ?? [];
-  const allRelatingSubjects = relatingRelations.flatMap(rel => rel.connectingSubject ?? []);
+  const allRelatingSubjects = relatingRelations
+    .filter(rel => !rel.relationshipType?.name)
+    .flatMap(rel => rel.connectingSubject ?? []);
 
   const relatedProperties = entry.properties ?? [];
   const relatedDocuments = entry.referenceDocuments ?? [];

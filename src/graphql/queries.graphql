@@ -348,13 +348,21 @@ query FindSubjects($input: FilterInput!) {
         ...RelationsProps
       }
       connectedSubjects {
-        ...RelationsProps
+        id
+        relationshipType {
+          name
+          kind
+        }
         targetSubjects {
           ...RelationsProps
         }
       }
       connectingSubjects {
-        ...RelationsProps
+        id
+        relationshipType {
+          name
+          kind
+        }
         connectingSubject {
           ...RelationsProps
         }
@@ -384,6 +392,11 @@ query FindSubjectsWithDictAndThemes($input: FilterInput!) {
         }
       }
       connectingSubjects {
+        id
+        relationshipType {
+          name
+          kind
+        }
         connectingSubject {
           name
           tags {
@@ -405,6 +418,59 @@ query FindPropertyGroups($input: FilterInput!) {
         ...TagProps
       }
     }
+  }
+}
+
+# IDS-spezifische Queries mit minimalen Feldern für bessere Performance
+# OHNE connectingSubjects um Backend-Überlastung zu vermeiden
+query FindSubjectsForIDS($input: FilterInput!) {
+  findSubjects(input: $input) {
+    nodes {
+      id
+      name
+      tags {
+        id
+        name
+      }
+      dictionary {
+        id
+      }
+    }
+  }
+}
+
+query FindClassesForIDS($input: FilterInput!) {
+  findSubjects(input: $input) {
+    nodes {
+      id
+      name
+      dictionary {
+        id
+        name {
+          texts {
+            text
+          }
+        }
+      }
+    }
+  }
+}
+
+# Optimierte Query für Properties im CreatePropertySetDialog
+query FindPropertiesMinimal($input: SearchInput!, $pageSize: Int, $pageNumber: Int) {
+  search(input: $input, pageSize: $pageSize, pageNumber: $pageNumber) {
+    nodes {
+      ... on XtdObject {
+        id
+        recordType
+        name(input: { languageTags: ["de-DE", "en-US"] })
+        tags {
+          id
+          name
+        }
+      }
+    }
+    totalElements
   }
 }
 

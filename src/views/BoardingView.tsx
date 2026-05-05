@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Paper, Typography, Tabs, Tab, Stack, Box } from "@mui/material";
 import LoginForm from "../components/LoginForm";
 import SignupForm from "../components/SignupForm";
+import KeycloakLoginButton from "../components/KeycloakLoginButton";
 import useAuthContext from "../hooks/useAuthContext";
 import { useSnackbar } from "notistack";
 import { styled } from "@mui/material/styles";
@@ -128,6 +129,7 @@ export default function BoardingView() {
                   </T>
                 </Typography>
                 <LoginForm onLogin={handleLogin} />
+                <KeycloakLoginButton />
               </TabPanel>
 
               <TabPanel value={tab} index="signup">

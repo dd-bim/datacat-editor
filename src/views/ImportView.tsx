@@ -177,7 +177,10 @@ export function ImportView() {
     for (let index = 0; index < lines.length; index++) {
       const line = lines[index];
       if (index === 0) {
-        const content = line.replaceAll('"', "").replace(/\s/g, "").split(";");
+        const content = line
+          .replaceAll('"', "")
+          .split(";")
+          .map((s) => s.trim());
         if (
           content.length !== header.length ||
           !content.every((val, i) => val === header[i])
@@ -192,7 +195,10 @@ export function ImportView() {
       .slice(1)
       .filter((line) => line && line.trim() !== "")
       .map((line) => {
-        const content = line.replaceAll('"', "").replace(/\s/g, "").split(";");
+        const content = line
+          .replaceAll('"', "")
+          .split(";")
+          .map((s) => s.trim());
         return {
           id: content[0] || uuidv4(),
           typ: content[1],
@@ -380,22 +386,39 @@ export function ImportView() {
   };
 
   function toRelType(input: string): RelationshipRecordType {
-    input = input
-      .replace(/[_\- ]+/g, " ")
-      .split(" ")
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join("");
+    // Input normalisieren
+    const normalizedInput = input
+      .toLowerCase()
+      .replace(/[_\- ]+/g, "");
 
-    if (input === "Groups") {
-      input = "RelationshipToSubject";
+    // Sonderfall "groups"
+    if (normalizedInput === "groups") {
+      return "RelationshipToSubject" as RelationshipRecordType;
     }
-    return input as RelationshipRecordType;
+
+    // Alle Enum-Werte dynamisch holen
+    const enumValues = Object.values(RelationshipRecordType) as string[];
+    const found = enumValues.find(type =>
+      type.toLowerCase().replace(/[_\- ]+/g, "") === normalizedInput
+    );
+    if (found) return found as RelationshipRecordType;
+    throw new Error(`Unknown relationship type: ${input}`);
   }
 
   // imports the relationships between the entities into database
   const importRelations = async (relations: relation[]) => {
+    // Group relations by (entity1, relationship) so all toIds are sent in one call
+    const grouped = new Map<string, { entity1: string; relationship: string; toIds: string[] }>();
     for (const rel of relations) {
-      const relType = toRelType(rel.relationship);
+      const key = `${rel.entity1}||${rel.relationship}`;
+      if (!grouped.has(key)) {
+        grouped.set(key, { entity1: rel.entity1, relationship: rel.relationship, toIds: [] });
+      }
+      grouped.get(key)!.toIds.push(rel.entity2);
+    }
+
+    for (const { entity1, relationship, toIds } of grouped.values()) {
+      const relType = toRelType(relationship);
       // Explicitly type properties as any to allow dynamic assignment
       const properties: any = {};
       if (relType === "RelationshipToSubject") {
@@ -403,15 +426,15 @@ export function ImportView() {
           relationshipType: "XTD_SCHEMA_LEVEL"
         };
       }
-      console.log("Importing relationship", relType, rel.entity1, rel.entity2, properties);
+      console.log("Importing relationship", relType, entity1, toIds, properties);
       try {
         await createRelationship({
           variables: {
             input: {
               relationshipType: relType,
               properties: properties,
-              fromId: rel.entity1,
-              toIds: [rel.entity2],
+              fromId: entity1,
+              toIds: toIds,
             },
           },
         });
@@ -419,9 +442,9 @@ export function ImportView() {
           <T
             keyName="import.created_relationship"
             params={{
-              relationshipType: rel.relationship,
-              entity1: rel.entity1,
-              entity2: rel.entity2,
+              relationshipType: relationship,
+              entity1: entity1,
+              entity2: toIds.join(", "),
             }}
           />
         );
@@ -430,9 +453,9 @@ export function ImportView() {
           <T
             keyName="import.error_creating_relationship"
             params={{
-              relationshipType: rel.relationship,
-              entity1: rel.entity1,
-              entity2: rel.entity2,
+              relationshipType: relationship,
+              entity1: entity1,
+              entity2: toIds.join(", "),
               error: e instanceof Error ? e.message : String(e),
             }}
           />

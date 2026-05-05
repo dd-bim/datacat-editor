@@ -29,21 +29,9 @@ COPY --from=builder /app/build .
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/templates/default.conf.template
 
-# Create entrypoint script for runtime config generation
-RUN echo '#!/bin/sh' > /docker-entrypoint.d/50-generate-config.sh && \
-    echo 'echo "Generating runtime configuration..."' >> /docker-entrypoint.d/50-generate-config.sh && \
-    echo 'cat > /var/www/env-config.js << EOF' >> /docker-entrypoint.d/50-generate-config.sh && \
-    echo '// Runtime Environment Configuration' >> /docker-entrypoint.d/50-generate-config.sh && \
-    echo 'window.ENV_CONFIG = {' >> /docker-entrypoint.d/50-generate-config.sh && \
-    echo '  MINIO_ENDPOINT: "${MINIO_ENDPOINT:-localhost}",' >> /docker-entrypoint.d/50-generate-config.sh && \
-    echo '  MINIO_PORT: "${MINIO_PORT:-9000}",' >> /docker-entrypoint.d/50-generate-config.sh && \
-    echo '  MINIO_USE_SSL: "${MINIO_USE_SSL:-false}",' >> /docker-entrypoint.d/50-generate-config.sh && \
-    echo '  MINIO_BUCKET_NAME: "${MINIO_BUCKET_NAME:-datacat-ids}",' >> /docker-entrypoint.d/50-generate-config.sh && \
-    echo '  MINIO_ACCESS_KEY: "${MINIO_ACCESS_KEY:-}",' >> /docker-entrypoint.d/50-generate-config.sh && \
-    echo '  MINIO_SECRET_KEY: "${MINIO_SECRET_KEY:-}"' >> /docker-entrypoint.d/50-generate-config.sh && \
-    echo '};' >> /docker-entrypoint.d/50-generate-config.sh && \
-    echo 'EOF' >> /docker-entrypoint.d/50-generate-config.sh && \
-    chmod +x /docker-entrypoint.d/50-generate-config.sh
+# Copy and set up entrypoint script for runtime config generation
+COPY generate-config.sh /docker-entrypoint.d/50-generate-config.sh
+RUN chmod +x /docker-entrypoint.d/50-generate-config.sh
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

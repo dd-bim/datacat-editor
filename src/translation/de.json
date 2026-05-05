@@ -42,10 +42,10 @@
     "methodology.title": "Die Methodik",
     "methodology.description": "Mittelpunkt der Entwicklung ist ein nah an den etablierten Standards DIN EN ISO 12006-3 und DIN EN ISO 23387 angelehntes Datenschema, das es ermöglichen soll, auch komplexe Klassifikationssysteme im Katalog zu pflegen. Die API ist völlig agnostisch gegenüber der anwendungsfallbezogenen Struktur, die im eigenen Datenkatalog umgesetzt werden soll.",
     "opensource.title": "Open Source",
-    "opensource.description": "datacat wird als freie, quelloffene Software unter der GPLv3 Lizenz entwickelt und kann durch jeden, auch kommerziell genutzt und vervielfältigt werden. Der Quellcode wird auf GitHub gehostet. Jede Art der Unterstützung des Projekts ist willkommen."
+    "opensource.description": "datacat wird als freie, quelloffene Software unter der MIT Lizenz entwickelt und kann durch jeden, auch kommerziell genutzt und vervielfältigt werden. Der Quellcode wird auf GitHub gehostet. Jede Art der Unterstützung des Projekts ist willkommen."
   },
   "intro": {
-    "description1": "datacat editor ist ein webbasiertes, OpenSource Arbeitswerkzeug zum gemeinsamen Entwickeln von Datenkatalogen für die Bauindustrie. Der Quellcode wird unter der GPL v3 Lizenz zur Verfügung gestellt.",
+    "description1": "datacat editor ist ein webbasiertes, OpenSource Arbeitswerkzeug zum gemeinsamen Entwickeln von Datenkatalogen für die Bauindustrie. Der Quellcode wird unter der MIT Lizenz zur Verfügung gestellt.",
     "description2": "In einem Datenkatalog können Sie Konzepte wie Akteure, Aktivitäten, Bauteile und Merkmale mehrsprachig benennen, beschreiben und nach Ihrer Funktion und Gestalt standardkonform kategorisieren. Durch das Bilden von Beziehungen zwischen diesen Konzepten, kann die bebaute Umwelt schließlich näher beschrieben werden.",
     "description3": "Der entwickelte Datenbestand steht zum Abruf über eine API für Entwickler von Import/Export-Werkzeugen und CAD/BIM-Plugins zur Verfügung. Zukünftig sollen Prüfroutinen entwickelt werden, die es erlauben, Inkonsistenzen wie ungenutzte Konzepte, mögliche Duplikate, und fehlende Übersetzungen im Katalog ausfindig zu machen.",
     "description4": "datacat wird an der Hochschule für Technik und Wirtschaft Dresden (HTW Dresden) entwickelt. Wenn Sie weiteres Interesse am Projekt oder Fragen zur Anwendung haben, kontaktieren Sie uns gern direkt über die unten genannten Daten.",
@@ -99,7 +99,9 @@
   "login": {
     "username_label": "Benutzername",
     "password_label": "Passwort",
-    "login_button": "Anmelden"
+    "login_button": "Anmelden",
+    "or": "oder",
+    "keycloak_button": "Mit Keycloak anmelden"
   },
   "import": {
     "heading": "Katalog Importieren (CSV)",

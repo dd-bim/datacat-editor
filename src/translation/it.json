@@ -42,10 +42,10 @@
     "methodology.title": "La metodologia",
     "methodology.description": "Il fulcro dello sviluppo è uno schema dati basato sugli standard DIN EN ISO 12006-3 e DIN EN ISO 23387, che consente di gestire anche sistemi di classificazione complessi nel catalogo. L'API è completamente agnostica rispetto alla struttura specifica del caso d'uso che si desidera implementare nel proprio catalogo dati.",
     "opensource.title": "Open Source",
-    "opensource.description": "datacat è sviluppato come software libero e open source sotto licenza GPLv3 e può essere utilizzato e distribuito da chiunque, anche a fini commerciali. Il codice sorgente è ospitato su GitHub. Ogni tipo di supporto al progetto è benvenuto."
+    "opensource.description": "datacat è sviluppato come software libero e open source sotto licenza MIT e può essere utilizzato e distribuito da chiunque, anche a fini commerciali. Il codice sorgente è ospitato su GitHub. Ogni tipo di supporto al progetto è benvenuto."
   },
   "intro": {
-    "description1": "datacat editor è uno strumento di lavoro web-based open source per lo sviluppo collaborativo di cataloghi di dati per l'industria delle costruzioni. Il codice sorgente è disponibile sotto licenza GPL v3.",
+    "description1": "datacat editor è uno strumento di lavoro web-based open source per lo sviluppo collaborativo di cataloghi di dati per l'industria delle costruzioni. Il codice sorgente è disponibile sotto licenza MIT.",
     "description2": "In un catalogo dati puoi nominare, descrivere e categorizzare concetti come attori, attività, componenti e proprietà in più lingue secondo la loro funzione e forma, in conformità agli standard. Collegando questi concetti, l'ambiente costruito può essere descritto più dettagliatamente.",
     "description3": "I dati sviluppati sono disponibili tramite un'API per sviluppatori di strumenti di import/export e plugin CAD/BIM. In futuro saranno sviluppate routine di verifica per individuare incoerenze come concetti inutilizzati, possibili duplicati e traduzioni mancanti nel catalogo.",
     "description4": "datacat è sviluppato presso l'Università di Scienze Applicate di Dresda (HTW Dresden). Se sei interessato al progetto o hai domande sull'applicazione, contattaci direttamente tramite i dati forniti di seguito.",
@@ -99,7 +99,9 @@
   "login": {
     "username_label": "Nome utente",
     "password_label": "Password",
-    "login_button": "Accedi"
+    "login_button": "Accedi",
+    "or": "oppure",
+    "keycloak_button": "Accedi con Keycloak"
   },
   "import": {
     "heading": "Importa catalogo (CSV)",

@@ -15,7 +15,7 @@ export default function IntroPanel() {
       <Typography gutterBottom>
         <T keyName="intro.description1">
           datacat editor ist ein webbasiertes, OpenSource Arbeitswerkzeug zum gemeinsamen Entwickeln von Datenkatalogen
-          für die Bauindustrie. Der Quellcode wird unter der GPL v3 Lizenz zur Verfügung gestellt.
+          für die Bauindustrie. Der Quellcode wird unter der MIT Lizenz zur Verfügung gestellt.
         </T>
       </Typography>
       <Typography gutterBottom>

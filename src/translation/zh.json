@@ -42,10 +42,10 @@
     "methodology.title": "方法论",
     "methodology.description": "开发的核心是一个基于DIN EN ISO 12006-3和DIN EN ISO 23387标准的数据模式，使得可以在目录中维护复杂的分类系统。API对应用场景结构完全无关，可以灵活适配。",
     "opensource.title": "开源",
-    "opensource.description": "datacat以GPLv3许可证作为自由开源软件开发，任何人都可以免费甚至商业使用和复制。源代码托管在GitHub上。欢迎任何形式的项目支持。"
+    "opensource.description": "datacat以MIT许可证作为自由开源软件开发，任何人都可以免费甚至商业使用和复制。源代码托管在GitHub上。欢迎任何形式的项目支持。"
   },
   "intro": {
-    "description1": "datacat editor是一个基于Web的开源工具，用于协作开发建筑行业的数据目录。源代码以GPL v3许可证提供。",
+    "description1": "datacat editor是一个基于Web的开源工具，用于协作开发建筑行业的数据目录。源代码以MIT许可证提供。",
     "description2": "在数据目录中，您可以为参与者、活动、构件和属性等概念进行多语言命名、描述，并根据其功能和形态进行标准化分类。通过建立这些概念之间的关系，可以更详细地描述建成环境。",
     "description3": "开发的数据可通过API供导入/导出工具和CAD/BIM插件开发者调用。未来将开发校验程序，用于发现目录中的未使用概念、可能的重复项和缺失的翻译。",
     "description4": "datacat由德累斯顿应用科技大学（HTW Dresden）开发。如果您对项目感兴趣或有应用问题，欢迎通过下方联系方式直接联系我们。",
@@ -99,7 +99,9 @@
   "login": {
     "username_label": "用户名",
     "password_label": "密码",
-    "login_button": "登录"
+    "login_button": "登录",
+    "or": "或",
+    "keycloak_button": "使用 Keycloak 登录"
   },
   "import": {
     "heading": "导入目录（CSV）",

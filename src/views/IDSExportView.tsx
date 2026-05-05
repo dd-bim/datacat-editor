@@ -27,9 +27,9 @@ import {
   FindItemDocument, 
   FindTagsDocument, 
   FindDictionariesDocument, 
-  FindSubjectsWithDictAndThemesDocument, 
   FindPropertyGroupsDocument,
-  FindSubjectsDocument
+  FindSubjectsForIdsDocument,
+  FindClassesForIdsDocument
 } from "../generated/graphql";
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
@@ -153,13 +153,13 @@ export const IDSExportView: React.FC = () => {
   
   const { enqueueSnackbar } = useSnackbar();
 
-  // DataCat
+  // DataCat - Reduzierte pageSize für bessere Performance
   const { data, loading, error, refetch: refetchPropertyTree } = useQuery(PropertyTreeDocument, {
     fetchPolicy: "cache-first",
     nextFetchPolicy: "cache-first",
   });
 
-  // Query: Dictionaries
+  // Query: Dictionaries - mit reduzierter pageSize
   const {
     data: dictionariesData,
     loading: dictionariesLoading,
@@ -168,19 +168,20 @@ export const IDSExportView: React.FC = () => {
   } = useQuery(FindDictionariesDocument, {
     variables: {
       input: {
-        pageSize: 1000,
+        pageSize: 200, // Reduziert von 1000
       },
     },
     fetchPolicy: "cache-first",
+    skip: loading, // Warte bis PropertyTree geladen ist
   });
 
-  // Query: Classes
+  // Query: Classes - Zeitlich gestaffelt mit erhöhter pageSize für alle Klassen
   const {
     data: classesData,
     loading: classesLoading,
     error: classesError,
     refetch: refetchClasses,
-  } = useQuery(FindSubjectsWithDictAndThemesDocument, {
+  } = useQuery(FindClassesForIdsDocument, {
     variables: {
       input: {
         tagged: ClassEntity.tags, // nur Klassen
@@ -188,9 +189,10 @@ export const IDSExportView: React.FC = () => {
       },
     },
     fetchPolicy: "cache-first",
+    skip: loading || dictionariesLoading, // Warte bis vorherige Queries fertig sind
   });
 
-  // Query: Property Groups - Verwende useFindSubjectsQuery für Subject-Entitäten
+  // Query: Property Groups - Zeitlich gestaffelt
   const {
     data: allItemsData,
     loading: allItemsLoading,
@@ -200,33 +202,34 @@ export const IDSExportView: React.FC = () => {
     variables: {
       input: {
         tagged: PropertyGroupEntity.tags, // PropertyGroup Tag verwenden
-        pageSize: 1000, // Noch kleiner für Debug
+        pageSize: 200, // Reduziert von 1000
       },
     },
-    // fetchPolicy: "no-cache", // Cache komplett ausschalten für Debug
     fetchPolicy: "cache-first",
-    errorPolicy: "all", // Alle Errors anzeigen
+    errorPolicy: "all",
+    skip: loading || dictionariesLoading || classesLoading, // Warte bis vorherige Queries fertig sind
   });
 
-  // Tags Query für Filterung
+  // Tags Query für Filterung - kleine Query, kann früh laufen
   const { data: tagsData, refetch: refetchTags } = useQuery(FindTagsDocument, {
     variables: { pageSize: 100 },
     fetchPolicy: "cache-first",
   });
 
-  // Query: Alle Subjects (Themen und Unterthemen) - werden clientseitig gefiltert
+  // Query: Alle Subjects (Themen) - Zeitlich gestaffelt mit reduzierter pageSize
   const { 
     data: allSubjectsData, 
     loading: allSubjectsLoading,
     refetch: refetchAllSubjects 
-  } = useQuery(FindSubjectsDocument, {
+  } = useQuery(FindSubjectsForIdsDocument, {
     variables: {
       input: {
         tagged: ThemeEntity.tags, // Thema-Tag
-        pageSize: 1000,
+        pageSize: 200, // Reduziert von 1000
       },
     },
     fetchPolicy: "cache-first",
+    skip: loading || dictionariesLoading || classesLoading || allItemsLoading, // Warte bis vorherige Queries fertig sind
   });
 
   // Error Handling für alle Queries
@@ -277,17 +280,10 @@ export const IDSExportView: React.FC = () => {
     
     return allSubjectsData.findSubjects.nodes
       .filter((subject: any) => {
-        // Filtere nach Dictionary
+        // Filtere nach Dictionary und Thema-Tag
         if (subject.dictionary?.id !== dictionaryId) return false;
-        
-        // Nur Hauptthemen (keine Parent-Beziehung zu anderen Themen)
         const hasThemeTag = subject.tags?.some((tag: any) => ThemeEntity.tags?.includes(tag.id));
-        const hasParentTheme = subject.connectingSubjects?.some((rel: any) => {
-          const connectingSubject = rel.connectingSubject;
-          return connectingSubject?.tags?.some((tag: any) => ThemeEntity.tags?.includes(tag.id));
-        });
-        
-        return hasThemeTag && !hasParentTheme;
+        return hasThemeTag;
       })
       .map((subject: any) => ({
         id: subject.id,
@@ -298,53 +294,25 @@ export const IDSExportView: React.FC = () => {
   }, [allSubjectsData]);
 
   const getSubThemesForTheme = useCallback((parentThemeId: string) => {
-    if (!allSubjectsData?.findSubjects?.nodes || !parentThemeId) return [];
-    
-    const matchingSubThemes = allSubjectsData.findSubjects.nodes
-      .filter((subject: any) => {
-        // Muss Thema-Tag haben UND Parent-Beziehung zum gewählten Thema
-        const hasThemeTag = subject.tags?.some((tag: any) => ThemeEntity.tags?.includes(tag.id));
-        const hasParentRelation = subject.connectingSubjects?.some((rel: any) => {
-          return rel.connectingSubject?.id === parentThemeId;
-        });
-        
-        return hasThemeTag && hasParentRelation;
-      })
-      .map((subject: any) => ({
-        id: subject.id,
-        name: subject.name?.texts?.[0]?.text || subject.name || subject.id,
-        parentThemeId,
-      }))
-      .sort((a: any, b: any) => a.name.localeCompare(b.name));
-    
-    return matchingSubThemes;
-  }, [allSubjectsData]);
+    // Unterthemen-Filterung deaktiviert wegen Backend-Performance
+    // Gibt leeres Array zurück, da hierarchische Filterung ohne connectingSubjects nicht möglich
+    return [];
+  }, []);
 
   // Hole alle Klassen für ein ausgewähltes Thema oder Unterthema (vereinheitlicht)
   const getClassesForThemeOrSubTheme = useCallback((themeId: string) => {
-    if (!classesData?.findSubjects?.nodes || !themeId) return [];
-    
-    // Finde das Theme/Subtheme-Objekt anhand der ID
-    const themeSubject = allSubjectsData?.findSubjects?.nodes?.find((s: any) => s.id === themeId);
-    const themeName = typeof themeSubject?.name === 'string' 
-      ? themeSubject.name 
-      : (themeSubject?.name as any)?.texts?.[0]?.text;
+    // Thema-spezifische Filterung deaktiviert wegen Backend-Performance
+    // Gibt alle Klassen ohne Themen-Filter zurück
+    if (!classesData?.findSubjects?.nodes) return [];
     
     return classesData.findSubjects.nodes
-      .filter((classNode: any) => {
-        return classNode.connectingSubjects?.some((rel: any) => {
-          // Da connectingSubject.id nicht verfügbar ist, verwende den Namen zum Vergleich
-          const subjectName = rel.connectingSubject?.name;
-          return subjectName && themeName && subjectName === themeName;
-        });
-      })
       .map((classNode: any) => ({
         id: classNode.id,
         name: classNode.name?.texts?.[0]?.text || classNode.name || classNode.id,
         themeId,
       }))
       .sort((a: any, b: any) => a.name.localeCompare(b.name));
-  }, [classesData, allSubjectsData]);
+  }, [classesData]);
 
   // NEUE Funktion: Hole ALLE Klassen für ein Dictionary (ohne Themen-Filter)
   const getAllClassesForDictionary = useCallback((dictionaryId: string) => {
